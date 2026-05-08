@@ -50,6 +50,7 @@
         let charTypeMap = {};
         let weaponMap = {};
         let professionMap = {};
+        let roomTypeMap = {};
         let searchTerm = '';
         let currentCharacter = null;
         let currentCharData = null;
@@ -217,6 +218,41 @@
             });
         }
 
+        function replaceTalentPlaceholders(desc, dataList) {
+            if (!desc || !desc.includes('{') || !dataList || !dataList.length) return desc || '';
+            return desc.replace(/\{(\d+),(\d+)(?::([^}]+))?\}/g, (match, dataIdx, valIdx, format) => {
+                const di = parseInt(dataIdx, 10);
+                const vi = parseInt(valIdx, 10);
+                const item = dataList[di];
+                if (!item) return match;
+
+                let finalValue;
+                const bb = item.attachBuff?.blackboard;
+                if (bb && bb[vi] !== undefined) {
+                    finalValue = bb[vi].value;
+                }
+                if (finalValue === undefined && vi === 0) {
+                    if (item.skillBbModifier?.floatValue !== undefined && item.skillBbModifier.floatValue !== 0) {
+                        finalValue = item.skillBbModifier.floatValue;
+                    } else if (item.skillParamModifier?.paramValue !== undefined && item.skillParamModifier.paramValue !== 0) {
+                        finalValue = item.skillParamModifier.paramValue;
+                    } else if (item.attrModifier?.attrValue !== undefined && item.attrModifier.attrValue !== 0) {
+                        finalValue = item.attrModifier.attrValue;
+                    }
+                }
+                if (finalValue === undefined) finalValue = 0;
+
+                if (typeof finalValue === 'number') {
+                    if (format === '0%') return Math.round(finalValue * 100) + '%';
+                    if (format === '0.0%') return (finalValue * 100).toFixed(1) + '%';
+                    if (format === '0') return Math.round(finalValue).toString();
+                    if (format === '0.0') return finalValue.toFixed(1);
+                    return finalValue.toString();
+                }
+                return String(finalValue);
+            });
+        }
+
         async function loadMaps() {
             try {
                 const res = await fetch('/public/CH/maps.json?t=' + Date.now());
@@ -228,6 +264,7 @@
                 charTypeMap = data.char_type_map || {};
                 weaponMap = data.weapon_map || {};
                 professionMap = data.profession_map || {};
+                roomTypeMap = data.room_type_map || {};
             } catch (err) {
                 console.error('加载映射数据失败:', err);
                 attrMap = {};
@@ -236,6 +273,7 @@
                 charTypeMap = {};
                 weaponMap = {};
                 professionMap = {};
+                roomTypeMap = {};
             }
         }
 
@@ -557,7 +595,7 @@
             const legacy = {
                 charId: baseInfo.charId,
                 icon: baseInfo.icon || '',
-                pic: rawData.pic || '',
+                pic: rawData.pic || `/public/images/character/charpic/${baseInfo.charId}.png`,
                 potentialpic1: rawData.potentialpic1 || '',
                 potentialpic2: rawData.potentialpic2 || '',
                 potentialpic3: rawData.potentialpic3 || '',
@@ -566,12 +604,21 @@
                 charType: baseInfo.charType,
                 profession: baseInfo.profession,
                 weapontype: baseInfo.weapontype,
-                mainAttrType: baseInfo.mainAttrType || '-',
-                subAttrType: baseInfo.subAttrType || '-',
-                charBattleTag: baseInfo.charBattleTag || [],
+                mainAttrType: getAttrName(rawData.charactertable?.mainAttrType) || baseInfo.mainAttrType || '-',
+                subAttrType: getAttrName(rawData.chargrowthtable?.subAttrType) || baseInfo.subAttrType || '-',
+                charBattleTag: rawData.chargrowthtable?.charBattleTag || baseInfo.charBattleTag || [],
                 profile: baseInfo.profile || '',
                 feature: baseInfo.feature || '',
-                cvName: baseInfo.cvName || [],
+                cvName: (function() {
+                    const cv = rawData.charactertable?.cvName;
+                    if (!cv) return baseInfo.cvName || [];
+                    const names = [];
+                    if (cv.ChiCVName?.text) names.push(cv.ChiCVName.text);
+                    if (cv.JapCVName?.text) names.push(cv.JapCVName.text);
+                    if (cv.EngCVName?.text) names.push(cv.EngCVName.text);
+                    if (cv.KorCVName?.text) names.push(cv.KorCVName.text);
+                    return names.length ? names : (baseInfo.cvName || []);
+                })(),
                 growth: {},
                 talents: [],
                 potentials: [],
@@ -583,7 +630,7 @@
                 profileVoice: []
             };
 
-            const preferredAttrs = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '法术异常伤害系数', '物理异常伤害系数'];
+            const preferredAttrs = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '防御力'];
             const attrTypeToName = {};
             Object.keys(attrMap || {}).forEach(k => {
                 attrTypeToName[parseInt(k, 10)] = attrMap[k];
@@ -607,18 +654,24 @@
             });
 
             const talentNodes = Object.values(rawData.chargrowthtable?.talentNodeMap || {}).filter(n => n.nodeType === 4 && n.passiveSkillNodeInfo?.talentEffectId);
-            legacy.talents = talentNodes.map(n => {
+            const talentGroups = {};
+            talentNodes.forEach(n => {
+                const info = n.passiveSkillNodeInfo;
+                const idx = info.index ?? 0;
+                const lvl = info.level ?? 0;
+                if (!talentGroups[idx] || lvl > (talentGroups[idx].level ?? 0)) {
+                    talentGroups[idx] = { node: n, level: lvl };
+                }
+            });
+            legacy.talents = Object.keys(talentGroups).sort().map(idx => {
+                const n = talentGroups[idx].node;
                 const effect = rawData.potentialtalenteffecttable?.[n.passiveSkillNodeInfo.talentEffectId];
                 if (!effect) return null;
                 const descRaw = effect.desc?.text || effect.desc || '';
-                const valueMap = {};
-                (effect.dataList || []).forEach(item => {
-                    if (item && item.key !== undefined) valueMap[item.key] = item.value;
-                });
                 return {
-                    name: effect.name?.text || effect.name || '天赋',
+                    name: n.passiveSkillNodeInfo.name?.text || effect.name?.text || effect.name || '天赋',
                     description: descRaw,
-                    values: valueMap
+                    dataList: effect.dataList || []
                 };
             }).filter(Boolean);
 
@@ -627,21 +680,18 @@
                 const effId = p.potentialEffectId;
                 let effect = rawData.potentialtalenteffecttable?.[effId];
                 let desc = effect?.desc?.text || effect?.desc || '';
-                const values = {};
-                (effect?.dataList || []).forEach(item => {
-                    if (item && item.key !== undefined) values[item.key] = item.value;
-                });
+                let dataList = effect?.dataList || [];
                 if (!desc) {
                     const patch = rawData.skillpatchtable?.[effId]?.SkillPatchDataBundle?.[0];
                     desc = patch?.description?.text || '';
-                    (patch?.blackboard || []).forEach(bb => {
-                        if (bb && bb.key !== undefined) values[bb.key] = bb.value;
-                    });
+                    if (patch?.blackboard?.length) {
+                        dataList = [{ attachBuff: { blackboard: patch.blackboard } }];
+                    }
                 }
                 return {
                     name: p.name?.text || p.name || `潜能 ${p.level || ''}`,
                     description: desc,
-                    values
+                    dataList
                 };
             });
 
@@ -649,6 +699,7 @@
             legacy.attributeNodes = attrNodes.map(n => {
                 const info = n.attributeNodeInfo || {};
                 const mod = info.attributeModifier;
+                if (!mod || (mod.attrType === 0 && mod.attrValue === 0)) return null;
                 const modName = mod ? (getAttrName(mod.attrType) || mod.attrType) : '';
                 const modText = mod ? `${modName}+${mod.attrValue}` : '';
                 return {
@@ -656,7 +707,7 @@
                     description: info.desc?.text || '',
                     modifier: modText
                 };
-            });
+            }).filter(Boolean);
 
             const skillGroupMap = rawData.chargrowthtable?.skillGroupMap || {};
             const skillGroups = Object.values(skillGroupMap).sort((a, b) => (a.skillGroupType || 0) - (b.skillGroupType || 0));
@@ -670,8 +721,24 @@
                     skillIds: s.skillIdList || []
                 };
 
-                const patchKey = s.skillGroupId || (Array.isArray(s.skillIdList) ? s.skillIdList[0] : '');
-                const patchList = rawData.skillpatchtable?.[patchKey]?.SkillPatchDataBundle || [];
+                const skillIdList = Array.isArray(s.skillIdList) ? s.skillIdList : [];
+                let patchKey = '';
+                let patchList = [];
+                for (const sid of skillIdList) {
+                    const pl = rawData.skillpatchtable?.[sid]?.SkillPatchDataBundle;
+                    if (pl && pl.length > 0) {
+                        patchKey = sid;
+                        patchList = pl;
+                        break;
+                    }
+                }
+                if (!patchKey && s.skillGroupId) {
+                    const pl = rawData.skillpatchtable?.[s.skillGroupId]?.SkillPatchDataBundle;
+                    if (pl && pl.length > 0) {
+                        patchKey = s.skillGroupId;
+                        patchList = pl;
+                    }
+                }
                 const values = { coolDown: [], costValue: [] };
                 patchList.forEach(patch => {
                     values.coolDown.push(patch.coolDown ?? 0);
@@ -682,7 +749,7 @@
                         values[bb.key].push(bb.value ?? 0);
                     });
                 });
-                legacy.skill[patchKey || group.name] = {
+                legacy.skill[group.name] = {
                     name: group.name,
                     values
                 };
@@ -708,9 +775,9 @@
                 const tName = skill.talentName?.text || skill.talentName || '';
                 if (!groupedSkills[tName]) {
                     groupedSkills[tName] = {
-                        icon: skill.icon ? `${IMAGE_BASE_PATH}${skill.icon}.png` : '',
+                        icon: skill.icon ? `/public/images/character/spaceshipskillicon/${skill.icon}.png` : '',
                         talentName: tName,
-                        roomTypeName: { 1: '制造舱', 5: '会客室' }[skill.roomType] || '',
+                        roomTypeName: roomTypeMap[String(skill.roomType)] || '',
                         levels: []
                     };
                 }
@@ -725,7 +792,7 @@
 
             legacy.profileRecord = (rawData.charactertable?.profileRecord || []).map(rec => ({
                 title: rec.recordTitle?.text || '',
-                desc: rec.recordText?.text || ''
+                desc: rec.recordDesc?.text || ''
             }));
             legacy.profileVoice = (rawData.charactertable?.profileVoice || []).map(v => ({
                 title: v.voiceTitle?.text || v.voiceTitle || v.voId || '',
@@ -739,7 +806,7 @@
             const tbody = document.querySelector('.growth-table tbody');
             if (!tbody || !currentCharData) return;
             const growth = currentCharData.growth || {};
-            const attributes = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '法术异常伤害系数', '物理异常伤害系数'];
+            const attributes = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '防御力'];
             const firstAttr = attributes.find(attr => growth[attr] && growth[attr].length);
             const levelCount = firstAttr ? growth[firstAttr].length : 0;
             const allGrowthRows = [];
@@ -884,7 +951,7 @@
             `;
 
             const growth = data.growth || {};
-            const attributes = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '法术异常伤害系数', '物理异常伤害系数'];
+            const attributes = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '防御力'];
             const firstAttr = attributes.find(attr => growth[attr] && growth[attr].length);
             const levelCount = firstAttr ? growth[firstAttr].length : 0;
             const allGrowthRows = [];
@@ -931,8 +998,7 @@
             `;
 
             const talentsHtml = (data.talents || []).map(talent => {
-                const valueMap = talent.values || {};
-                const desc = parseText(replacePlaceholders(talent.description, valueMap));
+                const desc = parseText(replaceTalentPlaceholders(talent.description, talent.dataList));
                 return `
                     <div class="talent-item">
                         <div class="talent-name">${talent.name}</div>
@@ -942,8 +1008,7 @@
             }).join('');
 
             const potentialsHtml = (data.potentials || []).map(pot => {
-                const valueMap = pot.values || {};
-                const desc = parseText(replacePlaceholders(pot.description, valueMap));
+                const desc = parseText(replaceTalentPlaceholders(pot.description, pot.dataList));
                 return `
                     <div class="potential-item">
                         <div class="potential-name">${pot.name}</div>
