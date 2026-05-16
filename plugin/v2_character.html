@@ -652,17 +652,13 @@
             });
 
             const talentNodes = Object.values(rawData.chargrowthtable?.talentNodeMap || {}).filter(n => n.nodeType === 4 && n.passiveSkillNodeInfo?.talentEffectId);
-            const talentGroups = {};
-            talentNodes.forEach(n => {
-                const info = n.passiveSkillNodeInfo;
-                const idx = info.index ?? 0;
-                const lvl = info.level ?? 0;
-                if (!talentGroups[idx] || lvl > (talentGroups[idx].level ?? 0)) {
-                    talentGroups[idx] = { node: n, level: lvl };
-                }
+            talentNodes.sort((a, b) => {
+                const ai = a.passiveSkillNodeInfo.index ?? 0;
+                const bi = b.passiveSkillNodeInfo.index ?? 0;
+                if (ai !== bi) return ai - bi;
+                return (a.passiveSkillNodeInfo.level ?? 0) - (b.passiveSkillNodeInfo.level ?? 0);
             });
-            legacy.talents = Object.keys(talentGroups).sort().map(idx => {
-                const n = talentGroups[idx].node;
+            legacy.talents = talentNodes.map(n => {
                 const effect = rawData.potentialtalenteffecttable?.[n.passiveSkillNodeInfo.talentEffectId];
                 if (!effect) return null;
                 const descRaw = effect.desc?.text || effect.desc || '';
@@ -743,6 +739,7 @@
             });
 
             const attrNodes = Object.values(rawData.chargrowthtable?.talentNodeMap || {}).filter(n => n.nodeType === 3);
+            attrNodes.sort((a, b) => (a.attributeNodeInfo?.breakStage ?? 0) - (b.attributeNodeInfo?.breakStage ?? 0));
             legacy.attributeNodes = attrNodes.map(n => {
                 const info = n.attributeNodeInfo || {};
                 const mod = info.attributeModifier;
