@@ -25,20 +25,21 @@
     },
     {
         "id": "character",
+        "title": "角色（旧版）",
+        "description": "查看干员详细数据",
+        "priority": 101,
+        "icon": "👥",
+        "contentFile": "/plugin/character.html",
+        "hidden": true
+    },
+    {
+        "id": "v2_character",
         "title": "角色",
         "description": "查看干员详细数据",
         "priority": 7,
         "icon": "👤",
-        "contentFile": "/plugin/character.html"
-    },
-    {
-        "id": "v2_character",
-        "title": "角色(V2)",
-        "description": "查看V2版本的角色数据（开发中）",
-        "priority": 1,
-        "icon": "👥",
         "contentFile": "/plugin/v2_character.html",
-        "hidden": true
+        "hidden": false
     },
     {
         "id": "enemy",

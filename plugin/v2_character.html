@@ -1,5 +1,23 @@
 <!-- plugin/v2_character.html -->
 <link rel="stylesheet" href="/theme/character.css">
+<style>
+.cost-wrap{position:relative;display:inline-block;vertical-align:middle}
+.cost-btn{display:inline-block;margin-left:4px;padding:1px 8px;font-size:0.72rem;background:var(--button-bg,#e0e8f0);border:1px solid var(--border-color,#ccc);border-radius:10px;cursor:pointer;color:var(--text-color,#333)}
+.cost-btn:hover{background:var(--hover-bg,#d0d8e0)}
+.cost-tip{display:none;position:absolute;z-index:200;left:0;bottom:calc(100% + 6px);background:var(--card-bg,#fff);border:1px solid var(--border-color,#ccc);border-radius:8px;padding:8px 12px;box-shadow:0 4px 16px rgba(0,0,0,.18);white-space:nowrap;pointer-events:auto}
+.cost-wrap:hover .cost-tip,.cost-tip.pinned{display:block}
+.cost-section-title{font-size:0.72rem;color:var(--text-color-secondary,#888);margin:4px 0 2px;font-weight:bold}
+.cost-item{display:flex;align-items:center;gap:6px;padding:3px 0;font-size:0.8rem}
+.cost-item img{width:16px;height:16px;object-fit:contain;flex-shrink:0}
+.cost-item .ci-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.cost-item .ci-cnt{font-weight:bold;flex-shrink:0}
+.sk-cost-row{display:flex;align-items:center;gap:4px 12px;padding:2px 0;font-size:0.8rem;white-space:nowrap}
+.sk-cost-row .cost-section-title{margin:0;flex-shrink:0}
+.sk-cost-row .ci-ri{display:inline-flex;align-items:center;gap:4px}
+.sk-cost-row .ci-ri img{width:16px;height:16px;object-fit:contain}
+.cost-btn-icons{display:inline-flex;align-items:center;gap:2px;margin-left:4px;vertical-align:middle}
+.cost-btn-icons img{width:18px;height:18px;object-fit:contain}
+</style>
 
 <div class="character-module">
     <div class="left-column">
@@ -651,6 +669,14 @@
                 });
             });
 
+            const itemNameMap = {};
+            Object.values(rawData.chargrowthtable?.talentNodeMap || {}).forEach(n => {
+                (n.requiredItem || []).forEach(item => {
+                    if (item.id && item.name?.text) itemNameMap[item.id] = item.name.text;
+                });
+            });
+            legacy.itemNameMap = itemNameMap;
+
             const talentNodes = Object.values(rawData.chargrowthtable?.talentNodeMap || {}).filter(n => n.nodeType === 4 && n.passiveSkillNodeInfo?.talentEffectId);
             talentNodes.sort((a, b) => {
                 const ai = a.passiveSkillNodeInfo.index ?? 0;
@@ -685,7 +711,8 @@
                 return {
                     name: n.passiveSkillNodeInfo.name?.text || effect.name?.text || effect.name || '天赋',
                     description: descRaw,
-                    values: values
+                    values: values,
+                    requiredItem: n.requiredItem || []
                 };
             }).filter(Boolean);
 
@@ -722,10 +749,12 @@
                         if (atName) values[atName] = item.attrModifier.attrValue;
                     }
                 });
+                const costItems = (p.itemIds || []).map((id, i) => ({ id, count: (p.itemCnts || [])[i] || 0 }));
                 return {
                     name: p.name?.text || p.name || `潜能 ${p.level || ''}`,
                     description: desc,
-                    values: values
+                    values: values,
+                    costItems: costItems
                 };
             });
 
@@ -749,7 +778,8 @@
                 return {
                     title: info.title?.text || '',
                     description: info.desc?.text || '',
-                    modifier: modText
+                    modifier: modText,
+                    requiredItem: n.requiredItem || []
                 };
             }).filter(Boolean);
 
@@ -762,7 +792,8 @@
                     icon: iconPath,
                     description: s.desc?.text || s.desc || '',
                     groupType: s.skillGroupType || 0,
-                    skillIds: s.skillIdList || []
+                    skillIds: s.skillIdList || [],
+                    skillGroupId: s.skillGroupId || ''
                 };
 
                 const skillIdList = Array.isArray(s.skillIdList) ? s.skillIdList : [];
@@ -827,6 +858,22 @@
 
                 return group;
             });
+
+            const skillLevelUp = rawData.chargrowthtable?.skillLevelUp || [];
+            const skillCosts = {};
+            const skillGroupIdToName = {};
+            legacy.skills.forEach(g => { skillGroupIdToName[g.skillIds?.[0]?.split('_').slice(0, -1).join('_') || ''] = g.name; });
+            Object.values(rawData.chargrowthtable?.skillGroupMap || {}).forEach(sg => {
+                skillGroupIdToName[sg.skillGroupId] = sg.name?.text || sg.name || '';
+            });
+            skillLevelUp.forEach(entry => {
+                const gid = entry.skillGroupId;
+                if (!skillCosts[gid]) skillCosts[gid] = [];
+                skillCosts[gid].push({ level: entry.level, goldCost: entry.goldCost || 0, items: entry.itemBundle || [] });
+            });
+            Object.values(skillCosts).forEach(arr => arr.sort((a, b) => a.level - b.level));
+            legacy.skillCosts = skillCosts;
+            legacy.skillGroupIdToName = skillGroupIdToName;
 
             const spaceshipChars = rawData.spaceshipcharskilltable?.skillList || [];
             const spaceshipSkills = rawData.spaceshipskilltable || {};
@@ -980,6 +1027,24 @@
             skillNames.forEach(name => updateSkillTable(name));
         }
 
+        function renderCostItemsHtml(items, goldCost, itemNameMap) {
+            const parts = [...(items || [])];
+            if (goldCost && goldCost > 0 && !parts.some(it => it.id === 'item_gold')) {
+                parts.push({ id: 'item_gold', count: goldCost });
+            }
+            if (parts.length === 0) return '';
+            return parts.map(it => {
+                const nm = (it.id === 'item_gold' ? '折金票' : (itemNameMap || {})[it.id]) || it.id;
+                return `<div class="cost-item"><img src="/public/images/item/itemicon/${it.id}.png" onerror="this.style.display='none'"><span class="ci-name">${nm}</span><span class="ci-cnt">×${it.count}</span></div>`;
+            }).join('');
+        }
+
+        function costBtnHtml(innerHtml, itemIds) {
+            if (!innerHtml) return '';
+            const icons = (itemIds || []).map(id => `<img src="/public/images/item/itemicon/${id}.png" onerror="this.style.display='none'">`).join('');
+            return `<span class="cost-wrap"><span class="cost-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.cost-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">养成消耗</span><span class="cost-btn-icons">${icons}</span><span class="cost-tip">${innerHtml}</span></span>`;
+        }
+
         function renderDetail(data) {
             const showHidden = getCurrentShowHidden();
 
@@ -1061,13 +1126,16 @@
                 </div>
             `;
 
+            const inm = data.itemNameMap || {};
             const talentsHtml = (data.talents || []).map(talent => {
                 const valueMap = talent.values || {};
                 let desc = replacePlaceholders(talent.description, valueMap);
                 desc = parseText(desc);
+                const costHtml = renderCostItemsHtml(talent.requiredItem, 0, inm);
+                const costIconIds = (talent.requiredItem || []).map(it => it.id);
                 return `
                     <div class="talent-item">
-                        <div class="talent-name">${talent.name}</div>
+                        <div class="talent-name">${talent.name} ${costBtnHtml(costHtml, costIconIds)}</div>
                         <div class="talent-desc">${desc}</div>
                     </div>
                 `;
@@ -1077,9 +1145,11 @@
                 const valueMap = pot.values || {};
                 let desc = replacePlaceholders(pot.description, valueMap);
                 desc = parseText(desc);
+                const costHtml = renderCostItemsHtml(pot.costItems, 0, inm);
+                const costIconIds = (pot.costItems || []).map(it => it.id);
                 return `
                     <div class="potential-item">
-                        <div class="potential-name">${pot.name}</div>
+                        <div class="potential-name">${pot.name} ${costBtnHtml(costHtml, costIconIds)}</div>
                         <div class="potential-desc">${desc}</div>
                     </div>
                 `;
@@ -1090,13 +1160,15 @@
                 <div class="section">
                     <h3>属性节点</h3>
                     <div class="attr-nodes-grid">
-                        ${attrNodes.map(node => `
-                            <div class="attr-node-item">
-                                <div class="attr-node-title">${node.title}</div>
+                        ${attrNodes.map(node => {
+                            const costHtml = renderCostItemsHtml(node.requiredItem, 0, inm);
+                            const costIconIds = (node.requiredItem || []).map(it => it.id);
+                            return `<div class="attr-node-item">
+                                <div class="attr-node-title">${node.title} ${costBtnHtml(costHtml, costIconIds)}</div>
                                 <div class="attr-node-desc">${node.description}</div>
                                 <div class="attr-node-modifier">${node.modifier}</div>
-                            </div>
-                        `).join('')}
+                            </div>`;
+                        }).join('')}
                     </div>
                 </div>
             `;
@@ -1175,11 +1247,25 @@
                     `;
                 }
 
+                const skCosts = (data.skillCosts || {})[group.skillGroupId] || [];
+                let skCostHtml = '';
+                if (skCosts.length > 0) {
+                    const rows = skCosts.map(c => {
+                        const itemParts = [{ id: 'item_gold', count: c.goldCost, name: { text: '折金票' } }, ...c.items.filter(it => it.id !== 'item_gold')];
+                        const itemsStr = itemParts.map(it => {
+                            const nm = it.name?.text || inm[it.id] || it.id;
+                            return `<span class="ci-ri"><img src="/public/images/item/itemicon/${it.id}.png" onerror="this.style.display='none'">${nm} ×${it.count}</span>`;
+                        }).join('');
+                        return `<div class="sk-cost-row"><span class="cost-section-title">Lv.${c.level - 1}→${c.level}</span>${itemsStr}</div>`;
+                    }).join('');
+                    skCostHtml = rows;
+                }
+
                 return `
                     <div class="skill-item" data-skill-name="${group.name}">
                         <div class="skill-name">
                             <img class="skill-icon" src="${group.icon}" alt="" onerror="this.onerror=null; this.src='';">
-                            ${displayName}
+                            ${displayName} ${costBtnHtml(skCostHtml, ['item_gold', ...new Set(skCosts.flatMap(c => c.items.map(it => it.id)))])}
                         </div>
                         <div class="skill-desc">${groupDesc}</div>
                         ${skillTables}
@@ -1301,6 +1387,10 @@
             isInitialized = true;
             if (window.configLoaded) await window.configLoaded;
             await loadMaps();
+
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.cost-tip.pinned').forEach(t => t.classList.remove('pinned'));
+            });
 
             const settings = window.akeData?.getLevelSettings?.() || {};
             if (settings.enabled) {
