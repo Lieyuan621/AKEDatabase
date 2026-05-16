@@ -787,6 +787,8 @@
                     }
                 }
                 const values = { coolDown: [], costValue: [] };
+                const subDescNames = [];
+                const subDescValues = {};
                 patchList.forEach(patch => {
                     values.coolDown.push(patch.coolDown ?? 0);
                     values.costValue.push(patch.costValue ?? 0);
@@ -795,10 +797,23 @@
                         if (!values[bb.key]) values[bb.key] = [];
                         values[bb.key].push(bb.value ?? 0);
                     });
+                    const names = patch.subDescNameList || [];
+                    const vals = patch.subDescList || [];
+                    names.forEach((n, i) => {
+                        const name = n?.text || '';
+                        if (!name) return;
+                        if (!subDescValues[name]) {
+                            subDescNames.push(name);
+                            subDescValues[name] = [];
+                        }
+                        subDescValues[name].push(vals[i] ?? '');
+                    });
                 });
                 legacy.skill[group.name] = {
                     name: group.name,
-                    values
+                    values,
+                    subDescNames,
+                    subDescValues
                 };
 
                 const descValueMap = {};
@@ -897,25 +912,27 @@
             if (!group || !skillDetail) return;
 
             const values = skillDetail.values || {};
-            const columns = Object.keys(values).filter(k => Array.isArray(values[k]));
-            let displayColumns = columns;
-            if (!showHidden) {
-                displayColumns = columns.filter(col => {
-                    const lowerCol = col.toLowerCase();
-                    return !HIDDEN_KEYWORDS.some(keyword => lowerCol.includes(keyword));
-                });
-            }
-            if (displayColumns.length === 0) {
+            const subDescNames = skillDetail.subDescNames || [];
+            const subDescValues = skillDetail.subDescValues || {};
+            const bbColumns = Object.keys(values).filter(k => Array.isArray(values[k]));
+            const hasSubDesc = subDescNames.length > 0;
+            const allColumns = hasSubDesc
+                ? (showHidden ? [...subDescNames, ...bbColumns] : subDescNames)
+                : bbColumns;
+            if (allColumns.length === 0) {
                 skillContainer.innerHTML = '';
                 return;
             }
 
-            const levelCount = values[columns[0]].length;
+            const levelCount = hasSubDesc ? (subDescValues[subDescNames[0]] || []).length : (values[bbColumns[0]] || []).length;
             const allSkillRows = [];
             for (let lv = 1; lv <= levelCount; lv++) {
-                const cells = displayColumns.map(col => {
+                const cells = allColumns.map(col => {
+                    if (hasSubDesc && subDescValues[col] !== undefined) {
+                        return `<td>${subDescValues[col][lv - 1] ?? ''}</td>`;
+                    }
                     const arr = values[col];
-                    let val = arr[lv - 1] !== undefined ? arr[lv - 1] : arr[arr.length - 1];
+                    let val = arr ? (arr[lv - 1] !== undefined ? arr[lv - 1] : arr[arr.length - 1]) : '';
                     if (typeof val === 'number') val = val.toFixed(2);
                     return `<td>${val}</td>`;
                 }).join('');
@@ -937,7 +954,7 @@
                 if (found) rowsToRender = [found];
             }
 
-            const headerCells = displayColumns.map(col => `<th>${COLUMN_MAP[col] || col}</th>`).join('');
+            const headerCells = allColumns.map(col => `<th>${COLUMN_MAP[col] || col}</th>`).join('');
             const header = `<tr><th>等级</th>${headerCells}</tr>`;
             const tableHtml = `
                 <div style="display: flex; align-items: center; justify-content: flex-end; margin-bottom: 4px;">
@@ -1094,6 +1111,8 @@
                 if (!skillDetail) return '';
 
                 const values = skillDetail.values || {};
+                const subDescNames = skillDetail.subDescNames || [];
+                const subDescValues = skillDetail.subDescValues || {};
                 const level1Values = {};
                 for (const [key, val] of Object.entries(values)) {
                     if (Array.isArray(val) && val.length > 0) level1Values[key] = val[0];
@@ -1104,23 +1123,23 @@
                 const prefix = (index < skillTypePrefix.length) ? skillTypePrefix[index] : '技能';
                 const displayName = `${prefix}·${group.name}`;
 
-                const columns = Object.keys(values).filter(k => Array.isArray(values[k]));
-                let displayColumns = columns;
-                if (!showHidden) {
-                    displayColumns = columns.filter(col => {
-                        const lowerCol = col.toLowerCase();
-                        return !HIDDEN_KEYWORDS.some(keyword => lowerCol.includes(keyword));
-                    });
-                }
+                const bbColumns = Object.keys(values).filter(k => Array.isArray(values[k]));
+                const hasSubDesc = subDescNames.length > 0;
+                const allColumns = hasSubDesc
+                    ? (showHidden ? [...subDescNames, ...bbColumns] : subDescNames)
+                    : bbColumns;
 
                 let skillTables = '';
-                if (displayColumns.length > 0) {
-                    const levelCount = values[columns[0]].length;
+                if (allColumns.length > 0) {
+                    const levelCount = hasSubDesc ? (subDescValues[subDescNames[0]] || []).length : (values[bbColumns[0]] || []).length;
                     const allSkillRows = [];
                     for (let lv = 1; lv <= levelCount; lv++) {
-                        const cells = displayColumns.map(col => {
+                        const cells = allColumns.map(col => {
+                            if (hasSubDesc && subDescValues[col] !== undefined) {
+                                return `<td>${subDescValues[col][lv - 1] ?? ''}</td>`;
+                            }
                             const arr = values[col];
-                            let val = arr[lv - 1] !== undefined ? arr[lv - 1] : arr[arr.length - 1];
+                            let val = arr ? (arr[lv - 1] !== undefined ? arr[lv - 1] : arr[arr.length - 1]) : '';
                             if (typeof val === 'number') val = val.toFixed(2);
                             return `<td>${val}</td>`;
                         }).join('');
@@ -1142,7 +1161,7 @@
                         if (found) skillRowsToRender = [found];
                     }
 
-                    const headerCells = displayColumns.map(col => `<th>${COLUMN_MAP[col] || col}</th>`).join('');
+                    const headerCells = allColumns.map(col => `<th>${COLUMN_MAP[col] || col}</th>`).join('');
                     const header = `<tr><th>等级</th>${headerCells}</tr>`;
                     const btnText = isExpanded ? '收起多余等级' : '展开所有等级';
 
