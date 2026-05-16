@@ -596,9 +596,7 @@
                 charId: baseInfo.charId,
                 icon: baseInfo.icon || '',
                 pic: rawData.pic || `/public/images/character/charpic/${baseInfo.charId}.png`,
-                potentialpic1: rawData.potentialpic1 || '',
-                potentialpic2: rawData.potentialpic2 || '',
-                potentialpic3: rawData.potentialpic3 || '',
+                potentialpics: [],
                 name: baseInfo.name || rawData.name || '',
                 rarity: baseInfo.rarity,
                 charType: baseInfo.charType,
@@ -733,6 +731,15 @@
                     description: desc,
                     values: values
                 };
+            });
+
+            const potentialBundles = rawData.characterpotentialtable?.potentialUnlockBundle || [];
+            potentialBundles.forEach(p => {
+                (p.unlockCharPictureItemList || []).forEach(itemId => {
+                    if (!itemId) return;
+                    const imgName = itemId.replace(/^item_/, '');
+                    legacy.potentialpics.push(`/public/images/character/imagepoaster/largesize/${imgName}.png`);
+                });
             });
 
             const attrNodes = Object.values(rawData.chargrowthtable?.talentNodeMap || {}).filter(n => n.nodeType === 3);
@@ -1164,10 +1171,7 @@
                 `;
             }).join('');
 
-            const potentialPics = [];
-            if (data.potentialpic1) potentialPics.push(data.potentialpic1);
-            if (data.potentialpic2) potentialPics.push(data.potentialpic2);
-            if (data.potentialpic3) potentialPics.push(data.potentialpic3);
+            const potentialPics = data.potentialpics || [];
             const potentialPicsHtml = potentialPics.length > 0 ? `
                 <div class="section collapsible-section">
                     <h3 class="section-header">
