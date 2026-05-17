@@ -99,10 +99,10 @@
             </div>
 
             <div class="about-box">
-                <p>AKEData · 版本 1.0.14</p>
+                <p>AKEData · 版本 1.0.15</p>
                 <p>游戏版本 CN_WIN_REL_1.2.4_C6434019_E6308478</p>
                 <p>Hotfix版本 7025848-16</p>
-                <p>最后更新于:2026/5/17 16:17:13(nagiyume)</p>
+                <p>最后更新于:2026/5/17 23:46:46(nagiyume)</p>
             </div>
         </div>
     </div>
@@ -751,7 +751,8 @@
                         '.category-title', '.series-title', '.dungeon-name',
                         '.weapon-detail .detail-title', '.character-detail .detail-name',
                         '.enemy-detail .detail-name', '.equip-detail .suit-name',
-                        '.achievement-detail .category-title', '.dungeon-detail .series-title'
+                        '.achievement-detail .category-title', '.dungeon-detail .series-title',
+                        '.v2e-name', '.v2d-series-title'
                     ];
                     for (const sel of possibleSelectors) {
                         const el = contentArea.querySelector(sel);
@@ -777,7 +778,7 @@
                                 // 移除左侧栏和内部列
                                 const globalSidebar = clonedDoc.querySelector('.sidebar');
                                 if (globalSidebar) globalSidebar.remove();
-                                const leftColumns = clonedDoc.querySelectorAll('.left-column');
+                                const leftColumns = clonedDoc.querySelectorAll('.left-column, .v2e-left, .v2d-left');
                                 leftColumns.forEach(col => col.remove());
                                 const weaponList = clonedDoc.querySelector('.weapon-list');
                                 if (weaponList) weaponList.remove();
@@ -795,6 +796,8 @@
                                     mainContent.style.overflow = 'visible';
                                     mainContent.style.padding = '0';
                                 }
+                                const v2Modules = clonedDoc.querySelectorAll('.v2e-module, .v2d-module, .dungeon-module');
+                                v2Modules.forEach(m => { m.style.display = 'block'; });
                             
                                 element.style.margin = '0';
                                 element.style.padding = '0';
