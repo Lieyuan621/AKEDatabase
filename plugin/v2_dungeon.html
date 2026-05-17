@@ -27,6 +27,13 @@
         let isInitialized = false;
         let searchTerm = '';
         let attrMap = {};
+        let attrNameToId = {};
+        let buffCache = {};
+
+        const FORMULA_TO_MODTYPE = {
+            'Addition': 0, 'Multiplier': 1, 'FinalAddition': 3, 'FinalMultiplier': 4,
+            'BaseAddition': 5, 'BaseMultiplier': 6, 'BaseFinalAddition': 7, 'BaseFinalMultiplier': 8
+        };
 
         const IMAGE_BASE_PATH = '/public/images/';
 
@@ -54,10 +61,116 @@
                 if (!res.ok) throw new Error('无法加载映射数据');
                 const data = await res.json();
                 attrMap = data.ATTR_MAP || {};
+                const attrEn = data.ATTR_MAP_EN || {};
+                Object.entries(attrEn).forEach(([id, name]) => { attrNameToId[name] = parseInt(id, 10); });
             } catch (err) {
                 console.error('加载映射数据失败:', err);
                 attrMap = {};
+                attrNameToId = {};
             }
+        }
+
+        async function loadBuff(buffId) {
+            if (buffCache[buffId] !== undefined) return buffCache[buffId];
+            try {
+                const res = await fetch(`/public/Json/BuffData/${buffId}.json?t=${Date.now()}`);
+                if (!res.ok) { buffCache[buffId] = null; return null; }
+                buffCache[buffId] = await res.json();
+                return buffCache[buffId];
+            } catch { buffCache[buffId] = null; return null; }
+        }
+
+        async function loadAllBuffs(buffIds) {
+            await Promise.all(buffIds.filter(id => buffCache[id] === undefined).map(id => loadBuff(id)));
+        }
+
+        function collectBuffIds(data) {
+            const ids = new Set();
+            Object.values(data.dungeontable || {}).forEach(dg => {
+                Object.values(dg.enemyTable || {}).forEach(e => (e.bornBuffs || []).forEach(id => ids.add(id)));
+                Object.values(dg.SpawnerConfig || {}).forEach(sc => {
+                    (sc.enemyLibrary || []).forEach(lib => (lib.bornBuffList || []).forEach(b => ids.add(b.buffId)));
+                });
+            });
+            return Array.from(ids);
+        }
+
+        function getBuffModifiers(buffId, blackboardOverrides) {
+            const buff = buffCache[buffId];
+            if (!buff?.attributeModifier?.attributeModifiers?.length) return [];
+            const bb = {};
+            (buff.blackboard || []).forEach(b => { bb[b.key] = b.valueDouble; });
+            (blackboardOverrides || []).forEach(b => { bb[b.key] = b.valueFloat ?? b.valueDouble ?? 0; });
+            return buff.attributeModifier.attributeModifiers.map(mod => {
+                const attrType = attrNameToId[mod.attributeType];
+                if (attrType === undefined) return null;
+                const mt = FORMULA_TO_MODTYPE[mod.formulaItem];
+                if (mt === undefined) return null;
+                let val;
+                if (mod.param.useBlackboardKey && mod.param.blackboardKey) {
+                    val = bb[mod.param.blackboardKey] ?? mod.param.value;
+                } else { val = mod.param.value; }
+                return { attrType, attrValue: val, modifierType: mt };
+            }).filter(Boolean);
+        }
+
+        function findTemplateId(instanceId, table) {
+            if (table[instanceId]) return instanceId;
+            let best = '';
+            Object.keys(table).forEach(k => {
+                if (instanceId.startsWith(k) && k.length > best.length) best = k;
+            });
+            return best || instanceId;
+        }
+
+        function parseDungeonWaves(dungeon) {
+            const sc = dungeon.SpawnerConfig;
+            if (!sc || Object.keys(sc).length === 0) return null;
+            const enemyTable = dungeon.enemyTable || {};
+            const displayTable = dungeon.enemyTemplateDisplayInfoTable || {};
+            const attrTable = dungeon.enemyAttributeTemplateTable || {};
+            const dungeonLv = dungeon.recommendLv || 0;
+            const allSpawners = [];
+            Object.entries(sc).forEach(([configId, spawner]) => {
+                const libMap = {};
+                const libLevels = new Set();
+                (spawner.enemyLibrary || []).forEach(lib => {
+                    libMap[lib.key] = lib;
+                    libLevels.add(lib.enemyLevel);
+                });
+                if (libLevels.size === 1 && libLevels.has(0)) return;
+                if (dungeonLv > 0 && !libLevels.has(dungeonLv)) return;
+                const waves = [];
+                Object.entries(spawner.waveMap || {}).forEach(([waveIdx, wave]) => {
+                    const enemies = [];
+                    let maxAlive = 0;
+                    let hasPause = false;
+                    Object.values(wave.groupMap || {}).forEach(group => {
+                        if (group.limitGroupMaxCount && group.groupMaxCount > 0) {
+                            maxAlive += group.groupMaxCount;
+                        }
+                        Object.values(group.actionMap || {}).forEach(action => {
+                            if (action.$type && action.$type.includes('Pause')) { hasPause = true; return; }
+                            if (!action.libraryKey) return;
+                            const lib = libMap[action.libraryKey];
+                            if (!lib) return;
+                            const eid = lib.enemyId;
+                            const cfg = enemyTable[eid] || {};
+                            const templateId = cfg.templateId || findTemplateId(eid, displayTable);
+                            const attrTemplateId = cfg.attrTemplateId || findTemplateId(eid, attrTable);
+                            const disp = displayTable[templateId] || {};
+                            const name = disp.name?.text || templateId;
+                            const count = action.spawnCount || 1;
+                            enemies.push({ instanceId: eid, templateId, attrTemplateId, name, count, level: lib.enemyLevel, bornBuffList: lib.bornBuffList || [] });
+                        });
+                    });
+                    if (enemies.length > 0) {
+                        waves.push({ waveIdx, repeatable: wave.repeatable || false, maxAlive, hasPause, enemies });
+                    }
+                });
+                if (waves.length > 0) allSpawners.push({ configId, waves });
+            });
+            return allSpawners.length > 0 ? allSpawners : null;
         }
 
         function getAttrName(attrType) {
@@ -236,6 +349,8 @@
             container.innerHTML = '<div class="v2d-loader">加载副本数据...</div>';
             try {
                 const data = await fetch(seriesItem.contentFile + '?t=' + Date.now()).then(r => r.json());
+                const buffIds = collectBuffIds(data);
+                if (buffIds.length > 0) await loadAllBuffs(buffIds);
                 container.innerHTML = renderDetail(data, seriesItem);
             } catch (err) {
                 container.innerHTML = `<div class="v2d-error">加载失败: ${err.message}</div>`;
@@ -302,6 +417,15 @@
                     const attrType = parseInt(key, 10);
                     baseAttrs[attrType] = computeAttrWithModifiers(baseAttrs[attrType], modifiers, attrType);
                 });
+                const multTypes = new Set([1, 4, 6, 8]);
+                const modAttrTypes = new Set(modifiers.map(m => m.attrType));
+                modAttrTypes.forEach(at => {
+                    if (baseAttrs[at] === undefined) {
+                        const mods = modifiers.filter(m => m.attrType === at);
+                        const baseVal = mods.every(m => multTypes.has(m.modifierType)) ? 1 : 0;
+                        baseAttrs[at] = computeAttrWithModifiers(baseVal, modifiers, at);
+                    }
+                });
             }
 
             const result = {};
@@ -322,31 +446,74 @@
             return result;
         }
 
-        function renderEnemyCard(enemyId, enemyLevel, dungeonData) {
+        function renderEnemyCard(enemyId, enemyLevel, dungeonData, libraryBuffs) {
             const enemyConfig = dungeonData.enemyTable?.[enemyId] || {};
-            const templateId = enemyConfig.templateId || enemyId;
-            const attrTemplateId = enemyConfig.attrTemplateId || enemyId;
-            const displayInfo = dungeonData.enemyTemplateDisplayInfoTable?.[templateId] || {};
-            const attrData = dungeonData.enemyAttributeTemplateTable?.[attrTemplateId] || {};
+            const displayTable = dungeonData.enemyTemplateDisplayInfoTable || {};
+            const attrTable = dungeonData.enemyAttributeTemplateTable || {};
+            const templateId = enemyConfig.templateId || findTemplateId(enemyId, displayTable);
+            const attrTemplateId = enemyConfig.attrTemplateId || findTemplateId(enemyId, attrTable);
+            const displayInfo = displayTable[templateId] || {};
+            const attrData = attrTable[attrTemplateId] || {};
 
             const name = displayInfo.name?.text || templateId;
             const nickname = displayInfo.nickname?.text || '';
             const desc = displayInfo.description?.text || '';
-            const modifiers = enemyConfig.attrModifiers || [];
+            const inlineModifiers = enemyConfig.attrModifiers || [];
             const iconSrc = `/public/images/enemy/monstericonbig/${templateId}.png`;
+
+            const ownBuffs = enemyConfig.bornBuffs || [];
+            const libBuffs = libraryBuffs || [];
+            const buffModifiers = [];
+            ownBuffs.forEach(id => buffModifiers.push(...getBuffModifiers(id, [])));
+            libBuffs.forEach(b => buffModifiers.push(...getBuffModifiers(b.buffId, b.blackboard)));
+            const allModifiers = [...inlineModifiers, ...buffModifiers];
 
             const flags = [];
             if (enemyConfig.isDangerous) flags.push('<span class="v2d-enemy-flag danger">危险</span>');
-            if (enemyConfig.showBigEffect) flags.push('<span class="v2d-enemy-flag big-effect">大特效</span>');
+            if (enemyConfig.showBigEffect) flags.push('<span class="v2d-enemy-flag big-effect">全局特效</span>');
             if (enemyConfig.showBigHeadbar) flags.push('<span class="v2d-enemy-flag big-headbar">置顶血条</span>');
             const flagsHtml = flags.length ? `<div class="v2d-enemy-flags">${flags.join('')}</div>` : '';
 
-            const modifierStr = formatAttrModifiers(modifiers);
+            const modifierStr = formatAttrModifiers(inlineModifiers);
             const modifierHtml = modifierStr ? `<div class="v2d-enemy-modifier">${modifierStr}</div>` : '';
 
+            const allBuffIds = [...new Set([...ownBuffs, ...libBuffs.map(b => b.buffId)])];
+            const buffBbMap = {};
+            libBuffs.forEach(b => {
+                if (!buffBbMap[b.buffId]) buffBbMap[b.buffId] = [];
+                (b.blackboard || []).forEach(bb => {
+                    if (!buffBbMap[b.buffId].find(x => x.key === bb.key)) buffBbMap[b.buffId].push(bb);
+                });
+            });
+            const buffTagsHtml = allBuffIds.length > 0 ?
+                `<div class="v2d-enemy-buffs">${allBuffIds.map(id => {
+                    const bb = buffBbMap[id] || [];
+                    const buff = buffCache[id];
+                    const attrMods = buff?.attributeModifier?.attributeModifiers || [];
+                    const rows = [];
+                    attrMods.forEach(mod => {
+                        const label = mod.attributeType;
+                        const formula = mod.formulaItem;
+                        let val;
+                        if (mod.param.useBlackboardKey && mod.param.blackboardKey) {
+                            const bbEntry = bb.find(b => b.key === mod.param.blackboardKey);
+                            val = bbEntry ? (bbEntry.valueFloat ?? bbEntry.valueDouble ?? 0) : mod.param.value;
+                        } else { val = mod.param.value; }
+                        const pctTypes = ['Multiplier', 'FinalMultiplier', 'BaseMultiplier', 'BaseFinalMultiplier'];
+                        const display = pctTypes.includes(formula) ? `${(val * 100).toFixed(0)}%` : val;
+                        rows.push(`${label} ${formula} ${display}`);
+                    });
+                    bb.forEach(b => {
+                        if (!attrMods.find(m => m.param.useBlackboardKey && m.param.blackboardKey === b.key)) {
+                            rows.push(`${b.key}: ${b.valueFloat ?? b.valueDouble ?? 0}`);
+                        }
+                    });
+                    if (rows.length === 0) return `<span class="v2d-buff-tag">${id}</span>`;
+                    const tipHtml = rows.map(r => `<div>${r}</div>`).join('');
+                    return `<span class="v2d-buff-tag v2d-has-tip">${id}<span class="v2d-buff-tip">${tipHtml}</span></span>`;
+                }).join('')}</div>` : '';
 
-
-            const stats = getEnemyStatsAtLevel(attrData, enemyLevel, modifiers);
+            const stats = getEnemyStatsAtLevel(attrData, enemyLevel, allModifiers);
             let statsHtml = '';
             if (stats && Object.keys(stats).length > 0) {
                 statsHtml = '<div class="v2d-attr-grid">';
@@ -368,6 +535,7 @@
                     </div>
                     ${desc ? `<div class="v2d-enemy-desc">${parseText(desc)}</div>` : ''}
                     ${modifierHtml}
+                    ${buffTagsHtml}
                     ${flagsHtml}
                     ${statsHtml}
                 </div>
@@ -406,16 +574,74 @@
                 </div>`;
             }
 
-            const enemyIds = dungeon.enemyIds || [];
-            const enemyLevels = dungeon.enemyLevels || [];
+            const waveSpawners = parseDungeonWaves(dungeon);
+
+            let waveSummaryHtml = '';
             let enemiesHtml = '';
-            if (enemyIds.length > 0) {
-                enemiesHtml = `<h4 class="v2d-enemies-title">敌人详情</h4><div class="v2d-enemy-list">`;
-                enemyIds.forEach((eid, idx) => {
-                    const eLevel = enemyLevels[idx] || recommendLv;
-                    enemiesHtml += renderEnemyCard(eid, eLevel, dungeon);
+
+            if (waveSpawners) {
+                let totalWaves = 0, totalEnemies = 0;
+                waveSpawners.forEach(sp => { totalWaves += sp.waves.length; sp.waves.forEach(w => w.enemies.forEach(e => totalEnemies += e.count)); });
+
+                let waveDetailHtml = '';
+                waveSpawners.forEach(sp => {
+                    sp.waves.forEach(wave => {
+                        const repeatTag = wave.repeatable ? ' <span class="v2d-wave-repeat">无限刷新</span>' : '';
+                        const aliveTag = wave.maxAlive > 0 ? ` <span class="v2d-wave-alive">上限${wave.maxAlive}只</span>` : '';
+                        const pauseTag = wave.hasPause ? ' <span class="v2d-wave-pause">该波次的生成受其他因素控制</span>' : '';
+                        const enemyParts = wave.enemies.map(e => {
+                            const iconSrc = `/public/images/enemy/monstericonbig/${e.templateId}.png`;
+                            return `<span class="v2d-wave-enemy"><img class="v2d-wave-icon" src="${iconSrc}" onerror="this.style.display='none'"><span class="v2d-wave-ename">${e.name}</span> ×${e.count} <span class="v2d-wave-lv">Lv.${e.level}</span></span>`;
+                        }).join(' ');
+                        waveDetailHtml += `<div class="v2d-wave-line"><span class="v2d-wave-num">波次 ${wave.waveIdx}</span>${repeatTag}${aliveTag}${pauseTag}: ${enemyParts}</div>`;
+                    });
                 });
-                enemiesHtml += '</div>';
+                waveSummaryHtml = `<div class="v2d-wave-section"><div class="v2d-wave-summary"><span class="v2d-wave-label">波次统计</span> ${totalWaves}波 | 共${totalEnemies}只</div><div class="v2d-wave-detail">${waveDetailHtml}</div></div>`;
+
+                const enemyLibBuffs = {};
+                waveSpawners.forEach(sp => {
+                    sp.waves.forEach(wave => {
+                        wave.enemies.forEach(e => {
+                            if (!enemyLibBuffs[e.instanceId]) enemyLibBuffs[e.instanceId] = [];
+                            e.bornBuffList.forEach(b => {
+                                if (!enemyLibBuffs[e.instanceId].find(x => x.buffId === b.buffId))
+                                    enemyLibBuffs[e.instanceId].push(b);
+                            });
+                        });
+                    });
+                });
+
+                const seenEnemies = new Set();
+                const uniqueEnemies = [];
+                waveSpawners.forEach(sp => {
+                    sp.waves.forEach(wave => {
+                        wave.enemies.forEach(e => {
+                            if (!seenEnemies.has(e.instanceId)) {
+                                seenEnemies.add(e.instanceId);
+                                uniqueEnemies.push(e);
+                            }
+                        });
+                    });
+                });
+
+                if (uniqueEnemies.length > 0) {
+                    enemiesHtml = `<h4 class="v2d-enemies-title">敌人详情</h4><div class="v2d-enemy-list">`;
+                    uniqueEnemies.forEach(e => {
+                        enemiesHtml += renderEnemyCard(e.instanceId, e.level, dungeon, enemyLibBuffs[e.instanceId] || []);
+                    });
+                    enemiesHtml += '</div>';
+                }
+            } else {
+                const enemyIds = dungeon.enemyIds || [];
+                const enemyLevels = dungeon.enemyLevels || [];
+                if (enemyIds.length > 0) {
+                    enemiesHtml = `<h4 class="v2d-enemies-title">敌人详情</h4><div class="v2d-enemy-list">`;
+                    enemyIds.forEach((eid, idx) => {
+                        const eLevel = enemyLevels[idx] || recommendLv;
+                        enemiesHtml += renderEnemyCard(eid, eLevel, dungeon, []);
+                    });
+                    enemiesHtml += '</div>';
+                }
             }
 
             const cardBgSrc = picPath ? `/public/images/dungeon/${picPath}.png` : '';
@@ -441,6 +667,7 @@
                         ${recommendLv ? `<div><span class="v2d-meta-label">推荐等级</span> ${recommendLv}</div>` : ''}
                         ${categoryLabel ? `<div><span class="v2d-meta-label">类型</span> ${categoryLabel}</div>` : ''}
                     </div>
+                    ${waveSummaryHtml}
                     ${rewardsHtml}
                     ${enemiesHtml}
                 </div>

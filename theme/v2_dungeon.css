@@ -128,7 +128,7 @@
     height: 100%;
     object-fit: cover;
     z-index: 0;
-    opacity: 0.35;
+    opacity: 0.7;
 }
 .v2d-series-banner::after {
     content: '';
@@ -358,6 +358,131 @@
 .v2d-reward-rarity.r-4 { background-color: #a335ee; }
 .v2d-reward-rarity.r-5 { background-color: #ffcc00; }
 .v2d-reward-rarity.r-6 { background-color: #ff3333; }
+
+.v2d-wave-summary {
+    margin: 12px 0 4px;
+    padding: 8px 12px;
+    background: var(--border-color, #eef3fa);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--text-color, #1e2b3c);
+}
+.v2d-wave-label {
+    font-weight: 600;
+    margin-right: 8px;
+}
+.v2d-wave-section {
+    margin: 8px 0;
+}
+.v2d-wave-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 6px;
+}
+.v2d-wave-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.88rem;
+    color: var(--text-color, #1e2b3c);
+    padding: 4px 0;
+}
+.v2d-wave-num {
+    font-weight: 600;
+    color: var(--accent-color, #1e6f9f);
+    white-space: nowrap;
+}
+.v2d-wave-repeat {
+    font-size: 0.78rem;
+    background: #ffe0e0;
+    color: #b00020;
+    padding: 1px 6px;
+    border-radius: 8px;
+}
+.v2d-wave-alive {
+    font-size: 0.78rem;
+    background: #e0f0ff;
+    color: #1e6f9f;
+    padding: 1px 6px;
+    border-radius: 8px;
+}
+.v2d-wave-pause {
+    font-size: 0.78rem;
+    background: #fff3e0;
+    color: #e68a2e;
+    padding: 1px 6px;
+    border-radius: 8px;
+}
+.v2d-wave-enemy {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    background: var(--module-bg, #f8fafd);
+    border: 1px solid var(--border-color, #e2e7f0);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--text-color, #1e2b3c);
+}
+.v2d-wave-icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+.v2d-wave-ename {
+    font-weight: 600;
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.v2d-wave-lv {
+    color: var(--desc-color, #5b6f86);
+    font-size: 0.8rem;
+}
+.v2d-enemy-buffs {
+    margin: 4px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+.v2d-buff-tag {
+    background: var(--tag-bg, #e8e0f2);
+    color: #6b4b8e;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    cursor: default;
+}
+.v2d-has-tip {
+    position: relative;
+    cursor: help;
+}
+.v2d-buff-tip {
+    display: none;
+    position: absolute;
+    z-index: 300;
+    left: 50%;
+    bottom: calc(100% + 6px);
+    transform: translateX(-50%);
+    background: var(--content-bg, #fff);
+    border: 1px solid var(--border-color, #d9e0e8);
+    border-radius: 10px;
+    padding: 10px 14px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.15);
+    white-space: nowrap;
+    pointer-events: none;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: var(--text-color, #1e2b3c);
+}
+.v2d-has-tip:hover .v2d-buff-tip {
+    display: block;
+}
 
 .v2d-enemies-title {
     font-size: 1.2rem;
