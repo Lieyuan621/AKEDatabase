@@ -1,0 +1,3157 @@
+{
+    "dungeonSeriesId": "dung01_group_puzzle06",
+    "dungeonseriestable": {
+        "desc": {
+            "id": 1591282883710602568,
+            "text": "内部不稳定的协议空间，其中出现什么都不令人意外。"
+        },
+        "dungeonCategory": 0,
+        "dungeonCategory2nd": 0,
+        "dungeonImg": "icon_adventure_d_brushingmonsters",
+        "dungeonPicPath": "dung_puzzle_08",
+        "dungeonRoleImg": "",
+        "gameCategory": "dungeon_challenge",
+        "id": "dung01_group_puzzle06",
+        "includeDungeonIds": [
+            "dung01_puzzle08"
+        ],
+        "name": {
+            "id": 5480715581522011554,
+            "text": "密境初显"
+        },
+        "sortId": 6,
+        "staminaText": {
+            "id": 0,
+            "text": ""
+        }
+    },
+    "dungeontable": {
+        "dung01_puzzle08": {
+            "canDirectlyGetReward": false,
+            "costStamina": 0,
+            "customRewardId": "",
+            "domainId": "",
+            "dungeonCategory": "dungeon_challenge",
+            "dungeonDesc": {
+                "id": -2867284225568387732,
+                "text": "内部不稳定的协议空间，其中出现什么都不令人意外。\n“铺天盖地的炮火？比起过往战争中噩梦般的景象，这只是再正常不过的炮击阵列罢了。”"
+            },
+            "dungeonId": "dung01_puzzle08",
+            "dungeonImg": "",
+            "dungeonLevelDesc": {
+                "id": -8732327395654309948,
+                "text": "轰鸣喜乐"
+            },
+            "dungeonName": {
+                "id": 8177634332556494238,
+                "text": "轰鸣喜乐"
+            },
+            "dungeonPicPath": "dung_puzzle_08",
+            "dungeonSeriesId": "dung01_group_puzzle06",
+            "enemyIds": [],
+            "enemyLevels": [],
+            "extraGoalDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "extraRewardId": "",
+            "featureDesc": {
+                "id": 5315934243084072600,
+                "text": "躲避天使的轰击，抵达终点。"
+            },
+            "firstPassRewardId": "reward_dung01_puzzle08",
+            "forceIgnoreFeaturePopup": false,
+            "hunterModeCostStamina": 0,
+            "hunterModeRewardId": "",
+            "levelId": "",
+            "mainGoalDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "needShowPass": true,
+            "previewCharTeamId": "",
+            "recommendLv": 0,
+            "relatedCharId": "",
+            "rewardId": "",
+            "sceneId": "dung01_cdg008",
+            "sortId": 0,
+            "tabGroupName": {
+                "id": 0,
+                "text": ""
+            },
+            "unlockSpCond": true,
+            "enemyTable": {},
+            "enemyTemplateDisplayInfoTable": {},
+            "enemyAttributeTemplateTable": {},
+            "rewardTable": {
+                "reward_dung01_puzzle08": {
+                    "itemBundles": [
+                        {
+                            "count": 200,
+                            "id": "item_diamond"
+                        },
+                        {
+                            "count": 2,
+                            "id": "item_expcard_stage2_high"
+                        },
+                        {
+                            "count": 4,
+                            "id": "item_weapon_expcard_high"
+                        },
+                        {
+                            "count": 6,
+                            "id": "item_char_skill_level_7_12"
+                        },
+                        {
+                            "count": 20000,
+                            "id": "item_gold"
+                        },
+                        {
+                            "count": 1,
+                            "id": "item_char_skill_crown"
+                        }
+                    ],
+                    "probItemBundles": [],
+                    "rewardId": "reward_dung01_puzzle08"
+                }
+            },
+            "itemTable": {
+                "item_diamond": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -8713379589258447987,
+                        "text": "由衍质源石加工来的特殊产物，因其瑰丽的外观和广泛的用途而倍受欢迎。"
+                    },
+                    "desc": {
+                        "id": -5909420414296930437,
+                        "text": "合成物质，常用于招募干员。"
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_diamond",
+                    "id": "item_diamond",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_gold_1",
+                    "name": {
+                        "id": 2239345069872003978,
+                        "text": "嵌晶玉"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_diamond",
+                        "item_obtain_bp",
+                        "item_obtain_adventurebook",
+                        "item_obtain_payshop_credit",
+                        "item_obtain_mission_daily",
+                        "item_obtain_explore",
+                        "item_obtain_mission"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 6,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -11,
+                    "sortId2": 1,
+                    "type": 2,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 6
+                },
+                "item_expcard_stage2_high": {
+                    "backpackCanDiscard": true,
+                    "decoDesc": {
+                        "id": -3113901782089962151,
+                        "text": "终末地工业研发的信息存储单元，适配各种读取设备，能有效帮助新干员掌握作战知识。仰赖于寂语修会的助力，本款载体压缩储存了更多信息。"
+                    },
+                    "desc": {
+                        "id": -2930328368287287953,
+                        "text": "用于干员61-90级等级提升的素材，提供了大量干员升级经验。"
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_expcard_stage2_high",
+                    "id": "item_expcard_stage2_high",
+                    "maxBackpackStackCount": 50,
+                    "maxStackCount": -1,
+                    "modelKey": "int_drop_cardexp",
+                    "name": {
+                        "id": 3051938166510576506,
+                        "text": "高级认知载体"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_dungeon_0001",
+                        "item_obtain_spaceship_manu",
+                        "item_obtain_shop_greenticket",
+                        "item_obtain_shop_yellowticket_expcard_stage2_high",
+                        "item_obtain_explore"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 5,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -32,
+                    "sortId2": 6,
+                    "type": 7,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 4
+                },
+                "item_weapon_expcard_high": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -8755825169003099574,
+                        "text": "使用了集成化工业技术的一次性装置套组，可以深度自动化检查武器全部结构，修补暗伤，极大提高武器性能。"
+                    },
+                    "desc": {
+                        "id": -9113418679880727755,
+                        "text": "用于武器等级提升的素材，提供了大量武器升级经验。"
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_weapon_expcard_high",
+                    "id": "item_weapon_expcard_high",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_drop_cardexp",
+                    "name": {
+                        "id": 6826735377194748722,
+                        "text": "武器检查套组"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_dungeon_0002",
+                        "item_obtain_spaceship_manu",
+                        "item_obtain_shop_greenticket",
+                        "item_obtain_shop_yellowticket_weapon_expcard_high",
+                        "item_obtain_explore"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 4,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -41,
+                    "sortId2": 3,
+                    "type": 25,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 4
+                },
+                "item_char_skill_level_7_12": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": 6466841694267957130,
+                        "text": "以协议技术特制的晶体棱柱组，使用了高级结晶法，配合其他设备可以提高人体对强化物质的吸收比率。"
+                    },
+                    "desc": {
+                        "id": 8818133186577058299,
+                        "text": "用于干员技能等级提升的素材。"
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_char_skill_level_7_12",
+                    "id": "item_char_skill_level_7_12",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_2",
+                    "name": {
+                        "id": -5685904010576788364,
+                        "text": "协议棱柱组"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_dungeon_0006",
+                        "item_obtain_shop_greenticket_char_skill_level_7_12",
+                        "item_obtain_shop_yellowticket_char_skill_level_7_12",
+                        "item_obtain_explore"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 4,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -34,
+                    "sortId2": 9,
+                    "type": 27,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 4
+                },
+                "item_gold": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -5111871529363494289,
+                        "text": "广泛流通的货币，防伪技术极为高超。能买到东西的钞票才是好钞票。"
+                    },
+                    "desc": {
+                        "id": -3278457396295353288,
+                        "text": "广泛流通的货币，用途广泛。"
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_gold",
+                    "id": "item_gold",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_gold_1",
+                    "name": {
+                        "id": 5406428249689377671,
+                        "text": "折金票"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_dungeon_0005",
+                        "item_obtain_mission_daily",
+                        "item_obtain_shop_greenticket",
+                        "item_obtain_explore"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 4,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -12,
+                    "sortId2": 1,
+                    "type": 1,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 6
+                },
+                "item_char_skill_crown": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -4761746726719634934,
+                        "text": "生命的延续，文明的延续，于此留痕。"
+                    },
+                    "desc": {
+                        "id": -5061177374052410168,
+                        "text": "用于干员技能专精提升的珍稀素材。"
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_char_skill_crown",
+                    "id": "item_char_skill_crown",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_2",
+                    "name": {
+                        "id": -5843006072967753631,
+                        "text": "存续的痕迹"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_bp",
+                        "item_obtain_shop_yellowticket",
+                        "item_obtain_activity"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 5,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -32,
+                    "sortId2": 1,
+                    "type": 96,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 4
+                }
+            },
+            "LevelData": {
+                "dung01_cdg008_lv_data": {
+                    "sceneId": "dung01_cdg008",
+                    "levelIdNum": 122,
+                    "guideHints": [],
+                    "enemies": [
+                        {
+                            "levelLogicId": 12200000127,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0039_agcanno_dung01",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -50.34,
+                                "y": 10.78,
+                                "z": 78.01
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 285.2795,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 25,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 12200000128,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0039_agcanno_dung01",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -27.135,
+                                "y": 2.3255,
+                                "z": -0.0624
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 320.4114,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 25,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "overrideAIAttrData": {
+                                "longSightRange": 55.0,
+                                "shortSightRange": 55.0,
+                                "innerCircleRange": 55.0
+                            },
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 12200000132,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0039_agcanno_dung01",
+                            "createState": "Disable",
+                            "position": {
+                                "x": -117.022354,
+                                "y": 21.9338837,
+                                "z": 91.10291
+                            },
+                            "rotation": {
+                                "x": 4.23423243,
+                                "y": 109.937782,
+                                "z": -2.140276e-07
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 30,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 12200000133,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0039_agcanno_dung01",
+                            "createState": "Disable",
+                            "position": {
+                                "x": -123.978264,
+                                "y": 15.5920086,
+                                "z": 77.86417
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 109.93779,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 30,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 12200000135,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0039_agcanno_dung01",
+                            "createState": "Disable",
+                            "position": {
+                                "x": -121.727592,
+                                "y": 18.37653,
+                                "z": 85.03953
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 109.93779,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 30,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 12200000137,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0039_agcanno_dung01",
+                            "createState": "Disable",
+                            "position": {
+                                "x": -115.146019,
+                                "y": 23.1948,
+                                "z": 98.41843
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 134.627914,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 30,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 12200000138,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0039_agcanno_dung01",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": 17.1,
+                                "y": -3.176,
+                                "z": 98.58
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 136.123856,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 25,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "overrideAIAttrData": {
+                                "longSightRange": 50.0,
+                                "shortSightRange": 50.0,
+                                "innerCircleRange": 50.0
+                            },
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 12200000139,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0039_agcanno_dung01",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -2.8,
+                                "y": 0.000326633453,
+                                "z": 104.33
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 208.070648,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 25,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "overrideAIAttrData": {
+                                "longSightRange": 50.0,
+                                "shortSightRange": 50.0,
+                                "innerCircleRange": 50.0
+                            },
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 12200000140,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0039_agcanno_dung01",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -20.66,
+                                "y": 3.54,
+                                "z": 90.77
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 38.96962,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 25,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "overrideAIAttrData": {
+                                "longSightRange": 45.0,
+                                "shortSightRange": 45.0,
+                                "innerCircleRange": 45.0
+                            },
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        }
+                    ],
+                    "interactives": [
+                        {
+                            "levelLogicId": 12200000068,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_trchest_common_high",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -62.783,
+                                "y": 3.181,
+                                "z": 55.661
+                            },
+                            "rotation": {
+                                "x": 5.33608535e-08,
+                                "y": 139.512558,
+                                "z": 0.5704628
+                            },
+                            "scale": {
+                                "x": 1.00000024,
+                                "y": 0.99999994,
+                                "z": 1.00000024
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "reward_id",
+                                    "value": {
+                                        "type": "String",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": "reward_eco_dung01_cdg008_int_68"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "should_destroy",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "PlayerInteractPerform": [
+                                    {
+                                        "key": "available_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ],
+                                "ClickTrigger": [
+                                    {
+                                        "key": "use_level_event_click",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "level_event_id_click",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": ""
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "click_option_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_trchest_common_option"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "TreasureComponent": [
+                                    {
+                                        "key": "destroy_self",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "reward_id",
+                                        "value": {
+                                            "type": "String",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "reward_eco_dung01_cdg008_int_68"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveHintPerformComponent": [
+                                    {
+                                        "key": "override_special_mode_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_brushing_distance_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_min_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_max_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 12200000091,
+                            "dependencyGroupId": 12200000091,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_simple_travel_pole",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -45.8,
+                                "y": 8.66,
+                                "z": 92.2
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 52.3359642,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.00000012,
+                                "y": 1.0,
+                                "z": 1.00000012
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "target_list",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 12200000092
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {}
+                        },
+                        {
+                            "levelLogicId": 12200000092,
+                            "dependencyGroupId": 12200000091,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_simple_travel_pole",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -86.44,
+                                "y": 9.862,
+                                "z": 59.63
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 242.0048,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "target_list",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": []
+                                    }
+                                }
+                            ],
+                            "componentProperties": {}
+                        },
+                        {
+                            "levelLogicId": 12200000094,
+                            "dependencyGroupId": 12200000094,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_simple_travel_pole",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": 32.88,
+                                "y": -10.19,
+                                "z": 54.66
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 326.6564,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "target_list",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": []
+                                    }
+                                }
+                            ],
+                            "componentProperties": {}
+                        },
+                        {
+                            "levelLogicId": 12200000096,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_dungeon_exit_challenge",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -71.05964,
+                                "y": 19.1175137,
+                                "z": 105.01889
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [],
+                            "componentProperties": {}
+                        },
+                        {
+                            "levelLogicId": 12200000101,
+                            "dependencyGroupId": 12200000094,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_simple_travel_pole",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -9.44,
+                                "y": -1.10000014,
+                                "z": 23.32
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 236.653015,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "target_list",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 12200000094
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {}
+                        },
+                        {
+                            "levelLogicId": 12200000121,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_fire_wall_dungeon",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": 31.6499939,
+                                "y": -8.726758,
+                                "z": 78.8100052
+                            },
+                            "rotation": {
+                                "x": -6.40330256e-07,
+                                "y": 49.32463,
+                                "z": 354.3098
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "duration",
+                                    "value": {
+                                        "type": "Float",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1073741824
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "fire_wall_move_type",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "fire_wall_spray_type",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 2
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "wait_time",
+                                    "value": {
+                                        "type": "Float",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1075838976
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "state",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "AbilitySystemForInt": [
+                                    {
+                                        "key": "bomb_check_ignore_raycast",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveLogicController": [
+                                    {
+                                        "key": "state",
+                                        "value": {
+                                            "type": "Int",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 1
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 12200000123,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_fire_wall_dungeon",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": 14.3139954,
+                                "y": -6.843257,
+                                "z": 81.9780045
+                            },
+                            "rotation": {
+                                "x": 351.311371,
+                                "y": 343.7021,
+                                "z": 0.9859369
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "fire_wall_move_type",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 3
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "fire_wall_spray_type",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "rotate_speed",
+                                    "value": {
+                                        "type": "Float",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1106247680
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "state",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "AbilitySystemForInt": [
+                                    {
+                                        "key": "bomb_check_ignore_raycast",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveLogicController": [
+                                    {
+                                        "key": "state",
+                                        "value": {
+                                            "type": "Int",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 1
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 12200000124,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_trchest_common_high",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -47.24,
+                                "y": 8.684521,
+                                "z": 96.01
+                            },
+                            "rotation": {
+                                "x": 3.56064533e-09,
+                                "y": 105.480515,
+                                "z": -1.28562476e-08
+                            },
+                            "scale": {
+                                "x": 1.00000012,
+                                "y": 1.0,
+                                "z": 1.00000012
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "reward_id",
+                                    "value": {
+                                        "type": "String",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": "reward_eco_dung01_cdg008_int_124"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "should_destroy",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "TriggerObserver": [
+                                    {
+                                        "key": "radius",
+                                        "value": {
+                                            "type": "Float",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 1071225242
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "check_area_radius",
+                                        "value": {
+                                            "type": "Float",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 1072064102
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "PlayerInteractPerform": [
+                                    {
+                                        "key": "available_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ],
+                                "ClickTrigger": [
+                                    {
+                                        "key": "use_level_event_click",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "level_event_id_click",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": ""
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "click_option_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_trchest_common_option"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "TreasureComponent": [
+                                    {
+                                        "key": "destroy_self",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "reward_id",
+                                        "value": {
+                                            "type": "String",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "reward_eco_dung01_cdg008_int_124"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveHintPerformComponent": [
+                                    {
+                                        "key": "override_special_mode_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_brushing_distance_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_min_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_max_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 12200000125,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_trchest_common_high",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -73.887,
+                                "y": 19.783,
+                                "z": 97.531
+                            },
+                            "rotation": {
+                                "x": 2.04534173,
+                                "y": 310.9857,
+                                "z": 0.370166361
+                            },
+                            "scale": {
+                                "x": 1.00000012,
+                                "y": 0.99999994,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "reward_id",
+                                    "value": {
+                                        "type": "String",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": "reward_eco_dung01_cdg008_int_125"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "should_destroy",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "PlayerInteractPerform": [
+                                    {
+                                        "key": "available_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ],
+                                "ClickTrigger": [
+                                    {
+                                        "key": "use_level_event_click",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "level_event_id_click",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": ""
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "click_option_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_trchest_common_option"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "TreasureComponent": [
+                                    {
+                                        "key": "destroy_self",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "reward_id",
+                                        "value": {
+                                            "type": "String",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "reward_eco_dung01_cdg008_int_125"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveHintPerformComponent": [
+                                    {
+                                        "key": "override_special_mode_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_brushing_distance_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_min_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_max_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 12200000141,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_fire_wall_dungeon",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -2.82608032,
+                                "y": -5.610757,
+                                "z": 80.05452
+                            },
+                            "rotation": {
+                                "x": 6.67738533,
+                                "y": 169.391312,
+                                "z": 358.75235
+                            },
+                            "scale": {
+                                "x": 1.00000036,
+                                "y": 1.0,
+                                "z": 1.00000024
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "duration",
+                                    "value": {
+                                        "type": "Float",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1073741824
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "fire_wall_move_type",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "fire_wall_spray_type",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 2
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "wait_time",
+                                    "value": {
+                                        "type": "Float",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1075838976
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "state",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "AbilitySystemForInt": [
+                                    {
+                                        "key": "bomb_check_ignore_raycast",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveLogicController": [
+                                    {
+                                        "key": "state",
+                                        "value": {
+                                            "type": "Int",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 1
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 12200000142,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_fire_wall_dungeon",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -9.747505,
+                                "y": -4.315258,
+                                "z": 78.4200058
+                            },
+                            "rotation": {
+                                "x": 340.74292,
+                                "y": 332.375549,
+                                "z": 355.4326
+                            },
+                            "scale": {
+                                "x": 0.99999994,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "fire_wall_move_type",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 3
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "fire_wall_spray_type",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "rotate_speed",
+                                    "value": {
+                                        "type": "Float",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1106247680
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "state",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "AbilitySystemForInt": [
+                                    {
+                                        "key": "bomb_check_ignore_raycast",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveLogicController": [
+                                    {
+                                        "key": "state",
+                                        "value": {
+                                            "type": "Int",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 1
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 12200000143,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_fire_wall_dungeon",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -17.1585045,
+                                "y": -2.634758,
+                                "z": 81.1965
+                            },
+                            "rotation": {
+                                "x": 358.1681,
+                                "y": 68.91697,
+                                "z": 345.045746
+                            },
+                            "scale": {
+                                "x": 1.00000024,
+                                "y": 1.0,
+                                "z": 1.00000012
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "duration",
+                                    "value": {
+                                        "type": "Float",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1073741824
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "fire_wall_move_type",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "fire_wall_spray_type",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 2
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "wait_time",
+                                    "value": {
+                                        "type": "Float",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1073741824
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "state",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "AbilitySystemForInt": [
+                                    {
+                                        "key": "bomb_check_ignore_raycast",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveLogicController": [
+                                    {
+                                        "key": "state",
+                                        "value": {
+                                            "type": "Int",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 1
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 12200000144,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_fire_wall_dungeon",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -1.44000244,
+                                "y": -3.72075748,
+                                "z": 87.19
+                            },
+                            "rotation": {
+                                "x": -2.13443414e-07,
+                                "y": 24.0166321,
+                                "z": 348.1346
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.00000012
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "duration",
+                                    "value": {
+                                        "type": "Float",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1073741824
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "fire_wall_move_type",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "fire_wall_spray_type",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 2
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "wait_time",
+                                    "value": {
+                                        "type": "Float",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1075838976
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "state",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "AbilitySystemForInt": [
+                                    {
+                                        "key": "bomb_check_ignore_raycast",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveLogicController": [
+                                    {
+                                        "key": "state",
+                                        "value": {
+                                            "type": "Int",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 1
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 12200000145,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_fire_wall_dungeon",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -8.100006,
+                                "y": -1.51575756,
+                                "z": 96.425
+                            },
+                            "rotation": {
+                                "x": -4.26886828e-07,
+                                "y": 210.24762,
+                                "z": 8.542577
+                            },
+                            "scale": {
+                                "x": 1.0000006,
+                                "y": 0.99999994,
+                                "z": 1.0000006
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "duration",
+                                    "value": {
+                                        "type": "Float",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1073741824
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "fire_wall_move_type",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "fire_wall_spray_type",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 2
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "wait_time",
+                                    "value": {
+                                        "type": "Float",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1075838976
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "state",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "AbilitySystemForInt": [
+                                    {
+                                        "key": "bomb_check_ignore_raycast",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveLogicController": [
+                                    {
+                                        "key": "state",
+                                        "value": {
+                                            "type": "Int",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 1
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 12200000149,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_dynamic_challenge_bridge",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -74.38,
+                                "y": 11.37,
+                                "z": 74.06
+                            },
+                            "rotation": {
+                                "x": 355.6165,
+                                "y": 333.5925,
+                                "z": 1.95550048
+                            },
+                            "scale": {
+                                "x": 1.00000012,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [],
+                            "componentProperties": {}
+                        },
+                        {
+                            "levelLogicId": 12200000162,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_fire_wall_dungeon",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -18.9850044,
+                                "y": 0.294242859,
+                                "z": 96.045
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 24.01663,
+                                "z": 349.799133
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "duration",
+                                    "value": {
+                                        "type": "Float",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1073741824
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "fire_wall_move_type",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "fire_wall_spray_type",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 2
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "wait_time",
+                                    "value": {
+                                        "type": "Float",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1075838976
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "state",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "AbilitySystemForInt": [
+                                    {
+                                        "key": "bomb_check_ignore_raycast",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveLogicController": [
+                                    {
+                                        "key": "state",
+                                        "value": {
+                                            "type": "Int",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 1
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "interactiveLockData": [],
+                    "factoryRegions": [],
+                    "factoryMines": [],
+                    "npcs": [],
+                    "npcClusters": [],
+                    "levelScriptDataPathDict": {},
+                    "levelScriptBriefDataDict": {
+                        "12200000001": {
+                            "scriptId": 12200000001,
+                            "dataPath": "Data/Json/LevelScriptData/dung01_cdg008/12200000001.json",
+                            "levelScriptType": "World",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 1,
+                            "refWorldEntityIdList": [
+                                12200000127,
+                                12200000128,
+                                12200000132,
+                                12200000133,
+                                12200000134,
+                                12200000135,
+                                12200000137,
+                                12200000138,
+                                12200000139,
+                                12200000140
+                            ],
+                            "properties": [],
+                            "propertyIdToKeyMap": {}
+                        },
+                        "12200000005": {
+                            "scriptId": 12200000005,
+                            "dataPath": "Data/Json/LevelScriptData/dung01_cdg008/12200000005.json",
+                            "levelScriptType": "World",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 1,
+                            "refWorldEntityIdList": [
+                                12200000149
+                            ],
+                            "properties": [],
+                            "propertyIdToKeyMap": {}
+                        },
+                        "12200000008": {
+                            "scriptId": 12200000008,
+                            "dataPath": "Data/Json/LevelScriptData/dung01_cdg008/12200000008.json",
+                            "levelScriptType": "World",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 1,
+                            "properties": [
+                                {
+                                    "key": "TreasureOpened",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "lt:p:2d28e9b4:3595a0e4",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "lt:mp:2d28e9b4:3595a0e4",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "propertyIdToKeyMap": {
+                                "1": "lt:p:2d28e9b4:3595a0e4",
+                                "11": "TreasureOpened",
+                                "1026": "lt:mp:2d28e9b4:3595a0e4"
+                            }
+                        },
+                        "12200000009": {
+                            "scriptId": 12200000009,
+                            "dataPath": "Data/Json/LevelScriptData/dung01_cdg008/12200000009.json",
+                            "levelScriptType": "World",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 1,
+                            "refWorldEntityIdList": [
+                                12200000127,
+                                12200000128,
+                                12200000138,
+                                12200000139,
+                                12200000140
+                            ],
+                            "properties": [],
+                            "propertyIdToKeyMap": {}
+                        },
+                        "12200000010": {
+                            "scriptId": 12200000010,
+                            "dataPath": "Data/Json/LevelScriptData/dung01_cdg008/12200000010.json",
+                            "levelScriptType": "World",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 1,
+                            "properties": [],
+                            "propertyIdToKeyMap": {}
+                        }
+                    },
+                    "patrols": [],
+                    "enemyPatrol": [],
+                    "charPatrol": [],
+                    "npcPatrol": [],
+                    "npcAttractPointData": [],
+                    "missionAreas": [],
+                    "enemyGroup": [],
+                    "npcGroup": [],
+                    "cameraPoses": [],
+                    "splines": [],
+                    "airWalls": [
+                        {
+                            "groupId": 12200002002,
+                            "slotId": 0,
+                            "scriptId": 0,
+                            "defaultOn": true,
+                            "bounds": {
+                                "m_center": {
+                                    "x": -62.504776,
+                                    "y": 9.675,
+                                    "z": 90.35335
+                                },
+                                "m_size": {
+                                    "x": 2.173664,
+                                    "y": 12.1299992,
+                                    "z": 15.303688
+                                }
+                            },
+                            "polyLineWalls": [
+                                {
+                                    "bounds": {
+                                        "m_center": {
+                                            "x": -62.504776,
+                                            "y": 9.675,
+                                            "z": 90.35335
+                                        },
+                                        "m_size": {
+                                            "x": 1.17366409,
+                                            "y": 11.1299992,
+                                            "z": 14.303688
+                                        }
+                                    },
+                                    "posList": [
+                                        {
+                                            "x": -63.0916061,
+                                            "y": 83.2015
+                                        },
+                                        {
+                                            "x": -63.02049,
+                                            "y": 94.33806
+                                        },
+                                        {
+                                            "x": -61.917942,
+                                            "y": 97.50519
+                                        }
+                                    ],
+                                    "heightRange": {
+                                        "x": 4.11,
+                                        "y": 15.24
+                                    },
+                                    "visualHeightRange": {
+                                        "x": 4.11,
+                                        "y": 4.11
+                                    },
+                                    "usage": 5,
+                                    "pushDis": 2.0,
+                                    "pushWarnDis": 5.0,
+                                    "disableDefaultEffect": false
+                                }
+                            ],
+                            "checkData": {
+                                "checkType": 0
+                            }
+                        }
+                    ],
+                    "environmentVolumes": [],
+                    "spawners": [],
+                    "worldWayPointData": [],
+                    "waterVolumes": [],
+                    "levelUIs": [],
+                    "aiTransData": [],
+                    "sludgeDatas": [],
+                    "safeZone": {
+                        "boxes": []
+                    },
+                    "factoryPredefineData": {
+                        "powerGates": []
+                    },
+                    "predefinedParams": [],
+                    "functionArea": {
+                        "ranges": [
+                            {
+                                "m_center": {
+                                    "x": -34.51,
+                                    "y": -12.0,
+                                    "z": 29.1100025
+                                },
+                                "m_size": {
+                                    "x": 127.664375,
+                                    "y": 10.0,
+                                    "z": 127.664383
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": -45.6,
+                                    "y": -15.3100014,
+                                    "z": 93.6000061
+                                },
+                                "m_size": {
+                                    "x": 100.0,
+                                    "y": 10.000001,
+                                    "z": 100.000008
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": -58.46,
+                                    "y": 5.86000061,
+                                    "z": 87.25
+                                },
+                                "m_size": {
+                                    "x": 8.565979,
+                                    "y": 10.0,
+                                    "z": 20.6132355
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": -50.11,
+                                    "y": 9.47,
+                                    "z": 77.75
+                                },
+                                "m_size": {
+                                    "x": 11.2227783,
+                                    "y": 10.0,
+                                    "z": 11.2227783
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": -64.46,
+                                    "y": -2.29629326,
+                                    "z": 34.25
+                                },
+                                "m_size": {
+                                    "x": 10.287487,
+                                    "y": 10.0,
+                                    "z": 20.1421814
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": -51.44,
+                                    "y": 15.4700012,
+                                    "z": 122.73999
+                                },
+                                "m_size": {
+                                    "x": 20.0,
+                                    "y": 10.000001,
+                                    "z": 19.9999924
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": -73.66,
+                                    "y": 3.54,
+                                    "z": 121.019989
+                                },
+                                "m_size": {
+                                    "x": 20.0,
+                                    "y": 10.0,
+                                    "z": 19.9999924
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": 16.1699982,
+                                    "y": -17.51,
+                                    "z": 74.78
+                                },
+                                "m_size": {
+                                    "x": 100.0,
+                                    "y": 10.0,
+                                    "z": 100.0
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": -71.2,
+                                    "y": -10.2,
+                                    "z": 112.3
+                                },
+                                "m_size": {
+                                    "x": 100.0,
+                                    "y": 10.0,
+                                    "z": 100.0
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": -91.3,
+                                    "y": -2.48999977,
+                                    "z": 91.8
+                                },
+                                "m_size": {
+                                    "x": 127.664375,
+                                    "y": 10.0,
+                                    "z": 127.664375
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": 39.82,
+                                    "y": -16.03,
+                                    "z": 94.34
+                                },
+                                "m_size": {
+                                    "x": 30.0,
+                                    "y": 10.0,
+                                    "z": 10.0
+                                }
+                            }
+                        ],
+                        "baseData": [
+                            {
+                                "functionType": "RepatriateZone",
+                                "shapeType": "Box",
+                                "index": 0,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 100.0,
+                                    "y": 10.0,
+                                    "z": 100.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -34.51,
+                                    "y": -12.0,
+                                    "z": 29.11
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 340.4816,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "RepatriateZone",
+                                "shapeType": "Box",
+                                "index": 1,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 100.0,
+                                    "y": 10.0,
+                                    "z": 100.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -45.6,
+                                    "y": -15.31,
+                                    "z": 93.6
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "RepatriateZone",
+                                "shapeType": "Box",
+                                "index": 2,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 6.0,
+                                    "y": 10.0,
+                                    "z": 20.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -58.46,
+                                    "y": 5.86,
+                                    "z": 87.25
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 7.52040529,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "RepatriateZone",
+                                "shapeType": "Box",
+                                "index": 3,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 10.0,
+                                    "y": 10.0,
+                                    "z": 10.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -50.11,
+                                    "y": 9.47,
+                                    "z": 77.75
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 7.52040529,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "RepatriateZone",
+                                "shapeType": "Box",
+                                "index": 4,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 10.0,
+                                    "y": 10.0,
+                                    "z": 20.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -64.46,
+                                    "y": -2.29629326,
+                                    "z": 34.25
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 0.826595962,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "RepatriateZone",
+                                "shapeType": "Box",
+                                "index": 5,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 20.0,
+                                    "y": 10.0,
+                                    "z": 20.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -51.44,
+                                    "y": 15.47,
+                                    "z": 122.74
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "RepatriateZone",
+                                "shapeType": "Box",
+                                "index": 6,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 20.0,
+                                    "y": 10.0,
+                                    "z": 20.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -73.66,
+                                    "y": 3.54,
+                                    "z": 121.02
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "RepatriateZone",
+                                "shapeType": "Box",
+                                "index": 7,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 100.0,
+                                    "y": 10.0,
+                                    "z": 100.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": 16.17,
+                                    "y": -17.51,
+                                    "z": 74.78
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "RepatriateZone",
+                                "shapeType": "Box",
+                                "index": 8,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 100.0,
+                                    "y": 10.0,
+                                    "z": 100.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -71.2,
+                                    "y": -10.2,
+                                    "z": 112.3
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "RepatriateZone",
+                                "shapeType": "Box",
+                                "index": 9,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 100.0,
+                                    "y": 10.0,
+                                    "z": 100.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -91.3,
+                                    "y": -2.49,
+                                    "z": 91.8
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 340.4816,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "RepatriateZone",
+                                "shapeType": "Box",
+                                "index": 10,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 30.0,
+                                    "y": 10.0,
+                                    "z": 10.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": 39.82,
+                                    "y": -16.03,
+                                    "z": 94.34
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            }
+                        ],
+                        "repatriateZoneData": [
+                            {
+                                "lifeRatio": 1.0,
+                                "useRepatriateZoneType": false
+                            },
+                            {
+                                "lifeRatio": 1.0,
+                                "useRepatriateZoneType": false
+                            },
+                            {
+                                "lifeRatio": 1.0,
+                                "useRepatriateZoneType": false
+                            },
+                            {
+                                "lifeRatio": 1.0,
+                                "useRepatriateZoneType": false
+                            },
+                            {
+                                "lifeRatio": 1.0,
+                                "useRepatriateZoneType": false
+                            },
+                            {
+                                "lifeRatio": 1.0,
+                                "useRepatriateZoneType": false
+                            },
+                            {
+                                "lifeRatio": 1.0,
+                                "useRepatriateZoneType": false
+                            },
+                            {
+                                "lifeRatio": 1.0,
+                                "useRepatriateZoneType": false
+                            },
+                            {
+                                "lifeRatio": 1.0,
+                                "useRepatriateZoneType": false
+                            },
+                            {
+                                "lifeRatio": 1.0,
+                                "useRepatriateZoneType": false
+                            },
+                            {
+                                "lifeRatio": 1.0,
+                                "useRepatriateZoneType": false
+                            }
+                        ],
+                        "cameraVolumeData": [],
+                        "radioTriggerZoneData": [],
+                        "cameraLookAtData": [],
+                        "cameraAddControlStateData": [],
+                        "ambienceCameraData": [],
+                        "storySafeZones": [],
+                        "sceneToast": [],
+                        "blockAIBarkData": [],
+                        "isolateEntityZoneData": [],
+                        "ditherFactoryZoneData": [],
+                        "functionAreaConditions": [],
+                        "carryTagZones": [],
+                        "visitLocStats": []
+                    },
+                    "doodadGroup": [],
+                    "mapVolumeDatas": [],
+                    "dynamicOccludeAreas": [],
+                    "autoSpawnedInteractives": [],
+                    "levelWideConfigs": {}
+                }
+            },
+            "SpawnerConfig": {},
+            "BuffData": {}
+        }
+    },
+    "name": "密境初显"
+}
