@@ -43,11 +43,21 @@
     },
     {
         "id": "enemy",
+        "title": "敌人（旧版）",
+        "description": "查看敌人详细数据",
+        "priority": 102,
+        "icon": "👾",
+        "contentFile": "/plugin/enemy.html",
+        "hidden": true
+    },
+    {
+        "id": "v2_enemy",
         "title": "敌人",
         "description": "查看敌人详细数据",
         "priority": 9,
         "icon": "👾",
-        "contentFile": "/plugin/enemy.html"
+        "contentFile": "/plugin/v2_enemy.html",
+        "hidden": false
     },
     {
         "id": "equip",
