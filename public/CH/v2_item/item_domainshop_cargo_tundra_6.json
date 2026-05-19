@@ -1,0 +1,74 @@
+{
+    "itemId": "item_domainshop_cargo_tundra_6",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -6909305622362992207,
+            "text": "囤积于谷地要塞的矿石病预防口服液。在塔卫二，每日坚持饮用预防口服液可以有效降低感染矿石病的风险。"
+        },
+        "desc": {
+            "id": 8001589573921756557,
+            "text": "当地日用消耗相关的货组，价值变动幅度较大，可通过物资调度买卖赚取收益。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_domainshop_cargo_tundra_6",
+        "id": "item_domainshop_cargo_tundra_6",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 6783546471038353348,
+            "text": "团结牌口服液货组"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 4825505151707676674,
+            "text": "<@obt.key>物资调度</>中购买"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_1"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -321,
+        "sortId2": 6,
+        "type": 56,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 7
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_1": {
+            "bindSystem": 512,
+            "desc": {
+                "id": -2131723199710794539,
+                "text": "四号谷地-物资调度购买"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_1",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "ShopTrade"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 56,
+        "name": {
+            "id": 5514429341118358800,
+            "text": "弹性需求物资"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 7
+    },
+    "name": "团结牌口服液货组"
+}

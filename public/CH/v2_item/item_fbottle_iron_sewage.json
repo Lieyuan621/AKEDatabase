@@ -1,0 +1,118 @@
+{
+    "itemId": "item_fbottle_iron_sewage",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -5428006588960186591,
+            "text": "市面上较为少见的铁瓶，即便与异铁极度近似的蓝铁具备较强的抗氧化性，但人们依旧喜爱使用钢制容器。"
+        },
+        "desc": {
+            "id": -8152436172973449204,
+            "text": "由蓝铁块加工后得来的金属瓶，可用于其他材料合成。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_iron_bottle_liquid",
+        "id": "item_fbottle_iron_sewage",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": -8999732008652078003,
+            "text": "蓝铁瓶"
+        },
+        "noObtainWayConditionId": [
+            "condition_item_obtain_noway_tech_shaper",
+            "condition_item_obtain_noway_item_iron"
+        ],
+        "noObtainWayHint": {
+            "id": 9106697919802107140,
+            "text": "工业发展后使用设备生产"
+        },
+        "noObtainWayId": [
+            "item_obtain_noway_tech_shaper",
+            "item_obtain_noway_item_iron"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [
+            "item_bottled_rec_hp_2",
+            "item_bottled_food_2",
+            "item_bottled_flower1spc_2"
+        ],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 4,
+        "sortId1": -81,
+        "sortId2": 39,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_fbottle_iron_sewage",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [
+            "domain_2"
+        ],
+        "showInUnloader": true,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 1
+    },
+    "fullbottletable": {
+        "emptyBottleId": "item_iron_bottle",
+        "id": "item_fbottle_iron_sewage",
+        "liquidCapacity": 1,
+        "liquidId": "item_liquid_sewage"
+    },
+    "wikientryid": "wiki_item_fbottle_iron_sewage",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 1964578882693717624,
+            "text": "盛装有<@obt.key>污水</>"
+        },
+        "groupId": "wiki_group_item_product",
+        "id": "wiki_item_fbottle_iron_sewage",
+        "order": 96,
+        "prtsId": "",
+        "refItemId": "item_fbottle_iron_sewage",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "材料"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_product",
+        "name": {
+            "id": 5543235263987292884,
+            "text": "产物"
+        },
+        "sortId": 3,
+        "type": 4
+    },
+    "name": "蓝铁瓶"
+}

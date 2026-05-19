@@ -1,0 +1,176 @@
+{
+    "itemId": "item_bottled_moss_1_2_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -750488948457670437,
+            "text": "林奈精心配制的药剂，倾注了他的个人情感。味道恰如其名，既混乱又丰富。"
+        },
+        "desc": {
+            "id": -5463739177059268704,
+            "text": "使用后可以提升干员战斗效果的消耗品。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_bottled_moss_1_2_1",
+        "id": "item_bottled_moss_1_2_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": 6738530931157310964,
+            "text": "意乱药剂"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -5254801080671991783,
+            "text": "完成任务后获得对应配方"
+        },
+        "noObtainWayId": [
+            "item_obtain_noway_booklet"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 5,
+        "sortId1": -82,
+        "sortId2": 42,
+        "type": 52,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "useitemtable": {
+        "duration": 300,
+        "effectType": 2,
+        "isPersistentBuff": true,
+        "isValuableDepot": false,
+        "itemId": "item_bottled_moss_1_2_1",
+        "itemUseDesc": {
+            "id": -5193459224506014976,
+            "text": "使用后，终结技充能效率增加<@ba.vup>{value:0%}</>，持续<@ba.vup>{duration:0}</>秒。"
+        },
+        "stackingKey": "buff",
+        "targetNumType": 0,
+        "uiType": 3,
+        "useActions": [
+            {
+                "buffBBData": {
+                    "blackboard": [
+                        {
+                            "key": "value",
+                            "value": 0.23760933,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 300,
+                            "valueStr": ""
+                        }
+                    ],
+                    "buffId": "buff_common_usprt_buff_potion_1"
+                },
+                "skillBBData": {
+                    "blackboard": [],
+                    "skillId": "",
+                    "skillPath": ""
+                },
+                "useType": 2
+            }
+        ]
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_bottled_moss_1_2_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 100
+    },
+    "wikientryid": "wiki_item_bottled_moss_1_2_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_usable",
+        "id": "wiki_item_bottled_moss_1_2_1",
+        "order": 32,
+        "prtsId": "",
+        "refItemId": "item_bottled_moss_1_2_1",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 52,
+        "name": {
+            "id": 6865863074684715813,
+            "text": "消耗品"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_usable",
+        "name": {
+            "id": -2232813154053962573,
+            "text": "可用道具"
+        },
+        "sortId": 6,
+        "type": 5
+    },
+    "factorymanualcrafttable": [
+        {
+            "defaultUnlock": false,
+            "domainId": "domain_1",
+            "id": "handwork_bottled_moss_1_2_1",
+            "ingredients": [
+                {
+                    "count": 2,
+                    "id": "item_plant_moss_powder_1"
+                },
+                {
+                    "count": 2,
+                    "id": "item_plant_moss_spc_powder_2"
+                },
+                {
+                    "count": 1,
+                    "id": "item_glass_bottle"
+                }
+            ],
+            "itemId": "item_formula_bottled_moss_1_2_1",
+            "name": {
+                "id": -2572508707673804807,
+                "text": "意乱药剂"
+            },
+            "outcomes": [
+                {
+                    "count": 1,
+                    "id": "item_bottled_moss_1_2_1"
+                }
+            ],
+            "rarity": 4,
+            "showingType": 19,
+            "sortId": 25
+        }
+    ],
+    "name": "意乱药剂"
+}

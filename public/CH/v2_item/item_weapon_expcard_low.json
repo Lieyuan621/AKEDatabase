@@ -1,0 +1,123 @@
+{
+    "itemId": "item_weapon_expcard_low",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -6852407852850182451,
+            "text": "使用了集成化工业技术的一次性微型单元，可以自动化检查武器局部位置，修补暗伤，轻微提高武器性能。"
+        },
+        "desc": {
+            "id": -1232219938779638348,
+            "text": "用于武器等级提升的素材，提供了少量武器升级经验。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_weapon_expcard_low",
+        "id": "item_weapon_expcard_low",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_cardexp",
+        "name": {
+            "id": -5484640845121531780,
+            "text": "武器检查单元"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_dungeon_0002",
+            "item_obtain_spaceship_manu",
+            "item_obtain_shop_greenticket",
+            "item_obtain_explore"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -41,
+        "sortId2": 1,
+        "type": 25,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 4
+    },
+    "wikientryid": "wiki_item_weapon_expcard_low",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_special",
+        "id": "wiki_item_weapon_expcard_low",
+        "order": 17,
+        "prtsId": "",
+        "refItemId": "item_weapon_expcard_low",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_dungeon_0002": {
+            "bindSystem": 52,
+            "desc": {
+                "id": -8333512389804352789,
+                "text": "协议空间·武器经验"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_0002",
+            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource2100320002\"\r\n}",
+            "phaseId": "Map"
+        },
+        "item_obtain_spaceship_manu": {
+            "bindSystem": 404,
+            "desc": {
+                "id": 3246750984102486862,
+                "text": "帝江号-制造舱生产"
+            },
+            "iconId": "icon_tips_mfg",
+            "id": "item_obtain_spaceship_manu",
+            "phaseArgs": "{\r\n  \"instId\": \"ss_room_a_1_base01_lv001\"\r\n}",
+            "phaseId": "Map"
+        },
+        "item_obtain_shop_greenticket": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 7484611790132137642,
+                "text": "采购中心-集成配额交易"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_shop_greenticket",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_green_1\"\r\n}",
+            "phaseId": "CashShop"
+        },
+        "item_obtain_explore": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 8888980312357865895,
+                "text": "冒险探索获取"
+            },
+            "iconId": "icon_tips_explore",
+            "id": "item_obtain_explore",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 25,
+        "name": {
+            "id": -4437706413258917611,
+            "text": "武器培养素材"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 4
+    },
+    "name": "武器检查单元"
+}

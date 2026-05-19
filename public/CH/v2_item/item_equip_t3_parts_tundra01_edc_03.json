@@ -1,0 +1,190 @@
+{
+    "itemId": "item_equip_t3_parts_tundra01_edc_03",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -221473186980877942,
+            "text": "多用于矿场作业的防护装备。\n《四号谷地安全防护标准》要求劳动保护装备至少需要软性保护及硬性保护两层防护结构。"
+        },
+        "desc": {
+            "id": 365380134935898534,
+            "text": "本装备由终末地工业自研，使用集成工业系统制造，能够提高使用者的作战能力。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_equip_t3_parts_tundra01_edc_03",
+        "id": "item_equip_t3_parts_tundra01_edc_03",
+        "maxBackpackStackCount": 1,
+        "maxStackCount": 1,
+        "modelKey": "int_drop_equip",
+        "name": {
+            "id": -740762569591169738,
+            "text": "矿场压缩核·壹型"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_equip"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 10,
+        "sortId1": -50,
+        "sortId2": 29,
+        "type": 6,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 3
+    },
+    "equiptable": {
+        "displayAttrModifiers": [
+            {
+                "attrIndex": 1,
+                "attrType": 41,
+                "attrValue": 31,
+                "compositeAttr": "",
+                "enhanceGuaranteeTimesRuleId": "",
+                "enhancedAttrIndex": 1,
+                "enhancedAttrValues": [],
+                "modifierType": 5
+            },
+            {
+                "attrIndex": 3,
+                "attrType": 44,
+                "attrValue": 0.18571428571428572,
+                "compositeAttr": "",
+                "enhanceGuaranteeTimesRuleId": "",
+                "enhancedAttrIndex": 2,
+                "enhancedAttrValues": [],
+                "modifierType": 5
+            }
+        ],
+        "displayBaseAttrModifier": {
+            "attrIndex": 0,
+            "attrType": 3,
+            "attrValue": 15,
+            "compositeAttr": "",
+            "enhanceGuaranteeTimesRuleId": "",
+            "enhancedAttrIndex": 0,
+            "enhancedAttrValues": [],
+            "modifierType": 5
+        },
+        "domainId": "domain_1",
+        "equipAttrModifiers": [
+            {
+                "attrIndex": 0,
+                "attrType": 3,
+                "attrValues": [
+                    15,
+                    15,
+                    15,
+                    15
+                ],
+                "modifierType": 5,
+                "modifyAttributeType": 0
+            },
+            {
+                "attrIndex": 1,
+                "attrType": 41,
+                "attrValues": [
+                    31,
+                    31,
+                    31,
+                    31
+                ],
+                "modifierType": 5,
+                "modifyAttributeType": 0
+            },
+            {
+                "attrIndex": 2,
+                "attrType": 44,
+                "attrValues": [
+                    0.18571428571428572,
+                    0.18571428571428572,
+                    0.18571428571428572,
+                    0.18571428571428572
+                ],
+                "modifierType": 5,
+                "modifyAttributeType": 0
+            }
+        ],
+        "itemId": "item_equip_t3_parts_tundra01_edc_03",
+        "minWearLv": 50,
+        "partType": 2,
+        "suitID": ""
+    },
+    "equipformulatable": {
+        "costGoldId": "item_domain_tundra_coupon",
+        "costGoldNum": 9600,
+        "costItemId": [
+            "item_equip_script_3"
+        ],
+        "costItemNum": [
+            50
+        ],
+        "formulaId": "item_formu_t3_parts_tundra01_edc_03",
+        "isNew": false,
+        "outcomeEquipId": "item_equip_t3_parts_tundra01_edc_03",
+        "packId": "pack_parts_tundra01_t3",
+        "unlockKey": "",
+        "unlockType": 1,
+        "unlockValue": 39
+    },
+    "wikientryid": "wiki_item_equip_t3_parts_tundra01_edc_03",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_equip_default",
+        "id": "wiki_item_equip_t3_parts_tundra01_edc_03",
+        "order": 54,
+        "prtsId": "",
+        "refItemId": "item_equip_t3_parts_tundra01_edc_03",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_equip": {
+            "bindSystem": 67,
+            "desc": {
+                "id": 4170146291278779065,
+                "text": "装备制造"
+            },
+            "iconId": "icon_tips_proc",
+            "id": "item_obtain_equip",
+            "phaseArgs": "",
+            "phaseId": "EquipTech"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 6,
+        "name": {
+            "id": -2365265597869215300,
+            "text": "装备"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 3
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_equip_ring",
+        "name": {
+            "id": -6894194081602645229,
+            "text": "配件"
+        },
+        "sortId": 10,
+        "type": 10
+    },
+    "name": "矿场压缩核·壹型"
+}

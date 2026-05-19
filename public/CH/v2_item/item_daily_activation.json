@@ -1,0 +1,74 @@
+{
+    "itemId": "item_daily_activation",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 0,
+            "text": ""
+        },
+        "desc": {
+            "id": 718725255332582409,
+            "text": "获取后可领取日常奖励。"
+        },
+        "iconCompositeId": "",
+        "iconId": "",
+        "id": "item_daily_activation",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": -1910123530750630610,
+            "text": "每日活跃度"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_adventurebook"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 1,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -999,
+        "sortId2": 2,
+        "type": 38,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "systemjumptable": {
+        "item_obtain_adventurebook": {
+            "bindSystem": 652,
+            "desc": {
+                "id": 5098488839752036361,
+                "text": "行动手册奖励"
+            },
+            "iconId": "icon_tips_adventure_book",
+            "id": "item_obtain_adventurebook",
+            "phaseArgs": "{\r\n  \"panelId\": \"AdventureStage\"\r\n}",
+            "phaseId": "AdventureBook"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 1,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 38,
+        "name": {
+            "id": 2930291676934672736,
+            "text": "每日活跃度"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "name": "每日活跃度"
+}

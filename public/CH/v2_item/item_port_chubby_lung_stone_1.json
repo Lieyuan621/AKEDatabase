@@ -1,0 +1,109 @@
+{
+    "itemId": "item_port_chubby_lung_stone_1",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 4626482002883382480,
+            "text": "“从入库单上判断，这应该是额外定制的工艺品……”\n“你确定这不是直接从武陵街头搬回来的吗？”"
+        },
+        "desc": {
+            "id": 6889128822451251163,
+            "text": "可放置的装饰物品。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_port_chubby_lung_stone_1",
+        "id": "item_port_chubby_lung_stone_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_drop_building",
+        "name": {
+            "id": 8841603362344093361,
+            "text": "龙泡泡石墩"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_2"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 17,
+        "sortId1": -105,
+        "sortId2": 2,
+        "type": 54,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [],
+        "dischargeType": false,
+        "id": "item_port_chubby_lung_stone_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 1
+    },
+    "wikientryid": "wiki_item_port_chubby_lung_stone_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 6251953933856661552,
+            "text": "可放置的装饰物品。"
+        },
+        "groupId": "wiki_group_building_decorate",
+        "id": "wiki_item_port_chubby_lung_stone_1",
+        "order": 2,
+        "prtsId": "",
+        "refItemId": "item_port_chubby_lung_stone_1",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_2": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 7739198979412470305,
+                "text": "武陵-物资调度购买"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_2",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_2\"\r\n}",
+            "phaseId": "ShopTrade"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 54,
+        "name": {
+            "id": -4134847563966023138,
+            "text": "功能设备"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_tools_building",
+        "name": {
+            "id": -802861162360212509,
+            "text": "生产工具"
+        },
+        "sortId": 7,
+        "type": 17
+    },
+    "name": "龙泡泡石墩"
+}

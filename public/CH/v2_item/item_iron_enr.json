@@ -1,0 +1,114 @@
+{
+    "itemId": "item_iron_enr",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 2216780422848253034,
+            "text": "多级加工后，终末地工业生产的钢材已被列为《塔卫二工业金属侵蚀耐受标准》二级标准参考物。"
+        },
+        "desc": {
+            "id": 4373920261502751012,
+            "text": "致密蓝铁粉末精炼融合后的高级材料，可用于其他材料合成。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_iron_enr",
+        "id": "item_iron_enr",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": -7518287441748297764,
+            "text": "钢块"
+        },
+        "noObtainWayConditionId": [
+            "condition_item_obtain_noway_tech_thickener",
+            "condition_item_obtain_noway_item_iron",
+            "condition_item_obtain_noway_item_moss_3"
+        ],
+        "noObtainWayHint": {
+            "id": 2469204113985262322,
+            "text": "工业发展后使用设备生产"
+        },
+        "noObtainWayId": [
+            "item_obtain_noway_tech_thickener",
+            "item_obtain_noway_item_iron",
+            "item_obtain_noway_item_moss_3"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 4,
+        "sortId1": -81,
+        "sortId2": 35,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_iron_enr",
+        "itemState": false,
+        "losslessDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "showInHubDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "showInUnloader": true,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 2
+    },
+    "wikientryid": "wiki_item_iron_enr",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_product",
+        "id": "wiki_item_iron_enr",
+        "order": 18,
+        "prtsId": "",
+        "refItemId": "item_iron_enr",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "材料"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_product",
+        "name": {
+            "id": 5543235263987292884,
+            "text": "产物"
+        },
+        "sortId": 3,
+        "type": 4
+    },
+    "name": "钢块"
+}

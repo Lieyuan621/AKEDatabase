@@ -1,0 +1,172 @@
+{
+    "itemId": "item_bottled_insec2_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -9031394759907114775,
+            "text": "附有特殊源石技艺的瓶子，内部晶簇相当锐利，激活后可以刺激人的器官及神经系统，加快肾上腺素分泌。"
+        },
+        "desc": {
+            "id": -6814910047737347598,
+            "text": "使用后可以提升干员战斗效果的消耗品。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_bottled_insec2_1",
+        "id": "item_bottled_insec2_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": 5151957121270032624,
+            "text": "附术瓶"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -7739897584856935033,
+            "text": "<@obt.key>简制手册</>中解锁对应配方后可进行制造"
+        },
+        "noObtainWayId": [
+            "item_obtain_hdwk_item_plant_tundra_insect_2"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 5,
+        "sortId1": -82,
+        "sortId2": 28,
+        "type": 52,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "useitemtable": {
+        "duration": 300,
+        "effectType": 2,
+        "isPersistentBuff": true,
+        "isValuableDepot": false,
+        "itemId": "item_bottled_insec2_1",
+        "itemUseDesc": {
+            "id": 6550729593810730212,
+            "text": "使用后，造成的所有伤害增加<@ba.vup>{buff_common_dmg_up_potion_1\\value:0%}</>，持续<@ba.vup>{buff_common_dmg_up_potion_1\\duration:0}</>秒。"
+        },
+        "stackingKey": "buff",
+        "targetNumType": 0,
+        "uiType": 3,
+        "useActions": [
+            {
+                "buffBBData": {
+                    "blackboard": [
+                        {
+                            "key": "value",
+                            "value": 0.18081632,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 300,
+                            "valueStr": ""
+                        }
+                    ],
+                    "buffId": "buff_common_dmg_up_potion_1"
+                },
+                "skillBBData": {
+                    "blackboard": [],
+                    "skillId": "",
+                    "skillPath": ""
+                },
+                "useType": 2
+            }
+        ]
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_bottled_insec2_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 20
+    },
+    "wikientryid": "wiki_item_bottled_insec2_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_usable",
+        "id": "wiki_item_bottled_insec2_1",
+        "order": 31,
+        "prtsId": "",
+        "refItemId": "item_bottled_insec2_1",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 52,
+        "name": {
+            "id": 6865863074684715813,
+            "text": "消耗品"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_usable",
+        "name": {
+            "id": -2232813154053962573,
+            "text": "可用道具"
+        },
+        "sortId": 6,
+        "type": 5
+    },
+    "factorymanualcrafttable": [
+        {
+            "defaultUnlock": false,
+            "domainId": "domain_1",
+            "id": "handwork_bottled_insec2_1",
+            "ingredients": [
+                {
+                    "count": 1,
+                    "id": "item_glass_bottle"
+                },
+                {
+                    "count": 1,
+                    "id": "item_plant_tundra_insect_2"
+                }
+            ],
+            "itemId": "item_formula_bottled_insec2_1",
+            "name": {
+                "id": 6609239851613344232,
+                "text": "附术瓶"
+            },
+            "outcomes": [
+                {
+                    "count": 1,
+                    "id": "item_bottled_insec2_1"
+                }
+            ],
+            "rarity": 3,
+            "showingType": 19,
+            "sortId": 49
+        }
+    ],
+    "name": "附术瓶"
+}

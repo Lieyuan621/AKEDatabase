@@ -1,0 +1,74 @@
+{
+    "itemId": "item_domainshop_cargo_tundra_7",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 2652556079377569353,
+            "text": "塞什卡产出的玩具。游玩者需预告自己即将投出的结果，假若失误，髀石上的巫术就会让玩家头顶“长”出一朵有三十分钟寿命的小花。"
+        },
+        "desc": {
+            "id": -4190463781040546537,
+            "text": "当地日用消耗相关的货组，价值变动幅度较大，可通过物资调度买卖赚取收益。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_domainshop_cargo_tundra_7",
+        "id": "item_domainshop_cargo_tundra_7",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": -3646986286890084080,
+            "text": "塞什卡髀石货组"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -6308589435746015473,
+            "text": "<@obt.key>物资调度</>中购买"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_1"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -321,
+        "sortId2": 7,
+        "type": 56,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 7
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_1": {
+            "bindSystem": 512,
+            "desc": {
+                "id": -2131723199710794539,
+                "text": "四号谷地-物资调度购买"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_1",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "ShopTrade"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 56,
+        "name": {
+            "id": 5514429341118358800,
+            "text": "弹性需求物资"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 7
+    },
+    "name": "塞什卡髀石货组"
+}

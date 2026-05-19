@@ -1,0 +1,112 @@
+{
+    "itemId": "wpn_sword_0012",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -797532084361456966,
+            "text": "北进重工支援所“开拓者”系列的基础产品。四型热熔切割器采用专利高温材料，切割性能强劲，受到工程人员广泛好评。"
+        },
+        "desc": {
+            "id": 8943550966839607509,
+            "text": "终末地干员用武器，装备之后可以显著提升干员的作战能力。"
+        },
+        "iconCompositeId": "",
+        "iconId": "wpn_sword_0012",
+        "id": "wpn_sword_0012",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_weapon",
+        "name": {
+            "id": 504161328765825530,
+            "text": "热熔切割器"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_payshop_weapon"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 6,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -35,
+        "sortId2": 52,
+        "type": 5,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 1
+    },
+    "weaponbasictable": {
+        "breakthroughTemplateId": "weapon_breakthrough_456star_B_1",
+        "engName": {
+            "id": -5631570377110167605,
+            "text": "Thermite Cutter"
+        },
+        "levelTemplateId": "weapon_upgrade_curve_6star_0.99",
+        "maxLv": 90,
+        "modelPath": "Gameplay/Prefabs/Weapons/wpn_sword_0012.prefab",
+        "potentialUpItemList": [],
+        "rarity": 6,
+        "talentTemplateId": "wpn_potential_456star",
+        "weaponDesc": {
+            "id": 721985578290447280,
+            "text": "尽管北进重工支援所多次公开强调，他们设计的所有产品仅为个人用工业器械与施工设备，但作为工具，这款切割机的使用效果并不理想，用作大剑则显得非常出色。\n——产品使用评测一\n\n不要被产品说明书误导，这根本不是一台切割机，而是一种武器。使用时请小心操作，以免烫伤自己。\n——产品使用评测二\n\n换一种思考方式，如果你携带这个设备，就不需要额外再带一把武器了，对吧？\n——产品使用评测三"
+        },
+        "weaponId": "wpn_sword_0012",
+        "weaponPotentialSkill": "sk_wpn_sword_0012",
+        "weaponSkillList": [
+            "wpn_attr_will_high",
+            "wpn_sp_attr_atk_high",
+            "sk_wpn_sword_0012"
+        ],
+        "weaponType": 1
+    },
+    "wikientryid": "wiki_wpn_sword_0012",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_weapon_sword",
+        "id": "wiki_wpn_sword_0012",
+        "order": 15,
+        "prtsId": "",
+        "refItemId": "wpn_sword_0012",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_payshop_weapon": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 6097231837213620507,
+                "text": "采购中心-武库交易所"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_payshop_weapon",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 5,
+        "name": {
+            "id": 8230458971049120788,
+            "text": "武器"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 2,
+        "unlockSystemType": 251,
+        "valuableTabType": 1
+    },
+    "name": "热熔切割器"
+}

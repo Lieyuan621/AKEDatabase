@@ -1,0 +1,111 @@
+{
+    "itemId": "wpn_pistol_0001",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 5722461716236993852,
+            "text": "终末地工业制造的干员基础装备之一。由武库工程师佩科负责设计。蚀刻弹药与铳械不再只属于萨科塔。"
+        },
+        "desc": {
+            "id": 1154865879980167077,
+            "text": "终末地干员用武器，装备之后可以显著提升干员的作战能力。"
+        },
+        "iconCompositeId": "",
+        "iconId": "wpn_pistol_0001",
+        "id": "wpn_pistol_0001",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_weapon",
+        "name": {
+            "id": 7335365171316261327,
+            "text": "佩科5"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_explore"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -35,
+        "sortId2": 4,
+        "type": 5,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 1
+    },
+    "weaponbasictable": {
+        "breakthroughTemplateId": "weapon_breakthrough_3star_D_2",
+        "engName": {
+            "id": 3892588126272251607,
+            "text": "Peco 5"
+        },
+        "levelTemplateId": "weapon_upgrade_curve_3star_1",
+        "maxLv": 90,
+        "modelPath": "Gameplay/Prefabs/Weapons/wpn_pistol_0001.prefab",
+        "potentialUpItemList": [],
+        "rarity": 3,
+        "talentTemplateId": "wpn_potential_3star",
+        "weaponDesc": {
+            "id": -5109535873955950855,
+            "text": "我咨询过余烬干员了，她同意参加佩科5的性能验证测试。尽管是萨科塔，但我一次也没有见过余烬干员在战斗中使用铳械，我还以为她会回绝我的提议，真是走运。余烬干员还告诉我，铁誓军在北方有自己的铳械生产线，而佩科5与熔炉要塞生产的制式装备相比“看起来还不差”。也许是我想多了，但我真心希望她不是在照顾合作方的心情，如果能得到一些严厉、直接的批评意见，我反而会安心许多。"
+        },
+        "weaponId": "wpn_pistol_0001",
+        "weaponPotentialSkill": "sk_wpn_pistol_0001",
+        "weaponSkillList": [
+            "wpn_attr_main_low",
+            "sk_wpn_pistol_0001"
+        ],
+        "weaponType": 6
+    },
+    "wikientryid": "wiki_wpn_pistol_0001",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_weapon_pistol",
+        "id": "wiki_wpn_pistol_0001",
+        "order": 1,
+        "prtsId": "",
+        "refItemId": "wpn_pistol_0001",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_explore": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 8888980312357865895,
+                "text": "冒险探索获取"
+            },
+            "iconId": "icon_tips_explore",
+            "id": "item_obtain_explore",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 5,
+        "name": {
+            "id": 8230458971049120788,
+            "text": "武器"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 2,
+        "unlockSystemType": 251,
+        "valuableTabType": 1
+    },
+    "name": "佩科5"
+}

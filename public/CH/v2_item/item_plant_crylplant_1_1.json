@@ -1,0 +1,135 @@
+{
+    "itemId": "item_plant_crylplant_1_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 4473299575023107077,
+            "text": "多齿叶的提取物曾被用于制造急救药物。"
+        },
+        "desc": {
+            "id": 24151324364525072,
+            "text": "采集自野外或培养舱培养的特殊植物。\n其提取物可在干员1~3级技能强化时使用。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_plant_crylplant_1_1",
+        "id": "item_plant_crylplant_1_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_orgplant_1",
+        "name": {
+            "id": 6837965746256263519,
+            "text": "晶化多齿叶"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 5214026587636620315,
+            "text": "探索枢纽区采集"
+        },
+        "noObtainWayId": [
+            "item_obtain_gather_locked"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_gather_crylplant_1_1",
+            "item_obtain_spaceship_plant",
+            "item_obtain_gather_map01_lv001"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": true,
+        "showingType": 16,
+        "sortId1": -60,
+        "sortId2": 9,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [],
+        "dischargeType": false,
+        "id": "item_plant_crylplant_1_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 1
+    },
+    "wikientryid": "wiki_item_plant_crylplant_1_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_nurturance",
+        "id": "wiki_item_plant_crylplant_1_1",
+        "order": 7,
+        "prtsId": "",
+        "refItemId": "item_plant_crylplant_1_1",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_gather_crylplant_1_1": {
+            "bindSystem": 0,
+            "desc": {
+                "id": -7572381463630546896,
+                "text": "稀有采集物区采集"
+            },
+            "iconId": "icon_tips_doodad",
+            "id": "item_obtain_gather_crylplant_1_1",
+            "phaseArgs": "{\r\n  \"resourceTemplateId\": \"mark_p_doodad_tundranest\",\r\n  \"resourceItemId\": \"item_plant_crylplant_1_1\"\r\n}",
+            "phaseId": "Map"
+        },
+        "item_obtain_spaceship_plant": {
+            "bindSystem": 404,
+            "desc": {
+                "id": -1688300472159664104,
+                "text": "帝江号-培养舱生产"
+            },
+            "iconId": "icon_tips_explore",
+            "id": "item_obtain_spaceship_plant",
+            "phaseArgs": "{\r\n  \"instId\": \"ss_room_b_1_base01_lv001\"\r\n}",
+            "phaseId": "Map"
+        },
+        "item_obtain_gather_map01_lv001": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": -8527446012536823998,
+                "text": "枢纽区等地采集"
+            },
+            "iconId": "icon_tips_doodad",
+            "id": "item_obtain_gather_map01_lv001",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "材料"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_nurturance",
+        "name": {
+            "id": -3166040552457956994,
+            "text": "培养素材"
+        },
+        "sortId": 5,
+        "type": 16
+    },
+    "name": "晶化多齿叶"
+}

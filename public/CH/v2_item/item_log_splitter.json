@@ -1,0 +1,87 @@
+{
+    "itemId": "item_log_splitter",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 8736797990804501351,
+            "text": "搭载了智能识别模块的传输路线调整设备，能有效减轻输出端设备供料压力。"
+        },
+        "desc": {
+            "id": 5251274818628780753,
+            "text": "可让1条传送带均匀传输到多条（最多3条）分支传送带的物流工具。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_log_splitter",
+        "id": "item_log_splitter",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 5872340006034245759,
+            "text": "分流器"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 1627159619785501961,
+            "text": "完成基础工业计划对应研究后使用"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_techtree"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -103,
+        "sortId2": 3,
+        "type": 11,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "wikientryid": "wiki_item_log_splitter",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 8813124082479591293,
+            "text": "<@gd.key>分流器</>可以将一条传送带上的物品平均分拣到多条传送带上，最多可支持分流成三条传送带。"
+        },
+        "groupId": "wiki_group_building_logistic",
+        "id": "wiki_item_log_splitter",
+        "order": 2,
+        "prtsId": "",
+        "refItemId": "item_log_splitter",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_techtree": {
+            "bindSystem": 104,
+            "desc": {
+                "id": -5929385360001250908,
+                "text": "完成对应工业发展规划研究获取"
+            },
+            "iconId": "icon_tips_factory",
+            "id": "item_obtain_techtree",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 1,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 11,
+        "name": {
+            "id": -6597940580029514091,
+            "text": "物流"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "name": "分流器"
+}

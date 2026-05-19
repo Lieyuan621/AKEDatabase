@@ -1,0 +1,159 @@
+{
+    "itemId": "item_char_skill_specialize_4",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -8957338165959904752,
+            "text": "一种假定的凝聚态液体。人类可以制造它，观察它的光学外观，但暂时无法测定它的实际构成形态。这种材料表现出了在人类所能配置的所有深度环境下，皆能有效防止源石挥发的性质，是一种十分优异的填充材料。"
+        },
+        "desc": {
+            "id": 1035214361788932388,
+            "text": "用于干员精英化、武器突破、干员技能专精的珍稀素材。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_char_skill_specialize_4",
+        "id": "item_char_skill_specialize_4",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": 8834622992079709163,
+            "text": "象限拟合液"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_case_bp_selfselect_skillsp_1_4",
+            "item_obtain_dungeon_ss04",
+            "item_obtain_dung02_bossrush01_03",
+            "item_obtain_shop_greenticket_char_skill_specialize_4",
+            "item_obtain_shop_yellowticket_char_skill_specialize_4",
+            "item_obtain_dungeon_common",
+            "item_obtain_dungeon_bossrush_common"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -34,
+        "sortId2": 14,
+        "type": 95,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 4
+    },
+    "wikientryid": "wiki_item_char_skill_specialize_4",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_special",
+        "id": "wiki_item_char_skill_specialize_4",
+        "order": 14,
+        "prtsId": "",
+        "refItemId": "item_char_skill_specialize_4",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_case_bp_selfselect_skillsp_1_4": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": -1990475001011482666,
+                "text": "高阶培养自选箱Ⅰ"
+            },
+            "iconId": "icon_tips_trd",
+            "id": "item_obtain_case_bp_selfselect_skillsp_1_4",
+            "phaseArgs": "{\r\n  \"itemId\": \"item_case_bp_selfselect_skillsp_1\",\r\n  \"selectedRewardId\": \"reward_case_bp_selfselect_skillsp_1_4\"\r\n}",
+            "phaseId": "UsableItemChest"
+        },
+        "item_obtain_dungeon_ss04": {
+            "bindSystem": 52,
+            "desc": {
+                "id": -5525916941806572769,
+                "text": "协议空间·高危材料研究所"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_ss04",
+            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_ss22800020012\"\r\n}",
+            "phaseId": "Map"
+        },
+        "item_obtain_dung02_bossrush01_03": {
+            "bindSystem": 52,
+            "desc": {
+                "id": 3234302538204631364,
+                "text": "危境祸影·阮一-深潜模式"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dung02_bossrush01_03",
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung02_group_bossrush01\",\r\n  \"dungeonId\": \"dung02_bossrush01_03\"\r\n}",
+            "phaseId": "DungeonEntry"
+        },
+        "item_obtain_shop_greenticket_char_skill_specialize_4": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 1161278672582081676,
+                "text": "采购中心-集成配额交易"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_shop_greenticket_char_skill_specialize_4",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_green_1\",\r\n  \"goodsId\": \"payshop_green_item_char_skill_specialize_4\"\r\n}",
+            "phaseId": "CashShop"
+        },
+        "item_obtain_shop_yellowticket_char_skill_specialize_4": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 2690171077124624994,
+                "text": "采购中心-保障配额交易"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_shop_yellowticket_char_skill_specialize_4",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_yellow_1\",\r\n  \"goodsId\": \"payshop_yellow_item_char_skill_specialize_4\"\r\n}",
+            "phaseId": "CashShop"
+        },
+        "item_obtain_dungeon_common": {
+            "bindSystem": 52,
+            "desc": {
+                "id": -8523774279803415166,
+                "text": "部分协议空间·危境预演概率掉落"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_common",
+            "phaseArgs": "{\r\n  \"panelId\": \"AdventureDungeon\",\r\n  \"dungeonTab\": \"SpecialResource\"\r\n}",
+            "phaseId": "AdventureBook"
+        },
+        "item_obtain_dungeon_bossrush_common": {
+            "bindSystem": 52,
+            "desc": {
+                "id": 775163229969626046,
+                "text": "部分协议空间·危境再现深潜模式概率掉落"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_bossrush_common",
+            "phaseArgs": "{\r\n  \"panelId\": \"AdventureDungeon\",\r\n  \"dungeonTab\": \"BossRush\"\r\n}",
+            "phaseId": "AdventureBook"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 95,
+        "name": {
+            "id": -6298492876840579785,
+            "text": "珍贵培养素材"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 4
+    },
+    "name": "象限拟合液"
+}

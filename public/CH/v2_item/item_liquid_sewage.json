@@ -1,0 +1,102 @@
+{
+    "itemId": "item_liquid_sewage",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 8421556658805592568,
+            "text": "荒地上的污水往往混杂了各式各样的复杂成分，需要较高的技术水平才能将之净化。"
+        },
+        "desc": {
+            "id": -3417922840932478794,
+            "text": "混杂了较为复杂成分的污水，需要通过废水处理机进行无害化处理。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_liquid_sewage",
+        "id": "item_liquid_sewage",
+        "maxBackpackStackCount": 0,
+        "maxStackCount": 0,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": -371010618268172463,
+            "text": "污水"
+        },
+        "noObtainWayConditionId": [
+            "condition_item_obtain_noway_item_copper",
+            "condition_item_obtain_noway_tech_furnance_mode"
+        ],
+        "noObtainWayHint": {
+            "id": -2094562878868981315,
+            "text": "工业发展后使用设备产生"
+        },
+        "noObtainWayId": [
+            "item_obtain_noway_item_copper",
+            "item_obtain_noway_tech_furnance_mode"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 4,
+        "sortId1": -81,
+        "sortId2": 1001,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [],
+        "dischargeType": false,
+        "id": "item_liquid_sewage",
+        "itemState": true,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [
+            "domain_2"
+        ],
+        "showInUnloader": false,
+        "subType": 3,
+        "transferDomainIds": [],
+        "value": 1
+    },
+    "wikientryid": "wiki_item_liquid_sewage",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_product",
+        "id": "wiki_item_liquid_sewage",
+        "order": 9,
+        "prtsId": "",
+        "refItemId": "item_liquid_sewage",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "材料"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_product",
+        "name": {
+            "id": 5543235263987292884,
+            "text": "产物"
+        },
+        "sortId": 3,
+        "type": 4
+    },
+    "name": "污水"
+}

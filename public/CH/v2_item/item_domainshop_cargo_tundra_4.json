@@ -1,0 +1,74 @@
+{
+    "itemId": "item_domainshop_cargo_tundra_4",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -4995382767464984159,
+            "text": "自第一次天使战争结束以来，这些罐头已经储存了一百余年。请勿开启食用，它能带来的心灵激励远超于口腹满足。"
+        },
+        "desc": {
+            "id": -3282406123017987260,
+            "text": "当地日用消耗相关的货组，价值变动幅度适中，可通过物资调度买卖赚取收益。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_domainshop_cargo_tundra_4",
+        "id": "item_domainshop_cargo_tundra_4",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": -3067120407155834515,
+            "text": "天使罐头货组"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -8979830006450000835,
+            "text": "<@obt.key>物资调度</>中购买"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_1"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -321,
+        "sortId2": 4,
+        "type": 56,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 7
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_1": {
+            "bindSystem": 512,
+            "desc": {
+                "id": -2131723199710794539,
+                "text": "四号谷地-物资调度购买"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_1",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "ShopTrade"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 56,
+        "name": {
+            "id": 5514429341118358800,
+            "text": "弹性需求物资"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 7
+    },
+    "name": "天使罐头货组"
+}

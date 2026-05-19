@@ -1,0 +1,93 @@
+{
+    "itemId": "gem_pistol_0003_663",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -3353819549369217896,
+            "text": "击败危险敌人掉落的活性化物质，可以用于调整武器，强化特殊武器性能。此样品为无瑕级。"
+        },
+        "desc": {
+            "id": 9093548896189978903,
+            "text": "可以注入到武器内，提升武器技能等级。"
+        },
+        "iconCompositeId": "item_icon_composite_big_gem",
+        "iconId": "item_gem_rarity_5",
+        "id": "gem_pistol_0003_663",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": 1,
+        "modelKey": "int_drop_gem",
+        "name": {
+            "id": -6770597729212424486,
+            "text": "无瑕基质"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_energy_point_2",
+            "item_obtain_monster_common"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -45,
+        "sortId2": 5,
+        "type": 19,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 2
+    },
+    "systemjumptable": {
+        "item_obtain_energy_point_2": {
+            "bindSystem": 70,
+            "desc": {
+                "id": -9002337709385092596,
+                "text": "重度能量淤积点"
+            },
+            "iconId": "icon_tips_enemy_spawner",
+            "id": "item_obtain_energy_point_2",
+            "phaseArgs": "{\r\n  \"panelId\": \"AdventureDungeon\",\r\n  \"dungeonTab\": \"EnemySpawner\"\r\n}",
+            "phaseId": "AdventureBook"
+        },
+        "item_obtain_monster_common": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": -8833444707159090547,
+                "text": "敌人掉落"
+            },
+            "iconId": "icon_tips_monster",
+            "id": "item_obtain_monster_common",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 19,
+        "name": {
+            "id": 4637724733292378828,
+            "text": "基质"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 2,
+        "unlockSystemType": 251,
+        "valuableTabType": 2
+    },
+    "itemiconcompositetable": {
+        "bgIcons": [],
+        "iconTransType": 2,
+        "id": "item_icon_composite_big_gem",
+        "markIcon": "",
+        "showRarity": true
+    },
+    "name": "无瑕基质"
+}

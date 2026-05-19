@@ -1,0 +1,202 @@
+{
+    "itemId": "item_corp4_grass2_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -1626281616085223657,
+            "text": "少油少盐的炒饭，最大限度地保留了蔬菜的清香。"
+        },
+        "desc": {
+            "id": 623928381924843242,
+            "text": "使用后可以回复干员生命值的战术物品。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_corp4_grass2_1",
+        "id": "item_corp4_grass2_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": -6938396988081817622,
+            "text": "锦素炒饭"
+        },
+        "noObtainWayConditionId": [
+            "condition_item_obtain_noway_item_plant_sp_4"
+        ],
+        "noObtainWayHint": {
+            "id": -4643686970844746630,
+            "text": "<@obt.key>简制手册</>中解锁对应配方后可进行制造"
+        },
+        "noObtainWayId": [
+            "item_obtain_gather_item_plant_sp_4",
+            "item_obtain_hdwk_item_plant_sp_4"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 5,
+        "sortId1": -82,
+        "sortId2": 51,
+        "type": 48,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "useitemtable": {
+        "duration": 0,
+        "effectType": 0,
+        "isPersistentBuff": false,
+        "isValuableDepot": false,
+        "itemId": "item_corp4_grass2_1",
+        "itemUseDesc": {
+            "id": -6478054530590556527,
+            "text": "使用后，立刻回复<@ba.vup>{value2:0%}</>最大生命值，再回复<@ba.vup>{value:0}</>点生命值。"
+        },
+        "stackingKey": "",
+        "targetNumType": 0,
+        "uiType": 0,
+        "useActions": [
+            {
+                "buffBBData": {
+                    "blackboard": [
+                        {
+                            "key": "value",
+                            "value": 1311.7347,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "value2",
+                            "value": 0.2,
+                            "valueStr": ""
+                        }
+                    ],
+                    "buffId": "buff_common_heal_potion_2"
+                },
+                "skillBBData": {
+                    "blackboard": [],
+                    "skillId": "",
+                    "skillPath": ""
+                },
+                "useType": 2
+            }
+        ]
+    },
+    "equipitemtable": {
+        "autoCheckNotInFight": true,
+        "castTime": 2,
+        "chargeCount": 3,
+        "checkTarget": 1,
+        "condParams": [
+            "0.4",
+            "lt"
+        ],
+        "condType": 0,
+        "cooldown": 3,
+        "equipDesc": {
+            "id": -2107394969692806102,
+            "text": "装备后，当队伍中任意干员生命值低于<@ba.vup>{param1:0%}</>时自动对其使用，单场战斗中最多可用<@ba.vup>{count:0}</>次。\n - <@tips.purple>无限制支援主控干员</>\n - <@tips.orange>用尽后恢复次数</>"
+        },
+        "equipExtraDesc": {
+            "id": -3876801649026392313,
+            "text": "装备后，当队伍中任意干员生命值低于<@ba.vup>{param1:0%}</>时自动对其使用，单场战斗中最多可用<@ba.vup>{count:0}</>次。\n<@tips.purple>无限制支援主控干员</>：战斗中支援主控干员无次数限制。\n<@tips.orange>用尽后恢复次数</>：战斗中的可用次数用尽时，一段时间后会恢复<@ba.vup>1</>次可用次数。"
+        },
+        "itemId": "item_corp4_grass2_1",
+        "levelUpChargeCount": 4,
+        "levelUpRecoverUpperCount": 1,
+        "recoverTime": 60,
+        "recoverUpperCount": 1,
+        "toMainCharCount": 0,
+        "useTarget": 1
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_corp4_grass2_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 200
+    },
+    "wikientryid": "wiki_item_corp4_grass2_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_usable",
+        "id": "wiki_item_corp4_grass2_1",
+        "order": 57,
+        "prtsId": "",
+        "refItemId": "item_corp4_grass2_1",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 48,
+        "name": {
+            "id": -8745995051935114781,
+            "text": "战术物品"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_usable",
+        "name": {
+            "id": -2232813154053962573,
+            "text": "可用道具"
+        },
+        "sortId": 6,
+        "type": 5
+    },
+    "factorymanualcrafttable": [
+        {
+            "defaultUnlock": false,
+            "domainId": "domain_2",
+            "id": "handwork_corp4_grass2_1",
+            "ingredients": [
+                {
+                    "count": 8,
+                    "id": "item_plant_sp_4"
+                },
+                {
+                    "count": 8,
+                    "id": "item_plant_grass_powder_2"
+                }
+            ],
+            "itemId": "item_formula_corp4_grass2_1",
+            "name": {
+                "id": -3538366526246844432,
+                "text": "锦素炒饭"
+            },
+            "outcomes": [
+                {
+                    "count": 1,
+                    "id": "item_corp4_grass2_1"
+                }
+            ],
+            "rarity": 4,
+            "showingType": 19,
+            "sortId": 17
+        }
+    ],
+    "name": "锦素炒饭"
+}

@@ -1,0 +1,87 @@
+{
+    "itemId": "item_weekraid_enemy_drop_5",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -5089694508776515814,
+            "text": "可用于数据分析的物质样本，生物倒下后掉落的植物残块，还沾染了生物身上脱落的源石晶簇碎屑。与平常的植物不同，这些植物坚硬得似乎能够刺破护甲。"
+        },
+        "desc": {
+            "id": 5128547116018174200,
+            "text": "击败谷地像差区域3敌人的掉落物，可用于委托提交。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_weekraid_enemy_drop_5",
+        "id": "item_weekraid_enemy_drop_5",
+        "maxBackpackStackCount": 1,
+        "maxStackCount": 10000,
+        "modelKey": "int_wrdg001_drop04",
+        "name": {
+            "id": 714648768291681861,
+            "text": "附晶体残块"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -6401953643157843246,
+            "text": "冒险探索收集"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_weekraid_enemy_3_1"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -71,
+        "sortId2": 9,
+        "type": 72,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [],
+        "dischargeType": false,
+        "id": "item_weekraid_enemy_drop_5",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 0
+    },
+    "systemjumptable": {
+        "item_obtain_weekraid_enemy_3_1": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 3798584701552399977,
+                "text": "谷地像差区域3的敌人掉落"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_weekraid_enemy_3_1",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 72,
+        "name": {
+            "id": -4851683196153112509,
+            "text": "沉积具象物"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "name": "附晶体残块"
+}

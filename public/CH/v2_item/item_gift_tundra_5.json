@@ -1,0 +1,115 @@
+{
+    "itemId": "item_gift_tundra_5",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 4864180885717403627,
+            "text": "人类初次探索塔卫二海洋时发现的瑰丽晶石，有许多流入市场后被加工成了标本。原来海洋深处还会有这样的瑰宝，这让人们倍感振奋。"
+        },
+        "desc": {
+            "id": 5173055957625299418,
+            "text": "可作为礼物送给爱好 [自然]  [文化] 的干员以增加信赖度。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_gift_tundra_5",
+        "id": "item_gift_tundra_5",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_gem",
+        "name": {
+            "id": -4486793869359263248,
+            "text": "浪潮海石"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 2186055468544444875,
+            "text": "物资调度获取"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_1",
+            "item_obtain_domain_shop_levelup"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -301,
+        "sortId2": 23,
+        "type": 33,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 10
+    },
+    "giftitemtable": {
+        "favorablePoint": 20,
+        "finishPopularTimeId": "",
+        "giftPreferTag": "tag_giftperfer_tundra_1",
+        "id": "item_gift_tundra_5",
+        "isPopular": false,
+        "isShowPopularFinishTime": false,
+        "tagList": [
+            "tag_hobby_nature",
+            "tag_hobby_culture"
+        ]
+    },
+    "wikientryid": "wiki_item_gift_tundra_5",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_gift",
+        "id": "wiki_item_gift_tundra_5",
+        "order": 5,
+        "prtsId": "",
+        "refItemId": "item_gift_tundra_5",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_1": {
+            "bindSystem": 512,
+            "desc": {
+                "id": -2131723199710794539,
+                "text": "四号谷地-物资调度购买"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_1",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "ShopTrade"
+        },
+        "item_obtain_domain_shop_levelup": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 1665065042415592699,
+                "text": "物资调度终端达特定等级后解锁"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_levelup",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 33,
+        "name": {
+            "id": -6412188518960810535,
+            "text": "礼物"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "giftprefertagconfigtable": {
+        "iconName": "tag_giftperfer_tundra_1",
+        "tag": "tag_giftperfer_tundra_1"
+    },
+    "name": "浪潮海石"
+}

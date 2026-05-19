@@ -1,0 +1,74 @@
+{
+    "itemId": "item_domainshop_cargo_jinlong_4",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -1770552071583005138,
+            "text": "在武陵广受好评的录像带。参考了《六桩案》的形式，用六个带有悬疑感的武侠故事勾勒出了武陵发展历史。访客们公认它是最方便了解武陵的资料。这套录像带普及程度本较高，最近不知为何又出现了销量暴涨的状况。"
+        },
+        "desc": {
+            "id": -996574882111772708,
+            "text": "当地日用消耗相关的货组，价值变动幅度适中，可通过物资调度买卖赚取收益。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_domainshop_cargo_jinlong_4",
+        "id": "item_domainshop_cargo_jinlong_4",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": -3080752049193962259,
+            "text": "武侠电影货组"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 4448447596893770657,
+            "text": "<@obt.key>物资调度</>中购买"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_2"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -321,
+        "sortId2": 16,
+        "type": 56,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 7
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_2": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 7739198979412470305,
+                "text": "武陵-物资调度购买"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_2",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_2\"\r\n}",
+            "phaseId": "ShopTrade"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 56,
+        "name": {
+            "id": 5514429341118358800,
+            "text": "弹性需求物资"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 7
+    },
+    "name": "武侠电影货组"
+}

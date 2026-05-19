@@ -1,0 +1,203 @@
+{
+    "itemId": "item_agmelee_1_moss_1_lbmob_1_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 7965045404937844391,
+            "text": "丁点肉星都没有，却带有肉香味的烩菜。异香石作为调料，在部分情况下对烹饪体系确实存在颠覆性的贡献。"
+        },
+        "desc": {
+            "id": -2750482317046942908,
+            "text": "使用后可以回复干员生命值的战术物品。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_agmelee_1_moss_1_lbmob_1_1",
+        "id": "item_agmelee_1_moss_1_lbmob_1_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": 5537986569672567422,
+            "text": "仿荤烩荞花"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -8036715600660337103,
+            "text": "<@obt.key>简制手册</>中解锁对应配方后可进行制造"
+        },
+        "noObtainWayId": [
+            "item_obtain_hdwk_item_drop_agmelee_1"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 5,
+        "sortId1": -82,
+        "sortId2": 21,
+        "type": 48,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "useitemtable": {
+        "duration": 0,
+        "effectType": 0,
+        "isPersistentBuff": false,
+        "isValuableDepot": false,
+        "itemId": "item_agmelee_1_moss_1_lbmob_1_1",
+        "itemUseDesc": {
+            "id": 4427851580115857745,
+            "text": "使用后，立刻回复<@ba.vup>{value2:0%}</>最大生命值，再回复<@ba.vup>{value:0}</>点生命值。"
+        },
+        "stackingKey": "",
+        "targetNumType": 0,
+        "uiType": 0,
+        "useActions": [
+            {
+                "buffBBData": {
+                    "blackboard": [
+                        {
+                            "key": "value",
+                            "value": 436.2245,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "value2",
+                            "value": 0.2,
+                            "valueStr": ""
+                        }
+                    ],
+                    "buffId": "buff_common_heal_potion_2"
+                },
+                "skillBBData": {
+                    "blackboard": [],
+                    "skillId": "",
+                    "skillPath": ""
+                },
+                "useType": 2
+            }
+        ]
+    },
+    "equipitemtable": {
+        "autoCheckNotInFight": true,
+        "castTime": 2,
+        "chargeCount": 3,
+        "checkTarget": 1,
+        "condParams": [
+            "0.5",
+            "lt"
+        ],
+        "condType": 0,
+        "cooldown": 3,
+        "equipDesc": {
+            "id": 5395481818643033259,
+            "text": "装备后，当队伍中任意干员生命值低于<@ba.vup>{param1:0%}</>时自动对其使用，单场战斗中最多可用<@ba.vup>{count:0}</>次。\n - <@tips.purple>无限制支援主控干员</>\n - <@tips.orange>用尽后恢复次数</>"
+        },
+        "equipExtraDesc": {
+            "id": -680512979851725075,
+            "text": "装备后，当队伍中任意干员生命值低于<@ba.vup>{param1:0%}</>时自动对其使用，单场战斗中最多可用<@ba.vup>{count:0}</>次。\n<@tips.purple>无限制支援主控干员</>：战斗中支援主控干员无次数限制。\n<@tips.orange>用尽后恢复次数</>：战斗中的可用次数用尽时，一段时间后会恢复<@ba.vup>1</>次可用次数。"
+        },
+        "itemId": "item_agmelee_1_moss_1_lbmob_1_1",
+        "levelUpChargeCount": 4,
+        "levelUpRecoverUpperCount": 1,
+        "recoverTime": 60,
+        "recoverUpperCount": 1,
+        "toMainCharCount": 0,
+        "useTarget": 1
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_agmelee_1_moss_1_lbmob_1_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 200
+    },
+    "wikientryid": "wiki_item_agmelee_1_moss_1_lbmob_1_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_usable",
+        "id": "wiki_item_agmelee_1_moss_1_lbmob_1_1",
+        "order": 35,
+        "prtsId": "",
+        "refItemId": "item_agmelee_1_moss_1_lbmob_1_1",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 48,
+        "name": {
+            "id": -8745995051935114781,
+            "text": "战术物品"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_usable",
+        "name": {
+            "id": -2232813154053962573,
+            "text": "可用道具"
+        },
+        "sortId": 6,
+        "type": 5
+    },
+    "factorymanualcrafttable": [
+        {
+            "defaultUnlock": false,
+            "domainId": "domain_1",
+            "id": "hdwk_agmelee_1_moss_1_lbmob_1_1",
+            "ingredients": [
+                {
+                    "count": 1,
+                    "id": "item_drop_agmelee_1"
+                },
+                {
+                    "count": 1,
+                    "id": "item_plant_moss_1"
+                },
+                {
+                    "count": 1,
+                    "id": "item_drop_lbmob_1"
+                }
+            ],
+            "itemId": "item_formula_agmelee_1_moss_1_lbmob_1_1",
+            "name": {
+                "id": -236961363312514350,
+                "text": "仿荤烩荞花"
+            },
+            "outcomes": [
+                {
+                    "count": 1,
+                    "id": "item_agmelee_1_moss_1_lbmob_1_1"
+                }
+            ],
+            "rarity": 2,
+            "showingType": 19,
+            "sortId": 60
+        }
+    ],
+    "name": "仿荤烩荞花"
+}

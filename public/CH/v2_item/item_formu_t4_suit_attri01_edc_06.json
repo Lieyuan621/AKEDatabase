@@ -1,0 +1,100 @@
+{
+    "itemId": "item_formu_t4_suit_attri01_edc_06",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 1094765100364081758,
+            "text": "记录着“碾骨小雕像·壹型”生产工艺的档案文件。"
+        },
+        "desc": {
+            "id": -605579476156147102,
+            "text": "获取后可制造相应的装备。"
+        },
+        "iconCompositeId": "item_icon_composite_formulaUnlock_equip",
+        "iconId": "item_equip_t4_suit_attri01_edc_06",
+        "id": "item_formu_t4_suit_attri01_edc_06",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": -5546069629417718959,
+            "text": "碾骨小雕像·壹型"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_2",
+            "item_obtain_domain_shop_levelup"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -53,
+        "sortId2": 101,
+        "type": 47,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_2": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 7739198979412470305,
+                "text": "武陵-物资调度购买"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_2",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_2\"\r\n}",
+            "phaseId": "ShopTrade"
+        },
+        "item_obtain_domain_shop_levelup": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 1665065042415592699,
+                "text": "物资调度终端达特定等级后解锁"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_levelup",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 47,
+        "name": {
+            "id": 9074531727668211748,
+            "text": "装备制造模板"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemiconcompositetable": {
+        "bgIcons": [
+            "item_icon_bg_equip_qualitycolor_grey",
+            "item_icon_bg_equip_qualitycolor_green",
+            "item_icon_bg_equip_qualitycolor_blue",
+            "item_icon_bg_equip_qualitycolor_purple",
+            "item_icon_bg_equip_qualitycolor_gold",
+            "item_icon_bg_equip_qualitycolor_gold"
+        ],
+        "iconTransType": 1,
+        "id": "item_icon_composite_formulaUnlock_equip",
+        "markIcon": "item_icon_mark_unlocked",
+        "showRarity": false
+    },
+    "name": "碾骨小雕像·壹型"
+}

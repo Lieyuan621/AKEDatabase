@@ -1,0 +1,112 @@
+{
+    "itemId": "wpn_sword_0008",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -8291944959687274177,
+            "text": "终末地工业制造的干员进阶装备之一。简洁的模块化构造带来了轻盈平衡的握持体验，剑刃耐用性十足。"
+        },
+        "desc": {
+            "id": -1804813842252282410,
+            "text": "终末地干员用武器，装备之后可以显著提升干员的作战能力。"
+        },
+        "iconCompositeId": "",
+        "iconId": "wpn_sword_0008",
+        "id": "wpn_sword_0008",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_weapon",
+        "name": {
+            "id": -5056931015556203329,
+            "text": "显锋"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_payshop_weapon"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -35,
+        "sortId2": 8,
+        "type": 5,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 1
+    },
+    "weaponbasictable": {
+        "breakthroughTemplateId": "weapon_breakthrough_456star_C_1",
+        "engName": {
+            "id": -2402125556550879012,
+            "text": "Prominent Edge"
+        },
+        "levelTemplateId": "weapon_upgrade_curve_4star_1",
+        "maxLv": 90,
+        "modelPath": "Gameplay/Prefabs/Weapons/wpn_sword_0008.prefab",
+        "potentialUpItemList": [],
+        "rarity": 4,
+        "talentTemplateId": "wpn_potential_456star",
+        "weaponDesc": {
+            "id": -5413316366612788037,
+            "text": "别紧张。你所见的，就是你会得到的。\n对开锋刃，剑脊厚重，重心稍稍靠后，接近握柄。\n对于新手来说，护手略小，且有一定弧度。\n把它拿起来。\n你需要一只手来握住它，握紧，但是让手腕保持自由活动的空间。\n现在，站在标靶面前，让整个身体配合发力。\n从上，到下。从肩头，到胸部的另一侧。重复这个动作。\n你想像管理员一样战斗？你担心自己永远都做不到？\n别分心。你所见的，就是你会得到的。"
+        },
+        "weaponId": "wpn_sword_0008",
+        "weaponPotentialSkill": "sk_wpn_sword_0008",
+        "weaponSkillList": [
+            "wpn_attr_agi_low",
+            "wpn_sp_attr_phydam_low",
+            "sk_wpn_sword_0008"
+        ],
+        "weaponType": 1
+    },
+    "wikientryid": "wiki_wpn_sword_0008",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_weapon_sword",
+        "id": "wiki_wpn_sword_0008",
+        "order": 2,
+        "prtsId": "",
+        "refItemId": "wpn_sword_0008",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_payshop_weapon": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 6097231837213620507,
+                "text": "采购中心-武库交易所"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_payshop_weapon",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 5,
+        "name": {
+            "id": 8230458971049120788,
+            "text": "武器"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 2,
+        "unlockSystemType": 251,
+        "valuableTabType": 1
+    },
+    "name": "显锋"
+}

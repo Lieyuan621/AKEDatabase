@@ -1,0 +1,104 @@
+{
+    "itemId": "item_liquid_copper",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -9085597421419731598,
+            "text": "“我会想到咱们在北边，在冻土里打出的井。兄弟，我猜那应该是人类在塔卫二打出的第一口井，虽然里面的水不能喝，但至少看起来很漂亮。”"
+        },
+        "desc": {
+            "id": 1690657066594799544,
+            "text": "溶解在沉积酸后的溶液，可用于其他材料合成。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_liquid_copper",
+        "id": "item_liquid_copper",
+        "maxBackpackStackCount": 0,
+        "maxStackCount": 0,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": 6183654321732561973,
+            "text": "赤铜溶液"
+        },
+        "noObtainWayConditionId": [
+            "condition_item_obtain_noway_item_liquid_acid",
+            "condition_item_obtain_noway_item_copper",
+            "condition_item_obtain_noway_tech_furnance_mode"
+        ],
+        "noObtainWayHint": {
+            "id": -6522233195580858069,
+            "text": "工业发展后使用设备生产"
+        },
+        "noObtainWayId": [
+            "item_obtain_noway_item_liquid_acid",
+            "item_obtain_noway_item_copper",
+            "item_obtain_noway_tech_furnance_mode"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 4,
+        "sortId1": -81,
+        "sortId2": 1008,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [],
+        "dischargeType": false,
+        "id": "item_liquid_copper",
+        "itemState": true,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [
+            "domain_2"
+        ],
+        "showInUnloader": false,
+        "subType": 11,
+        "transferDomainIds": [],
+        "value": 5
+    },
+    "wikientryid": "wiki_item_liquid_copper",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_product",
+        "id": "wiki_item_liquid_copper",
+        "order": 7,
+        "prtsId": "",
+        "refItemId": "item_liquid_copper",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "材料"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_product",
+        "name": {
+            "id": 5543235263987292884,
+            "text": "产物"
+        },
+        "sortId": 3,
+        "type": 4
+    },
+    "name": "赤铜溶液"
+}

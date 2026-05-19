@@ -1,0 +1,74 @@
+{
+    "itemId": "item_gacha_introletter_1_1_1",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -2518543150515359018,
+            "text": "一本写满了各类内推信息的小册子。新干员往往会受邀写下自己听闻过的可靠人才，当然，这些信息需要一段时间验证完毕才能录入系统。"
+        },
+        "desc": {
+            "id": -4887746942689023569,
+            "text": "在下一个特许寻访开启时，该寻访情报书将自动转化为对应特许寻访的专有十连凭证，此十连凭证将在对应寻访结束后失效。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_gacha_introletter",
+        "id": "item_gacha_introletter_1_1_1",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_collection_item_gold_1",
+        "name": {
+            "id": -2918878077063032996,
+            "text": "寻访情报书"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_gacha"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 6,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -10,
+        "sortId2": 19,
+        "type": 83,
+        "valuableDepotRedDot": true,
+        "valuableTabType": 10
+    },
+    "systemjumptable": {
+        "item_obtain_gacha": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 6381393184051493285,
+                "text": "干员寻访"
+            },
+            "iconId": "icon_tips_gacha",
+            "id": "item_obtain_gacha",
+            "phaseArgs": "",
+            "phaseId": "GachaPool"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 83,
+        "name": {
+            "id": 494491108058944761,
+            "text": "寻访情报书"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "name": "寻访情报书"
+}

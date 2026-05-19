@@ -1,0 +1,101 @@
+{
+    "itemId": "item_tundra_detector_coin_3",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -5107197420471255754,
+            "text": "用来探测醚质的施术单元，外观近似罗盘，能够利用表盘中心的小小醚质来定位其他醚质。\n“罗盘”处于超频运转状态，仅仅是简单激活就会让指针疯转起来。"
+        },
+        "desc": {
+            "id": -4943025214754017144,
+            "text": "消耗品，使用后可探测出当前区域内的一个未发现的醚质。解锁当前区域所有地图迷雾后才可使用。（仅限四号谷地地区生效）"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_tundra_detector_coin_3",
+        "id": "item_tundra_detector_coin_3",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": -6906586626315803570,
+            "text": "新锐谷地罗盘"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_1",
+            "item_obtain_domain_shop_levelup"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -21,
+        "sortId2": 1,
+        "type": 55,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 10
+    },
+    "useitemtable": {
+        "duration": 0,
+        "effectType": 2,
+        "isPersistentBuff": false,
+        "isValuableDepot": true,
+        "itemId": "item_tundra_detector_coin_3",
+        "itemUseDesc": {
+            "id": -4770740170131997620,
+            "text": "消耗品，使用后可探测出当前区域内的一个未发现的醚质。解锁当前区域所有地图迷雾后才可使用。（仅限四号谷地地区生效）"
+        },
+        "stackingKey": "",
+        "targetNumType": 0,
+        "uiType": 2,
+        "useActions": []
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_1": {
+            "bindSystem": 512,
+            "desc": {
+                "id": -2131723199710794539,
+                "text": "四号谷地-物资调度购买"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_1",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "ShopTrade"
+        },
+        "item_obtain_domain_shop_levelup": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 1665065042415592699,
+                "text": "物资调度终端达特定等级后解锁"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_levelup",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 55,
+        "name": {
+            "id": -5504206337339733588,
+            "text": "探测器"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "name": "新锐谷地罗盘"
+}

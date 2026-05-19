@@ -1,0 +1,89 @@
+{
+    "itemId": "item_factech_jinlong_point",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -4179946649388353536,
+            "text": "记录了集成工业系统武陵地区运行状况的小型电子设备，接入协议核心后能调整技术投放的权重。"
+        },
+        "desc": {
+            "id": -102507818642321140,
+            "text": "研发武陵工业计划内各类工业技术的需求点数。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_factech_jinlong_point",
+        "id": "item_factech_jinlong_point",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": 10000,
+        "modelKey": "",
+        "name": {
+            "id": 7741640095920085977,
+            "text": "武陵工业点数"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -2577017683399567225,
+            "text": "完成武陵工业计划对应研究后获取"
+        },
+        "noObtainWayId": [
+            "item_obtain_onway_techtree_2"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_blackbox_activate_2"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -999,
+        "sortId2": 5,
+        "type": 92,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 5
+    },
+    "wikientryid": "wiki_item_factech_jinlong_point",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_other",
+        "id": "wiki_item_factech_jinlong_point",
+        "order": 4,
+        "prtsId": "",
+        "refItemId": "item_factech_jinlong_point",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_blackbox_activate_2": {
+            "bindSystem": 0,
+            "desc": {
+                "id": -647927220596237351,
+                "text": "武陵-激活协议采录桩"
+            },
+            "iconId": "icon_tips_blackbox",
+            "id": "item_obtain_blackbox_activate_2",
+            "phaseArgs": "{\r\n  \"templateId\": \"mark_dg_blackbox\",\r\n  \"mapId\": \"map02\"\r\n}",
+            "phaseId": "Map"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 92,
+        "name": {
+            "id": -103375867350446221,
+            "text": "工业科技点数"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 5
+    },
+    "name": "武陵工业点数"
+}

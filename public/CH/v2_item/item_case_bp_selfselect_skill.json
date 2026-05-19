@@ -1,0 +1,85 @@
+{
+    "itemId": "item_case_bp_selfselect_skill",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 5250759241177044680,
+            "text": "卡拉德先生强烈推荐，小道奇教官亲身体验，最适合训练自身的辅助道具都在这款自选箱中。"
+        },
+        "desc": {
+            "id": -5442526861889403018,
+            "text": "开启后可选择获得干员技能升级素材。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_case_bp_selfselect_skill",
+        "id": "item_case_bp_selfselect_skill",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 2092256411578018951,
+            "text": "技能提升自选箱"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_bp_pay"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -20,
+        "sortId2": 203,
+        "type": 43,
+        "valuableDepotRedDot": true,
+        "valuableTabType": 10
+    },
+    "usableitemchesttable": {
+        "id": "item_case_bp_selfselect_skill",
+        "randomChestItemCounts": [],
+        "randomChestItemIds": [],
+        "rewardIdList": [
+            "reward_case_bp_selfselect_skill_1",
+            "reward_case_bp_selfselect_skill_2"
+        ],
+        "selectedCount": 1,
+        "type": 1
+    },
+    "systemjumptable": {
+        "item_obtain_bp_pay": {
+            "bindSystem": 802,
+            "desc": {
+                "id": -2171165044214956094,
+                "text": "协议通行证-协议定制"
+            },
+            "iconId": "icon_tips_bp",
+            "id": "item_obtain_bp_pay",
+            "phaseArgs": "{\r\n  \"panelId\": \"BattlePassPlan\"\r\n}",
+            "phaseId": "BattlePass"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 43,
+        "name": {
+            "id": 5868273933160474249,
+            "text": "物资箱"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "name": "技能提升自选箱"
+}

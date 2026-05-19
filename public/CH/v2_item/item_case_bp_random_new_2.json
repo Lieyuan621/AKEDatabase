@@ -1,0 +1,84 @@
+{
+    "itemId": "item_case_bp_random_new_2",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 3817604579937125253,
+            "text": "装有武器生产流水线中剩余材料的补给箱。无论怎么看，这份惊喜箱中的补给材料也着实太多了一些。"
+        },
+        "desc": {
+            "id": 9203353081975757690,
+            "text": "开启后可获得包含嵌晶玉、理智消耗许可在内的随机奖励。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_case_bp_random_new_2",
+        "id": "item_case_bp_random_new_2",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 8306352472748114402,
+            "text": "中号循环惊喜箱"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_bp"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -20,
+        "sortId2": 105,
+        "type": 43,
+        "valuableDepotRedDot": true,
+        "valuableTabType": 10
+    },
+    "usableitemchesttable": {
+        "id": "item_case_bp_random_new_2",
+        "randomChestItemCounts": [],
+        "randomChestItemIds": [],
+        "rewardIdList": [
+            "reward_case_bp_random_new_2"
+        ],
+        "selectedCount": 0,
+        "type": 0
+    },
+    "systemjumptable": {
+        "item_obtain_bp": {
+            "bindSystem": 802,
+            "desc": {
+                "id": 6001254325945104002,
+                "text": "协议通行证奖励"
+            },
+            "iconId": "icon_tips_bp",
+            "id": "item_obtain_bp",
+            "phaseArgs": "{\r\n  \"panelId\": \"BattlePassPlan\"\r\n}",
+            "phaseId": "BattlePass"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 43,
+        "name": {
+            "id": 5868273933160474249,
+            "text": "物资箱"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "name": "中号循环惊喜箱"
+}

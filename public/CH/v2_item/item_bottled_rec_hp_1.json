@@ -1,0 +1,207 @@
+{
+    "itemId": "item_bottled_rec_hp_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -6760812764954852357,
+            "text": "制作手段简单的胶囊，外出颠簸中或许会撒漏药粉导致药效降低。"
+        },
+        "desc": {
+            "id": 4105706610757719500,
+            "text": "使用后可以回复干员生命值的战术物品。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_bottled_rec_hp_1",
+        "id": "item_bottled_rec_hp_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": -7996397812364656281,
+            "text": "荞愈胶囊"
+        },
+        "noObtainWayConditionId": [
+            "condition_item_obtain_noway_tech_filling"
+        ],
+        "noObtainWayHint": {
+            "id": 5972009924378395960,
+            "text": "工业发展后使用设备生产"
+        },
+        "noObtainWayId": [
+            "item_obtain_noway_tech_filling"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 5,
+        "sortId1": -82,
+        "sortId2": 6,
+        "type": 48,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "useitemtable": {
+        "duration": 0,
+        "effectType": 0,
+        "isPersistentBuff": false,
+        "isValuableDepot": false,
+        "itemId": "item_bottled_rec_hp_1",
+        "itemUseDesc": {
+            "id": -6941704061642326663,
+            "text": "使用后，立刻回复<@ba.vup>{value:0}</>点生命值。"
+        },
+        "stackingKey": "",
+        "targetNumType": 0,
+        "uiType": 0,
+        "useActions": [
+            {
+                "buffBBData": {
+                    "blackboard": [
+                        {
+                            "key": "value",
+                            "value": 469.89795,
+                            "valueStr": ""
+                        }
+                    ],
+                    "buffId": "buff_common_heal_potion_1"
+                },
+                "skillBBData": {
+                    "blackboard": [],
+                    "skillId": "",
+                    "skillPath": ""
+                },
+                "useType": 2
+            }
+        ]
+    },
+    "equipitemtable": {
+        "autoCheckNotInFight": true,
+        "castTime": 2,
+        "chargeCount": 3,
+        "checkTarget": 0,
+        "condParams": [
+            "0.6",
+            "lt"
+        ],
+        "condType": 0,
+        "cooldown": 3,
+        "equipDesc": {
+            "id": 2903669325111643494,
+            "text": "装备后，当持有干员生命值低于<@ba.vup>{param1:0%}</>时自动使用，单场战斗中最多可用<@ba.vup>{count:0}</>次。\n - <@tips.purple>仅一次支援主控干员</>\n - <@tips.orange>用尽后恢复次数</>"
+        },
+        "equipExtraDesc": {
+            "id": -1439202190793498927,
+            "text": "装备后，当持有干员生命值低于<@ba.vup>{param1:0%}</>时自动使用，单场战斗中最多可用<@ba.vup>{count:0}</>次。\n<@tips.purple>仅一次支援主控干员</>：每场战斗仅<@ba.vup>1</>次，当主控干员生命值低于<@ba.vup>{param1:0%}</>时自动对其使用。\n<@tips.orange>用尽后恢复次数</>：战斗中的可用次数用尽时，一段时间后会恢复<@ba.vup>1</>次可用次数。"
+        },
+        "itemId": "item_bottled_rec_hp_1",
+        "levelUpChargeCount": 4,
+        "levelUpRecoverUpperCount": 1,
+        "recoverTime": 60,
+        "recoverUpperCount": 1,
+        "toMainCharCount": 1,
+        "useTarget": 1
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_bottled_rec_hp_1",
+        "itemState": false,
+        "losslessDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "showInHubDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "showInUnloader": true,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 10
+    },
+    "wikicraftjumptable": {
+        "blackboxId": "dung_blackbox_filling_1",
+        "blueprintId": "sysbp_tundra_bottled_rec_hp_1_1",
+        "itemId": "item_bottled_rec_hp_1"
+    },
+    "wikientryid": "wiki_item_bottled_rec_hp_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_usable",
+        "id": "wiki_item_bottled_rec_hp_1",
+        "order": 10,
+        "prtsId": "",
+        "refItemId": "item_bottled_rec_hp_1",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 48,
+        "name": {
+            "id": -8745995051935114781,
+            "text": "战术物品"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_usable",
+        "name": {
+            "id": -2232813154053962573,
+            "text": "可用道具"
+        },
+        "sortId": 6,
+        "type": 5
+    },
+    "factorymanualcrafttable": [
+        {
+            "defaultUnlock": false,
+            "domainId": "domain_1",
+            "id": "handwork_bottled_rec_hp_1",
+            "ingredients": [
+                {
+                    "count": 5,
+                    "id": "item_plant_moss_powder_1"
+                },
+                {
+                    "count": 5,
+                    "id": "item_glass_bottle"
+                }
+            ],
+            "itemId": "item_formula_bottled_rec_hp_1",
+            "name": {
+                "id": -8173291844752618703,
+                "text": "荞愈胶囊"
+            },
+            "outcomes": [
+                {
+                    "count": 1,
+                    "id": "item_bottled_rec_hp_1"
+                }
+            ],
+            "rarity": 3,
+            "showingType": 17,
+            "sortId": 39
+        }
+    ],
+    "name": "荞愈胶囊"
+}

@@ -1,0 +1,115 @@
+{
+    "itemId": "item_gift_tundra_4",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 2933469385192585227,
+            "text": "包装精致的香水，主要成分萃取自耶尔什雪山植物，味道能让人联想起雪山上清冷的风。"
+        },
+        "desc": {
+            "id": -7303154004297033504,
+            "text": "可作为礼物送给爱好 [创意]  [时尚] 的干员以增加信赖度。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_gift_tundra_4",
+        "id": "item_gift_tundra_4",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_gem",
+        "name": {
+            "id": 4671243858133313170,
+            "text": "耶尔什微风"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 7026483205882308573,
+            "text": "物资调度获取"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_1",
+            "item_obtain_domain_shop_levelup"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -301,
+        "sortId2": 22,
+        "type": 33,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 10
+    },
+    "giftitemtable": {
+        "favorablePoint": 20,
+        "finishPopularTimeId": "",
+        "giftPreferTag": "tag_giftperfer_tundra_1",
+        "id": "item_gift_tundra_4",
+        "isPopular": false,
+        "isShowPopularFinishTime": false,
+        "tagList": [
+            "tag_hobby_creativity",
+            "tag_hobby_fashion"
+        ]
+    },
+    "wikientryid": "wiki_item_gift_tundra_4",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_gift",
+        "id": "wiki_item_gift_tundra_4",
+        "order": 4,
+        "prtsId": "",
+        "refItemId": "item_gift_tundra_4",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_1": {
+            "bindSystem": 512,
+            "desc": {
+                "id": -2131723199710794539,
+                "text": "四号谷地-物资调度购买"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_1",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "ShopTrade"
+        },
+        "item_obtain_domain_shop_levelup": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 1665065042415592699,
+                "text": "物资调度终端达特定等级后解锁"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_levelup",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 33,
+        "name": {
+            "id": -6412188518960810535,
+            "text": "礼物"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "giftprefertagconfigtable": {
+        "iconName": "tag_giftperfer_tundra_1",
+        "tag": "tag_giftperfer_tundra_1"
+    },
+    "name": "耶尔什微风"
+}

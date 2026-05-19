@@ -1,0 +1,212 @@
+{
+    "itemId": "item_lbmob_1_moss_2_bottled_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 5217280318095674686,
+            "text": "根据卡贾提供的秘方制备的提神饮料，最好不要在白天就喝它。"
+        },
+        "desc": {
+            "id": -4990489116391197065,
+            "text": "使用后可以回复干员生命值的战术物品。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_lbmob_1_moss_2_bottled_1",
+        "id": "item_lbmob_1_moss_2_bottled_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": 1114331719336100017,
+            "text": "秘方醒神茶"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -954269418196051365,
+            "text": "<@obt.key>简制手册</>中解锁对应配方后可进行制造"
+        },
+        "noObtainWayId": [
+            "item_obtain_noway_booklet"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 5,
+        "sortId1": -82,
+        "sortId2": 36,
+        "type": 48,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "useitemtable": {
+        "duration": 0,
+        "effectType": 0,
+        "isPersistentBuff": false,
+        "isValuableDepot": false,
+        "itemId": "item_lbmob_1_moss_2_bottled_1",
+        "itemUseDesc": {
+            "id": -6237087509024703280,
+            "text": "使用后，<#ba.dispel>净化</><#ba.spellinflictonchar>法术附着</>与<#ba.spellinflictonchar>法术异常</>，然后立刻回复<@ba.vup>{value2:0%}</>最大生命值，再回复<@ba.vup>{value:0}</>点生命值。"
+        },
+        "stackingKey": "",
+        "targetNumType": 0,
+        "uiType": 0,
+        "useActions": [
+            {
+                "buffBBData": {
+                    "blackboard": [
+                        {
+                            "key": "value",
+                            "value": 503.57144,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "value2",
+                            "value": 0.1,
+                            "valueStr": ""
+                        }
+                    ],
+                    "buffId": "buff_common_heal_potion_2"
+                },
+                "skillBBData": {
+                    "blackboard": [],
+                    "skillId": "",
+                    "skillPath": ""
+                },
+                "useType": 2
+            },
+            {
+                "buffBBData": {
+                    "blackboard": [],
+                    "buffId": "buff_common_dispel_potion"
+                },
+                "skillBBData": {
+                    "blackboard": [],
+                    "skillId": "",
+                    "skillPath": ""
+                },
+                "useType": 2
+            }
+        ]
+    },
+    "equipitemtable": {
+        "autoCheckNotInFight": true,
+        "castTime": 0.5,
+        "chargeCount": 2,
+        "checkTarget": 1,
+        "condParams": [],
+        "condType": 5,
+        "cooldown": 3,
+        "equipDesc": {
+            "id": -5051812314509565471,
+            "text": "装备后，当队伍中有干员受到<#ba.spellinflictonchar>法术异常</>时自动对其使用，单场战斗中最多可用<@ba.vup>{count:0}</>次。\n - <@tips.purple>无限制支援主控干员</>\n - <@tips.orange>用尽后恢复次数</>"
+        },
+        "equipExtraDesc": {
+            "id": 1289146831834411556,
+            "text": "装备后，当队伍中有干员受到<#ba.spellinflictonchar>法术异常</>时自动对其使用，单场战斗中最多可用<@ba.vup>{count:0}</>次。\n<@tips.purple>无限制支援主控干员</>：战斗中支援主控干员无次数限制。\n<@tips.orange>用尽后恢复次数</>：战斗中的可用次数用尽时，一段时间后会恢复<@ba.vup>1</>次可用次数。"
+        },
+        "itemId": "item_lbmob_1_moss_2_bottled_1",
+        "levelUpChargeCount": 3,
+        "levelUpRecoverUpperCount": 1,
+        "recoverTime": 60,
+        "recoverUpperCount": 1,
+        "toMainCharCount": 0,
+        "useTarget": 1
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_lbmob_1_moss_2_bottled_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 200
+    },
+    "wikientryid": "wiki_item_lbmob_1_moss_2_bottled_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_usable",
+        "id": "wiki_item_lbmob_1_moss_2_bottled_1",
+        "order": 53,
+        "prtsId": "",
+        "refItemId": "item_lbmob_1_moss_2_bottled_1",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 48,
+        "name": {
+            "id": -8745995051935114781,
+            "text": "战术物品"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_usable",
+        "name": {
+            "id": -2232813154053962573,
+            "text": "可用道具"
+        },
+        "sortId": 6,
+        "type": 5
+    },
+    "factorymanualcrafttable": [
+        {
+            "defaultUnlock": false,
+            "domainId": "domain_1",
+            "id": "hdwk_lbmob_1_moss_2_bottled_1",
+            "ingredients": [
+                {
+                    "count": 1,
+                    "id": "item_drop_lbmob_1"
+                },
+                {
+                    "count": 1,
+                    "id": "item_plant_moss_powder_2"
+                },
+                {
+                    "count": 1,
+                    "id": "item_glass_bottle"
+                }
+            ],
+            "itemId": "item_formula_lbmob_1_moss_2_bottled_1_1",
+            "name": {
+                "id": 3630265693205645511,
+                "text": "秘方醒神茶"
+            },
+            "outcomes": [
+                {
+                    "count": 1,
+                    "id": "item_lbmob_1_moss_2_bottled_1"
+                }
+            ],
+            "rarity": 3,
+            "showingType": 19,
+            "sortId": 54
+        }
+    ],
+    "name": "秘方醒神茶"
+}

@@ -1,0 +1,127 @@
+{
+    "itemId": "item_port_soil_sp_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -285298140444850127,
+            "text": "为培植灰芦麦而调节了各项参数的田块，其土质整体上优于四号谷地平均土壤状况。"
+        },
+        "desc": {
+            "id": -8221196221589949056,
+            "text": "此田块上按步骤进行精细种植，收获后可获得大量灰芦麦。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_port_soil_sp_1",
+        "id": "item_port_soil_sp_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_drop_building",
+        "name": {
+            "id": -6677557432563838496,
+            "text": "灰芦麦田块"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 8881474607356295751,
+            "text": "探索解锁配方后在<@obt.key>简易制作</>中制作"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [
+            "item_plant_sp_1"
+        ],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 17,
+        "sortId1": -110,
+        "sortId2": 9,
+        "type": 9,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [],
+        "dischargeType": false,
+        "id": "item_port_soil_sp_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 100
+    },
+    "wikientryid": "wiki_item_port_soil_sp_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": -8545070924091721391,
+            "text": "浇水、成长、收获<@gd.key>灰芦麦</>。"
+        },
+        "groupId": "wiki_group_building_soil",
+        "id": "wiki_item_port_soil_sp_1",
+        "order": 7,
+        "prtsId": "",
+        "refItemId": "item_port_soil_sp_1",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 9,
+        "name": {
+            "id": 1216850085743131878,
+            "text": "普通设备"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_tools_building",
+        "name": {
+            "id": -802861162360212509,
+            "text": "生产工具"
+        },
+        "sortId": 7,
+        "type": 17
+    },
+    "factorymanualcrafttable": [
+        {
+            "defaultUnlock": false,
+            "domainId": "domain_1",
+            "id": "handwork_port_soil_sp_1",
+            "ingredients": [
+                {
+                    "count": 1,
+                    "id": "item_plant_sp_seed_1"
+                },
+                {
+                    "count": 1,
+                    "id": "item_carbon_mtl"
+                }
+            ],
+            "itemId": "item_plant_sp_1",
+            "name": {
+                "id": 5356952473752447620,
+                "text": "灰芦麦田块"
+            },
+            "outcomes": [
+                {
+                    "count": 1,
+                    "id": "item_port_soil_sp_1"
+                }
+            ],
+            "rarity": 3,
+            "showingType": 20,
+            "sortId": 106
+        }
+    ],
+    "name": "灰芦麦田块"
+}

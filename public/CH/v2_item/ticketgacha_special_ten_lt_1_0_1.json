@@ -1,0 +1,74 @@
+{
+    "itemId": "ticketgacha_special_ten_lt_1_0_1",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -4191324455181837801,
+            "text": "一张特殊的人事凭证，为批量招选具备某些特殊条件的干员而准备，由于准备紧急，它不可避免地受困于时效性。为了这张凭证，人力资源事务部的干员们付出了数十个日夜，请务必妥善使用。"
+        },
+        "desc": {
+            "id": -7015599733897925888,
+            "text": "终末地工业限时凭证，可用于在「熔火灼痕」特许寻访中寻访10次。该凭证将在「熔火灼痕」特许寻访结束后失效。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_ticketgacha_special_ten_lt_1_0_1",
+        "id": "ticketgacha_special_ten_lt_1_0_1",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_collection_item_gold_1",
+        "name": {
+            "id": 3196171816989202766,
+            "text": "行火留烬十连凭证"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_payshop_pack"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 6,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -10,
+        "sortId2": 9,
+        "type": 81,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 10
+    },
+    "systemjumptable": {
+        "item_obtain_payshop_pack": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 3045029175165087493,
+                "text": "采购中心-组合包"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_payshop_pack",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_gift_pack\"\r\n}",
+            "phaseId": "CashShop"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 81,
+        "name": {
+            "id": -5475386088406104497,
+            "text": "限时珍贵物品"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "name": "行火留烬十连凭证"
+}

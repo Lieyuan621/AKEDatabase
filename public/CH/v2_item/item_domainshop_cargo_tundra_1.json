@@ -1,0 +1,74 @@
+{
+    "itemId": "item_domainshop_cargo_tundra_1",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 1161614055224935104,
+            "text": "这套厨具与锚点的唯一关联，大概就是厨具的原材料是由锚点创造出的。第一次天使战争期间，缺少金属的人们在杀死富金属环境下生成的天使后，尝试用它们的残骸制作厨具。其中的锅具表面光滑平整，没有任何的砂眼，并且具备优异的导热性与出色的不粘效果，于是这项工艺便流传至今。"
+        },
+        "desc": {
+            "id": -1761495868951657479,
+            "text": "当地日用消耗相关的货组，价值变动幅度适中，可通过物资调度买卖赚取收益。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_domainshop_cargo_tundra_1",
+        "id": "item_domainshop_cargo_tundra_1",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 8280198421532414598,
+            "text": "锚点厨具货组"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -1303666800325967338,
+            "text": "<@obt.key>物资调度</>中购买"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_1"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -321,
+        "sortId2": 1,
+        "type": 56,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 7
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_1": {
+            "bindSystem": 512,
+            "desc": {
+                "id": -2131723199710794539,
+                "text": "四号谷地-物资调度购买"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_1",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "ShopTrade"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 56,
+        "name": {
+            "id": 5514429341118358800,
+            "text": "弹性需求物资"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 7
+    },
+    "name": "锚点厨具货组"
+}

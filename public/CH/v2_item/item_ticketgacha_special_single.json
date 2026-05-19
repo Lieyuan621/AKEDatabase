@@ -1,0 +1,86 @@
+{
+    "itemId": "item_ticketgacha_special_single",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 1939674822206630183,
+            "text": "塔卫二上不乏精英干将。为了满足终末地工业日益增长的人才需求，人力资源事务部特别准备了针对特殊人才招聘的临时应急手段。"
+        },
+        "desc": {
+            "id": 8926361917490324396,
+            "text": "终末地工业内部凭证，可用于在「特许寻访」中寻访1次。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_ticketgacha_special_single",
+        "id": "item_ticketgacha_special_single",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_collection_item_gold_1",
+        "name": {
+            "id": 4858788096663851272,
+            "text": "特许寻访凭证"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_shop_yellowticket_ticketgacha_special_single",
+            "item_obtain_activity"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 6,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -10,
+        "sortId2": 1,
+        "type": 14,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 10
+    },
+    "systemjumptable": {
+        "item_obtain_shop_yellowticket_ticketgacha_special_single": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 3329792338069619936,
+                "text": "采购中心-保障配额交易"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_shop_yellowticket_ticketgacha_special_single",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_yellow_1\",\r\n  \"goodsId\": \"payshop_yellow_ticketgacha_special_single\"\r\n}",
+            "phaseId": "CashShop"
+        },
+        "item_obtain_activity": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": -1457834971849491159,
+                "text": "活动奖励"
+            },
+            "iconId": "icon_tips_activity",
+            "id": "item_obtain_activity",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 14,
+        "name": {
+            "id": -2569683611406938136,
+            "text": "珍贵物品"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "name": "特许寻访凭证"
+}

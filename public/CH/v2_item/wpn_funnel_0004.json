@@ -1,0 +1,112 @@
+{
+    "itemId": "wpn_funnel_0004",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 6082085916333879899,
+            "text": "雷神工业研发的一款施术单元，以简洁和轻量著称。其材料用量不足普通施术单元的一半。"
+        },
+        "desc": {
+            "id": -132542204808007434,
+            "text": "终末地干员用武器，装备之后可以显著提升干员的作战能力。"
+        },
+        "iconCompositeId": "",
+        "iconId": "wpn_funnel_0004",
+        "id": "wpn_funnel_0004",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_weapon",
+        "name": {
+            "id": -5407485926004336253,
+            "text": "迷失荒野"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_payshop_weapon"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -35,
+        "sortId2": 29,
+        "type": 5,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 1
+    },
+    "weaponbasictable": {
+        "breakthroughTemplateId": "weapon_breakthrough_456star_C_1",
+        "engName": {
+            "id": 905051504107081792,
+            "text": "Wild Wanderer"
+        },
+        "levelTemplateId": "weapon_upgrade_curve_5star_1",
+        "maxLv": 90,
+        "modelPath": "Gameplay/Prefabs/Weapons/wpn_funnel_0004.prefab",
+        "potentialUpItemList": [],
+        "rarity": 5,
+        "talentTemplateId": "wpn_potential_456star",
+        "weaponDesc": {
+            "id": -4822791132468596286,
+            "text": "我在荒野中遇到了他们。\n起初，他们对我并不友善。一位师者检查了我的伤势，允许我在此逗留，直至能独自行动。其他人则拒绝与我进一步交流。或许，这是因为我身着环塔商会的制服。\n他们的生活方式……令我印象深刻。我认为这群人已形成了独特的传统，其核心是“节俭”，或更恰当地说，是“克制”。虽然他们的技术水平不算高超，但他们竭尽全力充分利用每一份材料。这赋予了他们的造物一种独特的“简洁之美”——一种由这颗星球的严酷荒野锤炼而成的美。\n我告诉他们我也是个工匠，因此得以参与他们的生产。近距离观察他们的工作后，我发现一个令人惊讶的事实：尽管他们的产品用料远少于我们，生产流程也相当简单，但武器性能损耗却不是很大。这一发现让我意识到，我们的设计还有极大的优化空间。\n我在他们中间生活了三年才离开。临别时，他们以师者的礼节对待我。然而，我深感自己从他们身上学到的，远比我教给他们的要多得多。"
+        },
+        "weaponId": "wpn_funnel_0004",
+        "weaponPotentialSkill": "sk_wpn_funnel_0004",
+        "weaponSkillList": [
+            "wpn_attr_wisd_mid",
+            "wpn_sp_attr_electrondam_mid",
+            "sk_wpn_funnel_0004"
+        ],
+        "weaponType": 2
+    },
+    "wikientryid": "wiki_wpn_funnel_0004",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_weapon_wand",
+        "id": "wiki_wpn_funnel_0004",
+        "order": 6,
+        "prtsId": "",
+        "refItemId": "wpn_funnel_0004",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_payshop_weapon": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 6097231837213620507,
+                "text": "采购中心-武库交易所"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_payshop_weapon",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 5,
+        "name": {
+            "id": 8230458971049120788,
+            "text": "武器"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 2,
+        "unlockSystemType": 251,
+        "valuableTabType": 1
+    },
+    "name": "迷失荒野"
+}

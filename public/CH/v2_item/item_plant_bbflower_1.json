@@ -1,0 +1,136 @@
+{
+    "itemId": "item_plant_bbflower_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 1486944034099210979,
+            "text": "酮化灌木是塔卫二的本土植物，它往往生长于土壤成分较为特殊的环境中。"
+        },
+        "desc": {
+            "id": 3333740908249168478,
+            "text": "可在野外采集或在工厂培育出的植物，内含易燃易爆成分，常用于制造工业爆炸物。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_plant_bbflower_1",
+        "id": "item_plant_bbflower_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_drop_plant_bbflower_1",
+        "name": {
+            "id": -420227815983436668,
+            "text": "酮化灌木"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 6775031754875980252,
+            "text": "冒险探索收集"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_gather_map01_lv002_1",
+            "item_obtain_plant"
+        ],
+        "outcomeItemIds": [
+            "item_plant_bbflower_powder_1",
+            "item_proc_bomb_1"
+        ],
+        "rarity": 1,
+        "showAllDepotCount": false,
+        "showingType": 2,
+        "sortId1": -80,
+        "sortId2": 15,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [
+            3,
+            1
+        ],
+        "dischargeType": false,
+        "id": "item_plant_bbflower_1",
+        "itemState": false,
+        "losslessDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "showInHubDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "showInUnloader": true,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 1
+    },
+    "wikientryid": "wiki_item_plant_bbflower_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_nature",
+        "id": "wiki_item_plant_bbflower_1",
+        "order": 11,
+        "prtsId": "",
+        "refItemId": "item_plant_bbflower_1",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_gather_map01_lv002_1": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 2087916908976314152,
+                "text": "谷地通道-废弃小径等地采集"
+            },
+            "iconId": "icon_tips_doodad",
+            "id": "item_obtain_gather_map01_lv002_1",
+            "phaseArgs": "",
+            "phaseId": ""
+        },
+        "item_obtain_plant": {
+            "bindSystem": 201,
+            "desc": {
+                "id": -358406319131326489,
+                "text": "生态种植区进行种植培育"
+            },
+            "iconId": "icon_tips_doodad",
+            "id": "item_obtain_plant",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "材料"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_plant",
+        "name": {
+            "id": 6281814164593113046,
+            "text": "植物"
+        },
+        "sortId": 2,
+        "type": 2
+    },
+    "name": "酮化灌木"
+}

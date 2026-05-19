@@ -1,0 +1,112 @@
+{
+    "itemId": "wpn_claym_0015",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -5766356892119944878,
+            "text": "终末地工业出品的系列制式装备。由资深武库工程师奥佩罗所组建的原型创意组设计。可根据实战需求，装配不同的模块套件。"
+        },
+        "desc": {
+            "id": 973131465861323561,
+            "text": "终末地干员用武器，装备之后可以显著提升干员的作战能力。"
+        },
+        "iconCompositeId": "",
+        "iconId": "wpn_claym_0015",
+        "id": "wpn_claym_0015",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_weapon",
+        "name": {
+            "id": -4096224548721604136,
+            "text": "O.B.J.重荷"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_payshop_weapon"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -35,
+        "sortId2": 36,
+        "type": 5,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 1
+    },
+    "weaponbasictable": {
+        "breakthroughTemplateId": "weapon_breakthrough_456star_C_2",
+        "engName": {
+            "id": -8692962530424183141,
+            "text": "OBJ Heavy Burden"
+        },
+        "levelTemplateId": "weapon_upgrade_curve_5star_1",
+        "maxLv": 90,
+        "modelPath": "Gameplay/Prefabs/Weapons/wpn_claym_0015.prefab",
+        "potentialUpItemList": [],
+        "rarity": 5,
+        "talentTemplateId": "wpn_potential_456star",
+        "weaponDesc": {
+            "id": 3493151527075831311,
+            "text": "“……我们要走了。听秦主管的意思，应该还是和以前一样，先回帝江号休整段日子，然后再看之后的安排。\n“本来大家还想着趁这次把你送回耶尔什的……不过库恩说你跟他提过，比起雪山脚下，往后还是更想待在暖和点的地方。\n“所以我们几个就去工团那里递了个申请——他们挺乐意为你做点什么的，于是就在这片公墓给你留了个好位置……毕竟按他们的说法，你也算是四号谷地的英雄了。\n“你放心，你攒的那些电影票根都给你整理好了，准备照你最后说的，寄给你那个只在Baker上聊过的朋友。\n“他挺关心你的，一直问我们‘十二号厅’是不是转行去了？我才知道你那个一直不肯说的‘退路’原来是去新蓝卡坞当场记……哈哈，确实是你会喜欢干的活……\n“所以你看你，明明都计划好了，回去要多看十场电影，要去食堂请大家吃炸羽兽腿，要找武库工程师换一把新武器……\n“最后怎么就……连犹豫都没犹豫，一个人冲上去了呢？唉……\n“那几个你救下的难民都没事，那批物资也帮你送到了……\n“你想拖住的那群天使，被你那一下炸得差不多了……剩的那几只，也被过来支援的工团哥们儿干掉了。\n“总之……都没白费。你就安心躺在这里吧，我们几个以后只要路过了，都会来看你的……\n“对了。这把大剑留给你了……我帮你递过申请了，它已经从‘紧急征用’那栏归到你名下了……\n“你之前想换的就是它这款吧？没想到会在那种关头被你从那堆物资里找出来一把……也算缘分不是吗？\n“那场爆炸里，它也算陪你到最后了……干脆就让它一直陪下去吧。\n“反正你俩挺像的，都特别能扛，也都……扛住了。\n“往后做个伴，也不那么寂寞。”"
+        },
+        "weaponId": "wpn_claym_0015",
+        "weaponPotentialSkill": "sk_wpn_claym_0015",
+        "weaponSkillList": [
+            "wpn_attr_str_mid",
+            "wpn_sp_attr_hp_mid",
+            "sk_wpn_claym_0015"
+        ],
+        "weaponType": 3
+    },
+    "wikientryid": "wiki_wpn_claym_0015",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_weapon_claymores",
+        "id": "wiki_wpn_claym_0015",
+        "order": 7,
+        "prtsId": "",
+        "refItemId": "wpn_claym_0015",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_payshop_weapon": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 6097231837213620507,
+                "text": "采购中心-武库交易所"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_payshop_weapon",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 5,
+        "name": {
+            "id": 8230458971049120788,
+            "text": "武器"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 2,
+        "unlockSystemType": 251,
+        "valuableTabType": 1
+    },
+    "name": "O.B.J.重荷"
+}

@@ -1,0 +1,98 @@
+{
+    "itemId": "item_bp_double_reward",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 8439716602231304435,
+            "text": "瞬间消耗大量理智的许可。瞬间过度消耗理智会对人体造成极大的伤害，在如此行动前，您需要接受医疗部门最高规格的体检。"
+        },
+        "desc": {
+            "id": -8694471843892782761,
+            "text": "参与理智消耗玩法时，可支持在消耗双倍理智后获取双倍奖励，每10理智需消耗1张许可。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_bp_double_reward",
+        "id": "item_bp_double_reward",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_collection_item_gold_1",
+        "name": {
+            "id": 7300137488989463260,
+            "text": "理智消耗许可"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_bp",
+            "item_obtain_domain_1",
+            "item_obtain_domain_2"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -11,
+        "sortId2": 12,
+        "type": 98,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 10
+    },
+    "systemjumptable": {
+        "item_obtain_bp": {
+            "bindSystem": 802,
+            "desc": {
+                "id": 6001254325945104002,
+                "text": "协议通行证奖励"
+            },
+            "iconId": "icon_tips_bp",
+            "id": "item_obtain_bp",
+            "phaseArgs": "{\r\n  \"panelId\": \"BattlePassPlan\"\r\n}",
+            "phaseId": "BattlePass"
+        },
+        "item_obtain_domain_1": {
+            "bindSystem": 502,
+            "desc": {
+                "id": 8441973591524353023,
+                "text": "四号谷地-地区建设等级奖励"
+            },
+            "iconId": "icon_tips_domain",
+            "id": "item_obtain_domain_1",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "DomainGrade"
+        },
+        "item_obtain_domain_2": {
+            "bindSystem": 502,
+            "desc": {
+                "id": 2234779008367754407,
+                "text": "武陵-地区建设等级奖励"
+            },
+            "iconId": "icon_tips_domain",
+            "id": "item_obtain_domain_2",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_2\"\r\n}",
+            "phaseId": "DomainGrade"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 98,
+        "name": {
+            "id": 3664179958853570486,
+            "text": "珍贵物品"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "name": "理智消耗许可"
+}

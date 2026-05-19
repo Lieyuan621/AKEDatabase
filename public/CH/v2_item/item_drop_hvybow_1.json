@@ -1,0 +1,117 @@
+{
+    "itemId": "item_drop_hvybow_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -9170544048267674576,
+            "text": "在雾火中“浸泡”多年的极重大弩，从安全角度考虑，已不建议作为武器使用。但裂地者设计的狂野武器偶尔会受到一些收藏爱好者们欢迎。"
+        },
+        "desc": {
+            "id": -4057898836865460762,
+            "text": "击败碾骨射手的掉落物，可用于仓储节点装箱运送。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_drop_hvybow_1",
+        "id": "item_drop_hvybow_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_drop_enemy_common_1",
+        "name": {
+            "id": -4437120287885568703,
+            "text": "浸雾大弩"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -4634456282847225907,
+            "text": "冒险探索中击败敌人获取"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_eny_0048_hvybow"
+        ],
+        "outcomeItemIds": [
+            "item_jlebm_grass1_1"
+        ],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 15,
+        "sortId1": -65,
+        "sortId2": 22,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            1
+        ],
+        "dischargeType": false,
+        "id": "item_drop_hvybow_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 500
+    },
+    "enemydroplist": [
+        "eny_0048_hvybow"
+    ],
+    "wikientryid": "wiki_item_drop_hvybow_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_material",
+        "id": "wiki_item_drop_hvybow_1",
+        "order": 24,
+        "prtsId": "",
+        "refItemId": "item_drop_hvybow_1",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_eny_0048_hvybow": {
+            "bindSystem": 55,
+            "desc": {
+                "id": -3842723184361372762,
+                "text": "击败碾骨射手有概率掉落"
+            },
+            "iconId": "icon_tips_monster",
+            "id": "item_obtain_eny_0048_hvybow",
+            "phaseArgs": "{\r\n  \"monsterId\": \"eny_0048_hvybow\"\r\n}",
+            "phaseId": "Wiki"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "材料"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_doodad",
+        "name": {
+            "id": -4889980326384875610,
+            "text": "采集材料"
+        },
+        "sortId": 4,
+        "type": 15
+    },
+    "name": "浸雾大弩"
+}

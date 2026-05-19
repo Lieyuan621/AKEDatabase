@@ -1,0 +1,117 @@
+{
+    "itemId": "item_drop_hsbear_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 4196974631265418466,
+            "text": "咆兽后颈部的辫毛。在咆兽快速吸入空气，发出咆哮的过程中，辫毛起着隔绝尘埃，保护颈部器官的作用。"
+        },
+        "desc": {
+            "id": -2890008378013364634,
+            "text": "击败天鼓的掉落物，可用于仓储节点装箱运送。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_drop_hsbear_1",
+        "id": "item_drop_hsbear_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_drop_enemy_common_1",
+        "name": {
+            "id": -2995722426423394371,
+            "text": "咆兽的辫束"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 2528414826373919264,
+            "text": "冒险探索中击败敌人获取"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_eny_0082_hsbear"
+        ],
+        "outcomeItemIds": [
+            "item_jlebm_grass1_1"
+        ],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 15,
+        "sortId1": -65,
+        "sortId2": 30,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            1
+        ],
+        "dischargeType": false,
+        "id": "item_drop_hsbear_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 1500
+    },
+    "enemydroplist": [
+        "eny_0082_hsbear"
+    ],
+    "wikientryid": "wiki_item_drop_hsbear_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_material",
+        "id": "wiki_item_drop_hsbear_1",
+        "order": 32,
+        "prtsId": "",
+        "refItemId": "item_drop_hsbear_1",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_eny_0082_hsbear": {
+            "bindSystem": 55,
+            "desc": {
+                "id": -8690238490197093333,
+                "text": "击败天鼓有概率掉落"
+            },
+            "iconId": "icon_tips_monster",
+            "id": "item_obtain_eny_0082_hsbear",
+            "phaseArgs": "{\r\n  \"monsterId\": \"eny_0082_hsbear\"\r\n}",
+            "phaseId": "Wiki"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "材料"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_doodad",
+        "name": {
+            "id": -4889980326384875610,
+            "text": "采集材料"
+        },
+        "sortId": 4,
+        "type": 15
+    },
+    "name": "咆兽的辫束"
+}

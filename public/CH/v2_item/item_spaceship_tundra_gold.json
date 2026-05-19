@@ -1,0 +1,74 @@
+{
+    "itemId": "item_spaceship_tundra_gold",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -297008743958236811,
+            "text": "终末地工业与合作方所签订物资供应协定的使用凭证。\n仅限四号谷地区域有效。"
+        },
+        "desc": {
+            "id": -8457296345143397991,
+            "text": "可在“帝江号”的供应链专员拉冬处使用，兑换四号谷地的货品。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_spaceship_tundra_gold",
+        "id": "item_spaceship_tundra_gold",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": -3185396315873210247,
+            "text": "谷地协定凭证"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 7382464172981720905,
+            "text": "完成四号谷地据点的订单获取"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_settlement_tundra"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -12,
+        "sortId2": 8,
+        "type": 44,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "systemjumptable": {
+        "item_obtain_settlement_tundra": {
+            "bindSystem": 501,
+            "desc": {
+                "id": 1330808358215359157,
+                "text": "四号谷地-据点供货订单报酬"
+            },
+            "iconId": "icon_tips_settlement",
+            "id": "item_obtain_settlement_tundra",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "SettlementMain"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": true,
+        "hideNewToast": false,
+        "itemType": 44,
+        "name": {
+            "id": -325568445562451710,
+            "text": "协议交换凭证"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "name": "谷地协定凭证"
+}

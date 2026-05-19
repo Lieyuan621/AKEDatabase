@@ -1,0 +1,198 @@
+{
+    "itemId": "item_equip_t4_parts_wuling01_body_01",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -4782885304285505161,
+            "text": "象征着艰辛前路的装备。“事未竟，路犹长。”"
+        },
+        "desc": {
+            "id": 6146578188459834563,
+            "text": "本装备由宏山选剑局设计，使用集成工业系统制造，能够提高使用者的作战能力。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_equip_t4_parts_wuling01_body_01",
+        "id": "item_equip_t4_parts_wuling01_body_01",
+        "maxBackpackStackCount": 1,
+        "maxStackCount": 1,
+        "modelKey": "int_drop_equip",
+        "name": {
+            "id": 819244360744399403,
+            "text": "纾难重甲"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_equip"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 9,
+        "sortId1": -50,
+        "sortId2": 31,
+        "type": 6,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 3
+    },
+    "equiptable": {
+        "displayAttrModifiers": [
+            {
+                "attrIndex": 1,
+                "attrType": 40,
+                "attrValue": 115,
+                "compositeAttr": "",
+                "enhanceGuaranteeTimesRuleId": "SingleAttrPity",
+                "enhancedAttrIndex": 1,
+                "enhancedAttrValues": [
+                    126,
+                    138,
+                    149
+                ],
+                "modifierType": 5
+            },
+            {
+                "attrIndex": 3,
+                "attrType": 17,
+                "attrValue": 0.144,
+                "compositeAttr": "",
+                "enhanceGuaranteeTimesRuleId": "ExtraAttrPity",
+                "enhancedAttrIndex": 2,
+                "enhancedAttrValues": [
+                    0.1584,
+                    0.1728,
+                    0.1872
+                ],
+                "modifierType": 5
+            }
+        ],
+        "displayBaseAttrModifier": {
+            "attrIndex": 0,
+            "attrType": 3,
+            "attrValue": 56,
+            "compositeAttr": "",
+            "enhanceGuaranteeTimesRuleId": "",
+            "enhancedAttrIndex": 0,
+            "enhancedAttrValues": [],
+            "modifierType": 5
+        },
+        "domainId": "domain_2",
+        "equipAttrModifiers": [
+            {
+                "attrIndex": 0,
+                "attrType": 3,
+                "attrValues": [
+                    56,
+                    56,
+                    56,
+                    56
+                ],
+                "modifierType": 5,
+                "modifyAttributeType": 0
+            },
+            {
+                "attrIndex": 1,
+                "attrType": 40,
+                "attrValues": [
+                    115,
+                    126,
+                    138,
+                    149
+                ],
+                "modifierType": 5,
+                "modifyAttributeType": 0
+            },
+            {
+                "attrIndex": 2,
+                "attrType": 17,
+                "attrValues": [
+                    0.144,
+                    0.1584,
+                    0.17279999999999998,
+                    0.1872
+                ],
+                "modifierType": 5,
+                "modifyAttributeType": 0
+            }
+        ],
+        "itemId": "item_equip_t4_parts_wuling01_body_01",
+        "minWearLv": 70,
+        "partType": 0,
+        "suitID": ""
+    },
+    "equipformulatable": {
+        "costGoldId": "item_domain_jinlong_coupon",
+        "costGoldNum": 16000,
+        "costItemId": [
+            "item_equip_script_4_1"
+        ],
+        "costItemNum": [
+            50
+        ],
+        "formulaId": "item_formu_t4_parts_wuling01_body_01",
+        "isNew": false,
+        "outcomeEquipId": "item_equip_t4_parts_wuling01_body_01",
+        "packId": "pack_parts_wuling01_t4",
+        "unlockKey": "domainshop_channel_map02_1",
+        "unlockType": 3,
+        "unlockValue": 0
+    },
+    "wikientryid": "wiki_item_equip_t4_parts_wuling01_body_01",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_equip_default",
+        "id": "wiki_item_equip_t4_parts_wuling01_body_01",
+        "order": 93,
+        "prtsId": "",
+        "refItemId": "item_equip_t4_parts_wuling01_body_01",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_equip": {
+            "bindSystem": 67,
+            "desc": {
+                "id": 4170146291278779065,
+                "text": "装备制造"
+            },
+            "iconId": "icon_tips_proc",
+            "id": "item_obtain_equip",
+            "phaseArgs": "",
+            "phaseId": "EquipTech"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 6,
+        "name": {
+            "id": -2365265597869215300,
+            "text": "装备"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 3
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_equip_body",
+        "name": {
+            "id": -65472941290393328,
+            "text": "护甲"
+        },
+        "sortId": 9,
+        "type": 9
+    },
+    "name": "纾难重甲"
+}

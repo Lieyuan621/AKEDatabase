@@ -1,0 +1,237 @@
+{
+    "itemId": "item_equip_t3_suit_usp01_hand_01",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -3070378848602918458,
+            "text": "源石研究园种植作业中会使用的外骨骼装备。\n重点调整了指关节部位的支撑结构，同时提高了抓握能力，能在源石晶簇切割搬运的过程中高效辅助作业。"
+        },
+        "desc": {
+            "id": 4306128639753051474,
+            "text": "本装备由特里格拉夫军工厂设计，使用集成工业系统制造，能够提高使用者的作战能力。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_equip_t3_suit_usp01_hand_01",
+        "id": "item_equip_t3_suit_usp01_hand_01",
+        "maxBackpackStackCount": 1,
+        "maxStackCount": 1,
+        "modelKey": "int_drop_equip",
+        "name": {
+            "id": 858133477575685391,
+            "text": "天灾防护手套"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_equip"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 8,
+        "sortId1": -52,
+        "sortId2": 39,
+        "type": 6,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 3
+    },
+    "equiptable": {
+        "displayAttrModifiers": [
+            {
+                "attrIndex": 1,
+                "attrType": 42,
+                "attrValue": 46,
+                "compositeAttr": "",
+                "enhanceGuaranteeTimesRuleId": "",
+                "enhancedAttrIndex": 1,
+                "enhancedAttrValues": [],
+                "modifierType": 5
+            },
+            {
+                "attrIndex": 2,
+                "attrType": 41,
+                "attrValue": 30,
+                "compositeAttr": "",
+                "enhanceGuaranteeTimesRuleId": "",
+                "enhancedAttrIndex": 2,
+                "enhancedAttrValues": [],
+                "modifierType": 5
+            },
+            {
+                "attrIndex": 3,
+                "attrType": 87,
+                "attrValue": 24.5,
+                "compositeAttr": "",
+                "enhanceGuaranteeTimesRuleId": "",
+                "enhancedAttrIndex": 3,
+                "enhancedAttrValues": [],
+                "modifierType": 5
+            }
+        ],
+        "displayBaseAttrModifier": {
+            "attrIndex": 0,
+            "attrType": 3,
+            "attrValue": 30,
+            "compositeAttr": "",
+            "enhanceGuaranteeTimesRuleId": "",
+            "enhancedAttrIndex": 0,
+            "enhancedAttrValues": [],
+            "modifierType": 5
+        },
+        "domainId": "domain_1",
+        "equipAttrModifiers": [
+            {
+                "attrIndex": 0,
+                "attrType": 3,
+                "attrValues": [
+                    30,
+                    30,
+                    30,
+                    30
+                ],
+                "modifierType": 5,
+                "modifyAttributeType": 0
+            },
+            {
+                "attrIndex": 1,
+                "attrType": 42,
+                "attrValues": [
+                    46,
+                    46,
+                    46,
+                    46
+                ],
+                "modifierType": 5,
+                "modifyAttributeType": 0
+            },
+            {
+                "attrIndex": 2,
+                "attrType": 41,
+                "attrValues": [
+                    30,
+                    30,
+                    30,
+                    30
+                ],
+                "modifierType": 5,
+                "modifyAttributeType": 0
+            },
+            {
+                "attrIndex": 3,
+                "attrType": 87,
+                "attrValues": [
+                    24.5,
+                    24.5,
+                    24.5,
+                    24.5
+                ],
+                "modifierType": 5,
+                "modifyAttributeType": 0
+            }
+        ],
+        "itemId": "item_equip_t3_suit_usp01_hand_01",
+        "minWearLv": 50,
+        "partType": 1,
+        "suitID": "suit_usp01"
+    },
+    "equipformulatable": {
+        "costGoldId": "item_domain_tundra_coupon",
+        "costGoldNum": 9600,
+        "costItemId": [
+            "item_equip_script_3"
+        ],
+        "costItemNum": [
+            50
+        ],
+        "formulaId": "item_formu_t3_suit_usp01_hand_01",
+        "isNew": false,
+        "outcomeEquipId": "item_equip_t3_suit_usp01_hand_01",
+        "packId": "pack_tundra_suit_usp01",
+        "unlockKey": "",
+        "unlockType": 1,
+        "unlockValue": 32
+    },
+    "wikientryid": "wiki_item_equip_t3_suit_usp01_hand_01",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_equip_default",
+        "id": "wiki_item_equip_t3_suit_usp01_hand_01",
+        "order": 69,
+        "prtsId": "",
+        "refItemId": "item_equip_t3_suit_usp01_hand_01",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_equip": {
+            "bindSystem": 67,
+            "desc": {
+                "id": 4170146291278779065,
+                "text": "装备制造"
+            },
+            "iconId": "icon_tips_proc",
+            "id": "item_obtain_equip",
+            "phaseArgs": "",
+            "phaseId": "EquipTech"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 6,
+        "name": {
+            "id": -2365265597869215300,
+            "text": "装备"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 3
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_equip_head",
+        "name": {
+            "id": -2865751486369138122,
+            "text": "护手"
+        },
+        "sortId": 8,
+        "type": 8
+    },
+    "equipsuittable": [
+        {
+            "equipList": [
+                "item_equip_t3_suit_usp01_body_01",
+                "item_equip_t3_suit_usp01_body_02",
+                "item_equip_t3_suit_usp01_hand_01",
+                "item_equip_t3_suit_usp01_edc_01",
+                "item_equip_t3_suit_usp01_edc_02",
+                "item_equip_t3_suit_usp01_edc_03"
+            ],
+            "list": [
+                {
+                    "equipCnt": 3,
+                    "skillID": "passive_equipsuit_usp_01",
+                    "skillLv": 1,
+                    "suitID": "suit_usp01",
+                    "suitLogoName": "icon_pack_tundra_suit_usp01",
+                    "suitName": {
+                        "id": -1756686334412141542,
+                        "text": "天灾防护"
+                    }
+                }
+            ]
+        }
+    ],
+    "name": "天灾防护手套"
+}

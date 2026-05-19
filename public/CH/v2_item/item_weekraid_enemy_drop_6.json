@@ -1,0 +1,87 @@
+{
+    "itemId": "item_weekraid_enemy_drop_6",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 3856783503682289140,
+            "text": "可用于数据分析的物质样本，生物倒下后掉落的植物残块。除了沾染的源石晶簇碎屑外，还包裹着一层不应该出现在上面的侵蚀物质。"
+        },
+        "desc": {
+            "id": 4693439173224621213,
+            "text": "击败谷地像差区域3敌人的掉落物，可用于委托提交。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_weekraid_enemy_drop_6",
+        "id": "item_weekraid_enemy_drop_6",
+        "maxBackpackStackCount": 1,
+        "maxStackCount": 10000,
+        "modelKey": "int_wrdg001_drop04",
+        "name": {
+            "id": 6566835592969509485,
+            "text": "污染附晶体残块"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -4176786888752881201,
+            "text": "冒险探索收集"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_weekraid_enemy_3_1"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -71,
+        "sortId2": 10,
+        "type": 72,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [],
+        "dischargeType": false,
+        "id": "item_weekraid_enemy_drop_6",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 0
+    },
+    "systemjumptable": {
+        "item_obtain_weekraid_enemy_3_1": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 3798584701552399977,
+                "text": "谷地像差区域3的敌人掉落"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_weekraid_enemy_3_1",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 72,
+        "name": {
+            "id": -4851683196153112509,
+            "text": "沉积具象物"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "name": "污染附晶体残块"
+}

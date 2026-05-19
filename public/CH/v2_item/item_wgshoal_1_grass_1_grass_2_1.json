@@ -1,0 +1,199 @@
+{
+    "itemId": "item_wgshoal_1_grass_1_grass_2_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 2527414327893411936,
+            "text": "极简单的小零食。那些离开家的人、无法回到故乡的人……往往会在最简单的甜味中窥见几缕旧时光。"
+        },
+        "desc": {
+            "id": 6713898216794414399,
+            "text": "使用后可以提升干员战斗效果的消耗品。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_wgshoal_1_grass_1_grass_2_1",
+        "id": "item_wgshoal_1_grass_1_grass_2_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": 8625149442134050854,
+            "text": "小糖画"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 55820066741377758,
+            "text": "<@obt.key>简制手册</>中解锁对应配方后可进行制造"
+        },
+        "noObtainWayId": [
+            "item_obtain_hdwk_item_drop_wgshoal_1"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 5,
+        "sortId1": -82,
+        "sortId2": 40,
+        "type": 52,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "useitemtable": {
+        "duration": 300,
+        "effectType": 2,
+        "isPersistentBuff": true,
+        "isValuableDepot": false,
+        "itemId": "item_wgshoal_1_grass_1_grass_2_1",
+        "itemUseDesc": {
+            "id": -8726671093302620884,
+            "text": "使用后，增加<@ba.vup>{buff_common_atk_buff_potion_1\\value:0%}</>攻击力，增加<@ba.vup>{buff_common_ctr_buff_potion_1\\value:0%}</>暴击率，持续<@ba.vup>{buff_common_ctr_buff_potion_1\\duration:0}</>秒。"
+        },
+        "stackingKey": "buff",
+        "targetNumType": 0,
+        "uiType": 3,
+        "useActions": [
+            {
+                "buffBBData": {
+                    "blackboard": [
+                        {
+                            "key": "value",
+                            "value": 0.18193878,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 300,
+                            "valueStr": ""
+                        }
+                    ],
+                    "buffId": "buff_common_atk_buff_potion_1"
+                },
+                "skillBBData": {
+                    "blackboard": [],
+                    "skillId": "",
+                    "skillPath": ""
+                },
+                "useType": 2
+            },
+            {
+                "buffBBData": {
+                    "blackboard": [
+                        {
+                            "key": "value",
+                            "value": 0.09096939,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 300,
+                            "valueStr": ""
+                        }
+                    ],
+                    "buffId": "buff_common_ctr_buff_potion_1"
+                },
+                "skillBBData": {
+                    "blackboard": [],
+                    "skillId": "",
+                    "skillPath": ""
+                },
+                "useType": 2
+            }
+        ]
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_wgshoal_1_grass_1_grass_2_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 300
+    },
+    "wikientryid": "wiki_item_wgshoal_1_grass_1_grass_2_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_usable",
+        "id": "wiki_item_wgshoal_1_grass_1_grass_2_1",
+        "order": 50,
+        "prtsId": "",
+        "refItemId": "item_wgshoal_1_grass_1_grass_2_1",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 52,
+        "name": {
+            "id": 6865863074684715813,
+            "text": "消耗品"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_usable",
+        "name": {
+            "id": -2232813154053962573,
+            "text": "可用道具"
+        },
+        "sortId": 6,
+        "type": 5
+    },
+    "factorymanualcrafttable": [
+        {
+            "defaultUnlock": false,
+            "domainId": "domain_2",
+            "id": "hdwk_wgshoal_1_grass_1_grass_2_1",
+            "ingredients": [
+                {
+                    "count": 1,
+                    "id": "item_drop_wgshoal_1"
+                },
+                {
+                    "count": 1,
+                    "id": "item_plant_grass_powder_1"
+                },
+                {
+                    "count": 1,
+                    "id": "item_plant_grass_powder_2"
+                }
+            ],
+            "itemId": "item_formula_wgshoal_1_grass_1_grass_2_1",
+            "name": {
+                "id": -4060023664436466650,
+                "text": "小糖画"
+            },
+            "outcomes": [
+                {
+                    "count": 1,
+                    "id": "item_wgshoal_1_grass_1_grass_2_1"
+                }
+            ],
+            "rarity": 3,
+            "showingType": 19,
+            "sortId": 34
+        }
+    ],
+    "name": "小糖画"
+}

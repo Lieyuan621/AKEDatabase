@@ -1,0 +1,117 @@
+{
+    "itemId": "item_drop_wgabyss_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -3962388529660562332,
+            "text": "哪怕闻的时间稍长些都能让人头晕片刻的奇妙液体。曾有好事者将之赠予品鉴师，为它搏来了“味同八十年陈酿”的美誉，但我们都清楚，天使的形成时间只有那短短片刻。"
+        },
+        "desc": {
+            "id": -6465920527320533617,
+            "text": "击败破潮之像的掉落物，可用于仓储节点装箱运送。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_drop_wgabyss_1",
+        "id": "item_drop_wgabyss_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_drop_enemy_common_1",
+        "name": {
+            "id": -4872186796551277727,
+            "text": "速成陈酿"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 5727230849579251793,
+            "text": "冒险探索中击败敌人获取"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_eny_0090_wgabyss"
+        ],
+        "outcomeItemIds": [
+            "item_jlebm_grass1_1"
+        ],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 15,
+        "sortId1": -65,
+        "sortId2": 29,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            1
+        ],
+        "dischargeType": false,
+        "id": "item_drop_wgabyss_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 1500
+    },
+    "enemydroplist": [
+        "eny_0090_wgabyss"
+    ],
+    "wikientryid": "wiki_item_drop_wgabyss_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_material",
+        "id": "wiki_item_drop_wgabyss_1",
+        "order": 31,
+        "prtsId": "",
+        "refItemId": "item_drop_wgabyss_1",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_eny_0090_wgabyss": {
+            "bindSystem": 55,
+            "desc": {
+                "id": 1802778021503288148,
+                "text": "击败破潮之像有概率掉落"
+            },
+            "iconId": "icon_tips_monster",
+            "id": "item_obtain_eny_0090_wgabyss",
+            "phaseArgs": "{\r\n  \"monsterId\": \"eny_0090_wgabyss\"\r\n}",
+            "phaseId": "Wiki"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "材料"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_doodad",
+        "name": {
+            "id": -4889980326384875610,
+            "text": "采集材料"
+        },
+        "sortId": 4,
+        "type": 15
+    },
+    "name": "速成陈酿"
+}

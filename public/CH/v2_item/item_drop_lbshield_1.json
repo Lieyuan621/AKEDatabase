@@ -1,0 +1,117 @@
+{
+    "itemId": "item_drop_lbshield_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 8716536969786571772,
+            "text": "极劣质的麦粉，不知具体成分，整体呈现出一种诡异的灰色。似乎裂地者有向其中掺杂某种蘑菇粉末，这让这袋麦粉闻起来有发霉的味道。"
+        },
+        "desc": {
+            "id": -2622300845694348355,
+            "text": "击败碾骨先锋的掉落物，可用于精制食药制作。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_drop_lbshield_1",
+        "id": "item_drop_lbshield_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_drop_enemy_common_1",
+        "name": {
+            "id": -6494111462457907172,
+            "text": "苦涩麦粉"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -7357513669848348709,
+            "text": "冒险探索中击败敌人获取"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_eny_0074_lbshield"
+        ],
+        "outcomeItemIds": [
+            "item_jlebm_grass1_1"
+        ],
+        "rarity": 1,
+        "showAllDepotCount": false,
+        "showingType": 15,
+        "sortId1": -65,
+        "sortId2": 9,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            1
+        ],
+        "dischargeType": false,
+        "id": "item_drop_lbshield_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 50
+    },
+    "enemydroplist": [
+        "eny_0074_lbshield"
+    ],
+    "wikientryid": "wiki_item_drop_lbshield_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_material",
+        "id": "wiki_item_drop_lbshield_1",
+        "order": 11,
+        "prtsId": "",
+        "refItemId": "item_drop_lbshield_1",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_eny_0074_lbshield": {
+            "bindSystem": 55,
+            "desc": {
+                "id": -3104735597856064411,
+                "text": "击败碾骨先锋有概率掉落"
+            },
+            "iconId": "icon_tips_monster",
+            "id": "item_obtain_eny_0074_lbshield",
+            "phaseArgs": "{\r\n  \"monsterId\": \"eny_0074_lbshield\"\r\n}",
+            "phaseId": "Wiki"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "材料"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_doodad",
+        "name": {
+            "id": -4889980326384875610,
+            "text": "采集材料"
+        },
+        "sortId": 4,
+        "type": 15
+    },
+    "name": "苦涩麦粉"
+}

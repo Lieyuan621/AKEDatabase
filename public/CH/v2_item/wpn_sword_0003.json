@@ -1,0 +1,111 @@
+{
+    "itemId": "wpn_sword_0003",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 5104909444423209551,
+            "text": "终末地工业制造的干员基础装备之一。由武库工程师塔尔负责设计。它是许多外勤干员的第一把武器。"
+        },
+        "desc": {
+            "id": -3953616802617070284,
+            "text": "终末地干员用武器，装备之后可以显著提升干员的作战能力。"
+        },
+        "iconCompositeId": "",
+        "iconId": "wpn_sword_0003",
+        "id": "wpn_sword_0003",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_weapon",
+        "name": {
+            "id": -8977995465513072192,
+            "text": "塔尔11"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_explore"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -35,
+        "sortId2": 2,
+        "type": 5,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 1
+    },
+    "weaponbasictable": {
+        "breakthroughTemplateId": "weapon_breakthrough_3star_B_2",
+        "engName": {
+            "id": 7760085309296872845,
+            "text": "Tarr 11"
+        },
+        "levelTemplateId": "weapon_upgrade_curve_3star_1",
+        "maxLv": 90,
+        "modelPath": "Gameplay/Prefabs/Weapons/wpn_sword_0003.prefab",
+        "potentialUpItemList": [],
+        "rarity": 3,
+        "talentTemplateId": "wpn_potential_3star",
+        "weaponDesc": {
+            "id": -8025842546653282673,
+            "text": "记录A：求助，求助，有任何人能听到吗？这里是终末地工业在侵蚀区的探索小队……滋滋……存者，我们遭到袭……滋滋……远程通信设备受损。我们将在这个频道上持续发送位置信息，请提供援助！\n\n记录B：六个小时了，依然没有任何回应，看来我们只能靠自己了。小队的制式武装……都被侵蚀弄坏了，我们需要新的武器，才有机会从这里活着走出去。生存手册上的办法够我们活命了，但是拿磨尖的石头和信号弹驱赶裂地者？这行不通。\n\n记录C：有办法了，还好我点子多！我们决定把无人机的螺旋桨拆下来，反正它的飞航系统也坏了，这样至少能派上点用场。再把螺旋桨和观测设备的支架组合在一起……合金叶片非常非常坚固，边缘也挺锋利的。这样一来，我们就有武器了！\n\n记录D：我们……我们把拦路的东西赶跑了，损失轻微。老天，真没想到应急的武器能这么管用！接下来只需要再步行半天，小队就能离开侵蚀区域，向最近的商会城镇求救了！希望他们开出的费用账单不会太长。\n\n记录E：躺在病床上的这段时间里，我进一步完善了它的设计，希望这款单手剑能让武库的大人物满意。这样一来，我那两根手指就不算白丢了。"
+        },
+        "weaponId": "wpn_sword_0003",
+        "weaponPotentialSkill": "sk_wpn_sword_0003",
+        "weaponSkillList": [
+            "wpn_attr_main_low",
+            "sk_wpn_sword_0003"
+        ],
+        "weaponType": 1
+    },
+    "wikientryid": "wiki_wpn_sword_0003",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_weapon_sword",
+        "id": "wiki_wpn_sword_0003",
+        "order": 1,
+        "prtsId": "",
+        "refItemId": "wpn_sword_0003",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_explore": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 8888980312357865895,
+                "text": "冒险探索获取"
+            },
+            "iconId": "icon_tips_explore",
+            "id": "item_obtain_explore",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 5,
+        "name": {
+            "id": 8230458971049120788,
+            "text": "武器"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 2,
+        "unlockSystemType": 251,
+        "valuableTabType": 1
+    },
+    "name": "塔尔11"
+}

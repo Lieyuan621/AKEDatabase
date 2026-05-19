@@ -1,0 +1,126 @@
+{
+    "itemId": "item_liquid_water",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 1501100005209942002,
+            "text": "它是永远的生命之源。"
+        },
+        "desc": {
+            "id": -7042017275248644686,
+            "text": "干净的清水，在工业系统中有丰富的使用场景。"
+        },
+        "iconCompositeId": "",
+        "iconId": "item_liquid_water",
+        "id": "item_liquid_water",
+        "maxBackpackStackCount": 0,
+        "maxStackCount": 0,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": -1255834102264005522,
+            "text": "清水"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 753476991519684283,
+            "text": "冒险探索收集"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_gather_common_liquid",
+            "item_obtain_gather_map02_lv001"
+        ],
+        "outcomeItemIds": [
+            "item_liquid_plant_grass_1",
+            "item_plant_grass_1"
+        ],
+        "rarity": 1,
+        "showAllDepotCount": false,
+        "showingType": 1,
+        "sortId1": -80,
+        "sortId2": 5,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [],
+        "dischargeType": true,
+        "id": "item_liquid_water",
+        "itemState": true,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [
+            "domain_2"
+        ],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 1
+    },
+    "wikientryid": "wiki_item_liquid_water",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_nature",
+        "id": "wiki_item_liquid_water",
+        "order": 18,
+        "prtsId": "",
+        "refItemId": "item_liquid_water",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_gather_common_liquid": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 7002173183973624263,
+                "text": "可使用水泵进行自动化采集"
+            },
+            "iconId": "icon_tips_doodad",
+            "id": "item_obtain_gather_common_liquid",
+            "phaseArgs": "",
+            "phaseId": ""
+        },
+        "item_obtain_gather_map02_lv001": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 4345693750944729935,
+                "text": "景玉谷等地采集"
+            },
+            "iconId": "icon_tips_doodad",
+            "id": "item_obtain_gather_map02_lv001",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "材料"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_ore",
+        "name": {
+            "id": -5438101795722332144,
+            "text": "矿物"
+        },
+        "sortId": 1,
+        "type": 1
+    },
+    "name": "清水"
+}
