@@ -69,11 +69,21 @@
     },
     {
         "id": "item",
+        "title": "物品（旧版）",
+        "description": "查看物品详细数据",
+        "priority": 104,
+        "icon": "📦",
+        "contentFile": "/plugin/item.html",
+        "hidden": true
+    },
+    {
+        "id": "v2_item",
         "title": "物品",
         "description": "查看物品详细数据",
         "priority": 20,
         "icon": "📦",
-        "contentFile": "/plugin/item.html"
+        "contentFile": "/plugin/v2_item.html",
+        "hidden": false
     },
     {
         "id": "achievement",
