@@ -797,46 +797,62 @@
                 };
 
                 const skillIdList = Array.isArray(s.skillIdList) ? s.skillIdList : [];
-                let patchKey = '';
-                let patchList = [];
+                const allPatchLists = [];
                 for (const sid of skillIdList) {
                     const pl = rawData.skillpatchtable?.[sid]?.SkillPatchDataBundle;
-                    if (pl && pl.length > 0) {
-                        patchKey = sid;
-                        patchList = pl;
-                        break;
-                    }
+                    if (pl && pl.length > 0) allPatchLists.push(pl);
                 }
-                if (!patchKey && s.skillGroupId) {
+                if (allPatchLists.length === 0 && s.skillGroupId) {
                     const pl = rawData.skillpatchtable?.[s.skillGroupId]?.SkillPatchDataBundle;
-                    if (pl && pl.length > 0) {
-                        patchKey = s.skillGroupId;
-                        patchList = pl;
-                    }
+                    if (pl && pl.length > 0) allPatchLists.push(pl);
                 }
                 const values = { coolDown: [], costValue: [] };
                 const subDescNames = [];
                 const subDescValues = {};
-                patchList.forEach(patch => {
-                    values.coolDown.push(patch.coolDown ?? 0);
-                    values.costValue.push(patch.costValue ?? 0);
-                    (patch.blackboard || []).forEach(bb => {
-                        if (!bb || !bb.key) return;
-                        if (!values[bb.key]) values[bb.key] = [];
-                        values[bb.key].push(bb.value ?? 0);
+                if (allPatchLists.length > 0) {
+                    allPatchLists[0].forEach(patch => {
+                        values.coolDown.push(patch.coolDown ?? 0);
+                        values.costValue.push(patch.costValue ?? 0);
                     });
-                    const names = patch.subDescNameList || [];
-                    const vals = patch.subDescList || [];
-                    names.forEach((n, i) => {
-                        const name = n?.text || '';
-                        if (!name) return;
-                        if (!subDescValues[name]) {
-                            subDescNames.push(name);
-                            subDescValues[name] = [];
-                        }
-                        subDescValues[name].push(vals[i] ?? '');
+                    const seenKeys = new Set();
+                    allPatchLists.forEach(patchList => {
+                        const localKeyMap = {};
+                        (patchList[0]?.blackboard || []).forEach(bb => {
+                            if (!bb || !bb.key) return;
+                            if (!seenKeys.has(bb.key)) {
+                                localKeyMap[bb.key] = bb.key;
+                                seenKeys.add(bb.key);
+                            } else {
+                                let seq = 2;
+                                let newKey = bb.key + '_' + seq;
+                                while (seenKeys.has(newKey)) { seq++; newKey = bb.key + '_' + seq; }
+                                localKeyMap[bb.key] = newKey;
+                                seenKeys.add(newKey);
+                            }
+                        });
+                        patchList.forEach(patch => {
+                            (patch.blackboard || []).forEach(bb => {
+                                if (!bb || !bb.key) return;
+                                const finalKey = localKeyMap[bb.key] || bb.key;
+                                if (!values[finalKey]) values[finalKey] = [];
+                                values[finalKey].push(bb.value ?? 0);
+                            });
+                            const names = patch.subDescNameList || [];
+                            const vals = patch.subDescList || [];
+                            names.forEach((n, i) => {
+                                const name = n?.text || '';
+                                if (!name) return;
+                                if (!subDescValues[name]) {
+                                    subDescNames.push(name);
+                                    subDescValues[name] = [];
+                                }
+                                if (subDescValues[name].length < (values.coolDown || []).length) {
+                                    subDescValues[name].push(vals[i] ?? '');
+                                }
+                            });
+                        });
                     });
-                });
+                }
                 legacy.skill[group.name] = {
                     name: group.name,
                     values,
