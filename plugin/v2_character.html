@@ -1,5 +1,6 @@
 <!-- plugin/v2_character.html -->
 <link rel="stylesheet" href="/theme/character.css">
+<link rel="stylesheet" href="/theme/v2_character.css">
 <style>
 .cost-wrap{position:relative;display:inline-block;vertical-align:middle}
 .cost-btn{display:inline-block;margin-left:4px;padding:1px 8px;font-size:0.72rem;background:var(--button-bg,#e0e8f0);border:1px solid var(--border-color,#ccc);border-radius:10px;cursor:pointer;color:var(--text-color,#333)}
@@ -65,6 +66,7 @@
         let attrMap = {};
         let attrEnMap = {};
         let paramTypeMap = {};
+        let modifierTypeMap = {};
         let charTypeMap = {};
         let weaponMap = {};
         let professionMap = {};
@@ -279,6 +281,7 @@
                 attrMap = data.ATTR_MAP || {};
                 attrEnMap = data.ATTR_MAP_EN || {};
                 paramTypeMap = data.param_type_map || {};
+                modifierTypeMap = data.MODIFIER_TYPE_MAP || {};
                 charTypeMap = data.char_type_map || {};
                 weaponMap = data.weapon_map || {};
                 professionMap = data.profession_map || {};
@@ -779,6 +782,7 @@
                     title: info.title?.text || '',
                     description: info.desc?.text || '',
                     modifier: modText,
+                    modifierType: mod?.modifierType,
                     requiredItem: n.requiredItem || []
                 };
             }).filter(Boolean);
@@ -1172,6 +1176,7 @@
             }).join('');
 
             const attrNodes = data.attributeNodes || [];
+            const showHiddenAttr = getCurrentShowHidden();
             const attrNodesHtml = `
                 <div class="section">
                     <h3>属性节点</h3>
@@ -1179,10 +1184,13 @@
                         ${attrNodes.map(node => {
                             const costHtml = renderCostItemsHtml(node.requiredItem, 0, inm);
                             const costIconIds = (node.requiredItem || []).map(it => it.id);
+                            const modTypeTag = (showHiddenAttr && node.modifierType != null)
+                                ? ` <span class="attr-node-modifier-tag">${modifierTypeMap[String(node.modifierType)] || ''}</span>`
+                                : '';
                             return `<div class="attr-node-item">
                                 <div class="attr-node-title">${node.title} ${costBtnHtml(costHtml, costIconIds)}</div>
                                 <div class="attr-node-desc">${node.description}</div>
-                                <div class="attr-node-modifier">${node.modifier}</div>
+                                <div class="attr-node-modifier">${node.modifier}${modTypeTag}</div>
                             </div>`;
                         }).join('')}
                     </div>

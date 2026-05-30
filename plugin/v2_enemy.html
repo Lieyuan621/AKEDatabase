@@ -32,6 +32,7 @@
         let currentEnemyData = null;
         let attrMap = {};
         let attrEnMap = {};
+        let modifierTypeMap = {};
 
         const IMAGE_BASE_PATH = '/public/images/';
 
@@ -56,6 +57,7 @@
                 const data = await res.json();
                 attrMap = data.ATTR_MAP || {};
                 attrEnMap = data.ATTR_MAP_EN || {};
+                modifierTypeMap = data.MODIFIER_TYPE_MAP || {};
             } catch (err) {
                 console.error('加载映射数据失败:', err);
                 attrMap = {};
@@ -69,16 +71,20 @@
 
         function formatAttrModifiers(modifiers) {
             if (!Array.isArray(modifiers) || modifiers.length === 0) return '';
+            const showHidden = getCurrentShowHidden();
             return modifiers.map(m => {
                 const name = getAttrName(m.attrType);
                 const val = m.attrValue;
                 const isMult = (m.modifierType === 1 || m.modifierType === 4 ||
                     m.modifierType === 6 || m.modifierType === 8);
-                if (isMult) {
-                    const pct = (val * 100).toFixed(1);
-                    return `${name} ${pct > 0 ? '+' : ''}${pct}%`;
+                let text = isMult
+                    ? `${name} ${(val * 100).toFixed(1) > 0 ? '+' : ''}${(val * 100).toFixed(1)}%`
+                    : `${name} ${val > 0 ? '+' : ''}${val}`;
+                if (showHidden) {
+                    const modName = modifierTypeMap[String(m.modifierType)] || '';
+                    if (modName) text += ` <span class="v2e-modifier-type-tag">${modName}</span>`;
                 }
-                return `${name} ${val > 0 ? '+' : ''}${val}`;
+                return text;
             }).join(', ');
         }
 
