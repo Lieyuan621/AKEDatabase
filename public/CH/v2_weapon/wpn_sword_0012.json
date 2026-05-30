@@ -1,0 +1,2579 @@
+{
+    "weaponId": "wpn_sword_0012",
+    "weaponbasictable": {
+        "breakthroughTemplateId": "weapon_breakthrough_456star_B_1",
+        "engName": {
+            "id": -5631570377110167605,
+            "text": "Thermite Cutter"
+        },
+        "levelTemplateId": "weapon_upgrade_curve_6star_0.99",
+        "maxLv": 90,
+        "modelPath": "Gameplay/Prefabs/Weapons/wpn_sword_0012.prefab",
+        "potentialUpItemList": [],
+        "rarity": 6,
+        "talentTemplateId": "wpn_potential_456star",
+        "weaponDesc": {
+            "id": 721985578290447280,
+            "text": "尽管北进重工支援所多次公开强调，他们设计的所有产品仅为个人用工业器械与施工设备，但作为工具，这款切割机的使用效果并不理想，用作大剑则显得非常出色。\n——产品使用评测一\n\n不要被产品说明书误导，这根本不是一台切割机，而是一种武器。使用时请小心操作，以免烫伤自己。\n——产品使用评测二\n\n换一种思考方式，如果你携带这个设备，就不需要额外再带一把武器了，对吧？\n——产品使用评测三"
+        },
+        "weaponId": "wpn_sword_0012",
+        "weaponPotentialSkill": "sk_wpn_sword_0012",
+        "weaponSkillList": [
+            "wpn_attr_will_high",
+            "wpn_sp_attr_atk_high",
+            "sk_wpn_sword_0012"
+        ],
+        "weaponType": 1
+    },
+    "itemtable": {
+        "wpn_sword_0012": {
+            "backpackCanDiscard": false,
+            "decoDesc": {
+                "id": -797532084361456966,
+                "text": "北进重工支援所“开拓者”系列的基础产品。四型热熔切割器采用专利高温材料，切割性能强劲，受到工程人员广泛好评。"
+            },
+            "desc": {
+                "id": 8943550966839607509,
+                "text": "终末地干员用武器，装备之后可以显著提升干员的作战能力。"
+            },
+            "iconCompositeId": "",
+            "iconId": "wpn_sword_0012",
+            "id": "wpn_sword_0012",
+            "maxBackpackStackCount": -1,
+            "maxStackCount": -1,
+            "modelKey": "int_drop_weapon",
+            "name": {
+                "id": 504161328765825530,
+                "text": "热熔切割器"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": 0,
+                "text": ""
+            },
+            "noObtainWayId": [],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_payshop_weapon"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 6,
+            "showAllDepotCount": false,
+            "showingType": 0,
+            "sortId1": -35,
+            "sortId2": 52,
+            "type": 5,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 1
+        },
+        "item_weapon_break_low": {
+            "backpackCanDiscard": false,
+            "decoDesc": {
+                "id": 8736157941298807866,
+                "text": "以稀有材料做成的模具，通过协议技术激活后，可以提高武器的综合材料强度。"
+            },
+            "desc": {
+                "id": -5499756249406011199,
+                "text": "用于武器突破的素材。"
+            },
+            "iconCompositeId": "",
+            "iconId": "item_weapon_break_low",
+            "id": "item_weapon_break_low",
+            "maxBackpackStackCount": -1,
+            "maxStackCount": -1,
+            "modelKey": "int_collection_item_2",
+            "name": {
+                "id": -1214547092772580978,
+                "text": "强固模具"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": 0,
+                "text": ""
+            },
+            "noObtainWayId": [],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_dungeon_0003",
+                "item_obtain_shop_greenticket_weapon_break_low",
+                "item_obtain_explore"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 3,
+            "showAllDepotCount": false,
+            "showingType": 0,
+            "sortId1": -42,
+            "sortId2": 4,
+            "type": 26,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 4
+        },
+        "item_plant_spcstone_1_1": {
+            "backpackCanDiscard": true,
+            "decoDesc": {
+                "id": 2569576658696217064,
+                "text": "黯石又被称为“古老之石”，它象征着一段人类从未见证过的消亡。"
+            },
+            "desc": {
+                "id": 83853172104022357,
+                "text": "采集自野外或培养舱培养的特殊矿物。\n可在武器20级突破强化时使用。"
+            },
+            "iconCompositeId": "",
+            "iconId": "item_plant_spcstone_1_1",
+            "id": "item_plant_spcstone_1_1",
+            "maxBackpackStackCount": 50,
+            "maxStackCount": -1,
+            "modelKey": "int_drop_spcstone_1_1",
+            "name": {
+                "id": -7929149998190383046,
+                "text": "轻黯石"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": 3274260551398899213,
+                "text": "探索枢纽区采集"
+            },
+            "noObtainWayId": [
+                "item_obtain_gather_locked"
+            ],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_gather_spcstone_1_1",
+                "item_obtain_spaceship_plant",
+                "item_obtain_gather_map01_lv001"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 4,
+            "showAllDepotCount": true,
+            "showingType": 16,
+            "sortId1": -60,
+            "sortId2": 17,
+            "type": 8,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 6
+        },
+        "item_plant_spcstone_1_2": {
+            "backpackCanDiscard": true,
+            "decoDesc": {
+                "id": 8931649555376193826,
+                "text": "人类目前尚不了解黯石这类矿石的生成过程，塔卫二始终没有完全揭开自己的面纱。"
+            },
+            "desc": {
+                "id": -2281212526304977469,
+                "text": "采集自野外或培养舱培养的特殊矿物。\n可在武器40级突破强化时使用。"
+            },
+            "iconCompositeId": "",
+            "iconId": "item_plant_spcstone_1_2",
+            "id": "item_plant_spcstone_1_2",
+            "maxBackpackStackCount": 50,
+            "maxStackCount": -1,
+            "modelKey": "int_drop_spcstone_1_2",
+            "name": {
+                "id": -8348617894122773819,
+                "text": "中黯石"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": 4074987989714521669,
+                "text": "探索源石研究园采集"
+            },
+            "noObtainWayId": [
+                "item_obtain_gather_locked"
+            ],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_gather_spcstone_1_2",
+                "item_obtain_spaceship_plant",
+                "item_obtain_gather_map01_lv006"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 4,
+            "showAllDepotCount": true,
+            "showingType": 16,
+            "sortId1": -60,
+            "sortId2": 19,
+            "type": 8,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 6
+        },
+        "item_weapon_break_high": {
+            "backpackCanDiscard": false,
+            "decoDesc": {
+                "id": -8526128948545229539,
+                "text": "以稀有材料做成的重型模具，通过协议技术激活后，可以提高武器的综合材料强度。"
+            },
+            "desc": {
+                "id": -4858212779948662414,
+                "text": "用于武器突破的素材。"
+            },
+            "iconCompositeId": "",
+            "iconId": "item_weapon_break_high",
+            "id": "item_weapon_break_high",
+            "maxBackpackStackCount": -1,
+            "maxStackCount": -1,
+            "modelKey": "int_collection_item_2",
+            "name": {
+                "id": 674233095572946314,
+                "text": "重型强固模具"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": 0,
+                "text": ""
+            },
+            "noObtainWayId": [],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_dungeon_0003",
+                "item_obtain_shop_greenticket_weapon_break_high",
+                "item_obtain_shop_yellowticket_weapon_break_high",
+                "item_obtain_explore"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 4,
+            "showAllDepotCount": false,
+            "showingType": 0,
+            "sortId1": -42,
+            "sortId2": 5,
+            "type": 26,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 4
+        },
+        "item_plant_spcstone_1_3": {
+            "backpackCanDiscard": true,
+            "decoDesc": {
+                "id": -8987705108640578122,
+                "text": "人类对黯石的命名中以轻、中、重为标准所区分的，实际上是黯石的氧化率。"
+            },
+            "desc": {
+                "id": -2900760749778380747,
+                "text": "采集自野外或培养舱培养的特殊矿物。\n可在武器60级突破强化时使用。"
+            },
+            "iconCompositeId": "",
+            "iconId": "item_plant_spcstone_1_3",
+            "id": "item_plant_spcstone_1_3",
+            "maxBackpackStackCount": 50,
+            "maxStackCount": -1,
+            "modelKey": "int_drop_spcstone_1_3",
+            "name": {
+                "id": 7942082281811106634,
+                "text": "重黯石"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": -1252268565815886874,
+                "text": "探索供能高地采集"
+            },
+            "noObtainWayId": [
+                "item_obtain_gather_locked"
+            ],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_gather_spcstone_1_3",
+                "item_obtain_spaceship_plant",
+                "item_obtain_gather_map02_lv001"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 4,
+            "showAllDepotCount": true,
+            "showingType": 16,
+            "sortId1": -60,
+            "sortId2": 21,
+            "type": 8,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 6
+        },
+        "item_char_skill_specialize_2": {
+            "backpackCanDiscard": false,
+            "decoDesc": {
+                "id": 2922337435941022007,
+                "text": "混合D32钢与D64钢制成的新合金。自然界中不存在的人造金属材料，继承了两种原料的高强度和法术传导性，特点是大大提高了材料在源石活性不稳定环境下的性能。它尚在试验阶段，四号样品的性能价格比相对最高。"
+            },
+            "desc": {
+                "id": -1220488086021804883,
+                "text": "用于干员精英化、武器突破、干员技能专精的珍稀素材。"
+            },
+            "iconCompositeId": "",
+            "iconId": "item_char_skill_specialize_2",
+            "id": "item_char_skill_specialize_2",
+            "maxBackpackStackCount": -1,
+            "maxStackCount": -1,
+            "modelKey": "int_collection_item_2",
+            "name": {
+                "id": -5867976822958715773,
+                "text": "D96钢样品四\n"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": 0,
+                "text": ""
+            },
+            "noObtainWayId": [],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_case_bp_selfselect_skillsp_1_2",
+                "item_obtain_dungeon_ss02",
+                "item_obtain_dungeon_bossrush_02_03",
+                "item_obtain_shop_greenticket_char_skill_specialize_2",
+                "item_obtain_shop_yellowticket_char_skill_specialize_2",
+                "item_obtain_dungeon_common",
+                "item_obtain_dungeon_bossrush_common"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 5,
+            "showAllDepotCount": false,
+            "showingType": 0,
+            "sortId1": -34,
+            "sortId2": 12,
+            "type": 95,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 4
+        },
+        "item_plant_spcstone_2_1": {
+            "backpackCanDiscard": true,
+            "decoDesc": {
+                "id": -8212026596656210475,
+                "text": "研究者推测，燎石是受火山喷发等特殊情况影响的黯石再受侵蚀后形成的特殊矿石。"
+            },
+            "desc": {
+                "id": 1081419836601008007,
+                "text": "采集自野外或培养舱培养的特殊矿物。\n可在武器80级突破强化时使用。"
+            },
+            "iconCompositeId": "",
+            "iconId": "item_plant_spcstone_2_1",
+            "id": "item_plant_spcstone_2_1",
+            "maxBackpackStackCount": 50,
+            "maxStackCount": -1,
+            "modelKey": "int_drop_spcstone_2_1",
+            "name": {
+                "id": 8193888702706636321,
+                "text": "燎石"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": -7276243724663331578,
+                "text": "探索武陵城城郊采集"
+            },
+            "noObtainWayId": [
+                "item_obtain_gather_locked"
+            ],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_gather_spcstone_2_1",
+                "item_obtain_spaceship_plant",
+                "item_obtain_gather_map02_lv002"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 5,
+            "showAllDepotCount": true,
+            "showingType": 16,
+            "sortId1": -60,
+            "sortId2": 23,
+            "type": 8,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 6
+        }
+    },
+    "skillpatchtable": {
+        "wpn_attr_will_high": {
+            "SkillPatchDataBundle": [
+                {
+                    "blackboard": [
+                        {
+                            "key": "will",
+                            "value": 20,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -5289552815292612474,
+                        "text": "意志<@ba.vup>+{will}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 1,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_will_high",
+                    "skillName": {
+                        "id": 1715938061739007516,
+                        "text": "意志提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_will"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "will",
+                            "value": 36,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 2182074241289371978,
+                        "text": "意志<@ba.vup>+{will}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 2,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_will_high",
+                    "skillName": {
+                        "id": 6638785602512524310,
+                        "text": "意志提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_will"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "will",
+                            "value": 52,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 5610001894221914335,
+                        "text": "意志<@ba.vup>+{will}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 3,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_will_high",
+                    "skillName": {
+                        "id": 5824278236850670044,
+                        "text": "意志提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_will"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "will",
+                            "value": 68,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -7472067848771817757,
+                        "text": "意志<@ba.vup>+{will}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 4,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_will_high",
+                    "skillName": {
+                        "id": -9196380778994880321,
+                        "text": "意志提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_will"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "will",
+                            "value": 84,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -7092123668829495939,
+                        "text": "意志<@ba.vup>+{will}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 5,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_will_high",
+                    "skillName": {
+                        "id": 7130528788770458631,
+                        "text": "意志提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_will"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "will",
+                            "value": 100,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -2777268331880993724,
+                        "text": "意志<@ba.vup>+{will}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 6,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_will_high",
+                    "skillName": {
+                        "id": -3871253929185066151,
+                        "text": "意志提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_will"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "will",
+                            "value": 116,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -1319067399308863144,
+                        "text": "意志<@ba.vup>+{will}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 7,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_will_high",
+                    "skillName": {
+                        "id": 3585707274888576812,
+                        "text": "意志提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_will"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "will",
+                            "value": 132,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 936829490679478176,
+                        "text": "意志<@ba.vup>+{will}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 8,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_will_high",
+                    "skillName": {
+                        "id": -7974161775006207519,
+                        "text": "意志提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_will"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "will",
+                            "value": 156,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -4375781403546150630,
+                        "text": "意志<@ba.vup>+{will}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 9,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_will_high",
+                    "skillName": {
+                        "id": 1360339753524887985,
+                        "text": "意志提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_will"
+                }
+            ]
+        },
+        "wpn_sp_attr_atk_high": {
+            "SkillPatchDataBundle": [
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk",
+                            "value": 0.05,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 4459916767353847689,
+                        "text": "攻击力<@ba.vup>+{atk:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 1,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_atk_high",
+                    "skillName": {
+                        "id": 7202011461442552043,
+                        "text": "攻击提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_atk"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk",
+                            "value": 0.09,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 6612653000042415874,
+                        "text": "攻击力<@ba.vup>+{atk:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 2,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_atk_high",
+                    "skillName": {
+                        "id": -2305307951059025137,
+                        "text": "攻击提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_atk"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk",
+                            "value": 0.13,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -5542322608776567563,
+                        "text": "攻击力<@ba.vup>+{atk:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 3,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_atk_high",
+                    "skillName": {
+                        "id": 2284704108637408116,
+                        "text": "攻击提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_atk"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk",
+                            "value": 0.17,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 2760950146082741184,
+                        "text": "攻击力<@ba.vup>+{atk:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 4,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_atk_high",
+                    "skillName": {
+                        "id": 4255525573757277216,
+                        "text": "攻击提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_atk"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk",
+                            "value": 0.21,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -1072040025807126891,
+                        "text": "攻击力<@ba.vup>+{atk:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 5,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_atk_high",
+                    "skillName": {
+                        "id": 43636407107215673,
+                        "text": "攻击提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_atk"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk",
+                            "value": 0.25,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -329535580982019319,
+                        "text": "攻击力<@ba.vup>+{atk:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 6,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_atk_high",
+                    "skillName": {
+                        "id": 5293347294401659280,
+                        "text": "攻击提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_atk"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk",
+                            "value": 0.29,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 4401343858478671105,
+                        "text": "攻击力<@ba.vup>+{atk:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 7,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_atk_high",
+                    "skillName": {
+                        "id": 7537748158085109847,
+                        "text": "攻击提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_atk"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk",
+                            "value": 0.33,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 397348351372250059,
+                        "text": "攻击力<@ba.vup>+{atk:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 8,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_atk_high",
+                    "skillName": {
+                        "id": -4807814659920393795,
+                        "text": "攻击提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_atk"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk",
+                            "value": 0.39,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -8101645534051358259,
+                        "text": "攻击力<@ba.vup>+{atk:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 9,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_atk_high",
+                    "skillName": {
+                        "id": 6622537608948627619,
+                        "text": "攻击提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_atk"
+                }
+            ]
+        },
+        "sk_wpn_sword_0012": {
+            "SkillPatchDataBundle": [
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_up",
+                            "value": 0.1,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_up2",
+                            "value": 0.05,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 20,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "max_stack",
+                            "value": 2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "lv",
+                            "value": 1,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 5896099585952208324,
+                        "text": "攻击力<@ba.vup>+{atk_up:0.0%}</>。\n装备者通过自身技能恢复技力或获得<#ba.combo>连击</>状态后，全队攻击力<@ba.vup>+{atk_up2:0.0%}</>，持续{duration:0}秒。\n<@ba.info>同名效果最多叠加{max_stack:0}层，每层单独计算持续时间。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 1,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_sword_0012",
+                    "skillName": {
+                        "id": 2444355582569175668,
+                        "text": "流转·高热解放"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "tacafter"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_up",
+                            "value": 0.12,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_up2",
+                            "value": 0.06,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 20,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "max_stack",
+                            "value": 2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "lv",
+                            "value": 2,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 3218609757585984107,
+                        "text": "攻击力<@ba.vup>+{atk_up:0.0%}</>。\n装备者通过自身技能恢复技力或获得<#ba.combo>连击</>状态后，全队攻击力<@ba.vup>+{atk_up2:0.0%}</>，持续{duration:0}秒。\n<@ba.info>同名效果最多叠加{max_stack:0}层，每层单独计算持续时间。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 2,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_sword_0012",
+                    "skillName": {
+                        "id": 2416658277760879679,
+                        "text": "流转·高热解放"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "tacafter"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_up",
+                            "value": 0.14,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_up2",
+                            "value": 0.07,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 20,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "max_stack",
+                            "value": 2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "lv",
+                            "value": 3,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 7117496194750976235,
+                        "text": "攻击力<@ba.vup>+{atk_up:0.0%}</>。\n装备者通过自身技能恢复技力或获得<#ba.combo>连击</>状态后，全队攻击力<@ba.vup>+{atk_up2:0.0%}</>，持续{duration:0}秒。\n<@ba.info>同名效果最多叠加{max_stack:0}层，每层单独计算持续时间。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 3,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_sword_0012",
+                    "skillName": {
+                        "id": -4435838263528453458,
+                        "text": "流转·高热解放"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "tacafter"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_up",
+                            "value": 0.16,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_up2",
+                            "value": 0.08,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 20,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "max_stack",
+                            "value": 2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "lv",
+                            "value": 4,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 4164369801181870245,
+                        "text": "攻击力<@ba.vup>+{atk_up:0.0%}</>。\n装备者通过自身技能恢复技力或获得<#ba.combo>连击</>状态后，全队攻击力<@ba.vup>+{atk_up2:0.0%}</>，持续{duration:0}秒。\n<@ba.info>同名效果最多叠加{max_stack:0}层，每层单独计算持续时间。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 4,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_sword_0012",
+                    "skillName": {
+                        "id": -8399392091607698740,
+                        "text": "流转·高热解放"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "tacafter"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_up",
+                            "value": 0.18,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_up2",
+                            "value": 0.09,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 20,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "max_stack",
+                            "value": 2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "lv",
+                            "value": 5,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 6007495746603944479,
+                        "text": "攻击力<@ba.vup>+{atk_up:0.0%}</>。\n装备者通过自身技能恢复技力或获得<#ba.combo>连击</>状态后，全队攻击力<@ba.vup>+{atk_up2:0.0%}</>，持续{duration:0}秒。\n<@ba.info>同名效果最多叠加{max_stack:0}层，每层单独计算持续时间。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 5,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_sword_0012",
+                    "skillName": {
+                        "id": -6191580266285915482,
+                        "text": "流转·高热解放"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "tacafter"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_up",
+                            "value": 0.2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_up2",
+                            "value": 0.1,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 20,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "max_stack",
+                            "value": 2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "lv",
+                            "value": 6,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -8731173745252221477,
+                        "text": "攻击力<@ba.vup>+{atk_up:0.0%}</>。\n装备者通过自身技能恢复技力或获得<#ba.combo>连击</>状态后，全队攻击力<@ba.vup>+{atk_up2:0.0%}</>，持续{duration:0}秒。\n<@ba.info>同名效果最多叠加{max_stack:0}层，每层单独计算持续时间。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 6,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_sword_0012",
+                    "skillName": {
+                        "id": -1697765363619246933,
+                        "text": "流转·高热解放"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "tacafter"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_up",
+                            "value": 0.22,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_up2",
+                            "value": 0.11,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 20,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "max_stack",
+                            "value": 2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "lv",
+                            "value": 7,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 2492298145633713600,
+                        "text": "攻击力<@ba.vup>+{atk_up:0.0%}</>。\n装备者通过自身技能恢复技力或获得<#ba.combo>连击</>状态后，全队攻击力<@ba.vup>+{atk_up2:0.0%}</>，持续{duration:0}秒。\n<@ba.info>同名效果最多叠加{max_stack:0}层，每层单独计算持续时间。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 7,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_sword_0012",
+                    "skillName": {
+                        "id": -6779833576694509319,
+                        "text": "流转·高热解放"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "tacafter"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_up",
+                            "value": 0.24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_up2",
+                            "value": 0.12,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 20,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "max_stack",
+                            "value": 2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "lv",
+                            "value": 8,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -7546853290121778599,
+                        "text": "攻击力<@ba.vup>+{atk_up:0.0%}</>。\n装备者通过自身技能恢复技力或获得<#ba.combo>连击</>状态后，全队攻击力<@ba.vup>+{atk_up2:0.0%}</>，持续{duration:0}秒。\n<@ba.info>同名效果最多叠加{max_stack:0}层，每层单独计算持续时间。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 8,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_sword_0012",
+                    "skillName": {
+                        "id": 1922932208900884948,
+                        "text": "流转·高热解放"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "tacafter"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_up",
+                            "value": 0.28,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_up2",
+                            "value": 0.14,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 20,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "max_stack",
+                            "value": 2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "lv",
+                            "value": 9,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -2302748711025450406,
+                        "text": "攻击力<@ba.vup>+{atk_up:0.0%}</>。\n装备者通过自身技能恢复技力或获得<#ba.combo>连击</>状态后，全队攻击力<@ba.vup>+{atk_up2:0.0%}</>，持续{duration:0}秒。\n<@ba.info>同名效果最多叠加{max_stack:0}层，每层单独计算持续时间。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 9,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_sword_0012",
+                    "skillName": {
+                        "id": 5170278244338085529,
+                        "text": "流转·高热解放"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "tacafter"
+                }
+            ]
+        }
+    },
+    "weaponbreakthroughtemplatetable": {
+        "weapon_breakthrough_456star_B_1": {
+            "list": [
+                {
+                    "breakItemList": [
+                        {
+                            "count": 0,
+                            "id": "item_weapon_break_low"
+                        }
+                    ],
+                    "breakthroughGold": 0,
+                    "breakthroughLv": 1,
+                    "breakthroughShowLv": 0,
+                    "skillLevelBounds": [
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 3
+                        },
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 3
+                        },
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 4
+                        }
+                    ]
+                },
+                {
+                    "breakItemList": [
+                        {
+                            "count": 5,
+                            "id": "item_weapon_break_low"
+                        },
+                        {
+                            "count": 3,
+                            "id": "item_plant_spcstone_1_1"
+                        }
+                    ],
+                    "breakthroughGold": 2200,
+                    "breakthroughLv": 20,
+                    "breakthroughShowLv": 1,
+                    "skillLevelBounds": [
+                        {
+                            "lowerBound": 2,
+                            "upperBound": 5
+                        },
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 4
+                        },
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 4
+                        }
+                    ]
+                },
+                {
+                    "breakItemList": [
+                        {
+                            "count": 18,
+                            "id": "item_weapon_break_low"
+                        },
+                        {
+                            "count": 5,
+                            "id": "item_plant_spcstone_1_2"
+                        }
+                    ],
+                    "breakthroughGold": 8500,
+                    "breakthroughLv": 40,
+                    "breakthroughShowLv": 2,
+                    "skillLevelBounds": [
+                        {
+                            "lowerBound": 2,
+                            "upperBound": 6
+                        },
+                        {
+                            "lowerBound": 2,
+                            "upperBound": 6
+                        },
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 4
+                        }
+                    ]
+                },
+                {
+                    "breakItemList": [
+                        {
+                            "count": 20,
+                            "id": "item_weapon_break_high"
+                        },
+                        {
+                            "count": 5,
+                            "id": "item_plant_spcstone_1_3"
+                        }
+                    ],
+                    "breakthroughGold": 25000,
+                    "breakthroughLv": 60,
+                    "breakthroughShowLv": 3,
+                    "skillLevelBounds": [
+                        {
+                            "lowerBound": 3,
+                            "upperBound": 8
+                        },
+                        {
+                            "lowerBound": 2,
+                            "upperBound": 7
+                        },
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 4
+                        }
+                    ]
+                },
+                {
+                    "breakItemList": [
+                        {
+                            "count": 30,
+                            "id": "item_weapon_break_high"
+                        },
+                        {
+                            "count": 16,
+                            "id": "item_char_skill_specialize_2"
+                        },
+                        {
+                            "count": 8,
+                            "id": "item_plant_spcstone_2_1"
+                        }
+                    ],
+                    "breakthroughGold": 90000,
+                    "breakthroughLv": 80,
+                    "breakthroughShowLv": 4,
+                    "skillLevelBounds": [
+                        {
+                            "lowerBound": 3,
+                            "upperBound": 9
+                        },
+                        {
+                            "lowerBound": 3,
+                            "upperBound": 9
+                        },
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 4
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "weaponupgradetemplatetable": {
+        "weapon_upgrade_curve_6star_0.99": {
+            "list": [
+                {
+                    "baseAtk": 50,
+                    "lvUpExp": 10,
+                    "lvUpGold": 0,
+                    "weaponLv": 1
+                },
+                {
+                    "baseAtk": 54,
+                    "lvUpExp": 10,
+                    "lvUpGold": 0,
+                    "weaponLv": 2
+                },
+                {
+                    "baseAtk": 59,
+                    "lvUpExp": 10,
+                    "lvUpGold": 0,
+                    "weaponLv": 3
+                },
+                {
+                    "baseAtk": 64,
+                    "lvUpExp": 20,
+                    "lvUpGold": 0,
+                    "weaponLv": 4
+                },
+                {
+                    "baseAtk": 69,
+                    "lvUpExp": 40,
+                    "lvUpGold": 0,
+                    "weaponLv": 5
+                },
+                {
+                    "baseAtk": 74,
+                    "lvUpExp": 50,
+                    "lvUpGold": 0,
+                    "weaponLv": 6
+                },
+                {
+                    "baseAtk": 79,
+                    "lvUpExp": 80,
+                    "lvUpGold": 0,
+                    "weaponLv": 7
+                },
+                {
+                    "baseAtk": 84,
+                    "lvUpExp": 110,
+                    "lvUpGold": 0,
+                    "weaponLv": 8
+                },
+                {
+                    "baseAtk": 89,
+                    "lvUpExp": 150,
+                    "lvUpGold": 0,
+                    "weaponLv": 9
+                },
+                {
+                    "baseAtk": 94,
+                    "lvUpExp": 200,
+                    "lvUpGold": 10,
+                    "weaponLv": 10
+                },
+                {
+                    "baseAtk": 99,
+                    "lvUpExp": 270,
+                    "lvUpGold": 10,
+                    "weaponLv": 11
+                },
+                {
+                    "baseAtk": 104,
+                    "lvUpExp": 370,
+                    "lvUpGold": 10,
+                    "weaponLv": 12
+                },
+                {
+                    "baseAtk": 109,
+                    "lvUpExp": 480,
+                    "lvUpGold": 20,
+                    "weaponLv": 13
+                },
+                {
+                    "baseAtk": 114,
+                    "lvUpExp": 620,
+                    "lvUpGold": 30,
+                    "weaponLv": 14
+                },
+                {
+                    "baseAtk": 119,
+                    "lvUpExp": 780,
+                    "lvUpGold": 50,
+                    "weaponLv": 15
+                },
+                {
+                    "baseAtk": 124,
+                    "lvUpExp": 990,
+                    "lvUpGold": 70,
+                    "weaponLv": 16
+                },
+                {
+                    "baseAtk": 129,
+                    "lvUpExp": 1250,
+                    "lvUpGold": 100,
+                    "weaponLv": 17
+                },
+                {
+                    "baseAtk": 134,
+                    "lvUpExp": 1550,
+                    "lvUpGold": 140,
+                    "weaponLv": 18
+                },
+                {
+                    "baseAtk": 139,
+                    "lvUpExp": 1900,
+                    "lvUpGold": 200,
+                    "weaponLv": 19
+                },
+                {
+                    "baseAtk": 144,
+                    "lvUpExp": 2360,
+                    "lvUpGold": 240,
+                    "weaponLv": 20
+                },
+                {
+                    "baseAtk": 149,
+                    "lvUpExp": 2960,
+                    "lvUpGold": 300,
+                    "weaponLv": 21
+                },
+                {
+                    "baseAtk": 153,
+                    "lvUpExp": 3280,
+                    "lvUpGold": 330,
+                    "weaponLv": 22
+                },
+                {
+                    "baseAtk": 158,
+                    "lvUpExp": 3580,
+                    "lvUpGold": 360,
+                    "weaponLv": 23
+                },
+                {
+                    "baseAtk": 163,
+                    "lvUpExp": 3850,
+                    "lvUpGold": 390,
+                    "weaponLv": 24
+                },
+                {
+                    "baseAtk": 168,
+                    "lvUpExp": 4090,
+                    "lvUpGold": 410,
+                    "weaponLv": 25
+                },
+                {
+                    "baseAtk": 173,
+                    "lvUpExp": 4300,
+                    "lvUpGold": 430,
+                    "weaponLv": 26
+                },
+                {
+                    "baseAtk": 178,
+                    "lvUpExp": 4600,
+                    "lvUpGold": 460,
+                    "weaponLv": 27
+                },
+                {
+                    "baseAtk": 183,
+                    "lvUpExp": 4810,
+                    "lvUpGold": 490,
+                    "weaponLv": 28
+                },
+                {
+                    "baseAtk": 188,
+                    "lvUpExp": 4940,
+                    "lvUpGold": 500,
+                    "weaponLv": 29
+                },
+                {
+                    "baseAtk": 193,
+                    "lvUpExp": 5090,
+                    "lvUpGold": 510,
+                    "weaponLv": 30
+                },
+                {
+                    "baseAtk": 198,
+                    "lvUpExp": 5250,
+                    "lvUpGold": 530,
+                    "weaponLv": 31
+                },
+                {
+                    "baseAtk": 203,
+                    "lvUpExp": 5480,
+                    "lvUpGold": 550,
+                    "weaponLv": 32
+                },
+                {
+                    "baseAtk": 208,
+                    "lvUpExp": 5670,
+                    "lvUpGold": 570,
+                    "weaponLv": 33
+                },
+                {
+                    "baseAtk": 213,
+                    "lvUpExp": 5820,
+                    "lvUpGold": 590,
+                    "weaponLv": 34
+                },
+                {
+                    "baseAtk": 218,
+                    "lvUpExp": 5910,
+                    "lvUpGold": 600,
+                    "weaponLv": 35
+                },
+                {
+                    "baseAtk": 223,
+                    "lvUpExp": 6010,
+                    "lvUpGold": 610,
+                    "weaponLv": 36
+                },
+                {
+                    "baseAtk": 228,
+                    "lvUpExp": 6110,
+                    "lvUpGold": 620,
+                    "weaponLv": 37
+                },
+                {
+                    "baseAtk": 233,
+                    "lvUpExp": 6220,
+                    "lvUpGold": 630,
+                    "weaponLv": 38
+                },
+                {
+                    "baseAtk": 238,
+                    "lvUpExp": 6320,
+                    "lvUpGold": 640,
+                    "weaponLv": 39
+                },
+                {
+                    "baseAtk": 243,
+                    "lvUpExp": 6430,
+                    "lvUpGold": 650,
+                    "weaponLv": 40
+                },
+                {
+                    "baseAtk": 248,
+                    "lvUpExp": 6620,
+                    "lvUpGold": 670,
+                    "weaponLv": 41
+                },
+                {
+                    "baseAtk": 252,
+                    "lvUpExp": 6810,
+                    "lvUpGold": 690,
+                    "weaponLv": 42
+                },
+                {
+                    "baseAtk": 257,
+                    "lvUpExp": 7010,
+                    "lvUpGold": 710,
+                    "weaponLv": 43
+                },
+                {
+                    "baseAtk": 262,
+                    "lvUpExp": 7220,
+                    "lvUpGold": 730,
+                    "weaponLv": 44
+                },
+                {
+                    "baseAtk": 267,
+                    "lvUpExp": 7410,
+                    "lvUpGold": 750,
+                    "weaponLv": 45
+                },
+                {
+                    "baseAtk": 272,
+                    "lvUpExp": 7690,
+                    "lvUpGold": 770,
+                    "weaponLv": 46
+                },
+                {
+                    "baseAtk": 277,
+                    "lvUpExp": 7960,
+                    "lvUpGold": 800,
+                    "weaponLv": 47
+                },
+                {
+                    "baseAtk": 282,
+                    "lvUpExp": 8260,
+                    "lvUpGold": 830,
+                    "weaponLv": 48
+                },
+                {
+                    "baseAtk": 287,
+                    "lvUpExp": 8580,
+                    "lvUpGold": 860,
+                    "weaponLv": 49
+                },
+                {
+                    "baseAtk": 292,
+                    "lvUpExp": 8940,
+                    "lvUpGold": 900,
+                    "weaponLv": 50
+                },
+                {
+                    "baseAtk": 297,
+                    "lvUpExp": 9320,
+                    "lvUpGold": 940,
+                    "weaponLv": 51
+                },
+                {
+                    "baseAtk": 302,
+                    "lvUpExp": 9740,
+                    "lvUpGold": 980,
+                    "weaponLv": 52
+                },
+                {
+                    "baseAtk": 307,
+                    "lvUpExp": 10190,
+                    "lvUpGold": 1020,
+                    "weaponLv": 53
+                },
+                {
+                    "baseAtk": 312,
+                    "lvUpExp": 10680,
+                    "lvUpGold": 1070,
+                    "weaponLv": 54
+                },
+                {
+                    "baseAtk": 317,
+                    "lvUpExp": 11210,
+                    "lvUpGold": 1130,
+                    "weaponLv": 55
+                },
+                {
+                    "baseAtk": 322,
+                    "lvUpExp": 11770,
+                    "lvUpGold": 1180,
+                    "weaponLv": 56
+                },
+                {
+                    "baseAtk": 327,
+                    "lvUpExp": 12380,
+                    "lvUpGold": 1240,
+                    "weaponLv": 57
+                },
+                {
+                    "baseAtk": 332,
+                    "lvUpExp": 13040,
+                    "lvUpGold": 1310,
+                    "weaponLv": 58
+                },
+                {
+                    "baseAtk": 337,
+                    "lvUpExp": 13740,
+                    "lvUpGold": 1380,
+                    "weaponLv": 59
+                },
+                {
+                    "baseAtk": 342,
+                    "lvUpExp": 14110,
+                    "lvUpGold": 1420,
+                    "weaponLv": 60
+                },
+                {
+                    "baseAtk": 347,
+                    "lvUpExp": 15870,
+                    "lvUpGold": 1540,
+                    "weaponLv": 61
+                },
+                {
+                    "baseAtk": 351,
+                    "lvUpExp": 17690,
+                    "lvUpGold": 1670,
+                    "weaponLv": 62
+                },
+                {
+                    "baseAtk": 356,
+                    "lvUpExp": 19480,
+                    "lvUpGold": 1800,
+                    "weaponLv": 63
+                },
+                {
+                    "baseAtk": 361,
+                    "lvUpExp": 21670,
+                    "lvUpGold": 1960,
+                    "weaponLv": 64
+                },
+                {
+                    "baseAtk": 366,
+                    "lvUpExp": 24220,
+                    "lvUpGold": 2160,
+                    "weaponLv": 65
+                },
+                {
+                    "baseAtk": 371,
+                    "lvUpExp": 27210,
+                    "lvUpGold": 2390,
+                    "weaponLv": 66
+                },
+                {
+                    "baseAtk": 376,
+                    "lvUpExp": 30700,
+                    "lvUpGold": 2680,
+                    "weaponLv": 67
+                },
+                {
+                    "baseAtk": 381,
+                    "lvUpExp": 34780,
+                    "lvUpGold": 3010,
+                    "weaponLv": 68
+                },
+                {
+                    "baseAtk": 386,
+                    "lvUpExp": 39510,
+                    "lvUpGold": 3400,
+                    "weaponLv": 69
+                },
+                {
+                    "baseAtk": 391,
+                    "lvUpExp": 44990,
+                    "lvUpGold": 3860,
+                    "weaponLv": 70
+                },
+                {
+                    "baseAtk": 396,
+                    "lvUpExp": 48870,
+                    "lvUpGold": 4400,
+                    "weaponLv": 71
+                },
+                {
+                    "baseAtk": 401,
+                    "lvUpExp": 53240,
+                    "lvUpGold": 5020,
+                    "weaponLv": 72
+                },
+                {
+                    "baseAtk": 406,
+                    "lvUpExp": 58140,
+                    "lvUpGold": 5730,
+                    "weaponLv": 73
+                },
+                {
+                    "baseAtk": 411,
+                    "lvUpExp": 63580,
+                    "lvUpGold": 6560,
+                    "weaponLv": 74
+                },
+                {
+                    "baseAtk": 416,
+                    "lvUpExp": 69600,
+                    "lvUpGold": 7500,
+                    "weaponLv": 75
+                },
+                {
+                    "baseAtk": 421,
+                    "lvUpExp": 74420,
+                    "lvUpGold": 8380,
+                    "weaponLv": 76
+                },
+                {
+                    "baseAtk": 426,
+                    "lvUpExp": 79530,
+                    "lvUpGold": 9350,
+                    "weaponLv": 77
+                },
+                {
+                    "baseAtk": 431,
+                    "lvUpExp": 84940,
+                    "lvUpGold": 10420,
+                    "weaponLv": 78
+                },
+                {
+                    "baseAtk": 436,
+                    "lvUpExp": 90620,
+                    "lvUpGold": 11590,
+                    "weaponLv": 79
+                },
+                {
+                    "baseAtk": 441,
+                    "lvUpExp": 96570,
+                    "lvUpGold": 12880,
+                    "weaponLv": 80
+                },
+                {
+                    "baseAtk": 446,
+                    "lvUpExp": 103570,
+                    "lvUpGold": 14400,
+                    "weaponLv": 81
+                },
+                {
+                    "baseAtk": 450,
+                    "lvUpExp": 110930,
+                    "lvUpGold": 16070,
+                    "weaponLv": 82
+                },
+                {
+                    "baseAtk": 455,
+                    "lvUpExp": 118620,
+                    "lvUpGold": 17900,
+                    "weaponLv": 83
+                },
+                {
+                    "baseAtk": 460,
+                    "lvUpExp": 126650,
+                    "lvUpGold": 19910,
+                    "weaponLv": 84
+                },
+                {
+                    "baseAtk": 465,
+                    "lvUpExp": 134990,
+                    "lvUpGold": 22090,
+                    "weaponLv": 85
+                },
+                {
+                    "baseAtk": 470,
+                    "lvUpExp": 143620,
+                    "lvUpGold": 24470,
+                    "weaponLv": 86
+                },
+                {
+                    "baseAtk": 475,
+                    "lvUpExp": 152540,
+                    "lvUpGold": 27060,
+                    "weaponLv": 87
+                },
+                {
+                    "baseAtk": 480,
+                    "lvUpExp": 161720,
+                    "lvUpGold": 29860,
+                    "weaponLv": 88
+                },
+                {
+                    "baseAtk": 485,
+                    "lvUpExp": 171160,
+                    "lvUpGold": 32900,
+                    "weaponLv": 89
+                },
+                {
+                    "baseAtk": 490,
+                    "lvUpExp": 0,
+                    "lvUpGold": 0,
+                    "weaponLv": 90
+                }
+            ]
+        }
+    },
+    "weaponupgradetemplatesumtable": {
+        "weapon_upgrade_curve_6star_0.99": {
+            "list": [
+                {
+                    "lvUpExpSum": 0,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 1
+                },
+                {
+                    "lvUpExpSum": 10,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 2
+                },
+                {
+                    "lvUpExpSum": 20,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 3
+                },
+                {
+                    "lvUpExpSum": 30,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 4
+                },
+                {
+                    "lvUpExpSum": 50,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 5
+                },
+                {
+                    "lvUpExpSum": 90,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 6
+                },
+                {
+                    "lvUpExpSum": 140,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 7
+                },
+                {
+                    "lvUpExpSum": 220,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 8
+                },
+                {
+                    "lvUpExpSum": 330,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 9
+                },
+                {
+                    "lvUpExpSum": 480,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 10
+                },
+                {
+                    "lvUpExpSum": 680,
+                    "lvUpGoldSum": 10,
+                    "weaponLv": 11
+                },
+                {
+                    "lvUpExpSum": 950,
+                    "lvUpGoldSum": 20,
+                    "weaponLv": 12
+                },
+                {
+                    "lvUpExpSum": 1320,
+                    "lvUpGoldSum": 30,
+                    "weaponLv": 13
+                },
+                {
+                    "lvUpExpSum": 1800,
+                    "lvUpGoldSum": 50,
+                    "weaponLv": 14
+                },
+                {
+                    "lvUpExpSum": 2420,
+                    "lvUpGoldSum": 80,
+                    "weaponLv": 15
+                },
+                {
+                    "lvUpExpSum": 3200,
+                    "lvUpGoldSum": 130,
+                    "weaponLv": 16
+                },
+                {
+                    "lvUpExpSum": 4190,
+                    "lvUpGoldSum": 200,
+                    "weaponLv": 17
+                },
+                {
+                    "lvUpExpSum": 5440,
+                    "lvUpGoldSum": 300,
+                    "weaponLv": 18
+                },
+                {
+                    "lvUpExpSum": 6990,
+                    "lvUpGoldSum": 440,
+                    "weaponLv": 19
+                },
+                {
+                    "lvUpExpSum": 8890,
+                    "lvUpGoldSum": 640,
+                    "weaponLv": 20
+                },
+                {
+                    "lvUpExpSum": 11250,
+                    "lvUpGoldSum": 880,
+                    "weaponLv": 21
+                },
+                {
+                    "lvUpExpSum": 14210,
+                    "lvUpGoldSum": 1180,
+                    "weaponLv": 22
+                },
+                {
+                    "lvUpExpSum": 17490,
+                    "lvUpGoldSum": 1510,
+                    "weaponLv": 23
+                },
+                {
+                    "lvUpExpSum": 21070,
+                    "lvUpGoldSum": 1870,
+                    "weaponLv": 24
+                },
+                {
+                    "lvUpExpSum": 24920,
+                    "lvUpGoldSum": 2260,
+                    "weaponLv": 25
+                },
+                {
+                    "lvUpExpSum": 29010,
+                    "lvUpGoldSum": 2670,
+                    "weaponLv": 26
+                },
+                {
+                    "lvUpExpSum": 33310,
+                    "lvUpGoldSum": 3100,
+                    "weaponLv": 27
+                },
+                {
+                    "lvUpExpSum": 37910,
+                    "lvUpGoldSum": 3560,
+                    "weaponLv": 28
+                },
+                {
+                    "lvUpExpSum": 42720,
+                    "lvUpGoldSum": 4050,
+                    "weaponLv": 29
+                },
+                {
+                    "lvUpExpSum": 47660,
+                    "lvUpGoldSum": 4550,
+                    "weaponLv": 30
+                },
+                {
+                    "lvUpExpSum": 52750,
+                    "lvUpGoldSum": 5060,
+                    "weaponLv": 31
+                },
+                {
+                    "lvUpExpSum": 58000,
+                    "lvUpGoldSum": 5590,
+                    "weaponLv": 32
+                },
+                {
+                    "lvUpExpSum": 63480,
+                    "lvUpGoldSum": 6140,
+                    "weaponLv": 33
+                },
+                {
+                    "lvUpExpSum": 69150,
+                    "lvUpGoldSum": 6710,
+                    "weaponLv": 34
+                },
+                {
+                    "lvUpExpSum": 74970,
+                    "lvUpGoldSum": 7300,
+                    "weaponLv": 35
+                },
+                {
+                    "lvUpExpSum": 80880,
+                    "lvUpGoldSum": 7900,
+                    "weaponLv": 36
+                },
+                {
+                    "lvUpExpSum": 86890,
+                    "lvUpGoldSum": 8510,
+                    "weaponLv": 37
+                },
+                {
+                    "lvUpExpSum": 93000,
+                    "lvUpGoldSum": 9130,
+                    "weaponLv": 38
+                },
+                {
+                    "lvUpExpSum": 99220,
+                    "lvUpGoldSum": 9760,
+                    "weaponLv": 39
+                },
+                {
+                    "lvUpExpSum": 105540,
+                    "lvUpGoldSum": 10400,
+                    "weaponLv": 40
+                },
+                {
+                    "lvUpExpSum": 111970,
+                    "lvUpGoldSum": 11050,
+                    "weaponLv": 41
+                },
+                {
+                    "lvUpExpSum": 118590,
+                    "lvUpGoldSum": 11720,
+                    "weaponLv": 42
+                },
+                {
+                    "lvUpExpSum": 125400,
+                    "lvUpGoldSum": 12410,
+                    "weaponLv": 43
+                },
+                {
+                    "lvUpExpSum": 132410,
+                    "lvUpGoldSum": 13120,
+                    "weaponLv": 44
+                },
+                {
+                    "lvUpExpSum": 139630,
+                    "lvUpGoldSum": 13850,
+                    "weaponLv": 45
+                },
+                {
+                    "lvUpExpSum": 147040,
+                    "lvUpGoldSum": 14600,
+                    "weaponLv": 46
+                },
+                {
+                    "lvUpExpSum": 154730,
+                    "lvUpGoldSum": 15370,
+                    "weaponLv": 47
+                },
+                {
+                    "lvUpExpSum": 162690,
+                    "lvUpGoldSum": 16170,
+                    "weaponLv": 48
+                },
+                {
+                    "lvUpExpSum": 170950,
+                    "lvUpGoldSum": 17000,
+                    "weaponLv": 49
+                },
+                {
+                    "lvUpExpSum": 179530,
+                    "lvUpGoldSum": 17860,
+                    "weaponLv": 50
+                },
+                {
+                    "lvUpExpSum": 188470,
+                    "lvUpGoldSum": 18760,
+                    "weaponLv": 51
+                },
+                {
+                    "lvUpExpSum": 197790,
+                    "lvUpGoldSum": 19700,
+                    "weaponLv": 52
+                },
+                {
+                    "lvUpExpSum": 207530,
+                    "lvUpGoldSum": 20680,
+                    "weaponLv": 53
+                },
+                {
+                    "lvUpExpSum": 217720,
+                    "lvUpGoldSum": 21700,
+                    "weaponLv": 54
+                },
+                {
+                    "lvUpExpSum": 228400,
+                    "lvUpGoldSum": 22770,
+                    "weaponLv": 55
+                },
+                {
+                    "lvUpExpSum": 239610,
+                    "lvUpGoldSum": 23900,
+                    "weaponLv": 56
+                },
+                {
+                    "lvUpExpSum": 251380,
+                    "lvUpGoldSum": 25080,
+                    "weaponLv": 57
+                },
+                {
+                    "lvUpExpSum": 263760,
+                    "lvUpGoldSum": 26320,
+                    "weaponLv": 58
+                },
+                {
+                    "lvUpExpSum": 276800,
+                    "lvUpGoldSum": 27630,
+                    "weaponLv": 59
+                },
+                {
+                    "lvUpExpSum": 290540,
+                    "lvUpGoldSum": 29010,
+                    "weaponLv": 60
+                },
+                {
+                    "lvUpExpSum": 304650,
+                    "lvUpGoldSum": 30430,
+                    "weaponLv": 61
+                },
+                {
+                    "lvUpExpSum": 320520,
+                    "lvUpGoldSum": 31970,
+                    "weaponLv": 62
+                },
+                {
+                    "lvUpExpSum": 338210,
+                    "lvUpGoldSum": 33640,
+                    "weaponLv": 63
+                },
+                {
+                    "lvUpExpSum": 357690,
+                    "lvUpGoldSum": 35440,
+                    "weaponLv": 64
+                },
+                {
+                    "lvUpExpSum": 379360,
+                    "lvUpGoldSum": 37400,
+                    "weaponLv": 65
+                },
+                {
+                    "lvUpExpSum": 403580,
+                    "lvUpGoldSum": 39560,
+                    "weaponLv": 66
+                },
+                {
+                    "lvUpExpSum": 430790,
+                    "lvUpGoldSum": 41950,
+                    "weaponLv": 67
+                },
+                {
+                    "lvUpExpSum": 461490,
+                    "lvUpGoldSum": 44630,
+                    "weaponLv": 68
+                },
+                {
+                    "lvUpExpSum": 496270,
+                    "lvUpGoldSum": 47640,
+                    "weaponLv": 69
+                },
+                {
+                    "lvUpExpSum": 535780,
+                    "lvUpGoldSum": 51040,
+                    "weaponLv": 70
+                },
+                {
+                    "lvUpExpSum": 580770,
+                    "lvUpGoldSum": 54900,
+                    "weaponLv": 71
+                },
+                {
+                    "lvUpExpSum": 629640,
+                    "lvUpGoldSum": 59300,
+                    "weaponLv": 72
+                },
+                {
+                    "lvUpExpSum": 682880,
+                    "lvUpGoldSum": 64320,
+                    "weaponLv": 73
+                },
+                {
+                    "lvUpExpSum": 741020,
+                    "lvUpGoldSum": 70050,
+                    "weaponLv": 74
+                },
+                {
+                    "lvUpExpSum": 804600,
+                    "lvUpGoldSum": 76610,
+                    "weaponLv": 75
+                },
+                {
+                    "lvUpExpSum": 874200,
+                    "lvUpGoldSum": 84110,
+                    "weaponLv": 76
+                },
+                {
+                    "lvUpExpSum": 948620,
+                    "lvUpGoldSum": 92490,
+                    "weaponLv": 77
+                },
+                {
+                    "lvUpExpSum": 1028150,
+                    "lvUpGoldSum": 101840,
+                    "weaponLv": 78
+                },
+                {
+                    "lvUpExpSum": 1113090,
+                    "lvUpGoldSum": 112260,
+                    "weaponLv": 79
+                },
+                {
+                    "lvUpExpSum": 1203710,
+                    "lvUpGoldSum": 123850,
+                    "weaponLv": 80
+                },
+                {
+                    "lvUpExpSum": 1300280,
+                    "lvUpGoldSum": 136730,
+                    "weaponLv": 81
+                },
+                {
+                    "lvUpExpSum": 1403850,
+                    "lvUpGoldSum": 151130,
+                    "weaponLv": 82
+                },
+                {
+                    "lvUpExpSum": 1514780,
+                    "lvUpGoldSum": 167200,
+                    "weaponLv": 83
+                },
+                {
+                    "lvUpExpSum": 1633400,
+                    "lvUpGoldSum": 185100,
+                    "weaponLv": 84
+                },
+                {
+                    "lvUpExpSum": 1760050,
+                    "lvUpGoldSum": 205010,
+                    "weaponLv": 85
+                },
+                {
+                    "lvUpExpSum": 1895040,
+                    "lvUpGoldSum": 227100,
+                    "weaponLv": 86
+                },
+                {
+                    "lvUpExpSum": 2038660,
+                    "lvUpGoldSum": 251570,
+                    "weaponLv": 87
+                },
+                {
+                    "lvUpExpSum": 2191200,
+                    "lvUpGoldSum": 278630,
+                    "weaponLv": 88
+                },
+                {
+                    "lvUpExpSum": 2352920,
+                    "lvUpGoldSum": 308490,
+                    "weaponLv": 89
+                },
+                {
+                    "lvUpExpSum": 2524080,
+                    "lvUpGoldSum": 341390,
+                    "weaponLv": 90
+                }
+            ]
+        }
+    },
+    "weapontalenttemplatetable": {
+        "wpn_potential_456star": {
+            "list": [
+                {
+                    "skillLevelExtraBounds": [
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 1
+                        }
+                    ],
+                    "talentLv": 1
+                },
+                {
+                    "skillLevelExtraBounds": [
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 2,
+                            "upperBound": 2
+                        }
+                    ],
+                    "talentLv": 2
+                },
+                {
+                    "skillLevelExtraBounds": [
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 3,
+                            "upperBound": 3
+                        }
+                    ],
+                    "talentLv": 3
+                },
+                {
+                    "skillLevelExtraBounds": [
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 4,
+                            "upperBound": 4
+                        }
+                    ],
+                    "talentLv": 4
+                },
+                {
+                    "skillLevelExtraBounds": [
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 5,
+                            "upperBound": 5
+                        }
+                    ],
+                    "talentLv": 5
+                }
+            ]
+        }
+    }
+}

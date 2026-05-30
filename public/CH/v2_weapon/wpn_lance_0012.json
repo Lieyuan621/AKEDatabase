@@ -1,0 +1,2534 @@
+{
+    "weaponId": "wpn_lance_0012",
+    "weaponbasictable": {
+        "breakthroughTemplateId": "weapon_breakthrough_456star_A_1",
+        "engName": {
+            "id": 9024559268148520109,
+            "text": "Mountain Bearer"
+        },
+        "levelTemplateId": "weapon_upgrade_curve_6star_1.01",
+        "maxLv": 90,
+        "modelPath": "Gameplay/Prefabs/Weapons/wpn_lance_0012.prefab",
+        "potentialUpItemList": [],
+        "rarity": 6,
+        "talentTemplateId": "wpn_potential_456star",
+        "weaponDesc": {
+            "id": 2145752065466328381,
+            "text": "先祖居尚蜀，好游学，一日远游，遇骤雨，避之山壁下，拾枯草燃火自暖。方将小憩，忽见一玄衣人，其人状甚异，无目无口，臂接于山。先祖异之，问曰：“先生手生岩中，所为何故？”\n怪人答曰：“昔日我居百灶，一日梦黄衣小人立于掌心，问人之性命几重。答曰：‘人命重于山。’小人闻之欣然笑曰：‘吾乃掌中国之君也。’言毕遂去，自此不复见。我不忍覆其国，遂置手于地，百年不移。年久日深，掌上渐生大山，汝今所见者是也。”\n先祖未解，复问曰：“先生仁厚矜怜，何不怜己，断腕以求解脱，何如？”怪人曰：“我不知‘掌中一国’孰与‘臂前一掌’重，及至通悟，或可负山而行矣。”怪人复曰：“勿忧我，自可安眠。”先祖遂寝。及晓，不复见怪人。\n吾尝闻尚蜀之地有草名“枕黄”，微毒，焚之令人入幻，先祖或为之惑欤！"
+        },
+        "weaponId": "wpn_lance_0012",
+        "weaponPotentialSkill": "sk_wpn_lance_0012",
+        "weaponSkillList": [
+            "wpn_attr_agi_high",
+            "wpn_sp_attr_phydam_high",
+            "sk_wpn_lance_0012"
+        ],
+        "weaponType": 5
+    },
+    "itemtable": {
+        "wpn_lance_0012": {
+            "backpackCanDiscard": false,
+            "decoDesc": {
+                "id": -4381654001674646035,
+                "text": "宏山选剑局研发的实验型长枪。枪杆部位在铸造时混入了极特殊的金合金，在保证强度的同时极大提高了韧性。"
+            },
+            "desc": {
+                "id": -5510392416534956898,
+                "text": "终末地干员用武器，装备之后可以显著提升干员的作战能力。"
+            },
+            "iconCompositeId": "",
+            "iconId": "wpn_lance_0012",
+            "id": "wpn_lance_0012",
+            "maxBackpackStackCount": -1,
+            "maxStackCount": -1,
+            "modelKey": "int_drop_weapon",
+            "name": {
+                "id": -8631404038748537017,
+                "text": "负山"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": 0,
+                "text": ""
+            },
+            "noObtainWayId": [],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_payshop_weapon"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 6,
+            "showAllDepotCount": false,
+            "showingType": 0,
+            "sortId1": -35,
+            "sortId2": 37,
+            "type": 5,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 1
+        },
+        "item_weapon_break_low": {
+            "backpackCanDiscard": false,
+            "decoDesc": {
+                "id": 8736157941298807866,
+                "text": "以稀有材料做成的模具，通过协议技术激活后，可以提高武器的综合材料强度。"
+            },
+            "desc": {
+                "id": -5499756249406011199,
+                "text": "用于武器突破的素材。"
+            },
+            "iconCompositeId": "",
+            "iconId": "item_weapon_break_low",
+            "id": "item_weapon_break_low",
+            "maxBackpackStackCount": -1,
+            "maxStackCount": -1,
+            "modelKey": "int_collection_item_2",
+            "name": {
+                "id": -1214547092772580978,
+                "text": "强固模具"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": 0,
+                "text": ""
+            },
+            "noObtainWayId": [],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_dungeon_0003",
+                "item_obtain_shop_greenticket_weapon_break_low",
+                "item_obtain_explore"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 3,
+            "showAllDepotCount": false,
+            "showingType": 0,
+            "sortId1": -42,
+            "sortId2": 4,
+            "type": 26,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 4
+        },
+        "item_plant_spcstone_1_1": {
+            "backpackCanDiscard": true,
+            "decoDesc": {
+                "id": 2569576658696217064,
+                "text": "黯石又被称为“古老之石”，它象征着一段人类从未见证过的消亡。"
+            },
+            "desc": {
+                "id": 83853172104022357,
+                "text": "采集自野外或培养舱培养的特殊矿物。\n可在武器20级突破强化时使用。"
+            },
+            "iconCompositeId": "",
+            "iconId": "item_plant_spcstone_1_1",
+            "id": "item_plant_spcstone_1_1",
+            "maxBackpackStackCount": 50,
+            "maxStackCount": -1,
+            "modelKey": "int_drop_spcstone_1_1",
+            "name": {
+                "id": -7929149998190383046,
+                "text": "轻黯石"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": 3274260551398899213,
+                "text": "探索枢纽区采集"
+            },
+            "noObtainWayId": [
+                "item_obtain_gather_locked"
+            ],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_gather_spcstone_1_1",
+                "item_obtain_spaceship_plant",
+                "item_obtain_gather_map01_lv001"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 4,
+            "showAllDepotCount": true,
+            "showingType": 16,
+            "sortId1": -60,
+            "sortId2": 17,
+            "type": 8,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 6
+        },
+        "item_plant_spcstone_1_2": {
+            "backpackCanDiscard": true,
+            "decoDesc": {
+                "id": 8931649555376193826,
+                "text": "人类目前尚不了解黯石这类矿石的生成过程，塔卫二始终没有完全揭开自己的面纱。"
+            },
+            "desc": {
+                "id": -2281212526304977469,
+                "text": "采集自野外或培养舱培养的特殊矿物。\n可在武器40级突破强化时使用。"
+            },
+            "iconCompositeId": "",
+            "iconId": "item_plant_spcstone_1_2",
+            "id": "item_plant_spcstone_1_2",
+            "maxBackpackStackCount": 50,
+            "maxStackCount": -1,
+            "modelKey": "int_drop_spcstone_1_2",
+            "name": {
+                "id": -8348617894122773819,
+                "text": "中黯石"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": 4074987989714521669,
+                "text": "探索源石研究园采集"
+            },
+            "noObtainWayId": [
+                "item_obtain_gather_locked"
+            ],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_gather_spcstone_1_2",
+                "item_obtain_spaceship_plant",
+                "item_obtain_gather_map01_lv006"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 4,
+            "showAllDepotCount": true,
+            "showingType": 16,
+            "sortId1": -60,
+            "sortId2": 19,
+            "type": 8,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 6
+        },
+        "item_weapon_break_high": {
+            "backpackCanDiscard": false,
+            "decoDesc": {
+                "id": -8526128948545229539,
+                "text": "以稀有材料做成的重型模具，通过协议技术激活后，可以提高武器的综合材料强度。"
+            },
+            "desc": {
+                "id": -4858212779948662414,
+                "text": "用于武器突破的素材。"
+            },
+            "iconCompositeId": "",
+            "iconId": "item_weapon_break_high",
+            "id": "item_weapon_break_high",
+            "maxBackpackStackCount": -1,
+            "maxStackCount": -1,
+            "modelKey": "int_collection_item_2",
+            "name": {
+                "id": 674233095572946314,
+                "text": "重型强固模具"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": 0,
+                "text": ""
+            },
+            "noObtainWayId": [],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_dungeon_0003",
+                "item_obtain_shop_greenticket_weapon_break_high",
+                "item_obtain_shop_yellowticket_weapon_break_high",
+                "item_obtain_explore"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 4,
+            "showAllDepotCount": false,
+            "showingType": 0,
+            "sortId1": -42,
+            "sortId2": 5,
+            "type": 26,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 4
+        },
+        "item_plant_spcstone_1_3": {
+            "backpackCanDiscard": true,
+            "decoDesc": {
+                "id": -8987705108640578122,
+                "text": "人类对黯石的命名中以轻、中、重为标准所区分的，实际上是黯石的氧化率。"
+            },
+            "desc": {
+                "id": -2900760749778380747,
+                "text": "采集自野外或培养舱培养的特殊矿物。\n可在武器60级突破强化时使用。"
+            },
+            "iconCompositeId": "",
+            "iconId": "item_plant_spcstone_1_3",
+            "id": "item_plant_spcstone_1_3",
+            "maxBackpackStackCount": 50,
+            "maxStackCount": -1,
+            "modelKey": "int_drop_spcstone_1_3",
+            "name": {
+                "id": 7942082281811106634,
+                "text": "重黯石"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": -1252268565815886874,
+                "text": "探索供能高地采集"
+            },
+            "noObtainWayId": [
+                "item_obtain_gather_locked"
+            ],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_gather_spcstone_1_3",
+                "item_obtain_spaceship_plant",
+                "item_obtain_gather_map02_lv001"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 4,
+            "showAllDepotCount": true,
+            "showingType": 16,
+            "sortId1": -60,
+            "sortId2": 21,
+            "type": 8,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 6
+        },
+        "item_char_skill_specialize_1": {
+            "backpackCanDiscard": false,
+            "decoDesc": {
+                "id": 8993164680529499267,
+                "text": "能够用来检测、验证超距作用的人工合成材料。它们是一种时间晶体，通常成对封装在静态容器内，通过观测其光学外观的回归特征来实现用途。这种材料通常十分稳定，但应尽可能避免打破它们的容器，也应避免进入一对超距辉映体之间的空间。"
+            },
+            "desc": {
+                "id": 5956107687977889148,
+                "text": "用于干员精英化、武器突破、干员技能专精的珍稀素材。"
+            },
+            "iconCompositeId": "",
+            "iconId": "item_char_skill_specialize_1",
+            "id": "item_char_skill_specialize_1",
+            "maxBackpackStackCount": -1,
+            "maxStackCount": -1,
+            "modelKey": "int_collection_item_2",
+            "name": {
+                "id": 3541394562098224485,
+                "text": "超距辉映管"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": 0,
+                "text": ""
+            },
+            "noObtainWayId": [],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_case_bp_selfselect_skillsp_1_1",
+                "item_obtain_dungeon_ss01",
+                "item_obtain_dungeon_bossrush_01_04",
+                "item_obtain_shop_greenticket_char_skill_specialize_1",
+                "item_obtain_shop_yellowticket_char_skill_specialize_1",
+                "item_obtain_dungeon_common",
+                "item_obtain_dungeon_bossrush_common"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 5,
+            "showAllDepotCount": false,
+            "showingType": 0,
+            "sortId1": -34,
+            "sortId2": 11,
+            "type": 95,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 4
+        },
+        "item_plant_spcstone_2_1": {
+            "backpackCanDiscard": true,
+            "decoDesc": {
+                "id": -8212026596656210475,
+                "text": "研究者推测，燎石是受火山喷发等特殊情况影响的黯石再受侵蚀后形成的特殊矿石。"
+            },
+            "desc": {
+                "id": 1081419836601008007,
+                "text": "采集自野外或培养舱培养的特殊矿物。\n可在武器80级突破强化时使用。"
+            },
+            "iconCompositeId": "",
+            "iconId": "item_plant_spcstone_2_1",
+            "id": "item_plant_spcstone_2_1",
+            "maxBackpackStackCount": 50,
+            "maxStackCount": -1,
+            "modelKey": "int_drop_spcstone_2_1",
+            "name": {
+                "id": 8193888702706636321,
+                "text": "燎石"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": -7276243724663331578,
+                "text": "探索武陵城城郊采集"
+            },
+            "noObtainWayId": [
+                "item_obtain_gather_locked"
+            ],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_gather_spcstone_2_1",
+                "item_obtain_spaceship_plant",
+                "item_obtain_gather_map02_lv002"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 5,
+            "showAllDepotCount": true,
+            "showingType": 16,
+            "sortId1": -60,
+            "sortId2": 23,
+            "type": 8,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 6
+        }
+    },
+    "skillpatchtable": {
+        "wpn_attr_agi_high": {
+            "SkillPatchDataBundle": [
+                {
+                    "blackboard": [
+                        {
+                            "key": "agi",
+                            "value": 20,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 6487044023264192995,
+                        "text": "敏捷<@ba.vup>+{agi}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 1,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_agi_high",
+                    "skillName": {
+                        "id": -1891498061935332427,
+                        "text": "敏捷提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_agi"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "agi",
+                            "value": 36,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 5846903524526748117,
+                        "text": "敏捷<@ba.vup>+{agi}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 2,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_agi_high",
+                    "skillName": {
+                        "id": -7709872726988251468,
+                        "text": "敏捷提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_agi"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "agi",
+                            "value": 52,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -5508948527934731289,
+                        "text": "敏捷<@ba.vup>+{agi}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 3,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_agi_high",
+                    "skillName": {
+                        "id": -4854294695107792792,
+                        "text": "敏捷提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_agi"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "agi",
+                            "value": 68,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -7601466570765298595,
+                        "text": "敏捷<@ba.vup>+{agi}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 4,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_agi_high",
+                    "skillName": {
+                        "id": -4771429818029164807,
+                        "text": "敏捷提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_agi"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "agi",
+                            "value": 84,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -490660765041069792,
+                        "text": "敏捷<@ba.vup>+{agi}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 5,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_agi_high",
+                    "skillName": {
+                        "id": -840784621121545817,
+                        "text": "敏捷提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_agi"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "agi",
+                            "value": 100,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -4672507361609639478,
+                        "text": "敏捷<@ba.vup>+{agi}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 6,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_agi_high",
+                    "skillName": {
+                        "id": 7173071081455551683,
+                        "text": "敏捷提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_agi"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "agi",
+                            "value": 116,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 1636810960317307489,
+                        "text": "敏捷<@ba.vup>+{agi}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 7,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_agi_high",
+                    "skillName": {
+                        "id": 5254205441389033509,
+                        "text": "敏捷提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_agi"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "agi",
+                            "value": 132,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -8417757986831530713,
+                        "text": "敏捷<@ba.vup>+{agi}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 8,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_agi_high",
+                    "skillName": {
+                        "id": 8433442402350384210,
+                        "text": "敏捷提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_agi"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "agi",
+                            "value": 156,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 3149664320133790342,
+                        "text": "敏捷<@ba.vup>+{agi}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 9,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_attr_agi_high",
+                    "skillName": {
+                        "id": 1772659133603944870,
+                        "text": "敏捷提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_agi"
+                }
+            ]
+        },
+        "wpn_sp_attr_phydam_high": {
+            "SkillPatchDataBundle": [
+                {
+                    "blackboard": [
+                        {
+                            "key": "phydam",
+                            "value": 0.055555556,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 8623174899587244157,
+                        "text": "物理伤害<@ba.vup>+{phydam:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 1,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_phydam_high",
+                    "skillName": {
+                        "id": -7000901546281884379,
+                        "text": "物理伤害提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_phydam"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "phydam",
+                            "value": 0.1,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -3054582251194861079,
+                        "text": "物理伤害<@ba.vup>+{phydam:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 2,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_phydam_high",
+                    "skillName": {
+                        "id": -989287618596725612,
+                        "text": "物理伤害提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_phydam"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "phydam",
+                            "value": 0.14444445,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 6761322593980472383,
+                        "text": "物理伤害<@ba.vup>+{phydam:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 3,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_phydam_high",
+                    "skillName": {
+                        "id": -5142653690279838749,
+                        "text": "物理伤害提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_phydam"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "phydam",
+                            "value": 0.18888889,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 2921046573032175948,
+                        "text": "物理伤害<@ba.vup>+{phydam:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 4,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_phydam_high",
+                    "skillName": {
+                        "id": -6595659577358009704,
+                        "text": "物理伤害提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_phydam"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "phydam",
+                            "value": 0.23333333,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 5931033333870520618,
+                        "text": "物理伤害<@ba.vup>+{phydam:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 5,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_phydam_high",
+                    "skillName": {
+                        "id": -3791779408113027417,
+                        "text": "物理伤害提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_phydam"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "phydam",
+                            "value": 0.2777778,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -2624819550485199703,
+                        "text": "物理伤害<@ba.vup>+{phydam:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 6,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_phydam_high",
+                    "skillName": {
+                        "id": 3570411471494513875,
+                        "text": "物理伤害提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_phydam"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "phydam",
+                            "value": 0.32222223,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 1149064016045878001,
+                        "text": "物理伤害<@ba.vup>+{phydam:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 7,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_phydam_high",
+                    "skillName": {
+                        "id": -3521792137742352648,
+                        "text": "物理伤害提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_phydam"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "phydam",
+                            "value": 0.36666667,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 5800761119346516533,
+                        "text": "物理伤害<@ba.vup>+{phydam:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 8,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_phydam_high",
+                    "skillName": {
+                        "id": -71943900082064506,
+                        "text": "物理伤害提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_phydam"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "phydam",
+                            "value": 0.43333334,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -7597515245413658317,
+                        "text": "物理伤害<@ba.vup>+{phydam:0.0%}</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 9,
+                    "maxChargeTime": 1,
+                    "skillId": "wpn_sp_attr_phydam_high",
+                    "skillName": {
+                        "id": 8857346329051691948,
+                        "text": "物理伤害提升·大"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "attr_phydam"
+                }
+            ]
+        },
+        "sk_wpn_lance_0012": {
+            "SkillPatchDataBundle": [
+                {
+                    "blackboard": [
+                        {
+                            "key": "dmg_up",
+                            "value": 0.2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up",
+                            "value": 0.08,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up2",
+                            "value": 0.08,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 4162262999251359947,
+                        "text": "装备者对处于<#ba.noguard>破防</>状态的敌人造成的伤害<@ba.vup>+{dmg_up:0.0%}</>。 \n装备者通过自身战技施加<#ba.noguard>破防</>时，获得全能力<@ba.vup>+{all_attr_up:0.0%}</>，持续{duration:0}秒。 装备者通过自身战技施加<#ba.physicalvul>物理脆弱</>时，获得全能力<@ba.vup>+{all_attr_up2:0.0%}</>，持续{duration:0}秒。 \n<@ba.info>两种效果独立生效，且均无法叠加。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 1,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_lance_0012",
+                    "skillName": {
+                        "id": 8989581355014781532,
+                        "text": "效益·山川在我"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "keyword"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "dmg_up",
+                            "value": 0.24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up",
+                            "value": 0.096,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up2",
+                            "value": 0.096,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -8425054939551064733,
+                        "text": "装备者对处于<#ba.noguard>破防</>状态的敌人造成的伤害<@ba.vup>+{dmg_up:0.0%}</>。 \n装备者通过自身战技施加<#ba.noguard>破防</>时，获得全能力<@ba.vup>+{all_attr_up:0.0%}</>，持续{duration:0}秒。 装备者通过自身战技施加<#ba.physicalvul>物理脆弱</>时，获得全能力<@ba.vup>+{all_attr_up2:0.0%}</>，持续{duration:0}秒。 \n<@ba.info>两种效果独立生效，且均无法叠加。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 2,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_lance_0012",
+                    "skillName": {
+                        "id": -917360969738590649,
+                        "text": "效益·山川在我"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "keyword"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "dmg_up",
+                            "value": 0.28,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up",
+                            "value": 0.112,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up2",
+                            "value": 0.112,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 5928308701454695523,
+                        "text": "装备者对处于<#ba.noguard>破防</>状态的敌人造成的伤害<@ba.vup>+{dmg_up:0.0%}</>。 \n装备者通过自身战技施加<#ba.noguard>破防</>时，获得全能力<@ba.vup>+{all_attr_up:0.0%}</>，持续{duration:0}秒。 装备者通过自身战技施加<#ba.physicalvul>物理脆弱</>时，获得全能力<@ba.vup>+{all_attr_up2:0.0%}</>，持续{duration:0}秒。 \n<@ba.info>两种效果独立生效，且均无法叠加。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 3,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_lance_0012",
+                    "skillName": {
+                        "id": -3779669306785699347,
+                        "text": "效益·山川在我"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "keyword"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "dmg_up",
+                            "value": 0.32,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up",
+                            "value": 0.128,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up2",
+                            "value": 0.128,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -2343388832012781551,
+                        "text": "装备者对处于<#ba.noguard>破防</>状态的敌人造成的伤害<@ba.vup>+{dmg_up:0.0%}</>。 \n装备者通过自身战技施加<#ba.noguard>破防</>时，获得全能力<@ba.vup>+{all_attr_up:0.0%}</>，持续{duration:0}秒。 装备者通过自身战技施加<#ba.physicalvul>物理脆弱</>时，获得全能力<@ba.vup>+{all_attr_up2:0.0%}</>，持续{duration:0}秒。 \n<@ba.info>两种效果独立生效，且均无法叠加。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 4,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_lance_0012",
+                    "skillName": {
+                        "id": 4233714290102563459,
+                        "text": "效益·山川在我"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "keyword"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "dmg_up",
+                            "value": 0.36,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up",
+                            "value": 0.144,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up2",
+                            "value": 0.144,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 8512016696338884892,
+                        "text": "装备者对处于<#ba.noguard>破防</>状态的敌人造成的伤害<@ba.vup>+{dmg_up:0.0%}</>。 \n装备者通过自身战技施加<#ba.noguard>破防</>时，获得全能力<@ba.vup>+{all_attr_up:0.0%}</>，持续{duration:0}秒。 装备者通过自身战技施加<#ba.physicalvul>物理脆弱</>时，获得全能力<@ba.vup>+{all_attr_up2:0.0%}</>，持续{duration:0}秒。 \n<@ba.info>两种效果独立生效，且均无法叠加。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 5,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_lance_0012",
+                    "skillName": {
+                        "id": -7107295383168350476,
+                        "text": "效益·山川在我"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "keyword"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "dmg_up",
+                            "value": 0.4,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up",
+                            "value": 0.16,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up2",
+                            "value": 0.16,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -6682395156010997104,
+                        "text": "装备者对处于<#ba.noguard>破防</>状态的敌人造成的伤害<@ba.vup>+{dmg_up:0.0%}</>。 \n装备者通过自身战技施加<#ba.noguard>破防</>时，获得全能力<@ba.vup>+{all_attr_up:0.0%}</>，持续{duration:0}秒。 装备者通过自身战技施加<#ba.physicalvul>物理脆弱</>时，获得全能力<@ba.vup>+{all_attr_up2:0.0%}</>，持续{duration:0}秒。 \n<@ba.info>两种效果独立生效，且均无法叠加。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 6,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_lance_0012",
+                    "skillName": {
+                        "id": 2944799983102457222,
+                        "text": "效益·山川在我"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "keyword"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "dmg_up",
+                            "value": 0.44,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up",
+                            "value": 0.176,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up2",
+                            "value": 0.176,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 4842727106938407548,
+                        "text": "装备者对处于<#ba.noguard>破防</>状态的敌人造成的伤害<@ba.vup>+{dmg_up:0.0%}</>。 \n装备者通过自身战技施加<#ba.noguard>破防</>时，获得全能力<@ba.vup>+{all_attr_up:0.0%}</>，持续{duration:0}秒。 装备者通过自身战技施加<#ba.physicalvul>物理脆弱</>时，获得全能力<@ba.vup>+{all_attr_up2:0.0%}</>，持续{duration:0}秒。 \n<@ba.info>两种效果独立生效，且均无法叠加。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 7,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_lance_0012",
+                    "skillName": {
+                        "id": -5750028790743247712,
+                        "text": "效益·山川在我"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "keyword"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "dmg_up",
+                            "value": 0.48,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up",
+                            "value": 0.192,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up2",
+                            "value": 0.192,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": -9076128542482781278,
+                        "text": "装备者对处于<#ba.noguard>破防</>状态的敌人造成的伤害<@ba.vup>+{dmg_up:0.0%}</>。 \n装备者通过自身战技施加<#ba.noguard>破防</>时，获得全能力<@ba.vup>+{all_attr_up:0.0%}</>，持续{duration:0}秒。 装备者通过自身战技施加<#ba.physicalvul>物理脆弱</>时，获得全能力<@ba.vup>+{all_attr_up2:0.0%}</>，持续{duration:0}秒。 \n<@ba.info>两种效果独立生效，且均无法叠加。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 8,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_lance_0012",
+                    "skillName": {
+                        "id": 9068145816232759104,
+                        "text": "效益·山川在我"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "keyword"
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "dmg_up",
+                            "value": 0.56,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up",
+                            "value": 0.224,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "all_attr_up2",
+                            "value": 0.224,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 6473565353077140328,
+                        "text": "装备者对处于<#ba.noguard>破防</>状态的敌人造成的伤害<@ba.vup>+{dmg_up:0.0%}</>。 \n装备者通过自身战技施加<#ba.noguard>破防</>时，获得全能力<@ba.vup>+{all_attr_up:0.0%}</>，持续{duration:0}秒。 装备者通过自身战技施加<#ba.physicalvul>物理脆弱</>时，获得全能力<@ba.vup>+{all_attr_up2:0.0%}</>，持续{duration:0}秒。 \n<@ba.info>两种效果独立生效，且均无法叠加。</>"
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 9,
+                    "maxChargeTime": 1,
+                    "skillId": "sk_wpn_lance_0012",
+                    "skillName": {
+                        "id": 2282175560132903998,
+                        "text": "效益·山川在我"
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": "keyword"
+                }
+            ]
+        }
+    },
+    "weaponbreakthroughtemplatetable": {
+        "weapon_breakthrough_456star_A_1": {
+            "list": [
+                {
+                    "breakItemList": [
+                        {
+                            "count": 0,
+                            "id": "item_weapon_break_low"
+                        }
+                    ],
+                    "breakthroughGold": 0,
+                    "breakthroughLv": 1,
+                    "breakthroughShowLv": 0,
+                    "skillLevelBounds": [
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 3
+                        },
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 3
+                        },
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 4
+                        }
+                    ]
+                },
+                {
+                    "breakItemList": [
+                        {
+                            "count": 5,
+                            "id": "item_weapon_break_low"
+                        },
+                        {
+                            "count": 3,
+                            "id": "item_plant_spcstone_1_1"
+                        }
+                    ],
+                    "breakthroughGold": 2200,
+                    "breakthroughLv": 20,
+                    "breakthroughShowLv": 1,
+                    "skillLevelBounds": [
+                        {
+                            "lowerBound": 2,
+                            "upperBound": 5
+                        },
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 4
+                        },
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 4
+                        }
+                    ]
+                },
+                {
+                    "breakItemList": [
+                        {
+                            "count": 18,
+                            "id": "item_weapon_break_low"
+                        },
+                        {
+                            "count": 5,
+                            "id": "item_plant_spcstone_1_2"
+                        }
+                    ],
+                    "breakthroughGold": 8500,
+                    "breakthroughLv": 40,
+                    "breakthroughShowLv": 2,
+                    "skillLevelBounds": [
+                        {
+                            "lowerBound": 2,
+                            "upperBound": 6
+                        },
+                        {
+                            "lowerBound": 2,
+                            "upperBound": 6
+                        },
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 4
+                        }
+                    ]
+                },
+                {
+                    "breakItemList": [
+                        {
+                            "count": 20,
+                            "id": "item_weapon_break_high"
+                        },
+                        {
+                            "count": 5,
+                            "id": "item_plant_spcstone_1_3"
+                        }
+                    ],
+                    "breakthroughGold": 25000,
+                    "breakthroughLv": 60,
+                    "breakthroughShowLv": 3,
+                    "skillLevelBounds": [
+                        {
+                            "lowerBound": 3,
+                            "upperBound": 8
+                        },
+                        {
+                            "lowerBound": 2,
+                            "upperBound": 7
+                        },
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 4
+                        }
+                    ]
+                },
+                {
+                    "breakItemList": [
+                        {
+                            "count": 30,
+                            "id": "item_weapon_break_high"
+                        },
+                        {
+                            "count": 16,
+                            "id": "item_char_skill_specialize_1"
+                        },
+                        {
+                            "count": 8,
+                            "id": "item_plant_spcstone_2_1"
+                        }
+                    ],
+                    "breakthroughGold": 90000,
+                    "breakthroughLv": 80,
+                    "breakthroughShowLv": 4,
+                    "skillLevelBounds": [
+                        {
+                            "lowerBound": 3,
+                            "upperBound": 9
+                        },
+                        {
+                            "lowerBound": 3,
+                            "upperBound": 9
+                        },
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 4
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "weaponupgradetemplatetable": {
+        "weapon_upgrade_curve_6star_1.01": {
+            "list": [
+                {
+                    "baseAtk": 51,
+                    "lvUpExp": 10,
+                    "lvUpGold": 0,
+                    "weaponLv": 1
+                },
+                {
+                    "baseAtk": 56,
+                    "lvUpExp": 10,
+                    "lvUpGold": 0,
+                    "weaponLv": 2
+                },
+                {
+                    "baseAtk": 61,
+                    "lvUpExp": 10,
+                    "lvUpGold": 0,
+                    "weaponLv": 3
+                },
+                {
+                    "baseAtk": 66,
+                    "lvUpExp": 20,
+                    "lvUpGold": 0,
+                    "weaponLv": 4
+                },
+                {
+                    "baseAtk": 71,
+                    "lvUpExp": 40,
+                    "lvUpGold": 0,
+                    "weaponLv": 5
+                },
+                {
+                    "baseAtk": 76,
+                    "lvUpExp": 50,
+                    "lvUpGold": 0,
+                    "weaponLv": 6
+                },
+                {
+                    "baseAtk": 81,
+                    "lvUpExp": 80,
+                    "lvUpGold": 0,
+                    "weaponLv": 7
+                },
+                {
+                    "baseAtk": 86,
+                    "lvUpExp": 110,
+                    "lvUpGold": 0,
+                    "weaponLv": 8
+                },
+                {
+                    "baseAtk": 91,
+                    "lvUpExp": 150,
+                    "lvUpGold": 0,
+                    "weaponLv": 9
+                },
+                {
+                    "baseAtk": 96,
+                    "lvUpExp": 200,
+                    "lvUpGold": 10,
+                    "weaponLv": 10
+                },
+                {
+                    "baseAtk": 101,
+                    "lvUpExp": 270,
+                    "lvUpGold": 10,
+                    "weaponLv": 11
+                },
+                {
+                    "baseAtk": 106,
+                    "lvUpExp": 370,
+                    "lvUpGold": 10,
+                    "weaponLv": 12
+                },
+                {
+                    "baseAtk": 111,
+                    "lvUpExp": 480,
+                    "lvUpGold": 20,
+                    "weaponLv": 13
+                },
+                {
+                    "baseAtk": 116,
+                    "lvUpExp": 620,
+                    "lvUpGold": 30,
+                    "weaponLv": 14
+                },
+                {
+                    "baseAtk": 121,
+                    "lvUpExp": 780,
+                    "lvUpGold": 50,
+                    "weaponLv": 15
+                },
+                {
+                    "baseAtk": 126,
+                    "lvUpExp": 990,
+                    "lvUpGold": 70,
+                    "weaponLv": 16
+                },
+                {
+                    "baseAtk": 131,
+                    "lvUpExp": 1250,
+                    "lvUpGold": 100,
+                    "weaponLv": 17
+                },
+                {
+                    "baseAtk": 136,
+                    "lvUpExp": 1550,
+                    "lvUpGold": 140,
+                    "weaponLv": 18
+                },
+                {
+                    "baseAtk": 141,
+                    "lvUpExp": 1900,
+                    "lvUpGold": 200,
+                    "weaponLv": 19
+                },
+                {
+                    "baseAtk": 146,
+                    "lvUpExp": 2360,
+                    "lvUpGold": 240,
+                    "weaponLv": 20
+                },
+                {
+                    "baseAtk": 152,
+                    "lvUpExp": 2960,
+                    "lvUpGold": 300,
+                    "weaponLv": 21
+                },
+                {
+                    "baseAtk": 157,
+                    "lvUpExp": 3280,
+                    "lvUpGold": 330,
+                    "weaponLv": 22
+                },
+                {
+                    "baseAtk": 162,
+                    "lvUpExp": 3580,
+                    "lvUpGold": 360,
+                    "weaponLv": 23
+                },
+                {
+                    "baseAtk": 167,
+                    "lvUpExp": 3850,
+                    "lvUpGold": 390,
+                    "weaponLv": 24
+                },
+                {
+                    "baseAtk": 172,
+                    "lvUpExp": 4090,
+                    "lvUpGold": 410,
+                    "weaponLv": 25
+                },
+                {
+                    "baseAtk": 177,
+                    "lvUpExp": 4300,
+                    "lvUpGold": 430,
+                    "weaponLv": 26
+                },
+                {
+                    "baseAtk": 182,
+                    "lvUpExp": 4600,
+                    "lvUpGold": 460,
+                    "weaponLv": 27
+                },
+                {
+                    "baseAtk": 187,
+                    "lvUpExp": 4810,
+                    "lvUpGold": 490,
+                    "weaponLv": 28
+                },
+                {
+                    "baseAtk": 192,
+                    "lvUpExp": 4940,
+                    "lvUpGold": 500,
+                    "weaponLv": 29
+                },
+                {
+                    "baseAtk": 197,
+                    "lvUpExp": 5090,
+                    "lvUpGold": 510,
+                    "weaponLv": 30
+                },
+                {
+                    "baseAtk": 202,
+                    "lvUpExp": 5250,
+                    "lvUpGold": 530,
+                    "weaponLv": 31
+                },
+                {
+                    "baseAtk": 207,
+                    "lvUpExp": 5480,
+                    "lvUpGold": 550,
+                    "weaponLv": 32
+                },
+                {
+                    "baseAtk": 212,
+                    "lvUpExp": 5670,
+                    "lvUpGold": 570,
+                    "weaponLv": 33
+                },
+                {
+                    "baseAtk": 217,
+                    "lvUpExp": 5820,
+                    "lvUpGold": 590,
+                    "weaponLv": 34
+                },
+                {
+                    "baseAtk": 222,
+                    "lvUpExp": 5910,
+                    "lvUpGold": 600,
+                    "weaponLv": 35
+                },
+                {
+                    "baseAtk": 227,
+                    "lvUpExp": 6010,
+                    "lvUpGold": 610,
+                    "weaponLv": 36
+                },
+                {
+                    "baseAtk": 232,
+                    "lvUpExp": 6110,
+                    "lvUpGold": 620,
+                    "weaponLv": 37
+                },
+                {
+                    "baseAtk": 237,
+                    "lvUpExp": 6220,
+                    "lvUpGold": 630,
+                    "weaponLv": 38
+                },
+                {
+                    "baseAtk": 242,
+                    "lvUpExp": 6320,
+                    "lvUpGold": 640,
+                    "weaponLv": 39
+                },
+                {
+                    "baseAtk": 247,
+                    "lvUpExp": 6430,
+                    "lvUpGold": 650,
+                    "weaponLv": 40
+                },
+                {
+                    "baseAtk": 253,
+                    "lvUpExp": 6620,
+                    "lvUpGold": 670,
+                    "weaponLv": 41
+                },
+                {
+                    "baseAtk": 258,
+                    "lvUpExp": 6810,
+                    "lvUpGold": 690,
+                    "weaponLv": 42
+                },
+                {
+                    "baseAtk": 263,
+                    "lvUpExp": 7010,
+                    "lvUpGold": 710,
+                    "weaponLv": 43
+                },
+                {
+                    "baseAtk": 268,
+                    "lvUpExp": 7220,
+                    "lvUpGold": 730,
+                    "weaponLv": 44
+                },
+                {
+                    "baseAtk": 273,
+                    "lvUpExp": 7410,
+                    "lvUpGold": 750,
+                    "weaponLv": 45
+                },
+                {
+                    "baseAtk": 278,
+                    "lvUpExp": 7690,
+                    "lvUpGold": 770,
+                    "weaponLv": 46
+                },
+                {
+                    "baseAtk": 283,
+                    "lvUpExp": 7960,
+                    "lvUpGold": 800,
+                    "weaponLv": 47
+                },
+                {
+                    "baseAtk": 288,
+                    "lvUpExp": 8260,
+                    "lvUpGold": 830,
+                    "weaponLv": 48
+                },
+                {
+                    "baseAtk": 293,
+                    "lvUpExp": 8580,
+                    "lvUpGold": 860,
+                    "weaponLv": 49
+                },
+                {
+                    "baseAtk": 298,
+                    "lvUpExp": 8940,
+                    "lvUpGold": 900,
+                    "weaponLv": 50
+                },
+                {
+                    "baseAtk": 303,
+                    "lvUpExp": 9320,
+                    "lvUpGold": 940,
+                    "weaponLv": 51
+                },
+                {
+                    "baseAtk": 308,
+                    "lvUpExp": 9740,
+                    "lvUpGold": 980,
+                    "weaponLv": 52
+                },
+                {
+                    "baseAtk": 313,
+                    "lvUpExp": 10190,
+                    "lvUpGold": 1020,
+                    "weaponLv": 53
+                },
+                {
+                    "baseAtk": 318,
+                    "lvUpExp": 10680,
+                    "lvUpGold": 1070,
+                    "weaponLv": 54
+                },
+                {
+                    "baseAtk": 323,
+                    "lvUpExp": 11210,
+                    "lvUpGold": 1130,
+                    "weaponLv": 55
+                },
+                {
+                    "baseAtk": 328,
+                    "lvUpExp": 11770,
+                    "lvUpGold": 1180,
+                    "weaponLv": 56
+                },
+                {
+                    "baseAtk": 333,
+                    "lvUpExp": 12380,
+                    "lvUpGold": 1240,
+                    "weaponLv": 57
+                },
+                {
+                    "baseAtk": 338,
+                    "lvUpExp": 13040,
+                    "lvUpGold": 1310,
+                    "weaponLv": 58
+                },
+                {
+                    "baseAtk": 343,
+                    "lvUpExp": 13740,
+                    "lvUpGold": 1380,
+                    "weaponLv": 59
+                },
+                {
+                    "baseAtk": 348,
+                    "lvUpExp": 14110,
+                    "lvUpGold": 1420,
+                    "weaponLv": 60
+                },
+                {
+                    "baseAtk": 354,
+                    "lvUpExp": 15870,
+                    "lvUpGold": 1540,
+                    "weaponLv": 61
+                },
+                {
+                    "baseAtk": 359,
+                    "lvUpExp": 17690,
+                    "lvUpGold": 1670,
+                    "weaponLv": 62
+                },
+                {
+                    "baseAtk": 364,
+                    "lvUpExp": 19480,
+                    "lvUpGold": 1800,
+                    "weaponLv": 63
+                },
+                {
+                    "baseAtk": 369,
+                    "lvUpExp": 21670,
+                    "lvUpGold": 1960,
+                    "weaponLv": 64
+                },
+                {
+                    "baseAtk": 374,
+                    "lvUpExp": 24220,
+                    "lvUpGold": 2160,
+                    "weaponLv": 65
+                },
+                {
+                    "baseAtk": 379,
+                    "lvUpExp": 27210,
+                    "lvUpGold": 2390,
+                    "weaponLv": 66
+                },
+                {
+                    "baseAtk": 384,
+                    "lvUpExp": 30700,
+                    "lvUpGold": 2680,
+                    "weaponLv": 67
+                },
+                {
+                    "baseAtk": 389,
+                    "lvUpExp": 34780,
+                    "lvUpGold": 3010,
+                    "weaponLv": 68
+                },
+                {
+                    "baseAtk": 394,
+                    "lvUpExp": 39510,
+                    "lvUpGold": 3400,
+                    "weaponLv": 69
+                },
+                {
+                    "baseAtk": 399,
+                    "lvUpExp": 44990,
+                    "lvUpGold": 3860,
+                    "weaponLv": 70
+                },
+                {
+                    "baseAtk": 404,
+                    "lvUpExp": 48870,
+                    "lvUpGold": 4400,
+                    "weaponLv": 71
+                },
+                {
+                    "baseAtk": 409,
+                    "lvUpExp": 53240,
+                    "lvUpGold": 5020,
+                    "weaponLv": 72
+                },
+                {
+                    "baseAtk": 414,
+                    "lvUpExp": 58140,
+                    "lvUpGold": 5730,
+                    "weaponLv": 73
+                },
+                {
+                    "baseAtk": 419,
+                    "lvUpExp": 63580,
+                    "lvUpGold": 6560,
+                    "weaponLv": 74
+                },
+                {
+                    "baseAtk": 424,
+                    "lvUpExp": 69600,
+                    "lvUpGold": 7500,
+                    "weaponLv": 75
+                },
+                {
+                    "baseAtk": 429,
+                    "lvUpExp": 74420,
+                    "lvUpGold": 8380,
+                    "weaponLv": 76
+                },
+                {
+                    "baseAtk": 434,
+                    "lvUpExp": 79530,
+                    "lvUpGold": 9350,
+                    "weaponLv": 77
+                },
+                {
+                    "baseAtk": 439,
+                    "lvUpExp": 84940,
+                    "lvUpGold": 10420,
+                    "weaponLv": 78
+                },
+                {
+                    "baseAtk": 444,
+                    "lvUpExp": 90620,
+                    "lvUpGold": 11590,
+                    "weaponLv": 79
+                },
+                {
+                    "baseAtk": 449,
+                    "lvUpExp": 96570,
+                    "lvUpGold": 12880,
+                    "weaponLv": 80
+                },
+                {
+                    "baseAtk": 455,
+                    "lvUpExp": 103570,
+                    "lvUpGold": 14400,
+                    "weaponLv": 81
+                },
+                {
+                    "baseAtk": 460,
+                    "lvUpExp": 110930,
+                    "lvUpGold": 16070,
+                    "weaponLv": 82
+                },
+                {
+                    "baseAtk": 465,
+                    "lvUpExp": 118620,
+                    "lvUpGold": 17900,
+                    "weaponLv": 83
+                },
+                {
+                    "baseAtk": 470,
+                    "lvUpExp": 126650,
+                    "lvUpGold": 19910,
+                    "weaponLv": 84
+                },
+                {
+                    "baseAtk": 475,
+                    "lvUpExp": 134990,
+                    "lvUpGold": 22090,
+                    "weaponLv": 85
+                },
+                {
+                    "baseAtk": 480,
+                    "lvUpExp": 143620,
+                    "lvUpGold": 24470,
+                    "weaponLv": 86
+                },
+                {
+                    "baseAtk": 485,
+                    "lvUpExp": 152540,
+                    "lvUpGold": 27060,
+                    "weaponLv": 87
+                },
+                {
+                    "baseAtk": 490,
+                    "lvUpExp": 161720,
+                    "lvUpGold": 29860,
+                    "weaponLv": 88
+                },
+                {
+                    "baseAtk": 495,
+                    "lvUpExp": 171160,
+                    "lvUpGold": 32900,
+                    "weaponLv": 89
+                },
+                {
+                    "baseAtk": 500,
+                    "lvUpExp": 0,
+                    "lvUpGold": 0,
+                    "weaponLv": 90
+                }
+            ]
+        }
+    },
+    "weaponupgradetemplatesumtable": {
+        "weapon_upgrade_curve_6star_1.01": {
+            "list": [
+                {
+                    "lvUpExpSum": 0,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 1
+                },
+                {
+                    "lvUpExpSum": 10,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 2
+                },
+                {
+                    "lvUpExpSum": 20,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 3
+                },
+                {
+                    "lvUpExpSum": 30,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 4
+                },
+                {
+                    "lvUpExpSum": 50,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 5
+                },
+                {
+                    "lvUpExpSum": 90,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 6
+                },
+                {
+                    "lvUpExpSum": 140,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 7
+                },
+                {
+                    "lvUpExpSum": 220,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 8
+                },
+                {
+                    "lvUpExpSum": 330,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 9
+                },
+                {
+                    "lvUpExpSum": 480,
+                    "lvUpGoldSum": 0,
+                    "weaponLv": 10
+                },
+                {
+                    "lvUpExpSum": 680,
+                    "lvUpGoldSum": 10,
+                    "weaponLv": 11
+                },
+                {
+                    "lvUpExpSum": 950,
+                    "lvUpGoldSum": 20,
+                    "weaponLv": 12
+                },
+                {
+                    "lvUpExpSum": 1320,
+                    "lvUpGoldSum": 30,
+                    "weaponLv": 13
+                },
+                {
+                    "lvUpExpSum": 1800,
+                    "lvUpGoldSum": 50,
+                    "weaponLv": 14
+                },
+                {
+                    "lvUpExpSum": 2420,
+                    "lvUpGoldSum": 80,
+                    "weaponLv": 15
+                },
+                {
+                    "lvUpExpSum": 3200,
+                    "lvUpGoldSum": 130,
+                    "weaponLv": 16
+                },
+                {
+                    "lvUpExpSum": 4190,
+                    "lvUpGoldSum": 200,
+                    "weaponLv": 17
+                },
+                {
+                    "lvUpExpSum": 5440,
+                    "lvUpGoldSum": 300,
+                    "weaponLv": 18
+                },
+                {
+                    "lvUpExpSum": 6990,
+                    "lvUpGoldSum": 440,
+                    "weaponLv": 19
+                },
+                {
+                    "lvUpExpSum": 8890,
+                    "lvUpGoldSum": 640,
+                    "weaponLv": 20
+                },
+                {
+                    "lvUpExpSum": 11250,
+                    "lvUpGoldSum": 880,
+                    "weaponLv": 21
+                },
+                {
+                    "lvUpExpSum": 14210,
+                    "lvUpGoldSum": 1180,
+                    "weaponLv": 22
+                },
+                {
+                    "lvUpExpSum": 17490,
+                    "lvUpGoldSum": 1510,
+                    "weaponLv": 23
+                },
+                {
+                    "lvUpExpSum": 21070,
+                    "lvUpGoldSum": 1870,
+                    "weaponLv": 24
+                },
+                {
+                    "lvUpExpSum": 24920,
+                    "lvUpGoldSum": 2260,
+                    "weaponLv": 25
+                },
+                {
+                    "lvUpExpSum": 29010,
+                    "lvUpGoldSum": 2670,
+                    "weaponLv": 26
+                },
+                {
+                    "lvUpExpSum": 33310,
+                    "lvUpGoldSum": 3100,
+                    "weaponLv": 27
+                },
+                {
+                    "lvUpExpSum": 37910,
+                    "lvUpGoldSum": 3560,
+                    "weaponLv": 28
+                },
+                {
+                    "lvUpExpSum": 42720,
+                    "lvUpGoldSum": 4050,
+                    "weaponLv": 29
+                },
+                {
+                    "lvUpExpSum": 47660,
+                    "lvUpGoldSum": 4550,
+                    "weaponLv": 30
+                },
+                {
+                    "lvUpExpSum": 52750,
+                    "lvUpGoldSum": 5060,
+                    "weaponLv": 31
+                },
+                {
+                    "lvUpExpSum": 58000,
+                    "lvUpGoldSum": 5590,
+                    "weaponLv": 32
+                },
+                {
+                    "lvUpExpSum": 63480,
+                    "lvUpGoldSum": 6140,
+                    "weaponLv": 33
+                },
+                {
+                    "lvUpExpSum": 69150,
+                    "lvUpGoldSum": 6710,
+                    "weaponLv": 34
+                },
+                {
+                    "lvUpExpSum": 74970,
+                    "lvUpGoldSum": 7300,
+                    "weaponLv": 35
+                },
+                {
+                    "lvUpExpSum": 80880,
+                    "lvUpGoldSum": 7900,
+                    "weaponLv": 36
+                },
+                {
+                    "lvUpExpSum": 86890,
+                    "lvUpGoldSum": 8510,
+                    "weaponLv": 37
+                },
+                {
+                    "lvUpExpSum": 93000,
+                    "lvUpGoldSum": 9130,
+                    "weaponLv": 38
+                },
+                {
+                    "lvUpExpSum": 99220,
+                    "lvUpGoldSum": 9760,
+                    "weaponLv": 39
+                },
+                {
+                    "lvUpExpSum": 105540,
+                    "lvUpGoldSum": 10400,
+                    "weaponLv": 40
+                },
+                {
+                    "lvUpExpSum": 111970,
+                    "lvUpGoldSum": 11050,
+                    "weaponLv": 41
+                },
+                {
+                    "lvUpExpSum": 118590,
+                    "lvUpGoldSum": 11720,
+                    "weaponLv": 42
+                },
+                {
+                    "lvUpExpSum": 125400,
+                    "lvUpGoldSum": 12410,
+                    "weaponLv": 43
+                },
+                {
+                    "lvUpExpSum": 132410,
+                    "lvUpGoldSum": 13120,
+                    "weaponLv": 44
+                },
+                {
+                    "lvUpExpSum": 139630,
+                    "lvUpGoldSum": 13850,
+                    "weaponLv": 45
+                },
+                {
+                    "lvUpExpSum": 147040,
+                    "lvUpGoldSum": 14600,
+                    "weaponLv": 46
+                },
+                {
+                    "lvUpExpSum": 154730,
+                    "lvUpGoldSum": 15370,
+                    "weaponLv": 47
+                },
+                {
+                    "lvUpExpSum": 162690,
+                    "lvUpGoldSum": 16170,
+                    "weaponLv": 48
+                },
+                {
+                    "lvUpExpSum": 170950,
+                    "lvUpGoldSum": 17000,
+                    "weaponLv": 49
+                },
+                {
+                    "lvUpExpSum": 179530,
+                    "lvUpGoldSum": 17860,
+                    "weaponLv": 50
+                },
+                {
+                    "lvUpExpSum": 188470,
+                    "lvUpGoldSum": 18760,
+                    "weaponLv": 51
+                },
+                {
+                    "lvUpExpSum": 197790,
+                    "lvUpGoldSum": 19700,
+                    "weaponLv": 52
+                },
+                {
+                    "lvUpExpSum": 207530,
+                    "lvUpGoldSum": 20680,
+                    "weaponLv": 53
+                },
+                {
+                    "lvUpExpSum": 217720,
+                    "lvUpGoldSum": 21700,
+                    "weaponLv": 54
+                },
+                {
+                    "lvUpExpSum": 228400,
+                    "lvUpGoldSum": 22770,
+                    "weaponLv": 55
+                },
+                {
+                    "lvUpExpSum": 239610,
+                    "lvUpGoldSum": 23900,
+                    "weaponLv": 56
+                },
+                {
+                    "lvUpExpSum": 251380,
+                    "lvUpGoldSum": 25080,
+                    "weaponLv": 57
+                },
+                {
+                    "lvUpExpSum": 263760,
+                    "lvUpGoldSum": 26320,
+                    "weaponLv": 58
+                },
+                {
+                    "lvUpExpSum": 276800,
+                    "lvUpGoldSum": 27630,
+                    "weaponLv": 59
+                },
+                {
+                    "lvUpExpSum": 290540,
+                    "lvUpGoldSum": 29010,
+                    "weaponLv": 60
+                },
+                {
+                    "lvUpExpSum": 304650,
+                    "lvUpGoldSum": 30430,
+                    "weaponLv": 61
+                },
+                {
+                    "lvUpExpSum": 320520,
+                    "lvUpGoldSum": 31970,
+                    "weaponLv": 62
+                },
+                {
+                    "lvUpExpSum": 338210,
+                    "lvUpGoldSum": 33640,
+                    "weaponLv": 63
+                },
+                {
+                    "lvUpExpSum": 357690,
+                    "lvUpGoldSum": 35440,
+                    "weaponLv": 64
+                },
+                {
+                    "lvUpExpSum": 379360,
+                    "lvUpGoldSum": 37400,
+                    "weaponLv": 65
+                },
+                {
+                    "lvUpExpSum": 403580,
+                    "lvUpGoldSum": 39560,
+                    "weaponLv": 66
+                },
+                {
+                    "lvUpExpSum": 430790,
+                    "lvUpGoldSum": 41950,
+                    "weaponLv": 67
+                },
+                {
+                    "lvUpExpSum": 461490,
+                    "lvUpGoldSum": 44630,
+                    "weaponLv": 68
+                },
+                {
+                    "lvUpExpSum": 496270,
+                    "lvUpGoldSum": 47640,
+                    "weaponLv": 69
+                },
+                {
+                    "lvUpExpSum": 535780,
+                    "lvUpGoldSum": 51040,
+                    "weaponLv": 70
+                },
+                {
+                    "lvUpExpSum": 580770,
+                    "lvUpGoldSum": 54900,
+                    "weaponLv": 71
+                },
+                {
+                    "lvUpExpSum": 629640,
+                    "lvUpGoldSum": 59300,
+                    "weaponLv": 72
+                },
+                {
+                    "lvUpExpSum": 682880,
+                    "lvUpGoldSum": 64320,
+                    "weaponLv": 73
+                },
+                {
+                    "lvUpExpSum": 741020,
+                    "lvUpGoldSum": 70050,
+                    "weaponLv": 74
+                },
+                {
+                    "lvUpExpSum": 804600,
+                    "lvUpGoldSum": 76610,
+                    "weaponLv": 75
+                },
+                {
+                    "lvUpExpSum": 874200,
+                    "lvUpGoldSum": 84110,
+                    "weaponLv": 76
+                },
+                {
+                    "lvUpExpSum": 948620,
+                    "lvUpGoldSum": 92490,
+                    "weaponLv": 77
+                },
+                {
+                    "lvUpExpSum": 1028150,
+                    "lvUpGoldSum": 101840,
+                    "weaponLv": 78
+                },
+                {
+                    "lvUpExpSum": 1113090,
+                    "lvUpGoldSum": 112260,
+                    "weaponLv": 79
+                },
+                {
+                    "lvUpExpSum": 1203710,
+                    "lvUpGoldSum": 123850,
+                    "weaponLv": 80
+                },
+                {
+                    "lvUpExpSum": 1300280,
+                    "lvUpGoldSum": 136730,
+                    "weaponLv": 81
+                },
+                {
+                    "lvUpExpSum": 1403850,
+                    "lvUpGoldSum": 151130,
+                    "weaponLv": 82
+                },
+                {
+                    "lvUpExpSum": 1514780,
+                    "lvUpGoldSum": 167200,
+                    "weaponLv": 83
+                },
+                {
+                    "lvUpExpSum": 1633400,
+                    "lvUpGoldSum": 185100,
+                    "weaponLv": 84
+                },
+                {
+                    "lvUpExpSum": 1760050,
+                    "lvUpGoldSum": 205010,
+                    "weaponLv": 85
+                },
+                {
+                    "lvUpExpSum": 1895040,
+                    "lvUpGoldSum": 227100,
+                    "weaponLv": 86
+                },
+                {
+                    "lvUpExpSum": 2038660,
+                    "lvUpGoldSum": 251570,
+                    "weaponLv": 87
+                },
+                {
+                    "lvUpExpSum": 2191200,
+                    "lvUpGoldSum": 278630,
+                    "weaponLv": 88
+                },
+                {
+                    "lvUpExpSum": 2352920,
+                    "lvUpGoldSum": 308490,
+                    "weaponLv": 89
+                },
+                {
+                    "lvUpExpSum": 2524080,
+                    "lvUpGoldSum": 341390,
+                    "weaponLv": 90
+                }
+            ]
+        }
+    },
+    "weapontalenttemplatetable": {
+        "wpn_potential_456star": {
+            "list": [
+                {
+                    "skillLevelExtraBounds": [
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 1,
+                            "upperBound": 1
+                        }
+                    ],
+                    "talentLv": 1
+                },
+                {
+                    "skillLevelExtraBounds": [
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 2,
+                            "upperBound": 2
+                        }
+                    ],
+                    "talentLv": 2
+                },
+                {
+                    "skillLevelExtraBounds": [
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 3,
+                            "upperBound": 3
+                        }
+                    ],
+                    "talentLv": 3
+                },
+                {
+                    "skillLevelExtraBounds": [
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 4,
+                            "upperBound": 4
+                        }
+                    ],
+                    "talentLv": 4
+                },
+                {
+                    "skillLevelExtraBounds": [
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 0,
+                            "upperBound": 0
+                        },
+                        {
+                            "lowerBound": 5,
+                            "upperBound": 5
+                        }
+                    ],
+                    "talentLv": 5
+                }
+            ]
+        }
+    }
+}
