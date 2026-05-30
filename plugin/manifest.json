@@ -17,11 +17,21 @@
     },
     {
         "id": "weapon",
+        "title": "武器（旧版）",
+        "description": "查看武器详细数据",
+        "priority": 106,
+        "icon": "🔫",
+        "contentFile": "plugin/weapon.html",
+        "hidden": true
+    },
+    {
+        "id": "v2_weapon",
         "title": "武器",
         "description": "查看武器详细数据",
         "priority": 8,
         "icon": "🔫",
-        "contentFile": "plugin/weapon.html"
+        "contentFile": "/plugin/v2_weapon.html",
+        "hidden": false
     },
     {
         "id": "character",
