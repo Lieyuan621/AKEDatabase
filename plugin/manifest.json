@@ -61,11 +61,21 @@
     },
     {
         "id": "equip",
+        "title": "装备（旧版）",
+        "description": "查看装备详细数据",
+        "priority": 105,
+        "icon": "🛡️",
+        "contentFile": "/plugin/equip.html",
+        "hidden": true
+    },
+    {
+        "id": "v2_equip",
         "title": "装备",
         "description": "查看装备详细数据",
         "priority": 10,
         "icon": "🛡️",
-        "contentFile": "/plugin/equip.html"
+        "contentFile": "/plugin/v2_equip.html",
+        "hidden": false
     },
     {
         "id": "item",
