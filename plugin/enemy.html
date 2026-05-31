@@ -23,6 +23,7 @@
 <script>
     (function() {
         let allEnemies = [];
+        let rawAllEnemies = [];
         let activeEnemyId = null;
         let isInitialized = false;
         let enemyLevelsToShow = null;
@@ -61,7 +62,8 @@
                 const res = await fetch('/public/CH/enemy/manifest.json?t=' + Date.now());
                 if (!res.ok) throw new Error('无法加载敌人清单');
                 const all = await res.json();
-                let enemies = showHidden ? all : all.filter(e => !e.hidden);
+                rawAllEnemies = all || [];
+                let enemies = showHidden ? rawAllEnemies : rawAllEnemies.filter(e => !e.hidden);
                 enemies.sort((a, b) => (a.priority || 999) - (b.priority || 999));
                 return enemies;
             } catch (err) {
@@ -119,24 +121,39 @@
                     document.querySelectorAll('.enemy-item').forEach(el => el.classList.remove('active'));
                     item.classList.add('active');
                     activeEnemyId = enemy.templateId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('enemy', enemy.templateId);
                     loadEnemyDetail(enemy, detailContainer);
                 });
 
                 container.appendChild(item);
             });
 
+            if (window.__deepLinkId) {
+                const deepItem = filtered.find(c => c.templateId === window.__deepLinkId);
+                if (deepItem) {
+                    activeEnemyId = deepItem.templateId;
+                } else {
+                    const existsInRaw = rawAllEnemies.some(c => c.templateId === window.__deepLinkId);
+                    if (window.__akeRouter && window.__akeRouter.onDeepLinkNotFound) {
+                        window.__akeRouter.onDeepLinkNotFound(window.__deepLinkId, existsInRaw);
+                    }
+                }
+                window.__deepLinkId = null;
+            }
             const activeExists = filtered.some(e => e.templateId === activeEnemyId);
             if (!activeExists && filtered.length > 0) {
                 activeEnemyId = filtered[0].templateId;
                 const firstItem = container.querySelector('.enemy-item');
                 if (firstItem) firstItem.classList.add('active');
                 loadEnemyDetail(filtered[0], detailContainer);
+                if (window.__akeRouter) window.__akeRouter.updateUrl('enemy', activeEnemyId);
             } else if (activeExists) {
                 const activeEnemy = filtered.find(e => e.templateId === activeEnemyId);
                 if (activeEnemy) {
                     const activeItem = container.querySelector(`.enemy-item[data-enemy-id="${activeEnemyId}"]`);
                     if (activeItem) activeItem.classList.add('active');
                     loadEnemyDetail(activeEnemy, detailContainer);
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('enemy', activeEnemyId);
                 }
             }
         }
@@ -401,6 +418,7 @@
                 `;
                 item.addEventListener('click', () => {
                     activeEnemyId = enemy.templateId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('enemy', enemy.templateId);
                     loadEnemyDetail(enemy, document.getElementById('enemyDetail'));
                     closeMobileList();
                 });

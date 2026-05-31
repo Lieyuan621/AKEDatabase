@@ -37,6 +37,7 @@
 <script>
     (function () {
         let allSkills = [];
+        let rawAllSkills = [];
         let activeSkillId = null;
         let isInitialized = false;
         let searchTerm = '';
@@ -76,6 +77,7 @@
                 const res = await fetch('/public/Json/SkillData/manifest.json?t=' + Date.now());
                 if (!res.ok) throw new Error('无法加载技能清单');
                 const all = await res.json();
+                rawAllSkills = all;
                 let skills = showHidden ? all : all.filter(s => !s.hidden);
                 skills.sort((a, b) => (a.priority || 999) - (b.priority || 999));
                 return skills;
@@ -122,11 +124,25 @@
                     document.querySelectorAll('.skill-item').forEach(el => el.classList.remove('active'));
                     item.classList.add('active');
                     activeSkillId = skill.id;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('skill', skill.id);
                     loadSkillDetail(skill, detailContainer);
                 });
 
                 container.appendChild(item);
             });
+
+            if (window.__deepLinkId) {
+                const deepItem = filtered.find(c => c.id === window.__deepLinkId);
+                if (deepItem) {
+                    activeSkillId = deepItem.id;
+                } else {
+                    const existsInRaw = rawAllSkills.some(c => c.id === window.__deepLinkId);
+                    if (window.__akeRouter && window.__akeRouter.onDeepLinkNotFound) {
+                        window.__akeRouter.onDeepLinkNotFound(window.__deepLinkId, existsInRaw);
+                    }
+                }
+                window.__deepLinkId = null;
+            }
 
             const activeExists = filtered.some(s => s.id === activeSkillId);
             if (!activeExists && filtered.length > 0) {
@@ -134,12 +150,14 @@
                 const firstItem = container.querySelector('.skill-item');
                 if (firstItem) firstItem.classList.add('active');
                 loadSkillDetail(filtered[0], detailContainer);
+                if (window.__akeRouter) window.__akeRouter.updateUrl('skill', activeSkillId);
             } else if (activeExists) {
                 const activeSkill = filtered.find(s => s.id === activeSkillId);
                 if (activeSkill) {
                     const activeItem = container.querySelector(`.skill-item[data-skill-id="${activeSkillId}"]`);
                     if (activeItem) activeItem.classList.add('active');
                     loadSkillDetail(activeSkill, detailContainer);
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('skill', activeSkillId);
                 }
             }
         }
@@ -509,6 +527,7 @@
                 `;
                 item.addEventListener('click', () => {
                     activeSkillId = skill.id;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('skill', skill.id);
                     loadSkillDetail(skill, document.getElementById('skillDetail'));
                     closeMobileList();
                     document.querySelectorAll('.skill-item').forEach(el => el.classList.remove('active'));

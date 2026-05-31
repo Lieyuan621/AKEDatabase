@@ -34,6 +34,7 @@
 <script>
     (function() {
         let allItems = [];
+        let rawAllItems = [];
         let activeItemId = null;
         let isInitialized = false;
         let searchTerm = '';
@@ -277,6 +278,7 @@
                 `;
                 itemDiv.addEventListener('click', () => {
                     activeItemId = item.itemId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('item', item.itemId);
                     loadItemDetail(item, document.getElementById('itemDetail'));
                     closeMobileList();
                 });
@@ -298,6 +300,7 @@
                 const res = await fetch('/public/CH/item/manifest.json?t=' + Date.now());
                 if (!res.ok) throw new Error('无法加载物品清单');
                 const all = await res.json();
+                rawAllItems = all;
                 let items = showHidden ? all : all.filter(i => !i.hidden);
                 items.sort((a, b) => (a.priority || 999) - (b.priority || 999));
                 return items;
@@ -359,11 +362,25 @@
                     document.querySelectorAll('.item-item').forEach(el => el.classList.remove('active'));
                     div.classList.add('active');
                     activeItemId = item.itemId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('item', item.itemId);
                     loadItemDetail(item, detailContainer);
                 });
 
                 container.appendChild(div);
             });
+
+            if (window.__deepLinkId) {
+                const deepItem = filtered.find(c => c.itemId === window.__deepLinkId);
+                if (deepItem) {
+                    activeItemId = deepItem.itemId;
+                } else {
+                    const existsInRaw = rawAllItems.some(c => c.itemId === window.__deepLinkId);
+                    if (window.__akeRouter && window.__akeRouter.onDeepLinkNotFound) {
+                        window.__akeRouter.onDeepLinkNotFound(window.__deepLinkId, existsInRaw);
+                    }
+                }
+                window.__deepLinkId = null;
+            }
 
             const activeExists = filtered.some(i => i.itemId === activeItemId);
             if (!activeExists && filtered.length > 0) {
@@ -371,12 +388,14 @@
                 const firstItem = container.querySelector('.item-item');
                 if (firstItem) firstItem.classList.add('active');
                 loadItemDetail(filtered[0], detailContainer);
+                if (window.__akeRouter) window.__akeRouter.updateUrl('item', activeItemId);
             } else if (activeExists) {
                 const activeItem = filtered.find(i => i.itemId === activeItemId);
                 if (activeItem) {
                     const activeDiv = container.querySelector(`.item-item[data-item-id="${activeItemId}"]`);
                     if (activeDiv) activeDiv.classList.add('active');
                     loadItemDetail(activeItem, detailContainer);
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('item', activeItemId);
                 }
             }
         }

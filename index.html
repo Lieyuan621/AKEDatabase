@@ -62,6 +62,10 @@
                 <label for="modalShowExportCheck">显示导出按钮（测试功能）：</label>
                 <input type="checkbox" id="modalShowExportCheck">
             </div>
+            <div class="settings-item">
+                <label for="modalKeepUrlSync">保持URL完整（地址栏随导航更新）：</label>
+                <input type="checkbox" id="modalKeepUrlSync">
+            </div>
 
             <!-- 等级设置区域 -->
             <div class="settings-section" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 16px;">
@@ -85,11 +89,9 @@
                     <label>敌人等级：</label>
                     <input type="text" id="modalEnemyLevels" placeholder="例: 80 或 10,20,30,80" style="flex:1;">
                 </div>
-                <div class="settings-item" style="flex-wrap: wrap;">
-                    <label style="width: 100%; margin-bottom: 8px;">角色技能等级（1-12）：</label>
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="skillLevelCheckboxes">
-                        <!-- 动态生成12个复选框 -->
-                    </div>
+                <div class="settings-item">
+                    <label>角色技能等级：</label>
+                    <input type="text" id="modalSkillLevels" placeholder="例: 1,9,10,11,12" style="flex:1;">
                 </div>
             </div>
 
@@ -99,10 +101,10 @@
             </div>
 
             <div class="about-box">
-                <p>AKEData · 版本 1.0.17</p>
+                <p>AKEData · 版本 1.0.18</p>
                 <p>游戏版本 CN_WIN_REL_1.2.4_C6434019_E6308478</p>
                 <p>Hotfix版本 7215718-17</p>
-                <p>最后更新于:2026/5/30 18:11:19(nagiyume)</p>
+                <p>最后更新于:2026/6/1 1:54:35(nagiyume)</p>
             </div>
         </div>
     </div>
@@ -116,6 +118,25 @@
             <div class="mobile-menu-list" id="mobileMenuList"></div>
         </div>
     </div>
+
+    <div id="toast-container" style="position:fixed;top:20px;right:20px;z-index:10000;display:flex;flex-direction:column;gap:8px;pointer-events:none;"></div>
+    <style>
+        .toast{padding:12px 20px;border-radius:8px;color:#fff;font-size:0.9rem;box-shadow:0 4px 12px rgba(0,0,0,0.15);opacity:0;transform:translateX(40px);animation:toastIn .3s forwards;pointer-events:auto;max-width:360px;word-break:break-all}
+        .toast.toast-out{animation:toastOut .4s forwards}
+        .toast-error{background:#b0003a}
+        .toast-warning{background:#e6a817;color:#1e1e1e}
+        .toast-info{background:#2d7fc1}
+        @keyframes toastIn{to{opacity:1;transform:translateX(0)}}
+        @keyframes toastOut{to{opacity:0;transform:translateX(40px)}}
+        .not-found-page{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;padding:40px 20px}
+        .not-found-code{font-size:6rem;font-weight:800;color:var(--text-color,#1e2b3c);opacity:.15;line-height:1;margin-bottom:8px}
+        .not-found-title{font-size:1.6rem;font-weight:700;color:var(--text-color,#1e2b3c);margin-bottom:12px}
+        .not-found-desc{font-size:1rem;color:#7f8c9f;margin-bottom:28px}
+        .not-found-hint{background:var(--card-bg,#f5f7fa);border:1px solid var(--border-color,#ddd);border-radius:10px;padding:16px 24px;margin-bottom:24px;max-width:480px;text-align:left;font-size:0.9rem;color:var(--text-color,#333);line-height:1.7}
+        .not-found-hint p{margin:4px 0}
+        .not-found-home-btn{background:var(--button-bg,#e0e8f0);border:1px solid var(--border-color,#ccc);border-radius:30px;padding:10px 28px;font-size:0.95rem;cursor:pointer;color:var(--text-color,#333);transition:background .2s}
+        .not-found-home-btn:hover{background:var(--hover-bg,#d0d8e0)}
+    </style>
 
     <script>
         (function() {
@@ -135,6 +156,36 @@
                 </div>
             `;
 
+            function showHomePage() {
+                setContent(HOME_CONTENT);
+                document.querySelectorAll('.module-item').forEach(item => item.classList.remove('active'));
+                activeModuleId = null;
+                if (window.__akeRouter) window.__akeRouter.clearUrl();
+            }
+
+            function show404Page(isHidden) {
+                const hiddenHint = isHidden ? `
+                    <div class="not-found-hint">
+                        <p>🔒 该内容可能为隐藏内容。</p>
+                        <p>您可以通过点击左下角 <strong>⚙️ 全局设置</strong> 按钮，开启「<strong>显示隐藏模块</strong>」来访问隐藏内容。</p>
+                    </div>
+                ` : '';
+                contentArea.innerHTML = `
+                    <div class="not-found-page">
+                        <div class="not-found-code">404</div>
+                        <div class="not-found-title">页面未找到</div>
+                        <div class="not-found-desc">您访问的模块或条目不存在</div>
+                        ${hiddenHint}
+                        <button class="not-found-home-btn" id="notFoundHomeBtn">返回首页</button>
+                    </div>
+                `;
+                document.querySelectorAll('.module-item').forEach(item => item.classList.remove('active'));
+                activeModuleId = null;
+                const btn = document.getElementById('notFoundHomeBtn');
+                if (btn) btn.addEventListener('click', showHomePage);
+                if (window.__akeRouter) window.__akeRouter.clearUrl();
+            }
+
             let config = {
                 theme: 'light',
                 showHidden: false,
@@ -145,7 +196,8 @@
                     weaponLevels: '1,20,40,60,80,90',
                     enemyLevels: '1,20,40,60,80,90',
                     skillLevels: [true, false, false, false, false, false, false, false, true, true, true, true]
-                }
+                },
+                keepUrlSync: true
             };
 
             let allModules = [];
@@ -164,7 +216,6 @@
             const modalCharacterLevels = document.getElementById('modalCharacterLevels');
             const modalWeaponLevels = document.getElementById('modalWeaponLevels');
             const modalEnemyLevels = document.getElementById('modalEnemyLevels');
-            const skillLevelContainer = document.getElementById('skillLevelCheckboxes');
             const tooltip1 = document.getElementById('hyperlink-tooltip-1');
             const tooltip2 = document.getElementById('hyperlink-tooltip-2');
 
@@ -186,15 +237,14 @@
                     `;
                     item.addEventListener('click', async () => {
                         closeMobileMenu();
-                        // 加载模块
                         const module = allModules.find(m => m.id === mod.id);
                         if (module) {
                             await loadModuleContent(module);
                             activeModuleId = mod.id;
-                            // 更新左侧模块高亮（虽然侧边栏隐藏，但保留状态）
                             document.querySelectorAll('.module-item').forEach(el => el.classList.remove('active'));
                             const sidebarItem = document.querySelector(`.module-item[data-id="${mod.id}"]`);
                             if (sidebarItem) sidebarItem.classList.add('active');
+                            if (window.__akeRouter) window.__akeRouter.updateUrl(mod.id);
                         }
                     });
                     mobileMenuList.appendChild(item);
@@ -237,12 +287,6 @@
             // ---------- 工具函数 ----------
             function setContent(html) {
                 contentArea.innerHTML = html;
-            }
-
-            function showHomePage() {
-                setContent(HOME_CONTENT);
-                document.querySelectorAll('.module-item').forEach(item => item.classList.remove('active'));
-                activeModuleId = null;
             }
 
             async function loadModuleContent(module) {
@@ -335,6 +379,7 @@
                         document.querySelectorAll('.module-item').forEach(el => el.classList.remove('active'));
                         item.classList.add('active');
                         activeModuleId = id;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl(id);
                         await loadModuleContent(module);
                     });
                 });
@@ -371,25 +416,21 @@
                 modalShowHiddenCheck.checked = config.showHidden;
                 const modalShowExportCheck = document.getElementById('modalShowExportCheck');
                 if (modalShowExportCheck) modalShowExportCheck.checked = config.showExportButton;
+                const modalKeepUrlSync = document.getElementById('modalKeepUrlSync');
+                if (modalKeepUrlSync) modalKeepUrlSync.checked = config.keepUrlSync;
                 modalLevelsEnabled.checked = config.levelSettings.enabled;
                 modalCharacterLevels.value = config.levelSettings.characterLevels;
                 modalWeaponLevels.value = config.levelSettings.weaponLevels;
                 modalEnemyLevels.value = config.levelSettings.enemyLevels;
 
-                skillLevelContainer.innerHTML = '';
-                for (let i = 1; i <= 12; i++) {
-                    const checked = config.levelSettings.skillLevels[i-1];
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.id = `skillLv${i}`;
-                    checkbox.value = i;
-                    checkbox.checked = checked;
-                    const label = document.createElement('label');
-                    label.htmlFor = `skillLv${i}`;
-                    label.textContent = i;
-                    label.style.marginRight = '8px';
-                    skillLevelContainer.appendChild(checkbox);
-                    skillLevelContainer.appendChild(label);
+                const modalSkillLevels = document.getElementById('modalSkillLevels');
+                if (modalSkillLevels) {
+                    const arr = config.levelSettings.skillLevels;
+                    const levels = [];
+                    if (Array.isArray(arr)) {
+                        arr.forEach((checked, idx) => { if (checked) levels.push(idx + 1); });
+                    }
+                    modalSkillLevels.value = levels.join(',');
                 }
                 settingsModal.style.display = 'flex';
             }
@@ -410,8 +451,11 @@
                 config.levelSettings.weaponLevels = weaponLevels;
                 config.levelSettings.enemyLevels = enemyLevels;
 
-                const skillChecks = document.querySelectorAll('#skillLevelCheckboxes input[type="checkbox"]');
-                config.levelSettings.skillLevels = Array.from(skillChecks).map(cb => cb.checked);
+                const modalSkillLevels = document.getElementById('modalSkillLevels');
+                let skillLevelsStr = modalSkillLevels ? modalSkillLevels.value : '1,9,10,11,12';
+                skillLevelsStr = validateLevelInput(skillLevelsStr, '1,9,10,11,12', 12);
+                const skillLevelNums = skillLevelsStr.split(',').map(s => parseInt(s.trim(), 10));
+                config.levelSettings.skillLevels = Array.from({ length: 12 }, (_, i) => skillLevelNums.includes(i + 1));
 
                 localStorage.setItem('akedata-levelSettings', JSON.stringify(config.levelSettings));
 
@@ -419,6 +463,18 @@
                 if (modalShowExportCheck) {
                     config.showExportButton = modalShowExportCheck.checked;
                     localStorage.setItem('akedata-showExportButton', config.showExportButton);
+                }
+
+                const modalKeepUrlSync = document.getElementById('modalKeepUrlSync');
+                if (modalKeepUrlSync) {
+                    const wasSync = config.keepUrlSync;
+                    config.keepUrlSync = modalKeepUrlSync.checked;
+                    localStorage.setItem('akedata-keepUrlSync', config.keepUrlSync);
+                    if (wasSync !== config.keepUrlSync) {
+                        settingsModal.style.display = 'none';
+                        location.reload();
+                        return;
+                    }
                 }
                 
                 // 主题
@@ -460,6 +516,25 @@
 
             window.hyperlinkConfig = {};
             window.textstyleConfig = {};
+
+            window.__akeRouter = {
+                updateUrl(plugin, id) {
+                    if (!config.keepUrlSync) return;
+                    const params = new URLSearchParams();
+                    if (plugin) params.set('plugin', plugin);
+                    if (id) params.set('id', id);
+                    const qs = params.toString();
+                    const newUrl = window.location.pathname + (qs ? '?' + qs : '');
+                    history.replaceState(null, '', newUrl);
+                },
+                clearUrl() {
+                    if (!config.keepUrlSync) return;
+                    history.replaceState(null, '', window.location.pathname);
+                },
+                stripUrl() {
+                    history.replaceState(null, '', window.location.pathname);
+                }
+            };
             window.configLoaded = Promise.all([
                 fetch('/theme/hyperlink.json?t=' + Date.now()).then(r => r.json()).then(cfg => window.hyperlinkConfig = cfg).catch(() => {}),
                 fetch('/theme/textstyle.json?t=' + Date.now()).then(r => r.json()).then(cfg => window.textstyleConfig = cfg).catch(() => {})
@@ -684,6 +759,10 @@
             }
 
             async function initApp() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const deepPlugin = urlParams.get('plugin');
+                const deepId = urlParams.get('id');
+
                 showHomePage();
                 initTheme();
 
@@ -701,6 +780,41 @@
                 allModules = await loadModulesFromManifest();
                 applyFilterAndRender();
 
+                const savedKeepUrlSync = localStorage.getItem('akedata-keepUrlSync');
+                if (savedKeepUrlSync !== null) {
+                    config.keepUrlSync = savedKeepUrlSync === 'true';
+                }
+
+                if (!config.keepUrlSync && (deepPlugin || deepId)) {
+                    window.__akeRouter.stripUrl();
+                }
+
+                if (deepPlugin) {
+                    const module = allModules.find(m => m.id === deepPlugin);
+                    if (module) {
+                        if (module.hidden && !config.showHidden) {
+                            show404Page(true);
+                        } else {
+                            window.__deepLinkId = deepId || null;
+                            if (deepId) {
+                                window.__akeRouter.onDeepLinkNotFound = function(notFoundId, isHidden) {
+                                    show404Page(isHidden);
+                                };
+                            }
+                            await loadModuleContent(module);
+                            activeModuleId = deepPlugin;
+                            document.querySelectorAll('.module-item').forEach(el => el.classList.remove('active'));
+                            const sidebarItem = document.querySelector(`.module-item[data-id="${deepPlugin}"]`);
+                            if (sidebarItem) sidebarItem.classList.add('active');
+                            if (config.keepUrlSync) {
+                                window.__akeRouter.updateUrl(deepPlugin, deepId);
+                            }
+                        }
+                    } else {
+                        show404Page(false);
+                    }
+                }
+
                 settingsButton.addEventListener('click', openSettings);
                 closeSettings.addEventListener('click', closeSettingsModal);
                 window.addEventListener('click', (e) => {
@@ -715,12 +829,10 @@
                         document.getElementById('modalCharacterLevels').value = '1,20,40,60,80,90';
                         document.getElementById('modalWeaponLevels').value = '1,20,40,60,80,90';
                         document.getElementById('modalEnemyLevels').value = '1,20,40,60,80,90';
-                        const skillChecks = document.querySelectorAll('#skillLevelCheckboxes input[type="checkbox"]');
-                        skillChecks.forEach((cb, index) => {
-                            cb.checked = [0, 8, 9, 10, 11].includes(index);
-                        });
+                        document.getElementById('modalSkillLevels').value = '1,9,10,11,12';
                         document.getElementById('modalThemeSelect').value = 'light';
                         document.getElementById('modalShowHiddenCheck').checked = false;
+                        document.getElementById('modalKeepUrlSync').checked = true;
                         closeSettingsModal(); // 立即应用
                     });
                 }
@@ -728,7 +840,7 @@
                 modalThemeSelect.addEventListener('change', (e) => setTheme(e.target.value));
                 modalShowHiddenCheck.addEventListener('change', (e) => {
                     if (e.target.checked) {
-                        const confirmed = confirm('是否确认开启隐藏内容？隐藏内容中包含开发中内容，可能存在bug');
+                        const confirmed = confirm('是否确认开启隐藏内容？隐藏内容中包含开发中内容，可能存在bug（我们建议您不要在直播或其他公开场合开启/阅读隐藏内容）');
                         if (!confirmed) {
                             e.target.checked = false;
                             return;

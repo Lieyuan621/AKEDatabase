@@ -22,6 +22,7 @@
 <script>
     (function() {
         let allCategories = [];
+        let rawAllCategories = [];
         let activeCategoryId = null;
         let isInitialized = false;
         let searchTerm = '';
@@ -45,6 +46,7 @@
                 `;
                 item.addEventListener('click', () => {
                     activeCategoryId = cat.categoryId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('achievement', cat.categoryId);
                     loadCategoryDetail(cat, document.getElementById('achievementDetail'));
                     closeMobileList();
                 });
@@ -83,6 +85,7 @@
                 const res = await fetch('/public/CH/achievement/manifest.json?t=' + Date.now());
                 if (!res.ok) throw new Error('无法加载奖章分类清单');
                 const all = await res.json();
+                rawAllCategories = all;
                 let cats = showHidden ? all : all.filter(c => !c.hidden);
                 cats.sort((a, b) => (a.priority || 999) - (b.priority || 999));
                 return cats;
@@ -123,23 +126,38 @@
                     document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
                     item.classList.add('active');
                     activeCategoryId = cat.categoryId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('achievement', cat.categoryId);
                     loadCategoryDetail(cat, detailContainer);
                 });
 
                 container.appendChild(item);
             });
 
+            if (window.__deepLinkId) {
+                const deepItem = filtered.find(c => c.categoryId === window.__deepLinkId);
+                if (deepItem) {
+                    activeCategoryId = deepItem.categoryId;
+                } else {
+                    const existsInRaw = rawAllCategories.some(c => c.categoryId === window.__deepLinkId);
+                    if (window.__akeRouter && window.__akeRouter.onDeepLinkNotFound) {
+                        window.__akeRouter.onDeepLinkNotFound(window.__deepLinkId, existsInRaw);
+                    }
+                }
+                window.__deepLinkId = null;
+            }
             const activeExists = filtered.some(c => c.categoryId === activeCategoryId);
             if (!activeExists && filtered.length > 0) {
                 activeCategoryId = filtered[0].categoryId;
                 const firstItem = container.querySelector('.category-item');
                 if (firstItem) firstItem.classList.add('active');
+                if (window.__akeRouter) window.__akeRouter.updateUrl('achievement', activeCategoryId);
                 loadCategoryDetail(filtered[0], detailContainer);
             } else if (activeExists) {
                 const activeCat = filtered.find(c => c.categoryId === activeCategoryId);
                 if (activeCat) {
                     const activeItem = container.querySelector(`.category-item[data-cat-id="${activeCategoryId}"]`);
                     if (activeItem) activeItem.classList.add('active');
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('achievement', activeCategoryId);
                     loadCategoryDetail(activeCat, detailContainer);
                 }
             }

@@ -42,6 +42,7 @@
 <script>
     (function() {
         let allSuits = [];
+        let rawAllSuits = [];
         let activeSuitId = null;
         let isInitialized = false;
         let searchTerm = '';
@@ -126,6 +127,7 @@
                 `;
                 div.addEventListener('click', () => {
                     activeSuitId = suit.suitID;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_equip', suit.suitID);
                     loadSuitDetail(suit, document.getElementById('v2equipDetail'));
                     closeMobileList();
                     document.querySelectorAll('.v2eq-item').forEach(el => el.classList.remove('active'));
@@ -163,6 +165,7 @@
                 const res = await fetch('/public/CH/v2_equip/manifest.json?t=' + Date.now());
                 if (!res.ok) throw new Error('无法加载装备清单');
                 const all = await res.json();
+                rawAllSuits = all;
                 let suits = showHidden ? all : all.filter(s => !s.hidden);
                 suits.sort((a, b) => (a.priority || 999) - (b.priority || 999));
                 return suits;
@@ -220,19 +223,35 @@
                     document.querySelectorAll('.v2eq-item').forEach(el => el.classList.remove('active'));
                     div.classList.add('active');
                     activeSuitId = suit.suitID;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_equip', suit.suitID);
                     loadSuitDetail(suit, detailContainer);
                 });
 
                 container.appendChild(div);
             });
 
+            if (window.__deepLinkId) {
+                const deepItem = filtered.find(c => c.suitID === window.__deepLinkId);
+                if (deepItem) {
+                    activeSuitId = deepItem.suitID;
+                } else {
+                    const existsInRaw = rawAllSuits.some(c => c.suitID === window.__deepLinkId);
+                    if (window.__akeRouter && window.__akeRouter.onDeepLinkNotFound) {
+                        window.__akeRouter.onDeepLinkNotFound(window.__deepLinkId, existsInRaw);
+                    }
+                }
+                window.__deepLinkId = null;
+            }
+
             const activeExists = filtered.some(s => s.suitID === activeSuitId);
             if (!activeExists && filtered.length > 0) {
                 activeSuitId = filtered[0].suitID;
+                if (window.__akeRouter) window.__akeRouter.updateUrl('v2_equip', activeSuitId);
                 const f = container.querySelector('.v2eq-item');
                 if (f) f.classList.add('active');
                 loadSuitDetail(filtered[0], detailContainer);
             } else if (activeExists) {
+                if (window.__akeRouter) window.__akeRouter.updateUrl('v2_equip', activeSuitId);
                 const ai = filtered.find(s => s.suitID === activeSuitId);
                 if (ai) {
                     const ad = container.querySelector(`.v2eq-item[data-suit-id="${activeSuitId}"]`);

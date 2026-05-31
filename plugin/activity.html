@@ -34,6 +34,7 @@
 <script>
     (function () {
         let allActivities = [];
+        let rawAllActivities = [];
         let activeActivityId = null;
         let isInitialized = false;
         let searchTerm = '';
@@ -174,6 +175,7 @@
                 const res = await fetch('/public/CH/activity/manifest.json?t=' + Date.now());
                 if (!res.ok) throw new Error('无法加载活动清单');
                 const all = await res.json();
+                rawAllActivities = all;
                 let activities = showHidden ? all : all.filter(a => !a.hidden);
                 activities.sort((a, b) => (a.priority || 999) - (b.priority || 999));
                 return activities;
@@ -230,6 +232,7 @@
                     document.querySelectorAll('.activity-item').forEach(el => el.classList.remove('active'));
                     item.classList.add('active');
                     activeActivityId = act.activityId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('activity', act.activityId);
                     loadActivityDetail(act, detailContainer);
                 });
 
@@ -237,16 +240,30 @@
             });
 
             const activeExists = filtered.some(a => a.activityId === activeActivityId);
+            if (window.__deepLinkId) {
+                const deepItem = filtered.find(c => c.activityId === window.__deepLinkId);
+                if (deepItem) {
+                    activeActivityId = deepItem.activityId;
+                } else {
+                    const existsInRaw = rawAllActivities.some(c => c.activityId === window.__deepLinkId);
+                    if (window.__akeRouter && window.__akeRouter.onDeepLinkNotFound) {
+                        window.__akeRouter.onDeepLinkNotFound(window.__deepLinkId, existsInRaw);
+                    }
+                }
+                window.__deepLinkId = null;
+            }
             if (!activeExists && filtered.length > 0) {
                 activeActivityId = filtered[0].activityId;
                 const firstItem = container.querySelector('.activity-item');
                 if (firstItem) firstItem.classList.add('active');
+                if (window.__akeRouter) window.__akeRouter.updateUrl('activity', activeActivityId);
                 loadActivityDetail(filtered[0], detailContainer);
             } else if (activeExists) {
                 const activeAct = filtered.find(a => a.activityId === activeActivityId);
                 if (activeAct) {
                     const activeItem = container.querySelector(`.activity-item[data-activity-id="${activeActivityId}"]`);
                     if (activeItem) activeItem.classList.add('active');
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('activity', activeActivityId);
                     loadActivityDetail(activeAct, detailContainer);
                 }
             }
@@ -383,6 +400,7 @@
                 `;
                 item.addEventListener('click', () => {
                     activeActivityId = act.activityId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('activity', act.activityId);
                     loadActivityDetail(act, document.getElementById('activityDetail'));
                     closeMobileList();
                     document.querySelectorAll('.activity-item').forEach(el => el.classList.remove('active'));

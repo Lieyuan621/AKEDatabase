@@ -23,6 +23,7 @@
 <script>
     (function() {
         let allEnemies = [];
+        let rawAllEnemies = [];
         let activeEnemyId = null;
         let isInitialized = false;
         let enemyLevelsToShow = null;
@@ -125,6 +126,7 @@
                 const res = await fetch('/public/CH/v2_enemy/manifest.json?t=' + Date.now());
                 if (!res.ok) throw new Error('无法加载敌人清单');
                 const all = await res.json();
+                rawAllEnemies = all;
                 let enemies = showHidden ? all : all.filter(e => !e.hidden);
                 enemies.sort((a, b) => (a.priority || 999) - (b.priority || 999));
                 return enemies;
@@ -408,21 +410,37 @@
                     document.querySelectorAll('.v2e-item').forEach(el => el.classList.remove('active'));
                     item.classList.add('active');
                     activeEnemyId = enemy.templateId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_enemy', enemy.templateId);
                     loadEnemyDetail(enemy, detailContainer);
                 });
 
                 container.appendChild(item);
             });
 
+            if (window.__deepLinkId) {
+                const deepItem = filtered.find(c => c.templateId === window.__deepLinkId);
+                if (deepItem) {
+                    activeEnemyId = deepItem.templateId;
+                } else {
+                    const existsInRaw = rawAllEnemies.some(c => c.templateId === window.__deepLinkId);
+                    if (window.__akeRouter && window.__akeRouter.onDeepLinkNotFound) {
+                        window.__akeRouter.onDeepLinkNotFound(window.__deepLinkId, existsInRaw);
+                    }
+                }
+                window.__deepLinkId = null;
+            }
+
             const activeExists = filtered.some(e => e.templateId === activeEnemyId);
             if (!activeExists && filtered.length > 0) {
                 activeEnemyId = filtered[0].templateId;
+                if (window.__akeRouter) window.__akeRouter.updateUrl('v2_enemy', activeEnemyId);
                 const firstItem = container.querySelector('.v2e-item');
                 if (firstItem) firstItem.classList.add('active');
                 loadEnemyDetail(filtered[0], detailContainer);
             } else if (activeExists) {
                 const activeEnemy = filtered.find(e => e.templateId === activeEnemyId);
                 if (activeEnemy) {
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_enemy', activeEnemyId);
                     const activeItem = container.querySelector(`.v2e-item[data-enemy-id="${activeEnemyId}"]`);
                     if (activeItem) activeItem.classList.add('active');
                     loadEnemyDetail(activeEnemy, detailContainer);
@@ -627,6 +645,7 @@
                 item.innerHTML = `<div class="v2e-mobile-name">${enemy.name}</div><div class="v2e-mobile-id">${enemy.templateId}</div>`;
                 item.addEventListener('click', () => {
                     activeEnemyId = enemy.templateId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_enemy', enemy.templateId);
                     loadEnemyDetail(enemy, document.getElementById('v2enemyDetail'));
                     closeMobileList();
                 });

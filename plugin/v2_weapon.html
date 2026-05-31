@@ -48,6 +48,7 @@
 <script>
 (function() {
     let allWeapons = [];
+    let rawAllWeapons = [];
     let activeWeaponId = null;
     let isInitialized = false;
     let weaponLevelsToShow = null;
@@ -143,6 +144,7 @@
             div.innerHTML = `<div class="item-name">${escapeHtml(w.name)}</div><div class="item-id">${escapeHtml(w.weaponId)}</div>`;
             div.addEventListener('click', () => {
                 activeWeaponId = w.weaponId;
+                if (window.__akeRouter) window.__akeRouter.updateUrl('v2_weapon', w.weaponId);
                 loadWeaponDetail(w, document.getElementById('v2wpnDetail'));
                 closeMobileList();
             });
@@ -159,6 +161,7 @@
             const res = await fetch('/public/CH/v2_weapon/manifest.json?t=' + Date.now());
             if (!res.ok) throw new Error('无法加载武器清单');
             const all = await res.json();
+        rawAllWeapons = all;
             let weapons = showHidden ? all : all.filter(w => !w.hidden);
             weapons.sort((a, b) => (a.priority || 999) - (b.priority || 999));
             return weapons;
@@ -220,22 +223,38 @@
                 document.querySelectorAll('.weapon-item').forEach(el => el.classList.remove('active'));
                 item.classList.add('active');
                 activeWeaponId = w.weaponId;
+                if (window.__akeRouter) window.__akeRouter.updateUrl('v2_weapon', w.weaponId);
                 loadWeaponDetail(w, detailContainer);
             });
             container.appendChild(item);
         });
+
+        if (window.__deepLinkId) {
+            const deepItem = filtered.find(c => c.weaponId === window.__deepLinkId);
+            if (deepItem) {
+                activeWeaponId = deepItem.weaponId;
+            } else {
+                const existsInRaw = rawAllWeapons.some(c => c.weaponId === window.__deepLinkId);
+                if (window.__akeRouter && window.__akeRouter.onDeepLinkNotFound) {
+                    window.__akeRouter.onDeepLinkNotFound(window.__deepLinkId, existsInRaw);
+                }
+            }
+            window.__deepLinkId = null;
+        }
 
         const activeExists = filtered.some(w => w.weaponId === activeWeaponId);
         if (!activeExists && filtered.length > 0) {
             activeWeaponId = filtered[0].weaponId;
             const f = container.querySelector('.weapon-item');
             if (f) f.classList.add('active');
+            if (window.__akeRouter) window.__akeRouter.updateUrl('v2_weapon', activeWeaponId);
             loadWeaponDetail(filtered[0], detailContainer);
         } else if (activeExists) {
             const aw = filtered.find(w => w.weaponId === activeWeaponId);
             if (aw) {
                 const ad = container.querySelector(`.weapon-item[data-weapon-id="${activeWeaponId}"]`);
                 if (ad) ad.classList.add('active');
+                if (window.__akeRouter) window.__akeRouter.updateUrl('v2_weapon', activeWeaponId);
                 loadWeaponDetail(aw, detailContainer);
             }
         }

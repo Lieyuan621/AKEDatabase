@@ -42,6 +42,7 @@
 <script>
     (function() {
         let allCharacters = [];
+        let rawAllCharacters = [];
         let activeCharId = null;
         let isInitialized = false;
 
@@ -255,6 +256,7 @@
                 `;
                 item.addEventListener('click', () => {
                     activeCharId = char.charId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('character', char.charId);
                     loadCharacterDetail(char, document.getElementById('characterDetail'));
                     closeMobileList();
                     // 同步高亮（可选）
@@ -277,7 +279,8 @@
                 const res = await fetch('/public/CH/character/manifest.json?t=' + Date.now());
                 if (!res.ok) throw new Error('无法加载角色清单');
                 const allChars = await res.json();
-                let chars = showHidden ? allChars : allChars.filter(c => !c.hidden);
+                rawAllCharacters = allChars || [];
+                let chars = showHidden ? rawAllCharacters : rawAllCharacters.filter(c => !c.hidden);
                 chars.sort((a, b) => (a.priority || 999) - (b.priority || 999));
                 return chars;
             } catch (err) {
@@ -341,11 +344,25 @@
                     document.querySelectorAll('.character-item').forEach(el => el.classList.remove('active'));
                     item.classList.add('active');
                     activeCharId = char.charId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('character', char.charId);
                     loadCharacterDetail(char, detailContainer);
                 });
 
                 container.appendChild(item);
             });
+
+            if (window.__deepLinkId) {
+                const deepItem = filtered.find(c => c.charId === window.__deepLinkId);
+                if (deepItem) {
+                    activeCharId = deepItem.charId;
+                } else {
+                    const existsInRaw = rawAllCharacters.some(c => c.charId === window.__deepLinkId);
+                    if (window.__akeRouter && window.__akeRouter.onDeepLinkNotFound) {
+                        window.__akeRouter.onDeepLinkNotFound(window.__deepLinkId, existsInRaw);
+                    }
+                }
+                window.__deepLinkId = null;
+            }
 
             const activeExists = filtered.some(c => c.charId === activeCharId);
             if (!activeExists && filtered.length > 0) {
@@ -353,12 +370,14 @@
                 const firstItem = container.querySelector('.character-item');
                 if (firstItem) firstItem.classList.add('active');
                 loadCharacterDetail(filtered[0], detailContainer);
+                if (window.__akeRouter) window.__akeRouter.updateUrl('character', activeCharId);
             } else if (activeExists) {
                 const activeChar = filtered.find(c => c.charId === activeCharId);
                 if (activeChar) {
                     const activeItem = container.querySelector(`.character-item[data-char-id="${activeCharId}"]`);
                     if (activeItem) activeItem.classList.add('active');
                     loadCharacterDetail(activeChar, detailContainer);
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('character', activeCharId);
                 }
             }
         }

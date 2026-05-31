@@ -24,6 +24,7 @@
 <script>
     (function() {
         let allSuits = [];
+        let rawAllSuits = [];
         let activeSuitId = null;
         let isInitialized = false;
         let searchTerm = '';
@@ -48,6 +49,7 @@
                 `;
                 item.addEventListener('click', () => {
                     activeSuitId = suit.suitID;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('equip', suit.suitID);
                     loadEquipDetail(suit, document.getElementById('equipDetail'));
                     closeMobileList();
                     // 可选：同步高亮（左侧列表已隐藏，但保留状态）
@@ -170,7 +172,8 @@
                 const res = await fetch('/public/CH/equip/manifest.json?t=' + Date.now());
                 if (!res.ok) throw new Error('无法加载装备清单');
                 const all = await res.json();
-                let suits = showHidden ? all : all.filter(s => !s.hidden);
+                rawAllSuits = all || [];
+                let suits = showHidden ? rawAllSuits : rawAllSuits.filter(s => !s.hidden);
                 suits.sort((a, b) => (a.priority || 999) - (b.priority || 999));
                 return suits;
             } catch (err) {
@@ -228,23 +231,39 @@
                     document.querySelectorAll('.equip-item').forEach(el => el.classList.remove('active'));
                     item.classList.add('active');
                     activeSuitId = suit.suitID;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('equip', suit.suitID);
                     loadEquipDetail(suit, detailContainer);
                 });
 
                 container.appendChild(item);
             });
 
+            if (window.__deepLinkId) {
+                const deepItem = filtered.find(c => c.suitID === window.__deepLinkId);
+                if (deepItem) {
+                    activeSuitId = deepItem.suitID;
+                } else {
+                    const existsInRaw = rawAllSuits.some(c => c.suitID === window.__deepLinkId);
+                    if (window.__akeRouter && window.__akeRouter.onDeepLinkNotFound) {
+                        window.__akeRouter.onDeepLinkNotFound(window.__deepLinkId, existsInRaw);
+                    }
+                }
+                window.__deepLinkId = null;
+            }
+
             const activeExists = filtered.some(s => s.suitID === activeSuitId);
             if (!activeExists && filtered.length > 0) {
                 activeSuitId = filtered[0].suitID;
                 const firstItem = container.querySelector('.equip-item');
                 if (firstItem) firstItem.classList.add('active');
+                if (window.__akeRouter) window.__akeRouter.updateUrl('equip', activeSuitId);
                 loadEquipDetail(filtered[0], detailContainer);
             } else if (activeExists) {
                 const activeSuit = filtered.find(s => s.suitID === activeSuitId);
                 if (activeSuit) {
                     const activeItem = container.querySelector(`.equip-item[data-suit-id="${activeSuitId}"]`);
                     if (activeItem) activeItem.classList.add('active');
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('equip', activeSuitId);
                     loadEquipDetail(activeSuit, detailContainer);
                 }
             }

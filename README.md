@@ -18,7 +18,8 @@ AKEData 是一个专为《明日方舟：终末地》玩家制作的数据查询
 - **超链接浮窗** – 点击游戏内标签（`<#tag>`）显示详细说明，双层浮窗支持
 - **导出长图** – 一键截图当前内容，分享攻略
 - **响应式布局** – 适配手机、平板、PC 端
-- **全局设置** – 控制隐藏内容、默认显示等级、导出按钮等
+- **全局设置** – 控制隐藏内容、默认显示等级、导出按钮、URL同步等
+- **URL路由** – 支持通过URL参数直接跳转到指定模块和条目，方便分享和收藏
 
 ## 在线预览
 
@@ -79,6 +80,58 @@ AKEData/
 如需更新游戏数据，替换 `public/CH/` 对应目录下的 JSON 文件即可。请确保数据结构与模块解析逻辑匹配。
 
 本项目的数据由NaGiYuMebot自动维护，确保始终与游戏最新数据保持一致
+
+## URL路由
+
+AKEData 支持通过 URL 查询参数直接访问指定模块和条目，方便用户收藏和分享特定内容。
+
+### 基本格式
+
+```
+http://localhost:5501/?plugin=<模块ID>
+http://localhost:5501/?plugin=<模块ID>&id=<条目ID>
+```
+
+### 示例
+
+| URL | 说明 |
+|---|---|
+| `/?plugin=v2_character` | 打开角色模块 |
+| `/?plugin=v2_character&id=chr_0002_endminm` | 打开角色模块并定位到管理员 |
+| `/?plugin=skill_v2&id=buff_abilityentity_interact_bomb_passive` | 打开Skill模块并定位到指定条目 |
+| `/?plugin=v2_weapon&id=wpn_0001_sword` | 打开武器模块并定位到指定武器 |
+
+### 支持的模块ID
+
+| 模块ID | 模块名称 | 条目ID示例 |
+|---|---|---|
+| `v2_character` | 角色 | `chr_0002_endminm` |
+| `v2_weapon` | 武器 | `wpn_0001_sword` |
+| `v2_enemy` | 敌人 | 敌人templateId |
+| `v2_equip` | 装备 | 装备suitID |
+| `v2_item` | 物品 | 物品itemId |
+| `v2_dungeon` | 副本 | 副本templateId |
+| `skill_v2` | Skill (V2) | 技能id |
+| `buff` | Buff | buff id |
+| `character` | 角色（旧版） | `chr_0002_endminm` |
+| `weapon` | 武器（旧版） | 武器weaponId |
+| `enemy` | 敌人（旧版） | 敌人templateId |
+| `equip` | 装备（旧版） | 装备suitID |
+| `item` | 物品（旧版） | 物品itemId |
+| `dungeon` | 副本（旧版） | 副本templateId |
+| `skill` | Skill（旧版） | 技能id |
+| `activity` | 活动 | 活动activityId |
+| `achievement` | 奖章 | 奖章categoryId |
+| `spawn` | 生成 | 生成组id |
+
+条目ID来自各模块manifest.json中的对应字段（如`charId`、`suitID`、`templateId`、`itemId`、`weaponId`、`id`等），或对应contentFile路径中的文件名（不含`.json`扩展名）。
+
+### URL同步设置
+
+在全局设置中，「保持URL完整」选项控制地址栏行为：
+
+- **开启（默认）**：点击模块和条目时，地址栏URL会随之更新，方便复制当前页面链接分享
+- **关闭**：地址栏始终显示干净的根路径，不显示查询参数；但通过URL直接访问的内容仍会正常加载
 
 ## 模块开发指南
 如果你希望扩展新模块，请遵循以下规范：

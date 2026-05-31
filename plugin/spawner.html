@@ -40,6 +40,7 @@
 <script>
     (function () {
         let groups = [];            // [{ id, name, manifestPath, spawners: null }]
+        let rawGroups = [];
         let currentGroup = null;
         let searchTerm = '';
         let isInitialized = false;
@@ -93,6 +94,7 @@
                 const resp = await fetch(url);
                 if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
                 const items = await resp.json();
+                rawGroups = items;
                 const showHidden = window.akeData?.getConfig().showHidden ?? false;
                 let filtered = showHidden ? items : items.filter(item => !item.hidden);
                 filtered.sort((a, b) => (a.priority || 999) - (b.priority || 999));
@@ -174,6 +176,7 @@
             abortController = new AbortController();
 
             currentGroup = group;
+            if (window.__akeRouter) window.__akeRouter.updateUrl('spawn', group.id);
             renderGroupList();
             const rightContainer = document.getElementById('spawnerRight');
             rightContainer.innerHTML = '<div class="loader">加载关卡数据中...</div>';
@@ -488,6 +491,18 @@
             renderGroupList();
             const rightContainer = document.getElementById('spawnerRight');
             if (rightContainer) rightContainer.innerHTML = '<div class="loader">请从左侧选择一个分组</div>';
+            if (window.__deepLinkId) {
+                const deepGroup = groups.find(g => g.id === window.__deepLinkId);
+                if (deepGroup) {
+                    onGroupSelected(deepGroup);
+                } else {
+                    const existsInRaw = rawGroups.some(g => g.id === window.__deepLinkId);
+                    if (window.__akeRouter && window.__akeRouter.onDeepLinkNotFound) {
+                        window.__akeRouter.onDeepLinkNotFound(window.__deepLinkId, existsInRaw);
+                    }
+                }
+                window.__deepLinkId = null;
+            }
         }
 
         async function initModule() {

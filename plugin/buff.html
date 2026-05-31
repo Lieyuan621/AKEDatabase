@@ -37,6 +37,7 @@
 <script>
     (function () {
         let allBuffs = [];
+        let rawAllBuffs = [];
         let activeBuffId = null;
         let isInitialized = false;
         let searchTerm = '';
@@ -76,7 +77,8 @@
                 const res = await fetch('/public/Json/BuffData/manifest.json?t=' + Date.now());
                 if (!res.ok) throw new Error('无法加载效果清单');
                 const all = await res.json();
-                let buffs = showHidden ? all : all.filter(b => !b.hidden);
+                rawAllBuffs = all || [];
+                let buffs = showHidden ? rawAllBuffs : rawAllBuffs.filter(b => !b.hidden);
                 buffs.sort((a, b) => (a.priority || 999) - (b.priority || 999));
                 return buffs;
             } catch (err) {
@@ -122,11 +124,25 @@
                     document.querySelectorAll('.buff-item').forEach(el => el.classList.remove('active'));
                     item.classList.add('active');
                     activeBuffId = buff.id;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('buff', buff.id);
                     loadBuffDetail(buff, detailContainer);
                 });
 
                 container.appendChild(item);
             });
+
+            if (window.__deepLinkId) {
+                const deepItem = filtered.find(c => c.id === window.__deepLinkId);
+                if (deepItem) {
+                    activeBuffId = deepItem.id;
+                } else {
+                    const existsInRaw = rawAllBuffs.some(c => c.id === window.__deepLinkId);
+                    if (window.__akeRouter && window.__akeRouter.onDeepLinkNotFound) {
+                        window.__akeRouter.onDeepLinkNotFound(window.__deepLinkId, existsInRaw);
+                    }
+                }
+                window.__deepLinkId = null;
+            }
 
             const activeExists = filtered.some(b => b.id === activeBuffId);
             if (!activeExists && filtered.length > 0) {
@@ -134,12 +150,14 @@
                 const firstItem = container.querySelector('.buff-item');
                 if (firstItem) firstItem.classList.add('active');
                 loadBuffDetail(filtered[0], detailContainer);
+                if (window.__akeRouter) window.__akeRouter.updateUrl('buff', activeBuffId);
             } else if (activeExists) {
                 const activeBuff = filtered.find(b => b.id === activeBuffId);
                 if (activeBuff) {
                     const activeItem = container.querySelector(`.buff-item[data-buff-id="${activeBuffId}"]`);
                     if (activeItem) activeItem.classList.add('active');
                     loadBuffDetail(activeBuff, detailContainer);
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('buff', activeBuffId);
                 }
             }
         }
@@ -633,6 +651,7 @@
                 `;
                 item.addEventListener('click', () => {
                     activeBuffId = buff.id;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('buff', buff.id);
                     loadBuffDetail(buff, document.getElementById('buffDetail'));
                     closeMobileList();
                     document.querySelectorAll('.buff-item').forEach(el => el.classList.remove('active'));

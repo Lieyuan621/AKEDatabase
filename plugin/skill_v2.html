@@ -28,6 +28,7 @@
 <script>
 (function () {
     let manifestList = [];
+    let rawAllSkills = [];
     let activeSkillId = null;
     let searchTerm = '';
     let isInitialized = false;
@@ -158,7 +159,8 @@
         const res = await fetch('/public/Json/SkillData/manifest.json?t=' + Date.now());
         if (!res.ok) throw new Error('无法加载 SkillData 清单');
         const json = await res.json();
-        return normalizeManifest(json || []);
+        rawAllSkills = json || [];
+        return normalizeManifest(rawAllSkills);
     }
 
     async function fetchSkillData(contentFile) {
@@ -194,16 +196,33 @@
             `;
             div.addEventListener('click', () => {
                 activeSkillId = item.id;
+                if (window.__akeRouter) window.__akeRouter.updateUrl('skill_v2', item.id);
                 highlightActive();
                 loadSkillDetail(item);
             });
             listEl.appendChild(div);
         });
 
+        if (window.__deepLinkId) {
+            const deepItem = filtered.find(c => c.id === window.__deepLinkId);
+            if (deepItem) {
+                activeSkillId = deepItem.id;
+            } else {
+                const existsInRaw = rawAllSkills.some(c => c.id === window.__deepLinkId);
+                if (window.__akeRouter && window.__akeRouter.onDeepLinkNotFound) {
+                    window.__akeRouter.onDeepLinkNotFound(window.__deepLinkId, existsInRaw);
+                }
+            }
+            window.__deepLinkId = null;
+        }
+
         if (!filtered.some(s => s.id === activeSkillId)) {
             activeSkillId = filtered[0].id;
+            if (window.__akeRouter) window.__akeRouter.updateUrl('skill_v2', activeSkillId);
             highlightActive();
             loadSkillDetail(filtered[0]);
+        } else {
+            if (window.__akeRouter) window.__akeRouter.updateUrl('skill_v2', activeSkillId);
         }
 
         buildMobileList();
@@ -1120,6 +1139,7 @@
             `;
             div.addEventListener('click', () => {
                 activeSkillId = item.id;
+                if (window.__akeRouter) window.__akeRouter.updateUrl('skill_v2', item.id);
                 highlightActive();
                 loadSkillDetail(item);
                 closeMobileList();

@@ -23,6 +23,7 @@
 <script>
     (function() {
         let allSeries = [];
+        let rawAllSeries = [];
         let activeSeriesId = null;
         let isInitialized = false;
         let searchTerm = '';
@@ -255,6 +256,7 @@
                 `;
                 item.addEventListener('click', () => {
                     activeSeriesId = series.templateId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', series.templateId);
                     loadSeriesDetail(series, document.getElementById('v2dungeonDetail'));
                     closeMobileList();
                 });
@@ -276,6 +278,7 @@
                 const res = await fetch('/public/CH/v2_dungeon/manifest.json?t=' + Date.now());
                 if (!res.ok) throw new Error('无法加载副本系列清单');
                 const all = await res.json();
+                rawAllSeries = all;
                 let series = showHidden ? all : all.filter(s => !s.hidden);
                 series.sort((a, b) => (a.priority || 999) - (b.priority || 999));
                 return series;
@@ -329,23 +332,39 @@
                     document.querySelectorAll('.v2d-item').forEach(el => el.classList.remove('active'));
                     div.classList.add('active');
                     activeSeriesId = item.templateId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', item.templateId);
                     loadSeriesDetail(item, detailContainer);
                 });
 
                 container.appendChild(div);
             });
 
+            if (window.__deepLinkId) {
+                const deepItem = filtered.find(c => c.templateId === window.__deepLinkId);
+                if (deepItem) {
+                    activeSeriesId = deepItem.templateId;
+                } else {
+                    const existsInRaw = rawAllSeries.some(c => c.templateId === window.__deepLinkId);
+                    if (window.__akeRouter && window.__akeRouter.onDeepLinkNotFound) {
+                        window.__akeRouter.onDeepLinkNotFound(window.__deepLinkId, existsInRaw);
+                    }
+                }
+                window.__deepLinkId = null;
+            }
+
             const activeExists = filtered.some(s => s.templateId === activeSeriesId);
             if (!activeExists && filtered.length > 0) {
                 activeSeriesId = filtered[0].templateId;
                 const firstItem = container.querySelector('.v2d-item');
                 if (firstItem) firstItem.classList.add('active');
+                if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', activeSeriesId);
                 loadSeriesDetail(filtered[0], detailContainer);
             } else if (activeExists) {
                 const activeItem = filtered.find(s => s.templateId === activeSeriesId);
                 if (activeItem) {
                     const activeDiv = container.querySelector(`.v2d-item[data-series-id="${activeSeriesId}"]`);
                     if (activeDiv) activeDiv.classList.add('active');
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', activeSeriesId);
                     loadSeriesDetail(activeItem, detailContainer);
                 }
             }

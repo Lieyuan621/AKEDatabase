@@ -35,6 +35,7 @@
 <script>
     (function() {
         let allWeapons = [];
+        let rawAllWeapons = [];
         let activeWeaponId = null;
         let isInitialized = false;
         let weaponLevelsToShow = null;
@@ -167,6 +168,7 @@
                 item.addEventListener('click', () => {
                     // 加载武器详情
                     activeWeaponId = weapon.weaponId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('weapon', weapon.weaponId);
                     loadWeaponDetail(weapon, document.getElementById('weaponDetail'));
                     closeMobileList();
                     // 同步高亮（如果左侧列表可见，也应该更新，但已隐藏）
@@ -197,8 +199,9 @@
             try {
                 const res = await fetch('/public/CH/weapon/manifest.json?t=' + Date.now());
                 if (!res.ok) throw new Error('无法加载武器清单');
-                const allWeapons = await res.json();
-                let weapons = showHidden ? allWeapons : allWeapons.filter(w => !w.hidden);
+                const allWeaponsRaw = await res.json();
+                rawAllWeapons = allWeaponsRaw || [];
+                let weapons = showHidden ? rawAllWeapons : rawAllWeapons.filter(w => !w.hidden);
                 weapons.sort((a, b) => (a.priority || 999) - (b.priority || 999));
                 return weapons;
             } catch (err) {
@@ -263,11 +266,25 @@
                     document.querySelectorAll('.weapon-item').forEach(el => el.classList.remove('active'));
                     item.classList.add('active');
                     activeWeaponId = weapon.weaponId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('weapon', weapon.weaponId);
                     loadWeaponDetail(weapon, detailContainer);
                 });
 
                 listItemsContainer.appendChild(item);
             });
+
+            if (window.__deepLinkId) {
+                const deepItem = filtered.find(c => c.weaponId === window.__deepLinkId);
+                if (deepItem) {
+                    activeWeaponId = deepItem.weaponId;
+                } else {
+                    const existsInRaw = rawAllWeapons.some(c => c.weaponId === window.__deepLinkId);
+                    if (window.__akeRouter && window.__akeRouter.onDeepLinkNotFound) {
+                        window.__akeRouter.onDeepLinkNotFound(window.__deepLinkId, existsInRaw);
+                    }
+                }
+                window.__deepLinkId = null;
+            }
 
             const activeExists = filtered.some(w => w.weaponId === activeWeaponId);
             if (!activeExists && filtered.length > 0) {
@@ -275,12 +292,14 @@
                 const firstItem = listItemsContainer.querySelector('.weapon-item');
                 if (firstItem) firstItem.classList.add('active');
                 loadWeaponDetail(filtered[0], detailContainer);
+                if (window.__akeRouter) window.__akeRouter.updateUrl('weapon', activeWeaponId);
             } else if (activeExists) {
                 const activeWeapon = filtered.find(w => w.weaponId === activeWeaponId);
                 if (activeWeapon) {
                     const activeItem = listItemsContainer.querySelector(`.weapon-item[data-weapon-id="${activeWeaponId}"]`);
                     if (activeItem) activeItem.classList.add('active');
                     loadWeaponDetail(activeWeapon, detailContainer);
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('weapon', activeWeaponId);
                 }
             }
         }
