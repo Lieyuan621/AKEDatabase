@@ -120,10 +120,16 @@
             return parts.length ? parts : [maxLevel];
         }
 
-        function replacePlaceholders(desc, valueMap) {
+        function replacePlaceholders(desc, valueMap, modifierTypes, showModTag) {
             const lowerValueMap = {};
             for (const [key, val] of Object.entries(valueMap || {})) {
                 lowerValueMap[String(key).toLowerCase()] = val;
+            }
+            const lowerModTypes = {};
+            if (modifierTypes) {
+                for (const [key, val] of Object.entries(modifierTypes)) {
+                    lowerModTypes[String(key).toLowerCase()] = val;
+                }
             }
             return String(desc || '').replace(/\{([^}]+)\}/g, (match, p1) => {
                 const parts = p1.split(':');
@@ -144,13 +150,22 @@
                 } catch (e) {
                     return match;
                 }
-                if (format.includes('%')) return (result * 100).toFixed(1) + '%';
-                if (format.includes('.')) {
+                let formatted;
+                if (format.includes('%')) formatted = (result * 100).toFixed(1) + '%';
+                else if (format.includes('.')) {
                     const precision = format.split('.')[1]?.length || 1;
-                    return result.toFixed(precision);
+                    formatted = result.toFixed(precision);
                 }
-                if (format.includes('0')) return Math.round(result);
-                return result.toString();
+                else if (format.includes('0')) formatted = Math.round(result).toString();
+                else formatted = result.toString();
+                if (showModTag && lowerModTypes) {
+                    const matchedModType = varNames.map(name => lowerModTypes[name.toLowerCase()]).find(v => v != null);
+                    if (matchedModType != null) {
+                        const modName = modifierTypeMap[String(matchedModType)] || '';
+                        if (modName) formatted += ` <span class="attr-node-modifier-tag">${modName}</span>`;
+                    }
+                }
+                return formatted;
             });
         }
 
@@ -692,6 +707,7 @@
                 if (!effect) return null;
                 const descRaw = effect.desc?.text || effect.desc || '';
                 const values = {};
+                const modifierTypes = {};
                 (effect.dataList || []).forEach(item => {
                     (item.attachSkill?.blackboard || []).forEach(bb => {
                         if (bb && bb.key !== undefined) values[bb.key] = bb.value;
@@ -708,13 +724,19 @@
                     }
                     if (item.attrModifier?.attrType && item.attrModifier.attrValue) {
                         const atName = attrEnMap[item.attrModifier.attrType];
-                        if (atName) values[atName] = item.attrModifier.attrValue;
+                        if (atName) {
+                            values[atName] = item.attrModifier.attrValue;
+                            if (item.attrModifier.modifierType != null) {
+                                modifierTypes[atName] = item.attrModifier.modifierType;
+                            }
+                        }
                     }
                 });
                 return {
                     name: n.passiveSkillNodeInfo.name?.text || effect.name?.text || effect.name || '天赋',
                     description: descRaw,
                     values: values,
+                    modifierTypes: modifierTypes,
                     requiredItem: n.requiredItem || []
                 };
             }).filter(Boolean);
@@ -733,6 +755,7 @@
                     }
                 }
                 const values = {};
+                const modifierTypes = {};
                 dataList.forEach(item => {
                     (item.attachSkill?.blackboard || []).forEach(bb => {
                         if (bb && bb.key !== undefined) values[bb.key] = bb.value;
@@ -749,7 +772,12 @@
                     }
                     if (item.attrModifier?.attrType && item.attrModifier.attrValue) {
                         const atName = attrEnMap[item.attrModifier.attrType];
-                        if (atName) values[atName] = item.attrModifier.attrValue;
+                        if (atName) {
+                            values[atName] = item.attrModifier.attrValue;
+                            if (item.attrModifier.modifierType != null) {
+                                modifierTypes[atName] = item.attrModifier.modifierType;
+                            }
+                        }
                     }
                 });
                 const costItems = (p.itemIds || []).map((id, i) => ({ id, count: (p.itemCnts || [])[i] || 0 }));
@@ -757,6 +785,7 @@
                     name: p.name?.text || p.name || `潜能 ${p.level || ''}`,
                     description: desc,
                     values: values,
+                    modifierTypes: modifierTypes,
                     costItems: costItems
                 };
             });
@@ -1147,9 +1176,10 @@
             `;
 
             const inm = data.itemNameMap || {};
+            const showHiddenAttr = getCurrentShowHidden();
             const talentsHtml = (data.talents || []).map(talent => {
                 const valueMap = talent.values || {};
-                let desc = replacePlaceholders(talent.description, valueMap);
+                let desc = replacePlaceholders(talent.description, valueMap, talent.modifierTypes, showHiddenAttr);
                 desc = parseText(desc);
                 const costHtml = renderCostItemsHtml(talent.requiredItem, 0, inm);
                 const costIconIds = (talent.requiredItem || []).map(it => it.id);
@@ -1163,7 +1193,7 @@
 
             const potentialsHtml = (data.potentials || []).map(pot => {
                 const valueMap = pot.values || {};
-                let desc = replacePlaceholders(pot.description, valueMap);
+                let desc = replacePlaceholders(pot.description, valueMap, pot.modifierTypes, showHiddenAttr);
                 desc = parseText(desc);
                 const costHtml = renderCostItemsHtml(pot.costItems, 0, inm);
                 const costIconIds = (pot.costItems || []).map(it => it.id);
@@ -1176,7 +1206,6 @@
             }).join('');
 
             const attrNodes = data.attributeNodes || [];
-            const showHiddenAttr = getCurrentShowHidden();
             const attrNodesHtml = `
                 <div class="section">
                     <h3>属性节点</h3>
