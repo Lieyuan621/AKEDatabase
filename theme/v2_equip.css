@@ -122,7 +122,6 @@
     text-overflow: ellipsis;
 }
 
-.v2eq-detail-container {}
 .v2eq-header {
     display: flex;
     gap: 20px;
@@ -238,6 +237,11 @@
 .v2eq-card-title {
     flex: 1;
     display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.v2eq-card-name-row {
+    display: flex;
     align-items: center;
     gap: 6px;
     flex-wrap: wrap;
@@ -246,6 +250,10 @@
     font-weight: 600;
     color: var(--text-color, #1e2b3c);
     font-size: 1rem;
+}
+.v2eq-card-item-id {
+    font-size: 0.75rem;
+    color: var(--desc-color, #5b6f86);
 }
 .v2eq-card-body {
     color: var(--desc-color, #5b6f86);
@@ -482,4 +490,157 @@
     .v2eq-mobile-btn, .v2eq-mobile-overlay {
         display: none !important;
     }
+}
+
+.v2eq-enhance-tip {
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+    color: var(--desc-color, #5b6f86);
+}
+.v2eq-blackboard-params {
+    margin-top: 8px;
+    font-size: 0.85rem;
+}
+.v2eq-blackboard-label {
+    color: var(--desc-color, #5b6f86);
+}
+.v2eq-blackboard-item {
+    margin-right: 12px;
+}
+.v2eq-enhance-cost-card {
+    margin-top: 12px;
+    padding: 8px;
+    background: var(--module-bg, #f8fafd);
+    border-radius: 8px;
+    border: 1px solid var(--border-color, #e2e7f0);
+}
+.v2eq-enhance-cost-domain {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.v2eq-cost-wrap {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+.v2eq-cost-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 6px;
+    padding: 2px 8px;
+    font-size: 0.72rem;
+    background: var(--button-bg, #e0e8f0);
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 10px;
+    cursor: pointer;
+    color: var(--text-color, #333);
+    white-space: nowrap;
+}
+.v2eq-cost-btn:hover {
+    background: var(--hover-bg, #d0d8e0);
+}
+.v2eq-cost-tip {
+    display: none;
+    position: absolute;
+    z-index: 200;
+    right: 0;
+    top: calc(100% + 6px);
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 8px;
+    padding: 8px 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.18);
+    white-space: nowrap;
+    pointer-events: auto;
+    min-width: 180px;
+}
+.v2eq-cost-wrap:hover .v2eq-cost-tip,
+.v2eq-cost-tip.pinned {
+    display: block;
+}
+.v2eq-cost-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 0;
+    font-size: 0.8rem;
+}
+.v2eq-cost-item img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    flex-shrink: 0;
+    border-radius: 3px;
+}
+.v2eq-cost-item .v2eq-ci-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.v2eq-cost-item .v2eq-ci-cnt {
+    font-weight: bold;
+    flex-shrink: 0;
+}
+.v2eq-cost-icons {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: 2px;
+    vertical-align: middle;
+}
+.v2eq-cost-icons img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    border-radius: 3px;
+}
+.v2eq-guarantee-wrap {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+.v2eq-guarantee-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    font-size: 0.72rem;
+    background: var(--button-bg, #e0e8f0);
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 10px;
+    cursor: pointer;
+    color: var(--text-color, #333);
+    white-space: nowrap;
+}
+.v2eq-guarantee-btn:hover {
+    background: var(--hover-bg, #d0d8e0);
+}
+.v2eq-guarantee-tip {
+    display: none;
+    position: absolute;
+    z-index: 200;
+    right: 0;
+    top: calc(100% + 6px);
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 8px;
+    padding: 8px 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.18);
+    pointer-events: auto;
+    min-width: 200px;
+}
+.v2eq-guarantee-wrap:hover .v2eq-guarantee-tip,
+.v2eq-guarantee-tip.pinned {
+    display: block;
+}
+.v2eq-card-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-left: auto;
+    flex-shrink: 0;
 }

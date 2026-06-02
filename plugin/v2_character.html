@@ -1,24 +1,5 @@
 <!-- plugin/v2_character.html -->
-<link rel="stylesheet" href="/theme/character.css">
 <link rel="stylesheet" href="/theme/v2_character.css">
-<style>
-.cost-wrap{position:relative;display:inline-block;vertical-align:middle}
-.cost-btn{display:inline-block;margin-left:4px;padding:1px 8px;font-size:0.72rem;background:var(--button-bg,#e0e8f0);border:1px solid var(--border-color,#ccc);border-radius:10px;cursor:pointer;color:var(--text-color,#333)}
-.cost-btn:hover{background:var(--hover-bg,#d0d8e0)}
-.cost-tip{display:none;position:absolute;z-index:200;left:0;bottom:calc(100% + 6px);background:var(--card-bg,#fff);border:1px solid var(--border-color,#ccc);border-radius:8px;padding:8px 12px;box-shadow:0 4px 16px rgba(0,0,0,.18);white-space:nowrap;pointer-events:auto}
-.cost-wrap:hover .cost-tip,.cost-tip.pinned{display:block}
-.cost-section-title{font-size:0.72rem;color:var(--text-color-secondary,#888);margin:4px 0 2px;font-weight:bold}
-.cost-item{display:flex;align-items:center;gap:6px;padding:3px 0;font-size:0.8rem}
-.cost-item img{width:16px;height:16px;object-fit:contain;flex-shrink:0}
-.cost-item .ci-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
-.cost-item .ci-cnt{font-weight:bold;flex-shrink:0}
-.sk-cost-row{display:flex;align-items:center;gap:4px 12px;padding:2px 0;font-size:0.8rem;white-space:nowrap}
-.sk-cost-row .cost-section-title{margin:0;flex-shrink:0}
-.sk-cost-row .ci-ri{display:inline-flex;align-items:center;gap:4px}
-.sk-cost-row .ci-ri img{width:16px;height:16px;object-fit:contain}
-.cost-btn-icons{display:inline-flex;align-items:center;gap:2px;margin-left:4px;vertical-align:middle}
-.cost-btn-icons img{width:18px;height:18px;object-fit:contain}
-</style>
 
 <div class="character-module">
     <div class="left-column">
@@ -1069,8 +1050,8 @@
             const headerCells = allColumns.map(col => `<th>${COLUMN_MAP[col] || col}</th>`).join('');
             const header = `<tr><th>等级</th>${headerCells}</tr>`;
             const tableHtml = `
-                <div style="display: flex; align-items: center; justify-content: flex-end; margin-bottom: 4px;">
-                    <button class="skill-toggle-btn" data-skill-name="${skillName}" style="background: var(--button-bg, #e0e8f0); border: 1px solid var(--border-color); border-radius: 16px; padding: 2px 8px; font-size: 0.8rem; cursor: pointer;">${isExpanded ? '收起多余等级' : '展开所有等级'}</button>
+                <div class="skill-toggle-container">
+                    <button class="skill-toggle-btn" data-skill-name="${skillName}">${isExpanded ? '收起多余等级' : '展开所有等级'}</button>
                 </div>
                 <table class="skill-table">
                     <thead>${header}</thead>
@@ -1176,9 +1157,9 @@
 
             const growthHtml = `
                 <div class="section">
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div class="section-header-row">
                         <h3>属性成长</h3>
-                        ${charLevelsToShow ? `<button class="toggle-char-levels-btn" style="background: var(--button-bg, #e0e8f0); border: 1px solid var(--border-color); border-radius: 16px; padding: 4px 12px; cursor: pointer;">${showAllCharLevels ? '收起多余等级' : '展开所有等级'}</button>` : ''}
+                        ${charLevelsToShow ? `<button class="toggle-char-levels-btn">${showAllCharLevels ? '收起多余等级' : '展开所有等级'}</button>` : ''}
                     </div>
                     <div class="growth-table-container">
                         <table class="growth-table">
@@ -1308,8 +1289,8 @@
 
                     skillTables = `
                         <div class="skill-detail">
-                            <div style="display: flex; align-items: center; justify-content: flex-end; margin-bottom: 4px;">
-                                <button class="skill-toggle-btn" data-skill-name="${group.name}" style="background: var(--button-bg, #e0e8f0); border: 1px solid var(--border-color); border-radius: 16px; padding: 2px 8px; font-size: 0.8rem; cursor: pointer;">${btnText}</button>
+                            <div class="skill-toggle-container">
+                                <button class="skill-toggle-btn" data-skill-name="${group.name}">${btnText}</button>
                             </div>
                             <table class="skill-table">
                                 <thead>${header}</thead>
@@ -1351,7 +1332,7 @@
                     <h3 class="section-header">
                         <span class="collapse-indicator">▶</span> 潜能图片
                     </h3>
-                    <div class="collapse-content" style="display:none;">
+                    <div class="collapse-content">
                         <div class="potential-pics">
                             ${potentialPics.map(src => `<img src="${src}" onerror="this.style.display='none'">`).join('')}
                         </div>
@@ -1413,9 +1394,9 @@
                 </div>
                 ${attrNodesHtml}
                 <div class="section">
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div class="section-header-row">
                         <h3>技能</h3>
-                        ${skillLevelsToShow ? `<button class="global-skill-toggle-btn" style="background: var(--button-bg, #e0e8f0); border: 1px solid var(--border-color); border-radius: 16px; padding: 4px 12px; cursor: pointer;">${globalSkillExpand ? '收起所有技能等级' : '展开所有技能等级'}</button>` : ''}
+                        ${skillLevelsToShow ? `<button class="global-skill-toggle-btn">${globalSkillExpand ? '收起所有技能等级' : '展开所有技能等级'}</button>` : ''}
                     </div>
                     ${skillsHtml || '<p>无</p>'}
                 </div>
@@ -1428,7 +1409,7 @@
                     <h3 class="section-header">
                         <span class="collapse-indicator">▶</span> 档案
                     </h3>
-                    <div class="collapse-content" style="display:none;">
+                    <div class="collapse-content">
                         ${profileRecordsHtml || '<p>无</p>'}
                     </div>
                 </div>
@@ -1436,7 +1417,7 @@
                     <h3 class="section-header">
                         <span class="collapse-indicator">▶</span> 语音记录
                     </h3>
-                    <div class="collapse-content" style="display:none;">
+                    <div class="collapse-content">
                         ${voiceHtml}
                     </div>
                 </div>

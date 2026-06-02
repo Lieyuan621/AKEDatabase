@@ -1,20 +1,5 @@
 <!-- plugin/v2_weapon.html -->
-<link rel="stylesheet" href="/theme/weapon.css">
-<style>
-    .break-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:12px}
-    .break-card{background:var(--module-bg,#f8fafd);border-radius:10px;padding:14px;border:1px solid var(--border-color,#e2e7f0)}
-    .break-card-title{font-weight:600;color:var(--text-color,#1e2b3c);margin-bottom:8px;font-size:1rem}
-    .break-cost-row{display:flex;align-items:center;gap:6px;padding:3px 0;font-size:0.85rem}
-    .break-cost-row img{width:20px;height:20px;object-fit:contain;border-radius:3px;flex-shrink:0}
-    .break-cost-row .bc-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;color:var(--desc-color,#5b6f86)}
-    .break-cost-row .bc-cnt{font-weight:bold;flex-shrink:0;color:var(--text-color,#1e2b3c)}
-    .break-skill-bounds{margin-top:8px;font-size:0.8rem;color:var(--desc-color,#5b6f86)}
-    .break-skill-bounds span{margin-right:10px}
-    .talent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
-    .talent-card{background:var(--module-bg,#f8fafd);border-radius:10px;padding:12px;border:1px solid var(--border-color,#e2e7f0);text-align:center}
-    .talent-lv{font-weight:600;font-size:1.1rem;color:var(--text-color,#1e2b3c);margin-bottom:6px}
-    .talent-info{font-size:0.85rem;color:var(--desc-color,#5b6f86)}
-</style>
+<link rel="stylesheet" href="/theme/v2_weapon.css">
 
 <div class="weapon-module">
     <div class="mobile-list-btn" id="v2wpnMobileListBtn">📋 列表</div>
@@ -435,8 +420,8 @@
         }
 
         const toggleHtml = weaponLevelsToShow ? `
-            <div style="display:flex;justify-content:flex-end;margin-top:4px;">
-                <button class="toggle-weapon-levels-btn" style="background:var(--button-bg,#e0e8f0);border:1px solid var(--border-color);border-radius:16px;padding:4px 12px;cursor:pointer;">${showAllWeaponLevels ? '收起多余等级' : '展开所有等级'}</button>
+            <div class="toggle-weapon-levels-container">
+                <button class="toggle-weapon-levels-btn">${showAllWeaponLevels ? '收起多余等级' : '展开所有等级'}</button>
             </div>
         ` : '';
 
