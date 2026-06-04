@@ -12,6 +12,7 @@
         "displayType": 1,
         "distributionIds": [
             "distribution_map02_lv003",
+            "distribution_map02_lv006",
             "distribution_world_energy_point06"
         ],
         "name": {
@@ -43,21 +44,6 @@
             "showBigHeadbar": false,
             "templateId": "eny_0054_hsmino"
         },
-        "eny_0054_hsmino": {
-            "aiTemplateId": "",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0054_hsmino",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [],
-            "enemyId": "eny_0054_hsmino",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": true,
-            "showBigHeadbar": false,
-            "templateId": "eny_0054_hsmino"
-        },
         "eny_0054_hsmino_hdg007": {
             "aiTemplateId": "aiconf_eny_0054_hsmino_hard",
             "attrModifiers": [
@@ -78,6 +64,36 @@
             "serverDeathCheck": false,
             "showBigEffect": true,
             "showBigHeadbar": true,
+            "templateId": "eny_0054_hsmino"
+        },
+        "eny_0054_hsmino": {
+            "aiTemplateId": "",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0054_hsmino",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0054_hsmino",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0054_hsmino"
+        },
+        "eny_0054_hsmino_chrdg": {
+            "aiTemplateId": "aiconf_eny_0054_hsmino_chrdg",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0054_hsmino",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0054_hsmino_chrdg",
+            "isDangerous": false,
+            "modelId": "eny_0054_hsmino_chrdg_postmodel",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
             "templateId": "eny_0054_hsmino"
         },
         "eny_0054_hsmino_race": {
@@ -4333,6 +4349,14 @@
             },
             "distributionId": "distribution_map02_lv003",
             "jumpId": "jump_map02_lv003"
+        },
+        "distribution_map02_lv006": {
+            "areaName": {
+                "id": -1517043004746701297,
+                "text": "藏剑谷"
+            },
+            "distributionId": "distribution_map02_lv006",
+            "jumpId": "jump_map02_lv006"
         },
         "distribution_world_energy_point06": {
             "areaName": {

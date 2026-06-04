@@ -7,6 +7,7 @@
     "type": 95,
     "obtainWayIds": [
         "item_obtain_case_bp_selfselect_skillsp_1_5",
+        "item_obtain_dungeon_ss05_untouched",
         "item_obtain_dungeon_ss05",
         "item_obtain_dung02_bossrush02_03",
         "item_obtain_shop_greenticket_char_skill_specialize_5",
@@ -24,11 +25,19 @@
             "icon": "/public/images/item/itemtips/icon_tips_trd.png"
         },
         {
-            "id": "item_obtain_dungeon_ss05",
+            "id": "item_obtain_dungeon_ss05_untouched",
             "desc": "协议空间·高危材料封存库",
             "bindSystem": 52,
             "phaseId": "Map",
             "phaseArgs": "{\r\n  \"instId\": \"mark_dg_ss22800020013\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
+        },
+        {
+            "id": "item_obtain_dungeon_ss05",
+            "desc": "协议空间·高危材料封存库",
+            "bindSystem": 52,
+            "phaseId": "DungeonEntry",
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung_group_ss05\"\r\n}",
             "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
         },
         {

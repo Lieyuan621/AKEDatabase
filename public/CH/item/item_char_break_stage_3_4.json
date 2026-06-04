@@ -6,6 +6,7 @@
     "rarity": 4,
     "type": 27,
     "obtainWayIds": [
+        "item_obtain_dungeon_0004_untouched",
         "item_obtain_dungeon_0004",
         "item_obtain_shop_greenticket_char_break_stage_3_4",
         "item_obtain_shop_yellowticket_char_break_stage_3_4",
@@ -13,11 +14,19 @@
     ],
     "obtainWays": [
         {
-            "id": "item_obtain_dungeon_0004",
+            "id": "item_obtain_dungeon_0004_untouched",
             "desc": "协议空间·干员进阶",
             "bindSystem": 52,
             "phaseId": "Map",
             "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource2100320000\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
+        },
+        {
+            "id": "item_obtain_dungeon_0004",
+            "desc": "协议空间·干员进阶",
+            "bindSystem": 52,
+            "phaseId": "DungeonEntry",
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung01_group_charbreak01\"\r\n}",
             "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
         },
         {

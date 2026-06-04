@@ -16571,7 +16571,7 @@
             },
             "id": "chr_0014_aurora_talent_1_2"
         },
-        "chr_0014_aurora_potential_3": {
+        "chr_0014_aurora_potential_5": {
             "dataList": [
                 {
                     "attachBuff": {
@@ -16591,10 +16591,10 @@
                     },
                     "modifyType": 3,
                     "skillBbModifier": {
-                        "bbKey": "extra_duration",
-                        "floatValue": 2,
-                        "modifyType": 1,
-                        "skillId": "chr_0014_aurora_ultimate_skill",
+                        "bbKey": "potential_5_atb",
+                        "floatValue": 10,
+                        "modifyType": 3,
+                        "skillId": "chr_0014_aurora_normal_skill",
                         "stringValue": ""
                     },
                     "skillParamModifier": {
@@ -16606,10 +16606,10 @@
                 }
             ],
             "desc": {
-                "id": 8469773918565120442,
-                "text": "终结技<@ba.key>凛冽寒霜</>施加的<#ba.frozen>冻结</>的持续时间<@ba.vup>+{extra_duration:0}</>秒。"
+                "id": -1592646390775026904,
+                "text": "战技<@ba.key>饱和性防御</>成功反击敌人时，<#ba.return>返还</><@ba.vup>{potential_5_atb:0}</>点技力。"
             },
-            "id": "chr_0014_aurora_potential_3"
+            "id": "chr_0014_aurora_potential_5"
         },
         "chr_0014_aurora_potential_1": {
             "dataList": [
@@ -16722,6 +16722,46 @@
             },
             "id": "chr_0014_aurora_potential_2"
         },
+        "chr_0014_aurora_potential_3": {
+            "dataList": [
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 3,
+                    "skillBbModifier": {
+                        "bbKey": "extra_duration",
+                        "floatValue": 2,
+                        "modifyType": 1,
+                        "skillId": "chr_0014_aurora_ultimate_skill",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                }
+            ],
+            "desc": {
+                "id": 8469773918565120442,
+                "text": "终结技<@ba.key>凛冽寒霜</>施加的<#ba.frozen>冻结</>的持续时间<@ba.vup>+{extra_duration:0}</>秒。"
+            },
+            "id": "chr_0014_aurora_potential_3"
+        },
         "chr_0014_aurora_potential_4": {
             "dataList": [
                 {
@@ -16792,1541 +16832,9 @@
                 "text": "防御力<@ba.vup>+{Def:0}</>，意志<@ba.vup>+{Will:0}</>。"
             },
             "id": "chr_0014_aurora_potential_4"
-        },
-        "chr_0014_aurora_potential_5": {
-            "dataList": [
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 3,
-                    "skillBbModifier": {
-                        "bbKey": "potential_5_atb",
-                        "floatValue": 10,
-                        "modifyType": 3,
-                        "skillId": "chr_0014_aurora_normal_skill",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                }
-            ],
-            "desc": {
-                "id": -1592646390775026904,
-                "text": "战技<@ba.key>饱和性防御</>成功反击敌人时，<#ba.return>返还</><@ba.vup>{potential_5_atb:0}</>点技力。"
-            },
-            "id": "chr_0014_aurora_potential_5"
         }
     },
     "skillpatchtable": {
-        "chr_0014_aurora_ultimate_skill": {
-            "SkillPatchDataBundle": [
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 2,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_loop",
-                            "value": 0.29,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "duration",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "interval",
-                            "value": 0.5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "forst_allow_count",
-                            "value": 2,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 20,
-                    "costType": 0,
-                    "costValue": 80,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_ultimate_skill_aurora_01",
-                    "level": 1,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0014_aurora_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "200%",
-                        "15",
-                        "29%",
-                        "0.5",
-                        "5"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -9028917328884385656,
-                            "text": "爆炸伤害倍率"
-                        },
-                        {
-                            "id": -1548332225368978647,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": -7654895854984603747,
-                            "text": "持续伤害倍率"
-                        },
-                        {
-                            "id": 4349868725584405805,
-                            "text": "持续伤害间隔（秒）"
-                        },
-                        {
-                            "id": 8833910019789329000,
-                            "text": "持续时间（秒）"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 2.2,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_loop",
-                            "value": 0.32,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "duration",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "interval",
-                            "value": 0.5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "forst_allow_count",
-                            "value": 2,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 20,
-                    "costType": 0,
-                    "costValue": 80,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_ultimate_skill_aurora_01",
-                    "level": 2,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0014_aurora_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "220%",
-                        "15",
-                        "32%",
-                        "0.5",
-                        "5"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -5136498498410127854,
-                            "text": "爆炸伤害倍率"
-                        },
-                        {
-                            "id": 7338850573417004308,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 904269123761292163,
-                            "text": "持续伤害倍率"
-                        },
-                        {
-                            "id": 9167911547770480307,
-                            "text": "持续伤害间隔（秒）"
-                        },
-                        {
-                            "id": -8517236619921793047,
-                            "text": "持续时间（秒）"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 2.4,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_loop",
-                            "value": 0.35,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "duration",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "interval",
-                            "value": 0.5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "forst_allow_count",
-                            "value": 2,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 20,
-                    "costType": 0,
-                    "costValue": 80,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_ultimate_skill_aurora_01",
-                    "level": 3,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0014_aurora_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "240%",
-                        "15",
-                        "35%",
-                        "0.5",
-                        "5"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -2746717627447248217,
-                            "text": "爆炸伤害倍率"
-                        },
-                        {
-                            "id": 8785163749706263880,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 4001172924184897822,
-                            "text": "持续伤害倍率"
-                        },
-                        {
-                            "id": 6417414593498926409,
-                            "text": "持续伤害间隔（秒）"
-                        },
-                        {
-                            "id": 7925370504202784075,
-                            "text": "持续时间（秒）"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 2.6,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_loop",
-                            "value": 0.37,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "duration",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "interval",
-                            "value": 0.5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "forst_allow_count",
-                            "value": 2,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 20,
-                    "costType": 0,
-                    "costValue": 80,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_ultimate_skill_aurora_01",
-                    "level": 4,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0014_aurora_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "260%",
-                        "15",
-                        "37%",
-                        "0.5",
-                        "5"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -1402126709031528893,
-                            "text": "爆炸伤害倍率"
-                        },
-                        {
-                            "id": -2653940257862147874,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 7348086965386310483,
-                            "text": "持续伤害倍率"
-                        },
-                        {
-                            "id": 6460608158140270647,
-                            "text": "持续伤害间隔（秒）"
-                        },
-                        {
-                            "id": 1728080031072751837,
-                            "text": "持续时间（秒）"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 2.8,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_loop",
-                            "value": 0.4,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "duration",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "interval",
-                            "value": 0.5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "forst_allow_count",
-                            "value": 2,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 20,
-                    "costType": 0,
-                    "costValue": 80,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_ultimate_skill_aurora_01",
-                    "level": 5,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0014_aurora_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "280%",
-                        "15",
-                        "40%",
-                        "0.5",
-                        "5"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 8202551017347928000,
-                            "text": "爆炸伤害倍率"
-                        },
-                        {
-                            "id": 4066797972806869314,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": -8641749250803670175,
-                            "text": "持续伤害倍率"
-                        },
-                        {
-                            "id": -6459250279952272565,
-                            "text": "持续伤害间隔（秒）"
-                        },
-                        {
-                            "id": -5407514765873787951,
-                            "text": "持续时间（秒）"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 3,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_loop",
-                            "value": 0.43,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "duration",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "interval",
-                            "value": 0.5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "forst_allow_count",
-                            "value": 2,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 20,
-                    "costType": 0,
-                    "costValue": 80,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_ultimate_skill_aurora_01",
-                    "level": 6,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0014_aurora_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "300%",
-                        "15",
-                        "43%",
-                        "0.5",
-                        "5"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -7604499762954103836,
-                            "text": "爆炸伤害倍率"
-                        },
-                        {
-                            "id": 8644763327711430102,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 1558493564826202696,
-                            "text": "持续伤害倍率"
-                        },
-                        {
-                            "id": 8319417007459996695,
-                            "text": "持续伤害间隔（秒）"
-                        },
-                        {
-                            "id": 6940551997189396485,
-                            "text": "持续时间（秒）"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 3.2,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_loop",
-                            "value": 0.46,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "duration",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "interval",
-                            "value": 0.5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "forst_allow_count",
-                            "value": 2,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 20,
-                    "costType": 0,
-                    "costValue": 80,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_ultimate_skill_aurora_01",
-                    "level": 7,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0014_aurora_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "320%",
-                        "15",
-                        "46%",
-                        "0.5",
-                        "5"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 8519749277914920411,
-                            "text": "爆炸伤害倍率"
-                        },
-                        {
-                            "id": 4309746277122807739,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 6650001179989528932,
-                            "text": "持续伤害倍率"
-                        },
-                        {
-                            "id": -4344515812097389391,
-                            "text": "持续伤害间隔（秒）"
-                        },
-                        {
-                            "id": -6920201882618698719,
-                            "text": "持续时间（秒）"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 3.4,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_loop",
-                            "value": 0.49,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "duration",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "interval",
-                            "value": 0.5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "forst_allow_count",
-                            "value": 2,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 20,
-                    "costType": 0,
-                    "costValue": 80,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_ultimate_skill_aurora_01",
-                    "level": 8,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0014_aurora_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "340%",
-                        "15",
-                        "49%",
-                        "0.5",
-                        "5"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 8548360640813147747,
-                            "text": "爆炸伤害倍率"
-                        },
-                        {
-                            "id": 3929971630162638646,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 6690866946579966878,
-                            "text": "持续伤害倍率"
-                        },
-                        {
-                            "id": 194005720136430457,
-                            "text": "持续伤害间隔（秒）"
-                        },
-                        {
-                            "id": 1924477826504686459,
-                            "text": "持续时间（秒）"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 3.6,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_loop",
-                            "value": 0.52,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "duration",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "interval",
-                            "value": 0.5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "forst_allow_count",
-                            "value": 2,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 20,
-                    "costType": 0,
-                    "costValue": 80,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_ultimate_skill_aurora_01",
-                    "level": 9,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0014_aurora_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "360%",
-                        "15",
-                        "52%",
-                        "0.5",
-                        "5"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 1545694177153078704,
-                            "text": "爆炸伤害倍率"
-                        },
-                        {
-                            "id": -497771395868121227,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": -1711304862375076584,
-                            "text": "持续伤害倍率"
-                        },
-                        {
-                            "id": -1355049380714948472,
-                            "text": "持续伤害间隔（秒）"
-                        },
-                        {
-                            "id": 2518408726307524406,
-                            "text": "持续时间（秒）"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 3.85,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_loop",
-                            "value": 0.55,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 20,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "duration",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "interval",
-                            "value": 0.5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "forst_allow_count",
-                            "value": 2,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 20,
-                    "costType": 0,
-                    "costValue": 80,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_ultimate_skill_aurora_01",
-                    "level": 10,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0014_aurora_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "385%",
-                        "20",
-                        "55%",
-                        "0.5",
-                        "5"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -5919498317693766321,
-                            "text": "爆炸伤害倍率"
-                        },
-                        {
-                            "id": -137280120844221568,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": -4032497018612431043,
-                            "text": "持续伤害倍率"
-                        },
-                        {
-                            "id": -9040400224996121046,
-                            "text": "持续伤害间隔（秒）"
-                        },
-                        {
-                            "id": -8241012929120681390,
-                            "text": "持续时间（秒）"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 4.15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_loop",
-                            "value": 0.6,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 20,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "duration",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "interval",
-                            "value": 0.5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "forst_allow_count",
-                            "value": 2,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 20,
-                    "costType": 0,
-                    "costValue": 80,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_ultimate_skill_aurora_01",
-                    "level": 11,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0014_aurora_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "415%",
-                        "20",
-                        "60%",
-                        "0.5",
-                        "5"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -3563265269211200101,
-                            "text": "爆炸伤害倍率"
-                        },
-                        {
-                            "id": 241028676584512580,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": -4105325645473328214,
-                            "text": "持续伤害倍率"
-                        },
-                        {
-                            "id": 8126753078097430676,
-                            "text": "持续伤害间隔（秒）"
-                        },
-                        {
-                            "id": -6268581494629929056,
-                            "text": "持续时间（秒）"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 4.5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_loop",
-                            "value": 0.65,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 20,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "duration",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "interval",
-                            "value": 0.5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "forst_allow_count",
-                            "value": 2,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 20,
-                    "costType": 0,
-                    "costValue": 80,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_ultimate_skill_aurora_01",
-                    "level": 12,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0014_aurora_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "450%",
-                        "20",
-                        "65%",
-                        "0.5",
-                        "5"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -1344498038797573274,
-                            "text": "爆炸伤害倍率"
-                        },
-                        {
-                            "id": 5337004518780234376,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 5014548222299382895,
-                            "text": "持续伤害倍率"
-                        },
-                        {
-                            "id": 7271313839249371666,
-                            "text": "持续伤害间隔（秒）"
-                        },
-                        {
-                            "id": -8723425112155852905,
-                            "text": "持续时间（秒）"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                }
-            ]
-        },
         "chr_0014_aurora_attack3": {
             "SkillPatchDataBundle": [
                 {
@@ -19587,54 +18095,6 @@
                             "text": ""
                         }
                     ],
-                    "tagId": ""
-                }
-            ]
-        },
-        "chr_0014_aurora_talent_0": {
-            "SkillPatchDataBundle": [
-                {
-                    "blackboard": [],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "",
-                    "level": 1,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0014_aurora_talent_0",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [],
-                    "subDescNameList": [],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "",
-                    "level": 2,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0014_aurora_talent_0",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [],
-                    "subDescNameList": [],
                     "tagId": ""
                 }
             ]
@@ -28655,6 +27115,54 @@
                 }
             ]
         },
+        "chr_0014_aurora_talent_0": {
+            "SkillPatchDataBundle": [
+                {
+                    "blackboard": [],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 1,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0014_aurora_talent_0",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "",
+                    "level": 2,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0014_aurora_talent_0",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [],
+                    "subDescNameList": [],
+                    "tagId": ""
+                }
+            ]
+        },
         "chr_0014_aurora_talent_1": {
             "SkillPatchDataBundle": [
                 {
@@ -28702,6 +27210,1498 @@
                     "tagId": ""
                 }
             ]
+        },
+        "chr_0014_aurora_ultimate_skill": {
+            "SkillPatchDataBundle": [
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_loop",
+                            "value": 0.29,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "interval",
+                            "value": 0.5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "forst_allow_count",
+                            "value": 2,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 20,
+                    "costType": 0,
+                    "costValue": 80,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_ultimate_skill_aurora_01",
+                    "level": 1,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0014_aurora_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "200%",
+                        "15",
+                        "29%",
+                        "0.5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -9028917328884385656,
+                            "text": "爆炸伤害倍率"
+                        },
+                        {
+                            "id": -1548332225368978647,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": -7654895854984603747,
+                            "text": "持续伤害倍率"
+                        },
+                        {
+                            "id": 4349868725584405805,
+                            "text": "持续伤害间隔（秒）"
+                        },
+                        {
+                            "id": 8833910019789329000,
+                            "text": "持续时间（秒）"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 2.2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_loop",
+                            "value": 0.32,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "interval",
+                            "value": 0.5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "forst_allow_count",
+                            "value": 2,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 20,
+                    "costType": 0,
+                    "costValue": 80,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_ultimate_skill_aurora_01",
+                    "level": 2,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0014_aurora_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "220%",
+                        "15",
+                        "32%",
+                        "0.5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -5136498498410127854,
+                            "text": "爆炸伤害倍率"
+                        },
+                        {
+                            "id": 7338850573417004308,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 904269123761292163,
+                            "text": "持续伤害倍率"
+                        },
+                        {
+                            "id": 9167911547770480307,
+                            "text": "持续伤害间隔（秒）"
+                        },
+                        {
+                            "id": -8517236619921793047,
+                            "text": "持续时间（秒）"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 2.4,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_loop",
+                            "value": 0.35,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "interval",
+                            "value": 0.5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "forst_allow_count",
+                            "value": 2,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 20,
+                    "costType": 0,
+                    "costValue": 80,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_ultimate_skill_aurora_01",
+                    "level": 3,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0014_aurora_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "240%",
+                        "15",
+                        "35%",
+                        "0.5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -2746717627447248217,
+                            "text": "爆炸伤害倍率"
+                        },
+                        {
+                            "id": 8785163749706263880,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 4001172924184897822,
+                            "text": "持续伤害倍率"
+                        },
+                        {
+                            "id": 6417414593498926409,
+                            "text": "持续伤害间隔（秒）"
+                        },
+                        {
+                            "id": 7925370504202784075,
+                            "text": "持续时间（秒）"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 2.6,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_loop",
+                            "value": 0.37,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "interval",
+                            "value": 0.5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "forst_allow_count",
+                            "value": 2,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 20,
+                    "costType": 0,
+                    "costValue": 80,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_ultimate_skill_aurora_01",
+                    "level": 4,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0014_aurora_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "260%",
+                        "15",
+                        "37%",
+                        "0.5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -1402126709031528893,
+                            "text": "爆炸伤害倍率"
+                        },
+                        {
+                            "id": -2653940257862147874,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 7348086965386310483,
+                            "text": "持续伤害倍率"
+                        },
+                        {
+                            "id": 6460608158140270647,
+                            "text": "持续伤害间隔（秒）"
+                        },
+                        {
+                            "id": 1728080031072751837,
+                            "text": "持续时间（秒）"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 2.8,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_loop",
+                            "value": 0.4,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "interval",
+                            "value": 0.5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "forst_allow_count",
+                            "value": 2,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 20,
+                    "costType": 0,
+                    "costValue": 80,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_ultimate_skill_aurora_01",
+                    "level": 5,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0014_aurora_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "280%",
+                        "15",
+                        "40%",
+                        "0.5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 8202551017347928000,
+                            "text": "爆炸伤害倍率"
+                        },
+                        {
+                            "id": 4066797972806869314,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": -8641749250803670175,
+                            "text": "持续伤害倍率"
+                        },
+                        {
+                            "id": -6459250279952272565,
+                            "text": "持续伤害间隔（秒）"
+                        },
+                        {
+                            "id": -5407514765873787951,
+                            "text": "持续时间（秒）"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 3,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_loop",
+                            "value": 0.43,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "interval",
+                            "value": 0.5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "forst_allow_count",
+                            "value": 2,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 20,
+                    "costType": 0,
+                    "costValue": 80,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_ultimate_skill_aurora_01",
+                    "level": 6,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0014_aurora_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "300%",
+                        "15",
+                        "43%",
+                        "0.5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -7604499762954103836,
+                            "text": "爆炸伤害倍率"
+                        },
+                        {
+                            "id": 8644763327711430102,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 1558493564826202696,
+                            "text": "持续伤害倍率"
+                        },
+                        {
+                            "id": 8319417007459996695,
+                            "text": "持续伤害间隔（秒）"
+                        },
+                        {
+                            "id": 6940551997189396485,
+                            "text": "持续时间（秒）"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 3.2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_loop",
+                            "value": 0.46,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "interval",
+                            "value": 0.5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "forst_allow_count",
+                            "value": 2,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 20,
+                    "costType": 0,
+                    "costValue": 80,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_ultimate_skill_aurora_01",
+                    "level": 7,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0014_aurora_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "320%",
+                        "15",
+                        "46%",
+                        "0.5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 8519749277914920411,
+                            "text": "爆炸伤害倍率"
+                        },
+                        {
+                            "id": 4309746277122807739,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 6650001179989528932,
+                            "text": "持续伤害倍率"
+                        },
+                        {
+                            "id": -4344515812097389391,
+                            "text": "持续伤害间隔（秒）"
+                        },
+                        {
+                            "id": -6920201882618698719,
+                            "text": "持续时间（秒）"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 3.4,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_loop",
+                            "value": 0.49,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "interval",
+                            "value": 0.5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "forst_allow_count",
+                            "value": 2,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 20,
+                    "costType": 0,
+                    "costValue": 80,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_ultimate_skill_aurora_01",
+                    "level": 8,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0014_aurora_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "340%",
+                        "15",
+                        "49%",
+                        "0.5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 8548360640813147747,
+                            "text": "爆炸伤害倍率"
+                        },
+                        {
+                            "id": 3929971630162638646,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 6690866946579966878,
+                            "text": "持续伤害倍率"
+                        },
+                        {
+                            "id": 194005720136430457,
+                            "text": "持续伤害间隔（秒）"
+                        },
+                        {
+                            "id": 1924477826504686459,
+                            "text": "持续时间（秒）"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 3.6,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_loop",
+                            "value": 0.52,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "interval",
+                            "value": 0.5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "forst_allow_count",
+                            "value": 2,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 20,
+                    "costType": 0,
+                    "costValue": 80,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_ultimate_skill_aurora_01",
+                    "level": 9,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0014_aurora_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "360%",
+                        "15",
+                        "52%",
+                        "0.5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 1545694177153078704,
+                            "text": "爆炸伤害倍率"
+                        },
+                        {
+                            "id": -497771395868121227,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": -1711304862375076584,
+                            "text": "持续伤害倍率"
+                        },
+                        {
+                            "id": -1355049380714948472,
+                            "text": "持续伤害间隔（秒）"
+                        },
+                        {
+                            "id": 2518408726307524406,
+                            "text": "持续时间（秒）"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 3.85,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_loop",
+                            "value": 0.55,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 20,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "interval",
+                            "value": 0.5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "forst_allow_count",
+                            "value": 2,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 20,
+                    "costType": 0,
+                    "costValue": 80,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_ultimate_skill_aurora_01",
+                    "level": 10,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0014_aurora_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "385%",
+                        "20",
+                        "55%",
+                        "0.5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -5919498317693766321,
+                            "text": "爆炸伤害倍率"
+                        },
+                        {
+                            "id": -137280120844221568,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": -4032497018612431043,
+                            "text": "持续伤害倍率"
+                        },
+                        {
+                            "id": -9040400224996121046,
+                            "text": "持续伤害间隔（秒）"
+                        },
+                        {
+                            "id": -8241012929120681390,
+                            "text": "持续时间（秒）"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 4.15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_loop",
+                            "value": 0.6,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 20,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "interval",
+                            "value": 0.5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "forst_allow_count",
+                            "value": 2,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 20,
+                    "costType": 0,
+                    "costValue": 80,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_ultimate_skill_aurora_01",
+                    "level": 11,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0014_aurora_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "415%",
+                        "20",
+                        "60%",
+                        "0.5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -3563265269211200101,
+                            "text": "爆炸伤害倍率"
+                        },
+                        {
+                            "id": 241028676584512580,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": -4105325645473328214,
+                            "text": "持续伤害倍率"
+                        },
+                        {
+                            "id": 8126753078097430676,
+                            "text": "持续伤害间隔（秒）"
+                        },
+                        {
+                            "id": -6268581494629929056,
+                            "text": "持续时间（秒）"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 4.5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_loop",
+                            "value": 0.65,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 20,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "interval",
+                            "value": 0.5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "forst_allow_count",
+                            "value": 2,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 20,
+                    "costType": 0,
+                    "costValue": 80,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_ultimate_skill_aurora_01",
+                    "level": 12,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0014_aurora_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "450%",
+                        "20",
+                        "65%",
+                        "0.5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -1344498038797573274,
+                            "text": "爆炸伤害倍率"
+                        },
+                        {
+                            "id": 5337004518780234376,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 5014548222299382895,
+                            "text": "持续伤害倍率"
+                        },
+                        {
+                            "id": 7271313839249371666,
+                            "text": "持续伤害间隔（秒）"
+                        },
+                        {
+                            "id": -8723425112155852905,
+                            "text": "持续时间（秒）"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                }
+            ]
         }
     },
     "spaceshipcharskilltable": {
@@ -28746,39 +28746,39 @@
         ]
     },
     "spaceshipskilltable": {
-        "spaceship_skill_chr_0014_aurora_2_2": {
+        "spaceship_skill_chr_0014_aurora_2_1": {
             "desc": {
-                "id": -7067940916861217047,
-                "text": "进驻总控中枢时，所有干员心情恢复提升16%"
+                "id": 3254060741689423088,
+                "text": "进驻总控中枢时，所有干员心情恢复提升12%"
             },
             "effectType": 0,
             "icon": "facskill_spaceship_physical_power",
-            "id": "spaceship_skill_chr_0014_aurora_2_2",
-            "level": 2,
+            "id": "spaceship_skill_chr_0014_aurora_2_1",
+            "level": 1,
             "name": {
-                "id": 8696891887843743061,
-                "text": "乐天派·γ"
+                "id": 5614157778039874822,
+                "text": "乐天派·β"
             },
             "parameters": [
                 {
                     "realType": 0,
                     "valueBoolList": null,
                     "valueFloatList": [
-                        0.16
+                        0.12
                     ],
                     "valueIntList": null,
                     "valueStringList": [
-                        "0.16"
+                        "0.12"
                     ],
                     "valueType": 0,
                     "valueVector3": null
                 }
             ],
             "roomType": 0,
-            "skillNamePostfix": "γ",
-            "sortId": 36,
+            "skillNamePostfix": "β",
+            "sortId": 35,
             "talentName": {
-                "id": 6298215246970832022,
+                "id": -412687340537378105,
                 "text": "乐天派"
             }
         },
@@ -28818,42 +28818,6 @@
                 "text": "救援者的恒心"
             }
         },
-        "spaceship_skill_chr_0014_aurora_2_1": {
-            "desc": {
-                "id": 3254060741689423088,
-                "text": "进驻总控中枢时，所有干员心情恢复提升12%"
-            },
-            "effectType": 0,
-            "icon": "facskill_spaceship_physical_power",
-            "id": "spaceship_skill_chr_0014_aurora_2_1",
-            "level": 1,
-            "name": {
-                "id": 5614157778039874822,
-                "text": "乐天派·β"
-            },
-            "parameters": [
-                {
-                    "realType": 0,
-                    "valueBoolList": null,
-                    "valueFloatList": [
-                        0.12
-                    ],
-                    "valueIntList": null,
-                    "valueStringList": [
-                        "0.12"
-                    ],
-                    "valueType": 0,
-                    "valueVector3": null
-                }
-            ],
-            "roomType": 0,
-            "skillNamePostfix": "β",
-            "sortId": 35,
-            "talentName": {
-                "id": -412687340537378105,
-                "text": "乐天派"
-            }
-        },
         "spaceship_skill_chr_0014_aurora_1_2": {
             "desc": {
                 "id": -5573396209830811297,
@@ -28888,6 +28852,42 @@
             "talentName": {
                 "id": 5763445910684776946,
                 "text": "救援者的恒心"
+            }
+        },
+        "spaceship_skill_chr_0014_aurora_2_2": {
+            "desc": {
+                "id": -7067940916861217047,
+                "text": "进驻总控中枢时，所有干员心情恢复提升16%"
+            },
+            "effectType": 0,
+            "icon": "facskill_spaceship_physical_power",
+            "id": "spaceship_skill_chr_0014_aurora_2_2",
+            "level": 2,
+            "name": {
+                "id": 8696891887843743061,
+                "text": "乐天派·γ"
+            },
+            "parameters": [
+                {
+                    "realType": 0,
+                    "valueBoolList": null,
+                    "valueFloatList": [
+                        0.16
+                    ],
+                    "valueIntList": null,
+                    "valueStringList": [
+                        "0.16"
+                    ],
+                    "valueType": 0,
+                    "valueVector3": null
+                }
+            ],
+            "roomType": 0,
+            "skillNamePostfix": "γ",
+            "sortId": 36,
+            "talentName": {
+                "id": 6298215246970832022,
+                "text": "乐天派"
             }
         }
     },

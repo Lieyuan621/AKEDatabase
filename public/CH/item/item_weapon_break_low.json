@@ -6,17 +6,26 @@
     "rarity": 3,
     "type": 26,
     "obtainWayIds": [
+        "item_obtain_dungeon_0003_untouched",
         "item_obtain_dungeon_0003",
         "item_obtain_shop_greenticket_weapon_break_low",
         "item_obtain_explore"
     ],
     "obtainWays": [
         {
-            "id": "item_obtain_dungeon_0003",
+            "id": "item_obtain_dungeon_0003_untouched",
             "desc": "协议空间·武器进阶",
             "bindSystem": 52,
             "phaseId": "Map",
             "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource2100320003\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
+        },
+        {
+            "id": "item_obtain_dungeon_0003",
+            "desc": "协议空间·武器进阶",
+            "bindSystem": 52,
+            "phaseId": "DungeonEntry",
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung01_group_wpbreak01\"\r\n}",
             "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
         },
         {

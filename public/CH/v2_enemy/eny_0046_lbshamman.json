@@ -31,31 +31,47 @@
         "templateId": "eny_0046_lbshamman"
     },
     "enemytable": {
-        "eny_0046_lbshamman_bomb_range": {
-            "aiTemplateId": "aiconf_eny_0046_lbshamman_bomb_range",
-            "attrModifiers": [],
+        "eny_0046_lbshamman_race": {
+            "aiTemplateId": "aiconf_eny_0046_lbshamman_endrpg",
+            "attrModifiers": [
+                {
+                    "attrType": 20,
+                    "attrValue": 80,
+                    "modifierType": 0,
+                    "modifyAttributeType": 0
+                },
+                {
+                    "attrType": 1,
+                    "attrValue": 2.5,
+                    "modifierType": 4,
+                    "modifyAttributeType": 0
+                }
+            ],
             "attrTemplateId": "eny_0046_lbshamman",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
-            "bornBuffs": [],
-            "enemyId": "eny_0046_lbshamman_bomb_range",
+            "bornBuffs": [
+                "buff_common_born",
+                "buff_common_superarmor_infinity"
+            ],
+            "enemyId": "eny_0046_lbshamman_race",
             "isDangerous": false,
-            "modelId": "",
+            "modelId": "eny_0046_lbshamman_race_postmodel",
             "serverDeathCheck": false,
             "showBigEffect": true,
-            "showBigHeadbar": false,
+            "showBigHeadbar": true,
             "templateId": "eny_0046_lbshamman"
         },
-        "eny_0046_lbshamman_bomb": {
-            "aiTemplateId": "aiconf_eny_0046_lbshamman_bomb",
+        "eny_0046_lbshamman_dungeon": {
+            "aiTemplateId": "",
             "attrModifiers": [],
             "attrTemplateId": "eny_0046_lbshamman",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
             "bornBuffs": [
-                "buff_eny_0046_lbshamman_teleport_bomb"
+                "buff_common_born"
             ],
-            "enemyId": "eny_0046_lbshamman_bomb",
+            "enemyId": "eny_0046_lbshamman_dungeon",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,
@@ -80,6 +96,38 @@
             "showBigHeadbar": false,
             "templateId": "eny_0046_lbshamman"
         },
+        "eny_0046_lbshamman_bomb": {
+            "aiTemplateId": "aiconf_eny_0046_lbshamman_bomb",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0046_lbshamman",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_eny_0046_lbshamman_teleport_bomb"
+            ],
+            "enemyId": "eny_0046_lbshamman_bomb",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0046_lbshamman"
+        },
+        "eny_0046_lbshamman_bomb_range": {
+            "aiTemplateId": "aiconf_eny_0046_lbshamman_bomb_range",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0046_lbshamman",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0046_lbshamman_bomb_range",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0046_lbshamman"
+        },
         "eny_0046_lbshamman_cardefend": {
             "aiTemplateId": "Settlement/aiconf_eny_0046_lbshamman_cardefend",
             "attrModifiers": [],
@@ -88,23 +136,6 @@
             "autoLockCancelType": 0,
             "bornBuffs": [],
             "enemyId": "eny_0046_lbshamman_cardefend",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": true,
-            "showBigHeadbar": false,
-            "templateId": "eny_0046_lbshamman"
-        },
-        "eny_0046_lbshamman_dungeon": {
-            "aiTemplateId": "",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0046_lbshamman",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [
-                "buff_common_born"
-            ],
-            "enemyId": "eny_0046_lbshamman_dungeon",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,
@@ -142,37 +173,6 @@
             "serverDeathCheck": false,
             "showBigEffect": true,
             "showBigHeadbar": false,
-            "templateId": "eny_0046_lbshamman"
-        },
-        "eny_0046_lbshamman_race": {
-            "aiTemplateId": "aiconf_eny_0046_lbshamman_endrpg",
-            "attrModifiers": [
-                {
-                    "attrType": 20,
-                    "attrValue": 80,
-                    "modifierType": 0,
-                    "modifyAttributeType": 0
-                },
-                {
-                    "attrType": 1,
-                    "attrValue": 2.5,
-                    "modifierType": 4,
-                    "modifyAttributeType": 0
-                }
-            ],
-            "attrTemplateId": "eny_0046_lbshamman",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [
-                "buff_common_born",
-                "buff_common_superarmor_infinity"
-            ],
-            "enemyId": "eny_0046_lbshamman_race",
-            "isDangerous": false,
-            "modelId": "eny_0046_lbshamman_race_postmodel",
-            "serverDeathCheck": false,
-            "showBigEffect": true,
-            "showBigHeadbar": true,
             "templateId": "eny_0046_lbshamman"
         },
         "eny_0046_lbshamman_settlement": {

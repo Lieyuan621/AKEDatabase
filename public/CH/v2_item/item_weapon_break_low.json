@@ -29,6 +29,7 @@
         "notObtainShow": true,
         "notObtainShowTimeId": "",
         "obtainWayIds": [
+            "item_obtain_dungeon_0003_untouched",
             "item_obtain_dungeon_0003",
             "item_obtain_shop_greenticket_weapon_break_low",
             "item_obtain_explore"
@@ -57,6 +58,17 @@
         "refMonsterTemplateId": ""
     },
     "systemjumptable": {
+        "item_obtain_dungeon_0003_untouched": {
+            "bindSystem": 52,
+            "desc": {
+                "id": 5711329832635679720,
+                "text": "协议空间·武器进阶"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_0003_untouched",
+            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource2100320003\"\r\n}",
+            "phaseId": "Map"
+        },
         "item_obtain_dungeon_0003": {
             "bindSystem": 52,
             "desc": {
@@ -65,8 +77,8 @@
             },
             "iconId": "icon_tips_dungeon",
             "id": "item_obtain_dungeon_0003",
-            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource2100320003\"\r\n}",
-            "phaseId": "Map"
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung01_group_wpbreak01\"\r\n}",
+            "phaseId": "DungeonEntry"
         },
         "item_obtain_shop_greenticket_weapon_break_low": {
             "bindSystem": 51,

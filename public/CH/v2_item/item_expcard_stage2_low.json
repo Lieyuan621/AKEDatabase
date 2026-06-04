@@ -29,9 +29,9 @@
         "notObtainShow": true,
         "notObtainShowTimeId": "",
         "obtainWayIds": [
+            "item_obtain_dungeon_0001_untouched",
             "item_obtain_dungeon_0001",
             "item_obtain_spaceship_manu",
-            "item_obtain_shop_greenticket",
             "item_obtain_explore"
         ],
         "outcomeItemIds": [],
@@ -62,6 +62,17 @@
         "refMonsterTemplateId": ""
     },
     "systemjumptable": {
+        "item_obtain_dungeon_0001_untouched": {
+            "bindSystem": 52,
+            "desc": {
+                "id": -6223987024747570091,
+                "text": "协议空间·干员经验"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_0001_untouched",
+            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource200001663\"\r\n}",
+            "phaseId": "Map"
+        },
         "item_obtain_dungeon_0001": {
             "bindSystem": 52,
             "desc": {
@@ -70,8 +81,8 @@
             },
             "iconId": "icon_tips_dungeon",
             "id": "item_obtain_dungeon_0001",
-            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource200001663\"\r\n}",
-            "phaseId": "Map"
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung01_group_exp01\"\r\n}",
+            "phaseId": "DungeonEntry"
         },
         "item_obtain_spaceship_manu": {
             "bindSystem": 404,
@@ -83,17 +94,6 @@
             "id": "item_obtain_spaceship_manu",
             "phaseArgs": "{\r\n  \"instId\": \"ss_room_a_1_base01_lv001\"\r\n}",
             "phaseId": "Map"
-        },
-        "item_obtain_shop_greenticket": {
-            "bindSystem": 51,
-            "desc": {
-                "id": 7484611790132137642,
-                "text": "采购中心-集成配额交易"
-            },
-            "iconId": "icon_tips_payshop",
-            "id": "item_obtain_shop_greenticket",
-            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_green_1\"\r\n}",
-            "phaseId": "CashShop"
         },
         "item_obtain_explore": {
             "bindSystem": 10000000,

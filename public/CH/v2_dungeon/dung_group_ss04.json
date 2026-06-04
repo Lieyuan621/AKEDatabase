@@ -8,7 +8,6 @@
         "dungeonCategory": 6,
         "dungeonCategory2nd": 0,
         "dungeonImg": "item_char_skill_specialize_4",
-        "dungeonPicPath": "dung_ss_04",
         "dungeonRoleImg": "",
         "gameCategory": "dungeon_ss",
         "id": "dung_group_ss04",
@@ -81,7 +80,6 @@
                 "text": ""
             },
             "needShowPass": false,
-            "previewCharTeamId": "",
             "recommendLv": 80,
             "relatedCharId": "",
             "rewardId": "",
@@ -847,6 +845,11 @@
             },
             "rewardTable": {
                 "reward_dung_ss04_firstpass": {
+                    "itemBundleVisibleList": [
+                        0,
+                        0,
+                        0
+                    ],
                     "itemBundles": [
                         {
                             "count": 200,
@@ -984,6 +987,7 @@
                     "notObtainShowTimeId": "",
                     "obtainWayIds": [
                         "item_obtain_case_bp_selfselect_skillsp_1_4",
+                        "item_obtain_dungeon_ss04_untouched",
                         "item_obtain_dungeon_ss04",
                         "item_obtain_dung02_bossrush01_03",
                         "item_obtain_shop_greenticket_char_skill_specialize_4",

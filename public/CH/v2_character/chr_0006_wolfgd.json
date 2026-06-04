@@ -16632,6 +16632,46 @@
             },
             "id": "chr_0006_wolfgd_talent_2_2"
         },
+        "chr_0006_wolfgd_potential_4": {
+            "dataList": [
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 2,
+                    "skillBbModifier": {
+                        "bbKey": "",
+                        "floatValue": 0,
+                        "modifyType": 0,
+                        "skillId": "",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 2,
+                        "paramType": 1,
+                        "paramValue": 0.85,
+                        "skillId": "chr_0006_wolfgd_ultimate_skill"
+                    }
+                }
+            ],
+            "desc": {
+                "id": -781557117168535763,
+                "text": "终结技<@ba.key>狼之怒</>所需的终结技能量<@ba.vup>-{1-costvalue:0%}</>。"
+            },
+            "id": "chr_0006_wolfgd_potential_4"
+        },
         "chr_0006_wolfgd_potential_1": {
             "dataList": [
                 {
@@ -16845,46 +16885,6 @@
             },
             "id": "chr_0006_wolfgd_potential_3"
         },
-        "chr_0006_wolfgd_potential_4": {
-            "dataList": [
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 2,
-                    "skillBbModifier": {
-                        "bbKey": "",
-                        "floatValue": 0,
-                        "modifyType": 0,
-                        "skillId": "",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 2,
-                        "paramType": 1,
-                        "paramValue": 0.85,
-                        "skillId": "chr_0006_wolfgd_ultimate_skill"
-                    }
-                }
-            ],
-            "desc": {
-                "id": -781557117168535763,
-                "text": "终结技<@ba.key>狼之怒</>所需的终结技能量<@ba.vup>-{1-costvalue:0%}</>。"
-            },
-            "id": "chr_0006_wolfgd_potential_4"
-        },
         "chr_0006_wolfgd_potential_5": {
             "dataList": [
                 {
@@ -16927,27 +16927,27 @@
         }
     },
     "skillpatchtable": {
-        "chr_0006_wolfgd_combo_skill": {
+        "chr_0006_wolfgd_attack4": {
             "SkillPatchDataBundle": [
                 {
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.6,
+                            "value": 0.68,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 10,
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
-                            "key": "usp",
-                            "value": 10,
+                            "key": "atb",
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 20,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -16955,31 +16955,29 @@
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_combo_skill_wolfgd_01",
+                    "iconId": "icon_attack_pistol",
                     "level": 1,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_combo_skill",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "60%",
-                        "10",
-                        "10"
+                        "68%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -7860985993827661268,
-                            "text": "伤害倍率"
+                            "id": 2357481342740817680,
+                            "text": "普攻第四段倍率"
                         },
                         {
-                            "id": -8282099172026386859,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": 101909894347134131,
-                            "text": "获得终结技能量"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -17040,21 +17038,21 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.66,
+                            "value": 0.74,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 10,
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
-                            "key": "usp",
-                            "value": 10,
+                            "key": "atb",
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 20,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -17062,31 +17060,29 @@
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_combo_skill_wolfgd_01",
+                    "iconId": "icon_attack_pistol",
                     "level": 2,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_combo_skill",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "66%",
-                        "10",
-                        "10"
+                        "74%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 2196164987706624227,
-                            "text": "伤害倍率"
+                            "id": 7575134507732265653,
+                            "text": "普攻第四段倍率"
                         },
                         {
-                            "id": -1369155319059173508,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": -5913617406751631096,
-                            "text": "获得终结技能量"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -17147,21 +17143,21 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.72,
+                            "value": 0.81,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 10,
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
-                            "key": "usp",
-                            "value": 10,
+                            "key": "atb",
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 20,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -17169,31 +17165,29 @@
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_combo_skill_wolfgd_01",
+                    "iconId": "icon_attack_pistol",
                     "level": 3,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_combo_skill",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "72%",
-                        "10",
-                        "10"
+                        "81%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 1360095323690846852,
-                            "text": "伤害倍率"
+                            "id": 2934886871670892679,
+                            "text": "普攻第四段倍率"
                         },
                         {
-                            "id": -8299476216326937372,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": 2401834489048000213,
-                            "text": "获得终结技能量"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -17254,21 +17248,21 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.78,
+                            "value": 0.88,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 10,
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
-                            "key": "usp",
-                            "value": 10,
+                            "key": "atb",
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 20,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -17276,31 +17270,29 @@
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_combo_skill_wolfgd_01",
+                    "iconId": "icon_attack_pistol",
                     "level": 4,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_combo_skill",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "78%",
-                        "10",
-                        "10"
+                        "88%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -5865320362758258847,
-                            "text": "伤害倍率"
+                            "id": -1270195632608690956,
+                            "text": "普攻第四段倍率"
                         },
                         {
-                            "id": -5138734706646563911,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": -5901545986607210440,
-                            "text": "获得终结技能量"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -17361,21 +17353,21 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.84,
+                            "value": 0.95,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 10,
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
-                            "key": "usp",
-                            "value": 10,
+                            "key": "atb",
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 20,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -17383,31 +17375,29 @@
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_combo_skill_wolfgd_01",
+                    "iconId": "icon_attack_pistol",
                     "level": 5,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_combo_skill",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "84%",
-                        "10",
-                        "10"
+                        "95%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 8262244917769559075,
-                            "text": "伤害倍率"
+                            "id": -8178918261901941856,
+                            "text": "普攻第四段倍率"
                         },
                         {
-                            "id": -6147310774992490678,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": -4653214271962601118,
-                            "text": "获得终结技能量"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -17468,21 +17458,21 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.9,
+                            "value": 1.01,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 10,
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
-                            "key": "usp",
-                            "value": 10,
+                            "key": "atb",
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 20,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -17490,31 +17480,21 @@
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_combo_skill_wolfgd_01",
+                    "iconId": "icon_attack_pistol",
                     "level": 6,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_combo_skill",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "90%",
-                        "10",
-                        "10"
+                        "101%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 8983261437068417025,
-                            "text": "伤害倍率"
-                        },
-                        {
-                            "id": 5618882295782021920,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": -2980339181193415816,
-                            "text": "获得终结技能量"
+                            "id": 4106484398940714457,
+                            "text": "普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -17523,212 +17503,6 @@
                         {
                             "id": 0,
                             "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.96,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 10,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "usp",
-                            "value": 10,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 20,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_combo_skill_wolfgd_01",
-                    "level": 7,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_combo_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "96%",
-                        "10",
-                        "10"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -1709118316107782250,
-                            "text": "伤害倍率"
-                        },
-                        {
-                            "id": 43344007504868460,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 9072557031405634138,
-                            "text": "获得终结技能量"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.02,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 10,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "usp",
-                            "value": 10,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 20,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_combo_skill_wolfgd_01",
-                    "level": 8,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_combo_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "102%",
-                        "10",
-                        "10"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 271827693033254903,
-                            "text": "伤害倍率"
-                        },
-                        {
-                            "id": -723590462971265032,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 4522955453411997163,
-                            "text": "获得终结技能量"
                         },
                         {
                             "id": 0,
@@ -17794,16 +17568,16 @@
                         },
                         {
                             "key": "poise",
-                            "value": 10,
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
-                            "key": "usp",
-                            "value": 10,
+                            "key": "atb",
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 20,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -17811,1129 +17585,25 @@
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_combo_skill_wolfgd_01",
-                    "level": 9,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_combo_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "108%",
-                        "10",
-                        "10"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 1666737204973366899,
-                            "text": "伤害倍率"
-                        },
-                        {
-                            "id": 8225609863288537480,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": -3950294206214227549,
-                            "text": "获得终结技能量"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.16,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 10,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "usp",
-                            "value": 10,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 20,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_combo_skill_wolfgd_01",
-                    "level": 10,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_combo_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "116%",
-                        "10",
-                        "10"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -4205342514687911813,
-                            "text": "伤害倍率"
-                        },
-                        {
-                            "id": 1730935413261126204,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 7197748933027826212,
-                            "text": "获得终结技能量"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.25,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 10,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "usp",
-                            "value": 10,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 20,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_combo_skill_wolfgd_01",
-                    "level": 11,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_combo_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "125%",
-                        "10",
-                        "10"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 6956390293911326563,
-                            "text": "伤害倍率"
-                        },
-                        {
-                            "id": -264935890882267586,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 2095126731257152287,
-                            "text": "获得终结技能量"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.35,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 10,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "usp",
-                            "value": 10,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 19,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_combo_skill_wolfgd_01",
-                    "level": 12,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_combo_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "135%",
-                        "10",
-                        "10"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 1591512848419420149,
-                            "text": "伤害倍率"
-                        },
-                        {
-                            "id": -8799096025369853617,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 3099252915312631721,
-                            "text": "获得终结技能量"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                }
-            ]
-        },
-        "chr_0006_wolfgd_ultimate_skill": {
-            "SkillPatchDataBundle": [
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.32,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 3,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 1.6,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise_display",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 10,
-                    "costType": 0,
-                    "costValue": 90,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_ultimate_skill_wolfgd_01",
-                    "level": 1,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "32%",
-                        "15"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -6520242693821146191,
-                            "text": "每段伤害倍率"
-                        },
-                        {
-                            "id": -7187299520887492200,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.35,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 3,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 1.76,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise_display",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 10,
-                    "costType": 0,
-                    "costValue": 90,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_ultimate_skill_wolfgd_01",
-                    "level": 2,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "35%",
-                        "15"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -3091897578510504211,
-                            "text": "每段伤害倍率"
-                        },
-                        {
-                            "id": -4678336906218962006,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.38,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 3,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 1.92,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise_display",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 10,
-                    "costType": 0,
-                    "costValue": 90,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_ultimate_skill_wolfgd_01",
-                    "level": 3,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "38%",
-                        "15"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -8080060555000615795,
-                            "text": "每段伤害倍率"
-                        },
-                        {
-                            "id": -3287690466044121935,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.42,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 3,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 2.08,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise_display",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 10,
-                    "costType": 0,
-                    "costValue": 90,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_ultimate_skill_wolfgd_01",
-                    "level": 4,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "42%",
-                        "15"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 1737319018908648415,
-                            "text": "每段伤害倍率"
-                        },
-                        {
-                            "id": -4145511930519416152,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.45,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 3,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 2.24,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise_display",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 10,
-                    "costType": 0,
-                    "costValue": 90,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_ultimate_skill_wolfgd_01",
-                    "level": 5,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "45%",
-                        "15"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 4352846850909823623,
-                            "text": "每段伤害倍率"
-                        },
-                        {
-                            "id": -6177116432943178292,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.48,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 3,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 2.4,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise_display",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 10,
-                    "costType": 0,
-                    "costValue": 90,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_ultimate_skill_wolfgd_01",
-                    "level": 6,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_ultimate_skill",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "48%",
-                        "15"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -5359041446420638453,
-                            "text": "每段伤害倍率"
-                        },
-                        {
-                            "id": -1263257068521532505,
-                            "text": "失衡值"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.51,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 3,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 2.56,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise_display",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 10,
-                    "costType": 0,
-                    "costValue": 90,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "iconId": "icon_attack_pistol",
                     "level": 7,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "51%",
-                        "15"
+                        "108%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 9171379876880523940,
-                            "text": "每段伤害倍率"
+                            "id": 4170499496759392399,
+                            "text": "普攻第四段倍率"
                         },
                         {
-                            "id": -3951391589854080630,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -18998,53 +17668,47 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.54,
+                            "value": 1.15,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 3,
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
-                            "key": "display_atk_scale",
-                            "value": 2.72,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise_display",
-                            "value": 15,
+                            "key": "atb",
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 10,
+                    "coolDown": 0,
                     "costType": 0,
-                    "costValue": 90,
+                    "costValue": 0,
                     "description": {
                         "id": 0,
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "iconId": "icon_attack_pistol",
                     "level": 8,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "54%",
-                        "15"
+                        "115%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -7155017093348434033,
-                            "text": "每段伤害倍率"
+                            "id": -6573823027013022748,
+                            "text": "普攻第四段倍率"
                         },
                         {
-                            "id": 5136601237426113850,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -19109,53 +17773,47 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.58,
+                            "value": 1.22,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 3,
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
-                            "key": "display_atk_scale",
-                            "value": 2.88,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise_display",
-                            "value": 15,
+                            "key": "atb",
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 10,
+                    "coolDown": 0,
                     "costType": 0,
-                    "costValue": 90,
+                    "costValue": 0,
                     "description": {
                         "id": 0,
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "iconId": "icon_attack_pistol",
                     "level": 9,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "58%",
-                        "15"
+                        "122%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -5940062491840460023,
-                            "text": "每段伤害倍率"
+                            "id": 8548986167042105458,
+                            "text": "普攻第四段倍率"
                         },
                         {
-                            "id": 7878858068494250139,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -19220,53 +17878,47 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.62,
+                            "value": 1.3,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 3,
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
-                            "key": "display_atk_scale",
-                            "value": 3.08,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise_display",
-                            "value": 15,
+                            "key": "atb",
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 10,
+                    "coolDown": 0,
                     "costType": 0,
-                    "costValue": 90,
+                    "costValue": 0,
                     "description": {
                         "id": 0,
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "iconId": "icon_attack_pistol",
                     "level": 10,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "62%",
-                        "15"
+                        "130%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -7234344967858282406,
-                            "text": "每段伤害倍率"
+                            "id": 971824317724038810,
+                            "text": "普攻第四段倍率"
                         },
                         {
-                            "id": -4687147888645934633,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -19331,53 +17983,47 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.66,
+                            "value": 1.4,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 3,
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
-                            "key": "display_atk_scale",
-                            "value": 3.32,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise_display",
-                            "value": 15,
+                            "key": "atb",
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 10,
+                    "coolDown": 0,
                     "costType": 0,
-                    "costValue": 90,
+                    "costValue": 0,
                     "description": {
                         "id": 0,
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "iconId": "icon_attack_pistol",
                     "level": 11,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "66%",
-                        "15"
+                        "140%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 1792467334872382656,
-                            "text": "每段伤害倍率"
+                            "id": 7018135440342185858,
+                            "text": "普攻第四段倍率"
                         },
                         {
-                            "id": 2799290409393914492,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -19442,53 +18088,47 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.72,
+                            "value": 1.52,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 3,
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
-                            "key": "display_atk_scale",
-                            "value": 3.6,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise_display",
-                            "value": 15,
+                            "key": "atb",
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 10,
+                    "coolDown": 0,
                     "costType": 0,
-                    "costValue": 90,
+                    "costValue": 0,
                     "description": {
                         "id": 0,
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "iconId": "icon_attack_pistol",
                     "level": 12,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "72%",
-                        "15"
+                        "152%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 3249535151159333307,
-                            "text": "每段伤害倍率"
+                            "id": -7384030490500388048,
+                            "text": "普攻第四段倍率"
                         },
                         {
-                            "id": 1612876609526776081,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -23343,27 +21983,27 @@
                 }
             ]
         },
-        "chr_0006_wolfgd_attack4": {
+        "chr_0006_wolfgd_combo_skill": {
             "SkillPatchDataBundle": [
                 {
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.68,
+                            "value": 0.6,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 18,
+                            "value": 10,
                             "valueStr": ""
                         },
                         {
-                            "key": "atb",
-                            "value": 18,
+                            "key": "usp",
+                            "value": 10,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 0,
+                    "coolDown": 20,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -23371,29 +22011,31 @@
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_attack_pistol",
+                    "iconId": "icon_combo_skill_wolfgd_01",
                     "level": 1,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_combo_skill",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "68%"
+                        "60%",
+                        "10",
+                        "10"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 2357481342740817680,
-                            "text": "普攻第四段倍率"
+                            "id": -7860985993827661268,
+                            "text": "伤害倍率"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": -8282099172026386859,
+                            "text": "失衡值"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": 101909894347134131,
+                            "text": "获得终结技能量"
                         },
                         {
                             "id": 0,
@@ -23454,21 +22096,21 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.74,
+                            "value": 0.66,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 18,
+                            "value": 10,
                             "valueStr": ""
                         },
                         {
-                            "key": "atb",
-                            "value": 18,
+                            "key": "usp",
+                            "value": 10,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 0,
+                    "coolDown": 20,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -23476,29 +22118,31 @@
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_attack_pistol",
+                    "iconId": "icon_combo_skill_wolfgd_01",
                     "level": 2,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_combo_skill",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "74%"
+                        "66%",
+                        "10",
+                        "10"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 7575134507732265653,
-                            "text": "普攻第四段倍率"
+                            "id": 2196164987706624227,
+                            "text": "伤害倍率"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": -1369155319059173508,
+                            "text": "失衡值"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": -5913617406751631096,
+                            "text": "获得终结技能量"
                         },
                         {
                             "id": 0,
@@ -23559,21 +22203,21 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.81,
+                            "value": 0.72,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 18,
+                            "value": 10,
                             "valueStr": ""
                         },
                         {
-                            "key": "atb",
-                            "value": 18,
+                            "key": "usp",
+                            "value": 10,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 0,
+                    "coolDown": 20,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -23581,29 +22225,31 @@
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_attack_pistol",
+                    "iconId": "icon_combo_skill_wolfgd_01",
                     "level": 3,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_combo_skill",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "81%"
+                        "72%",
+                        "10",
+                        "10"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 2934886871670892679,
-                            "text": "普攻第四段倍率"
+                            "id": 1360095323690846852,
+                            "text": "伤害倍率"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": -8299476216326937372,
+                            "text": "失衡值"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": 2401834489048000213,
+                            "text": "获得终结技能量"
                         },
                         {
                             "id": 0,
@@ -23664,21 +22310,21 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.88,
+                            "value": 0.78,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 18,
+                            "value": 10,
                             "valueStr": ""
                         },
                         {
-                            "key": "atb",
-                            "value": 18,
+                            "key": "usp",
+                            "value": 10,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 0,
+                    "coolDown": 20,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -23686,29 +22332,31 @@
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_attack_pistol",
+                    "iconId": "icon_combo_skill_wolfgd_01",
                     "level": 4,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_combo_skill",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "88%"
+                        "78%",
+                        "10",
+                        "10"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -1270195632608690956,
-                            "text": "普攻第四段倍率"
+                            "id": -5865320362758258847,
+                            "text": "伤害倍率"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": -5138734706646563911,
+                            "text": "失衡值"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": -5901545986607210440,
+                            "text": "获得终结技能量"
                         },
                         {
                             "id": 0,
@@ -23769,21 +22417,21 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.95,
+                            "value": 0.84,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 18,
+                            "value": 10,
                             "valueStr": ""
                         },
                         {
-                            "key": "atb",
-                            "value": 18,
+                            "key": "usp",
+                            "value": 10,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 0,
+                    "coolDown": 20,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -23791,29 +22439,31 @@
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_attack_pistol",
+                    "iconId": "icon_combo_skill_wolfgd_01",
                     "level": 5,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_combo_skill",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "95%"
+                        "84%",
+                        "10",
+                        "10"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -8178918261901941856,
-                            "text": "普攻第四段倍率"
+                            "id": 8262244917769559075,
+                            "text": "伤害倍率"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": -6147310774992490678,
+                            "text": "失衡值"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": -4653214271962601118,
+                            "text": "获得终结技能量"
                         },
                         {
                             "id": 0,
@@ -23874,21 +22524,21 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 1.01,
+                            "value": 0.9,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 18,
+                            "value": 10,
                             "valueStr": ""
                         },
                         {
-                            "key": "atb",
-                            "value": 18,
+                            "key": "usp",
+                            "value": 10,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 0,
+                    "coolDown": 20,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -23896,21 +22546,31 @@
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_attack_pistol",
+                    "iconId": "icon_combo_skill_wolfgd_01",
                     "level": 6,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_combo_skill",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "101%"
+                        "90%",
+                        "10",
+                        "10"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 4106484398940714457,
-                            "text": "普攻第四段倍率"
+                            "id": 8983261437068417025,
+                            "text": "伤害倍率"
+                        },
+                        {
+                            "id": 5618882295782021920,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": -2980339181193415816,
+                            "text": "获得终结技能量"
                         },
                         {
                             "id": 0,
@@ -23919,6 +22579,212 @@
                         {
                             "id": 0,
                             "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.96,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 10,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "usp",
+                            "value": 10,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 20,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_combo_skill_wolfgd_01",
+                    "level": 7,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0006_wolfgd_combo_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "96%",
+                        "10",
+                        "10"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -1709118316107782250,
+                            "text": "伤害倍率"
+                        },
+                        {
+                            "id": 43344007504868460,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 9072557031405634138,
+                            "text": "获得终结技能量"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 1.02,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 10,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "usp",
+                            "value": 10,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 20,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_combo_skill_wolfgd_01",
+                    "level": 8,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0006_wolfgd_combo_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "102%",
+                        "10",
+                        "10"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 271827693033254903,
+                            "text": "伤害倍率"
+                        },
+                        {
+                            "id": -723590462971265032,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 4522955453411997163,
+                            "text": "获得终结技能量"
                         },
                         {
                             "id": 0,
@@ -23984,16 +22850,16 @@
                         },
                         {
                             "key": "poise",
-                            "value": 18,
+                            "value": 10,
                             "valueStr": ""
                         },
                         {
-                            "key": "atb",
-                            "value": 18,
+                            "key": "usp",
+                            "value": 10,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 0,
+                    "coolDown": 20,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -24001,239 +22867,31 @@
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_attack_pistol",
-                    "level": 7,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "108%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 4170499496759392399,
-                            "text": "普攻第四段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 18,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 18,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_attack_pistol",
-                    "level": 8,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "115%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -6573823027013022748,
-                            "text": "普攻第四段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.22,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 18,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 18,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_attack_pistol",
+                    "iconId": "icon_combo_skill_wolfgd_01",
                     "level": 9,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_combo_skill",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "122%"
+                        "108%",
+                        "10",
+                        "10"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 8548986167042105458,
-                            "text": "普攻第四段倍率"
+                            "id": 1666737204973366899,
+                            "text": "伤害倍率"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": 8225609863288537480,
+                            "text": "失衡值"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": -3950294206214227549,
+                            "text": "获得终结技能量"
                         },
                         {
                             "id": 0,
@@ -24294,21 +22952,21 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 1.3,
+                            "value": 1.16,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 18,
+                            "value": 10,
                             "valueStr": ""
                         },
                         {
-                            "key": "atb",
-                            "value": 18,
+                            "key": "usp",
+                            "value": 10,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 0,
+                    "coolDown": 20,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -24316,29 +22974,31 @@
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_attack_pistol",
+                    "iconId": "icon_combo_skill_wolfgd_01",
                     "level": 10,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_combo_skill",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "130%"
+                        "116%",
+                        "10",
+                        "10"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 971824317724038810,
-                            "text": "普攻第四段倍率"
+                            "id": -4205342514687911813,
+                            "text": "伤害倍率"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": 1730935413261126204,
+                            "text": "失衡值"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": 7197748933027826212,
+                            "text": "获得终结技能量"
                         },
                         {
                             "id": 0,
@@ -24399,21 +23059,21 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 1.4,
+                            "value": 1.25,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 18,
+                            "value": 10,
                             "valueStr": ""
                         },
                         {
-                            "key": "atb",
-                            "value": 18,
+                            "key": "usp",
+                            "value": 10,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 0,
+                    "coolDown": 20,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -24421,29 +23081,31 @@
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_attack_pistol",
+                    "iconId": "icon_combo_skill_wolfgd_01",
                     "level": 11,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_combo_skill",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "140%"
+                        "125%",
+                        "10",
+                        "10"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 7018135440342185858,
-                            "text": "普攻第四段倍率"
+                            "id": 6956390293911326563,
+                            "text": "伤害倍率"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": -264935890882267586,
+                            "text": "失衡值"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": 2095126731257152287,
+                            "text": "获得终结技能量"
                         },
                         {
                             "id": 0,
@@ -24504,21 +23166,21 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 1.52,
+                            "value": 1.35,
                             "valueStr": ""
                         },
                         {
                             "key": "poise",
-                            "value": 18,
+                            "value": 10,
                             "valueStr": ""
                         },
                         {
-                            "key": "atb",
-                            "value": 18,
+                            "key": "usp",
+                            "value": 10,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 0,
+                    "coolDown": 19,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -24526,29 +23188,31 @@
                         "text": ""
                     },
                     "iconBgType": 2,
-                    "iconId": "icon_attack_pistol",
+                    "iconId": "icon_combo_skill_wolfgd_01",
                     "level": 12,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_combo_skill",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "152%"
+                        "135%",
+                        "10",
+                        "10"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -7384030490500388048,
-                            "text": "普攻第四段倍率"
+                            "id": 1591512848419420149,
+                            "text": "伤害倍率"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": -8799096025369853617,
+                            "text": "失衡值"
                         },
                         {
-                            "id": 0,
-                            "text": ""
+                            "id": 3099252915312631721,
+                            "text": "获得终结技能量"
                         },
                         {
                             "id": 0,
@@ -29914,6 +28578,1342 @@
                     "tagId": ""
                 }
             ]
+        },
+        "chr_0006_wolfgd_ultimate_skill": {
+            "SkillPatchDataBundle": [
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.32,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 3,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 1.6,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise_display",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 10,
+                    "costType": 0,
+                    "costValue": 90,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "level": 1,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "32%",
+                        "15"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -6520242693821146191,
+                            "text": "每段伤害倍率"
+                        },
+                        {
+                            "id": -7187299520887492200,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.35,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 3,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 1.76,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise_display",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 10,
+                    "costType": 0,
+                    "costValue": 90,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "level": 2,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "35%",
+                        "15"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -3091897578510504211,
+                            "text": "每段伤害倍率"
+                        },
+                        {
+                            "id": -4678336906218962006,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.38,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 3,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 1.92,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise_display",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 10,
+                    "costType": 0,
+                    "costValue": 90,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "level": 3,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "38%",
+                        "15"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -8080060555000615795,
+                            "text": "每段伤害倍率"
+                        },
+                        {
+                            "id": -3287690466044121935,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.42,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 3,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.08,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise_display",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 10,
+                    "costType": 0,
+                    "costValue": 90,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "level": 4,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "42%",
+                        "15"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 1737319018908648415,
+                            "text": "每段伤害倍率"
+                        },
+                        {
+                            "id": -4145511930519416152,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.45,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 3,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise_display",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 10,
+                    "costType": 0,
+                    "costValue": 90,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "level": 5,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "45%",
+                        "15"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 4352846850909823623,
+                            "text": "每段伤害倍率"
+                        },
+                        {
+                            "id": -6177116432943178292,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.48,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 3,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.4,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise_display",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 10,
+                    "costType": 0,
+                    "costValue": 90,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "level": 6,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "48%",
+                        "15"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -5359041446420638453,
+                            "text": "每段伤害倍率"
+                        },
+                        {
+                            "id": -1263257068521532505,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.51,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 3,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.56,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise_display",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 10,
+                    "costType": 0,
+                    "costValue": 90,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "level": 7,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "51%",
+                        "15"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 9171379876880523940,
+                            "text": "每段伤害倍率"
+                        },
+                        {
+                            "id": -3951391589854080630,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.54,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 3,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.72,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise_display",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 10,
+                    "costType": 0,
+                    "costValue": 90,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "level": 8,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "54%",
+                        "15"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -7155017093348434033,
+                            "text": "每段伤害倍率"
+                        },
+                        {
+                            "id": 5136601237426113850,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.58,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 3,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.88,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise_display",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 10,
+                    "costType": 0,
+                    "costValue": 90,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "level": 9,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "58%",
+                        "15"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -5940062491840460023,
+                            "text": "每段伤害倍率"
+                        },
+                        {
+                            "id": 7878858068494250139,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.62,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 3,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 3.08,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise_display",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 10,
+                    "costType": 0,
+                    "costValue": 90,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "level": 10,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "62%",
+                        "15"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -7234344967858282406,
+                            "text": "每段伤害倍率"
+                        },
+                        {
+                            "id": -4687147888645934633,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.66,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 3,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 3.32,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise_display",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 10,
+                    "costType": 0,
+                    "costValue": 90,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "level": 11,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "66%",
+                        "15"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 1792467334872382656,
+                            "text": "每段伤害倍率"
+                        },
+                        {
+                            "id": 2799290409393914492,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.72,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 3,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 3.6,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise_display",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 10,
+                    "costType": 0,
+                    "costValue": 90,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_ultimate_skill_wolfgd_01",
+                    "level": 12,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0006_wolfgd_ultimate_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "72%",
+                        "15"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 3249535151159333307,
+                            "text": "每段伤害倍率"
+                        },
+                        {
+                            "id": 1612876609526776081,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                }
+            ]
         }
     },
     "spaceshipcharskilltable": {
@@ -29958,29 +29958,29 @@
         ]
     },
     "spaceshipskilltable": {
-        "spaceship_skill_chr_0006_wolfgd_2_2": {
+        "spaceship_skill_chr_0006_wolfgd_1_1": {
             "desc": {
-                "id": -127675187125093303,
-                "text": "进驻培养舱时，矿物质料的培养速度提升30%"
+                "id": 8160033073446295581,
+                "text": "进驻制造舱时，干员经验素材的生产效率提升10%"
             },
-            "effectType": 3,
-            "icon": "facskill_spaceship_plant_mineral",
-            "id": "spaceship_skill_chr_0006_wolfgd_2_2",
-            "level": 2,
+            "effectType": 7,
+            "icon": "facskill_spaceship_manufacture_efficiency",
+            "id": "spaceship_skill_chr_0006_wolfgd_1_1",
+            "level": 1,
             "name": {
-                "id": -4067702986849569292,
-                "text": "荒野卓识·γ"
+                "id": 6048581034805828080,
+                "text": "狼群的技巧·α"
             },
             "parameters": [
                 {
                     "realType": 0,
                     "valueBoolList": null,
                     "valueFloatList": [
-                        0.3
+                        0.1
                     ],
                     "valueIntList": null,
                     "valueStringList": [
-                        "0.30000000000000004"
+                        "0.1"
                     ],
                     "valueType": 0,
                     "valueVector3": null
@@ -29989,24 +29989,24 @@
                     "realType": 0,
                     "valueBoolList": null,
                     "valueFloatList": [
-                        3
+                        1
                     ],
                     "valueIntList": [
-                        3
+                        1
                     ],
                     "valueStringList": [
-                        "3"
+                        "1"
                     ],
                     "valueType": 0,
                     "valueVector3": null
                 }
             ],
-            "roomType": 2,
-            "skillNamePostfix": "γ",
-            "sortId": 12,
+            "roomType": 1,
+            "skillNamePostfix": "α",
+            "sortId": 9,
             "talentName": {
-                "id": 2491787390316894282,
-                "text": "荒野卓识"
+                "id": -54356410449251098,
+                "text": "狼群的技巧"
             }
         },
         "spaceship_skill_chr_0006_wolfgd_1_2": {
@@ -30111,29 +30111,29 @@
                 "text": "荒野卓识"
             }
         },
-        "spaceship_skill_chr_0006_wolfgd_1_1": {
+        "spaceship_skill_chr_0006_wolfgd_2_2": {
             "desc": {
-                "id": 8160033073446295581,
-                "text": "进驻制造舱时，干员经验素材的生产效率提升10%"
+                "id": -127675187125093303,
+                "text": "进驻培养舱时，矿物质料的培养速度提升30%"
             },
-            "effectType": 7,
-            "icon": "facskill_spaceship_manufacture_efficiency",
-            "id": "spaceship_skill_chr_0006_wolfgd_1_1",
-            "level": 1,
+            "effectType": 3,
+            "icon": "facskill_spaceship_plant_mineral",
+            "id": "spaceship_skill_chr_0006_wolfgd_2_2",
+            "level": 2,
             "name": {
-                "id": 6048581034805828080,
-                "text": "狼群的技巧·α"
+                "id": -4067702986849569292,
+                "text": "荒野卓识·γ"
             },
             "parameters": [
                 {
                     "realType": 0,
                     "valueBoolList": null,
                     "valueFloatList": [
-                        0.1
+                        0.3
                     ],
                     "valueIntList": null,
                     "valueStringList": [
-                        "0.1"
+                        "0.30000000000000004"
                     ],
                     "valueType": 0,
                     "valueVector3": null
@@ -30142,24 +30142,24 @@
                     "realType": 0,
                     "valueBoolList": null,
                     "valueFloatList": [
-                        1
+                        3
                     ],
                     "valueIntList": [
-                        1
+                        3
                     ],
                     "valueStringList": [
-                        "1"
+                        "3"
                     ],
                     "valueType": 0,
                     "valueVector3": null
                 }
             ],
-            "roomType": 1,
-            "skillNamePostfix": "α",
-            "sortId": 9,
+            "roomType": 2,
+            "skillNamePostfix": "γ",
+            "sortId": 12,
             "talentName": {
-                "id": -54356410449251098,
-                "text": "狼群的技巧"
+                "id": 2491787390316894282,
+                "text": "荒野卓识"
             }
         }
     },

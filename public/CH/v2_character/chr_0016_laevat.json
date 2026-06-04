@@ -16516,8 +16516,8 @@
                 }
             ],
             "desc": {
-                "id": -8244736316848073447,
-                "text": "主控干员<#ba.lastcombo>重击</>或处决命中后，莱万汀会吸收周围敌人的<#ba.fireinflict>灼热附着</>。\n每吸收一层<#ba.fireinflict>灼热附着</>，自身获得一层<@ba.key>熔火</>，最多叠加{max_stack:0}层。\n达到{max_stack:0}层后，莱万汀造成的伤害无视敌人<@ba.vup>{100*ignore_fire_resist:0}</>点<@ba.fire>灼热抗性</>，持续{ignore_fire_resist_duration:0}秒。\n<@ba.info>附近敌人被击败时，身上的灼热附着也会被吸收。</>"
+                "id": 4882007901093490525,
+                "text": "主控干员<#ba.lastcombo>重击</>或处决命中后，莱万汀会<#ba.absorb>吸收</>周围敌人的<#ba.fireinflict>灼热附着</>。\n每<#ba.absorb>吸收</>一层<#ba.fireinflict>灼热附着</>，自身获得一层<@ba.key>熔火</>，最多叠加{max_stack:0}层。\n达到{max_stack:0}层后，莱万汀造成的伤害无视敌人<@ba.vup>{100*ignore_fire_resist:0}</>点<@ba.fire>灼热抗性</>，持续{ignore_fire_resist_duration:0}秒。\n<@ba.info>附近敌人被击败时，身上的灼热附着也会被吸收。</>"
             },
             "id": "chr_0016_laevat_talent_1_2"
         },
@@ -16572,8 +16572,8 @@
                 }
             ],
             "desc": {
-                "id": -2752679950428153650,
-                "text": "主控干员<#ba.lastcombo>重击</>或处决命中后，莱万汀会吸收周围敌人的<#ba.fireinflict>灼热附着</>。\n每吸收一层<#ba.fireinflict>灼热附着</>，自身获得一层<@ba.key>熔火</>，最多叠加{max_stack:0}层。\n达到{max_stack:0}层后，莱万汀造成的伤害无视敌人<@ba.vup>{100*ignore_fire_resist:0}</>点<@ba.fire>灼热抗性</>，持续{ignore_fire_resist_duration:0}秒。\n<@ba.info>附近敌人被击败时，身上的灼热附着也会被吸收。</>"
+                "id": -3761589458912948442,
+                "text": "主控干员<#ba.lastcombo>重击</>或处决命中后，莱万汀会<#ba.absorb>吸收</>周围敌人的<#ba.fireinflict>灼热附着</>。\n每<#ba.absorb>吸收</>一层<#ba.fireinflict>灼热附着</>，自身获得一层<@ba.key>熔火</>，最多叠加{max_stack:0}层。\n达到{max_stack:0}层后，莱万汀造成的伤害无视敌人<@ba.vup>{100*ignore_fire_resist:0}</>点<@ba.fire>灼热抗性</>，持续{ignore_fire_resist_duration:0}秒。\n<@ba.info>附近敌人被击败时，身上的灼热附着也会被吸收。</>"
             },
             "id": "chr_0016_laevat_talent_1_1"
         },
@@ -16628,8 +16628,8 @@
                 }
             ],
             "desc": {
-                "id": 7996881506796173422,
-                "text": "主控干员<#ba.lastcombo>重击</>或处决命中后，莱万汀会吸收周围敌人的<#ba.fireinflict>灼热附着</>。\n每吸收一层<#ba.fireinflict>灼热附着</>，自身获得一层<@ba.key>熔火</>，最多叠加{max_stack:0}层。\n达到{max_stack:0}层后，莱万汀造成的伤害无视敌人<@ba.vup>{100*ignore_fire_resist:0}</>点<@ba.fire>灼热抗性</>，持续{ignore_fire_resist_duration:0}秒。\n<@ba.info>附近敌人被击败时，身上的灼热附着也会被吸收。</>"
+                "id": 5238534631375013600,
+                "text": "主控干员<#ba.lastcombo>重击</>或处决命中后，莱万汀会<#ba.absorb>吸收</>周围敌人的<#ba.fireinflict>灼热附着</>。\n每<#ba.absorb>吸收</>一层<#ba.fireinflict>灼热附着</>，自身获得一层<@ba.key>熔火</>，最多叠加{max_stack:0}层。\n达到{max_stack:0}层后，莱万汀造成的伤害无视敌人<@ba.vup>{100*ignore_fire_resist:0}</>点<@ba.fire>灼热抗性</>，持续{ignore_fire_resist_duration:0}秒。\n<@ba.info>附近敌人被击败时，身上的灼热附着也会被吸收。</>"
             },
             "id": "chr_0016_laevat_talent_1_3"
         },
@@ -16774,6 +16774,383 @@
                 "text": "当生命值低于{hp_threshold:0%}时，获得<@ba.vup>{shelter:0%}</><#ba.guard>庇护</>，并每秒回复<@ba.heal>{heal_max_hp:0%}</>最大生命值，持续<@ba.vup>{duration:0}</>秒。该效果每{cd:0}秒最多触发一次。"
             },
             "id": "chr_0016_laevat_talent_2_2"
+        },
+        "chr_0016_laevat_potential_1": {
+            "dataList": [
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 3,
+                    "skillBbModifier": {
+                        "bbKey": "atb",
+                        "floatValue": 20,
+                        "modifyType": 1,
+                        "skillId": "chr_0016_laevat_normal_skill",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                },
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 3,
+                    "skillBbModifier": {
+                        "bbKey": "atb",
+                        "floatValue": 20,
+                        "modifyType": 1,
+                        "skillId": "chr_0016_laevat_normal_skill_during_ult",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                },
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 3,
+                    "skillBbModifier": {
+                        "bbKey": "ratio",
+                        "floatValue": 1.2,
+                        "modifyType": 3,
+                        "skillId": "chr_0016_laevat_normal_skill_during_ult",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                },
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 3,
+                    "skillBbModifier": {
+                        "bbKey": "ratio",
+                        "floatValue": 1.2,
+                        "modifyType": 3,
+                        "skillId": "chr_0016_laevat_normal_skill",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                }
+            ],
+            "desc": {
+                "id": -7700248427879013762,
+                "text": "战技<@ba.key>焚灭</>的追加攻击的伤害倍率提升至原本的<@ba.vup>{ratio:0.0}</>倍，且命中后<#ba.return>返还</><@ba.vup>{atb:0}</>点技力。"
+            },
+            "id": "chr_0016_laevat_potential_1"
+        },
+        "chr_0016_laevat_potential_3": {
+            "dataList": [
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 3,
+                    "skillBbModifier": {
+                        "bbKey": "duration",
+                        "floatValue": 1.5,
+                        "modifyType": 2,
+                        "skillId": "chr_0016_laevat_normal_skill",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                },
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 3,
+                    "skillBbModifier": {
+                        "bbKey": "extra_scaling",
+                        "floatValue": 1.5,
+                        "modifyType": 3,
+                        "skillId": "chr_0016_laevat_normal_skill",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                },
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 3,
+                    "skillBbModifier": {
+                        "bbKey": "duration",
+                        "floatValue": 1.5,
+                        "modifyType": 2,
+                        "skillId": "chr_0016_laevat_normal_skill_during_ult",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                },
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 3,
+                    "skillBbModifier": {
+                        "bbKey": "extra_scaling",
+                        "floatValue": 1.5,
+                        "modifyType": 3,
+                        "skillId": "chr_0016_laevat_normal_skill_during_ult",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                }
+            ],
+            "desc": {
+                "id": 1240817483951838000,
+                "text": "战技<@ba.key>焚灭</>造成的<#ba.burning>燃烧</>持续时间<@ba.vup>+{duration-1:0%}</>，且<#ba.burning>燃烧</>的伤害提升至原本的<@ba.vup>{extra_scaling:0.0}</>倍。"
+            },
+            "id": "chr_0016_laevat_potential_3"
+        },
+        "chr_0016_laevat_potential_2": {
+            "dataList": [
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 41,
+                        "attrValue": 20,
+                        "modifierType": 5,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 4,
+                    "skillBbModifier": {
+                        "bbKey": "",
+                        "floatValue": 0,
+                        "modifyType": 0,
+                        "skillId": "",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                },
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 17,
+                        "attrValue": 0.15,
+                        "modifierType": 5,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 4,
+                    "skillBbModifier": {
+                        "bbKey": "",
+                        "floatValue": 0,
+                        "modifyType": 0,
+                        "skillId": "",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                }
+            ],
+            "desc": {
+                "id": -4939955581186767808,
+                "text": "智识<@ba.vup>+{Wisd:0}</>，普通攻击伤害<@ba.vup>+{NormalAttackDamageIncrease:0%}</>。"
+            },
+            "id": "chr_0016_laevat_potential_2"
+        },
+        "chr_0016_laevat_potential_4": {
+            "dataList": [
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 2,
+                    "skillBbModifier": {
+                        "bbKey": "",
+                        "floatValue": 0,
+                        "modifyType": 0,
+                        "skillId": "",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 2,
+                        "paramType": 1,
+                        "paramValue": 0.85,
+                        "skillId": "chr_0016_laevat_ultimate_skill"
+                    }
+                }
+            ],
+            "desc": {
+                "id": -4246090809116462942,
+                "text": "终结技<@ba.key>黄昏</>所需的终结技能量<@ba.vup>-{1-costvalue:0%}</>。"
+            },
+            "id": "chr_0016_laevat_potential_4"
         },
         "chr_0016_laevat_potential_5": {
             "dataList": [
@@ -16949,393 +17326,31 @@
                 "text": "终结技<@ba.key>黄昏</>的强化普通攻击的伤害倍率提升至原本的<@ba.vup>{ratio:0.0}</>倍，且终结技期间，莱万汀每击败一个敌人，终结技的持续时间<@ba.vup>+{extend_duration:0}</>秒。（最多<@ba.vup>+{max_duration:0}</>秒）"
             },
             "id": "chr_0016_laevat_potential_5"
-        },
-        "chr_0016_laevat_potential_4": {
-            "dataList": [
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 2,
-                    "skillBbModifier": {
-                        "bbKey": "",
-                        "floatValue": 0,
-                        "modifyType": 0,
-                        "skillId": "",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 2,
-                        "paramType": 1,
-                        "paramValue": 0.85,
-                        "skillId": "chr_0016_laevat_ultimate_skill"
-                    }
-                }
-            ],
-            "desc": {
-                "id": -4246090809116462942,
-                "text": "终结技<@ba.key>黄昏</>所需的终结技能量<@ba.vup>-{1-costvalue:0%}</>。"
-            },
-            "id": "chr_0016_laevat_potential_4"
-        },
-        "chr_0016_laevat_potential_1": {
-            "dataList": [
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 3,
-                    "skillBbModifier": {
-                        "bbKey": "atb",
-                        "floatValue": 20,
-                        "modifyType": 1,
-                        "skillId": "chr_0016_laevat_normal_skill",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                },
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 3,
-                    "skillBbModifier": {
-                        "bbKey": "atb",
-                        "floatValue": 20,
-                        "modifyType": 1,
-                        "skillId": "chr_0016_laevat_normal_skill_during_ult",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                },
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 3,
-                    "skillBbModifier": {
-                        "bbKey": "ratio",
-                        "floatValue": 1.2,
-                        "modifyType": 3,
-                        "skillId": "chr_0016_laevat_normal_skill_during_ult",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                },
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 3,
-                    "skillBbModifier": {
-                        "bbKey": "ratio",
-                        "floatValue": 1.2,
-                        "modifyType": 3,
-                        "skillId": "chr_0016_laevat_normal_skill",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                }
-            ],
-            "desc": {
-                "id": -7700248427879013762,
-                "text": "战技<@ba.key>焚灭</>的追加攻击的伤害倍率提升至原本的<@ba.vup>{ratio:0.0}</>倍，且命中后<#ba.return>返还</><@ba.vup>{atb:0}</>点技力。"
-            },
-            "id": "chr_0016_laevat_potential_1"
-        },
-        "chr_0016_laevat_potential_2": {
-            "dataList": [
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 41,
-                        "attrValue": 20,
-                        "modifierType": 5,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 4,
-                    "skillBbModifier": {
-                        "bbKey": "",
-                        "floatValue": 0,
-                        "modifyType": 0,
-                        "skillId": "",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                },
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 17,
-                        "attrValue": 0.15,
-                        "modifierType": 5,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 4,
-                    "skillBbModifier": {
-                        "bbKey": "",
-                        "floatValue": 0,
-                        "modifyType": 0,
-                        "skillId": "",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                }
-            ],
-            "desc": {
-                "id": -4939955581186767808,
-                "text": "智识<@ba.vup>+{Wisd:0}</>，普通攻击伤害<@ba.vup>+{NormalAttackDamageIncrease:0%}</>。"
-            },
-            "id": "chr_0016_laevat_potential_2"
-        },
-        "chr_0016_laevat_potential_3": {
-            "dataList": [
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 3,
-                    "skillBbModifier": {
-                        "bbKey": "duration",
-                        "floatValue": 1.5,
-                        "modifyType": 2,
-                        "skillId": "chr_0016_laevat_normal_skill",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                },
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 3,
-                    "skillBbModifier": {
-                        "bbKey": "extra_scaling",
-                        "floatValue": 1.5,
-                        "modifyType": 3,
-                        "skillId": "chr_0016_laevat_normal_skill",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                },
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 3,
-                    "skillBbModifier": {
-                        "bbKey": "duration",
-                        "floatValue": 1.5,
-                        "modifyType": 2,
-                        "skillId": "chr_0016_laevat_normal_skill_during_ult",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                },
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 3,
-                    "skillBbModifier": {
-                        "bbKey": "extra_scaling",
-                        "floatValue": 1.5,
-                        "modifyType": 3,
-                        "skillId": "chr_0016_laevat_normal_skill_during_ult",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                }
-            ],
-            "desc": {
-                "id": 1240817483951838000,
-                "text": "战技<@ba.key>焚灭</>造成的<#ba.burning>燃烧</>持续时间<@ba.vup>+{duration-1:0%}</>，且<#ba.burning>燃烧</>的伤害提升至原本的<@ba.vup>{extra_scaling:0.0}</>倍。"
-            },
-            "id": "chr_0016_laevat_potential_3"
         }
     },
     "skillpatchtable": {
-        "chr_0016_laevat_attack3": {
+        "chr_0016_laevat_ult_attack4": {
             "SkillPatchDataBundle": [
                 {
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.25,
+                            "value": 1.01,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.03,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 22,
                             "valueStr": ""
                         }
                     ],
@@ -17350,18 +17365,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 1,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack3",
+                    "skillId": "chr_0016_laevat_ult_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "25%"
+                        "203%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -3470436546165054362,
-                            "text": "普攻第三段倍率"
+                            "id": -499788767817514295,
+                            "text": "强化普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -17430,7 +17445,22 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.28,
+                            "value": 1.11,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.23,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 22,
                             "valueStr": ""
                         }
                     ],
@@ -17445,18 +17475,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 2,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack3",
+                    "skillId": "chr_0016_laevat_ult_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "28%"
+                        "223%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 7697139461807731675,
-                            "text": "普攻第三段倍率"
+                            "id": -5181924559988117326,
+                            "text": "强化普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -17525,7 +17555,22 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.3,
+                            "value": 1.22,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.43,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 22,
                             "valueStr": ""
                         }
                     ],
@@ -17540,18 +17585,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 3,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack3",
+                    "skillId": "chr_0016_laevat_ult_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "30%"
+                        "243%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 6778374647108824630,
-                            "text": "普攻第三段倍率"
+                            "id": -3313900900174024965,
+                            "text": "强化普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -17620,7 +17665,22 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.33,
+                            "value": 1.32,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.63,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 22,
                             "valueStr": ""
                         }
                     ],
@@ -17635,18 +17695,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 4,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack3",
+                    "skillId": "chr_0016_laevat_ult_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "33%"
+                        "263%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 5236705648347787358,
-                            "text": "普攻第三段倍率"
+                            "id": -4440702928414429936,
+                            "text": "强化普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -17715,7 +17775,22 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.35,
+                            "value": 1.42,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.84,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 22,
                             "valueStr": ""
                         }
                     ],
@@ -17730,18 +17805,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 5,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack3",
+                    "skillId": "chr_0016_laevat_ult_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "35%"
+                        "284%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -8471347654014113966,
-                            "text": "普攻第三段倍率"
+                            "id": 4916794950271490053,
+                            "text": "强化普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -17810,7 +17885,22 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.38,
+                            "value": 1.52,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 3.04,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 22,
                             "valueStr": ""
                         }
                     ],
@@ -17825,18 +17915,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 6,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack3",
+                    "skillId": "chr_0016_laevat_ult_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "38%"
+                        "304%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 3816943340836827949,
-                            "text": "普攻第三段倍率"
+                            "id": 357774695218788387,
+                            "text": "强化普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -17905,7 +17995,22 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.4,
+                            "value": 1.62,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 3.24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 22,
                             "valueStr": ""
                         }
                     ],
@@ -17920,18 +18025,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 7,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack3",
+                    "skillId": "chr_0016_laevat_ult_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "40%"
+                        "324%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 5661205241634150727,
-                            "text": "普攻第三段倍率"
+                            "id": -5413591671366961784,
+                            "text": "强化普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -18000,7 +18105,22 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.43,
+                            "value": 1.72,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 3.44,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 22,
                             "valueStr": ""
                         }
                     ],
@@ -18015,18 +18135,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 8,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack3",
+                    "skillId": "chr_0016_laevat_ult_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "43%"
+                        "344%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -8195209895076108975,
-                            "text": "普攻第三段倍率"
+                            "id": 8756176495090377370,
+                            "text": "强化普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -18095,7 +18215,22 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.45,
+                            "value": 1.82,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 3.65,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 22,
                             "valueStr": ""
                         }
                     ],
@@ -18110,18 +18245,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 9,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack3",
+                    "skillId": "chr_0016_laevat_ult_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "45%"
+                        "365%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 4164597040755202906,
-                            "text": "普攻第三段倍率"
+                            "id": 8224376189185590993,
+                            "text": "强化普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -18190,7 +18325,22 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.48,
+                            "value": 1.95,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 3.9,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 22,
                             "valueStr": ""
                         }
                     ],
@@ -18205,18 +18355,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 10,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack3",
+                    "skillId": "chr_0016_laevat_ult_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "48%"
+                        "390%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 8454282928825698615,
-                            "text": "普攻第三段倍率"
+                            "id": -6590415395223941997,
+                            "text": "强化普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -18285,7 +18435,22 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.52,
+                            "value": 2.1,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 4.2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 22,
                             "valueStr": ""
                         }
                     ],
@@ -18300,18 +18465,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 11,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack3",
+                    "skillId": "chr_0016_laevat_ult_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "52%"
+                        "420%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 2439961376366900357,
-                            "text": "普攻第三段倍率"
+                            "id": -7865192404657996094,
+                            "text": "强化普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -18380,7 +18545,22 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.56,
+                            "value": 2.28,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 4.56,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 22,
                             "valueStr": ""
                         }
                     ],
@@ -18395,18 +18575,1222 @@
                     "iconId": "icon_attack_sword",
                     "level": 12,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack3",
+                    "skillId": "chr_0016_laevat_ult_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "56%"
+                        "456%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 4857509995751858637,
-                            "text": "普攻第三段倍率"
+                            "id": 1978218664134978118,
+                            "text": "强化普攻第四段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                }
+            ]
+        },
+        "chr_0016_laevat_attack4": {
+            "SkillPatchDataBundle": [
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.13,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.39,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_attack_sword",
+                    "level": 1,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0016_laevat_attack4",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "39%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -3179531018112898626,
+                            "text": "普攻第四段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.14,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.43,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_attack_sword",
+                    "level": 2,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0016_laevat_attack4",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "43%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -2801651325199073525,
+                            "text": "普攻第四段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.16,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.47,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_attack_sword",
+                    "level": 3,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0016_laevat_attack4",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "47%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -4316775751460001482,
+                            "text": "普攻第四段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.17,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.51,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_attack_sword",
+                    "level": 4,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0016_laevat_attack4",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "51%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -4725213191407660125,
+                            "text": "普攻第四段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.18,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.55,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_attack_sword",
+                    "level": 5,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0016_laevat_attack4",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "55%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -65668241101653147,
+                            "text": "普攻第四段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.59,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_attack_sword",
+                    "level": 6,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0016_laevat_attack4",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "59%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 7330459221012359876,
+                            "text": "普攻第四段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.21,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.62,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_attack_sword",
+                    "level": 7,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0016_laevat_attack4",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "62%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -7172280595126628931,
+                            "text": "普攻第四段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.22,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.66,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_attack_sword",
+                    "level": 8,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0016_laevat_attack4",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "66%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 2849624745059172577,
+                            "text": "普攻第四段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.23,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.7,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_attack_sword",
+                    "level": 9,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0016_laevat_attack4",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "70%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 3848579021818948168,
+                            "text": "普攻第四段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.25,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.75,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_attack_sword",
+                    "level": 10,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0016_laevat_attack4",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "75%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 8172034789460114886,
+                            "text": "普攻第四段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.27,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.81,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_attack_sword",
+                    "level": 11,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0016_laevat_attack4",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "81%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -8280191148446046106,
+                            "text": "普攻第四段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.29,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.88,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 2,
+                    "iconId": "icon_attack_sword",
+                    "level": 12,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0016_laevat_attack4",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "88%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 9219245772267557297,
+                            "text": "普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -20821,18 +22205,13 @@
                 }
             ]
         },
-        "chr_0016_laevat_attack4": {
+        "chr_0016_laevat_attack3": {
             "SkillPatchDataBundle": [
                 {
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.13,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.39,
+                            "value": 0.25,
                             "valueStr": ""
                         }
                     ],
@@ -20847,18 +22226,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 1,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack4",
+                    "skillId": "chr_0016_laevat_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "39%"
+                        "25%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -3179531018112898626,
-                            "text": "普攻第四段倍率"
+                            "id": -3470436546165054362,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -20927,12 +22306,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.14,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.43,
+                            "value": 0.28,
                             "valueStr": ""
                         }
                     ],
@@ -20947,18 +22321,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 2,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack4",
+                    "skillId": "chr_0016_laevat_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "43%"
+                        "28%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -2801651325199073525,
-                            "text": "普攻第四段倍率"
+                            "id": 7697139461807731675,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -21027,12 +22401,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.16,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.47,
+                            "value": 0.3,
                             "valueStr": ""
                         }
                     ],
@@ -21047,18 +22416,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 3,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack4",
+                    "skillId": "chr_0016_laevat_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "47%"
+                        "30%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -4316775751460001482,
-                            "text": "普攻第四段倍率"
+                            "id": 6778374647108824630,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -21127,12 +22496,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.17,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.51,
+                            "value": 0.33,
                             "valueStr": ""
                         }
                     ],
@@ -21147,18 +22511,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 4,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack4",
+                    "skillId": "chr_0016_laevat_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "51%"
+                        "33%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -4725213191407660125,
-                            "text": "普攻第四段倍率"
+                            "id": 5236705648347787358,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -21227,12 +22591,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.18,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.55,
+                            "value": 0.35,
                             "valueStr": ""
                         }
                     ],
@@ -21247,18 +22606,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 5,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack4",
+                    "skillId": "chr_0016_laevat_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "55%"
+                        "35%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -65668241101653147,
-                            "text": "普攻第四段倍率"
+                            "id": -8471347654014113966,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -21327,12 +22686,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.2,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.59,
+                            "value": 0.38,
                             "valueStr": ""
                         }
                     ],
@@ -21347,18 +22701,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 6,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack4",
+                    "skillId": "chr_0016_laevat_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "59%"
+                        "38%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 7330459221012359876,
-                            "text": "普攻第四段倍率"
+                            "id": 3816943340836827949,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -21427,12 +22781,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.21,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.62,
+                            "value": 0.4,
                             "valueStr": ""
                         }
                     ],
@@ -21447,18 +22796,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 7,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack4",
+                    "skillId": "chr_0016_laevat_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "62%"
+                        "40%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -7172280595126628931,
-                            "text": "普攻第四段倍率"
+                            "id": 5661205241634150727,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -21527,12 +22876,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.22,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.66,
+                            "value": 0.43,
                             "valueStr": ""
                         }
                     ],
@@ -21547,18 +22891,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 8,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack4",
+                    "skillId": "chr_0016_laevat_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "66%"
+                        "43%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 2849624745059172577,
-                            "text": "普攻第四段倍率"
+                            "id": -8195209895076108975,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -21627,12 +22971,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.23,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.7,
+                            "value": 0.45,
                             "valueStr": ""
                         }
                     ],
@@ -21647,18 +22986,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 9,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack4",
+                    "skillId": "chr_0016_laevat_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "70%"
+                        "45%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 3848579021818948168,
-                            "text": "普攻第四段倍率"
+                            "id": 4164597040755202906,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -21727,12 +23066,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.25,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.75,
+                            "value": 0.48,
                             "valueStr": ""
                         }
                     ],
@@ -21747,18 +23081,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 10,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack4",
+                    "skillId": "chr_0016_laevat_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "75%"
+                        "48%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 8172034789460114886,
-                            "text": "普攻第四段倍率"
+                            "id": 8454282928825698615,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -21827,12 +23161,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.27,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.81,
+                            "value": 0.52,
                             "valueStr": ""
                         }
                     ],
@@ -21847,18 +23176,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 11,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack4",
+                    "skillId": "chr_0016_laevat_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "81%"
+                        "52%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -8280191148446046106,
-                            "text": "普攻第四段倍率"
+                            "id": 2439961376366900357,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -21927,12 +23256,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.29,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.88,
+                            "value": 0.56,
                             "valueStr": ""
                         }
                     ],
@@ -21947,18 +23271,18 @@
                     "iconId": "icon_attack_sword",
                     "level": 12,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_attack4",
+                    "skillId": "chr_0016_laevat_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "88%"
+                        "56%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 9219245772267557297,
-                            "text": "普攻第四段倍率"
+                            "id": 4857509995751858637,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -35337,1330 +36661,6 @@
                 }
             ]
         },
-        "chr_0016_laevat_ult_attack4": {
-            "SkillPatchDataBundle": [
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.01,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 2.03,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 24,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 22,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_attack_sword",
-                    "level": 1,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_ult_attack4",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "203%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -499788767817514295,
-                            "text": "强化普攻第四段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.11,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 2.23,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 24,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 22,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_attack_sword",
-                    "level": 2,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_ult_attack4",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "223%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -5181924559988117326,
-                            "text": "强化普攻第四段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.22,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 2.43,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 24,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 22,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_attack_sword",
-                    "level": 3,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_ult_attack4",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "243%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -3313900900174024965,
-                            "text": "强化普攻第四段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.32,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 2.63,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 24,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 22,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_attack_sword",
-                    "level": 4,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_ult_attack4",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "263%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -4440702928414429936,
-                            "text": "强化普攻第四段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.42,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 2.84,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 24,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 22,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_attack_sword",
-                    "level": 5,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_ult_attack4",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "284%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 4916794950271490053,
-                            "text": "强化普攻第四段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.52,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 3.04,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 24,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 22,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_attack_sword",
-                    "level": 6,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_ult_attack4",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "304%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 357774695218788387,
-                            "text": "强化普攻第四段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.62,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 3.24,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 24,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 22,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_attack_sword",
-                    "level": 7,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_ult_attack4",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "324%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -5413591671366961784,
-                            "text": "强化普攻第四段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.72,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 3.44,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 24,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 22,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_attack_sword",
-                    "level": 8,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_ult_attack4",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "344%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 8756176495090377370,
-                            "text": "强化普攻第四段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.82,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 3.65,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 24,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 22,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_attack_sword",
-                    "level": 9,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_ult_attack4",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "365%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 8224376189185590993,
-                            "text": "强化普攻第四段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.95,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 3.9,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 24,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 22,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_attack_sword",
-                    "level": 10,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_ult_attack4",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "390%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -6590415395223941997,
-                            "text": "强化普攻第四段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 2.1,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 4.2,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 24,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 22,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_attack_sword",
-                    "level": 11,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_ult_attack4",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "420%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -7865192404657996094,
-                            "text": "强化普攻第四段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 2.28,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 4.56,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 24,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 22,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 2,
-                    "iconId": "icon_attack_sword",
-                    "level": 12,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0016_laevat_ult_attack4",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "456%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 1978218664134978118,
-                            "text": "强化普攻第四段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                }
-            ]
-        },
         "chr_0016_laevat_ultimate_skill": {
             "SkillPatchDataBundle": [
                 {
@@ -37968,6 +37968,42 @@
         ]
     },
     "spaceshipskilltable": {
+        "spaceship_skill_chr_0016_laevat_2_2": {
+            "desc": {
+                "id": 4211476872777082026,
+                "text": "进驻制造舱时，舱室内干员心情消耗降低18%"
+            },
+            "effectType": 1,
+            "icon": "facskill_spaceship_manufacture_power_consume",
+            "id": "spaceship_skill_chr_0016_laevat_2_2",
+            "level": 2,
+            "name": {
+                "id": -7367646198790118512,
+                "text": "不熄炎火·γ"
+            },
+            "parameters": [
+                {
+                    "realType": 0,
+                    "valueBoolList": null,
+                    "valueFloatList": [
+                        0.18
+                    ],
+                    "valueIntList": null,
+                    "valueStringList": [
+                        "0.18"
+                    ],
+                    "valueType": 0,
+                    "valueVector3": null
+                }
+            ],
+            "roomType": 1,
+            "skillNamePostfix": "γ",
+            "sortId": 44,
+            "talentName": {
+                "id": -5337966570841559546,
+                "text": "不熄炎火"
+            }
+        },
         "spaceship_skill_chr_0016_laevat_1_1": {
             "desc": {
                 "id": -5444458354133922524,
@@ -38103,42 +38139,6 @@
             "sortId": 43,
             "talentName": {
                 "id": -3049455034883576539,
-                "text": "不熄炎火"
-            }
-        },
-        "spaceship_skill_chr_0016_laevat_2_2": {
-            "desc": {
-                "id": 4211476872777082026,
-                "text": "进驻制造舱时，舱室内干员心情消耗降低18%"
-            },
-            "effectType": 1,
-            "icon": "facskill_spaceship_manufacture_power_consume",
-            "id": "spaceship_skill_chr_0016_laevat_2_2",
-            "level": 2,
-            "name": {
-                "id": -7367646198790118512,
-                "text": "不熄炎火·γ"
-            },
-            "parameters": [
-                {
-                    "realType": 0,
-                    "valueBoolList": null,
-                    "valueFloatList": [
-                        0.18
-                    ],
-                    "valueIntList": null,
-                    "valueStringList": [
-                        "0.18"
-                    ],
-                    "valueType": 0,
-                    "valueVector3": null
-                }
-            ],
-            "roomType": 1,
-            "skillNamePostfix": "γ",
-            "sortId": 44,
-            "talentName": {
-                "id": -5337966570841559546,
                 "text": "不熄炎火"
             }
         }

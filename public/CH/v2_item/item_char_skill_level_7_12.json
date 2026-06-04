@@ -29,6 +29,7 @@
         "notObtainShow": true,
         "notObtainShowTimeId": "",
         "obtainWayIds": [
+            "item_obtain_dungeon_0006_untouched",
             "item_obtain_dungeon_0006",
             "item_obtain_shop_greenticket_char_skill_level_7_12",
             "item_obtain_shop_yellowticket_char_skill_level_7_12",
@@ -58,6 +59,17 @@
         "refMonsterTemplateId": ""
     },
     "systemjumptable": {
+        "item_obtain_dungeon_0006_untouched": {
+            "bindSystem": 52,
+            "desc": {
+                "id": 2274386652358295134,
+                "text": "协议空间·技能提升"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_0006_untouched",
+            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource2100320001\"\r\n}",
+            "phaseId": "Map"
+        },
         "item_obtain_dungeon_0006": {
             "bindSystem": 52,
             "desc": {
@@ -66,8 +78,8 @@
             },
             "iconId": "icon_tips_dungeon",
             "id": "item_obtain_dungeon_0006",
-            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource2100320001\"\r\n}",
-            "phaseId": "Map"
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung01_group_skill01\"\r\n}",
+            "phaseId": "DungeonEntry"
         },
         "item_obtain_shop_greenticket_char_skill_level_7_12": {
             "bindSystem": 51,

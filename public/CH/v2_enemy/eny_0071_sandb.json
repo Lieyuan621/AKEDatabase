@@ -26,23 +26,22 @@
         "templateId": "eny_0071_sandb"
     },
     "enemytable": {
-        "eny_0071_sandb_settlement": {
-            "aiTemplateId": "Settlement/aiconf_eny_0071_sandb_settlement",
+        "eny_0071_sandb_activityspecial_02": {
+            "aiTemplateId": "aiconf_eny_0071_sandb_activityspecial_2",
             "attrModifiers": [],
             "attrTemplateId": "eny_0071_sandb",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
             "bornBuffs": [
-                "buff_settlement_addtag",
-                "buff_eny_0071_sandb_settlement",
+                "buff_eny_0071_activityspecial_2_invincible",
                 "buff_common_superarmor_behit_sandb"
             ],
-            "enemyId": "eny_0071_sandb_settlement",
+            "enemyId": "eny_0071_sandb_activityspecial_02",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,
             "showBigEffect": true,
-            "showBigHeadbar": false,
+            "showBigHeadbar": true,
             "templateId": "eny_0071_sandb"
         },
         "eny_0071_sandb_activityspecial_01": {
@@ -63,22 +62,23 @@
             "showBigHeadbar": false,
             "templateId": "eny_0071_sandb"
         },
-        "eny_0071_sandb_activityspecial_02": {
-            "aiTemplateId": "aiconf_eny_0071_sandb_activityspecial_2",
+        "eny_0071_sandb_settlement": {
+            "aiTemplateId": "Settlement/aiconf_eny_0071_sandb_settlement",
             "attrModifiers": [],
             "attrTemplateId": "eny_0071_sandb",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
             "bornBuffs": [
-                "buff_eny_0071_activityspecial_2_invincible",
+                "buff_settlement_addtag",
+                "buff_eny_0071_sandb_settlement",
                 "buff_common_superarmor_behit_sandb"
             ],
-            "enemyId": "eny_0071_sandb_activityspecial_02",
+            "enemyId": "eny_0071_sandb_settlement",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,
             "showBigEffect": true,
-            "showBigHeadbar": true,
+            "showBigHeadbar": false,
             "templateId": "eny_0071_sandb"
         },
         "eny_0071_sandb": {

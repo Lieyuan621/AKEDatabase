@@ -28,6 +28,55 @@
         "templateId": "eny_0072_slimeml"
     },
     "enemytable": {
+        "eny_0072_slimeml_bomb": {
+            "aiTemplateId": "aiconf_eny_0072_slimeml_bomb",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0072_slimeml",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0072_slimeml_bomb",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0072_slimeml"
+        },
+        "eny_0072_slimeml_activityspecial_01": {
+            "aiTemplateId": "aiconf_eny_0072_slimeml_activityspecial_1",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0072_slimeml",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_eny_0072_slimeml_deathskill"
+            ],
+            "enemyId": "eny_0072_slimeml_activityspecial_01",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0072_slimeml"
+        },
+        "eny_0072_slimeml_settlement": {
+            "aiTemplateId": "Settlement/aiconf_eny_0072_slimeml_settlement",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0072_slimeml",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_settlement_addtag"
+            ],
+            "enemyId": "eny_0072_slimeml_settlement",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0072_slimeml"
+        },
         "eny_0072_slimeml": {
             "aiTemplateId": "",
             "attrModifiers": [],
@@ -53,55 +102,6 @@
                 "buff_eny_0072_slimeml_Fragile_bron"
             ],
             "enemyId": "eny_0072_slimeml_Fragile",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": false,
-            "showBigHeadbar": false,
-            "templateId": "eny_0072_slimeml"
-        },
-        "eny_0072_slimeml_activityspecial_01": {
-            "aiTemplateId": "aiconf_eny_0072_slimeml_activityspecial_1",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0072_slimeml",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [
-                "buff_eny_0072_slimeml_deathskill"
-            ],
-            "enemyId": "eny_0072_slimeml_activityspecial_01",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": false,
-            "showBigHeadbar": false,
-            "templateId": "eny_0072_slimeml"
-        },
-        "eny_0072_slimeml_bomb": {
-            "aiTemplateId": "aiconf_eny_0072_slimeml_bomb",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0072_slimeml",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [],
-            "enemyId": "eny_0072_slimeml_bomb",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": false,
-            "showBigHeadbar": false,
-            "templateId": "eny_0072_slimeml"
-        },
-        "eny_0072_slimeml_settlement": {
-            "aiTemplateId": "Settlement/aiconf_eny_0072_slimeml_settlement",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0072_slimeml",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [
-                "buff_settlement_addtag"
-            ],
-            "enemyId": "eny_0072_slimeml_settlement",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,

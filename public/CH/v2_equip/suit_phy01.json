@@ -11,7 +11,8 @@
             "item_equip_t4_suit_phy01_edc_03",
             "item_equip_t4_suit_phy01_body_03",
             "item_equip_t4_suit_phy01_hand_03",
-            "item_equip_t4_suit_phy01_edc_04"
+            "item_equip_t4_suit_phy01_edc_04",
+            "item_equip_t4_suit_phy01_body_04"
         ],
         "list": [
             {
@@ -1111,6 +1112,117 @@
             "minWearLv": 70,
             "partType": 2,
             "suitID": "suit_phy01"
+        },
+        "item_equip_t4_suit_phy01_body_04": {
+            "displayAttrModifiers": [
+                {
+                    "attrIndex": 1,
+                    "attrType": 39,
+                    "attrValue": 87,
+                    "compositeAttr": "",
+                    "enhanceGuaranteeTimesRuleId": "DoubleAttrPity",
+                    "enhancedAttrIndex": 1,
+                    "enhancedAttrValues": [
+                        95,
+                        104,
+                        113
+                    ],
+                    "modifierType": 5
+                },
+                {
+                    "attrIndex": 2,
+                    "attrType": 42,
+                    "attrValue": 58,
+                    "compositeAttr": "",
+                    "enhanceGuaranteeTimesRuleId": "DoubleAttrPity",
+                    "enhancedAttrIndex": 2,
+                    "enhancedAttrValues": [
+                        63,
+                        69,
+                        75
+                    ],
+                    "modifierType": 5
+                },
+                {
+                    "attrIndex": 3,
+                    "attrType": 50,
+                    "attrValue": 0.11499999999999999,
+                    "compositeAttr": "",
+                    "enhanceGuaranteeTimesRuleId": "ExtraAttrPity",
+                    "enhancedAttrIndex": 3,
+                    "enhancedAttrValues": [
+                        0.1265,
+                        0.138,
+                        0.1495
+                    ],
+                    "modifierType": 5
+                }
+            ],
+            "displayBaseAttrModifier": {
+                "attrIndex": 0,
+                "attrType": 3,
+                "attrValue": 56,
+                "compositeAttr": "",
+                "enhanceGuaranteeTimesRuleId": "",
+                "enhancedAttrIndex": 0,
+                "enhancedAttrValues": [],
+                "modifierType": 5
+            },
+            "domainId": "domain_2",
+            "equipAttrModifiers": [
+                {
+                    "attrIndex": 0,
+                    "attrType": 3,
+                    "attrValues": [
+                        56,
+                        56,
+                        56,
+                        56
+                    ],
+                    "modifierType": 5,
+                    "modifyAttributeType": 0
+                },
+                {
+                    "attrIndex": 1,
+                    "attrType": 39,
+                    "attrValues": [
+                        87,
+                        95,
+                        104,
+                        113
+                    ],
+                    "modifierType": 5,
+                    "modifyAttributeType": 0
+                },
+                {
+                    "attrIndex": 2,
+                    "attrType": 42,
+                    "attrValues": [
+                        58,
+                        63,
+                        69,
+                        75
+                    ],
+                    "modifierType": 5,
+                    "modifyAttributeType": 0
+                },
+                {
+                    "attrIndex": 3,
+                    "attrType": 50,
+                    "attrValues": [
+                        0.11499999999999999,
+                        0.1265,
+                        0.13799999999999998,
+                        0.1495
+                    ],
+                    "modifierType": 5,
+                    "modifyAttributeType": 0
+                }
+            ],
+            "itemId": "item_equip_t4_suit_phy01_body_04",
+            "minWearLv": 70,
+            "partType": 0,
+            "suitID": "suit_phy01"
         }
     },
     "itemtable": {
@@ -1524,6 +1636,47 @@
             "valuableDepotRedDot": false,
             "valuableTabType": 3
         },
+        "item_equip_t4_suit_phy01_body_04": {
+            "backpackCanDiscard": true,
+            "decoDesc": {
+                "id": -4644338720075292187,
+                "text": "选剑局早期向市场推广的产品之一。\n其兵装图纸文件底页写着这样四个字：慷慨北行。"
+            },
+            "desc": {
+                "id": 2619849315899083547,
+                "text": "本装备由宏山选剑局设计，使用集成工业系统制造，能够提高使用者的作战能力。"
+            },
+            "iconCompositeId": "",
+            "iconId": "item_equip_t4_suit_phy01_body_04",
+            "id": "item_equip_t4_suit_phy01_body_04",
+            "maxBackpackStackCount": 1,
+            "maxStackCount": 1,
+            "modelKey": "int_drop_equip",
+            "name": {
+                "id": 4871240285504864489,
+                "text": "点剑纤维护甲"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": 0,
+                "text": ""
+            },
+            "noObtainWayId": [],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_equip"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 5,
+            "showAllDepotCount": false,
+            "showingType": 9,
+            "sortId1": -52,
+            "sortId2": 64,
+            "type": 6,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 3
+        },
         "item_equip_script_4_1": {
             "backpackCanDiscard": true,
             "decoDesc": {
@@ -1889,7 +2042,7 @@
                 50
             ],
             "formulaId": "item_formu_t4_suit_phy01_body_03",
-            "isNew": true,
+            "isNew": false,
             "outcomeEquipId": "item_equip_t4_suit_phy01_body_03",
             "packId": "pack_wuling_suit_phy01",
             "unlockKey": "reward_eco_indie_dg007_int_187",
@@ -1906,7 +2059,7 @@
                 50
             ],
             "formulaId": "item_formu_t4_suit_phy01_hand_03",
-            "isNew": true,
+            "isNew": false,
             "outcomeEquipId": "item_equip_t4_suit_phy01_hand_03",
             "packId": "pack_wuling_suit_phy01",
             "unlockKey": "reward_eco_indie_dg007_int_187",
@@ -1923,10 +2076,27 @@
                 50
             ],
             "formulaId": "item_formu_t4_suit_phy01_edc_04",
-            "isNew": true,
+            "isNew": false,
             "outcomeEquipId": "item_equip_t4_suit_phy01_edc_04",
             "packId": "pack_wuling_suit_phy01",
             "unlockKey": "reward_eco_indie_dg007_int_187",
+            "unlockType": 2,
+            "unlockValue": 0
+        },
+        "item_formu_t4_suit_phy01_body_04": {
+            "costGoldId": "item_domain_jinlong_coupon",
+            "costGoldNum": 25000,
+            "costItemId": [
+                "item_equip_script_4_2"
+            ],
+            "costItemNum": [
+                50
+            ],
+            "formulaId": "item_formu_t4_suit_phy01_body_04",
+            "isNew": true,
+            "outcomeEquipId": "item_equip_t4_suit_phy01_body_04",
+            "packId": "pack_wuling_suit_phy01",
+            "unlockKey": "reward_eco_map02_lv006_int_50214",
             "unlockType": 2,
             "unlockValue": 0
         }
@@ -1941,7 +2111,8 @@
         "item_equip_t4_suit_phy01_edc_03": "item_formu_t4_suit_phy01_edc_03",
         "item_equip_t4_suit_phy01_body_03": "item_formu_t4_suit_phy01_body_03",
         "item_equip_t4_suit_phy01_hand_03": "item_formu_t4_suit_phy01_hand_03",
-        "item_equip_t4_suit_phy01_edc_04": "item_formu_t4_suit_phy01_edc_04"
+        "item_equip_t4_suit_phy01_edc_04": "item_formu_t4_suit_phy01_edc_04",
+        "item_equip_t4_suit_phy01_body_04": "item_formu_t4_suit_phy01_body_04"
     },
     "equippacktable": {
         "pack_wuling_suit_phy01": {
@@ -1987,6 +2158,9 @@
                 },
                 {
                     "formulaId": "item_formu_t4_suit_phy01_edc_04"
+                },
+                {
+                    "formulaId": "item_formu_t4_suit_phy01_body_04"
                 }
             ]
         }
@@ -2022,7 +2196,8 @@
     },
     "equipconst": {
         "enhanceEquipRarity": 5,
-        "maxAttrEnhanceLevel": 3
+        "maxAttrEnhanceLevel": 3,
+        "maxEnhanceIngredientCount": 25
     },
     "equiptechconst": {
         "equipProduceMaxCount": 100,

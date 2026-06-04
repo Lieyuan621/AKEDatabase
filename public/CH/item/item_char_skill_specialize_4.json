@@ -7,6 +7,7 @@
     "type": 95,
     "obtainWayIds": [
         "item_obtain_case_bp_selfselect_skillsp_1_4",
+        "item_obtain_dungeon_ss04_untouched",
         "item_obtain_dungeon_ss04",
         "item_obtain_dung02_bossrush01_03",
         "item_obtain_shop_greenticket_char_skill_specialize_4",
@@ -24,11 +25,19 @@
             "icon": "/public/images/item/itemtips/icon_tips_trd.png"
         },
         {
-            "id": "item_obtain_dungeon_ss04",
+            "id": "item_obtain_dungeon_ss04_untouched",
             "desc": "协议空间·高危材料研究所",
             "bindSystem": 52,
             "phaseId": "Map",
             "phaseArgs": "{\r\n  \"instId\": \"mark_dg_ss22800020012\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
+        },
+        {
+            "id": "item_obtain_dungeon_ss04",
+            "desc": "协议空间·高危材料研究所",
+            "bindSystem": 52,
+            "phaseId": "DungeonEntry",
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung_group_ss04\"\r\n}",
             "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
         },
         {

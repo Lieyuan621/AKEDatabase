@@ -30,6 +30,7 @@
         "notObtainShowTimeId": "",
         "obtainWayIds": [
             "item_obtain_case_bp_selfselect_skillsp_1_2",
+            "item_obtain_dungeon_ss02_untouched",
             "item_obtain_dungeon_ss02",
             "item_obtain_dungeon_bossrush_02_03",
             "item_obtain_shop_greenticket_char_skill_specialize_2",
@@ -72,6 +73,17 @@
             "phaseArgs": "{\r\n  \"itemId\": \"item_case_bp_selfselect_skillsp_1\",\r\n  \"selectedRewardId\": \"reward_case_bp_selfselect_skillsp_1_2\"\r\n}",
             "phaseId": "UsableItemChest"
         },
+        "item_obtain_dungeon_ss02_untouched": {
+            "bindSystem": 52,
+            "desc": {
+                "id": 5054269686199222415,
+                "text": "协议空间·高危材料收集处"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_ss02_untouched",
+            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_ss3500031334\"\r\n}",
+            "phaseId": "Map"
+        },
         "item_obtain_dungeon_ss02": {
             "bindSystem": 52,
             "desc": {
@@ -80,8 +92,8 @@
             },
             "iconId": "icon_tips_dungeon",
             "id": "item_obtain_dungeon_ss02",
-            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_ss3500031334\"\r\n}",
-            "phaseId": "Map"
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung_group_ss02\"\r\n}",
+            "phaseId": "DungeonEntry"
         },
         "item_obtain_dungeon_bossrush_02_03": {
             "bindSystem": 52,

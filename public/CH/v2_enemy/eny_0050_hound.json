@@ -30,16 +30,29 @@
         "templateId": "eny_0050_hound"
     },
     "enemytable": {
-        "eny_0050_hound_hdg005": {
-            "aiTemplateId": "aiconf_eny_0050_hound_hdg005",
+        "eny_0050_hound": {
+            "aiTemplateId": "",
             "attrModifiers": [],
             "attrTemplateId": "eny_0050_hound",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
-            "bornBuffs": [
-                "buff_eny_0050_hound_hdg005"
-            ],
-            "enemyId": "eny_0050_hound_hdg005",
+            "bornBuffs": [],
+            "enemyId": "eny_0050_hound",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0050_hound"
+        },
+        "eny_0050_hound_noborneffect": {
+            "aiTemplateId": "",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0050_hound",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0050_hound_noborneffect",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,
@@ -77,38 +90,6 @@
             "showBigHeadbar": false,
             "templateId": "eny_0050_hound"
         },
-        "eny_0050_hound_weekly_dung01": {
-            "aiTemplateId": "aiconf_eny_0050_hound_weekly_dungeon",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0050_hound",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [
-                "buff_race_enemy_explode_on_death"
-            ],
-            "enemyId": "eny_0050_hound_weekly_dung01",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": false,
-            "showBigHeadbar": false,
-            "templateId": "eny_0050_hound"
-        },
-        "eny_0050_hound": {
-            "aiTemplateId": "",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0050_hound",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [],
-            "enemyId": "eny_0050_hound",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": false,
-            "showBigHeadbar": false,
-            "templateId": "eny_0050_hound"
-        },
         "eny_0050_hound_dungeon": {
             "aiTemplateId": "",
             "attrModifiers": [],
@@ -126,14 +107,16 @@
             "showBigHeadbar": false,
             "templateId": "eny_0050_hound"
         },
-        "eny_0050_hound_noborneffect": {
-            "aiTemplateId": "",
+        "eny_0050_hound_hdg005": {
+            "aiTemplateId": "aiconf_eny_0050_hound_hdg005",
             "attrModifiers": [],
             "attrTemplateId": "eny_0050_hound",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
-            "bornBuffs": [],
-            "enemyId": "eny_0050_hound_noborneffect",
+            "bornBuffs": [
+                "buff_eny_0050_hound_hdg005"
+            ],
+            "enemyId": "eny_0050_hound_hdg005",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,
@@ -151,6 +134,23 @@
                 "buff_settlement_addtag"
             ],
             "enemyId": "eny_0050_hound_settlement",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0050_hound"
+        },
+        "eny_0050_hound_weekly_dung01": {
+            "aiTemplateId": "aiconf_eny_0050_hound_weekly_dungeon",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0050_hound",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_race_enemy_explode_on_death"
+            ],
+            "enemyId": "eny_0050_hound_weekly_dung01",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,

@@ -29,6 +29,7 @@
         "notObtainShow": true,
         "notObtainShowTimeId": "",
         "obtainWayIds": [
+            "item_obtain_dungeon_0001_untouched",
             "item_obtain_dungeon_0001",
             "item_obtain_spaceship_manu",
             "item_obtain_shop_greenticket",
@@ -63,6 +64,17 @@
         "refMonsterTemplateId": ""
     },
     "systemjumptable": {
+        "item_obtain_dungeon_0001_untouched": {
+            "bindSystem": 52,
+            "desc": {
+                "id": -6223987024747570091,
+                "text": "协议空间·干员经验"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_0001_untouched",
+            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource200001663\"\r\n}",
+            "phaseId": "Map"
+        },
         "item_obtain_dungeon_0001": {
             "bindSystem": 52,
             "desc": {
@@ -71,8 +83,8 @@
             },
             "iconId": "icon_tips_dungeon",
             "id": "item_obtain_dungeon_0001",
-            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource200001663\"\r\n}",
-            "phaseId": "Map"
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung01_group_exp01\"\r\n}",
+            "phaseId": "DungeonEntry"
         },
         "item_obtain_spaceship_manu": {
             "bindSystem": 404,

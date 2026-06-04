@@ -8,7 +8,8 @@
             "item_equip_t4_suit_combo_cd01_hand_02",
             "item_equip_t4_suit_combo_cd01_edc_01",
             "item_equip_t4_suit_combo_cd01_edc_02",
-            "item_equip_t4_suit_combo_cd01_edc_03"
+            "item_equip_t4_suit_combo_cd01_edc_03",
+            "item_equip_t4_suit_combo_cd01_edc_04"
         ],
         "list": [
             {
@@ -837,6 +838,117 @@
             "minWearLv": 70,
             "partType": 2,
             "suitID": "suit_combo_cd01"
+        },
+        "item_equip_t4_suit_combo_cd01_edc_04": {
+            "displayAttrModifiers": [
+                {
+                    "attrIndex": 1,
+                    "attrType": 40,
+                    "attrValue": 32,
+                    "compositeAttr": "",
+                    "enhanceGuaranteeTimesRuleId": "DoubleAttrPity",
+                    "enhancedAttrIndex": 1,
+                    "enhancedAttrValues": [
+                        35,
+                        38,
+                        41
+                    ],
+                    "modifierType": 5
+                },
+                {
+                    "attrIndex": 2,
+                    "attrType": 39,
+                    "attrValue": 21,
+                    "compositeAttr": "",
+                    "enhanceGuaranteeTimesRuleId": "DoubleAttrPity",
+                    "enhancedAttrIndex": 2,
+                    "enhancedAttrValues": [
+                        23,
+                        25,
+                        27
+                    ],
+                    "modifierType": 5
+                },
+                {
+                    "attrIndex": 3,
+                    "attrType": 50,
+                    "attrValue": 0.22999999999999998,
+                    "compositeAttr": "",
+                    "enhanceGuaranteeTimesRuleId": "ExtraAttrPity",
+                    "enhancedAttrIndex": 3,
+                    "enhancedAttrValues": [
+                        0.253,
+                        0.276,
+                        0.299
+                    ],
+                    "modifierType": 5
+                }
+            ],
+            "displayBaseAttrModifier": {
+                "attrIndex": 0,
+                "attrType": 3,
+                "attrValue": 21,
+                "compositeAttr": "",
+                "enhanceGuaranteeTimesRuleId": "",
+                "enhancedAttrIndex": 0,
+                "enhancedAttrValues": [],
+                "modifierType": 5
+            },
+            "domainId": "domain_2",
+            "equipAttrModifiers": [
+                {
+                    "attrIndex": 0,
+                    "attrType": 3,
+                    "attrValues": [
+                        21,
+                        21,
+                        21,
+                        21
+                    ],
+                    "modifierType": 5,
+                    "modifyAttributeType": 0
+                },
+                {
+                    "attrIndex": 1,
+                    "attrType": 40,
+                    "attrValues": [
+                        32,
+                        35,
+                        38,
+                        41
+                    ],
+                    "modifierType": 5,
+                    "modifyAttributeType": 0
+                },
+                {
+                    "attrIndex": 2,
+                    "attrType": 39,
+                    "attrValues": [
+                        21,
+                        23,
+                        25,
+                        27
+                    ],
+                    "modifierType": 5,
+                    "modifyAttributeType": 0
+                },
+                {
+                    "attrIndex": 3,
+                    "attrType": 50,
+                    "attrValues": [
+                        0.22999999999999998,
+                        0.253,
+                        0.27599999999999997,
+                        0.299
+                    ],
+                    "modifierType": 5,
+                    "modifyAttributeType": 0
+                }
+            ],
+            "itemId": "item_equip_t4_suit_combo_cd01_edc_04",
+            "minWearLv": 70,
+            "partType": 2,
+            "suitID": "suit_combo_cd01"
         }
     },
     "itemtable": {
@@ -1127,6 +1239,47 @@
             "valuableDepotRedDot": false,
             "valuableTabType": 3
         },
+        "item_equip_t4_suit_combo_cd01_edc_04": {
+            "backpackCanDiscard": true,
+            "decoDesc": {
+                "id": -3783481692823712492,
+                "text": "自清波寨古书中还原出来的高性价比装备。\n某种结合了水脉探测功能及指南功能的简易装置。据文献记载，它在清波寨建立之初就已立下了赫赫战功。"
+            },
+            "desc": {
+                "id": 6288250736169219032,
+                "text": "本装备由终末地工业参考荒野手工艺品设计，使用集成工业系统制造，能够提高使用者的作战能力。"
+            },
+            "iconCompositeId": "",
+            "iconId": "item_equip_t4_suit_combo_cd01_edc_04",
+            "id": "item_equip_t4_suit_combo_cd01_edc_04",
+            "maxBackpackStackCount": 1,
+            "maxStackCount": 1,
+            "modelKey": "int_drop_equip",
+            "name": {
+                "id": 7063543860883030394,
+                "text": "清波定位仪·壹型"
+            },
+            "noObtainWayConditionId": [],
+            "noObtainWayHint": {
+                "id": 0,
+                "text": ""
+            },
+            "noObtainWayId": [],
+            "notObtainShow": true,
+            "notObtainShowTimeId": "",
+            "obtainWayIds": [
+                "item_obtain_equip"
+            ],
+            "outcomeItemIds": [],
+            "rarity": 5,
+            "showAllDepotCount": false,
+            "showingType": 10,
+            "sortId1": -52,
+            "sortId2": 178,
+            "type": 6,
+            "valuableDepotRedDot": false,
+            "valuableTabType": 3
+        },
         "item_equip_script_4_2": {
             "backpackCanDiscard": true,
             "decoDesc": {
@@ -1281,7 +1434,7 @@
                 50
             ],
             "formulaId": "item_formu_t4_suit_combo_cd01_body_01",
-            "isNew": true,
+            "isNew": false,
             "outcomeEquipId": "item_equip_t4_suit_combo_cd01_body_01",
             "packId": "pack_wuling_combo_cd01",
             "unlockKey": "reward_eco_map02_lv004_int_83313",
@@ -1298,7 +1451,7 @@
                 50
             ],
             "formulaId": "item_formu_t4_suit_combo_cd01_body_02",
-            "isNew": true,
+            "isNew": false,
             "outcomeEquipId": "item_equip_t4_suit_combo_cd01_body_02",
             "packId": "pack_wuling_combo_cd01",
             "unlockKey": "reward_eco_map02_lv004_int_83312",
@@ -1315,7 +1468,7 @@
                 50
             ],
             "formulaId": "item_formu_t4_suit_combo_cd01_hand_01",
-            "isNew": true,
+            "isNew": false,
             "outcomeEquipId": "item_equip_t4_suit_combo_cd01_hand_01",
             "packId": "pack_wuling_combo_cd01",
             "unlockKey": "reward_eco_map02_lv004_int_83313",
@@ -1332,7 +1485,7 @@
                 50
             ],
             "formulaId": "item_formu_t4_suit_combo_cd01_hand_02",
-            "isNew": true,
+            "isNew": false,
             "outcomeEquipId": "item_equip_t4_suit_combo_cd01_hand_02",
             "packId": "pack_wuling_combo_cd01",
             "unlockKey": "reward_eco_map02_lv004_int_83312",
@@ -1349,7 +1502,7 @@
                 50
             ],
             "formulaId": "item_formu_t4_suit_combo_cd01_edc_01",
-            "isNew": true,
+            "isNew": false,
             "outcomeEquipId": "item_equip_t4_suit_combo_cd01_edc_01",
             "packId": "pack_wuling_combo_cd01",
             "unlockKey": "reward_eco_map02_lv004_int_83313",
@@ -1366,7 +1519,7 @@
                 50
             ],
             "formulaId": "item_formu_t4_suit_combo_cd01_edc_02",
-            "isNew": true,
+            "isNew": false,
             "outcomeEquipId": "item_equip_t4_suit_combo_cd01_edc_02",
             "packId": "pack_wuling_combo_cd01",
             "unlockKey": "reward_eco_map02_lv004_int_83313",
@@ -1383,10 +1536,27 @@
                 50
             ],
             "formulaId": "item_formu_t4_suit_combo_cd01_edc_03",
-            "isNew": true,
+            "isNew": false,
             "outcomeEquipId": "item_equip_t4_suit_combo_cd01_edc_03",
             "packId": "pack_wuling_combo_cd01",
             "unlockKey": "reward_eco_map02_lv004_int_83311",
+            "unlockType": 2,
+            "unlockValue": 0
+        },
+        "item_formu_t4_suit_combo_cd01_edc_04": {
+            "costGoldId": "item_domain_jinlong_coupon",
+            "costGoldNum": 25000,
+            "costItemId": [
+                "item_equip_script_4_2"
+            ],
+            "costItemNum": [
+                50
+            ],
+            "formulaId": "item_formu_t4_suit_combo_cd01_edc_04",
+            "isNew": true,
+            "outcomeEquipId": "item_equip_t4_suit_combo_cd01_edc_04",
+            "packId": "pack_wuling_combo_cd01",
+            "unlockKey": "reward_eco_map02_lv006_int_70271",
             "unlockType": 2,
             "unlockValue": 0
         }
@@ -1398,7 +1568,8 @@
         "item_equip_t4_suit_combo_cd01_hand_02": "item_formu_t4_suit_combo_cd01_hand_02",
         "item_equip_t4_suit_combo_cd01_edc_01": "item_formu_t4_suit_combo_cd01_edc_01",
         "item_equip_t4_suit_combo_cd01_edc_02": "item_formu_t4_suit_combo_cd01_edc_02",
-        "item_equip_t4_suit_combo_cd01_edc_03": "item_formu_t4_suit_combo_cd01_edc_03"
+        "item_equip_t4_suit_combo_cd01_edc_03": "item_formu_t4_suit_combo_cd01_edc_03",
+        "item_equip_t4_suit_combo_cd01_edc_04": "item_formu_t4_suit_combo_cd01_edc_04"
     },
     "equippacktable": {
         "pack_wuling_combo_cd01": {
@@ -1435,6 +1606,9 @@
                 },
                 {
                     "formulaId": "item_formu_t4_suit_combo_cd01_edc_03"
+                },
+                {
+                    "formulaId": "item_formu_t4_suit_combo_cd01_edc_04"
                 }
             ]
         }
@@ -1464,7 +1638,8 @@
     },
     "equipconst": {
         "enhanceEquipRarity": 5,
-        "maxAttrEnhanceLevel": 3
+        "maxAttrEnhanceLevel": 3,
+        "maxEnhanceIngredientCount": 25
     },
     "equiptechconst": {
         "equipProduceMaxCount": 100,

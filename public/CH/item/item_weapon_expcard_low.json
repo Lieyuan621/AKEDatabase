@@ -6,18 +6,26 @@
     "rarity": 2,
     "type": 25,
     "obtainWayIds": [
+        "item_obtain_dungeon_0002_untouched",
         "item_obtain_dungeon_0002",
         "item_obtain_spaceship_manu",
-        "item_obtain_shop_greenticket",
         "item_obtain_explore"
     ],
     "obtainWays": [
         {
-            "id": "item_obtain_dungeon_0002",
+            "id": "item_obtain_dungeon_0002_untouched",
             "desc": "协议空间·武器经验",
             "bindSystem": 52,
             "phaseId": "Map",
             "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource2100320002\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
+        },
+        {
+            "id": "item_obtain_dungeon_0002",
+            "desc": "协议空间·武器经验",
+            "bindSystem": 52,
+            "phaseId": "DungeonEntry",
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung01_group_wpexp01\"\r\n}",
             "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
         },
         {
@@ -27,14 +35,6 @@
             "phaseId": "Map",
             "phaseArgs": "{\r\n  \"instId\": \"ss_room_a_1_base01_lv001\"\r\n}",
             "icon": "/public/images/item/itemtips/icon_tips_mfg.png"
-        },
-        {
-            "id": "item_obtain_shop_greenticket",
-            "desc": "采购中心-集成配额交易",
-            "bindSystem": 51,
-            "phaseId": "CashShop",
-            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_green_1\"\r\n}",
-            "icon": "/public/images/item/itemtips/icon_tips_payshop.png"
         },
         {
             "id": "item_obtain_explore",

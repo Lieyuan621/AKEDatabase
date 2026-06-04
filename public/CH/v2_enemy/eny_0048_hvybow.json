@@ -49,6 +49,36 @@
             "showBigHeadbar": false,
             "templateId": "eny_0048_hvybow"
         },
+        "eny_0048_hvybow_race": {
+            "aiTemplateId": "aiconf_eny_0048_hvybow_race",
+            "attrModifiers": [
+                {
+                    "attrType": 20,
+                    "attrValue": 30,
+                    "modifierType": 0,
+                    "modifyAttributeType": 0
+                },
+                {
+                    "attrType": 1,
+                    "attrValue": 1.11111111111111,
+                    "modifierType": 4,
+                    "modifyAttributeType": 0
+                }
+            ],
+            "attrTemplateId": "eny_0048_hvybow",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_common_born"
+            ],
+            "enemyId": "eny_0048_hvybow_race",
+            "isDangerous": false,
+            "modelId": "eny_0048_hvybow_race_postmodel",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0048_hvybow"
+        },
         "eny_0048_hvybow": {
             "aiTemplateId": "",
             "attrModifiers": [],
@@ -126,23 +156,6 @@
             "showBigHeadbar": true,
             "templateId": "eny_0048_hvybow"
         },
-        "eny_0048_hvybow_dungeon": {
-            "aiTemplateId": "",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0048_hvybow",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [
-                "buff_common_born"
-            ],
-            "enemyId": "eny_0048_hvybow_dungeon",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": true,
-            "showBigHeadbar": false,
-            "templateId": "eny_0048_hvybow"
-        },
         "eny_0048_hvybow_hdg004_assult": {
             "aiTemplateId": "aiconf_eny_0048_hvybow_hard",
             "attrModifiers": [
@@ -167,31 +180,18 @@
             "showBigHeadbar": false,
             "templateId": "eny_0048_hvybow"
         },
-        "eny_0048_hvybow_race": {
-            "aiTemplateId": "aiconf_eny_0048_hvybow_race",
-            "attrModifiers": [
-                {
-                    "attrType": 20,
-                    "attrValue": 30,
-                    "modifierType": 0,
-                    "modifyAttributeType": 0
-                },
-                {
-                    "attrType": 1,
-                    "attrValue": 1.11111111111111,
-                    "modifierType": 4,
-                    "modifyAttributeType": 0
-                }
-            ],
+        "eny_0048_hvybow_dungeon": {
+            "aiTemplateId": "",
+            "attrModifiers": [],
             "attrTemplateId": "eny_0048_hvybow",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
             "bornBuffs": [
                 "buff_common_born"
             ],
-            "enemyId": "eny_0048_hvybow_race",
+            "enemyId": "eny_0048_hvybow_dungeon",
             "isDangerous": false,
-            "modelId": "eny_0048_hvybow_race_postmodel",
+            "modelId": "",
             "serverDeathCheck": false,
             "showBigEffect": true,
             "showBigHeadbar": false,

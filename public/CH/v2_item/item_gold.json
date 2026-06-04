@@ -29,6 +29,7 @@
         "notObtainShow": true,
         "notObtainShowTimeId": "",
         "obtainWayIds": [
+            "item_obtain_dungeon_0005_untouched",
             "item_obtain_dungeon_0005",
             "item_obtain_mission_daily",
             "item_obtain_shop_greenticket",
@@ -38,13 +39,24 @@
         "rarity": 4,
         "showAllDepotCount": false,
         "showingType": 0,
-        "sortId1": -12,
-        "sortId2": 1,
+        "sortId1": -25,
+        "sortId2": 30,
         "type": 1,
         "valuableDepotRedDot": false,
         "valuableTabType": 6
     },
     "systemjumptable": {
+        "item_obtain_dungeon_0005_untouched": {
+            "bindSystem": 52,
+            "desc": {
+                "id": -63095406087272153,
+                "text": "协议空间·钱币收集"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_0005_untouched",
+            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource200001631\"\r\n}",
+            "phaseId": "Map"
+        },
         "item_obtain_dungeon_0005": {
             "bindSystem": 52,
             "desc": {
@@ -53,8 +65,8 @@
             },
             "iconId": "icon_tips_dungeon",
             "id": "item_obtain_dungeon_0005",
-            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource200001631\"\r\n}",
-            "phaseId": "Map"
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung01_group_gold01\"\r\n}",
+            "phaseId": "DungeonEntry"
         },
         "item_obtain_mission_daily": {
             "bindSystem": 61,

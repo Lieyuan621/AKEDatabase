@@ -42,18 +42,17 @@
             "showBigHeadbar": false,
             "templateId": "eny_0095_ethillu"
         },
-        "eny_0095_ethillu_nobomb": {
-            "aiTemplateId": "",
+        "eny_0095_ethillu_CapitalDefense": {
+            "aiTemplateId": "Settlement/aiconf_eny_0095_ethillu_cardefend",
             "attrModifiers": [],
             "attrTemplateId": "eny_0095_ethillu",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
             "bornBuffs": [
-                "buff_eny_0095_ethillu_nobomb",
-                "buff_eny_0095_ethillu_dead",
-                "buff_eny_0095_ethillu_undeadable"
+                "buff_eny_0095_ethillu_realdead",
+                "buff_eny_0095_ethillu_absorb"
             ],
-            "enemyId": "eny_0095_ethillu_nobomb",
+            "enemyId": "eny_0095_ethillu_CapitalDefense",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,
@@ -79,17 +78,18 @@
             "showBigHeadbar": false,
             "templateId": "eny_0095_ethillu"
         },
-        "eny_0095_ethillu_CapitalDefense": {
-            "aiTemplateId": "Settlement/aiconf_eny_0095_ethillu_cardefend",
+        "eny_0095_ethillu_nobomb": {
+            "aiTemplateId": "",
             "attrModifiers": [],
             "attrTemplateId": "eny_0095_ethillu",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
             "bornBuffs": [
-                "buff_eny_0095_ethillu_realdead",
-                "buff_eny_0095_ethillu_absorb"
+                "buff_eny_0095_ethillu_nobomb",
+                "buff_eny_0095_ethillu_dead",
+                "buff_eny_0095_ethillu_undeadable"
             ],
-            "enemyId": "eny_0095_ethillu_CapitalDefense",
+            "enemyId": "eny_0095_ethillu_nobomb",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,

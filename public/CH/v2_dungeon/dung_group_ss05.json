@@ -8,7 +8,6 @@
         "dungeonCategory": 6,
         "dungeonCategory2nd": 0,
         "dungeonImg": "item_char_skill_specialize_5",
-        "dungeonPicPath": "dung_ss_05",
         "dungeonRoleImg": "",
         "gameCategory": "dungeon_ss",
         "id": "dung_group_ss05",
@@ -81,7 +80,6 @@
                 "text": ""
             },
             "needShowPass": false,
-            "previewCharTeamId": "",
             "recommendLv": 80,
             "relatedCharId": "",
             "rewardId": "",
@@ -857,6 +855,11 @@
             },
             "rewardTable": {
                 "reward_dung_ss05_firstpass": {
+                    "itemBundleVisibleList": [
+                        0,
+                        0,
+                        0
+                    ],
                     "itemBundles": [
                         {
                             "count": 200,
@@ -994,6 +997,7 @@
                     "notObtainShowTimeId": "",
                     "obtainWayIds": [
                         "item_obtain_case_bp_selfselect_skillsp_1_5",
+                        "item_obtain_dungeon_ss05_untouched",
                         "item_obtain_dungeon_ss05",
                         "item_obtain_dung02_bossrush02_03",
                         "item_obtain_shop_greenticket_char_skill_specialize_5",

@@ -7,6 +7,7 @@
     "type": 95,
     "obtainWayIds": [
         "item_obtain_case_bp_selfselect_skillsp_1_2",
+        "item_obtain_dungeon_ss02_untouched",
         "item_obtain_dungeon_ss02",
         "item_obtain_dungeon_bossrush_02_03",
         "item_obtain_shop_greenticket_char_skill_specialize_2",
@@ -24,11 +25,19 @@
             "icon": "/public/images/item/itemtips/icon_tips_trd.png"
         },
         {
-            "id": "item_obtain_dungeon_ss02",
+            "id": "item_obtain_dungeon_ss02_untouched",
             "desc": "协议空间·高危材料收集处",
             "bindSystem": 52,
             "phaseId": "Map",
             "phaseArgs": "{\r\n  \"instId\": \"mark_dg_ss3500031334\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
+        },
+        {
+            "id": "item_obtain_dungeon_ss02",
+            "desc": "协议空间·高危材料收集处",
+            "bindSystem": 52,
+            "phaseId": "DungeonEntry",
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung_group_ss02\"\r\n}",
             "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
         },
         {

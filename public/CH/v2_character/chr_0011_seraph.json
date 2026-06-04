@@ -16579,6 +16579,46 @@
             },
             "id": "chr_0011_seraph_talent_2_1"
         },
+        "chr_0011_seraph_talent_2_2": {
+            "dataList": [
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 3,
+                    "skillBbModifier": {
+                        "bbKey": "exist_talent_2",
+                        "floatValue": 1,
+                        "modifyType": 3,
+                        "skillId": "chr_0011_seraph_ultimate_skill",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                }
+            ],
+            "desc": {
+                "id": 2228716932457339150,
+                "text": "终结技<@ba.key>栈溢出</>会额外<#ba.dispel>净化</>全队的<#ba.crystonchar>寒冷附着</>和<#ba.frozenonchar>冻结</>状态。"
+            },
+            "id": "chr_0011_seraph_talent_2_2"
+        },
         "chr_0011_seraph_potential_1": {
             "dataList": [
                 {
@@ -16871,1373 +16911,9 @@
                 "text": "终结技<@ba.key>栈溢出</>提供的<#ba.enhance>增幅</>效果提高至原本的<@ba.vup>{atk_up:0.0}</>倍。"
             },
             "id": "chr_0011_seraph_potential_5"
-        },
-        "chr_0011_seraph_talent_2_2": {
-            "dataList": [
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 3,
-                    "skillBbModifier": {
-                        "bbKey": "exist_talent_2",
-                        "floatValue": 1,
-                        "modifyType": 3,
-                        "skillId": "chr_0011_seraph_ultimate_skill",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                }
-            ],
-            "desc": {
-                "id": 2228716932457339150,
-                "text": "终结技<@ba.key>栈溢出</>会额外<#ba.dispel>净化</>全队的<#ba.crystonchar>寒冷附着</>和<#ba.frozenonchar>冻结</>状态。"
-            },
-            "id": "chr_0011_seraph_talent_2_2"
         }
     },
     "skillpatchtable": {
-        "chr_0011_seraph_attack5": {
-            "SkillPatchDataBundle": [
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.55,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.55,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_attack_funnel",
-                    "level": 1,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0011_seraph_attack5",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "55%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -5146161868681368079,
-                            "text": "普攻第五段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.61,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.61,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_attack_funnel",
-                    "level": 2,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0011_seraph_attack5",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "61%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -2940046481953660788,
-                            "text": "普攻第五段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.66,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.66,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_attack_funnel",
-                    "level": 3,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0011_seraph_attack5",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "66%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -3867174350292202923,
-                            "text": "普攻第五段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.72,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.72,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_attack_funnel",
-                    "level": 4,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0011_seraph_attack5",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "72%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -7330129530361032247,
-                            "text": "普攻第五段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.77,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.77,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_attack_funnel",
-                    "level": 5,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0011_seraph_attack5",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "77%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -5170949625317162231,
-                            "text": "普攻第五段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.83,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.83,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_attack_funnel",
-                    "level": 6,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0011_seraph_attack5",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "83%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 8874173609215340883,
-                            "text": "普攻第五段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.88,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.88,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_attack_funnel",
-                    "level": 7,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0011_seraph_attack5",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "88%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 7851433756054325108,
-                            "text": "普攻第五段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.94,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.94,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_attack_funnel",
-                    "level": 8,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0011_seraph_attack5",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "94%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 2546544066115284088,
-                            "text": "普攻第五段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.99,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.99,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_attack_funnel",
-                    "level": 9,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0011_seraph_attack5",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "99%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -2698149517106186004,
-                            "text": "普攻第五段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.06,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 1.06,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_attack_funnel",
-                    "level": 10,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0011_seraph_attack5",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "106%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 9092956250624600910,
-                            "text": "普攻第五段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.14,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 1.14,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_attack_funnel",
-                    "level": 11,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0011_seraph_attack5",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "114%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 7642139277116812686,
-                            "text": "普攻第五段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 1.24,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 1.24,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 15,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 15,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 4,
-                    "iconId": "icon_attack_funnel",
-                    "level": 12,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0011_seraph_attack5",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "124%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -5966048487573660978,
-                            "text": "普攻第五段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                }
-            ]
-        },
         "chr_0011_seraph_attack1": {
             "SkillPatchDataBundle": [
                 {
@@ -23228,6 +21904,1330 @@
                         {
                             "id": -81813938507293331,
                             "text": "普攻第四段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                }
+            ]
+        },
+        "chr_0011_seraph_attack5": {
+            "SkillPatchDataBundle": [
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.55,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.55,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_attack_funnel",
+                    "level": 1,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0011_seraph_attack5",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "55%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -5146161868681368079,
+                            "text": "普攻第五段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.61,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.61,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_attack_funnel",
+                    "level": 2,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0011_seraph_attack5",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "61%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -2940046481953660788,
+                            "text": "普攻第五段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.66,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.66,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_attack_funnel",
+                    "level": 3,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0011_seraph_attack5",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "66%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -3867174350292202923,
+                            "text": "普攻第五段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.72,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.72,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_attack_funnel",
+                    "level": 4,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0011_seraph_attack5",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "72%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -7330129530361032247,
+                            "text": "普攻第五段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.77,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.77,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_attack_funnel",
+                    "level": 5,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0011_seraph_attack5",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "77%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -5170949625317162231,
+                            "text": "普攻第五段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.83,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.83,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_attack_funnel",
+                    "level": 6,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0011_seraph_attack5",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "83%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 8874173609215340883,
+                            "text": "普攻第五段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.88,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.88,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_attack_funnel",
+                    "level": 7,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0011_seraph_attack5",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "88%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 7851433756054325108,
+                            "text": "普攻第五段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.94,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.94,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_attack_funnel",
+                    "level": 8,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0011_seraph_attack5",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "94%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 2546544066115284088,
+                            "text": "普攻第五段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.99,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.99,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_attack_funnel",
+                    "level": 9,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0011_seraph_attack5",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "99%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -2698149517106186004,
+                            "text": "普攻第五段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 1.06,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 1.06,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_attack_funnel",
+                    "level": 10,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0011_seraph_attack5",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "106%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 9092956250624600910,
+                            "text": "普攻第五段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 1.14,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 1.14,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_attack_funnel",
+                    "level": 11,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0011_seraph_attack5",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "114%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 7642139277116812686,
+                            "text": "普攻第五段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 1.24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 1.24,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 15,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 4,
+                    "iconId": "icon_attack_funnel",
+                    "level": 12,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0011_seraph_attack5",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "124%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -5966048487573660978,
+                            "text": "普攻第五段倍率"
                         },
                         {
                             "id": 0,
@@ -31197,57 +31197,6 @@
         ]
     },
     "spaceshipskilltable": {
-        "spaceship_skill_chr_0011_seraph_1_2": {
-            "desc": {
-                "id": 3916336633506968756,
-                "text": "进驻制造舱时，干员经验素材的生产效率提升20%"
-            },
-            "effectType": 7,
-            "icon": "facskill_spaceship_manufacture_efficiency",
-            "id": "spaceship_skill_chr_0011_seraph_1_2",
-            "level": 2,
-            "name": {
-                "id": -1958329496400726919,
-                "text": "标准化编译·β"
-            },
-            "parameters": [
-                {
-                    "realType": 0,
-                    "valueBoolList": null,
-                    "valueFloatList": [
-                        0.2
-                    ],
-                    "valueIntList": null,
-                    "valueStringList": [
-                        "0.2"
-                    ],
-                    "valueType": 0,
-                    "valueVector3": null
-                },
-                {
-                    "realType": 0,
-                    "valueBoolList": null,
-                    "valueFloatList": [
-                        1
-                    ],
-                    "valueIntList": [
-                        1
-                    ],
-                    "valueStringList": [
-                        "1"
-                    ],
-                    "valueType": 0,
-                    "valueVector3": null
-                }
-            ],
-            "roomType": 1,
-            "skillNamePostfix": "β",
-            "sortId": 22,
-            "talentName": {
-                "id": 4473684445314749623,
-                "text": "标准化编译"
-            }
-        },
         "spaceship_skill_chr_0011_seraph_1_1": {
             "desc": {
                 "id": 9215934624744003617,
@@ -31296,6 +31245,57 @@
             "sortId": 21,
             "talentName": {
                 "id": 2430024713287448315,
+                "text": "标准化编译"
+            }
+        },
+        "spaceship_skill_chr_0011_seraph_1_2": {
+            "desc": {
+                "id": 3916336633506968756,
+                "text": "进驻制造舱时，干员经验素材的生产效率提升20%"
+            },
+            "effectType": 7,
+            "icon": "facskill_spaceship_manufacture_efficiency",
+            "id": "spaceship_skill_chr_0011_seraph_1_2",
+            "level": 2,
+            "name": {
+                "id": -1958329496400726919,
+                "text": "标准化编译·β"
+            },
+            "parameters": [
+                {
+                    "realType": 0,
+                    "valueBoolList": null,
+                    "valueFloatList": [
+                        0.2
+                    ],
+                    "valueIntList": null,
+                    "valueStringList": [
+                        "0.2"
+                    ],
+                    "valueType": 0,
+                    "valueVector3": null
+                },
+                {
+                    "realType": 0,
+                    "valueBoolList": null,
+                    "valueFloatList": [
+                        1
+                    ],
+                    "valueIntList": [
+                        1
+                    ],
+                    "valueStringList": [
+                        "1"
+                    ],
+                    "valueType": 0,
+                    "valueVector3": null
+                }
+            ],
+            "roomType": 1,
+            "skillNamePostfix": "β",
+            "sortId": 22,
+            "talentName": {
+                "id": 4473684445314749623,
                 "text": "标准化编译"
             }
         },

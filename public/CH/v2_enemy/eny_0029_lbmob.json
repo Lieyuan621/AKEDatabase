@@ -28,6 +28,38 @@
         "templateId": "eny_0029_lbmob"
     },
     "enemytable": {
+        "eny_0029_lbmob_cardefend": {
+            "aiTemplateId": "Settlement/aiconf_eny_0029_lbmob_cardefend",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0029_lbmob",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0029_lbmob_cardefend",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0029_lbmob"
+        },
+        "eny_0029_lbmob_hdg005": {
+            "aiTemplateId": "aiconf_eny_0029_lbmob_hdg005",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0029_lbmob",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_eny_0029_lbmob_hdg005"
+            ],
+            "enemyId": "eny_0029_lbmob_hdg005",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0029_lbmob"
+        },
         "eny_0029_lbmob": {
             "aiTemplateId": "",
             "attrModifiers": [],
@@ -51,21 +83,6 @@
             "autoLockCancelType": 0,
             "bornBuffs": [],
             "enemyId": "eny_0029_lbmob_bomb",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": false,
-            "showBigHeadbar": false,
-            "templateId": "eny_0029_lbmob"
-        },
-        "eny_0029_lbmob_cardefend": {
-            "aiTemplateId": "Settlement/aiconf_eny_0029_lbmob_cardefend",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0029_lbmob",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [],
-            "enemyId": "eny_0029_lbmob_cardefend",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,
@@ -105,23 +122,6 @@
                 "buff_common_born"
             ],
             "enemyId": "eny_0029_lbmob_dungeon",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": false,
-            "showBigHeadbar": false,
-            "templateId": "eny_0029_lbmob"
-        },
-        "eny_0029_lbmob_hdg005": {
-            "aiTemplateId": "aiconf_eny_0029_lbmob_hdg005",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0029_lbmob",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [
-                "buff_eny_0029_lbmob_hdg005"
-            ],
-            "enemyId": "eny_0029_lbmob_hdg005",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,

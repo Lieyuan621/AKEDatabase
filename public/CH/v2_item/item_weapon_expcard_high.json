@@ -29,6 +29,7 @@
         "notObtainShow": true,
         "notObtainShowTimeId": "",
         "obtainWayIds": [
+            "item_obtain_dungeon_0002_untouched",
             "item_obtain_dungeon_0002",
             "item_obtain_spaceship_manu",
             "item_obtain_shop_greenticket",
@@ -59,6 +60,17 @@
         "refMonsterTemplateId": ""
     },
     "systemjumptable": {
+        "item_obtain_dungeon_0002_untouched": {
+            "bindSystem": 52,
+            "desc": {
+                "id": -6953300977480520559,
+                "text": "协议空间·武器经验"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_0002_untouched",
+            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource2100320002\"\r\n}",
+            "phaseId": "Map"
+        },
         "item_obtain_dungeon_0002": {
             "bindSystem": 52,
             "desc": {
@@ -67,8 +79,8 @@
             },
             "iconId": "icon_tips_dungeon",
             "id": "item_obtain_dungeon_0002",
-            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource2100320002\"\r\n}",
-            "phaseId": "Map"
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung01_group_wpexp01\"\r\n}",
+            "phaseId": "DungeonEntry"
         },
         "item_obtain_spaceship_manu": {
             "bindSystem": 404,

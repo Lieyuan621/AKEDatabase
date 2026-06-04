@@ -29,6 +29,7 @@
         "notObtainShow": true,
         "notObtainShowTimeId": "",
         "obtainWayIds": [
+            "item_obtain_dungeon_0004_untouched",
             "item_obtain_dungeon_0004",
             "item_obtain_shop_greenticket_char_break_stage_1_2",
             "item_obtain_explore"
@@ -57,6 +58,17 @@
         "refMonsterTemplateId": ""
     },
     "systemjumptable": {
+        "item_obtain_dungeon_0004_untouched": {
+            "bindSystem": 52,
+            "desc": {
+                "id": -4362114207177679657,
+                "text": "协议空间·干员进阶"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_0004_untouched",
+            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource2100320000\"\r\n}",
+            "phaseId": "Map"
+        },
         "item_obtain_dungeon_0004": {
             "bindSystem": 52,
             "desc": {
@@ -65,8 +77,8 @@
             },
             "iconId": "icon_tips_dungeon",
             "id": "item_obtain_dungeon_0004",
-            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource2100320000\"\r\n}",
-            "phaseId": "Map"
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung01_group_charbreak01\"\r\n}",
+            "phaseId": "DungeonEntry"
         },
         "item_obtain_shop_greenticket_char_break_stage_1_2": {
             "bindSystem": 51,

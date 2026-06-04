@@ -29,23 +29,6 @@
         "templateId": "eny_0033_lbhunt"
     },
     "enemytable": {
-        "eny_0033_lbhunt_settlement": {
-            "aiTemplateId": "Settlement/aiconf_eny_0033_lbhunt_settlement",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0033_lbhunt",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [
-                "buff_settlement_addtag"
-            ],
-            "enemyId": "eny_0033_lbhunt_settlement",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": false,
-            "showBigHeadbar": false,
-            "templateId": "eny_0033_lbhunt"
-        },
         "eny_0033_lbhunt": {
             "aiTemplateId": "",
             "attrModifiers": [],
@@ -61,31 +44,16 @@
             "showBigHeadbar": false,
             "templateId": "eny_0033_lbhunt"
         },
-        "eny_0033_lbhunt_dungeon": {
-            "aiTemplateId": "",
+        "eny_0033_lbhunt_settlement": {
+            "aiTemplateId": "Settlement/aiconf_eny_0033_lbhunt_settlement",
             "attrModifiers": [],
             "attrTemplateId": "eny_0033_lbhunt",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
             "bornBuffs": [
-                "buff_common_born"
+                "buff_settlement_addtag"
             ],
-            "enemyId": "eny_0033_lbhunt_dungeon",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": false,
-            "showBigHeadbar": false,
-            "templateId": "eny_0033_lbhunt"
-        },
-        "eny_0033_lbhunt_noborneffect": {
-            "aiTemplateId": "",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0033_lbhunt",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [],
-            "enemyId": "eny_0033_lbhunt_noborneffect",
+            "enemyId": "eny_0033_lbhunt_settlement",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,
@@ -138,6 +106,23 @@
             "showBigHeadbar": false,
             "templateId": "eny_0033_lbhunt"
         },
+        "eny_0033_lbhunt_dungeon": {
+            "aiTemplateId": "",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0033_lbhunt",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_common_born"
+            ],
+            "enemyId": "eny_0033_lbhunt_dungeon",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0033_lbhunt"
+        },
         "eny_0033_lbhunt_hdg005": {
             "aiTemplateId": "aiconf_eny_0033_lbhunt_hdg005",
             "attrModifiers": [
@@ -155,6 +140,36 @@
                 "buff_eny_0033_lbhunt_hdg005"
             ],
             "enemyId": "eny_0033_lbhunt_hdg005",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0033_lbhunt"
+        },
+        "eny_0033_lbhunt_noborneffect": {
+            "aiTemplateId": "",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0033_lbhunt",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0033_lbhunt_noborneffect",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0033_lbhunt"
+        },
+        "eny_0033_lbhunt_onlyshoot": {
+            "aiTemplateId": "aiconf_eny_0033_lbhunt_onlyshoot",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0033_lbhunt",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0033_lbhunt_onlyshoot",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,

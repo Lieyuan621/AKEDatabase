@@ -25,23 +25,6 @@
         "templateId": "eny_0062_paletent"
     },
     "enemytable": {
-        "eny_0062_paletent_range": {
-            "aiTemplateId": "aiconf_eny_0062_paletent_range",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0062_paletent",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [
-                "buff_eny_0062_paletent_buff"
-            ],
-            "enemyId": "eny_0062_paletent_range",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": true,
-            "showBigHeadbar": false,
-            "templateId": "eny_0062_paletent"
-        },
         "eny_0062_paletent": {
             "aiTemplateId": "",
             "attrModifiers": [],
@@ -69,6 +52,23 @@
                 "buff_eny_0062_paletent_buff"
             ],
             "enemyId": "eny_0062_paletent_melee",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0062_paletent"
+        },
+        "eny_0062_paletent_range": {
+            "aiTemplateId": "aiconf_eny_0062_paletent_range",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0062_paletent",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_eny_0062_paletent_buff"
+            ],
+            "enemyId": "eny_0062_paletent_range",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,

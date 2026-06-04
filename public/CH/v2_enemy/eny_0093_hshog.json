@@ -26,17 +26,44 @@
         "templateId": "eny_0093_hshog"
     },
     "enemytable": {
-        "eny_0093_hshog_settlement": {
-            "aiTemplateId": "Settlement/aiconf_eny_0093_hshog_settlement",
+        "eny_0093_hshog": {
+            "aiTemplateId": "",
             "attrModifiers": [],
             "attrTemplateId": "eny_0093_hshog",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
-            "bornBuffs": [
-                "buff_eny_0093_hshog_attack",
-                "buff_settlement_addtag"
-            ],
-            "enemyId": "eny_0093_hshog_settlement",
+            "bornBuffs": [],
+            "enemyId": "eny_0093_hshog",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0093_hshog"
+        },
+        "eny_0093_hshog_capitaldefense": {
+            "aiTemplateId": "",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0093_hshog",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0093_hshog_capitaldefense",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0093_hshog"
+        },
+        "eny_0093_hshog_special01": {
+            "aiTemplateId": "aiconf_eny_0093_hshog_special01",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0093_hshog",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0093_hshog_special01",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,
@@ -61,44 +88,17 @@
             "showBigHeadbar": false,
             "templateId": "eny_0093_hshog"
         },
-        "eny_0093_hshog_capitaldefense": {
-            "aiTemplateId": "",
+        "eny_0093_hshog_settlement": {
+            "aiTemplateId": "Settlement/aiconf_eny_0093_hshog_settlement",
             "attrModifiers": [],
             "attrTemplateId": "eny_0093_hshog",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
-            "bornBuffs": [],
-            "enemyId": "eny_0093_hshog_capitaldefense",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": true,
-            "showBigHeadbar": false,
-            "templateId": "eny_0093_hshog"
-        },
-        "eny_0093_hshog": {
-            "aiTemplateId": "",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0093_hshog",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [],
-            "enemyId": "eny_0093_hshog",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": true,
-            "showBigHeadbar": false,
-            "templateId": "eny_0093_hshog"
-        },
-        "eny_0093_hshog_special01": {
-            "aiTemplateId": "aiconf_eny_0093_hshog_special01",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0093_hshog",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [],
-            "enemyId": "eny_0093_hshog_special01",
+            "bornBuffs": [
+                "buff_eny_0093_hshog_attack",
+                "buff_settlement_addtag"
+            ],
+            "enemyId": "eny_0093_hshog_settlement",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,

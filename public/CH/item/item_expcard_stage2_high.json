@@ -6,6 +6,7 @@
     "rarity": 5,
     "type": 7,
     "obtainWayIds": [
+        "item_obtain_dungeon_0001_untouched",
         "item_obtain_dungeon_0001",
         "item_obtain_spaceship_manu",
         "item_obtain_shop_greenticket",
@@ -14,11 +15,19 @@
     ],
     "obtainWays": [
         {
-            "id": "item_obtain_dungeon_0001",
+            "id": "item_obtain_dungeon_0001_untouched",
             "desc": "协议空间·干员经验",
             "bindSystem": 52,
             "phaseId": "Map",
             "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource200001663\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
+        },
+        {
+            "id": "item_obtain_dungeon_0001",
+            "desc": "协议空间·干员经验",
+            "bindSystem": 52,
+            "phaseId": "DungeonEntry",
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung01_group_exp01\"\r\n}",
             "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
         },
         {
