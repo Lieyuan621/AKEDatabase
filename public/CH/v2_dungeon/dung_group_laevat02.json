@@ -610,20 +610,8 @@
                     "functionArea": {
                         "ranges": [],
                         "baseData": [],
-                        "repatriateZoneData": [],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [],
-                        "cameraAddControlStateData": [],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [],
-                        "sceneToast": [],
-                        "blockAIBarkData": [],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
-                        "functionAreaConditions": [],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        "specificDatas": [],
+                        "functionAreaConditions": []
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],
@@ -682,20 +670,8 @@
                     "functionArea": {
                         "ranges": [],
                         "baseData": [],
-                        "repatriateZoneData": [],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [],
-                        "cameraAddControlStateData": [],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [],
-                        "sceneToast": [],
-                        "blockAIBarkData": [],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
-                        "functionAreaConditions": [],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        "specificDatas": [],
+                        "functionAreaConditions": []
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],
@@ -927,7 +903,7 @@
                                             "type": "Int",
                                             "valueArray": [
                                                 {
-                                                    "valueBit64": -1
+                                                    "valueBit64": 3
                                                 }
                                             ]
                                         }
@@ -1041,7 +1017,7 @@
                                             "type": "Int",
                                             "valueArray": [
                                                 {
-                                                    "valueBit64": -1
+                                                    "valueBit64": 3
                                                 }
                                             ]
                                         }
@@ -1155,7 +1131,7 @@
                                             "type": "Int",
                                             "valueArray": [
                                                 {
-                                                    "valueBit64": -1
+                                                    "valueBit64": 3
                                                 }
                                             ]
                                         }
@@ -1269,7 +1245,7 @@
                                             "type": "Int",
                                             "valueArray": [
                                                 {
-                                                    "valueBit64": -1
+                                                    "valueBit64": 3
                                                 }
                                             ]
                                         }
@@ -2817,20 +2793,8 @@
                     "functionArea": {
                         "ranges": [],
                         "baseData": [],
-                        "repatriateZoneData": [],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [],
-                        "cameraAddControlStateData": [],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [],
-                        "sceneToast": [],
-                        "blockAIBarkData": [],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
-                        "functionAreaConditions": [],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        "specificDatas": [],
+                        "functionAreaConditions": []
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],
@@ -3102,8 +3066,8 @@
                 }
             },
             "BuffData": {
-                "buff_common_maxhpup": {
-                    "id": "buff_common_maxhpup",
+                "buff_common_atkup": {
+                    "id": "buff_common_atkup",
                     "iconConfig": {
                         "_spritePath": "",
                         "showInHeadBarCommon": false,
@@ -3112,6 +3076,7 @@
                         "onlyShowForMainCharacter": false,
                         "blinkInMainCharHpBar": false,
                         "showProgressInHpBar": false,
+                        "showProgressInNormalSkillButton": false,
                         "iconStyleInSquad": "Default",
                         "abnormalColorType": "Physical",
                         "_orderPriorityConfig": {
@@ -3124,6 +3089,7 @@
                         "hasCharHpBarVfxType": false,
                         "charHpBarVfxType": "Fire"
                     },
+                    "hasIcon": false,
                     "ignoreTagImmune": false,
                     "useTimeDilationDt": false,
                     "finishOnRepatriate": false,
@@ -3139,7 +3105,7 @@
                         "attributeModifiers": [
                             {
                                 "modifyAttributeType": "Specific",
-                                "attributeType": "MaxHp",
+                                "attributeType": "Atk",
                                 "formulaItem": "Multiplier",
                                 "param": {
                                     "useBlackboardKey": true,
@@ -3204,8 +3170,8 @@
                         }
                     ]
                 },
-                "buff_common_atkup": {
-                    "id": "buff_common_atkup",
+                "buff_common_maxhpup": {
+                    "id": "buff_common_maxhpup",
                     "iconConfig": {
                         "_spritePath": "",
                         "showInHeadBarCommon": false,
@@ -3214,6 +3180,7 @@
                         "onlyShowForMainCharacter": false,
                         "blinkInMainCharHpBar": false,
                         "showProgressInHpBar": false,
+                        "showProgressInNormalSkillButton": false,
                         "iconStyleInSquad": "Default",
                         "abnormalColorType": "Physical",
                         "_orderPriorityConfig": {
@@ -3226,6 +3193,7 @@
                         "hasCharHpBarVfxType": false,
                         "charHpBarVfxType": "Fire"
                     },
+                    "hasIcon": false,
                     "ignoreTagImmune": false,
                     "useTimeDilationDt": false,
                     "finishOnRepatriate": false,
@@ -3241,7 +3209,7 @@
                         "attributeModifiers": [
                             {
                                 "modifyAttributeType": "Specific",
-                                "attributeType": "Atk",
+                                "attributeType": "MaxHp",
                                 "formulaItem": "Multiplier",
                                 "param": {
                                     "useBlackboardKey": true,

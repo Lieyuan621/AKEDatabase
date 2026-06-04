@@ -381,6 +381,19 @@
                                 }
                             ],
                             "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
                                 "PlayerInteractPerform": [
                                     {
                                         "key": "wait_time",
@@ -553,6 +566,19 @@
                                 }
                             ],
                             "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
                                 "ClickTrigger": [
                                     {
                                         "key": "use_level_event_click",
@@ -719,6 +745,19 @@
                                 }
                             ],
                             "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
                                 "ClickTrigger": [
                                     {
                                         "key": "use_level_event_click",
@@ -874,6 +913,19 @@
                                 }
                             ],
                             "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
                                 "ClickTrigger": [
                                     {
                                         "key": "use_level_event_click",
@@ -1270,6 +1322,17 @@
                                         "valueArray": [
                                             {
                                                 "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "state",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
                                             }
                                         ]
                                     }
@@ -3713,7 +3776,7 @@
                             {
                                 "functionType": "CameraLookAt",
                                 "shapeType": "Sphere",
-                                "index": 0,
+                                "index": 1,
                                 "offset": {
                                     "x": 0.0,
                                     "y": 0.0,
@@ -4009,16 +4072,14 @@
                                 "bufferDistance": 0.0
                             }
                         ],
-                        "repatriateZoneData": [
+                        "specificDatas": [
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
-                            }
-                        ],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [
+                            },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+CameraLookAtData, Gameplay.Beyond",
                                 "useLocalRotation": true,
                                 "lookAtRotationYaw": 0.0,
                                 "lookAtRotationPitch": 0.0,
@@ -4034,16 +4095,7 @@
                                 "duration": 2.0
                             }
                         ],
-                        "cameraAddControlStateData": [],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [],
-                        "sceneToast": [],
-                        "blockAIBarkData": [],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
-                        "functionAreaConditions": [],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        "functionAreaConditions": []
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],
@@ -4092,20 +4144,8 @@
                     "functionArea": {
                         "ranges": [],
                         "baseData": [],
-                        "repatriateZoneData": [],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [],
-                        "cameraAddControlStateData": [],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [],
-                        "sceneToast": [],
-                        "blockAIBarkData": [],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
-                        "functionAreaConditions": [],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        "specificDatas": [],
+                        "functionAreaConditions": []
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],
@@ -5533,7 +5573,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         },
                                         {
                                             "type": "TurnTo",
@@ -5561,7 +5602,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         },
                                         {
                                             "type": "Wait",
@@ -5589,7 +5631,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         },
                                         {
                                             "type": "PlayAnimation",
@@ -5617,7 +5660,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 }
@@ -5694,7 +5738,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         },
                                         {
                                             "type": "PlayAnimation",
@@ -5722,7 +5767,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -5853,7 +5899,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         },
                                         {
                                             "type": "PlayAnimation",
@@ -5881,7 +5928,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 }
@@ -6294,7 +6342,7 @@
                             {
                                 "functionType": "CameraAddControlState",
                                 "shapeType": "Box",
-                                "index": 0,
+                                "index": 1,
                                 "offset": {
                                     "x": 0.0,
                                     "y": 0.0,
@@ -6322,11 +6370,9 @@
                                 "bufferDistance": 0.0
                             }
                         ],
-                        "repatriateZoneData": [],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [
+                        "specificDatas": [
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+CameraLookAtData, Gameplay.Beyond",
                                 "useLocalRotation": true,
                                 "lookAtRotationYaw": 10.0,
                                 "lookAtRotationPitch": -5.0,
@@ -6340,10 +6386,9 @@
                                 "blendOutStyle": "EaseInOut",
                                 "blendOutTime": 2.0,
                                 "duration": -1.0
-                            }
-                        ],
-                        "cameraAddControlStateData": [
+                            },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+CameraAddControlStateData, Gameplay.Beyond",
                                 "multipleCCS": false,
                                 "stateConfig": "LD/CCS_LD_FlatGroundOvershoulderMidShot_c6m1",
                                 "stateCheckAngle": 0.0,
@@ -6357,15 +6402,7 @@
                                 "blendOutTime": 0.2
                             }
                         ],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [],
-                        "sceneToast": [],
-                        "blockAIBarkData": [],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
-                        "functionAreaConditions": [],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        "functionAreaConditions": []
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],
@@ -7288,7 +7325,8 @@
                                                 "movementStyle": "Walk",
                                                 "overrideSpeed": false,
                                                 "overrideSpeedValue": 4.0,
-                                                "radius": 0.0
+                                                "radius": 0.0,
+                                                "npcPlayAnimationTimeEndForceToIdle": false
                                             }
                                         ]
                                     },
@@ -7773,6 +7811,7 @@
                         "onlyShowForMainCharacter": false,
                         "blinkInMainCharHpBar": false,
                         "showProgressInHpBar": false,
+                        "showProgressInNormalSkillButton": false,
                         "iconStyleInSquad": "Default",
                         "abnormalColorType": "Physical",
                         "_orderPriorityConfig": {
@@ -7785,6 +7824,7 @@
                         "hasCharHpBarVfxType": false,
                         "charHpBarVfxType": "Fire"
                     },
+                    "hasIcon": false,
                     "ignoreTagImmune": false,
                     "useTimeDilationDt": false,
                     "finishOnRepatriate": false,
@@ -7962,7 +8002,6 @@
                                                 "visibleWithEntity": true,
                                                 "visibleWithEntityType": "Source",
                                                 "moveType": "FollowTarget",
-                                                "isOnlyFollowBattleCamera": false,
                                                 "positionRef": "Target",
                                                 "grounded": false,
                                                 "followGrounded": false,

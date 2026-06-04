@@ -692,6 +692,19 @@
                                 }
                             ],
                             "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
                                 "PlayerInteractPerform": [
                                     {
                                         "key": "available_list",
@@ -1418,6 +1431,17 @@
                                         "valueArray": [
                                             {
                                                 "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "state",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
                                             }
                                         ]
                                     }
@@ -3302,50 +3326,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -3432,50 +3412,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -3566,50 +3502,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -3696,50 +3588,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -3830,50 +3678,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -3960,50 +3764,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -4094,50 +3854,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -4224,50 +3940,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -4358,50 +4030,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -4488,50 +4116,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -4622,50 +4206,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -4752,50 +4292,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -4886,50 +4382,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -5016,50 +4468,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -5150,50 +4558,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -5280,50 +4644,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -5414,50 +4734,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -5544,50 +4820,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -5678,50 +4910,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -5808,50 +4996,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -5942,50 +5086,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -6072,50 +5172,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -6206,50 +5262,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -6336,50 +5348,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -8348,50 +7316,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -8478,50 +7402,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -8612,50 +7492,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -8742,50 +7578,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -8876,50 +7668,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -9006,50 +7754,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -9140,50 +7844,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -9270,50 +7930,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -9404,50 +8020,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -9534,50 +8106,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -9668,50 +8196,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -9798,50 +8282,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -9932,50 +8372,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -10062,50 +8458,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -10196,50 +8548,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -10326,50 +8634,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -10460,50 +8724,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -10590,50 +8810,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -10724,50 +8900,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -10854,50 +8986,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -10988,50 +9076,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -11118,50 +9162,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -11252,50 +9252,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -11382,50 +9338,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -11516,50 +9428,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -11646,50 +9514,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -11780,50 +9604,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -11910,50 +9690,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -12044,50 +9780,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -12174,50 +9866,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -12308,50 +9956,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -12438,50 +10042,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -12572,50 +10132,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -12702,50 +10218,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -13142,50 +10614,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -13274,50 +10702,6 @@
                                             ]
                                         }
                                     }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    }
                                 ]
                             }
                         },
@@ -13404,50 +10788,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -15366,7 +12706,8 @@
                                             "movementStyle": "Run",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -15462,7 +12803,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -15545,7 +12887,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 }
@@ -15595,7 +12938,8 @@
                                             "movementStyle": "Run",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -15651,7 +12995,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -15707,7 +13052,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         },
                                         {
                                             "type": "EventToLevel",
@@ -15748,7 +13094,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -15817,7 +13164,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -15886,7 +13234,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -15964,7 +13313,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -16002,7 +13352,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -16058,7 +13409,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -16109,7 +13461,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -16156,7 +13509,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 }
@@ -18233,93 +15587,99 @@
                                 "bufferDistance": 0.0
                             }
                         ],
-                        "repatriateZoneData": [
+                        "specificDatas": [
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             }
                         ],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [],
-                        "cameraAddControlStateData": [],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [],
-                        "sceneToast": [],
-                        "blockAIBarkData": [],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
-                        "functionAreaConditions": [],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        "functionAreaConditions": []
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],
@@ -18378,20 +15738,8 @@
                     "functionArea": {
                         "ranges": [],
                         "baseData": [],
-                        "repatriateZoneData": [],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [],
-                        "cameraAddControlStateData": [],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [],
-                        "sceneToast": [],
-                        "blockAIBarkData": [],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
-                        "functionAreaConditions": [],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        "specificDatas": [],
+                        "functionAreaConditions": []
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],
@@ -20115,10 +17463,16 @@
                                             "animName": "",
                                             "repeatAnim": false,
                                             "rootMotion": true,
+                                            "templateId": "",
                                             "npcMontageTag": {
                                                 "tagName": "",
                                                 "tagId": 0
                                             },
+                                            "blendInTime": 0.2,
+                                            "playRate": 1.0,
+                                            "fixedTimeOffset": 0.0,
+                                            "autoBlendOut": true,
+                                            "blendOutTime": 0.2,
                                             "radioId": "",
                                             "angle": 30.0,
                                             "envTalkId": "",
@@ -20132,10 +17486,16 @@
                                             "animName": "",
                                             "repeatAnim": false,
                                             "rootMotion": true,
+                                            "templateId": "",
                                             "npcMontageTag": {
                                                 "tagName": "Montage/NPC/Humanoid/Particular/Loli/Wulfa/crawling",
                                                 "tagId": -1909878886
                                             },
+                                            "blendInTime": 0.2,
+                                            "playRate": 1.0,
+                                            "fixedTimeOffset": 0.0,
+                                            "autoBlendOut": true,
+                                            "blendOutTime": 0.2,
                                             "radioId": "",
                                             "angle": 0.0,
                                             "envTalkId": "",
@@ -20149,10 +17509,16 @@
                                             "animName": "",
                                             "repeatAnim": false,
                                             "rootMotion": true,
+                                            "templateId": "",
                                             "npcMontageTag": {
                                                 "tagName": "",
                                                 "tagId": 0
                                             },
+                                            "blendInTime": 0.2,
+                                            "playRate": 1.0,
+                                            "fixedTimeOffset": 0.0,
+                                            "autoBlendOut": true,
+                                            "blendOutTime": 0.2,
                                             "radioId": "",
                                             "angle": 0.0,
                                             "envTalkId": "",
@@ -20166,10 +17532,16 @@
                                             "animName": "",
                                             "repeatAnim": false,
                                             "rootMotion": true,
+                                            "templateId": "",
                                             "npcMontageTag": {
                                                 "tagName": "",
                                                 "tagId": 0
                                             },
+                                            "blendInTime": 0.2,
+                                            "playRate": 1.0,
+                                            "fixedTimeOffset": 0.0,
+                                            "autoBlendOut": true,
+                                            "blendOutTime": 0.2,
                                             "radioId": "",
                                             "angle": 0.0,
                                             "envTalkId": "",
@@ -20226,10 +17598,16 @@
                                             "animName": "",
                                             "repeatAnim": false,
                                             "rootMotion": true,
+                                            "templateId": "",
                                             "npcMontageTag": {
                                                 "tagName": "",
                                                 "tagId": 0
                                             },
+                                            "blendInTime": 0.2,
+                                            "playRate": 1.0,
+                                            "fixedTimeOffset": 0.0,
+                                            "autoBlendOut": true,
+                                            "blendOutTime": 0.2,
                                             "radioId": "",
                                             "angle": 0.0,
                                             "envTalkId": "",
@@ -20253,10 +17631,16 @@
                                             "animName": "",
                                             "repeatAnim": false,
                                             "rootMotion": true,
+                                            "templateId": "",
                                             "npcMontageTag": {
                                                 "tagName": "",
                                                 "tagId": 0
                                             },
+                                            "blendInTime": 0.2,
+                                            "playRate": 1.0,
+                                            "fixedTimeOffset": 0.0,
+                                            "autoBlendOut": true,
+                                            "blendOutTime": 0.2,
                                             "radioId": "",
                                             "angle": 0.0,
                                             "envTalkId": "",
@@ -20280,10 +17664,16 @@
                                             "animName": "",
                                             "repeatAnim": false,
                                             "rootMotion": true,
+                                            "templateId": "",
                                             "npcMontageTag": {
                                                 "tagName": "",
                                                 "tagId": 0
                                             },
+                                            "blendInTime": 0.2,
+                                            "playRate": 1.0,
+                                            "fixedTimeOffset": 0.0,
+                                            "autoBlendOut": true,
+                                            "blendOutTime": 0.2,
                                             "radioId": "",
                                             "angle": 0.0,
                                             "envTalkId": "",
@@ -20297,10 +17687,16 @@
                                             "animName": "",
                                             "repeatAnim": false,
                                             "rootMotion": true,
+                                            "templateId": "",
                                             "npcMontageTag": {
                                                 "tagName": "Montage/NPC/Humanoid/Particular/Loli/Wulfa/wave",
                                                 "tagId": 1316088778
                                             },
+                                            "blendInTime": 0.2,
+                                            "playRate": 1.0,
+                                            "fixedTimeOffset": 0.0,
+                                            "autoBlendOut": true,
+                                            "blendOutTime": 0.2,
                                             "radioId": "",
                                             "angle": 0.0,
                                             "envTalkId": "",
@@ -20339,10 +17735,16 @@
                                             "animName": "",
                                             "repeatAnim": false,
                                             "rootMotion": true,
+                                            "templateId": "",
                                             "npcMontageTag": {
                                                 "tagName": "",
                                                 "tagId": 0
                                             },
+                                            "blendInTime": 0.2,
+                                            "playRate": 1.0,
+                                            "fixedTimeOffset": 0.0,
+                                            "autoBlendOut": true,
+                                            "blendOutTime": 0.2,
                                             "radioId": "",
                                             "angle": 180.0,
                                             "envTalkId": "",
@@ -20436,7 +17838,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -20492,7 +17895,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -20587,7 +17991,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -20625,7 +18030,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -21112,20 +18518,8 @@
                     "functionArea": {
                         "ranges": [],
                         "baseData": [],
-                        "repatriateZoneData": [],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [],
-                        "cameraAddControlStateData": [],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [],
-                        "sceneToast": [],
-                        "blockAIBarkData": [],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
-                        "functionAreaConditions": [],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        "specificDatas": [],
+                        "functionAreaConditions": []
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],

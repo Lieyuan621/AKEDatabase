@@ -1298,6 +1298,19 @@
                                 }
                             ],
                             "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
                                 "PlayerInteractPerform": [
                                     {
                                         "key": "available_list",
@@ -1523,19 +1536,6 @@
                                 }
                             ],
                             "componentProperties": {
-                                "Hittable": [
-                                    {
-                                        "key": "bomb_check_ignore_raycast",
-                                        "value": {
-                                            "type": "Bool",
-                                            "valueArray": [
-                                                {
-                                                    "valueBit64": 0
-                                                }
-                                            ]
-                                        }
-                                    }
-                                ],
                                 "AttackTrigger": [
                                     {
                                         "key": "use_level_event_attack",
@@ -1563,50 +1563,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -1655,19 +1611,6 @@
                                 }
                             ],
                             "componentProperties": {
-                                "Hittable": [
-                                    {
-                                        "key": "bomb_check_ignore_raycast",
-                                        "value": {
-                                            "type": "Bool",
-                                            "valueArray": [
-                                                {
-                                                    "valueBit64": 0
-                                                }
-                                            ]
-                                        }
-                                    }
-                                ],
                                 "AttackTrigger": [
                                     {
                                         "key": "use_level_event_attack",
@@ -1695,50 +1638,6 @@
                                                     "valueBit64": 0
                                                 }
                                             ]
-                                        }
-                                    }
-                                ],
-                                "InteractiveHintPerformComponent": [
-                                    {
-                                        "key": "override_special_mode_list",
-                                        "value": {
-                                            "type": "IntList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_outline_name_list",
-                                        "value": {
-                                            "type": "StringList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "is_override_special_mode_brushing_distance_list",
-                                        "value": {
-                                            "type": "BoolList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_min_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
-                                        }
-                                    },
-                                    {
-                                        "key": "override_special_mode_brushing_max_distance_list",
-                                        "value": {
-                                            "type": "FloatList",
-                                            "valueArray": []
                                         }
                                     }
                                 ]
@@ -7962,57 +7861,54 @@
                                 "bufferDistance": 0.0
                             }
                         ],
-                        "repatriateZoneData": [
+                        "specificDatas": [
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             }
                         ],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [],
-                        "cameraAddControlStateData": [],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [],
-                        "sceneToast": [],
-                        "blockAIBarkData": [],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
-                        "functionAreaConditions": [],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        "functionAreaConditions": []
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],
@@ -8061,20 +7957,8 @@
                     "functionArea": {
                         "ranges": [],
                         "baseData": [],
-                        "repatriateZoneData": [],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [],
-                        "cameraAddControlStateData": [],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [],
-                        "sceneToast": [],
-                        "blockAIBarkData": [],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
-                        "functionAreaConditions": [],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        "specificDatas": [],
+                        "functionAreaConditions": []
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],

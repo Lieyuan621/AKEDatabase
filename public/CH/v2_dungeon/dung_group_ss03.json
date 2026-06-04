@@ -864,8 +864,8 @@
             "LevelData": {},
             "SpawnerConfig": {},
             "BuffData": {
-                "buff_common_superarmor_behit_sandb": {
-                    "id": "buff_common_superarmor_behit_sandb",
+                "buff_common_superarmor_behit_hstiger": {
+                    "id": "buff_common_superarmor_behit_hstiger",
                     "iconConfig": {
                         "_spritePath": "",
                         "showInHeadBarCommon": true,
@@ -874,6 +874,7 @@
                         "onlyShowForMainCharacter": false,
                         "blinkInMainCharHpBar": false,
                         "showProgressInHpBar": false,
+                        "showProgressInNormalSkillButton": false,
                         "iconStyleInSquad": "Default",
                         "abnormalColorType": "Physical",
                         "_orderPriorityConfig": {
@@ -886,6 +887,7 @@
                         "hasCharHpBarVfxType": false,
                         "charHpBarVfxType": "Fire"
                     },
+                    "hasIcon": false,
                     "ignoreTagImmune": false,
                     "useTimeDilationDt": false,
                     "finishOnRepatriate": false,
@@ -1082,7 +1084,7 @@
                                             "playOnHittableObjects": false,
                                             "effectActionCfg": {
                                                 "fxType": "Normal",
-                                                "effectName": "P_fxgp_common_enemy_hit_sandb_asset",
+                                                "effectName": "P_fxgp_common_enemy_hit_hstiger_asset",
                                                 "guardEffect": false,
                                                 "isCenterChangeLod": false,
                                                 "useScaleBB": false,
@@ -1130,7 +1132,6 @@
                                                 "visibleWithEntity": true,
                                                 "visibleWithEntityType": "Source",
                                                 "moveType": "FollowTarget",
-                                                "isOnlyFollowBattleCamera": false,
                                                 "positionRef": "Target",
                                                 "grounded": false,
                                                 "followGrounded": false,
@@ -1429,7 +1430,7 @@
                                             "playOnHittableObjects": false,
                                             "effectActionCfg": {
                                                 "fxType": "Normal",
-                                                "effectName": "P_fxgp_common_enemy_hit_sandb_asset",
+                                                "effectName": "P_fxgp_common_enemy_hit_hstiger_asset",
                                                 "guardEffect": false,
                                                 "isCenterChangeLod": false,
                                                 "useScaleBB": false,
@@ -1477,7 +1478,6 @@
                                                 "visibleWithEntity": true,
                                                 "visibleWithEntityType": "Source",
                                                 "moveType": "FollowTarget",
-                                                "isOnlyFollowBattleCamera": false,
                                                 "positionRef": "Target",
                                                 "grounded": false,
                                                 "followGrounded": false,
@@ -1634,8 +1634,8 @@
                         }
                     ]
                 },
-                "buff_common_superarmor_behit_hstiger": {
-                    "id": "buff_common_superarmor_behit_hstiger",
+                "buff_common_superarmor_behit_sandb": {
+                    "id": "buff_common_superarmor_behit_sandb",
                     "iconConfig": {
                         "_spritePath": "",
                         "showInHeadBarCommon": true,
@@ -1644,6 +1644,7 @@
                         "onlyShowForMainCharacter": false,
                         "blinkInMainCharHpBar": false,
                         "showProgressInHpBar": false,
+                        "showProgressInNormalSkillButton": false,
                         "iconStyleInSquad": "Default",
                         "abnormalColorType": "Physical",
                         "_orderPriorityConfig": {
@@ -1656,6 +1657,7 @@
                         "hasCharHpBarVfxType": false,
                         "charHpBarVfxType": "Fire"
                     },
+                    "hasIcon": false,
                     "ignoreTagImmune": false,
                     "useTimeDilationDt": false,
                     "finishOnRepatriate": false,
@@ -1852,7 +1854,7 @@
                                             "playOnHittableObjects": false,
                                             "effectActionCfg": {
                                                 "fxType": "Normal",
-                                                "effectName": "P_fxgp_common_enemy_hit_hstiger_asset",
+                                                "effectName": "P_fxgp_common_enemy_hit_sandb_asset",
                                                 "guardEffect": false,
                                                 "isCenterChangeLod": false,
                                                 "useScaleBB": false,
@@ -1900,7 +1902,6 @@
                                                 "visibleWithEntity": true,
                                                 "visibleWithEntityType": "Source",
                                                 "moveType": "FollowTarget",
-                                                "isOnlyFollowBattleCamera": false,
                                                 "positionRef": "Target",
                                                 "grounded": false,
                                                 "followGrounded": false,
@@ -2199,7 +2200,7 @@
                                             "playOnHittableObjects": false,
                                             "effectActionCfg": {
                                                 "fxType": "Normal",
-                                                "effectName": "P_fxgp_common_enemy_hit_hstiger_asset",
+                                                "effectName": "P_fxgp_common_enemy_hit_sandb_asset",
                                                 "guardEffect": false,
                                                 "isCenterChangeLod": false,
                                                 "useScaleBB": false,
@@ -2247,7 +2248,6 @@
                                                 "visibleWithEntity": true,
                                                 "visibleWithEntityType": "Source",
                                                 "moveType": "FollowTarget",
-                                                "isOnlyFollowBattleCamera": false,
                                                 "positionRef": "Target",
                                                 "grounded": false,
                                                 "followGrounded": false,

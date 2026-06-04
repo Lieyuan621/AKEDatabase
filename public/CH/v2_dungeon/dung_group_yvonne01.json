@@ -1293,6 +1293,19 @@
                                         }
                                     }
                                 ],
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
                                 "PlayerInteractPerform": [
                                     {
                                         "key": "available_list",
@@ -2438,6 +2451,19 @@
                                                 },
                                                 {
                                                     "valueBit64": 1072567419
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
                                                 }
                                             ]
                                         }
@@ -7666,6 +7692,19 @@
                                 }
                             ],
                             "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
                                 "PlayerInteractPerform": [
                                     {
                                         "key": "available_list",
@@ -11272,37 +11311,29 @@
                                 "bufferDistance": 0.0
                             }
                         ],
-                        "repatriateZoneData": [
+                        "specificDatas": [
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             }
                         ],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [],
-                        "cameraAddControlStateData": [],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [],
-                        "sceneToast": [],
-                        "blockAIBarkData": [],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
-                        "functionAreaConditions": [],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        "functionAreaConditions": []
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],
@@ -11361,20 +11392,8 @@
                     "functionArea": {
                         "ranges": [],
                         "baseData": [],
-                        "repatriateZoneData": [],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [],
-                        "cameraAddControlStateData": [],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [],
-                        "sceneToast": [],
-                        "blockAIBarkData": [],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
-                        "functionAreaConditions": [],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        "specificDatas": [],
+                        "functionAreaConditions": []
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],
@@ -12747,6 +12766,7 @@
                                             "rootMotion": true,
                                             "radioId": "",
                                             "templateId": "",
+                                            "eventKey": "",
                                             "actionEndType": "WaitActionEnd",
                                             "waitTime": 0.0
                                         }
@@ -12801,7 +12821,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -12905,7 +12926,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -12943,7 +12965,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -13020,7 +13043,8 @@
                                             "movementStyle": "Walk",
                                             "overrideSpeed": false,
                                             "overrideSpeedValue": 4.0,
-                                            "radius": 0.0
+                                            "radius": 0.0,
+                                            "npcPlayAnimationTimeEndForceToIdle": false
                                         }
                                     ]
                                 },
@@ -13293,33 +13317,23 @@
                                 "bufferDistance": 2.0
                             }
                         ],
-                        "repatriateZoneData": [],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [],
-                        "cameraAddControlStateData": [],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [
+                        "specificDatas": [
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+StorySafeZone, Gameplay.Beyond",
                                 "defaultOn": false,
                                 "showEnterToast": true,
                                 "showLeaveToast": false,
                                 "npcProxyIds": []
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+StorySafeZone, Gameplay.Beyond",
                                 "defaultOn": false,
                                 "showEnterToast": true,
                                 "showLeaveToast": false,
                                 "npcProxyIds": []
                             }
                         ],
-                        "sceneToast": [],
-                        "blockAIBarkData": [],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
-                        "functionAreaConditions": [],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        "functionAreaConditions": []
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],

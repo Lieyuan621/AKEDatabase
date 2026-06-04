@@ -1628,29 +1628,19 @@
                                 "bufferDistance": 0.0
                             }
                         ],
-                        "repatriateZoneData": [
+                        "specificDatas": [
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             },
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
                                 "lifeRatio": 1.0,
                                 "useRepatriateZoneType": false
                             }
                         ],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [],
-                        "cameraAddControlStateData": [],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [],
-                        "sceneToast": [],
-                        "blockAIBarkData": [],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
-                        "functionAreaConditions": [],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        "functionAreaConditions": []
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],
@@ -1724,20 +1714,8 @@
                     "functionArea": {
                         "ranges": [],
                         "baseData": [],
-                        "repatriateZoneData": [],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [],
-                        "cameraAddControlStateData": [],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [],
-                        "sceneToast": [],
-                        "blockAIBarkData": [],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
-                        "functionAreaConditions": [],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        "specificDatas": [],
+                        "functionAreaConditions": []
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],
@@ -1781,7 +1759,21 @@
                             "hideInDialog": false,
                             "modelScale": 0.0,
                             "properties": [],
-                            "componentProperties": {}
+                            "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
                         }
                     ],
                     "interactiveLockData": [],
@@ -2112,7 +2104,7 @@
                             {
                                 "functionType": "StorySafeZone",
                                 "shapeType": "Sphere",
-                                "index": 0,
+                                "index": 1,
                                 "offset": {
                                     "x": 0.0,
                                     "y": 0.0,
@@ -2140,28 +2132,19 @@
                                 "bufferDistance": 2.0
                             }
                         ],
-                        "repatriateZoneData": [],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [],
-                        "cameraAddControlStateData": [],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [
+                        "specificDatas": [
                             {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+BlockAIBarkData, Gameplay.Beyond",
+                                "defaultOn": true
+                            },
+                            {
+                                "$type": "Beyond.Gameplay.LevelFunctionAreaData+StorySafeZone, Gameplay.Beyond",
                                 "defaultOn": false,
                                 "showEnterToast": true,
                                 "showLeaveToast": false,
                                 "npcProxyIds": []
                             }
                         ],
-                        "sceneToast": [],
-                        "blockAIBarkData": [
-                            {
-                                "defaultOn": true
-                            }
-                        ],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
                         "functionAreaConditions": [
                             {
                                 "uniqueId": 13100010001,
@@ -2172,9 +2155,7 @@
                                     "compareTarget": "Processing"
                                 }
                             }
-                        ],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        ]
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],

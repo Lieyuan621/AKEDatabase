@@ -465,7 +465,21 @@
                             "hideInDialog": false,
                             "modelScale": 0.0,
                             "properties": [],
-                            "componentProperties": {}
+                            "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
                         },
                         {
                             "levelLogicId": 11800000286,
@@ -497,7 +511,21 @@
                             "hideInDialog": false,
                             "modelScale": 0.0,
                             "properties": [],
-                            "componentProperties": {}
+                            "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
                         },
                         {
                             "levelLogicId": 11800000309,
@@ -553,6 +581,19 @@
                                 }
                             ],
                             "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
                                 "PlayerInteractPerform": [
                                     {
                                         "key": "available_list",
@@ -718,6 +759,19 @@
                                 }
                             ],
                             "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
                                 "PlayerInteractPerform": [
                                     {
                                         "key": "available_list",
@@ -883,6 +937,19 @@
                                 }
                             ],
                             "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
                                 "PlayerInteractPerform": [
                                     {
                                         "key": "available_list",
@@ -1424,6 +1491,19 @@
                                 }
                             ],
                             "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
                                 "PlayerInteractPerform": [
                                     {
                                         "key": "available_list",
@@ -2562,20 +2642,8 @@
                                 "bufferDistance": 0.0
                             }
                         ],
-                        "repatriateZoneData": [],
-                        "cameraVolumeData": [],
-                        "radioTriggerZoneData": [],
-                        "cameraLookAtData": [],
-                        "cameraAddControlStateData": [],
-                        "ambienceCameraData": [],
-                        "storySafeZones": [],
-                        "sceneToast": [],
-                        "blockAIBarkData": [],
-                        "isolateEntityZoneData": [],
-                        "ditherFactoryZoneData": [],
-                        "functionAreaConditions": [],
-                        "carryTagZones": [],
-                        "visitLocStats": []
+                        "specificDatas": [],
+                        "functionAreaConditions": []
                     },
                     "doodadGroup": [],
                     "mapVolumeDatas": [],
