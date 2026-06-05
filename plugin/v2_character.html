@@ -674,18 +674,34 @@
             });
 
             const attributes = rawData.charactertable?.attributes || [];
+            const levelMap = {};
             attributes.forEach(levelData => {
                 const attrs = levelData?.Attribute?.attrs || [];
-                const nameValueMap = {};
-                attrs.forEach(a => {
-                    const n = attrTypeToName[a.attrType];
-                    if (n) nameValueMap[n] = a.attrValue;
-                });
+                const breakStage = levelData?.breakStage ?? 0;
+                const levelEntry = attrs.find(a => a.attrType === 0);
+                const level = levelEntry ? levelEntry.attrValue : null;
+                if (level == null) return;
+                if (!levelMap[level] || breakStage >= levelMap[level].breakStage) {
+                    const nameValueMap = {};
+                    attrs.forEach(a => {
+                        const n = attrTypeToName[a.attrType];
+                        if (n) nameValueMap[n] = a.attrValue;
+                    });
+                    levelMap[level] = { breakStage, nameValueMap };
+                }
+            });
+            const sortedLevels = Object.keys(levelMap).map(Number).sort((a, b) => a - b);
+            sortedLevels.forEach(level => {
+                const nameValueMap = levelMap[level].nameValueMap;
                 preferredAttrs.forEach(name => {
                     const val = nameValueMap[name];
                     legacy.growth[name].push(typeof val === 'number' ? val : 0);
                 });
             });
+
+            if (sortedLevels.length > 0) {
+                legacy.growth['生命值'] = sortedLevels.map(level => Math.round((500 + 5500 / 98 * (level - 1)) * 100) / 100);
+            }
 
             const itemNameMap = {};
             Object.values(rawData.chargrowthtable?.talentNodeMap || {}).forEach(n => {
