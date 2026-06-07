@@ -664,7 +664,7 @@
                 profileVoice: []
             };
 
-            const preferredAttrs = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '防御力'];
+            const preferredAttrs = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '防御力', '法术异常伤害系数', '物理异常伤害系数'];
             const attrTypeToName = {};
             Object.keys(attrMap || {}).forEach(k => {
                 attrTypeToName[parseInt(k, 10)] = attrMap[k];
@@ -980,14 +980,17 @@
             const tbody = document.querySelector('.growth-table tbody');
             if (!tbody || !currentCharData) return;
             const growth = currentCharData.growth || {};
-            const attributes = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '防御力'];
+            const attributes = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '防御力', '法术异常伤害系数', '物理异常伤害系数'];
+            const preciseAttrs = new Set(['法术异常伤害系数', '物理异常伤害系数']);
+            const showHiddenGrowth = getCurrentShowHidden();
             const firstAttr = attributes.find(attr => growth[attr] && growth[attr].length);
             const levelCount = firstAttr ? growth[firstAttr].length : 0;
             const allGrowthRows = [];
             for (let lv = 1; lv <= levelCount; lv++) {
                 const cells = attributes.map(attr => {
                     const val = growth[attr]?.[lv - 1];
-                    return `<td>${val !== undefined ? Number(val).toFixed(2) : '-'}</td>`;
+                    const precision = preciseAttrs.has(attr) ? (showHiddenGrowth ? 5 : 3) : 2;
+                    return `<td>${val !== undefined ? Number(val).toFixed(precision) : '-'}</td>`;
                 }).join('');
                 allGrowthRows.push(`<tr data-level="${lv}"><td>${lv}</td>${cells}</tr>`);
             }
@@ -1145,14 +1148,17 @@
             `;
 
             const growth = data.growth || {};
-            const attributes = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '防御力'];
+            const attributes = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '防御力', '法术异常伤害系数', '物理异常伤害系数'];
+            const preciseAttrs = new Set(['法术异常伤害系数', '物理异常伤害系数']);
+            const showHiddenGrowth = getCurrentShowHidden();
             const firstAttr = attributes.find(attr => growth[attr] && growth[attr].length);
             const levelCount = firstAttr ? growth[firstAttr].length : 0;
             const allGrowthRows = [];
             for (let lv = 1; lv <= levelCount; lv++) {
                 const cells = attributes.map(attr => {
                     const val = growth[attr]?.[lv - 1];
-                    return `<td>${val !== undefined ? Number(val).toFixed(2) : '-'}</td>`;
+                    const precision = preciseAttrs.has(attr) ? (showHiddenGrowth ? 5 : 3) : 2;
+                    return `<td>${val !== undefined ? Number(val).toFixed(precision) : '-'}</td>`;
                 }).join('');
                 allGrowthRows.push(`<tr data-level="${lv}"><td>${lv}</td>${cells}</tr>`);
             }
