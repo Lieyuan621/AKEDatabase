@@ -163,7 +163,7 @@ http://localhost:5501/?plugin=<模块ID>&id=<条目ID>
 
 [终末地地图集](https://opendfieldmap.cn/) – 《明日方舟:终末地》地图工具。
 
-[CEP 终末地基质规划器](https://end.canmoe.com/) – 《明日方舟:终末地》基质刷取、角色攻略资源站。
+[CEP 终末地基质规划器](https://end.canmoe.com/) – 《明日方舟：终末地》规划工具集——基质规划与计算、精锻规划与计算、角色攻略、卡池日历等一站式解决方案。
 
 [排轴终端 - Endaxis](https://www.end-axis.com/) – 《明日方舟:终末地》排轴模拟器。
 
