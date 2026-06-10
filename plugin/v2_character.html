@@ -81,6 +81,8 @@
             'coolDown': '冷却时间',
             'costValue': '消耗能量',
         };
+        const ALWAYS_SHOW_COLS = ['coolDown', 'costValue'];
+        const SKILL_GROUP_ORDER = { 0: 0, 1: 1, 2: 3, 3: 2 };
         const HIDDEN_KEYWORDS = ['atb', 'scale', 'usp', 'duration', 'poise', '_', 'count', 'layer', 'prob'];
 
         function getCurrentLanguage() {
@@ -833,7 +835,7 @@
             }).filter(Boolean);
 
             const skillGroupMap = rawData.chargrowthtable?.skillGroupMap || {};
-            const skillGroups = Object.values(skillGroupMap).sort((a, b) => (a.skillGroupType || 0) - (b.skillGroupType || 0));
+            const skillGroups = Object.values(skillGroupMap).sort((a, b) => (SKILL_GROUP_ORDER[a.skillGroupType] ?? a.skillGroupType) - (SKILL_GROUP_ORDER[b.skillGroupType] ?? b.skillGroupType));
             legacy.skills = skillGroups.map(s => {
                 const iconPath = s.icon ? `/public/images/character/skillicon/${s.icon}.png` : '';
                 const group = {
@@ -1028,9 +1030,17 @@
             const subDescValues = skillDetail.subDescValues || {};
             const bbColumns = Object.keys(values).filter(k => Array.isArray(values[k]));
             const hasSubDesc = subDescNames.length > 0;
-            const allColumns = hasSubDesc
-                ? (showHidden ? [...subDescNames, ...bbColumns] : subDescNames)
-                : bbColumns;
+            let allColumns;
+            if (hasSubDesc) {
+                if (showHidden) {
+                    allColumns = [...subDescNames, ...bbColumns];
+                } else {
+                    const extraCols = ALWAYS_SHOW_COLS.filter(c => bbColumns.includes(c));
+                    allColumns = [...extraCols, ...subDescNames];
+                }
+            } else {
+                allColumns = bbColumns;
+            }
             if (allColumns.length === 0) {
                 skillContainer.innerHTML = '';
                 return;
@@ -1249,7 +1259,7 @@
             `;
 
             const skillsGroups = data.skills || [];
-            const skillTypePrefix = ['普攻', '战技', '终结技', '连携技'];
+            const skillTypePrefix = ['普攻', '战技', '连携技', '终结技'];
             const skillsHtml = skillsGroups.map((group, index) => {
                 const skillDetail = Object.values(data.skill || {}).find(s => s.name === group.name);
                 if (!skillDetail) return '';
@@ -1269,9 +1279,17 @@
 
                 const bbColumns = Object.keys(values).filter(k => Array.isArray(values[k]));
                 const hasSubDesc = subDescNames.length > 0;
-                const allColumns = hasSubDesc
-                    ? (showHidden ? [...subDescNames, ...bbColumns] : subDescNames)
-                    : bbColumns;
+                let allColumns;
+                if (hasSubDesc) {
+                    if (showHidden) {
+                        allColumns = [...subDescNames, ...bbColumns];
+                    } else {
+                        const extraCols = ALWAYS_SHOW_COLS.filter(c => bbColumns.includes(c));
+                        allColumns = [...extraCols, ...subDescNames];
+                    }
+                } else {
+                    allColumns = bbColumns;
+                }
 
                 let skillTables = '';
                 if (allColumns.length > 0) {
