@@ -149,11 +149,21 @@ http://localhost:5501/?plugin=<模块ID>&id=<条目ID>
 
 #### 数据与图片版权声明：
 
-项目内所有游戏数据（`public/CH/` 目录下的 JSON 文件）及游戏相关图片（`public/images/`）版权归 **鹰角网络** 所有。
+项目内所有游戏数据（`public/CH/` 、 `public/Json/` 、 `public/Json/` 目录下的 JSON 文件）及游戏相关图片（`public/images/`）版权归 **鹰角网络** 所有。
 
 本项目仅供学习交流，严禁用于商业用途。数据来源于游戏正式服客户端，未经官方授权，请勿用于非法用途。
 
 详见 [LICENSE](./LICENSE) 文件
+
+## 数据合作
+
+本项目同时也为以下工具/网站提供数据支持：
+
+[Perlica Bot](https://bot.perlica.tech/) – QQ机器人，《明日方舟:终末地》游戏助手。
+[终末地地图集](https://opendfieldmap.cn/) – 《明日方舟:终末地》地图工具。
+[CEP 终末地基质规划器](https://end.canmoe.com/) – 《明日方舟:终末地》基质刷取、角色攻略资源站。
+[排轴终端 - Endaxis](https://www.end-axis.com/) – 《明日方舟:终末地》排轴模拟器。
+[终末地战斗日志](https://zmdlogs.com/) – 《明日方舟:终末地》战斗数据记录工具，竞速排行网站。
 
 ## 赞助支持
 
