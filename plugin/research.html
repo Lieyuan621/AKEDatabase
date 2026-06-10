@@ -11,6 +11,8 @@
     <div class="research-detail" id="researchDetail">
         <div class="loader">加载研究文档...</div>
     </div>
+    <div class="research-toc" id="researchToc"></div>
+    <div class="toc-toggle-btn" id="tocToggleBtn">📑 索引</div>
     <div class="mobile-list-btn" id="researchMobileListBtn">📋 列表</div>
     <div id="researchMobileListOverlay" class="mobile-list-overlay">
         <div class="mobile-list-container">
@@ -18,6 +20,11 @@
             <div class="mobile-list-content" id="researchMobileListContent"></div>
         </div>
     </div>
+</div>
+
+<div id="imgLightbox" class="img-lightbox">
+    <span class="img-lightbox-close">&times;</span>
+    <img class="img-lightbox-img" src="" alt="">
 </div>
 
 <script>
@@ -37,22 +44,86 @@
             return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
+        function highlightCode(code, lang) {
+            var escaped = escapeHtml(code);
+            if (lang === 'json' || lang === 'JSON') {
+                escaped = escaped.replace(/(&quot;[^&]*?&quot;)(\s*:)/g, '<span class="hl-key">$1</span>$2');
+                escaped = escaped.replace(/:\s*(&quot;.*?&quot;)/g, ': <span class="hl-string">$1</span>');
+                escaped = escaped.replace(/:\s*(-?\d+\.?\d*)/g, ': <span class="hl-number">$1</span>');
+                escaped = escaped.replace(/:\s*(true|false|null)/g, ': <span class="hl-keyword">$1</span>');
+                escaped = escaped.replace(/\b(true|false|null)\b/g, '<span class="hl-keyword">$1</span>');
+                return escaped;
+            }
+            if (lang === 'plain' || lang === 'text' || lang === 'plaintext' || !lang) {
+                return escaped;
+            }
+            escaped = escaped.replace(/\b(function|var|let|const|return|if|else|for|while|do|switch|case|break|continue|new|this|class|extends|import|export|from|default|try|catch|finally|throw|async|await|yield|typeof|instanceof|in|of|void|delete|with|debugger)\b/g, '<span class="hl-keyword">$1</span>');
+            escaped = escaped.replace(/\b(true|false|null|undefined|NaN|Infinity)\b/g, '<span class="hl-keyword">$1</span>');
+            escaped = escaped.replace(/\b(\d+\.?\d*)\b/g, '<span class="hl-number">$1</span>');
+            escaped = escaped.replace(/(&quot;.*?&quot;)/g, '<span class="hl-string">$1</span>');
+            escaped = escaped.replace(/(&#39;.*?&#39;)/g, '<span class="hl-string">$1</span>');
+            escaped = escaped.replace(/(\/\/.*?)$/gm, '<span class="hl-comment">$1</span>');
+            escaped = escaped.replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="hl-comment">$1</span>');
+            escaped = escaped.replace(/#(.*?)$/gm, '<span class="hl-comment">#$1</span>');
+            return escaped;
+        }
+
+        function slugify(text) {
+            return text
+                .replace(/<[^>]+>/g, '')
+                .replace(/[^\w\u4e00-\u9fff\- ]/g, '')
+                .trim()
+                .replace(/\s+/g, '-')
+                .toLowerCase();
+        }
+
+        var ESCAPE_RE = /\\([*_#`~\[\]()!.\-+=>{}|\\])/g;
+
+        function parseInline(text) {
+            if (!text) return '';
+            var result = text;
+            result = result.replace(ESCAPE_RE, function(m, ch) {
+                return '\u0000' + ch.charCodeAt(0) + '\u0001';
+            });
+            result = result.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, function(m, alt, src) {
+                if (src.charAt(0) !== '/' && !src.startsWith('http://') && !src.startsWith('https://')) {
+                    src = '/' + src;
+                }
+                return '<img src="' + src + '" alt="' + escapeHtml(alt) + '" class="md-img" onerror="this.onerror=null;this.style.display=\'none\';">';
+            });
+            result = result.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function(m, label, href) {
+                if (href.charAt(0) === '#') {
+                    var anchorId = 'heading-' + slugify(decodeURIComponent(href.substring(1)));
+                    return '<a href="#' + anchorId + '" class="anchor-link">' + label + '</a>';
+                }
+                return '<a href="' + href + '" target="_blank" rel="noopener">' + label + '</a>';
+            });
+            result = result.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            result = result.replace(/\*(.+?)\*/g, '<em>$1</em>');
+            result = result.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+            result = result.replace(/~~(.+?)~~/g, '<del>$1</del>');
+            result = result.replace(/\u0000(\d+)\u0001/g, function(m, code) {
+                return String.fromCharCode(parseInt(code, 10));
+            });
+            return result;
+        }
+
         function parseMarkdown(md) {
             if (!md) return '';
-            let html = '';
-            const lines = md.split('\n');
-            let i = 0;
-            let inTable = false;
-            let tableHeaders = [];
-            let tableAligns = [];
-            let inCodeBlock = false;
-            let codeBlockLang = '';
-            let codeBlockContent = '';
-            let inBlockquote = false;
-            let blockquoteContent = '';
-            let inList = false;
-            let listType = '';
-            let listItems = [];
+            var html = '';
+            var lines = md.split('\n');
+            var i = 0;
+            var inTable = false;
+            var tableHeaders = [];
+            var tableAligns = [];
+            var inCodeBlock = false;
+            var codeBlockLang = '';
+            var codeBlockLines = [];
+            var inBlockquote = false;
+            var blockquoteContent = '';
+            var inList = false;
+            var listType = '';
+            var listItems = [];
 
             function flushBlockquote() {
                 if (inBlockquote && blockquoteContent) {
@@ -64,11 +135,11 @@
 
             function flushList() {
                 if (inList && listItems.length > 0) {
-                    const tag = listType === 'ol' ? 'ol' : 'ul';
+                    var tag = listType === 'ol' ? 'ol' : 'ul';
                     html += '<' + tag + '>';
-                    listItems.forEach(function(item) {
-                        html += '<li>' + parseInline(item) + '</li>';
-                    });
+                    for (var li = 0; li < listItems.length; li++) {
+                        html += '<li>' + parseInline(listItems[li]) + '</li>';
+                    }
                     html += '</' + tag + '>\n';
                     listItems = [];
                     inList = false;
@@ -85,26 +156,15 @@
                 }
             }
 
-            function parseInline(text) {
-                if (!text) return '';
-                let result = text;
-                result = result.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
-                result = result.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-                result = result.replace(/\*(.+?)\*/g, '<em>$1</em>');
-                result = result.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
-                result = result.replace(/~~(.+?)~~/g, '<del>$1</del>');
-                return result;
-            }
-
             while (i < lines.length) {
-                const line = lines[i];
-                const trimmed = line.trim();
+                var line = lines[i];
+                var trimmed = line.trim();
 
                 if (trimmed.startsWith('```')) {
                     if (inCodeBlock) {
-                        html += escapeHtml(codeBlockContent) + '</code></pre>\n';
+                        html += highlightCode(codeBlockLines.join('\n'), codeBlockLang) + '</code></pre>\n';
                         inCodeBlock = false;
-                        codeBlockContent = '';
+                        codeBlockLines = [];
                         codeBlockLang = '';
                     } else {
                         flushBlockquote();
@@ -112,14 +172,14 @@
                         flushTable();
                         inCodeBlock = true;
                         codeBlockLang = trimmed.substring(3).trim();
-                        html += '<pre class="code-block' + (codeBlockLang ? ' lang-' + codeBlockLang : '') + '"><code>';
+                        html += '<pre class="code-block' + (codeBlockLang ? ' lang-' + escapeHtml(codeBlockLang) : '') + '"><code>';
                     }
                     i++;
                     continue;
                 }
 
                 if (inCodeBlock) {
-                    codeBlockContent += (codeBlockContent ? '\n' : '') + line;
+                    codeBlockLines.push(line);
                     i++;
                     continue;
                 }
@@ -132,15 +192,15 @@
                     continue;
                 }
 
-                const headerMatch = trimmed.match(/^(#{1,6})\s+(.+)$/);
+                var headerMatch = trimmed.match(/^(#{1,6})\s+(.+)$/);
                 if (headerMatch) {
                     flushBlockquote();
                     flushList();
                     flushTable();
-                    const level = headerMatch[1].length;
-                    const headerText = parseInline(headerMatch[2]);
-                    const id = headerMatch[2].replace(/[^a-zA-Z0-9\u4e00-\u9fff]/g, '_');
-                    html += '<h' + level + ' id="heading-' + id + '">' + headerText + '</h' + level + '>\n';
+                    var level = headerMatch[1].length;
+                    var headerText = parseInline(headerMatch[2]);
+                    var slug = slugify(headerMatch[2]);
+                    html += '<h' + level + ' id="heading-' + slug + '">' + headerText + '</h' + level + '>\n';
                     i++;
                     continue;
                 }
@@ -148,26 +208,26 @@
                 if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
                     flushBlockquote();
                     flushList();
-                    const cells = trimmed.split('|').slice(1, -1).map(function(c) { return c.trim(); });
+                    var cells = trimmed.split('|').slice(1, -1).map(function(c) { return c.trim(); });
 
                     if (!inTable) {
                         inTable = true;
                         tableHeaders = cells;
                         html += '<table class="md-table"><thead><tr>';
-                        cells.forEach(function(cell) {
-                            html += '<th>' + parseInline(cell) + '</th>';
-                        });
+                        for (var ci = 0; ci < cells.length; ci++) {
+                            html += '<th>' + parseInline(cells[ci]) + '</th>';
+                        }
                         html += '</tr></thead><tbody>\n';
                         i++;
                         continue;
                     }
 
-                    const isSeparator = cells.every(function(c) {
+                    var isSeparator = cells.every(function(c) {
                         return /^:?-+:?$/.test(c.trim());
                     });
                     if (isSeparator) {
                         tableAligns = cells.map(function(c) {
-                            const s = c.trim();
+                            var s = c.trim();
                             if (s.startsWith(':') && s.endsWith(':')) return 'center';
                             if (s.endsWith(':')) return 'right';
                             return 'left';
@@ -177,10 +237,10 @@
                     }
 
                     html += '<tr>';
-                    cells.forEach(function(cell, idx) {
-                        const align = tableAligns[idx] || 'left';
-                        html += '<td style="text-align:' + align + '">' + parseInline(cell) + '</td>';
-                    });
+                    for (var ci2 = 0; ci2 < cells.length; ci2++) {
+                        var align = tableAligns[ci2] || 'left';
+                        html += '<td style="text-align:' + align + '">' + parseInline(cells[ci2]) + '</td>';
+                    }
                     html += '</tr>\n';
                     i++;
                     continue;
@@ -192,7 +252,7 @@
 
                 if (trimmed.startsWith('>')) {
                     flushList();
-                    const quoteText = trimmed.substring(1).trim();
+                    var quoteText = trimmed.substring(1).trim();
                     if (!inBlockquote) {
                         inBlockquote = true;
                         blockquoteContent = quoteText;
@@ -207,7 +267,7 @@
                     flushBlockquote();
                 }
 
-                const olMatch = trimmed.match(/^(\d+)\.\s+(.+)$/);
+                var olMatch = trimmed.match(/^(\d+)\.\s+(.+)$/);
                 if (olMatch) {
                     flushBlockquote();
                     flushTable();
@@ -221,7 +281,7 @@
                     continue;
                 }
 
-                const ulMatch = trimmed.match(/^[-*+]\s+(.+)$/);
+                var ulMatch = trimmed.match(/^[-*+]\s+(.+)$/);
                 if (ulMatch) {
                     flushBlockquote();
                     flushTable();
@@ -238,7 +298,7 @@
                 flushBlockquote();
                 flushList();
 
-                if (trimmed.startsWith('---') || trimmed.startsWith('***') || trimmed.startsWith('___')) {
+                if (/^[-*_]{3,}\s*$/.test(trimmed)) {
                     html += '<hr>\n';
                     i++;
                     continue;
@@ -252,7 +312,7 @@
             flushList();
             flushTable();
             if (inCodeBlock) {
-                html += escapeHtml(codeBlockContent) + '</code></pre>\n';
+                html += highlightCode(codeBlockLines.join('\n'), codeBlockLang) + '</code></pre>\n';
             }
 
             return html;
@@ -360,7 +420,67 @@
             }
         }
 
+        function scrollToHeading(detailEl, targetId) {
+            var target = detailEl.querySelector('#' + CSS.escape(targetId));
+            if (!target) return;
+            detailEl.scrollTo({ top: Math.max(0, target.offsetTop - 10), behavior: 'smooth' });
+        }
+
+        var tocObserver = null;
+
+        function buildToc(detailEl) {
+            var tocEl = document.getElementById('researchToc');
+            if (!tocEl) return;
+            var content = detailEl.querySelector('.article-content');
+            if (!content) { tocEl.innerHTML = ''; return; }
+            var headings = content.querySelectorAll('h1, h2, h3');
+            if (headings.length < 2) { tocEl.innerHTML = ''; return; }
+
+            var html = '<div class="toc-title">目录</div><nav class="toc-nav">';
+            for (var i = 0; i < headings.length; i++) {
+                var h = headings[i];
+                var level = parseInt(h.tagName.charAt(1), 10);
+                var id = h.id || ('heading-' + slugify(h.textContent));
+                if (!h.id) h.id = id;
+                var text = h.textContent;
+                html += '<a class="toc-link toc-level-' + level + '" href="#' + id + '" data-target="' + id + '">' + escapeHtml(text) + '</a>';
+            }
+            html += '</nav>';
+            tocEl.innerHTML = html;
+
+            tocEl.querySelectorAll('.toc-link').forEach(function(a) {
+                a.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    scrollToHeading(detailEl, a.dataset.target);
+                });
+            });
+
+            if (tocObserver) tocObserver.disconnect();
+            var links = tocEl.querySelectorAll('.toc-link');
+            var linkMap = {};
+            links.forEach(function(l) { linkMap[l.dataset.target] = l; });
+
+            tocObserver = new IntersectionObserver(function(entries) {
+                var active = null;
+                for (var j = 0; j < entries.length; j++) {
+                    if (entries[j].isIntersecting) {
+                        active = entries[j].target.id;
+                    }
+                }
+                if (active && linkMap[active]) {
+                    links.forEach(function(l) { l.classList.remove('active'); });
+                    linkMap[active].classList.add('active');
+                }
+            }, { root: detailEl, rootMargin: '-10% 0px -80% 0px', threshold: 0 });
+
+            for (var k = 0; k < headings.length; k++) {
+                tocObserver.observe(headings[k]);
+            }
+        }
+
         async function loadDocDetail(doc, container) {
+            var tocEl = document.getElementById('researchToc');
+            if (tocEl) tocEl.innerHTML = '';
             if (!isItemUnlocked(doc)) {
                 container.innerHTML = '<div class="not-found-page">' +
                     '<div class="not-found-code">404</div>' +
@@ -377,6 +497,25 @@
                 const rendered = parseMarkdown(mdText);
                 container.innerHTML = '<div class="research-article"><div class="article-content">' + rendered + '</div></div>';
                 container.scrollTop = 0;
+                container.querySelectorAll('.anchor-link').forEach(function(a) {
+                    a.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        var targetId = a.getAttribute('href').substring(1);
+                        scrollToHeading(container, targetId);
+                    });
+                });
+                buildToc(container);
+                container.querySelectorAll('.md-img').forEach(function(img) {
+                    img.addEventListener('click', function() {
+                        var lightbox = document.getElementById('imgLightbox');
+                        var lightboxImg = lightbox ? lightbox.querySelector('.img-lightbox-img') : null;
+                        if (lightbox && lightboxImg) {
+                            lightboxImg.src = img.src;
+                            lightboxImg.alt = img.alt;
+                            lightbox.style.display = 'flex';
+                        }
+                    });
+                });
             } catch (err) {
                 container.innerHTML = '<div class="error-message">加载失败: ' + escapeHtml(err.message) + '</div>';
             }
@@ -448,6 +587,31 @@
             if (mobileOverlay) mobileOverlay.addEventListener('click', function(e) {
                 if (e.target === mobileOverlay) closeMobileList();
             });
+
+            var lightbox = document.getElementById('imgLightbox');
+            var lightboxImg = lightbox ? lightbox.querySelector('.img-lightbox-img') : null;
+            var lightboxClose = lightbox ? lightbox.querySelector('.img-lightbox-close') : null;
+            if (lightbox && lightboxClose) {
+                lightboxClose.addEventListener('click', function() { lightbox.style.display = 'none'; });
+                lightbox.addEventListener('click', function(e) {
+                    if (e.target === lightbox) lightbox.style.display = 'none';
+                });
+            }
+
+            var tocToggleBtn = document.getElementById('tocToggleBtn');
+            var tocPanel = document.getElementById('researchToc');
+            if (tocToggleBtn && tocPanel) {
+                tocToggleBtn.addEventListener('click', function() {
+                    var isOpen = tocPanel.classList.toggle('open');
+                    tocToggleBtn.classList.toggle('open', isOpen);
+                });
+                document.addEventListener('click', function(e) {
+                    if (tocPanel.classList.contains('open') && !tocPanel.contains(e.target) && e.target !== tocToggleBtn) {
+                        tocPanel.classList.remove('open');
+                        tocToggleBtn.classList.remove('open');
+                    }
+                });
+            }
 
             await refreshModule();
         }
