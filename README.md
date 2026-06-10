@@ -160,9 +160,13 @@ http://localhost:5501/?plugin=<模块ID>&id=<条目ID>
 本项目同时也为以下工具/网站提供数据支持：
 
 [Perlica Bot](https://bot.perlica.tech/) – QQ机器人，《明日方舟:终末地》游戏助手。
+
 [终末地地图集](https://opendfieldmap.cn/) – 《明日方舟:终末地》地图工具。
+
 [CEP 终末地基质规划器](https://end.canmoe.com/) – 《明日方舟:终末地》基质刷取、角色攻略资源站。
+
 [排轴终端 - Endaxis](https://www.end-axis.com/) – 《明日方舟:终末地》排轴模拟器。
+
 [终末地战斗日志](https://zmdlogs.com/) – 《明日方舟:终末地》战斗数据记录工具，竞速排行网站。
 
 ## 赞助支持
