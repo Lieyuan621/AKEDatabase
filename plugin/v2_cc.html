@@ -1,0 +1,703 @@
+<!-- plugin/v2_cc.html -->
+<link rel="stylesheet" href="/theme/v2_cc.css">
+
+<div class="v2cc-module">
+    <div class="v2cc-left">
+        <div class="v2cc-search">
+            <input type="text" id="v2ccSearchInput" placeholder="搜索合约 (ID/名称)">
+        </div>
+        <div class="v2cc-list" id="v2ccList"></div>
+    </div>
+    <div class="v2cc-detail" id="v2ccDetail">
+        <div class="v2cc-loader">请选择合约赛季</div>
+    </div>
+    <div class="v2cc-mobile-btn" id="v2ccMobileListBtn">📋 列表</div>
+    <div id="v2ccMobileListOverlay" class="v2cc-mobile-overlay">
+        <div class="v2cc-mobile-container">
+            <div class="v2cc-mobile-header">选择合约赛季</div>
+            <div class="v2cc-mobile-content" id="v2ccMobileListContent"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    let allGames = [];
+    let activeGameId = null;
+    let isInitialized = false;
+    let searchTerm = '';
+    let selectedTagIds = new Set();
+    let currentData = null;
+    let currentGame = null;
+
+    const IMAGE_BASE_PATH = '/public/images/';
+
+    const TERM_TYPE_MAP = {
+        'EnemyBuff': { label: '敌方增益', cls: 'enemy-buff' },
+        'SelfGlobalBuff': { label: '己方减益', cls: 'self-buff' },
+        'ReduceChallengeTime': { label: '减少时间', cls: 'time-reduce' },
+        'None': { label: '无效果', cls: '' }
+    };
+
+    function parseText(text) {
+        return window.parseText(text, IMAGE_BASE_PATH);
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function getCurrentShowHidden() {
+        return window.akeData?.getConfig().showHidden ?? false;
+    }
+
+    function formatBlackboardValue(val) {
+        if (typeof val === 'number') {
+            if (Number.isInteger(val)) return val.toString();
+            return (val * 100).toFixed(0) + '%';
+        }
+        return String(val);
+    }
+
+    function replacePlaceholders(desc, valueMap) {
+        if (!desc || !desc.includes('{')) return desc;
+        const lowerValueMap = {};
+        for (const [key, val] of Object.entries(valueMap || {})) {
+            lowerValueMap[String(key).toLowerCase()] = val;
+        }
+        return String(desc).replace(/\{([^}]+)\}/g, (match, p1) => {
+            const parts = p1.split(':');
+            const expr = parts[0].replace(/\s+/g, '');
+            const format = parts[1] ? parts[1].trim() : '';
+            const varNames = expr.match(/[a-zA-Z_][a-zA-Z0-9_]*/g) || [];
+            const missingVar = varNames.find(name => !(name.toLowerCase() in lowerValueMap));
+            if (missingVar) return match;
+            let evalExpr = expr;
+            for (const name of varNames) {
+                const value = lowerValueMap[name.toLowerCase()];
+                const regex = new RegExp(`\\b${name}\\b`, 'g');
+                evalExpr = evalExpr.replace(regex, `(${value})`);
+            }
+            let result;
+            try {
+                result = new Function('return ' + evalExpr)();
+            } catch (e) {
+                return match;
+            }
+            if (format.includes('%')) return (result * 100).toFixed(1) + '%';
+            if (format.includes('.')) {
+                const precision = format.split('.')[1]?.length || 1;
+                return result.toFixed(precision);
+            }
+            if (format.includes('0')) return Math.round(result).toString();
+            return result.toString();
+        });
+    }
+
+    function buildBlackboardValueMap(tagTerms) {
+        const map = {};
+        for (const term of (tagTerms || [])) {
+            for (const bb of (term.blackboard || [])) {
+                if (bb.key) {
+                    map[bb.key] = (bb.valueStr && bb.valueStr !== '') ? bb.valueStr : bb.value;
+                }
+            }
+        }
+        return map;
+    }
+
+    function filterGames(games) {
+        if (!searchTerm) return games;
+        const t = searchTerm.toLowerCase();
+        return games.filter(g =>
+            (g.gameId && g.gameId.toLowerCase().includes(t)) ||
+            (g.name && g.name.toLowerCase().includes(t)) ||
+            (g.activityId && g.activityId.toLowerCase().includes(t))
+        );
+    }
+
+    function getAllContractTags(cct) {
+        if (!cct || !cct.contractGroupMap) return {};
+        const all = {};
+        for (const gid of Object.keys(cct.contractGroupMap)) {
+            const group = cct.contractGroupMap[gid];
+            if (!group.contractMap) continue;
+            for (const tid of Object.keys(group.contractMap)) {
+                all[tid] = group.contractMap[tid];
+            }
+        }
+        return all;
+    }
+
+    function getAvailableKeys(selectedIds, allTags) {
+        const keys = new Set();
+        for (const tid of selectedIds) {
+            const tag = allTags[tid];
+            if (tag && tag.keyId) keys.add(tag.keyId);
+        }
+        return keys;
+    }
+
+    function checkTagRequirements(tagId, selectedIds, allTags) {
+        const tag = allTags[tagId];
+        if (!tag) return { ok: false, reason: 'tag不存在' };
+
+        if (tag.conflictId) {
+            for (const sid of selectedIds) {
+                if (sid === String(tagId)) continue;
+                const st = allTags[sid];
+                if (st && st.conflictId === tag.conflictId) {
+                    return { ok: false, reason: `与 Tag ${sid} 冲突 (${tag.conflictId})` };
+                }
+            }
+        }
+
+        if (tag.lockIds && tag.lockIds.length > 0) {
+            const availableKeys = getAvailableKeys(selectedIds, allTags);
+            const missing = tag.lockIds.filter(k => !availableKeys.has(k));
+            if (missing.length > 0) {
+                return { ok: false, reason: `缺少钥匙: ${missing.join(', ')}` };
+            }
+        }
+
+        return { ok: true, reason: '' };
+    }
+
+    function isTagSelectable(tagId, selectedIds, allTags) {
+        if (selectedIds.has(tagId)) return { ok: true, reason: '' };
+        return checkTagRequirements(tagId, selectedIds, allTags);
+    }
+
+    function cascadeDeselect(selectedIds, allTags) {
+        let changed = true;
+        while (changed) {
+            changed = false;
+            for (const tid of Array.from(selectedIds)) {
+                const check = checkTagRequirements(tid, selectedIds, allTags);
+                if (!check.ok) {
+                    selectedIds.delete(tid);
+                    changed = true;
+                }
+            }
+        }
+        return selectedIds;
+    }
+
+    function computeTotalScore(selectedIds, tagTable) {
+        let total = 0;
+        for (const tid of selectedIds) {
+            const td = tagTable[tid];
+            if (td) total += (td.score || 0);
+        }
+        return total;
+    }
+
+    async function loadGameManifest(showHidden) {
+        try {
+            const res = await fetch('/public/CH/v2_cc/manifest.json?t=' + Date.now());
+            if (!res.ok) throw new Error('无法加载合约清单');
+            const all = await res.json();
+            let games = showHidden ? all : all.filter(g => !g.hidden);
+            games.sort((a, b) => (a.priority || 999) - (b.priority || 999));
+            return games;
+        } catch (err) {
+            console.error('加载合约清单失败:', err);
+            return [];
+        }
+    }
+
+    const mobileBtn = document.getElementById('v2ccMobileListBtn');
+    const mobileOverlay = document.getElementById('v2ccMobileListOverlay');
+    const mobileContent = document.getElementById('v2ccMobileListContent');
+
+    function buildMobileList() {
+        const filtered = filterGames(allGames);
+        mobileContent.innerHTML = '';
+        filtered.forEach(game => {
+            const div = document.createElement('div');
+            div.className = `v2cc-mobile-item ${game.gameId === activeGameId ? 'active' : ''}`;
+            div.innerHTML = `
+                <div class="v2cc-mobile-name">${escapeHtml(game.name || game.gameId)}</div>
+                <div class="v2cc-mobile-id">${escapeHtml(game.activityId)}</div>
+            `;
+            div.addEventListener('click', () => {
+                activeGameId = game.gameId;
+                if (window.__akeRouter) window.__akeRouter.updateUrl('v2_cc', game.gameId);
+                loadGameDetail(game, document.getElementById('v2ccDetail'));
+                closeMobileList();
+            });
+            mobileContent.appendChild(div);
+        });
+    }
+
+    function openMobileList() {
+        buildMobileList();
+        mobileOverlay.style.display = 'flex';
+    }
+
+    function closeMobileList() {
+        mobileOverlay.style.display = 'none';
+    }
+
+    function renderGameList() {
+        const container = document.getElementById('v2ccList');
+        const detailContainer = document.getElementById('v2ccDetail');
+        if (!container) return;
+
+        const filtered = filterGames(allGames);
+        container.innerHTML = '';
+
+        if (filtered.length === 0) {
+            container.innerHTML = '<div class="v2cc-loader">无匹配合约</div>';
+            if (detailContainer) detailContainer.innerHTML = '<div class="v2cc-loader">请选择合约赛季</div>';
+            activeGameId = null;
+            return;
+        }
+
+        filtered.forEach((game, index) => {
+            const div = document.createElement('div');
+            div.className = `v2cc-item ${game.gameId === activeGameId ? 'active' : (!activeGameId && index === 0 ? 'active' : '')}`;
+            div.dataset.gameId = game.gameId;
+
+            const icon = document.createElement('div');
+            icon.className = 'v2cc-item-icon';
+            icon.style.display = 'flex';
+            icon.style.alignItems = 'center';
+            icon.style.justifyContent = 'center';
+            icon.style.fontSize = '1.4rem';
+            icon.textContent = '⚔️';
+
+            const info = document.createElement('div');
+            info.className = 'v2cc-item-info';
+            const nm = document.createElement('div');
+            nm.className = 'v2cc-item-name';
+            nm.textContent = game.name || game.gameId;
+            const sub = document.createElement('div');
+            sub.className = 'v2cc-item-sub';
+            sub.textContent = game.activityId;
+            info.appendChild(nm);
+            info.appendChild(sub);
+
+            div.appendChild(icon);
+            div.appendChild(info);
+
+            div.addEventListener('click', () => {
+                document.querySelectorAll('.v2cc-item').forEach(el => el.classList.remove('active'));
+                div.classList.add('active');
+                activeGameId = game.gameId;
+                if (window.__akeRouter) window.__akeRouter.updateUrl('v2_cc', game.gameId);
+                loadGameDetail(game, detailContainer);
+            });
+
+            container.appendChild(div);
+        });
+
+        if (window.__deepLinkId) {
+            const deepGame = filtered.find(g => g.gameId === window.__deepLinkId);
+            if (deepGame) {
+                activeGameId = deepGame.gameId;
+            } else {
+                const existsInRaw = allGames.some(g => g.gameId === window.__deepLinkId);
+                if (window.__akeRouter && window.__akeRouter.onDeepLinkNotFound) {
+                    window.__akeRouter.onDeepLinkNotFound(window.__deepLinkId, existsInRaw);
+                }
+            }
+            window.__deepLinkId = null;
+        }
+        const activeExists = filtered.some(g => g.gameId === activeGameId);
+        if (!activeExists && filtered.length > 0) {
+            activeGameId = filtered[0].gameId;
+            if (window.__akeRouter) window.__akeRouter.updateUrl('v2_cc', activeGameId);
+            const f = container.querySelector('.v2cc-item');
+            if (f) f.classList.add('active');
+            loadGameDetail(filtered[0], detailContainer);
+        } else if (activeExists) {
+            const ag = filtered.find(g => g.gameId === activeGameId);
+            if (ag) {
+                if (window.__akeRouter) window.__akeRouter.updateUrl('v2_cc', activeGameId);
+                const ad = container.querySelector(`.v2cc-item[data-game-id="${activeGameId}"]`);
+                if (ad) ad.classList.add('active');
+                loadGameDetail(ag, detailContainer);
+            }
+        }
+    }
+
+    async function loadGameDetail(game, container) {
+        container.innerHTML = '<div class="v2cc-loader">加载合约数据...</div>';
+        try {
+            const data = await fetch(game.contentFile + '?t=' + Date.now()).then(r => r.json());
+            currentData = data;
+            currentGame = game;
+            selectedTagIds.clear();
+            container.innerHTML = renderDetail(data, game);
+            bindTagEvents();
+        } catch (err) {
+            container.innerHTML = `<div class="v2cc-error">加载失败: ${escapeHtml(err.message)}</div>`;
+        }
+    }
+
+    function renderActivityInfo(acc) {
+        if (!acc) return '';
+        const items = [
+            { l: '活动ID', v: acc.activityId },
+            { l: '玩法类型', v: acc.type },
+            { l: '结束关卡', v: acc.gameplayEndStageId },
+            { l: '标签最大列数', v: acc.tagMaxColumn },
+            { l: '兑换货币数量', v: acc.compareToMoneyCount },
+            { l: '商店组', v: acc.shopGroupId },
+            { l: '商店跳转', v: acc.shopJumpId },
+            { l: '任务跳转', v: acc.taskJumpId }
+        ].filter(i => i.v !== undefined && i.v !== '');
+
+        if (!items.length) return '';
+
+        return `
+            <div class="v2cc-section">
+                <h3>活动配置</h3>
+                <div class="v2cc-info-grid">
+                    ${items.map(i => `
+                        <div class="v2cc-info-item">
+                            <div class="v2cc-info-label">${escapeHtml(i.l)}</div>
+                            <div class="v2cc-info-value">${escapeHtml(String(i.v))}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    function renderScoreBands(acc) {
+        if (!acc || !acc.rangeArray || !acc.scoreBand) return '';
+        const ranges = acc.rangeArray;
+        const bands = acc.scoreBand;
+        const pairs = [];
+        for (let i = 0; i < bands.length; i++) {
+            const lo = ranges[i] || 0;
+            const hi = ranges[i + 1] !== undefined ? ranges[i + 1] : '∞';
+            pairs.push({ range: `${lo} - ${hi}`, score: bands[i] });
+        }
+
+        return `
+            <div class="v2cc-section">
+                <h3>分数段映射</h3>
+                <div class="v2cc-score-bands">
+                    ${pairs.map(p => `
+                        <div class="v2cc-score-band">
+                            <div class="v2cc-score-band-label">${escapeHtml(p.range)}</div>
+                            <div class="v2cc-score-band-value">${p.score}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    function renderTagTermEffect(term) {
+        const typeInfo = TERM_TYPE_MAP[term.termType] || TERM_TYPE_MAP['None'];
+        const params = (term.blackboard || []).map(bb => {
+            const val = bb.valueStr || formatBlackboardValue(bb.value);
+            return `${escapeHtml(bb.key)}: ${escapeHtml(val)}`;
+        }).join(', ');
+
+        return `
+            <div class="v2cc-tag-term">
+                <span class="v2cc-term-type ${typeInfo.cls}">${escapeHtml(typeInfo.label)}</span>
+                ${params ? `<span class="v2cc-term-param">${params}</span>` : ''}
+            </div>
+        `;
+    }
+
+    function renderScorePanel(tagTable) {
+        const total = computeTotalScore(selectedTagIds, tagTable);
+        const count = selectedTagIds.size;
+        return `
+            <div class="v2cc-score-panel" id="v2ccScorePanel">
+                <div class="v2cc-score-panel-left">
+                    <span class="v2cc-score-panel-label">当前总分</span>
+                    <span class="v2cc-score-panel-value">${total}</span>
+                    <span class="v2cc-score-panel-count">${count} 个词条已选</span>
+                </div>
+                <div class="v2cc-score-panel-right">
+                    <button class="v2cc-reset-btn" id="v2ccResetBtn">重置选择</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderContractGroups(cct, tagTable) {
+        if (!cct || !cct.contractGroupMap) return '';
+        const groupMap = cct.contractGroupMap;
+        const groupIds = Object.keys(groupMap).sort((a, b) => Number(a) - Number(b));
+        if (!groupIds.length) return '';
+
+        const allTags = getAllContractTags(cct);
+
+        return `
+            <div class="v2cc-section">
+                <h3>合约词条</h3>
+                ${renderScorePanel(tagTable)}
+                <div class="v2cc-groups">
+                    ${groupIds.map(gid => {
+                        const group = groupMap[gid];
+                        const contractMap = group.contractMap || {};
+                        const tagIds = Object.keys(contractMap).sort((a, b) => Number(a) - Number(b));
+
+                        return `
+                            <div class="v2cc-group">
+                                <div class="v2cc-group-title">分组 ${escapeHtml(gid)}</div>
+                                ${tagIds.map(tid => {
+                                    const tag = contractMap[tid];
+                                    const tagData = tagTable[String(tag.tagId)] || {};
+                                    const name = tagData.name?.text || `Tag ${tag.tagId}`;
+                                    const terms = tagData.tagTerms || [];
+                                    const bbValueMap = buildBlackboardValueMap(terms);
+                                    const desc = replacePlaceholders(tagData.desc?.text || '', bbValueMap);
+                                    const icon = tagData.icon || '';
+                                    const roman = tagData.romanNumSuffix || '';
+                                    const score = tagData.score ?? 0;
+                                    const isSelected = selectedTagIds.has(tid);
+                                    const selCheck = isTagSelectable(tid, selectedTagIds, allTags);
+                                    const isSelectable = selCheck.ok || isSelected;
+                                    const stateClass = isSelected ? 'selected' : (selCheck.ok ? 'selectable' : 'locked');
+
+                                    let badges = '';
+                                    if (tag.keyId) {
+                                        const keyHeld = getAvailableKeys(selectedTagIds, allTags).has(tag.keyId);
+                                        badges += `<span class="v2cc-tag-badge key${keyHeld ? ' held' : ''}"><span class="badge-dot"></span>钥匙: ${escapeHtml(tag.keyId)}</span>`;
+                                    }
+                                    if (tag.lockIds && tag.lockIds.length > 0) {
+                                        tag.lockIds.forEach(lid => {
+                                            const keyHeld = getAvailableKeys(selectedTagIds, allTags).has(lid);
+                                            badges += `<span class="v2cc-tag-badge lock${keyHeld ? ' held' : ''}"><span class="badge-dot"></span>需要: ${escapeHtml(lid)}</span>`;
+                                        });
+                                    }
+                                    if (tag.conflictId) {
+                                        let conflictWith = '';
+                                        for (const sid of selectedTagIds) {
+                                            if (sid === tid) continue;
+                                            const st = allTags[sid];
+                                            if (st && st.conflictId === tag.conflictId) {
+                                                conflictWith = sid;
+                                                break;
+                                            }
+                                        }
+                                        badges += `<span class="v2cc-tag-badge conflict${conflictWith ? ' active-conflict' : ''}"><span class="badge-dot"></span>冲突: ${escapeHtml(tag.conflictId)}${conflictWith ? ` (与 Tag ${conflictWith})` : ''}</span>`;
+                                    }
+                                    if (!tag.canPreview) {
+                                        badges += `<span class="v2cc-tag-badge preview-off">🔒 不可预览</span>`;
+                                    }
+
+                                    let lockReason = '';
+                                    if (!isSelected && !selCheck.ok) {
+                                        lockReason = `<div class="v2cc-tag-lock-reason">${escapeHtml(selCheck.reason)}</div>`;
+                                    }
+
+                                    return `
+                                        <div class="v2cc-tag-card ${stateClass}" data-tag-id="${tid}">
+                                            <div class="v2cc-tag-header">
+                                                <div class="v2cc-tag-check">${isSelected ? '✓' : ''}</div>
+                                                ${icon ? `<img class="v2cc-tag-icon" src="${IMAGE_BASE_PATH}TermIcon/${icon}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
+                                                <span class="v2cc-tag-name">${escapeHtml(name)}</span>
+                                                ${roman ? `<span class="v2cc-tag-roman">${escapeHtml(roman)}</span>` : ''}
+                                                <span class="v2cc-tag-score">+${score}</span>
+                                            </div>
+                                            ${desc ? `<div class="v2cc-tag-desc">${parseText(desc)}</div>` : ''}
+                                            ${terms.length ? `<div class="v2cc-tag-terms">${terms.map(renderTagTermEffect).join('')}</div>` : ''}
+                                            ${badges ? `<div class="v2cc-tag-meta">${badges}</div>` : ''}
+                                            ${lockReason}
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    function renderLevelRewards(lt) {
+        if (!lt || !lt.levelMap || !Object.keys(lt.levelMap).length) return '';
+        const levels = Object.entries(lt.levelMap).sort((a, b) => (a[1].level || 0) - (b[1].level || 0));
+
+        return `
+            <div class="v2cc-section">
+                <h3>等级奖励</h3>
+                <div class="v2cc-levels">
+                    ${levels.map(([, lv]) => `
+                        <div class="v2cc-level-card">
+                            <div class="v2cc-level-num">Lv.${lv.level}</div>
+                            <div class="v2cc-level-reward">${escapeHtml(lv.firstReward || '-')}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    function renderTaskGroups(tgt) {
+        if (!tgt || !Object.keys(tgt).length) return '';
+        const groups = Object.entries(tgt).sort((a, b) => (a[1].sortId || 0) - (b[1].sortId || 0));
+
+        return `
+            <div class="v2cc-section">
+                <h3>任务组</h3>
+                <div class="v2cc-task-groups">
+                    ${groups.map(([, tg]) => `
+                        <div class="v2cc-task-card">
+                            <div class="v2cc-task-name">${tg.name?.text ? parseText(tg.name.text) : escapeHtml(tg.taskGroupId)}</div>
+                            <div class="v2cc-task-meta">
+                                <span>任务数: ${tg.totalTaskNum}</span>
+                                <span>可更新: ${tg.canUpdate ? '是' : '否'}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    function renderDetail(data, game) {
+        const acc = data.activitycontingencycontracttable;
+        const cct = data.contingencycontracttable;
+        const tagTable = data.cctagtable || {};
+        const lt = data.contingencycontractleveltable;
+        const tgt = data.activitycontingencycontracttaskgrouptable;
+
+        const title = game.name || game.gameId;
+        const tagCount = Object.keys(tagTable).length;
+        const groupCount = cct && cct.contractGroupMap ? Object.keys(cct.contractGroupMap).length : 0;
+
+        let html = `
+            <div class="v2cc-detail-container">
+                <div class="v2cc-header">
+                    <div class="v2cc-header-icon">⚔️</div>
+                    <div class="v2cc-header-text">
+                        <div class="v2cc-title">${escapeHtml(title)}</div>
+                        <div class="v2cc-subtitle">${escapeHtml(game.activityId)} · ${groupCount} 个分组 · ${tagCount} 个词条</div>
+                    </div>
+                </div>
+                ${renderActivityInfo(acc)}
+                ${renderScoreBands(acc)}
+                ${renderContractGroups(cct, tagTable)}
+                ${renderLevelRewards(lt)}
+                ${renderTaskGroups(tgt)}
+            </div>
+        `;
+        return html;
+    }
+
+    function refreshInteractiveSection() {
+        if (!currentData || !currentGame) return;
+        const container = document.getElementById('v2ccDetail');
+        if (!container) return;
+        const scrollTop = container.scrollTop;
+        container.innerHTML = renderDetail(currentData, currentGame);
+        container.scrollTop = scrollTop;
+        bindTagEvents();
+    }
+
+    function bindTagEvents() {
+        const cct = currentData ? currentData.contingencycontracttable : null;
+        if (!cct) return;
+        const allTags = getAllContractTags(cct);
+
+        document.querySelectorAll('.v2cc-tag-card[data-tag-id]').forEach(card => {
+            card.addEventListener('click', () => {
+                const tid = card.dataset.tagId;
+                if (selectedTagIds.has(tid)) {
+                    selectedTagIds.delete(tid);
+                    cascadeDeselect(selectedTagIds, allTags);
+                } else {
+                    const check = isTagSelectable(tid, selectedTagIds, allTags);
+                    if (!check.ok) return;
+                    selectedTagIds.add(tid);
+                }
+                refreshInteractiveSection();
+            });
+
+            card.addEventListener('mouseenter', () => {
+                const tid = card.dataset.tagId;
+                if (card.classList.contains('locked')) {
+                    const tag = allTags[tid];
+                    if (!tag) return;
+                    if (tag.conflictId) {
+                        document.querySelectorAll('.v2cc-tag-card[data-tag-id]').forEach(other => {
+                            if (other === card) return;
+                            const oTag = allTags[other.dataset.tagId];
+                            if (oTag && oTag.conflictId === tag.conflictId) {
+                                other.classList.add('highlight-conflict');
+                            }
+                        });
+                    }
+                    if (tag.lockIds && tag.lockIds.length > 0) {
+                        document.querySelectorAll('.v2cc-tag-card[data-tag-id]').forEach(other => {
+                            if (other === card) return;
+                            const oTag = allTags[other.dataset.tagId];
+                            if (oTag && oTag.keyId && tag.lockIds.includes(oTag.keyId)) {
+                                other.classList.add('highlight-key');
+                            }
+                        });
+                    }
+                }
+            });
+
+            card.addEventListener('mouseleave', () => {
+                document.querySelectorAll('.highlight-conflict, .highlight-key').forEach(el => {
+                    el.classList.remove('highlight-conflict', 'highlight-key');
+                });
+            });
+        });
+
+        const resetBtn = document.getElementById('v2ccResetBtn');
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+                selectedTagIds.clear();
+                refreshInteractiveSection();
+            });
+        }
+    }
+
+    async function refreshModule() {
+        const list = document.getElementById('v2ccList');
+        const detail = document.getElementById('v2ccDetail');
+        if (!list || !detail) return;
+
+        const showHidden = getCurrentShowHidden();
+        allGames = await loadGameManifest(showHidden);
+        renderGameList();
+    }
+
+    async function initModule() {
+        if (isInitialized) return;
+        isInitialized = true;
+        if (window.configLoaded) await window.configLoaded;
+
+        if (mobileBtn) mobileBtn.addEventListener('click', openMobileList);
+        if (mobileOverlay) mobileOverlay.addEventListener('click', (e) => {
+            if (e.target === mobileOverlay) closeMobileList();
+        });
+
+        window.addEventListener('globalConfigChanged', () => {
+            searchTerm = '';
+            const si = document.getElementById('v2ccSearchInput');
+            if (si) si.value = '';
+            refreshModule();
+        });
+
+        document.getElementById('v2ccSearchInput')?.addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            renderGameList();
+        });
+
+        await refreshModule();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initModule);
+    } else {
+        initModule();
+    }
+})();
+</script>

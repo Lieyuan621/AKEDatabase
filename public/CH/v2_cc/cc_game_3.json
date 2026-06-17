@@ -1,0 +1,2584 @@
+{
+    "gameId": "cc_game_3",
+    "activitycontingencycontracttable": {
+        "activityId": "activity_cc_s3",
+        "compareToMoneyCount": 100,
+        "gameId": "cc_game_3",
+        "gameplayEndStageId": "stage_cc_end_3",
+        "otherDesc": {
+            "id": 1234567890123456789,
+            "text": ""
+        },
+        "rangeArray": [
+            0,
+            300,
+            600,
+            1000,
+            1500
+        ],
+        "scoreBand": [
+            100,
+            200,
+            300,
+            400,
+            500
+        ],
+        "shopGroupId": "shop_group_cc_3",
+        "shopJumpId": "jump_shop_cc_3",
+        "tagMaxColumn": 4,
+        "taskJumpId": "jump_task_cc_3",
+        "type": "ContingencyContract"
+    },
+    "contingencycontracttable": {
+        "activityId": "activity_cc_s3",
+        "contractGroupMap": {
+            "1": {
+                "contractMap": {
+                    "101": {
+                        "tagId": 101,
+                        "groupId": 1,
+                        "keyId": "key_g1_t1",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    },
+                    "102": {
+                        "tagId": 102,
+                        "groupId": 1,
+                        "keyId": "key_g1_t2",
+                        "lockIds": [
+                            "key_g1_t1"
+                        ],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g1",
+                        "canPreview": true
+                    },
+                    "103": {
+                        "tagId": 103,
+                        "groupId": 1,
+                        "keyId": "",
+                        "lockIds": [
+                            "key_g1_t2"
+                        ],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g1",
+                        "canPreview": true
+                    }
+                }
+            },
+            "2": {
+                "contractMap": {
+                    "201": {
+                        "tagId": 201,
+                        "groupId": 2,
+                        "keyId": "key_g2_t1",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    },
+                    "202": {
+                        "tagId": 202,
+                        "groupId": 2,
+                        "keyId": "",
+                        "lockIds": [
+                            "key_g2_t1"
+                        ],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g2",
+                        "canPreview": true
+                    }
+                }
+            },
+            "3": {
+                "contractMap": {
+                    "301": {
+                        "tagId": 301,
+                        "groupId": 3,
+                        "keyId": "key_g3_t1",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    },
+                    "302": {
+                        "tagId": 302,
+                        "groupId": 3,
+                        "keyId": "key_g3_t2",
+                        "lockIds": [
+                            "key_g3_t1"
+                        ],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g3",
+                        "canPreview": true
+                    },
+                    "303": {
+                        "tagId": 303,
+                        "groupId": 3,
+                        "keyId": "",
+                        "lockIds": [
+                            "key_g3_t2"
+                        ],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g3",
+                        "canPreview": true
+                    }
+                }
+            },
+            "4": {
+                "contractMap": {
+                    "401": {
+                        "tagId": 401,
+                        "groupId": 4,
+                        "keyId": "key_g4_t1",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    },
+                    "402": {
+                        "tagId": 402,
+                        "groupId": 4,
+                        "keyId": "key_g4_t2",
+                        "lockIds": [
+                            "key_g4_t1"
+                        ],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g4",
+                        "canPreview": true
+                    },
+                    "403": {
+                        "tagId": 403,
+                        "groupId": 4,
+                        "keyId": "",
+                        "lockIds": [
+                            "key_g4_t2"
+                        ],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g4",
+                        "canPreview": true
+                    }
+                }
+            },
+            "5": {
+                "contractMap": {
+                    "501": {
+                        "tagId": 501,
+                        "groupId": 5,
+                        "keyId": "key_g5_t1",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    },
+                    "502": {
+                        "tagId": 502,
+                        "groupId": 5,
+                        "keyId": "",
+                        "lockIds": [
+                            "key_g5_t1"
+                        ],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g5",
+                        "canPreview": true
+                    }
+                }
+            },
+            "6": {
+                "contractMap": {
+                    "601": {
+                        "tagId": 601,
+                        "groupId": 6,
+                        "keyId": "key_g6_t1",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    },
+                    "602": {
+                        "tagId": 602,
+                        "groupId": 6,
+                        "keyId": "",
+                        "lockIds": [
+                            "key_g6_t1"
+                        ],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g6",
+                        "canPreview": true
+                    }
+                }
+            },
+            "7": {
+                "contractMap": {
+                    "701": {
+                        "tagId": 701,
+                        "groupId": 7,
+                        "keyId": "",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g7",
+                        "canPreview": true
+                    },
+                    "702": {
+                        "tagId": 702,
+                        "groupId": 7,
+                        "keyId": "",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g7",
+                        "canPreview": true
+                    }
+                }
+            },
+            "8": {
+                "contractMap": {
+                    "801": {
+                        "tagId": 801,
+                        "groupId": 8,
+                        "keyId": "key_g8_t1",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    },
+                    "802": {
+                        "tagId": 802,
+                        "groupId": 8,
+                        "keyId": "",
+                        "lockIds": [
+                            "key_g8_t1"
+                        ],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g8",
+                        "canPreview": true
+                    }
+                }
+            },
+            "9": {
+                "contractMap": {
+                    "901": {
+                        "tagId": 901,
+                        "groupId": 9,
+                        "keyId": "key_g9_t1",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    },
+                    "902": {
+                        "tagId": 902,
+                        "groupId": 9,
+                        "keyId": "",
+                        "lockIds": [
+                            "key_g9_t1"
+                        ],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g9",
+                        "canPreview": true
+                    }
+                }
+            },
+            "10": {
+                "contractMap": {
+                    "1001": {
+                        "tagId": 1001,
+                        "groupId": 10,
+                        "keyId": "",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    }
+                }
+            },
+            "11": {
+                "contractMap": {
+                    "1101": {
+                        "tagId": 1101,
+                        "groupId": 11,
+                        "keyId": "",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    }
+                }
+            },
+            "12": {
+                "contractMap": {
+                    "1201": {
+                        "tagId": 1201,
+                        "groupId": 12,
+                        "keyId": "",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    }
+                }
+            },
+            "13": {
+                "contractMap": {
+                    "1301": {
+                        "tagId": 1301,
+                        "groupId": 13,
+                        "keyId": "",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    }
+                }
+            },
+            "14": {
+                "contractMap": {
+                    "1401": {
+                        "tagId": 1401,
+                        "groupId": 14,
+                        "keyId": "",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    }
+                }
+            },
+            "15": {
+                "contractMap": {
+                    "1501": {
+                        "tagId": 1501,
+                        "groupId": 15,
+                        "keyId": "",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g15",
+                        "canPreview": true
+                    },
+                    "1502": {
+                        "tagId": 1502,
+                        "groupId": 15,
+                        "keyId": "",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g15",
+                        "canPreview": true
+                    }
+                }
+            },
+            "16": {
+                "contractMap": {
+                    "1601": {
+                        "tagId": 1601,
+                        "groupId": 16,
+                        "keyId": "",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    }
+                }
+            },
+            "17": {
+                "contractMap": {
+                    "1701": {
+                        "tagId": 1701,
+                        "groupId": 17,
+                        "keyId": "",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    }
+                }
+            },
+            "18": {
+                "contractMap": {
+                    "1801": {
+                        "tagId": 1801,
+                        "groupId": 18,
+                        "keyId": "key_g18_t1",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    },
+                    "1802": {
+                        "tagId": 1802,
+                        "groupId": 18,
+                        "keyId": "",
+                        "lockIds": [
+                            "key_g18_t1"
+                        ],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g18",
+                        "canPreview": true
+                    }
+                }
+            },
+            "19": {
+                "contractMap": {
+                    "1901": {
+                        "tagId": 1901,
+                        "groupId": 19,
+                        "keyId": "key_g19_t1",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    },
+                    "1902": {
+                        "tagId": 1902,
+                        "groupId": 19,
+                        "keyId": "",
+                        "lockIds": [
+                            "key_g19_t1"
+                        ],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g19",
+                        "canPreview": true
+                    }
+                }
+            },
+            "20": {
+                "contractMap": {
+                    "2001": {
+                        "tagId": 2001,
+                        "groupId": 20,
+                        "keyId": "key_g20_t1",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    },
+                    "2002": {
+                        "tagId": 2002,
+                        "groupId": 20,
+                        "keyId": "",
+                        "lockIds": [
+                            "key_g20_t1"
+                        ],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g20",
+                        "canPreview": true
+                    }
+                }
+            },
+            "21": {
+                "contractMap": {
+                    "2101": {
+                        "tagId": 2101,
+                        "groupId": 21,
+                        "keyId": "",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g21",
+                        "canPreview": true
+                    },
+                    "2102": {
+                        "tagId": 2102,
+                        "groupId": 21,
+                        "keyId": "",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g21",
+                        "canPreview": true
+                    },
+                    "2103": {
+                        "tagId": 2103,
+                        "groupId": 21,
+                        "keyId": "",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g21",
+                        "canPreview": true
+                    },
+                    "2104": {
+                        "tagId": 2104,
+                        "groupId": 21,
+                        "keyId": "",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g21",
+                        "canPreview": true
+                    }
+                }
+            },
+            "22": {
+                "contractMap": {
+                    "2201": {
+                        "tagId": 2201,
+                        "groupId": 22,
+                        "keyId": "",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    }
+                }
+            },
+            "23": {
+                "contractMap": {
+                    "2301": {
+                        "tagId": 2301,
+                        "groupId": 23,
+                        "keyId": "key_g23_t1",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    },
+                    "2302": {
+                        "tagId": 2302,
+                        "groupId": 23,
+                        "keyId": "",
+                        "lockIds": [
+                            "key_g23_t1"
+                        ],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "conflict_g23",
+                        "canPreview": true
+                    }
+                }
+            },
+            "24": {
+                "contractMap": {
+                    "2401": {
+                        "tagId": 2401,
+                        "groupId": 24,
+                        "keyId": "",
+                        "lockIds": [],
+                        "unlockScore": 0,
+                        "unlockActivityStage": "",
+                        "conflictId": "",
+                        "canPreview": true
+                    }
+                }
+            }
+        }
+    },
+    "cctagtable": {
+        "901": {
+            "desc": {
+                "id": 100000000901,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_ultimate_dmg_down",
+            "name": {
+                "id": 100000000901,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 901,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_ultimate_dmg_down_50",
+                    "blackboard": [
+                        {
+                            "key": "ultimate_dmg_reduce_pct",
+                            "value": 0.5,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "902": {
+            "desc": {
+                "id": 100000000902,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_ultimate_dmg_down",
+            "name": {
+                "id": 100000000902,
+                "text": ""
+            },
+            "romanNumSuffix": "II",
+            "score": 2,
+            "tagId": 902,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_ultimate_dmg_down_100",
+                    "blackboard": [
+                        {
+                            "key": "ultimate_dmg_reduce_pct",
+                            "value": 1.0,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "1801": {
+            "desc": {
+                "id": 100000001801,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_enemy_death_poison",
+            "name": {
+                "id": 100000001801,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 1801,
+            "tagTerms": [
+                {
+                    "termType": "EnemyBuff",
+                    "buffId": "buff_cc_enemy_death_poison_2",
+                    "blackboard": [
+                        {
+                            "key": "poison_dmg_pct_per_sec",
+                            "value": 0.02,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "1802": {
+            "desc": {
+                "id": 100000001802,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_enemy_death_poison",
+            "name": {
+                "id": 100000001802,
+                "text": ""
+            },
+            "romanNumSuffix": "II",
+            "score": 2,
+            "tagId": 1802,
+            "tagTerms": [
+                {
+                    "termType": "EnemyBuff",
+                    "buffId": "buff_cc_enemy_death_poison_5",
+                    "blackboard": [
+                        {
+                            "key": "poison_dmg_pct_per_sec",
+                            "value": 0.05,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "401": {
+            "desc": {
+                "id": 100000000401,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_enemy_hp_up",
+            "name": {
+                "id": 100000000401,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 401,
+            "tagTerms": [
+                {
+                    "termType": "EnemyBuff",
+                    "buffId": "buff_cc_enemy_hp_up_50",
+                    "blackboard": [
+                        {
+                            "key": "max_hp_pct",
+                            "value": 0.5,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "402": {
+            "desc": {
+                "id": 100000000402,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_enemy_hp_up",
+            "name": {
+                "id": 100000000402,
+                "text": ""
+            },
+            "romanNumSuffix": "II",
+            "score": 2,
+            "tagId": 402,
+            "tagTerms": [
+                {
+                    "termType": "EnemyBuff",
+                    "buffId": "buff_cc_enemy_hp_up_100",
+                    "blackboard": [
+                        {
+                            "key": "max_hp_pct",
+                            "value": 1.0,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "403": {
+            "desc": {
+                "id": 100000000403,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_enemy_hp_up",
+            "name": {
+                "id": 100000000403,
+                "text": ""
+            },
+            "romanNumSuffix": "III",
+            "score": 3,
+            "tagId": 403,
+            "tagTerms": [
+                {
+                    "termType": "EnemyBuff",
+                    "buffId": "buff_cc_enemy_hp_up_200",
+                    "blackboard": [
+                        {
+                            "key": "max_hp_pct",
+                            "value": 2.0,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "1301": {
+            "desc": {
+                "id": 100000001301,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_normal_atk_down",
+            "name": {
+                "id": 100000001301,
+                "text": ""
+            },
+            "romanNumSuffix": "III",
+            "score": 3,
+            "tagId": 1301,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_normal_atk_dmg_down_70",
+                    "blackboard": [
+                        {
+                            "key": "normal_atk_dmg_reduce_pct",
+                            "value": 0.7,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "2201": {
+            "desc": {
+                "id": 100000002201,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_cold_to_freeze",
+            "name": {
+                "id": 100000002201,
+                "text": ""
+            },
+            "romanNumSuffix": "III",
+            "score": 3,
+            "tagId": 2201,
+            "tagTerms": [
+                {
+                    "termType": "EnemyBuff",
+                    "buffId": "buff_cc_cold_to_freeze",
+                    "blackboard": []
+                }
+            ]
+        },
+        "801": {
+            "desc": {
+                "id": 100000000801,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_heal_reduce",
+            "name": {
+                "id": 100000000801,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 801,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_heal_mass_reduce_1",
+                    "blackboard": [
+                        {
+                            "key": "heal_mass_count",
+                            "value": 1,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "802": {
+            "desc": {
+                "id": 100000000802,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_heal_disable",
+            "name": {
+                "id": 100000000802,
+                "text": ""
+            },
+            "romanNumSuffix": "II",
+            "score": 2,
+            "tagId": 802,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_heal_mass_reduce_0",
+                    "blackboard": [
+                        {
+                            "key": "heal_mass_count",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "1701": {
+            "desc": {
+                "id": 100000001701,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_lock_main_char",
+            "name": {
+                "id": 100000001701,
+                "text": ""
+            },
+            "romanNumSuffix": "II",
+            "score": 2,
+            "tagId": 1701,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_lock_main_char",
+                    "blackboard": []
+                }
+            ]
+        },
+        "301": {
+            "desc": {
+                "id": 100000000301,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_time_reduce",
+            "name": {
+                "id": 100000000301,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 301,
+            "tagTerms": [
+                {
+                    "termType": "ReduceChallengeTime",
+                    "buffId": "buff_cc_time_reduce_100",
+                    "blackboard": [
+                        {
+                            "key": "time_reduce_sec",
+                            "value": 100,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "302": {
+            "desc": {
+                "id": 100000000302,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_time_reduce",
+            "name": {
+                "id": 100000000302,
+                "text": ""
+            },
+            "romanNumSuffix": "II",
+            "score": 2,
+            "tagId": 302,
+            "tagTerms": [
+                {
+                    "termType": "ReduceChallengeTime",
+                    "buffId": "buff_cc_time_reduce_200",
+                    "blackboard": [
+                        {
+                            "key": "time_reduce_sec",
+                            "value": 200,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "303": {
+            "desc": {
+                "id": 100000000303,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_time_reduce",
+            "name": {
+                "id": 100000000303,
+                "text": ""
+            },
+            "romanNumSuffix": "III",
+            "score": 3,
+            "tagId": 303,
+            "tagTerms": [
+                {
+                    "termType": "ReduceChallengeTime",
+                    "buffId": "buff_cc_time_reduce_300",
+                    "blackboard": [
+                        {
+                            "key": "time_reduce_sec",
+                            "value": 300,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "1201": {
+            "desc": {
+                "id": 100000001201,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_heal_enemy_restore",
+            "name": {
+                "id": 100000001201,
+                "text": ""
+            },
+            "romanNumSuffix": "II",
+            "score": 2,
+            "tagId": 1201,
+            "tagTerms": [
+                {
+                    "termType": "EnemyBuff",
+                    "buffId": "buff_cc_heal_triggers_enemy_restore",
+                    "blackboard": [
+                        {
+                            "key": "heal_threshold_pct",
+                            "value": 0.1,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "shield_threshold_pct",
+                            "value": 0.2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "enemy_restore_pct",
+                            "value": 0.08,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "2101": {
+            "desc": {
+                "id": 100000002101,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_freeze_unlock_fire",
+            "name": {
+                "id": 100000002101,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 2101,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_freeze_15s_unlock_fire",
+                    "blackboard": [
+                        {
+                            "key": "freeze_duration_sec",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "unlock_element",
+                            "value": 0,
+                            "valueStr": "fire"
+                        }
+                    ]
+                }
+            ]
+        },
+        "2102": {
+            "desc": {
+                "id": 100000002102,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_freeze_unlock_nature",
+            "name": {
+                "id": 100000002102,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 2102,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_freeze_15s_unlock_nature",
+                    "blackboard": [
+                        {
+                            "key": "freeze_duration_sec",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "unlock_element",
+                            "value": 0,
+                            "valueStr": "nature"
+                        }
+                    ]
+                }
+            ]
+        },
+        "2103": {
+            "desc": {
+                "id": 100000002103,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_freeze_unlock_electric",
+            "name": {
+                "id": 100000002103,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 2103,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_freeze_15s_unlock_electric",
+                    "blackboard": [
+                        {
+                            "key": "freeze_duration_sec",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "unlock_element",
+                            "value": 0,
+                            "valueStr": "electric"
+                        }
+                    ]
+                }
+            ]
+        },
+        "2104": {
+            "desc": {
+                "id": 100000002104,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_freeze_unlock_physical",
+            "name": {
+                "id": 100000002104,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 2104,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_freeze_15s_unlock_physical",
+                    "blackboard": [
+                        {
+                            "key": "freeze_duration_sec",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "unlock_element",
+                            "value": 0,
+                            "valueStr": "physical"
+                        }
+                    ]
+                }
+            ]
+        },
+        "701": {
+            "desc": {
+                "id": 100000000701,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_stamina_down",
+            "name": {
+                "id": 100000000701,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 701,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_stamina_regen_down_50",
+                    "blackboard": [
+                        {
+                            "key": "stamina_regen_pct",
+                            "value": -0.5,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "702": {
+            "desc": {
+                "id": 100000000702,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_dodge_disable",
+            "name": {
+                "id": 100000000702,
+                "text": ""
+            },
+            "romanNumSuffix": "III",
+            "score": 3,
+            "tagId": 702,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_dodge_disable",
+                    "blackboard": []
+                }
+            ]
+        },
+        "1601": {
+            "desc": {
+                "id": 100000001601,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_debuff_enemy_resist",
+            "name": {
+                "id": 100000001601,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 1601,
+            "tagTerms": [
+                {
+                    "termType": "EnemyBuff",
+                    "buffId": "buff_cc_debuff_stack_dmg_reduce_10",
+                    "blackboard": [
+                        {
+                            "key": "dmg_reduce_per_stack_pct",
+                            "value": 0.1,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "201": {
+            "desc": {
+                "id": 100000000201,
+                "text": "<@ba.key>灼热獠牙</>测试222{atk_pct:0%}"
+            },
+            "icon": "icon_cc_tag_enemy_atk_up",
+            "name": {
+                "id": 100000000201,
+                "text": "<@ba.key>灼热獠牙</>测试222{atk_pct:0.0}"
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 201,
+            "tagTerms": [
+                {
+                    "termType": "EnemyBuff",
+                    "buffId": "buff_cc_enemy_atk_up_30",
+                    "blackboard": [
+                        {
+                            "key": "atk_pct",
+                            "value": 0.3,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "202": {
+            "desc": {
+                "id": 100000000202,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_enemy_atk_up",
+            "name": {
+                "id": 100000000202,
+                "text": ""
+            },
+            "romanNumSuffix": "II",
+            "score": 2,
+            "tagId": 202,
+            "tagTerms": [
+                {
+                    "termType": "EnemyBuff",
+                    "buffId": "buff_cc_enemy_atk_up_80",
+                    "blackboard": [
+                        {
+                            "key": "atk_pct",
+                            "value": 0.8,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "1101": {
+            "desc": {
+                "id": 100000001101,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_enemy_spd_up_dmg_cap",
+            "name": {
+                "id": 100000001101,
+                "text": ""
+            },
+            "romanNumSuffix": "II",
+            "score": 2,
+            "tagId": 1101,
+            "tagTerms": [
+                {
+                    "termType": "EnemyBuff",
+                    "buffId": "buff_cc_enemy_spd_up_100_dmg_cap",
+                    "blackboard": [
+                        {
+                            "key": "spd_pct",
+                            "value": 1.0,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "dmg_cap_pct",
+                            "value": 0.25,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "dmg_cap_window_sec",
+                            "value": 0.1,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "2001": {
+            "desc": {
+                "id": 100000002001,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_chain_cold",
+            "name": {
+                "id": 100000002001,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 2001,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_every_2_chain_cold",
+                    "blackboard": [
+                        {
+                            "key": "trigger_count",
+                            "value": 2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "cooldown_sec",
+                            "value": 3,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "2002": {
+            "desc": {
+                "id": 100000002002,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_chain_cold",
+            "name": {
+                "id": 100000002002,
+                "text": ""
+            },
+            "romanNumSuffix": "II",
+            "score": 2,
+            "tagId": 2002,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_every_chain_cold",
+                    "blackboard": [
+                        {
+                            "key": "trigger_count",
+                            "value": 1,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "cooldown_sec",
+                            "value": 3,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "601": {
+            "desc": {
+                "id": 100000000601,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_main_char_dmg_up",
+            "name": {
+                "id": 100000000601,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 601,
+            "tagTerms": [
+                {
+                    "termType": "EnemyBuff",
+                    "buffId": "buff_cc_main_char_dmg_taken_50",
+                    "blackboard": [
+                        {
+                            "key": "dmg_taken_pct",
+                            "value": 0.5,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "602": {
+            "desc": {
+                "id": 100000000602,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_main_char_dmg_up",
+            "name": {
+                "id": 100000000602,
+                "text": ""
+            },
+            "romanNumSuffix": "II",
+            "score": 2,
+            "tagId": 602,
+            "tagTerms": [
+                {
+                    "termType": "EnemyBuff",
+                    "buffId": "buff_cc_main_char_dmg_taken_100",
+                    "blackboard": [
+                        {
+                            "key": "dmg_taken_pct",
+                            "value": 1.0,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "1501": {
+            "desc": {
+                "id": 100000001501,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_other_dmg_up_skill_down",
+            "name": {
+                "id": 100000001501,
+                "text": ""
+            },
+            "romanNumSuffix": "III",
+            "score": 3,
+            "tagId": 1501,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_other_dmg_up_100_skill_down_60",
+                    "blackboard": [
+                        {
+                            "key": "other_dmg_up_pct",
+                            "value": 1.0,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "skill_dmg_reduce_pct",
+                            "value": 0.6,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "1502": {
+            "desc": {
+                "id": 100000001502,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_chain_cd_down_skill_down",
+            "name": {
+                "id": 100000001502,
+                "text": ""
+            },
+            "romanNumSuffix": "III",
+            "score": 3,
+            "tagId": 1502,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_chain_cd_down_60_skill_down_60",
+                    "blackboard": [
+                        {
+                            "key": "chain_cd_reduce_pct",
+                            "value": 0.6,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "skill_dmg_reduce_pct",
+                            "value": 0.6,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "2401": {
+            "desc": {
+                "id": 100000002401,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_enemy_upgrade",
+            "name": {
+                "id": 100000002401,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 2401,
+            "tagTerms": [
+                {
+                    "termType": "EnemyBuff",
+                    "buffId": "buff_cc_enemy_upgrade_alpha",
+                    "blackboard": []
+                }
+            ]
+        },
+        "101": {
+            "desc": {
+                "id": 100000000101,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_operator_stat_down",
+            "name": {
+                "id": 100000000101,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 101,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_operator_stat_down_10",
+                    "blackboard": [
+                        {
+                            "key": "stat_pct",
+                            "value": -0.1,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "102": {
+            "desc": {
+                "id": 100000000102,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_operator_stat_down",
+            "name": {
+                "id": 100000000102,
+                "text": ""
+            },
+            "romanNumSuffix": "II",
+            "score": 2,
+            "tagId": 102,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_operator_stat_down_20",
+                    "blackboard": [
+                        {
+                            "key": "stat_pct",
+                            "value": -0.2,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "103": {
+            "desc": {
+                "id": 100000000103,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_operator_stat_down",
+            "name": {
+                "id": 100000000103,
+                "text": ""
+            },
+            "romanNumSuffix": "III",
+            "score": 3,
+            "tagId": 103,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_operator_stat_down_40",
+                    "blackboard": [
+                        {
+                            "key": "stat_pct",
+                            "value": -0.4,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "1001": {
+            "desc": {
+                "id": 100000001001,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_debuff_cd",
+            "name": {
+                "id": 100000001001,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 1001,
+            "tagTerms": [
+                {
+                    "termType": "EnemyBuff",
+                    "buffId": "buff_cc_debuff_apply_cd_5s",
+                    "blackboard": [
+                        {
+                            "key": "cooldown_sec",
+                            "value": 5,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "1901": {
+            "desc": {
+                "id": 100000001901,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_skill_cold",
+            "name": {
+                "id": 100000001901,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 1901,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_every_2_skill_cold",
+                    "blackboard": [
+                        {
+                            "key": "trigger_count",
+                            "value": 2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "cooldown_sec",
+                            "value": 3,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "1902": {
+            "desc": {
+                "id": 100000001902,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_skill_cold",
+            "name": {
+                "id": 100000001902,
+                "text": ""
+            },
+            "romanNumSuffix": "II",
+            "score": 2,
+            "tagId": 1902,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_every_skill_cold",
+                    "blackboard": [
+                        {
+                            "key": "trigger_count",
+                            "value": 1,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "cooldown_sec",
+                            "value": 3,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "501": {
+            "desc": {
+                "id": 100000000501,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_debuff_dmg_down",
+            "name": {
+                "id": 100000000501,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 501,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_debuff_dmg_down_45",
+                    "blackboard": [
+                        {
+                            "key": "dmg_reduce_pct",
+                            "value": 0.45,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration_sec",
+                            "value": 10,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "502": {
+            "desc": {
+                "id": 100000000502,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_debuff_dmg_down",
+            "name": {
+                "id": 100000000502,
+                "text": ""
+            },
+            "romanNumSuffix": "II",
+            "score": 2,
+            "tagId": 502,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_debuff_dmg_down_90",
+                    "blackboard": [
+                        {
+                            "key": "dmg_reduce_pct",
+                            "value": 0.9,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration_sec",
+                            "value": 10,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "1401": {
+            "desc": {
+                "id": 100000001401,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_dmg_to_maxhp_reduce",
+            "name": {
+                "id": 100000001401,
+                "text": ""
+            },
+            "romanNumSuffix": "III",
+            "score": 3,
+            "tagId": 1401,
+            "tagTerms": [
+                {
+                    "termType": "SelfGlobalBuff",
+                    "buffId": "buff_cc_melee_dmg_to_maxhp_30",
+                    "blackboard": [
+                        {
+                            "key": "melee_maxhp_dmg_pct",
+                            "value": 0.3,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "ranged_maxhp_dmg_pct",
+                            "value": 0.5,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "2301": {
+            "desc": {
+                "id": 100000002301,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_ctrl_enemy_restore",
+            "name": {
+                "id": 100000002301,
+                "text": ""
+            },
+            "romanNumSuffix": "I",
+            "score": 1,
+            "tagId": 2301,
+            "tagTerms": [
+                {
+                    "termType": "EnemyBuff",
+                    "buffId": "buff_cc_ctrl_enemy_restore_5",
+                    "blackboard": [
+                        {
+                            "key": "restore_pct_per_sec",
+                            "value": 0.05,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        "2302": {
+            "desc": {
+                "id": 100000002302,
+                "text": ""
+            },
+            "icon": "icon_cc_tag_ctrl_enemy_restore",
+            "name": {
+                "id": 100000002302,
+                "text": ""
+            },
+            "romanNumSuffix": "II",
+            "score": 2,
+            "tagId": 2302,
+            "tagTerms": [
+                {
+                    "termType": "EnemyBuff",
+                    "buffId": "buff_cc_ctrl_enemy_restore_15",
+                    "blackboard": [
+                        {
+                            "key": "restore_pct_per_sec",
+                            "value": 0.15,
+                            "valueStr": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "cctagtiptable": {
+        "901": {
+            "tagId": 901,
+            "formationTip": {
+                "id": 200000000901,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000901,
+                "text": ""
+            }
+        },
+        "902": {
+            "tagId": 902,
+            "formationTip": {
+                "id": 200000000902,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000902,
+                "text": ""
+            }
+        },
+        "1801": {
+            "tagId": 1801,
+            "formationTip": {
+                "id": 200000001801,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000001801,
+                "text": ""
+            }
+        },
+        "1802": {
+            "tagId": 1802,
+            "formationTip": {
+                "id": 200000001802,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000001802,
+                "text": ""
+            }
+        },
+        "401": {
+            "tagId": 401,
+            "formationTip": {
+                "id": 200000000401,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000401,
+                "text": ""
+            }
+        },
+        "402": {
+            "tagId": 402,
+            "formationTip": {
+                "id": 200000000402,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000402,
+                "text": ""
+            }
+        },
+        "403": {
+            "tagId": 403,
+            "formationTip": {
+                "id": 200000000403,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000403,
+                "text": ""
+            }
+        },
+        "1301": {
+            "tagId": 1301,
+            "formationTip": {
+                "id": 200000001301,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000001301,
+                "text": ""
+            }
+        },
+        "2201": {
+            "tagId": 2201,
+            "formationTip": {
+                "id": 200000002201,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000002201,
+                "text": ""
+            }
+        },
+        "801": {
+            "tagId": 801,
+            "formationTip": {
+                "id": 200000000801,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000801,
+                "text": ""
+            }
+        },
+        "802": {
+            "tagId": 802,
+            "formationTip": {
+                "id": 200000000802,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000802,
+                "text": ""
+            }
+        },
+        "1701": {
+            "tagId": 1701,
+            "formationTip": {
+                "id": 200000001701,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000001701,
+                "text": ""
+            }
+        },
+        "301": {
+            "tagId": 301,
+            "formationTip": {
+                "id": 200000000301,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000301,
+                "text": ""
+            }
+        },
+        "302": {
+            "tagId": 302,
+            "formationTip": {
+                "id": 200000000302,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000302,
+                "text": ""
+            }
+        },
+        "303": {
+            "tagId": 303,
+            "formationTip": {
+                "id": 200000000303,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000303,
+                "text": ""
+            }
+        },
+        "1201": {
+            "tagId": 1201,
+            "formationTip": {
+                "id": 200000001201,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000001201,
+                "text": ""
+            }
+        },
+        "2101": {
+            "tagId": 2101,
+            "formationTip": {
+                "id": 200000002101,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000002101,
+                "text": ""
+            }
+        },
+        "2102": {
+            "tagId": 2102,
+            "formationTip": {
+                "id": 200000002102,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000002102,
+                "text": ""
+            }
+        },
+        "2103": {
+            "tagId": 2103,
+            "formationTip": {
+                "id": 200000002103,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000002103,
+                "text": ""
+            }
+        },
+        "2104": {
+            "tagId": 2104,
+            "formationTip": {
+                "id": 200000002104,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000002104,
+                "text": ""
+            }
+        },
+        "701": {
+            "tagId": 701,
+            "formationTip": {
+                "id": 200000000701,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000701,
+                "text": ""
+            }
+        },
+        "702": {
+            "tagId": 702,
+            "formationTip": {
+                "id": 200000000702,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000702,
+                "text": ""
+            }
+        },
+        "1601": {
+            "tagId": 1601,
+            "formationTip": {
+                "id": 200000001601,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000001601,
+                "text": ""
+            }
+        },
+        "201": {
+            "tagId": 201,
+            "formationTip": {
+                "id": 200000000201,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000201,
+                "text": ""
+            }
+        },
+        "202": {
+            "tagId": 202,
+            "formationTip": {
+                "id": 200000000202,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000202,
+                "text": ""
+            }
+        },
+        "1101": {
+            "tagId": 1101,
+            "formationTip": {
+                "id": 200000001101,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000001101,
+                "text": ""
+            }
+        },
+        "2001": {
+            "tagId": 2001,
+            "formationTip": {
+                "id": 200000002001,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000002001,
+                "text": ""
+            }
+        },
+        "2002": {
+            "tagId": 2002,
+            "formationTip": {
+                "id": 200000002002,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000002002,
+                "text": ""
+            }
+        },
+        "601": {
+            "tagId": 601,
+            "formationTip": {
+                "id": 200000000601,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000601,
+                "text": ""
+            }
+        },
+        "602": {
+            "tagId": 602,
+            "formationTip": {
+                "id": 200000000602,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000602,
+                "text": ""
+            }
+        },
+        "1501": {
+            "tagId": 1501,
+            "formationTip": {
+                "id": 200000001501,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000001501,
+                "text": ""
+            }
+        },
+        "1502": {
+            "tagId": 1502,
+            "formationTip": {
+                "id": 200000001502,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000001502,
+                "text": ""
+            }
+        },
+        "2401": {
+            "tagId": 2401,
+            "formationTip": {
+                "id": 200000002401,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000002401,
+                "text": ""
+            }
+        },
+        "101": {
+            "tagId": 101,
+            "formationTip": {
+                "id": 200000000101,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000101,
+                "text": ""
+            }
+        },
+        "102": {
+            "tagId": 102,
+            "formationTip": {
+                "id": 200000000102,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000102,
+                "text": ""
+            }
+        },
+        "103": {
+            "tagId": 103,
+            "formationTip": {
+                "id": 200000000103,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000103,
+                "text": ""
+            }
+        },
+        "1001": {
+            "tagId": 1001,
+            "formationTip": {
+                "id": 200000001001,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000001001,
+                "text": ""
+            }
+        },
+        "1901": {
+            "tagId": 1901,
+            "formationTip": {
+                "id": 200000001901,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000001901,
+                "text": ""
+            }
+        },
+        "1902": {
+            "tagId": 1902,
+            "formationTip": {
+                "id": 200000001902,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000001902,
+                "text": ""
+            }
+        },
+        "501": {
+            "tagId": 501,
+            "formationTip": {
+                "id": 200000000501,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000501,
+                "text": ""
+            }
+        },
+        "502": {
+            "tagId": 502,
+            "formationTip": {
+                "id": 200000000502,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000000502,
+                "text": ""
+            }
+        },
+        "1401": {
+            "tagId": 1401,
+            "formationTip": {
+                "id": 200000001401,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000001401,
+                "text": ""
+            }
+        },
+        "2301": {
+            "tagId": 2301,
+            "formationTip": {
+                "id": 200000002301,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000002301,
+                "text": ""
+            }
+        },
+        "2302": {
+            "tagId": 2302,
+            "formationTip": {
+                "id": 200000002302,
+                "text": ""
+            },
+            "battleHUDTip": {
+                "id": 300000002302,
+                "text": ""
+            }
+        }
+    },
+    "contingencycontractkeylocktable": {
+        "key_g3_t2": {
+            "color": "#4444FF",
+            "keyDecoImg": "img_cc_key_deco_blue",
+            "keyName": {
+                "id": 400000000005,
+                "text": ""
+            },
+            "lockName": {
+                "id": 500000000005,
+                "text": ""
+            }
+        },
+        "key_g19_t1": {
+            "color": "#4444FF",
+            "keyDecoImg": "img_cc_key_deco_blue",
+            "keyName": {
+                "id": 400000000013,
+                "text": ""
+            },
+            "lockName": {
+                "id": 500000000013,
+                "text": ""
+            }
+        },
+        "key_g4_t1": {
+            "color": "#FF8800",
+            "keyDecoImg": "img_cc_key_deco_orange",
+            "keyName": {
+                "id": 400000000006,
+                "text": ""
+            },
+            "lockName": {
+                "id": 500000000006,
+                "text": ""
+            }
+        },
+        "key_g3_t1": {
+            "color": "#4444FF",
+            "keyDecoImg": "img_cc_key_deco_blue",
+            "keyName": {
+                "id": 400000000004,
+                "text": ""
+            },
+            "lockName": {
+                "id": 500000000004,
+                "text": ""
+            }
+        },
+        "key_g1_t2": {
+            "color": "#44AA44",
+            "keyDecoImg": "img_cc_key_deco_green",
+            "keyName": {
+                "id": 400000000002,
+                "text": ""
+            },
+            "lockName": {
+                "id": 500000000002,
+                "text": ""
+            }
+        },
+        "key_g8_t1": {
+            "color": "#44AA44",
+            "keyDecoImg": "img_cc_key_deco_green",
+            "keyName": {
+                "id": 400000000010,
+                "text": ""
+            },
+            "lockName": {
+                "id": 500000000010,
+                "text": ""
+            }
+        },
+        "key_g18_t1": {
+            "color": "#44AA44",
+            "keyDecoImg": "img_cc_key_deco_green",
+            "keyName": {
+                "id": 400000000012,
+                "text": ""
+            },
+            "lockName": {
+                "id": 500000000012,
+                "text": ""
+            }
+        },
+        "key_g2_t1": {
+            "color": "#FF4444",
+            "keyDecoImg": "img_cc_key_deco_red",
+            "keyName": {
+                "id": 400000000003,
+                "text": ""
+            },
+            "lockName": {
+                "id": 500000000003,
+                "text": ""
+            }
+        },
+        "key_g1_t1": {
+            "color": "#44AA44",
+            "keyDecoImg": "img_cc_key_deco_green",
+            "keyName": {
+                "id": 400000000001,
+                "text": ""
+            },
+            "lockName": {
+                "id": 500000000001,
+                "text": ""
+            }
+        },
+        "key_g5_t1": {
+            "color": "#AA44AA",
+            "keyDecoImg": "img_cc_key_deco_purple",
+            "keyName": {
+                "id": 400000000008,
+                "text": ""
+            },
+            "lockName": {
+                "id": 500000000008,
+                "text": ""
+            }
+        },
+        "key_g6_t1": {
+            "color": "#FF4444",
+            "keyDecoImg": "img_cc_key_deco_red",
+            "keyName": {
+                "id": 400000000009,
+                "text": ""
+            },
+            "lockName": {
+                "id": 500000000009,
+                "text": ""
+            }
+        },
+        "key_g20_t1": {
+            "color": "#4444FF",
+            "keyDecoImg": "img_cc_key_deco_blue",
+            "keyName": {
+                "id": 400000000014,
+                "text": ""
+            },
+            "lockName": {
+                "id": 500000000014,
+                "text": ""
+            }
+        },
+        "key_g23_t1": {
+            "color": "#FF8800",
+            "keyDecoImg": "img_cc_key_deco_orange",
+            "keyName": {
+                "id": 400000000015,
+                "text": ""
+            },
+            "lockName": {
+                "id": 500000000015,
+                "text": ""
+            }
+        },
+        "key_g4_t2": {
+            "color": "#FF8800",
+            "keyDecoImg": "img_cc_key_deco_orange",
+            "keyName": {
+                "id": 400000000007,
+                "text": ""
+            },
+            "lockName": {
+                "id": 500000000007,
+                "text": ""
+            }
+        },
+        "key_g9_t1": {
+            "color": "#FFD700",
+            "keyDecoImg": "img_cc_key_deco_gold",
+            "keyName": {
+                "id": 400000000011,
+                "text": ""
+            },
+            "lockName": {
+                "id": 500000000011,
+                "text": ""
+            }
+        }
+    },
+    "contingencycontractleveltable": {
+        "levelMap": {
+            "1": {
+                "firstReward": "item_cc_reward_bronze",
+                "level": 1
+            },
+            "2": {
+                "firstReward": "item_cc_reward_silver",
+                "level": 2
+            },
+            "3": {
+                "firstReward": "item_cc_reward_gold",
+                "level": 3
+            },
+            "4": {
+                "firstReward": "item_cc_reward_platinum",
+                "level": 4
+            },
+            "5": {
+                "firstReward": "item_cc_reward_diamond",
+                "level": 5
+            }
+        }
+    },
+    "rewardtable": {},
+    "itemtable": {},
+    "activitycontingencycontracttaskgrouptable": {
+        "cc_task_group_1": {
+            "canUpdate": true,
+            "icon": "icon_cc_task_group_1",
+            "name": {
+                "id": 1111111111111111111,
+                "text": ""
+            },
+            "sortId": 1,
+            "taskGroupId": "cc_task_group_1",
+            "totalTaskNum": 5
+        },
+        "cc_task_group_2": {
+            "canUpdate": false,
+            "icon": "icon_cc_task_group_2",
+            "name": {
+                "id": 2222222222222222222,
+                "text": ""
+            },
+            "sortId": 2,
+            "taskGroupId": "cc_task_group_2",
+            "totalTaskNum": 8
+        },
+        "cc_task_group_3": {
+            "canUpdate": true,
+            "icon": "icon_cc_task_group_3",
+            "name": {
+                "id": 3333333333333333333,
+                "text": ""
+            },
+            "sortId": 3,
+            "taskGroupId": "cc_task_group_3",
+            "totalTaskNum": 10
+        }
+    },
+    "buffdata": {}
+}
