@@ -3,6 +3,69 @@
   "categoryName": "奇想奖章",
   "group": {
     "default": {
+      "achv_hide_rebellious": {
+        "name": "“人造南墙”",
+        "order": 4,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": false,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_hide_rebellious_lv02.png",
+            "desc": "但这仍然无法令斧甲兽回头，真是可惜。",
+            "conditions": [
+              "使用防御反击技能终止斧甲兽的连续冲撞"
+            ],
+            "progressToCompare": [
+              1
+            ]
+          }
+        ]
+      },
+      "achv_hide_open_treasure": {
+        "name": "“小兽的赠礼”",
+        "order": 10,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": false,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_hide_open_treasure_lv02.png",
+            "desc": "友情？信任？在这位可爱的小动物眼中，您已经是它的朋友了。",
+            "conditions": [
+              "找到小机灵的“赠礼”"
+            ],
+            "progressToCompare": [
+              1
+            ]
+          }
+        ]
+      },
+      "achv_hide_fly": {
+        "name": "“非正常移动”",
+        "order": 2,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": false,
+        "level": [
+          {
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_hide_fly_lv03.png",
+            "desc": "帝江号正计划为您研发贴地飞行设备。",
+            "conditions": [
+              "使用滑索架、弹射器和绳索累计移动10000米"
+            ],
+            "progressToCompare": [
+              10000000
+            ]
+          }
+        ]
+      },
       "achv_hide_ruanyi": {
         "name": "“死域游身”",
         "order": 7,
@@ -45,48 +108,6 @@
           }
         ]
       },
-      "achv_hide_jump_hit": {
-        "name": "“协议ε·20.00m”",
-        "order": 5,
-        "canBeUpgraded": false,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": false,
-        "level": [
-          {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_hide_jump_hit_lv02.png",
-            "desc": "显然，本次出现在空中的并非轨道漂浮物，而是您和您的干员。",
-            "conditions": [
-              "从20米及以上高空下落并命中敌人"
-            ],
-            "progressToCompare": [
-              20
-            ]
-          }
-        ]
-      },
-      "achv_hide_open_treasure": {
-        "name": "“小兽的赠礼”",
-        "order": 10,
-        "canBeUpgraded": false,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": false,
-        "level": [
-          {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_hide_open_treasure_lv02.png",
-            "desc": "友情？信任？在这位可爱的小动物眼中，您已经是它的朋友了。",
-            "conditions": [
-              "找到小机灵的“赠礼”"
-            ],
-            "progressToCompare": [
-              1
-            ]
-          }
-        ]
-      },
       "achv_hide_cave": {
         "name": "“正在抓捕验收人员”",
         "order": 1,
@@ -108,6 +129,27 @@
           }
         ]
       },
+      "achv_hide_jump_hit": {
+        "name": "“协议ε·20.00m”",
+        "order": 5,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": false,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_hide_jump_hit_lv02.png",
+            "desc": "显然，本次出现在空中的并非轨道漂浮物，而是您和您的干员。",
+            "conditions": [
+              "从20米及以上高空下落并命中敌人"
+            ],
+            "progressToCompare": [
+              20
+            ]
+          }
+        ]
+      },
       "achv_hide_paralyze": {
         "name": "“全位显现”",
         "order": 9,
@@ -122,69 +164,6 @@
             "desc": "她的野心与狂妄令人恐惧，但您仍不惮于在绝望的封锁中全方位展示自己的勇气。",
             "conditions": [
               "在「聂菲斯，“征服者”」静止住周遭时，主控干员被定在半空"
-            ],
-            "progressToCompare": [
-              1
-            ]
-          }
-        ]
-      },
-      "achv_hide_waterwheel_top": {
-        "name": "“水自天流”",
-        "order": 6,
-        "canBeUpgraded": false,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": false,
-        "level": [
-          {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_hide_waterwheel_top_lv02.png",
-            "desc": "您登上了清波寨水车的顶端，见证了“水从天上来”的奇景。",
-            "conditions": [
-              "抵达清波寨大水车顶端"
-            ],
-            "progressToCompare": [
-              1
-            ]
-          }
-        ]
-      },
-      "achv_hide_fly": {
-        "name": "“非正常移动”",
-        "order": 2,
-        "canBeUpgraded": false,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": false,
-        "level": [
-          {
-            "level": 3,
-            "icon": "/public/images/achievement/medaliconbig/achv_hide_fly_lv03.png",
-            "desc": "帝江号正计划为您研发贴地飞行设备。",
-            "conditions": [
-              "使用滑索架、弹射器和绳索累计移动10000米"
-            ],
-            "progressToCompare": [
-              10000000
-            ]
-          }
-        ]
-      },
-      "achv_hide_rebellious": {
-        "name": "“人造南墙”",
-        "order": 4,
-        "canBeUpgraded": false,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": false,
-        "level": [
-          {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_hide_rebellious_lv02.png",
-            "desc": "但这仍然无法令斧甲兽回头，真是可惜。",
-            "conditions": [
-              "使用防御反击技能终止斧甲兽的连续冲撞"
             ],
             "progressToCompare": [
               1
@@ -230,6 +209,27 @@
             ],
             "progressToCompare": [
               4
+            ]
+          }
+        ]
+      },
+      "achv_hide_waterwheel_top": {
+        "name": "“水自天流”",
+        "order": 6,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": false,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_hide_waterwheel_top_lv02.png",
+            "desc": "您登上了清波寨水车的顶端，见证了“水从天上来”的奇景。",
+            "conditions": [
+              "抵达清波寨大水车顶端"
+            ],
+            "progressToCompare": [
+              1
             ]
           }
         ]

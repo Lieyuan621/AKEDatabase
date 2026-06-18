@@ -66,33 +66,35 @@
         for (const [key, val] of Object.entries(valueMap || {})) {
             lowerValueMap[String(key).toLowerCase()] = val;
         }
-        return String(desc).replace(/\{([^}]+)\}/g, (match, p1) => {
-            const parts = p1.split(':');
-            const expr = parts[0].replace(/\s+/g, '');
-            const format = parts[1] ? parts[1].trim() : '';
-            const varNames = expr.match(/[a-zA-Z_][a-zA-Z0-9_]*/g) || [];
-            const missingVar = varNames.find(name => !(name.toLowerCase() in lowerValueMap));
-            if (missingVar) return match;
-            let evalExpr = expr;
-            for (const name of varNames) {
-                const value = lowerValueMap[name.toLowerCase()];
-                const regex = new RegExp(`\\b${name}\\b`, 'g');
-                evalExpr = evalExpr.replace(regex, `(${value})`);
-            }
-            let result;
-            try {
-                result = new Function('return ' + evalExpr)();
-            } catch (e) {
-                return match;
-            }
-            if (format.includes('%')) return (result * 100).toFixed(1) + '%';
-            if (format.includes('.')) {
-                const precision = format.split('.')[1]?.length || 1;
-                return result.toFixed(precision);
-            }
-            if (format.includes('0')) return Math.round(result).toString();
-            return result.toString();
-        });
+        return String(desc)
+            .replace(/\{@[^@]*@/g, '{')
+            .replace(/\{([^}]+)\}/g, (match, p1) => {
+                const parts = p1.split(':');
+                const expr = parts[0].replace(/\s+/g, '');
+                const format = parts[1] ? parts[1].trim() : '';
+                const varNames = expr.match(/[a-zA-Z_][a-zA-Z0-9_\-]*/g) || [];
+                const missingVar = varNames.find(name => !(name.toLowerCase() in lowerValueMap));
+                if (missingVar) return match;
+                let evalExpr = expr;
+                for (const name of varNames) {
+                    const value = lowerValueMap[name.toLowerCase()];
+                    const regex = new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g');
+                    evalExpr = evalExpr.replace(regex, `(${value})`);
+                }
+                let result;
+                try {
+                    result = new Function('return ' + evalExpr)();
+                } catch (e) {
+                    return match;
+                }
+                if (format.includes('%')) return (result * 100).toFixed(1) + '%';
+                if (format.includes('.')) {
+                    const precision = format.split('.')[1]?.length || 1;
+                    return result.toFixed(precision);
+                }
+                if (format.includes('0')) return Math.round(result).toString();
+                return result.toString();
+            });
     }
 
     function buildBlackboardValueMap(tagTerms) {
@@ -123,8 +125,9 @@
         for (const gid of Object.keys(cct.contractGroupMap)) {
             const group = cct.contractGroupMap[gid];
             if (!group.contractMap) continue;
-            for (const tid of Object.keys(group.contractMap)) {
-                all[tid] = group.contractMap[tid];
+            for (const key of Object.keys(group.contractMap)) {
+                const tag = group.contractMap[key];
+                all[String(tag.tagId)] = tag;
             }
         }
         return all;
@@ -440,15 +443,16 @@
                     ${groupIds.map(gid => {
                         const group = groupMap[gid];
                         const contractMap = group.contractMap || {};
-                        const tagIds = Object.keys(contractMap).sort((a, b) => Number(a) - Number(b));
+                        const entryKeys = Object.keys(contractMap).sort((a, b) => Number(a) - Number(b));
 
                         return `
                             <div class="v2cc-group">
                                 <div class="v2cc-group-title">分组 ${escapeHtml(gid)}</div>
-                                ${tagIds.map(tid => {
-                                    const tag = contractMap[tid];
-                                    const tagData = tagTable[String(tag.tagId)] || {};
-                                    const name = tagData.name?.text || `Tag ${tag.tagId}`;
+                                ${entryKeys.map(ek => {
+                                    const tag = contractMap[ek];
+                                    const tid = String(tag.tagId);
+                                    const tagData = tagTable[tid] || {};
+                                    const name = tagData.name?.text || `Tag ${tid}`;
                                     const terms = tagData.tagTerms || [];
                                     const bbValueMap = buildBlackboardValueMap(terms);
                                     const desc = replacePlaceholders(tagData.desc?.text || '', bbValueMap);
@@ -667,7 +671,7 @@
         const tagTable = data.cctagtable || {};
         const tgt = data.activitycontingencycontracttaskgrouptable;
 
-        const title = game.name || game.gameId;
+        const title = game.gameId;
         const tagCount = Object.keys(tagTable).length;
         const groupCount = cct && cct.contractGroupMap ? Object.keys(cct.contractGroupMap).length : 0;
 
