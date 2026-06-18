@@ -575,6 +575,19 @@
     color: var(--desc-color, #5b6f86);
     word-break: break-all;
 }
+.v2cc-level-desc {
+    margin-top: 10px;
+    padding: 8px 12px;
+    font-size: 0.78rem;
+    color: var(--desc-color, #5b6f86);
+    background: var(--module-bg, #fff);
+    border-radius: 8px;
+    border: 1px solid var(--border-color, #e5e9f0);
+    line-height: 1.7;
+}
+.v2cc-level-desc-line b {
+    color: var(--text-color, #1e2b3c);
+}
 
 /* Shop */
 .v2cc-shops {
@@ -624,7 +637,7 @@
     text-align: center;
 }
 .v2cc-shop-table .col-name {
-    min-width: 120px;
+    min-width: 100px;
 }
 .v2cc-shop-table .col-price {
     white-space: nowrap;
@@ -679,6 +692,12 @@
     text-align: center;
     color: var(--desc-color, #5b6f86);
 }
+.v2cc-item-qty {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent-color, #1e6f9f);
+    margin-left: 1px;
+}
 .v2cc-goods-icon {
     width: 22px;
     height: 22px;
@@ -698,6 +717,12 @@
 .v2cc-goods-fallback {
     color: var(--desc-color, #5b6f86);
     font-style: italic;
+}
+.v2cc-price-original {
+    text-decoration: line-through;
+    color: var(--desc-color, #5b6f86);
+    font-size: 0.72rem;
+    margin-right: 2px;
 }
 
 /* Selected tags summary */
@@ -736,29 +761,126 @@
 
 /* Task groups */
 .v2cc-task-groups {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
-.v2cc-task-card {
+.v2cc-task-group-card {
     background: var(--sidebar-bg, #f2f4f8);
-    border-radius: 10px;
-    padding: 12px 14px;
+    border-radius: 12px;
+    padding: 14px;
     border: 1px solid var(--border-color, #e5e9f0);
 }
-.v2cc-task-name {
-    font-size: 0.85rem;
-    font-weight: 600;
+.v2cc-task-group-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color, #d9e0e8);
+}
+.v2cc-task-group-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    object-fit: contain;
+    flex-shrink: 0;
+    background: #2a3a4f;
+}
+.v2cc-task-group-name {
+    font-size: 0.95rem;
+    font-weight: 700;
     color: var(--text-color, #1e2b3c);
+    flex: 1;
+}
+.v2cc-task-group-badge {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: var(--module-bg, #fff);
+    border: 1px solid var(--border-color, #d9e0e8);
+    color: var(--desc-color, #5b6f86);
+    white-space: nowrap;
+}
+.v2cc-task-group-badge.update {
+    border-color: #27ae60;
+    color: #27ae60;
+    background: rgba(39,174,96,0.08);
+}
+.v2cc-task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.v2cc-task-item {
+    background: var(--module-bg, #fff);
+    border-radius: 8px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color, #e5e9f0);
+}
+.v2cc-task-item-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     margin-bottom: 6px;
 }
-.v2cc-task-meta {
-    font-size: 0.75rem;
+.v2cc-task-item-id {
+    font-size: 0.72rem;
     color: var(--desc-color, #5b6f86);
+    font-family: monospace;
+    background: var(--sidebar-bg, #f2f4f8);
+    padding: 1px 6px;
+    border-radius: 4px;
 }
-.v2cc-task-meta span {
-    display: inline-block;
-    margin-right: 10px;
+.v2cc-task-item-desc {
+    font-size: 0.82rem;
+    color: var(--text-color, #1e2b3c);
+    line-height: 1.5;
+    margin-bottom: 6px;
+}
+.v2cc-task-unlock {
+    font-size: 0.72rem;
+    color: #e67e22;
+    margin-bottom: 6px;
+}
+.v2cc-task-item-rewards {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 6px;
+    border-top: 1px solid var(--border-color, #eef1f6);
+}
+.v2cc-task-reward-label {
+    font-size: 0.72rem;
+    color: var(--desc-color, #5b6f86);
+    font-weight: 600;
+}
+.v2cc-task-reward {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+}
+.v2cc-task-reward-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+.v2cc-task-reward-name {
+    color: var(--text-color, #1e2b3c);
+}
+.v2cc-task-reward-count {
+    color: var(--desc-color, #5b6f86);
+    white-space: nowrap;
+}
+.v2cc-task-empty {
+    font-size: 0.82rem;
+    color: var(--desc-color, #5b6f86);
+    text-align: center;
+    padding: 12px;
 }
 
 /* Mobile */

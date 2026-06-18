@@ -40,6 +40,9 @@
     };
 
     function parseText(text) {
+        if (!text) return '';
+        text = text.replace(/<color=([^>]+)>/g, '<span style="color:$1">').replace(/<\/color>/g, '</span>');
+        text = text.replace(/\n/g, '<br>');
         return window.parseText(text, IMAGE_BASE_PATH);
     }
 
@@ -389,32 +392,6 @@
         `;
     }
 
-    function renderScoreBands(acc) {
-        if (!acc || !acc.rangeArray || !acc.scoreBand) return '';
-        const ranges = acc.rangeArray;
-        const bands = acc.scoreBand;
-        const pairs = [];
-        for (let i = 0; i < bands.length; i++) {
-            const lo = ranges[i] || 0;
-            const hi = ranges[i + 1] !== undefined ? ranges[i + 1] : '∞';
-            pairs.push({ range: `${lo} - ${hi}`, score: bands[i] });
-        }
-
-        return `
-            <div class="v2cc-section">
-                <h3>分数段映射</h3>
-                <div class="v2cc-score-bands">
-                    ${pairs.map(p => `
-                        <div class="v2cc-score-band">
-                            <div class="v2cc-score-band-label">${escapeHtml(p.range)}</div>
-                            <div class="v2cc-score-band-value">${p.score}</div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-    }
-
     function renderTagTermEffect(term) {
         const typeInfo = TERM_TYPE_MAP[term.termType] || TERM_TYPE_MAP['None'];
         const params = (term.blackboard || []).map(bb => {
@@ -563,6 +540,20 @@
         const itemTable = data.itemtable || {};
         const levels = Object.entries(lt.levelMap).sort((a, b) => (a[1].level || 0) - (b[1].level || 0));
 
+        const acc = data.activitycontingencycontracttable;
+        const scoreBand = acc?.scoreBand || [];
+        const descs = [];
+        levels.forEach(([, lv], i) => {
+            const items = resolveRewardItems(lv.firstReward, rewardTable, itemTable);
+            const rewardText = items.map(it => `${escapeHtml(it.name)}×${it.count}`).join('、');
+            const score = scoreBand[i];
+            if (score !== undefined) {
+                descs.push(`<span class="v2cc-level-desc-line"><b>${score} 指标</b> → Lv.${lv.level}，获得 ${rewardText}</span>`);
+            } else {
+                descs.push(`<span class="v2cc-level-desc-line"><b>全部达成</b> → Lv.${lv.level}，获得 ${rewardText}</span>`);
+            }
+        });
+
         return `
             <div class="v2cc-section">
                 <h3>等级奖励</h3>
@@ -585,6 +576,7 @@
                         `;
                     }).join('')}
                 </div>
+                ${descs.length ? `<div class="v2cc-level-desc">${descs.join('<br>')}</div>` : ''}
             </div>
         `;
     }
@@ -639,19 +631,20 @@
                                     const rewardItems = resolveRewardItems(g.rewardId, data.rewardtable || {}, itemTable);
                                     const itemIcon = rewardItems.length ? rewardItems[0].iconId : '';
                                     const itemName = rewardItems.length
-                                        ? rewardItems.map(r => escapeHtml(r.name)).join(' + ')
+                                        ? rewardItems.map(r => escapeHtml(r.name) + (r.count > 1 ? `<span class="v2cc-item-qty">×${r.count}</span>` : '')).join(' + ')
                                         : `<span class="v2cc-goods-fallback">${escapeHtml(g.goodsTagId || g.goodsId)}</span>`;
                                     const currencyName = escapeHtml(getCurrencyName(g.moneyId));
                                     const limitText = g.limitCount > 0 ? g.limitCount : '∞';
-                                    const discount = g.cnDiscount > 0 && g.cnDiscount < 1;
+                                    const hasDiscount = g.cnDiscount > 0 && g.cnDiscount < 1;
+                                    const actualPrice = hasDiscount ? Math.ceil(g.price * g.cnDiscount) : g.price;
 
                                     return `
                                         <div class="v2cc-shop-goods-row">
                                             <span class="col-icon">
                                                 ${itemIcon ? `<img class="v2cc-goods-icon" src="/public/images/item/itemicon/${itemIcon}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
                                             </span>
-                                            <span class="col-name">${itemName}${discount ? ` <span class="v2cc-goods-discount">-${Math.round((1 - g.cnDiscount) * 100)}%</span>` : ''}</span>
-                                            <span class="col-price">${g.price} ${currencyName}</span>
+                                            <span class="col-name">${itemName}</span>
+                                            <span class="col-price">${hasDiscount ? `<span class="v2cc-price-original">${g.price}</span> ` : ''}${actualPrice} ${currencyName}${hasDiscount ? ` <span class="v2cc-goods-discount">-${Math.round((1 - g.cnDiscount) * 100)}%</span>` : ''}</span>
                                             <span class="col-limit">${limitText}</span>
                                         </div>
                                     `;
@@ -664,23 +657,76 @@
         `;
     }
 
-    function renderTaskGroups(tgt) {
+    function renderTaskGroups(data) {
+        const tgt = data.activitycontingencycontracttaskgrouptable;
         if (!tgt || !Object.keys(tgt).length) return '';
         const groups = Object.entries(tgt).sort((a, b) => (a[1].sortId || 0) - (b[1].sortId || 0));
 
+        const acmConfig = data.activityconditionalmultistagetaskconfigtable;
+        let taskConfigMap = {};
+        if (acmConfig) {
+            for (const actKey of Object.keys(acmConfig)) {
+                const cfg = acmConfig[actKey];
+                if (cfg && cfg.TaskConfigMap) {
+                    Object.assign(taskConfigMap, cfg.TaskConfigMap);
+                }
+            }
+        }
+
+        const rewardTable = data.rewardtable || {};
+        const itemTable = data.itemtable || {};
+
         return `
             <div class="v2cc-section">
-                <h3>任务组</h3>
+                <h3>任务</h3>
                 <div class="v2cc-task-groups">
-                    ${groups.map(([, tg]) => `
-                        <div class="v2cc-task-card">
-                            <div class="v2cc-task-name">${tg.name?.text ? parseText(tg.name.text) : escapeHtml(tg.taskGroupId)}</div>
-                            <div class="v2cc-task-meta">
-                                <span>任务数: ${tg.totalTaskNum}</span>
-                                <span>可更新: ${tg.canUpdate ? '是' : '否'}</span>
+                    ${groups.map(([, tg]) => {
+                        const tgId = tg.taskGroupId;
+                        const tasks = Object.values(taskConfigMap)
+                            .filter(t => t.taskGroupId === tgId)
+                            .sort((a, b) => (a.sortId || 0) - (b.sortId || 0));
+
+                        return `
+                            <div class="v2cc-task-group-card">
+                                <div class="v2cc-task-group-header">
+                                    ${tg.icon ? `<img class="v2cc-task-group-icon" src="/public/images/contingencycontract/${tg.icon}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
+                                    <span class="v2cc-task-group-name">${tg.name?.text ? parseText(tg.name.text) : escapeHtml(tgId)}</span>
+                                    <span class="v2cc-task-group-badge">${tasks.length} 个任务</span>
+                                    ${tg.canUpdate ? '<span class="v2cc-task-group-badge update">可更新</span>' : ''}
+                                </div>
+                                ${tasks.length ? `
+                                    <div class="v2cc-task-list">
+                                        ${tasks.map(task => {
+                                            const desc = task.desc?.text ? parseText(task.desc.text) : '';
+                                            const rewards = resolveRewardItems(task.rewardId, rewardTable, itemTable);
+                                            const unlockHint = task.unlockTimeId ? `<div class="v2cc-task-unlock">解锁条件: ${escapeHtml(task.unlockTimeId)}</div>` : '';
+                                            return `
+                                                <div class="v2cc-task-item">
+                                                    <div class="v2cc-task-item-header">
+                                                        <span class="v2cc-task-item-id">${escapeHtml(task.taskId)}</span>
+                                                    </div>
+                                                    ${desc ? `<div class="v2cc-task-item-desc">${desc}</div>` : ''}
+                                                    ${unlockHint}
+                                                    ${rewards.length ? `
+                                                        <div class="v2cc-task-item-rewards">
+                                                            <span class="v2cc-task-reward-label">奖励:</span>
+                                                            ${rewards.map(r => `
+                                                                <span class="v2cc-task-reward">
+                                                                    ${r.iconId ? `<img class="v2cc-task-reward-icon" src="/public/images/item/itemicon/${r.iconId}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
+                                                                    <span class="v2cc-task-reward-name">${escapeHtml(r.name)}</span>
+                                                                    <span class="v2cc-task-reward-count">×${r.count}</span>
+                                                                </span>
+                                                            `).join('')}
+                                                        </div>
+                                                    ` : ''}
+                                                </div>
+                                            `;
+                                        }).join('')}
+                                    </div>
+                                ` : '<div class="v2cc-task-empty">暂无任务</div>'}
                             </div>
-                        </div>
-                    `).join('')}
+                        `;
+                    }).join('')}
                 </div>
             </div>
         `;
@@ -690,8 +736,6 @@
         const acc = data.activitycontingencycontracttable;
         const cct = data.contingencycontracttable;
         const tagTable = data.cctagtable || {};
-        const tgt = data.activitycontingencycontracttaskgrouptable;
-
         const title = game.gameId;
         const tagCount = Object.keys(tagTable).length;
         const groupCount = cct && cct.contractGroupMap ? Object.keys(cct.contractGroupMap).length : 0;
@@ -706,12 +750,11 @@
                     </div>
                 </div>
                 ${renderActivityInfo(acc)}
-                ${renderScoreBands(acc)}
                 ${renderContractGroups(cct, tagTable)}
                 <div class="v2cc-section" id="v2ccSelectedSummary"></div>
                 ${renderLevelRewards(data)}
                 ${renderShopSection(data)}
-                ${renderTaskGroups(tgt)}
+                ${renderTaskGroups(data)}
             </div>
         `;
         return html;
