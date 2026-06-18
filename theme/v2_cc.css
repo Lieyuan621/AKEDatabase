@@ -540,12 +540,198 @@
     font-size: 1.2rem;
     font-weight: 700;
     color: var(--accent-color, #1e6f9f);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
-.v2cc-level-reward {
+.v2cc-level-reward-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.v2cc-reward-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
     font-size: 0.75rem;
+}
+.v2cc-reward-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+.v2cc-reward-name {
+    color: var(--text-color, #1e2b3c);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.v2cc-reward-count {
+    color: var(--desc-color, #5b6f86);
+    white-space: nowrap;
+}
+.v2cc-reward-empty {
+    font-size: 0.72rem;
     color: var(--desc-color, #5b6f86);
     word-break: break-all;
+}
+
+/* Shop */
+.v2cc-shops {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.v2cc-shop-card {
+    background: var(--sidebar-bg, #f2f4f8);
+    border-radius: 12px;
+    padding: 14px;
+    border: 1px solid var(--border-color, #e5e9f0);
+    margin-bottom: 12px;
+}
+.v2cc-shop-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border-color, #d9e0e8);
+}
+.v2cc-shop-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-color, #1e2b3c);
+}
+.v2cc-shop-count {
+    font-size: 0.75rem;
+    color: var(--desc-color, #5b6f86);
+}
+.v2cc-shop-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+.v2cc-shop-table thead th {
+    text-align: left;
+    font-weight: 600;
+    color: var(--desc-color, #5b6f86);
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border-color, #d9e0e8);
+    font-size: 0.75rem;
+}
+.v2cc-shop-table .col-icon {
+    width: 28px;
+    text-align: center;
+}
+.v2cc-shop-table .col-name {
+    min-width: 120px;
+}
+.v2cc-shop-table .col-price {
+    white-space: nowrap;
+    text-align: right;
+}
+.v2cc-shop-table .col-limit {
+    width: 50px;
+    text-align: center;
+    color: var(--desc-color, #5b6f86);
+}
+.v2cc-shop-goods-body {
+    columns: 1;
+}
+@media (min-width: 900px) {
+    .v2cc-shop-goods-body {
+        columns: 2;
+    }
+}
+@media (min-width: 1400px) {
+    .v2cc-shop-goods-body {
+        columns: 3;
+    }
+}
+.v2cc-shop-goods-row {
+    break-inside: avoid;
+    display: grid;
+    grid-template-columns: 28px 1fr auto 50px;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 8px;
+    border-bottom: 1px solid var(--border-color, #eef1f6);
+    font-size: 0.8rem;
+}
+.v2cc-shop-goods-row:hover {
+    background: var(--module-bg, #fff);
+}
+.v2cc-shop-goods-row .col-icon {
+    text-align: center;
+}
+.v2cc-shop-goods-row .col-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text-color, #1e2b3c);
+}
+.v2cc-shop-goods-row .col-price {
+    white-space: nowrap;
+    text-align: right;
+    color: var(--desc-color, #5b6f86);
+}
+.v2cc-shop-goods-row .col-limit {
+    text-align: center;
+    color: var(--desc-color, #5b6f86);
+}
+.v2cc-goods-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 3px;
+    object-fit: contain;
+    vertical-align: middle;
+}
+.v2cc-goods-discount {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #e74c3c;
+    background: rgba(231,76,60,0.1);
+    padding: 1px 5px;
+    border-radius: 4px;
+    margin-left: 4px;
+}
+.v2cc-goods-fallback {
+    color: var(--desc-color, #5b6f86);
+    font-style: italic;
+}
+
+/* Selected tags summary */
+.v2cc-selected-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.v2cc-selected-row {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border-color, #e5e9f0);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.v2cc-selected-row:last-child {
+    border-bottom: none;
+}
+.v2cc-selected-name {
+    font-weight: 700;
+    color: var(--text-color, #1e2b3c);
+    white-space: nowrap;
+}
+.v2cc-selected-score {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #e67e22;
+    white-space: nowrap;
+}
+.v2cc-selected-desc {
+    color: var(--desc-color, #5b6f86);
 }
 
 /* Task groups */

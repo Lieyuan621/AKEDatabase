@@ -332,6 +332,7 @@
             selectedTagIds.clear();
             container.innerHTML = renderDetail(data, game);
             bindTagEvents();
+            updateSelectedSummary(data.cctagtable || {});
         } catch (err) {
             container.innerHTML = `<div class="v2cc-error">加载失败: ${escapeHtml(err.message)}</div>`;
         }
@@ -342,12 +343,10 @@
         const items = [
             { l: '活动ID', v: acc.activityId },
             { l: '玩法类型', v: acc.type },
-            { l: '结束关卡', v: acc.gameplayEndStageId },
+            { l: '关卡ID', v: acc.gameplayEndStageId },
             { l: '标签最大列数', v: acc.tagMaxColumn },
             { l: '兑换货币数量', v: acc.compareToMoneyCount },
-            { l: '商店组', v: acc.shopGroupId },
-            { l: '商店跳转', v: acc.shopJumpId },
-            { l: '任务跳转', v: acc.taskJumpId }
+            { l: '商店组', v: acc.shopGroupId }
         ].filter(i => i.v !== undefined && i.v !== '');
 
         if (!items.length) return '';
@@ -517,21 +516,125 @@
         `;
     }
 
-    function renderLevelRewards(lt) {
+    function resolveRewardItems(rewardId, rewardTable, itemTable) {
+        const reward = rewardTable?.[rewardId];
+        if (!reward || !reward.itemBundles) return [];
+        return reward.itemBundles.map(bundle => {
+            const item = itemTable?.[bundle.id];
+            return {
+                id: bundle.id,
+                count: bundle.count,
+                name: item?.name?.text || bundle.id,
+                iconId: item?.iconId || '',
+                rarity: item?.rarity ?? 0
+            };
+        });
+    }
+
+    function renderLevelRewards(data) {
+        const lt = data.contingencycontractleveltable;
         if (!lt || !lt.levelMap || !Object.keys(lt.levelMap).length) return '';
+        const rewardTable = data.rewardtable || {};
+        const itemTable = data.itemtable || {};
         const levels = Object.entries(lt.levelMap).sort((a, b) => (a[1].level || 0) - (b[1].level || 0));
 
         return `
             <div class="v2cc-section">
                 <h3>等级奖励</h3>
                 <div class="v2cc-levels">
-                    ${levels.map(([, lv]) => `
-                        <div class="v2cc-level-card">
-                            <div class="v2cc-level-num">Lv.${lv.level}</div>
-                            <div class="v2cc-level-reward">${escapeHtml(lv.firstReward || '-')}</div>
-                        </div>
-                    `).join('')}
+                    ${levels.map(([, lv]) => {
+                        const items = resolveRewardItems(lv.firstReward, rewardTable, itemTable);
+                        return `
+                            <div class="v2cc-level-card">
+                                <div class="v2cc-level-num">Lv.${lv.level}</div>
+                                <div class="v2cc-level-reward-list">
+                                    ${items.length ? items.map(it => `
+                                        <div class="v2cc-reward-item">
+                                            <img class="v2cc-reward-icon" src="/public/images/item/itemicon/${it.iconId}.png" onerror="this.onerror=null; this.style.display='none';">
+                                            <span class="v2cc-reward-name">${escapeHtml(it.name)}</span>
+                                            <span class="v2cc-reward-count">×${it.count}</span>
+                                        </div>
+                                    `).join('') : `<span class="v2cc-reward-empty">${escapeHtml(lv.firstReward || '-')}</span>`}
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
                 </div>
+            </div>
+        `;
+    }
+
+    function renderShopSection(data) {
+        const sgt = data.shopgrouptable;
+        const shopTable = data.shoptable || {};
+        const goodsTable = data.shopgoodstable || {};
+        const itemTable = data.itemtable || {};
+        if (!sgt || !Object.keys(shopTable).length) return '';
+
+        const groupName = sgt.shopGroupName?.text || sgt.shopGroupId;
+        const shopIds = sgt.shopIds || [];
+        const currencyCache = {};
+
+        function getCurrencyName(moneyId) {
+            if (currencyCache[moneyId]) return currencyCache[moneyId];
+            const item = itemTable[moneyId];
+            const name = item?.name?.text || moneyId;
+            currencyCache[moneyId] = name;
+            return name;
+        }
+
+        return `
+            <div class="v2cc-section">
+                <h3>商店 · ${parseText(groupName)}</h3>
+                ${shopIds.map(sid => {
+                    const shop = shopTable[sid];
+                    if (!shop) return '';
+                    const shopName = shop.shopName?.text || sid;
+                    const goodsIds = shop.shopGoodsIds || [];
+                    const goods = goodsIds.map(gid => goodsTable[gid]).filter(Boolean);
+
+                    return `
+                        <div class="v2cc-shop-card">
+                            <div class="v2cc-shop-header">
+                                <span class="v2cc-shop-name">${parseText(shopName)}</span>
+                                <span class="v2cc-shop-count">${goods.length} 件商品</span>
+                            </div>
+                            <table class="v2cc-shop-table">
+                                <thead>
+                                    <tr>
+                                        <th class="col-icon"></th>
+                                        <th class="col-name">物品</th>
+                                        <th class="col-price">价格</th>
+                                        <th class="col-limit">限购</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="v2cc-shop-goods-body">
+                                ${goods.map(g => {
+                                    const rewardItems = resolveRewardItems(g.rewardId, data.rewardtable || {}, itemTable);
+                                    const itemIcon = rewardItems.length ? rewardItems[0].iconId : '';
+                                    const itemName = rewardItems.length
+                                        ? rewardItems.map(r => escapeHtml(r.name)).join(' + ')
+                                        : `<span class="v2cc-goods-fallback">${escapeHtml(g.goodsTagId || g.goodsId)}</span>`;
+                                    const currencyName = escapeHtml(getCurrencyName(g.moneyId));
+                                    const limitText = g.limitCount > 0 ? g.limitCount : '∞';
+                                    const discount = g.cnDiscount > 0 && g.cnDiscount < 1;
+
+                                    return `
+                                        <div class="v2cc-shop-goods-row">
+                                            <span class="col-icon">
+                                                ${itemIcon ? `<img class="v2cc-goods-icon" src="/public/images/item/itemicon/${itemIcon}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
+                                            </span>
+                                            <span class="col-name">${itemName}${discount ? ` <span class="v2cc-goods-discount">-${Math.round((1 - g.cnDiscount) * 100)}%</span>` : ''}</span>
+                                            <span class="col-price">${g.price} ${currencyName}</span>
+                                            <span class="col-limit">${limitText}</span>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
             </div>
         `;
     }
@@ -562,7 +665,6 @@
         const acc = data.activitycontingencycontracttable;
         const cct = data.contingencycontracttable;
         const tagTable = data.cctagtable || {};
-        const lt = data.contingencycontractleveltable;
         const tgt = data.activitycontingencycontracttaskgrouptable;
 
         const title = game.name || game.gameId;
@@ -581,21 +683,109 @@
                 ${renderActivityInfo(acc)}
                 ${renderScoreBands(acc)}
                 ${renderContractGroups(cct, tagTable)}
-                ${renderLevelRewards(lt)}
+                <div class="v2cc-section" id="v2ccSelectedSummary"></div>
+                ${renderLevelRewards(data)}
+                ${renderShopSection(data)}
                 ${renderTaskGroups(tgt)}
             </div>
         `;
         return html;
     }
 
+    function updateSelectedSummary(tagTable) {
+        const container = document.getElementById('v2ccSelectedSummary');
+        if (!container) return;
+        if (selectedTagIds.size === 0) {
+            container.innerHTML = '';
+            return;
+        }
+        const items = Array.from(selectedTagIds).map(tid => {
+            const td = tagTable[tid];
+            if (!td) return '';
+            const name = td.name?.text || `Tag ${tid}`;
+            const bbMap = buildBlackboardValueMap(td.tagTerms || []);
+            const desc = replacePlaceholders(td.desc?.text || '', bbMap);
+            const score = td.score ?? 0;
+            return `
+                <div class="v2cc-selected-row">
+                    <span class="v2cc-selected-name">${escapeHtml(name)}</span>
+                    <span class="v2cc-selected-score">+${score}</span>
+                    ${desc ? `<span class="v2cc-selected-desc">${parseText(desc)}</span>` : ''}
+                </div>
+            `;
+        }).join('');
+        container.innerHTML = `
+            <h3>已选词条详情</h3>
+            <div class="v2cc-selected-list">${items}</div>
+        `;
+    }
+
     function refreshInteractiveSection() {
         if (!currentData || !currentGame) return;
-        const container = document.getElementById('v2ccDetail');
-        if (!container) return;
-        const scrollTop = container.scrollTop;
-        container.innerHTML = renderDetail(currentData, currentGame);
-        container.scrollTop = scrollTop;
-        bindTagEvents();
+        const cct = currentData.contingencycontracttable;
+        const tagTable = currentData.cctagtable || {};
+        if (!cct) return;
+        const allTags = getAllContractTags(cct);
+
+        const totalEl = document.querySelector('.v2cc-score-panel-value');
+        const countEl = document.querySelector('.v2cc-score-panel-count');
+        if (totalEl) totalEl.textContent = computeTotalScore(selectedTagIds, tagTable);
+        if (countEl) countEl.textContent = selectedTagIds.size + ' 个词条已选';
+
+        document.querySelectorAll('.v2cc-tag-card[data-tag-id]').forEach(card => {
+            const tid = card.dataset.tagId;
+            const tag = allTags[tid];
+            if (!tag) return;
+            const tagData = tagTable[String(tag.tagId)] || {};
+            const isSelected = selectedTagIds.has(tid);
+            const selCheck = isTagSelectable(tid, selectedTagIds, allTags);
+            const stateClass = isSelected ? 'selected' : (selCheck.ok ? 'selectable' : 'locked');
+
+            card.classList.remove('selected', 'selectable', 'locked');
+            card.classList.add(stateClass);
+
+            const checkEl = card.querySelector('.v2cc-tag-check');
+            if (checkEl) checkEl.textContent = isSelected ? '\u2713' : '';
+
+            const badges = card.querySelectorAll('.v2cc-tag-badge');
+            const heldKeys = getAvailableKeys(selectedTagIds, allTags);
+            badges.forEach(badge => {
+                const text = badge.textContent;
+                if (badge.classList.contains('key') && tag.keyId) {
+                    badge.classList.toggle('held', heldKeys.has(tag.keyId));
+                }
+                if (badge.classList.contains('lock') && tag.lockIds) {
+                    tag.lockIds.forEach(lid => {
+                        if (text.includes(lid)) badge.classList.toggle('held', heldKeys.has(lid));
+                    });
+                }
+                if (badge.classList.contains('conflict') && tag.conflictId) {
+                    let conflictWith = '';
+                    for (const sid of selectedTagIds) {
+                        if (sid === tid) continue;
+                        const st = allTags[sid];
+                        if (st && st.conflictId === tag.conflictId) { conflictWith = sid; break; }
+                    }
+                    badge.classList.toggle('active-conflict', !!conflictWith);
+                    const base = '冲突: ' + escapeHtml(tag.conflictId);
+                    badge.innerHTML = '<span class="badge-dot"></span>' + base + (conflictWith ? ' (与 Tag ' + escapeHtml(conflictWith) + ')' : '');
+                }
+            });
+
+            let lockReasonEl = card.querySelector('.v2cc-tag-lock-reason');
+            if (!isSelected && !selCheck.ok) {
+                if (!lockReasonEl) {
+                    lockReasonEl = document.createElement('div');
+                    lockReasonEl.className = 'v2cc-tag-lock-reason';
+                    card.appendChild(lockReasonEl);
+                }
+                lockReasonEl.textContent = selCheck.reason;
+            } else if (lockReasonEl) {
+                lockReasonEl.remove();
+            }
+        });
+
+        updateSelectedSummary(tagTable);
     }
 
     function bindTagEvents() {

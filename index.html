@@ -997,7 +997,7 @@
                         '.weapon-detail .detail-title', '.character-detail .detail-name',
                         '.enemy-detail .detail-name', '.equip-detail .suit-name',
                         '.achievement-detail .category-title', '.dungeon-detail .series-title',
-                        '.v2e-name', '.v2d-series-title'
+                        '.v2e-name', '.v2d-series-title', '.v2cc-title'
                     ];
                     for (const sel of possibleSelectors) {
                         const el = contentArea.querySelector(sel);
@@ -1023,8 +1023,10 @@
                                 // 移除左侧栏和内部列
                                 const globalSidebar = clonedDoc.querySelector('.sidebar');
                                 if (globalSidebar) globalSidebar.remove();
-                                const leftColumns = clonedDoc.querySelectorAll('.left-column, .v2e-left, .v2d-left');
+                                const leftColumns = clonedDoc.querySelectorAll('.left-column, .v2e-left, .v2d-left, .v2cc-left');
                                 leftColumns.forEach(col => col.remove());
+                                const mobileBtns = clonedDoc.querySelectorAll('.v2cc-mobile-btn');
+                                mobileBtns.forEach(btn => btn.remove());
                                 const weaponList = clonedDoc.querySelector('.weapon-list');
                                 if (weaponList) weaponList.remove();
                             
@@ -1041,7 +1043,7 @@
                                     mainContent.style.overflow = 'visible';
                                     mainContent.style.padding = '0';
                                 }
-                                const v2Modules = clonedDoc.querySelectorAll('.v2e-module, .v2d-module, .dungeon-module');
+                                const v2Modules = clonedDoc.querySelectorAll('.v2e-module, .v2d-module, .dungeon-module, .v2cc-module');
                                 v2Modules.forEach(m => { m.style.display = 'block'; });
                             
                                 element.style.margin = '0';
