@@ -60,48 +60,6 @@
         return String(val);
     }
 
-    function replacePlaceholders(desc, valueMap) {
-        if (!desc) return desc;
-        const hasPlaceholders = desc.includes('{');
-        const hasColor = desc.includes('<color');
-        if (!hasPlaceholders && !hasColor) return desc;
-        const lowerValueMap = {};
-        for (const [key, val] of Object.entries(valueMap || {})) {
-            lowerValueMap[String(key).toLowerCase()] = val;
-        }
-        return String(desc)
-            .replace(/<color=([^>]+)>/g, '<span style="color:$1">')
-            .replace(/<\/color>/g, '</span>')
-            .replace(/\{@[^@]*@/g, '{')
-            .replace(/\{([^}]+)\}/g, (match, p1) => {
-                const parts = p1.split(':');
-                const expr = parts[0].replace(/\s+/g, '');
-                const format = parts[1] ? parts[1].trim() : '';
-                const varNames = expr.match(/[a-zA-Z_][a-zA-Z0-9_]*/g) || [];
-                const missingVar = varNames.find(name => !(name.toLowerCase() in lowerValueMap));
-                if (missingVar) return match;
-                let evalExpr = expr;
-                for (const name of varNames) {
-                    const value = lowerValueMap[name.toLowerCase()];
-                    const regex = new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g');
-                    evalExpr = evalExpr.replace(regex, `(${value})`);
-                }
-                let result;
-                try {
-                    result = new Function('return ' + evalExpr)();
-                } catch (e) {
-                    return match;
-                }
-                if (format.includes('%')) return (result * 100).toFixed(1) + '%';
-                if (format.includes('.')) {
-                    const precision = format.split('.')[1]?.length || 1;
-                    return result.toFixed(precision);
-                }
-                if (format.includes('0')) return Math.round(result).toString();
-                return result.toString();
-            });
-    }
-
     function buildBlackboardValueMap(tagTerms) {
         const map = {};
         for (const term of (tagTerms || [])) {
@@ -112,6 +70,63 @@
             }
         }
         return map;
+    }
+
+    function buildAllTagValueMaps(tagTable) {
+        const maps = {};
+        for (const [tid, td] of Object.entries(tagTable || {})) {
+            maps[String(tid)] = buildBlackboardValueMap(td.tagTerms || []);
+        }
+        return maps;
+    }
+
+    function evalExprWithMap(expr, format, valueMap) {
+        const lowerValueMap = {};
+        for (const [key, val] of Object.entries(valueMap || {})) {
+            lowerValueMap[String(key).toLowerCase()] = val;
+        }
+        const varNames = expr.match(/[a-zA-Z_][a-zA-Z0-9_]*/g) || [];
+        const missingVar = varNames.find(name => !(name.toLowerCase() in lowerValueMap));
+        if (missingVar) return null;
+        let evalExpr = expr;
+        for (const name of varNames) {
+            const value = lowerValueMap[name.toLowerCase()];
+            const regex = new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g');
+            evalExpr = evalExpr.replace(regex, `(${value})`);
+        }
+        let result;
+        try {
+            result = new Function('return ' + evalExpr)();
+        } catch (e) {
+            return null;
+        }
+        if (format.includes('%')) return (result * 100).toFixed(1) + '%';
+        if (format.includes('.')) {
+            const precision = format.split('.')[1]?.length || 1;
+            return result.toFixed(precision);
+        }
+        if (format.includes('0')) return Math.round(result).toString();
+        return result.toString();
+    }
+
+    function replacePlaceholders(desc, valueMap, allValueMaps) {
+        if (!desc) return desc;
+        const hasPlaceholders = desc.includes('{');
+        const hasColor = desc.includes('<color');
+        if (!hasPlaceholders && !hasColor) return desc;
+        return String(desc)
+            .replace(/<color=([^>]+)>/g, '<span style="color:$1">')
+            .replace(/<\/color>/g, '</span>')
+            .replace(/\{(@([^@]*)@)?([^}]+)\}/g, (match, _atPart, refTagId, inner) => {
+                const parts = inner.split(':');
+                const expr = parts[0].replace(/\s+/g, '');
+                const format = parts[1] ? parts[1].trim() : '';
+                const lookupMap = (refTagId && allValueMaps)
+                    ? allValueMaps[String(refTagId)] || {}
+                    : valueMap;
+                const result = evalExprWithMap(expr, format, lookupMap);
+                return result !== null ? result : match;
+            });
     }
 
     function filterGames(games) {
@@ -439,6 +454,7 @@
         if (!groupIds.length) return '';
 
         const allTags = getAllContractTags(cct);
+        const allValueMaps = buildAllTagValueMaps(tagTable);
 
         return `
             <div class="v2cc-section">
@@ -460,7 +476,7 @@
                                     const name = tagData.name?.text || `Tag ${tid}`;
                                     const terms = tagData.tagTerms || [];
                                     const bbValueMap = buildBlackboardValueMap(terms);
-                                    const desc = replacePlaceholders(tagData.desc?.text || '', bbValueMap);
+                                    const desc = replacePlaceholders(tagData.desc?.text || '', bbValueMap, allValueMaps);
                                     const icon = tagData.icon || '';
                                     const roman = tagData.romanNumSuffix || '';
                                     const score = tagData.score ?? 0;
@@ -505,7 +521,7 @@
                                         <div class="v2cc-tag-card ${stateClass}" data-tag-id="${tid}">
                                             <div class="v2cc-tag-header">
                                                 <div class="v2cc-tag-check">${isSelected ? '✓' : ''}</div>
-                                                ${icon ? `<img class="v2cc-tag-icon" src="${IMAGE_BASE_PATH}TermIcon/${icon}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
+                                                ${icon ? `<img class="v2cc-tag-icon" src="/public/images/contingencycontract/${icon}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
                                                 <span class="v2cc-tag-name">${escapeHtml(name)}</span>
                                                 ${roman ? `<span class="v2cc-tag-roman">${escapeHtml(roman)}</span>` : ''}
                                                 <span class="v2cc-tag-score">+${score}</span>
@@ -708,12 +724,13 @@
             container.innerHTML = '';
             return;
         }
+        const allValueMaps = buildAllTagValueMaps(tagTable);
         const items = Array.from(selectedTagIds).map(tid => {
             const td = tagTable[tid];
             if (!td) return '';
             const name = td.name?.text || `Tag ${tid}`;
             const bbMap = buildBlackboardValueMap(td.tagTerms || []);
-            const desc = replacePlaceholders(td.desc?.text || '', bbMap);
+            const desc = replacePlaceholders(td.desc?.text || '', bbMap, allValueMaps);
             const score = td.score ?? 0;
             return `
                 <div class="v2cc-selected-row">
