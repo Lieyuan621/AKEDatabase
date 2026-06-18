@@ -61,18 +61,23 @@
     }
 
     function replacePlaceholders(desc, valueMap) {
-        if (!desc || !desc.includes('{')) return desc;
+        if (!desc) return desc;
+        const hasPlaceholders = desc.includes('{');
+        const hasColor = desc.includes('<color');
+        if (!hasPlaceholders && !hasColor) return desc;
         const lowerValueMap = {};
         for (const [key, val] of Object.entries(valueMap || {})) {
             lowerValueMap[String(key).toLowerCase()] = val;
         }
         return String(desc)
+            .replace(/<color=([^>]+)>/g, '<span style="color:$1">')
+            .replace(/<\/color>/g, '</span>')
             .replace(/\{@[^@]*@/g, '{')
             .replace(/\{([^}]+)\}/g, (match, p1) => {
                 const parts = p1.split(':');
                 const expr = parts[0].replace(/\s+/g, '');
                 const format = parts[1] ? parts[1].trim() : '';
-                const varNames = expr.match(/[a-zA-Z_][a-zA-Z0-9_\-]*/g) || [];
+                const varNames = expr.match(/[a-zA-Z_][a-zA-Z0-9_]*/g) || [];
                 const missingVar = varNames.find(name => !(name.toLowerCase() in lowerValueMap));
                 if (missingVar) return match;
                 let evalExpr = expr;
@@ -505,7 +510,7 @@
                                                 ${roman ? `<span class="v2cc-tag-roman">${escapeHtml(roman)}</span>` : ''}
                                                 <span class="v2cc-tag-score">+${score}</span>
                                             </div>
-                                            ${desc ? `<div class="v2cc-tag-desc">${parseText(desc)}</div>` : ''}
+                                            ${desc ? `<div class="v2cc-tag-desc">${desc}</div>` : ''}
                                             ${terms.length ? `<div class="v2cc-tag-terms">${terms.map(renderTagTermEffect).join('')}</div>` : ''}
                                             ${badges ? `<div class="v2cc-tag-meta">${badges}</div>` : ''}
                                             ${lockReason}
@@ -714,7 +719,7 @@
                 <div class="v2cc-selected-row">
                     <span class="v2cc-selected-name">${escapeHtml(name)}</span>
                     <span class="v2cc-selected-score">+${score}</span>
-                    ${desc ? `<span class="v2cc-selected-desc">${parseText(desc)}</span>` : ''}
+                    ${desc ? `<span class="v2cc-selected-desc">${desc}</span>` : ''}
                 </div>
             `;
         }).join('');
