@@ -78,11 +78,6 @@
                 "text": ""
             },
             "unlockSpCond": false,
-            "enemyTable": {},
-            "enemyTemplateDisplayInfoTable": {},
-            "enemyAttributeTemplateTable": {},
-            "rewardTable": {},
-            "itemTable": {},
             "LevelData": {
                 "dung01_rdg005_lv_data": {
                     "sceneId": "dung01_rdg005",
@@ -13558,6 +13553,161 @@
                     ]
                 }
             },
+            "enemyTable": {
+                "eny_0076_agfly": {
+                    "aiTemplateId": "",
+                    "attrModifiers": [],
+                    "attrTemplateId": "eny_0076_agfly",
+                    "autoLockCancelTime": -1,
+                    "autoLockCancelType": 0,
+                    "bornBuffs": [],
+                    "enemyId": "eny_0076_agfly",
+                    "isDangerous": false,
+                    "modelId": "",
+                    "serverDeathCheck": false,
+                    "showBigEffect": false,
+                    "showBigHeadbar": false,
+                    "templateId": "eny_0076_agfly"
+                }
+            },
+            "enemyTemplateDisplayInfoTable": {
+                "eny_0076_agfly": {
+                    "abilityDescIds": [
+                        "eny_0076_agfly_ability_1"
+                    ],
+                    "description": {
+                        "id": -6288992299992533374,
+                        "text": "“苏索泰隆”（归档编号：ARA07C），飞行能力与其外形无关。这种形成模式最早被认为是对生物的模仿，但如今，共识已演变为模仿泰拉人所使用的飞行器。"
+                    },
+                    "displayType": 0,
+                    "distributionIds": [
+                        "distribution_map01_lv006",
+                        "distribution_world_energy_point03"
+                    ],
+                    "name": {
+                        "id": 7963377122723050350,
+                        "text": "仿生翅天使"
+                    },
+                    "nickname": {
+                        "id": -5186028975576610665,
+                        "text": "仿生翅天使"
+                    },
+                    "tags": [],
+                    "templateId": "eny_0076_agfly"
+                }
+            },
+            "enemyAttributeTemplateTable": {
+                "eny_0076_agfly": {
+                    "aoiRadius": 0,
+                    "attackValueAgainstTower": 10,
+                    "breakingAttackedAtbObtain": 25,
+                    "crystDmgResistScalar": 1,
+                    "fireDmgResistScalar": 1,
+                    "initialSuperArmor": 0,
+                    "levelDependentAttributes": [
+                        {
+                            "attrs": [
+                                {
+                                    "attrType": 0,
+                                    "attrValue": 45
+                                },
+                                {
+                                    "attrType": 1,
+                                    "attrValue": 7379
+                                },
+                                {
+                                    "attrType": 2,
+                                    "attrValue": 509
+                                },
+                                {
+                                    "attrType": 3,
+                                    "attrValue": 100
+                                }
+                            ]
+                        }
+                    ],
+                    "levelIndependentAttributes": {
+                        "attrs": [
+                            {
+                                "attrType": 20,
+                                "attrValue": 60
+                            },
+                            {
+                                "attrType": 21,
+                                "attrValue": 6
+                            },
+                            {
+                                "attrType": 27,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 12,
+                                "attrValue": 6
+                            },
+                            {
+                                "attrType": 8,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 11,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 9,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 10,
+                                "attrValue": 0.5
+                            },
+                            {
+                                "attrType": 80,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 84,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 83,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 82,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 81,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 85,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 15,
+                                "attrValue": 1
+                            }
+                        ]
+                    },
+                    "maxResilience": 65,
+                    "naturalDmgResistScalar": 1,
+                    "physicalDmgResistScalar": 1,
+                    "poiseKnotBuffList": [],
+                    "poiseKnotPctList": [],
+                    "pulseDmgResistScalar": 1,
+                    "pushedBackCoefficient": 1,
+                    "resilienceDecreaseWhenHurt": 0,
+                    "resilienceFullRecoverTime": 3,
+                    "resilienceRecover": 100,
+                    "resilienceRecoverInterval": 1,
+                    "superArmorWhenResilienceZero": 0,
+                    "templateId": "eny_0076_agfly",
+                    "zeroPoiseSuperArmor": 0
+                }
+            },
+            "rewardTable": {},
+            "itemTable": {},
             "BuffData": {}
         }
     },
