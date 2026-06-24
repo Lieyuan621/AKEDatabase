@@ -1,7 +1,7 @@
 # 危机合约 Buff 机制分析
 
 > 本文基于当前数据表解析危机合约相关 Buff 机制，面向希望理解词条效果与底层机制的玩家。
-> 原作者: Shiroha，重写：bilibili[@MoeYinlo](https://space.bilibili.com/394239497)
+> 原作者: [@渚汐奏梦](https://space.bilibili.com/694452100)，重写：bilibili[@MoeYinlo](https://space.bilibili.com/394239497)
 
 ## 数据范围与读法
 
@@ -14,13 +14,6 @@
 
 术语上，`EnemyBuff` 是直接给敌人挂普通 Buff；`SelfGlobalBuff` 是先启用一个 Global Buff 入口，再把实际 Buff 分发给我方干员或修改全局系统；`ReduceChallengeTime` 是挑战时间类关卡效果。Global Buff 的通俗解释见附录 1。
 
-## 阅读要点
-
-1. 当前词条以 `CcTagTable` 为准；`BuffData` 文件名只说明底层实现，不等同于玩家可选词条。
-2. 同一个 Buff 或 Global Buff 被多个 tag 引用时，本文合并为多等级词条，并直接列出每级数值。
-3. `SelfGlobalBuff` 词条需要沿 `CcTagTable -> GlobalBuffData -> child BuffData / globalModifier / level event` 读取，不能只看 `BuffData` 默认黑板。
-4. 未进入当前 CcTag 的数据会按 Buff 行为拟写为“非原游戏内容”的暂拟词条，只用于说明数据意图。
-5. 附录 3、附录 4 保留全量 BuffData 与 GlobalBuffData 列表，方便按 ID 追溯。
 
 ## 当前未开放与内部数据
 
@@ -32,10 +25,12 @@
 
 ### 暂拟词条总览
 
+>目前只能通过这个看tag机制，准确数值请等待6/26上午十点数据更新
+>下述tag**不一定全部实装**，但是他们**一定**出现在了目前的游戏数据中
+>你可以在下方找到每个词条的详细的描述与机制分析
+
 | 暂拟名称 | 当前状态 | 暂拟描述 | 主要数据入口 |
 |---|---|---|---|
-| 暂拟：环境：厌氧（备用入口） | BuffData 备用入口，当前 CcTag 未引用；与正式词条“环境：厌氧”功能重叠，大概率是旧入口或弃用方案 | 体力恢复速度降低 50%。 | `buff_cc_chr_dash_recover_speed_down` |
-| 暂拟：环境：隔断 | 有 Global Buff 入口，当前 CcTag 未引用；与正式词条“环境：分隔”功能重叠，大概率是旧入口或弃用方案 | 禁止切换主控干员，并显示提示。 | `global_buff_cc_level_mute_switch_player` |
 | 暂拟：环境：逆流 | 有 Global Buff 入口，当前 CcTag 未引用；可能的密钥指标 | 干员战技伤害降低；干员消耗或吸收破防/法术附着层数后，对目标造成按层数计算的真实伤害。 | `global_buff_cc_chr_consume_inflict_special_cc0` |
 | 暂拟：环境：紊流 | 有 Global Buff 入口，当前 CcTag 未引用；可能的密钥指标 | 技力自然恢复速度下降；干员通过技能获得技力时会额外获得 2 倍技力，但战技伤害降低 60%。 | `global_buff_cc_chr_normal_special_cc0` |
 | 暂拟：队列：迟滞 | 有 Global Buff 入口，当前 CcTag 未引用 | 干员连携技冷却时间增加 5 秒。 | `global_buff_cc_chr_combo_cd_up` |
@@ -52,7 +47,7 @@
 | 暂拟：队列：分担 | 有 Global Buff 入口，当前 CcTag 未引用 | 非主控队友受到伤害降低 50%，主控干员不受影响。 | `global_buff_cc_chr_teammate_take_dmg_down` |
 | 暂拟：队列：蓄压 | 有 Global Buff 入口，当前 CcTag 未引用 | 干员每次施放终结技后，提高自身后续终结技能量需求。 | `global_buff_cc_chr_ult_sp_cost_increase_lv1`<br>`global_buff_cc_chr_ult_sp_cost_increase_lv2` |
 | 暂拟：队列：滞能 | 有 Global Buff 入口，当前 CcTag 未引用 | 干员终结技能量获取速度降低。 | `global_buff_cc_chr_usp_speed_down` |
-| 暂拟：环境：钝化 | GlobalBuffData-only，当前 CcTag 未引用 | ATB 恢复速度降低。 | `global_buff_cc_chr_atb_recoverspeed_down` |
+| 暂拟：环境：钝化 | GlobalBuffData-only，当前 CcTag 未引用 | ATB（技力） 恢复速度降低。 | `global_buff_cc_chr_ATB_recoverspeed_down` |
 | 暂拟：改写：精锐 | GlobalBuffData-only，当前 CcTag 未引用 | 通过关卡事件提升敌方或关卡精英等级。 | `global_buff_cc_level_elite_levelup` |
 | 暂拟：环境：深冻 | 当前未见入口 | 角色进入冻结表现状态，播放冻结效果并触发冻结附着事件。 | `buff_cc_chr_frozenonchar_extend_instance` |
 | 暂拟：环境：回灌 | 当前未见入口 | 查找场上敌人，并对每个敌人执行回血结算。 | `buff_cc_chr_heal_reflect_to_eny_stack` |
@@ -64,44 +59,6 @@
 | 暂拟：改写：稳固 | 当前未见入口 | 敌人受到指定异常层数后获得霸体，异常结束后移除。 | `buff_cc_eny_abnormal_to_superarmor`<br>`buff_cc_eny_abnormal_to_superarmor_instance` |
 
 ### 暂拟词条详解
-
-### 暂拟：环境：厌氧（大概率废案，备用入口）
-
-> 非原游戏内容：以下名称与描述由本文根据数据行为编写，不属于游戏内正式 CcTag 文案。
-
-**暂拟描述**
-
-体力恢复速度降低 50%。
-
-**当前数据状态**
-
-- BuffData 备用入口，当前 CcTag 未引用。
-- 默认值：`ratio=-0.5`。正式词条“环境：厌氧”已经使用 `global_buff_cc_chr_dash_recover_speed_down` 直接修改 `DashRecover`，功能与本 BuffData 重叠，因此该 BuffData 更像旧入口或弃用方案。
-
-**数据链路**
-
-- `buff_cc_chr_dash_recover_speed_down`。
-- 涉及 ID：`buff_cc_chr_dash_recover_speed_down`。
-
-### 暂拟：环境：隔断 （大概率废案）
-
-> 非原游戏内容：以下名称与描述由本文根据数据行为编写，不属于游戏内正式 CcTag 文案。
-
-**暂拟描述**
-
-禁止切换主控干员，并显示提示。
-
-**当前数据状态**
-
-- 有 Global Buff 入口，当前 CcTag 未引用。
-- 无数值黑板。
-- 正式词条“环境：分隔”使用 `global_buff_cc_level_mute_switch_player_pre`，已经实现同类限制与提示；本入口启动时还会结束 `_pre` 版本，因此更像替换 `_pre` 的旧方案或后续未采用方案。
-
-**数据链路**
-
-- `global_buff_cc_level_mute_switch_player`。
-- `OnBuffStart` 结束 `global_buff_cc_level_mute_switch_player_pre`；`DuringBuffEnable` 显示 `ui_bat_cc_mute_switch_player_info`。
-- 涉及 ID：`global_buff_cc_level_mute_switch_player`、`global_buff_cc_level_mute_switch_player_pre`。
 
 ### 暂拟：环境：逆流 （可能的密钥指标）
 
@@ -140,14 +97,14 @@
 
 - 有 Global Buff 入口，当前 CcTag 未引用。
 - 可能的密钥指标：当前已上线的两个 `special_cc0` 词条均为密钥指标，本条同属 `special_cc0` 命名组，但尚未在 CcTagTable 出现。
-- GlobalBuffData 默认值：`recover_ratio=1`，`skill_ratio=2`，`dmg_scale=-0.6`。其中 `recover_ratio` 是 `AtbRecover` 全局倍率的占位默认值；若后续进入 CcTagTable，应以 CcTagTable 的真实黑板值覆盖，玩家效果应理解为技力自然恢复速度下降。
-- child Buff 监听 `OnObtainAtb`：只有获得来源为 `Skill`、获得方式为 `Gain` 时才触发。这里的 `Skill` 是技能来源，不限于战技，连携技、终结技等技能来源的技力获取也可触发；触发后先读取本次获得的技力值，再乘以 `skill_ratio=2`，然后通过 `ObtainCostAction` 以 ATB 类型补发这部分数值。
+- GlobalBuffData 默认值：`recover_ratio=1`，`skill_ratio=2`，`dmg_scale=-0.6`。其中 `recover_ratio` 是 `ATB（技力）Recover` 全局倍率的占位默认值；若后续进入 CcTagTable，应以 CcTagTable 的真实黑板值覆盖，玩家效果应理解为技力自然恢复速度下降。
+- child Buff 监听 `OnObtainATB（技力）`：只有获得来源为 `Skill`、获得方式为 `Gain` 时才触发。这里的 `Skill` 是技能来源，不限于战技，连携技、终结技等技能来源的技力获取也可触发；触发后先读取本次获得的技力值，再乘以 `skill_ratio=2`，然后通过 `ObtainCostAction` 以 ATB（技力） 类型补发这部分数值。
 - 同一个 child Buff 还检查伤害标记 `NormalSkill`，对战技伤害应用 `dmg_scale=-0.6`，即战技伤害降低 60%。
 
 **数据链路**
 
-- `global_buff_cc_chr_normal_special_cc0` -> `buff_cc_chr_normal_special_cc0`，并附带 `AtbRecover` globalModifier。
-- child Buff 监听 `OnObtainAtb`，并对战技伤害应用伤害降低。
+- `global_buff_cc_chr_normal_special_cc0` -> `buff_cc_chr_normal_special_cc0`，并附带 `ATB（技力）Recover` globalModifier。
+- child Buff 监听 `OnObtainATB（技力）`，并对战技伤害应用伤害降低。
 - 涉及 ID：`global_buff_cc_chr_normal_special_cc0`、`buff_cc_chr_normal_special_cc0`。
 
 ### 暂拟：队列：迟滞
@@ -437,7 +394,7 @@
 
 **暂拟描述**
 
-ATB 恢复速度降低。
+ATB（技力） 恢复速度降低。
 
 **当前数据状态**
 
@@ -446,9 +403,9 @@ ATB 恢复速度降低。
 
 **数据链路**
 
-- `global_buff_cc_chr_atb_recoverspeed_down`。
-- 该项没有 child BuffData，通过 `AtbRecover` globalModifier 生效。
-- 涉及 ID：`global_buff_cc_chr_atb_recoverspeed_down`。
+- `global_buff_cc_chr_ATB_recoverspeed_down`。
+- 该项没有 child BuffData，通过 `ATB（技力）Recover` globalModifier 生效。
+- 涉及 ID：`global_buff_cc_chr_ATB_recoverspeed_down`。
 
 ### 暂拟：改写：精锐
 
@@ -1359,7 +1316,7 @@ GlobalBuffData 默认 `dmg_up=2`，当前 CcTag 覆盖为 `dmg_up=1`；应按当
 | `buff_cc_chr_normal_skill_dmg_down` | 当前未开放/预留：暂拟：队列：抑技 | 当前 CcTag 未引用<br>Global child: `global_buff_cc_chr_normal_skill_dmg_down` (传入 dmg_scale<-dmg_scale) | 无内部派生 | 伤害: Attacker[mask HasAll 256] -> DamageScaleProcessor/ProdCalcZone(dmg_scale) |
 | `buff_cc_chr_normal_skill_global_cd` | 当前未开放/预留：暂拟：队列：锁技 | 当前 CcTag 未引用<br>Global child: `global_buff_cc_chr_normal_skill_global_cd_lv1` (传入 cd<-cd) | 创建 `buff_cc_chr_normal_skill_global_cd_instance` | Ability.OnBeforeCastSkill: CheckSkillType, CreateBuffAction |
 | `buff_cc_chr_normal_skill_global_cd_instance` | 当前未开放/预留：暂拟：队列：锁技 | 当前 CcTag 未引用 | 由 `buff_cc_chr_normal_skill_global_cd` 创建 | 标签: Status/DisableNormalSkill |
-| `buff_cc_chr_normal_special_cc0` | 当前未开放/预留：暂拟：环境：紊流 | 当前 CcTag 未引用<br>Global child: `global_buff_cc_chr_normal_special_cc0` (传入 skill_ratio<-skill_ratio, dmg_scale<-dmg_scale) | 无内部派生 | 伤害: Attacker[NormalSkill/256] -> DamageScaleProcessor/ProdCalcZone(dmg_scale=-0.6)<br>Ability.OnObtainAtb: Skill/Gain 来源技力触发（不限战技），读取本次技力值后乘 `skill_ratio=2` 并补发 ATB |
+| `buff_cc_chr_normal_special_cc0` | 当前未开放/预留：暂拟：环境：紊流 | 当前 CcTag 未引用<br>Global child: `global_buff_cc_chr_normal_special_cc0` (传入 skill_ratio<-skill_ratio, dmg_scale<-dmg_scale) | 无内部派生 | 伤害: Attacker[NormalSkill/256] -> DamageScaleProcessor/ProdCalcZone(dmg_scale=-0.6)<br>Ability.OnObtainATB（技力）: Skill/Gain 来源技力触发（不限战技），读取本次技力值后乘 `skill_ratio=2` 并补发 ATB（技力） |
 | `buff_cc_chr_phy_dmg_down` | 当前词条相关：队列：扼制 | 当前 CcTag 未引用 | 由 `buff_cc_chr_dmg_down_after_inflict` 创建 | 伤害: Attacker[Physical] -> DamageScaleProcessor/ProdCalcZone(dmg_scale) |
 | `buff_cc_chr_phy_skill_clear_frozenonchar` | 当前词条相关：环境：融化 / 升华 / 电解 / 切削 | 当前入口： 102401 via `global_buff_cc_chr_phy_skill_clear_frozenonchar` {}<br>Global child: `global_buff_cc_chr_phy_skill_clear_frozenonchar` (no assign) | 无内部派生 | Ability.OnBeforeCastSkill: CheckSkillDamageType, CheckSkillType, FinishBuffAdvanced |
 | `buff_cc_chr_physical_and_inflict_enhance_special_cc0` | 当前词条相关：环境：震荡 | 当前入口： 103203 via `global_buff_cc_chr_physical_and_inflict_enhance_special_cc0` {dmg_up=1, dmg_scale=-0.6}<br>Global child: `global_buff_cc_chr_physical_and_inflict_enhance_special_cc0` (传入 dmg_up<-dmg_up, dmg_scale<-dmg_scale) | 无内部派生 | 伤害: Attacker[mask ExceptAny 9088] -> DamageScaleProcessor/ProdCalcZone(dmg_up); Attacker[mask HasAll 256] -> DamageScaleProcessor/ProdCalcZone(dmg_scale) |
@@ -1417,11 +1374,11 @@ GlobalBuffData 默认 `dmg_up=2`，当前 CcTag 覆盖为 `dmg_up=1`；应按当
 
 ## 附录 4：全量 GlobalBuffData 列表
 
-本表列出所有 42 个 `global_buff_cc*`。有些 Global Buff 没有 child BuffData，而是直接修改体力、ATB 或关卡事件。
+本表列出所有 42 个 `global_buff_cc*`。有些 Global Buff 没有 child BuffData，而是直接修改体力、ATB（技力） 或关卡事件。
 
 | GlobalBuffData | 当前 CcTag | 默认黑板 | 生效方式 | 备注 |
 |---|---|---|---|---|
-| `global_buff_cc_chr_atb_recoverspeed_down` | 当前 CcTag 未引用 | ratio=-0.1 | globalModifier `AtbRecover` / `Multiplier`（ratio） | 当前未开放/预留；若后续进入 CcTag，以 CcTag 黑板覆盖值为准。 |
+| `global_buff_cc_chr_ATB_recoverspeed_down` | 当前 CcTag 未引用 | ratio=-0.1 | globalModifier `ATB（技力）Recover` / `Multiplier`（ratio） | 当前未开放/预留；若后续进入 CcTag，以 CcTag 黑板覆盖值为准。 |
 | `global_buff_cc_chr_combo_cd_up` | 当前 CcTag 未引用 | cd=5 | `buff_cc_chr_combo_cd_up`（传入 cd<-cd） | 当前未开放/预留；若后续进入 CcTag，以 CcTag 黑板覆盖值为准。 |
 | `global_buff_cc_chr_combo_skill_cryst_inflict` | 100401, 100402 | times=2 | `buff_cc_chr_combo_skill_cryst_inflict`（传入 times<-times） | 当前词条：队列：热流失 |
 | `global_buff_cc_chr_combo_skill_dmg_down` | 当前 CcTag 未引用 | dmg_scale=-0.9 | `buff_cc_chr_combo_skill_dmg_down`（传入 dmg_scale<-dmg_scale） | 当前未开放/预留；若后续进入 CcTag，以 CcTag 黑板覆盖值为准。 |
@@ -1445,7 +1402,7 @@ GlobalBuffData 默认 `dmg_up=2`，当前 CcTag 覆盖为 `dmg_up=1`；应按当
 | `global_buff_cc_chr_normal_skill_cryst_inflict` | 100301, 100302 | times=2 | `buff_cc_chr_normal_skill_cryst_inflict`（传入 times<-times） | 当前词条：队列：失温 |
 | `global_buff_cc_chr_normal_skill_dmg_down` | 当前 CcTag 未引用 | dmg_scale=-0.9 | `buff_cc_chr_normal_skill_dmg_down`（传入 dmg_scale<-dmg_scale） | 当前未开放/预留；若后续进入 CcTag，以 CcTag 黑板覆盖值为准。 |
 | `global_buff_cc_chr_normal_skill_global_cd_lv1` | 当前 CcTag 未引用 | cd=8 | `buff_cc_chr_normal_skill_global_cd`（传入 cd<-cd） | 当前未开放/预留；若后续进入 CcTag，以 CcTag 黑板覆盖值为准。 |
-| `global_buff_cc_chr_normal_special_cc0` | 当前 CcTag 未引用 | recover_ratio=1, skill_ratio=2, dmg_scale=-0.6 | `buff_cc_chr_normal_special_cc0`（传入 skill_ratio<-skill_ratio, dmg_scale<-dmg_scale）<br>globalModifier `AtbRecover` / `Multiplier`（recover_ratio） | 当前未开放/预留；`recover_ratio=1` 是默认占位，后续若进入 CcTagTable 应由真实黑板覆盖。玩家效果应写作技力自然恢复速度下降，Skill/Gain 来源技力额外补发 2 倍数值（不限战技），战技伤害 -60%。 |
+| `global_buff_cc_chr_normal_special_cc0` | 当前 CcTag 未引用 | recover_ratio=1, skill_ratio=2, dmg_scale=-0.6 | `buff_cc_chr_normal_special_cc0`（传入 skill_ratio<-skill_ratio, dmg_scale<-dmg_scale）<br>globalModifier `ATB（技力）Recover` / `Multiplier`（recover_ratio） | 当前未开放/预留；`recover_ratio=1` 是默认占位，后续若进入 CcTagTable 应由真实黑板覆盖。玩家效果应写作技力自然恢复速度下降，Skill/Gain 来源技力额外补发 2 倍数值（不限战技），战技伤害 -60%。 |
 | `global_buff_cc_chr_phy_skill_clear_frozenonchar` | 102401 | - | `buff_cc_chr_phy_skill_clear_frozenonchar`（传入 layer<-layer） | 当前词条：环境：融化 / 升华 / 电解 / 切削 |
 | `global_buff_cc_chr_physical_and_inflict_enhance_special_cc0` | 103203 | dmg_up=2, dmg_scale=-0.6 | `buff_cc_chr_physical_and_inflict_enhance_special_cc0`（传入 dmg_up<-dmg_up, dmg_scale<-dmg_scale） | 当前词条：环境：震荡 |
 | `global_buff_cc_chr_pulse_skill_clear_frozenonchar` | 101901 | - | `buff_cc_chr_pulse_skill_clear_frozenonchar`（传入 layer<-layer） | 当前词条：环境：融化 / 升华 / 电解 / 切削 |
