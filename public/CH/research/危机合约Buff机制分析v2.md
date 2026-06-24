@@ -22,35 +22,6 @@
 4. 未进入当前 CcTag 的数据会按 Buff 行为拟写为“非原游戏内容”的暂拟词条，只用于说明数据意图。
 5. 附录 3、附录 4 保留全量 BuffData 与 GlobalBuffData 列表，方便按 ID 追溯。
 
-## 当前词条总览
-
-| 单元 | Tag | 核心效果 | 当前数值 | 数据入口 |
-|---|---|---|---|---|
-| 环境：过速 | 100003 | 连携技冷却缩短，但战技伤害降低。 | 100003：连携技冷却变为 40%（等价于冷却时间 -60%）；战技伤害 -60%。 | `global_buff_cc_chr_combo_special_cc0` |
-| 改写：刺激 | 100201<br>100202 | 敌人造成的各类型伤害提高。 | I / 100201：敌人伤害 +30%。<br>II / 100202：敌人伤害 +80%。 | `buff_cc_enemy_common_dmg_up` |
-| 队列：失温 | 100301<br>100302 | 干员反复施放战技后，主控干员获得寒冷附着。 | I / 100301：每施放 2 次战技触发。<br>II / 100302：每施放 1 次战技触发。<br>每名干员有 3 秒冷却。 | `global_buff_cc_chr_normal_skill_cryst_inflict` |
-| 队列：热流失 | 100401<br>100402 | 干员反复施放连携技后，主控干员获得寒冷附着。 | I / 100401：每施放 2 次连携技触发。<br>II / 100402：每施放 1 次连携技触发。<br>每名干员有 3 秒冷却。 | `global_buff_cc_chr_combo_skill_cryst_inflict` |
-| 队列：折刃 | 100501<br>100502 | 干员每次施放终结技后，该干员之后的终结技伤害按层数降低。 | I / 100501：每层终结技伤害 -50%。<br>II / 100502：每层终结技伤害 -100%。 | `global_buff_cc_chr_ult_dmg_down_gradual` |
-| 队列：斩首 | 100601<br>100602 | 主控干员受到伤害提高。 | I / 100601：主控干员受伤 +50%。<br>II / 100602：主控干员受伤 +100%。 | `global_buff_cc_chr_main_dmg_taken_up` |
-| 队列：脱力 | 100803 | 干员普通攻击伤害降低。 | 100803：普通攻击伤害 -70%。 | `global_buff_cc_chr_normal_attack_dmg_down` |
-| 队列：扼制 | 100901<br>100902 | 干员使敌人破防或法术附着层数增加后，该干员对应类型伤害暂时降低。 | I / 100901：对应类型伤害 -45%，持续 10 秒。<br>II / 100902：对应类型伤害 -90%，持续 10 秒。 | `global_buff_cc_chr_dmg_down_after_inflict` |
-| 改写：屏障 | 101001 | 每个敌人对破防或同类型法术附着有周期性免疫窗口。 | 101001：每 5 秒只能被施加一次破防或同类型法术附着。 | `buff_cc_enemy_periodic_inflict_resist` |
-| 改写：愈合 | 101101<br>101102 | 敌人处于控制效果时持续回血。 | I / 101101：每秒回复 5% 最大生命值。<br>II / 101102：每秒回复 15% 最大生命值。 | `buff_cc_enemy_heal_under_control` |
-| 环境：分隔 | 101201 | 战斗开始后禁止切换主控干员。 | 101201：无数值黑板。 | `global_buff_cc_level_mute_switch_player_pre` |
-| 环境：厌氧 | 101301 | 体力恢复速度降低。 | 101301：`ratio=-0.5`，按当前 runtime 的 Multiplier 公式是恢复速度变为 50%，即 -50%。 | `global_buff_cc_chr_dash_recover_speed_down` |
-| 环境：禁锢 | 101303 | 禁止闪避。 | 101303：无数值黑板。 | `global_buff_cc_level_mute_evade` |
-| 队列：衰竭 | 101402 | 干员受伤时，将部分伤害转化为生命值上限降低。 | 101402：近战干员转化 30%；远程干员转化 50%。 | `global_buff_cc_chr_dmg_reduce_maxhp` |
-| 改写：遗毒 | 101501<br>101502 | 敌人被击败后留下地面区域，干员处于其中会按最大生命值受伤。 | I / 101501：每秒 2% 最大生命值伤害。<br>II / 101502：每秒 5% 最大生命值伤害。 | `buff_cc_enemy_death_ground_area`<br>`buff_cc_enemy_death_ground_area_dmg` |
-| 环境：融化 / 升华 / 电解 / 切削 | 101701<br>101801<br>101901<br>102401 | 主控干员冻结时间延长至 15 秒，并指定一种技能类型可以解除冻结。 | 101701 融化：灼热类型技能解除冻结。<br>101801 升华：自然类型技能解除冻结。<br>101901 电解：电磁类型技能解除冻结。<br>102401 切削：物理类型技能解除冻结。<br>四个词条都包含 `global_buff_cc_chr_frozenonchar_extend`，冻结时间均为 15 秒。 | `global_buff_cc_chr_fire_skill_clear_frozenonchar`<br>`global_buff_cc_chr_frozenonchar_extend`<br>`global_buff_cc_chr_natural_skill_clear_frozenonchar`<br>`global_buff_cc_chr_phy_skill_clear_frozenonchar`<br>`global_buff_cc_chr_pulse_skill_clear_frozenonchar` |
-| 环境：枯萎 | 102001<br>102002 | 减少波次间隔产生的治愈团块。 | I / 102001：波次间隔只产生 1 个治愈团块。<br>II / 102002：波次间隔不产生治愈团块。 | `global_buff_cc_level_reduce_heal_ball`<br>`global_buff_cc_level_reduce_heal_ball_2` |
-| 环境：时限 | 102101<br>102102 | 挑战倒计时减少。 | I / 102101：倒计时 -100 秒。<br>II / 102102：倒计时 -200 秒。 | `global_buff_cc_level_countdown_reduce` |
-| 改写：奔腾 | 102302 | 敌人移动速度提高，并获得短时间单次受伤上限。 | 102302：移动速度 x2（+100%）；0.1 秒内受到的伤害不超过最大生命值 25%。 | `buff_cc_enemy_common_movespeedup` |
-| 队列：萎缩 | 102801<br>102802<br>102803 | 干员主能力值降低。 | I / 102801：主能力值 x0.9（-10%）。<br>II / 102802：主能力值 x0.8（-20%）。<br>III / 102803：主能力值 x0.6（-40%）。 | `global_buff_cc_chr_main_attribute_down` |
-| 改写：裹附 | 103102 | 敌人身上的破防或法术附着层数会降低其受到的对应类型伤害。 | 103102：每层对应类型伤害 -10%；效果在破防或附着结束后延迟 0.1 秒消失。 | `buff_cc_enemy_inflict_stack_resist` |
-| 环境：震荡 | 103203 | 干员特定伤害提高，同时战技伤害降低。 | 103203：除普通攻击、战技、连携技和终结技以外的伤害 +100%；战技伤害 -60%。 | `global_buff_cc_chr_physical_and_inflict_enhance_special_cc0` |
-| 环境：同步生长 | 103302 | 主控干员获得足量治疗或护盾时，场上敌人回血。 | 103302：主控实际回复 10% 最大生命值，或获得 20% 最大生命值护盾时，敌人回复 8% 最大生命值。 | `global_buff_cc_chr_heal_reflect_to_eny` |
-| 改写：活性 | 900101<br>900102<br>900103 | 敌人最大生命值提高。 | I / 900101：敌人生命 x1.5（+50%）。<br>II / 900102：敌人生命 x2.0（+100%）。<br>III / 900103：敌人生命 x3.0（+200%）。 | `buff_cc_enemy_common_hp_up` |
-
 ## 当前未开放与内部数据
 
 本节收录当前表里没有作为玩家词条出现的数据。下面的“暂拟”名称与描述均由本文根据 BuffData / GlobalBuffData 行为编写，用来帮助读者理解数据意图；它们不是游戏原文，也不代表后续一定会上线。
