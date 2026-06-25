@@ -1125,3 +1125,181 @@
 .v2cc-cc-tag-desc {
     color: var(--desc-color, #5b6f86);
 }
+
+/* Spawn map */
+.v2cc-wave-map-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+.v2cc-wave-map-row > .v2d-wave-section {
+    flex: 1;
+    min-width: 0;
+}
+.v2cc-wave-map-row > .v2cc-spawn-map-container {
+    flex-shrink: 0;
+    width: 400px;
+}
+@media (max-width: 900px) {
+    .v2cc-wave-map-row {
+        flex-direction: column;
+    }
+    .v2cc-wave-map-row > .v2cc-spawn-map-container {
+        width: 100%;
+    }
+}
+.v2d-wave-line {
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: background 0.15s;
+}
+.v2d-wave-line:hover {
+    background: var(--active-bg, #e2eaf9);
+}
+.v2d-wave-line.active {
+    background: rgba(30,111,159,0.1);
+    border-left: 3px solid var(--accent-color, #1e6f9f);
+    padding-left: 8px;
+}
+.v2d-wave-num {
+    cursor: pointer;
+}
+.v2d-wave-enemy {
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 1px 2px;
+    transition: background 0.15s;
+}
+.v2d-wave-enemy:hover {
+    background: var(--active-bg, #e2eaf9);
+}
+.v2d-wave-enemy.enemy-highlight {
+    background: rgba(39,174,96,0.15);
+    outline: 1px solid #27ae60;
+}
+.v2d-wave-enemy.enemy-target-highlight {
+    background: rgba(241,196,15,0.15);
+    outline: 1px solid #f1c40f;
+}
+.v2cc-spawn-map {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 520px;
+    background: var(--sidebar-bg, #f2f4f8);
+    border: 1px solid var(--border-color, #d9e0e8);
+    border-radius: 10px;
+    overflow: visible;
+}
+.v2cc-map-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    margin: -3px 0 0 -3px;
+    background: var(--border-color, #d9e0e8);
+    border-radius: 50%;
+}
+.v2cc-map-spot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 1;
+    cursor: default;
+    width: var(--unit, 5%);
+    height: var(--unit, 5%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.v2cc-map-spot:hover {
+    z-index: 100 !important;
+}
+.v2cc-map-spot-icon {
+    width: 100%;
+    height: 100%;
+    border-radius: 3px;
+    object-fit: contain;
+    border: 1.5px solid var(--accent-color, #1e6f9f);
+    background: var(--module-bg, #fff);
+    box-sizing: border-box;
+    display: block;
+}
+.v2cc-map-tip {
+    display: none;
+    position: absolute;
+    background: var(--text-color, #1e2b3c);
+    color: #fff;
+    font-size: 0.7rem;
+    line-height: 1.5;
+    padding: 6px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    z-index: 100;
+    pointer-events: none;
+    text-align: left;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+}
+.v2cc-map-tip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -4px;
+    border: 4px solid transparent;
+    border-top-color: var(--text-color, #1e2b3c);
+}
+.v2cc-map-tip.tip-below {
+    bottom: auto;
+    top: calc(100% + 6px);
+}
+.v2cc-map-tip.tip-below::after {
+    top: auto;
+    bottom: 100%;
+    border-top-color: transparent;
+    border-bottom-color: var(--text-color, #1e2b3c);
+}
+.v2cc-map-tip.tip-right {
+    left: 0;
+    transform: translateX(0);
+}
+.v2cc-map-tip.tip-right::after {
+    left: 8px;
+    margin-left: 0;
+}
+.v2cc-map-tip.tip-left {
+    left: auto;
+    right: 0;
+    transform: translateX(0);
+}
+.v2cc-map-tip.tip-left::after {
+    left: auto;
+    right: 8px;
+    margin-left: 0;
+}
+.v2cc-map-spot:hover .v2cc-map-tip {
+    display: block;
+}
+.v2cc-map-spot:hover .v2cc-map-spot-icon {
+    border-color: #e74c3c !important;
+    box-shadow: 0 0 0 2px rgba(231,76,60,0.3);
+}
+.v2cc-map-spot.group-highlight .v2cc-map-spot-icon {
+    box-shadow: 0 0 0 2px rgba(39,174,96,0.5);
+    border-color: #27ae60 !important;
+}
+.v2cc-map-spot.target-highlight .v2cc-map-spot-icon {
+    box-shadow: 0 0 0 2px rgba(241,196,15,0.6);
+    border-color: #f1c40f !important;
+}
+.v2cc-map-coords {
+    font-size: 0.65rem;
+    color: var(--desc-color, #5b6f86);
+    margin-top: 4px;
+    font-family: monospace;
+}

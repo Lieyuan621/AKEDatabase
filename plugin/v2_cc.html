@@ -48,7 +48,8 @@
         1: { label: '敌方增益', cls: 'enemy-buff' },
         2: { label: '己方减益', cls: 'self-buff' },
         3: { label: '减少时间', cls: 'time-reduce' },
-        0: { label: '无效果', cls: '' }
+        0: { label: '无效果', cls: '' },
+        'None': { label: '无效果', cls: '' }
     };
 
     function parseText(text) {
@@ -1025,12 +1026,21 @@
             const waves = [];
             Object.entries(spawner.waveMap || {}).forEach(([waveIdx, wave]) => {
                 const enemies = [];
+                const groups = [];
                 let maxAlive = 0;
                 let hasPause = false;
-                Object.values(wave.groupMap || {}).forEach(group => {
-                    if (group.limitGroupMaxCount && group.groupMaxCount > 0) {
-                        maxAlive += group.groupMaxCount;
-                    }
+                Object.entries(wave.groupMap || {}).forEach(([mapIdx, group]) => {
+                    const groupInfo = {
+                        groupKey: group.groupKey || mapIdx,
+                        groupId: group.groupId,
+                        groupMode: group.groupMode || 'Sequence',
+                        groupModeTargetKey: group.groupModeTargetKey || '',
+                        groupModeKillCount: group.groupModeKillCount || 0,
+                        maxCount: (group.limitGroupMaxCount && group.groupMaxCount > 0) ? group.groupMaxCount : 0,
+                        timestamp: group.timestamp || 0,
+                        spawns: []
+                    };
+                    if (groupInfo.maxCount > 0) maxAlive += groupInfo.maxCount;
                     Object.values(group.actionMap || {}).forEach(action => {
                         if (action.$type && action.$type.includes('Pause')) { hasPause = true; return; }
                         if (!action.libraryKey) return;
@@ -1043,16 +1053,129 @@
                         const disp = displayTable[templateId] || {};
                         const name = disp.name?.text || templateId;
                         const count = action.spawnCount || 1;
-                        enemies.push({ instanceId: eid, templateId, attrTemplateId, name, count, level: lib.enemyLevel, bornBuffList: lib.bornBuffList || [] });
+                        groupInfo.spawns.push({
+                            instanceId: eid, templateId, attrTemplateId, name, count,
+                            level: lib.enemyLevel, bornBuffList: lib.bornBuffList || [],
+                            timestamp: action.timestamp || 0,
+                            spawnInterval: action.spawnInterval || 0,
+                            position: action.position || { x: 0, y: 0, z: 0 },
+                            faceMainCharacter: action.faceMainCharacter ?? true,
+                            randomizeRadius: action.randomizeRadius || 0,
+                            routeId: action.routeId ?? null,
+                            preWarnTime: lib.preWarnTime || 0
+                        });
+                        enemies.push(groupInfo.spawns[groupInfo.spawns.length - 1]);
                     });
+                    if (groupInfo.spawns.length > 0) groups.push(groupInfo);
                 });
                 if (enemies.length > 0) {
-                    waves.push({ waveIdx, repeatable: wave.repeatable || false, maxAlive, hasPause, enemies });
+                    waves.push({
+                        waveIdx,
+                        waveMode: wave.waveMode || 'Parallel',
+                        repeatable: wave.repeatable || false,
+                        maxAlive,
+                        hasPause,
+                        enemies,
+                        groups
+                    });
                 }
             });
             if (waves.length > 0) allSpawners.push({ configId, waves });
         });
         return allSpawners.length > 0 ? allSpawners : null;
+    }
+
+    function renderSpawnMap(spawner) {
+        const waves = spawner.waves;
+        if (!waves || !waves.length) return '';
+
+        let allX = [], allZ = [];
+        waves.forEach(w => {
+            (w.groups || []).forEach(g => {
+                g.spawns.forEach(s => {
+                    allX.push(s.position.x);
+                    allZ.push(s.position.z);
+                });
+            });
+        });
+        const pad = 2;
+        const halfX = Math.max(Math.abs(Math.min(...allX)), Math.abs(Math.max(...allX))) + pad;
+        const halfZ = Math.max(Math.abs(Math.min(...allZ)), Math.abs(Math.max(...allZ))) + pad;
+        const minX = -halfX, maxX = halfX, minZ = -halfZ, maxZ = halfZ;
+        const rangeX = maxX - minX || 1, rangeZ = maxZ - minZ || 1;
+
+        function toPct(x, z) {
+            return { left: ((x - minX) / rangeX * 100).toFixed(1), top: ((maxZ - z) / rangeZ * 100).toFixed(1) };
+        }
+
+        let mapSpotsHtml = '';
+        waves.forEach((w, wi) => {
+            const vis = wi === 0 ? '' : 'display:none;';
+
+            const allSpawns = [];
+            (w.groups || []).forEach((g, gi) => {
+                const modeLabel = { 'Parallel': '同时', 'Sequence': '顺序', 'PartKilled': '击杀后', 'AllKilled': '全灭后', 'Deadline': '计时后' }[g.groupMode] || g.groupMode;
+                let conditionText = '';
+                let targetGroupKey = '';
+                if (g.groupMode === 'PartKilled' && g.groupModeTargetKey) {
+                    conditionText = `组${g.groupModeTargetKey}击杀${g.groupModeKillCount}只后`;
+                    targetGroupKey = g.groupModeTargetKey;
+                } else if (g.groupMode === 'AllKilled' && g.groupModeTargetKey) {
+                    conditionText = `组${g.groupModeTargetKey}全灭后`;
+                    targetGroupKey = g.groupModeTargetKey;
+                }
+                g.spawns.forEach(spawn => {
+                    allSpawns.push({ spawn, group: g, modeLabel, conditionText, targetGroupKey });
+                });
+            });
+
+            const posCount = {};
+            allSpawns.forEach(item => {
+                const key = `${item.spawn.position.x.toFixed(1)},${item.spawn.position.z.toFixed(1)}`;
+                if (!posCount[key]) posCount[key] = 0;
+                item.stackIdx = posCount[key];
+                posCount[key]++;
+            });
+
+            allSpawns.forEach(item => {
+                const { spawn, group: g, modeLabel, conditionText, targetGroupKey, stackIdx } = item;
+                const pct = toPct(spawn.position.x, spawn.position.z);
+                const posStr = `(${spawn.position.x.toFixed(1)}, ${spawn.position.z.toFixed(1)})`;
+                const randomStr = spawn.randomizeRadius > 0 ? ` ±${spawn.randomizeRadius.toFixed(1)}` : '';
+                const delayStr = spawn.timestamp > 0 ? `延迟 ${spawn.timestamp.toFixed(1)}s` : '';
+                const intervalStr = spawn.spawnInterval > 0 ? `间隔 ${spawn.spawnInterval.toFixed(1)}s` : '';
+                const warnStr = spawn.preWarnTime > 0 ? `预告 ${spawn.preWarnTime.toFixed(1)}s` : '';
+                const faceStr = spawn.faceMainCharacter ? '面向主控' : '';
+
+                const tipLines = [
+                    `<b>${escapeHtml(spawn.name)} ×${spawn.count} Lv.${spawn.level}</b>`,
+                    `坐标 ${posStr}${randomStr}`,
+                    `组${g.groupKey} · ${modeLabel}${conditionText ? ' · ' + conditionText : ''}`,
+                    [delayStr, intervalStr, warnStr, faceStr].filter(Boolean).join(' · ')
+                ].filter(Boolean);
+
+                const offsetPct = (0.3 * 100 / (2 * halfX)).toFixed(2);
+                const stackStyle = stackIdx > 0
+                    ? `margin-left:${stackIdx * offsetPct}%;margin-top:-${stackIdx * offsetPct}%;z-index:${10 - stackIdx};`
+                    : 'z-index:10;';
+
+                mapSpotsHtml += `<div class="v2cc-map-spot" data-wave="${wi}" data-group="${g.groupKey}" data-target-group="${targetGroupKey}" style="left:${pct.left}%;top:${pct.top}%;${vis}${stackStyle}">
+                    <img class="v2cc-map-spot-icon" src="/public/images/enemy/monstericonbig/${spawn.templateId}.png" onerror="this.style.display='none'">
+                    <div class="v2cc-map-tip">${tipLines.map(l => `<div>${l}</div>`).join('')}</div>
+                </div>`;
+            });
+        });
+
+        const coordInfo = `<div class="v2cc-map-coords">X: ${minX.toFixed(0)} ~ ${maxX.toFixed(0)}  Z: ${minZ.toFixed(0)} ~ ${maxZ.toFixed(0)}</div>`;
+        const unitPct = (100 / (2 * halfX)).toFixed(2);
+
+        return `<div class="v2cc-spawn-map-container">
+            <div class="v2cc-spawn-map" style="--unit:${unitPct}%">
+                <div class="v2cc-map-center"></div>
+                ${mapSpotsHtml}
+            </div>
+            ${coordInfo}
+        </div>`;
     }
 
     function renderDungeonSection(dungeonData) {
@@ -1080,21 +1203,25 @@
                 ${featureDesc ? `<div class="v2cc-dungeon-feature">${featureDesc}</div>` : ''}`;
 
             if (waveSpawners) {
+                waveSpawners.sort((a, b) => a.configId.localeCompare(b.configId));
                 waveSpawners.forEach((sp, spIdx) => {
                     let totalWaves = 0, totalEnemies = 0;
                     sp.waves.forEach(w => { totalWaves++; w.enemies.forEach(e => totalEnemies += e.count); });
 
                     let waveDetailHtml = '';
-                    sp.waves.forEach(wave => {
+                    sp.waves.forEach((wave, wIdx) => {
                         const repeatTag = wave.repeatable ? ' <span class="v2d-wave-repeat">无限刷新</span>' : '';
                         const aliveTag = wave.maxAlive > 0 ? ` <span class="v2d-wave-alive">上限${wave.maxAlive}只</span>` : '';
                         const pauseTag = wave.hasPause ? ' <span class="v2d-wave-pause">该波次的生成受其他因素控制</span>' : '';
                         const enemyParts = wave.enemies.map(e => {
                             const iconSrc = `/public/images/enemy/monstericonbig/${e.templateId}.png`;
-                            return `<span class="v2d-wave-enemy"><img class="v2d-wave-icon" src="${iconSrc}" onerror="this.style.display='none'"><span class="v2d-wave-ename">${escapeHtml(e.name)}</span> ×${e.count} <span class="v2d-wave-lv">Lv.${e.level}</span></span>`;
+                            return `<span class="v2d-wave-enemy" data-wave-idx="${wIdx}" data-enemy-id="${e.instanceId}"><img class="v2d-wave-icon" src="${iconSrc}" onerror="this.style.display='none'"><span class="v2d-wave-ename">${escapeHtml(e.name)}</span> ×${e.count} <span class="v2d-wave-lv">Lv.${e.level}</span></span>`;
                         }).join(' ');
-                        waveDetailHtml += `<div class="v2d-wave-line"><span class="v2d-wave-num">波次 ${wave.waveIdx}</span>${repeatTag}${aliveTag}${pauseTag}: ${enemyParts}</div>`;
+                        const activeCls = wIdx === 0 ? ' active' : '';
+                        waveDetailHtml += `<div class="v2d-wave-line${activeCls}" data-wave-idx="${wIdx}"><span class="v2d-wave-num" data-wave-idx="${wIdx}">波次 ${wave.waveIdx}</span>${repeatTag}${aliveTag}${pauseTag}: ${enemyParts}</div>`;
                     });
+
+                    const spawnMapHtml = renderSpawnMap(sp);
 
                     const enemyLibBuffs = {};
                     sp.waves.forEach(wave => {
@@ -1136,9 +1263,12 @@
                             <span class="v2cc-spawner-brief">${totalWaves}波 · ${totalEnemies}只</span>
                         </div>
                         <div class="v2cc-spawner-body">
-                            <div class="v2d-wave-section">
-                                <div class="v2d-wave-summary"><span class="v2d-wave-label">波次统计</span> ${totalWaves}波 | 共${totalEnemies}只</div>
-                                <div class="v2d-wave-detail">${waveDetailHtml}</div>
+                            <div class="v2cc-wave-map-row">
+                                <div class="v2d-wave-section">
+                                    <div class="v2d-wave-summary"><span class="v2d-wave-label">波次统计</span> ${totalWaves}波 | 共${totalEnemies}只</div>
+                                    <div class="v2d-wave-detail">${waveDetailHtml}</div>
+                                </div>
+                                ${spawnMapHtml}
                             </div>
                             ${enemiesHtml}
                         </div>
@@ -1507,6 +1637,159 @@
         document.getElementById('v2ccSearchInput')?.addEventListener('input', (e) => {
             searchTerm = e.target.value;
             renderGameList();
+        });
+
+        function adjustTipPosition(spot, map) {
+            const tip = spot.querySelector('.v2cc-map-tip');
+            if (!tip) return;
+            const mapRect = map.getBoundingClientRect();
+            const spotRect = spot.getBoundingClientRect();
+            const spotCenterX = spotRect.left + spotRect.width / 2 - mapRect.left;
+            const spotTop = spotRect.top - mapRect.top;
+
+            tip.classList.remove('tip-below', 'tip-left', 'tip-right');
+            if (spotTop < 60) tip.classList.add('tip-below');
+            if (spotCenterX > mapRect.width * 0.7) tip.classList.add('tip-left');
+            else if (spotCenterX < mapRect.width * 0.3) tip.classList.add('tip-right');
+        }
+
+        function switchWave(wi, spawnerBody) {
+            const map = spawnerBody.querySelector('.v2cc-spawn-map');
+            if (!map) return;
+            spawnerBody.querySelectorAll('.v2d-wave-line').forEach(l => {
+                l.classList.toggle('active', l.dataset.waveIdx === wi);
+            });
+            map.querySelectorAll('.v2cc-map-spot').forEach(spot => {
+                spot.style.display = spot.dataset.wave === wi ? '' : 'none';
+            });
+        }
+
+        function clearHighlights(spawnerBody) {
+            if (!spawnerBody) return;
+            spawnerBody.querySelectorAll('.v2cc-map-spot').forEach(s => {
+                s.classList.remove('group-highlight', 'target-highlight');
+            });
+            spawnerBody.querySelectorAll('.v2d-wave-enemy').forEach(e => {
+                e.classList.remove('enemy-highlight', 'enemy-target-highlight');
+            });
+        }
+
+        function highlightGroup(spawnerBody, groupKey, targetGroup, map) {
+            if (!spawnerBody || !map) return;
+            map.querySelectorAll('.v2cc-map-spot').forEach(s => {
+                if (s.dataset.group === groupKey) s.classList.add('group-highlight');
+                if (targetGroup && s.dataset.group === targetGroup) s.classList.add('target-highlight');
+            });
+            const activeWave = map.querySelector('.v2cc-map-spot[data-wave]:not([style*="display:none"])');
+            const wi = activeWave ? activeWave.dataset.wave : null;
+            spawnerBody.querySelectorAll('.v2d-wave-enemy').forEach(e => {
+                if (wi !== null && e.dataset.waveIdx !== wi) return;
+                const line = e.closest('.v2d-wave-line');
+                if (!line) return;
+                const spots = map.querySelectorAll(`.v2cc-map-spot[data-wave="${wi}"][data-group="${groupKey}"]`);
+                if (spots.length && e.dataset.enemyId === spots[0].dataset.group) {
+                    e.classList.add('enemy-highlight');
+                }
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            const waveLine = e.target.closest('.v2d-wave-line');
+            if (waveLine) {
+                const spawnerBody = waveLine.closest('.v2cc-spawner-body');
+                if (!spawnerBody) return;
+                const wi = waveLine.dataset.waveIdx;
+                if (wi !== undefined) switchWave(wi, spawnerBody);
+                return;
+            }
+
+            const waveEnemy = e.target.closest('.v2d-wave-enemy');
+            if (waveEnemy) {
+                const spawnerBody = waveEnemy.closest('.v2cc-spawner-body');
+                if (!spawnerBody) return;
+                const wi = waveEnemy.dataset.waveIdx;
+                const eid = waveEnemy.dataset.enemyId;
+                if (wi !== undefined) {
+                    switchWave(wi, spawnerBody);
+                    const map = spawnerBody.querySelector('.v2cc-spawn-map');
+                    if (map) {
+                        clearHighlights(spawnerBody);
+                        map.querySelectorAll(`.v2cc-map-spot[data-wave="${wi}"]`).forEach(spot => {
+                            if (spot.dataset.group) {
+                                const spots = map.querySelectorAll(`.v2cc-map-spot[data-wave="${wi}"][data-group="${spot.dataset.group}"]`);
+                                if (spots.length) {
+                                    const icon = spots[0].querySelector('.v2cc-map-spot-icon');
+                                    if (icon && icon.src && icon.src.includes(eid)) {
+                                        spots.forEach(s => s.classList.add('group-highlight'));
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+                return;
+            }
+        });
+
+        document.addEventListener('mouseover', (e) => {
+            const spot = e.target.closest('.v2cc-map-spot');
+            if (spot) {
+                const map = spot.closest('.v2cc-spawn-map');
+                const spawnerBody = spot.closest('.v2cc-spawner-body');
+                if (!map) return;
+                adjustTipPosition(spot, map);
+
+                const groupKey = spot.dataset.group;
+                const targetGroup = spot.dataset.targetGroup;
+                const wi = spot.dataset.wave;
+                map.querySelectorAll('.v2cc-map-spot').forEach(s => {
+                    s.classList.remove('group-highlight', 'target-highlight');
+                    if (s.dataset.group === groupKey && s !== spot) s.classList.add('group-highlight');
+                    if (targetGroup && s.dataset.group === targetGroup) s.classList.add('target-highlight');
+                });
+                if (spawnerBody) {
+                    spawnerBody.querySelectorAll(`.v2d-wave-enemy[data-wave-idx="${wi}"]`).forEach(we => {
+                        const iconSrc = we.querySelector('.v2d-wave-icon')?.src || '';
+                        const spotIconSrc = spot.querySelector('.v2cc-map-spot-icon')?.src || '';
+                        if (iconSrc && spotIconSrc && iconSrc === spotIconSrc) {
+                            we.classList.add('enemy-highlight');
+                        }
+                    });
+                }
+                return;
+            }
+
+            const waveEnemy = e.target.closest('.v2d-wave-enemy');
+            if (waveEnemy) {
+                const spawnerBody = waveEnemy.closest('.v2cc-spawner-body');
+                if (!spawnerBody) return;
+                const map = spawnerBody.querySelector('.v2cc-spawn-map');
+                if (!map) return;
+                const wi = waveEnemy.dataset.waveIdx;
+                const iconSrc = waveEnemy.querySelector('.v2d-wave-icon')?.src || '';
+                map.querySelectorAll(`.v2cc-map-spot[data-wave="${wi}"]`).forEach(spot => {
+                    const spotIconSrc = spot.querySelector('.v2cc-map-spot-icon')?.src || '';
+                    if (iconSrc && spotIconSrc && iconSrc === spotIconSrc) {
+                        spot.classList.add('group-highlight');
+                        const groupKey = spot.dataset.group;
+                        const targetGroup = spot.dataset.targetGroup;
+                        map.querySelectorAll('.v2cc-map-spot').forEach(s => {
+                            if (s.dataset.group === groupKey && s !== spot) s.classList.add('group-highlight');
+                            if (targetGroup && s.dataset.group === targetGroup) s.classList.add('target-highlight');
+                        });
+                    }
+                });
+                waveEnemy.classList.add('enemy-highlight');
+                return;
+            }
+        });
+
+        document.addEventListener('mouseout', (e) => {
+            const spot = e.target.closest('.v2cc-map-spot');
+            const waveEnemy = e.target.closest('.v2d-wave-enemy');
+            if (!spot && !waveEnemy) return;
+            const spawnerBody = (spot || waveEnemy)?.closest('.v2cc-spawner-body');
+            if (spawnerBody) clearHighlights(spawnerBody);
         });
 
         await refreshModule();
