@@ -708,3 +708,183 @@
 @media (min-width: 1000px) {
     .v2d-mobile-btn, .v2d-mobile-overlay { display: none !important; }
 }
+
+/* Spawn map */
+.v2d-wave-map-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+.v2d-wave-map-row > .v2d-wave-section {
+    flex: 1;
+    min-width: 0;
+}
+.v2d-wave-map-row > .v2d-spawn-map-container {
+    flex-shrink: 0;
+    width: 320px;
+}
+@media (max-width: 900px) {
+    .v2d-wave-map-row {
+        flex-direction: column;
+    }
+    .v2d-wave-map-row > .v2d-spawn-map-container {
+        width: 100%;
+    }
+}
+.v2d-wave-line {
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: background 0.15s;
+}
+.v2d-wave-line:hover {
+    background: rgba(30,111,159,0.08);
+}
+.v2d-wave-line.active {
+    background: rgba(30,111,159,0.1);
+    border-left: 3px solid #1e6f9f;
+    padding-left: 8px;
+}
+.v2d-wave-num {
+    cursor: pointer;
+}
+.v2d-wave-enemy {
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 1px 2px;
+    transition: background 0.15s, outline 0.15s;
+}
+.v2d-wave-enemy:hover {
+    background: rgba(30,111,159,0.08);
+}
+.v2d-wave-enemy.enemy-highlight {
+    background: rgba(39,174,96,0.15);
+    outline: 1px solid #27ae60;
+}
+.v2d-wave-enemy.enemy-target-highlight {
+    background: rgba(241,196,15,0.15);
+    outline: 1px solid #f1c40f;
+}
+.v2d-spawn-map-container {
+    flex-shrink: 0;
+}
+.v2d-spawn-map {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 320px;
+    background: #f2f4f8;
+    border: 1px solid #d9e0e8;
+    border-radius: 10px;
+    overflow: visible;
+}
+.v2d-map-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    margin: -3px 0 0 -3px;
+    background: #d9e0e8;
+    border-radius: 50%;
+}
+.v2d-map-spot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 1;
+    cursor: default;
+    width: var(--unit, 5%);
+    height: var(--unit, 5%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.v2d-map-spot:hover {
+    z-index: 100 !important;
+}
+.v2d-map-spot-icon {
+    width: 100%;
+    height: 100%;
+    border-radius: 3px;
+    object-fit: contain;
+    border: 1.5px solid #1e6f9f;
+    background: #fff;
+    box-sizing: border-box;
+    display: block;
+}
+.v2d-map-spot:hover .v2d-map-spot-icon {
+    border-color: #e74c3c !important;
+    box-shadow: 0 0 0 2px rgba(231,76,60,0.3);
+}
+.v2d-map-spot.group-highlight .v2d-map-spot-icon {
+    box-shadow: 0 0 0 2px rgba(39,174,96,0.5);
+    border-color: #27ae60 !important;
+}
+.v2d-map-spot.target-highlight .v2d-map-spot-icon {
+    box-shadow: 0 0 0 2px rgba(241,196,15,0.6);
+    border-color: #f1c40f !important;
+}
+.v2d-map-tip {
+    display: none;
+    position: absolute;
+    background: #1e2b3c;
+    color: #fff;
+    font-size: 0.7rem;
+    line-height: 1.5;
+    padding: 6px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    z-index: 100;
+    pointer-events: none;
+    text-align: left;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+}
+.v2d-map-tip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -4px;
+    border: 4px solid transparent;
+    border-top-color: #1e2b3c;
+}
+.v2d-map-tip.tip-below {
+    bottom: auto;
+    top: calc(100% + 6px);
+}
+.v2d-map-tip.tip-below::after {
+    top: auto;
+    bottom: 100%;
+    border-top-color: transparent;
+    border-bottom-color: #1e2b3c;
+}
+.v2d-map-tip.tip-right {
+    left: 0;
+    transform: translateX(0);
+}
+.v2d-map-tip.tip-right::after {
+    left: 8px;
+    margin-left: 0;
+}
+.v2d-map-tip.tip-left {
+    left: auto;
+    right: 0;
+    transform: translateX(0);
+}
+.v2d-map-tip.tip-left::after {
+    left: auto;
+    right: 8px;
+    margin-left: 0;
+}
+.v2d-map-spot:hover .v2d-map-tip {
+    display: block;
+}
+.v2d-map-coords {
+    font-size: 0.65rem;
+    color: #5b6f86;
+    margin-top: 4px;
+    font-family: monospace;
+}

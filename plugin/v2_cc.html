@@ -1149,7 +1149,7 @@
 
                 const tipLines = [
                     `<b>${escapeHtml(spawn.name)} ×${spawn.count} Lv.${spawn.level}</b>`,
-                    `坐标 ${posStr}${randomStr}`,
+                    `生成坐标 ${posStr}${randomStr}`,
                     `组${g.groupKey} · ${modeLabel}${conditionText ? ' · ' + conditionText : ''}`,
                     [delayStr, intervalStr, warnStr, faceStr].filter(Boolean).join(' · ')
                 ].filter(Boolean);
@@ -1205,11 +1205,25 @@
             if (waveSpawners) {
                 waveSpawners.sort((a, b) => a.configId.localeCompare(b.configId));
                 waveSpawners.forEach((sp, spIdx) => {
-                    let totalWaves = 0, totalEnemies = 0;
-                    sp.waves.forEach(w => { totalWaves++; w.enemies.forEach(e => totalEnemies += e.count); });
+                    const mergedWaves = [];
+                    sp.waves.forEach(w => {
+                        const existing = mergedWaves.find(mw => mw.waveIdx === w.waveIdx);
+                        if (existing) {
+                            existing.groups.push(...w.groups);
+                            existing.enemies.push(...w.enemies);
+                            existing.maxAlive += w.maxAlive;
+                            if (w.hasPause) existing.hasPause = true;
+                            if (w.repeatable) existing.repeatable = true;
+                        } else {
+                            mergedWaves.push({ ...w, groups: [...w.groups], enemies: [...w.enemies] });
+                        }
+                    });
+
+                    let totalWaves = mergedWaves.length, totalEnemies = 0;
+                    mergedWaves.forEach(w => w.enemies.forEach(e => totalEnemies += e.count));
 
                     let waveDetailHtml = '';
-                    sp.waves.forEach((wave, wIdx) => {
+                    mergedWaves.forEach((wave, wIdx) => {
                         const repeatTag = wave.repeatable ? ' <span class="v2d-wave-repeat">无限刷新</span>' : '';
                         const aliveTag = wave.maxAlive > 0 ? ` <span class="v2d-wave-alive">上限${wave.maxAlive}只</span>` : '';
                         const pauseTag = wave.hasPause ? ' <span class="v2d-wave-pause">该波次的生成受其他因素控制</span>' : '';
@@ -1221,7 +1235,8 @@
                         waveDetailHtml += `<div class="v2d-wave-line${activeCls}" data-wave-idx="${wIdx}"><span class="v2d-wave-num" data-wave-idx="${wIdx}">波次 ${wave.waveIdx}</span>${repeatTag}${aliveTag}${pauseTag}: ${enemyParts}</div>`;
                     });
 
-                    const spawnMapHtml = renderSpawnMap(sp);
+                    const mergedSpawner = { ...sp, waves: mergedWaves };
+                    const spawnMapHtml = renderSpawnMap(mergedSpawner);
 
                     const enemyLibBuffs = {};
                     sp.waves.forEach(wave => {
