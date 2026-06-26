@@ -35,30 +35,9 @@
           }
         ]
       },
-      "achv_fac_recycle_station": {
-        "name": "资源回收奖章",
-        "order": 6,
-        "canBeUpgraded": false,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 1,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_recycle_station_lv01.png",
-            "desc": "您已在资源回收站收取了多次物资。\n“感谢您准时到来！”那只羽兽似乎在说这样的话。",
-            "conditions": [
-              "在资源回收站累计回收50次资源"
-            ],
-            "progressToCompare": [
-              50
-            ]
-          }
-        ]
-      },
-      "achv_fac_settlement_wuling_1": {
-        "name": "武陵据点开拓奖章·Ⅰ",
-        "order": 12,
+      "achv_fac_settlement_tundra": {
+        "name": "谷地据点开拓奖章",
+        "order": 2,
         "canBeUpgraded": false,
         "canBePlated": true,
         "applyRareEffect": false,
@@ -66,31 +45,74 @@
         "level": [
           {
             "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_settlement_wuling_1_lv02.png",
-            "desc": "武陵的部分据点已在您的支援计划之中。\n授人以钓鳞竿，您的支援方针无比正确。",
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_settlement_tundra_lv02.png",
+            "desc": "四号谷地的所有据点都已在您的支援计划之中。\n授人以钓鳞竿，您的支援方针无比正确。",
             "conditions": [
-              "将天王坪援建点和心脏修缮站纳入支援计划"
+              "将四号谷地的所有据点纳入支援计划"
             ],
             "progressToCompare": [
-              2
+              3
             ]
           },
           {
             "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_settlement_wuling_1_lv02_plating.png",
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_settlement_tundra_lv02_plating.png",
             "desc": "",
             "conditions": [
-              "将天王坪援建点和心脏修缮站的等级提升到最高级"
+              "将四号谷地的所有据点等级提升到最高级"
             ],
             "progressToCompare": [
-              2
+              12
             ]
           }
         ]
       },
-      "achv_fac_techtree_tundra": {
-        "name": "谷地工业先驱奖章",
-        "order": 1,
+      "achv_fac_blackbox_1": {
+        "name": "模拟空间奖章",
+        "order": 10,
+        "canBeUpgraded": true,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 1,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_blackbox_1_lv01.png",
+            "desc": "您完成了部分模拟空间。",
+            "conditions": [
+              "累计手动完成5个模拟空间"
+            ],
+            "progressToCompare": [
+              5
+            ]
+          },
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_blackbox_1_lv02.png",
+            "desc": "您完成了许多模拟空间。",
+            "conditions": [
+              "累计手动完成10个模拟空间"
+            ],
+            "progressToCompare": [
+              10
+            ]
+          },
+          {
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_blackbox_1_lv03.png",
+            "desc": "您完成了大量模拟空间，感谢您对工业知识的热情。",
+            "conditions": [
+              "累计手动完成20个模拟空间"
+            ],
+            "progressToCompare": [
+              20
+            ]
+          }
+        ]
+      },
+      "achv_fac_coupon_wuling_4": {
+        "name": "武陵调度专家奖章·Ⅳ",
+        "order": 16,
         "canBeUpgraded": false,
         "canBePlated": false,
         "applyRareEffect": false,
@@ -98,20 +120,20 @@
         "level": [
           {
             "level": 3,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_techtree_tundra_lv03.png",
-            "desc": "您已实现了基础工业计划中的所有研究内容。\n在您的努力下，集成工业系统已完全与四号谷地适配。",
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_coupon_wuling_4_lv03.png",
+            "desc": "您已获得了许多武陵调度券。\n更多的调度券，更清晰的了解，武陵山水间的物资流转逃不过您的双眼。",
             "conditions": [
-              "完成基础工业计划的所有技术研究"
+              "累计获得80,000,000张武陵调度券"
             ],
             "progressToCompare": [
-              37
+              80000000
             ]
           }
         ]
       },
-      "achv_fac_simulation_training": {
-        "name": "“演武巅峰”",
-        "order": 15,
+      "achv_fac_domain_depot": {
+        "name": "货物运送奖章",
+        "order": 8,
         "canBeUpgraded": false,
         "canBePlated": true,
         "applyRareEffect": false,
@@ -119,24 +141,45 @@
         "level": [
           {
             "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_simulation_training_lv02.png",
-            "desc": "您以极巧妙的策略，登临了选剑演武的顶峰。",
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_domain_depot_lv02.png",
+            "desc": "您已完成了多次货物运送。\n即便拥有协议技术，但在运输货物上，您仍坚持亲力亲为，这令您的“客户们”无比感动。",
             "conditions": [
-              "完成1次战力点之和为10的演算"
+              "累计完成20次货物运送"
             ],
             "progressToCompare": [
-              1
+              20
             ]
           },
           {
             "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_simulation_training_lv02_plating.png",
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_domain_depot_lv02_plating.png",
             "desc": "",
             "conditions": [
-              "在数据溢出1次后，完成1次战力点之和为10的演算"
+              "在不损失货物完整度的情况下，累计完成20次精密制品货箱（极易损）的运送"
             ],
             "progressToCompare": [
-              2
+              20
+            ]
+          }
+        ]
+      },
+      "achv_fac_techtree_jinlong_1": {
+        "name": "武陵工业先驱奖章·Ⅰ",
+        "order": 4,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 1,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_techtree_jinlong_1_lv01.png",
+            "desc": "您已实现了武陵工业计划的第一期内容。",
+            "conditions": [
+              "完成武陵工业一期的所有技术研究"
+            ],
+            "progressToCompare": [
+              18
             ]
           }
         ]
@@ -203,45 +246,23 @@
           }
         ]
       },
-      "achv_fac_blackbox_1": {
-        "name": "模拟空间奖章",
-        "order": 10,
-        "canBeUpgraded": true,
+      "achv_fac_coupon_wuling_2": {
+        "name": "武陵调度专家奖章·Ⅱ",
+        "order": 11,
+        "canBeUpgraded": false,
         "canBePlated": false,
         "applyRareEffect": false,
         "noObtainCanView": true,
         "level": [
           {
-            "level": 1,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_blackbox_1_lv01.png",
-            "desc": "您完成了部分模拟空间。",
-            "conditions": [
-              "累计手动完成5个模拟空间"
-            ],
-            "progressToCompare": [
-              5
-            ]
-          },
-          {
             "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_blackbox_1_lv02.png",
-            "desc": "您完成了许多模拟空间。",
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_coupon_wuling_2_lv02.png",
+            "desc": "您已获得了许多武陵调度券。\n越多的票券出现在您手中，就代表着越多的人获得了急需的物资，您厥功至伟。",
             "conditions": [
-              "累计手动完成10个模拟空间"
+              "累计获得10,000,000张武陵调度券"
             ],
             "progressToCompare": [
-              10
-            ]
-          },
-          {
-            "level": 3,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_blackbox_1_lv03.png",
-            "desc": "您完成了大量模拟空间，感谢您对工业知识的热情。",
-            "conditions": [
-              "累计手动完成20个模拟空间"
-            ],
-            "progressToCompare": [
-              20
+              10000000
             ]
           }
         ]
@@ -310,23 +331,129 @@
           }
         ]
       },
-      "achv_fac_coupon_wuling_2": {
-        "name": "武陵调度专家奖章·Ⅱ",
-        "order": 11,
+      "achv_fac_coupon_wuling_3": {
+        "name": "武陵调度专家奖章·Ⅲ",
+        "order": 14,
         "canBeUpgraded": false,
         "canBePlated": false,
         "applyRareEffect": false,
         "noObtainCanView": true,
         "level": [
           {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_coupon_wuling_2_lv02.png",
-            "desc": "您已获得了许多武陵调度券。\n越多的票券出现在您手中，就代表着越多的人获得了急需的物资，您厥功至伟。",
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_coupon_wuling_3_lv03.png",
+            "desc": "您已获得了大量武陵调度券。\n越多的票券出现在您手中，就代表着越多的人获得了急需的物资，您厥功至伟。",
             "conditions": [
-              "累计获得10,000,000张武陵调度券"
+              "累计获得25,000,000张武陵调度券"
             ],
             "progressToCompare": [
-              10000000
+              25000000
+            ]
+          }
+        ]
+      },
+      "achv_fac_recycle_station": {
+        "name": "资源回收奖章",
+        "order": 6,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 1,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_recycle_station_lv01.png",
+            "desc": "您已在资源回收站收取了多次物资。\n“感谢您准时到来！”那只羽兽似乎在说这样的话。",
+            "conditions": [
+              "在资源回收站累计回收50次资源"
+            ],
+            "progressToCompare": [
+              50
+            ]
+          }
+        ]
+      },
+      "achv_fac_settlement_wuling_1": {
+        "name": "武陵据点开拓奖章·Ⅰ",
+        "order": 12,
+        "canBeUpgraded": false,
+        "canBePlated": true,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_settlement_wuling_1_lv02.png",
+            "desc": "武陵的部分据点已在您的支援计划之中。\n授人以钓鳞竿，您的支援方针无比正确。",
+            "conditions": [
+              "将天王坪援建点和心脏修缮站纳入支援计划"
+            ],
+            "progressToCompare": [
+              2
+            ]
+          },
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_settlement_wuling_1_lv02_plating.png",
+            "desc": "",
+            "conditions": [
+              "将天王坪援建点和心脏修缮站的等级提升到最高级"
+            ],
+            "progressToCompare": [
+              2
+            ]
+          }
+        ]
+      },
+      "achv_fac_simulation_training": {
+        "name": "“演武巅峰”",
+        "order": 15,
+        "canBeUpgraded": false,
+        "canBePlated": true,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_simulation_training_lv02.png",
+            "desc": "您以极巧妙的策略，登临了选剑演武的顶峰。",
+            "conditions": [
+              "完成1次战力点之和为10的演算"
+            ],
+            "progressToCompare": [
+              1
+            ]
+          },
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_simulation_training_lv02_plating.png",
+            "desc": "",
+            "conditions": [
+              "在数据溢出1次后，完成1次战力点之和为10的演算"
+            ],
+            "progressToCompare": [
+              2
+            ]
+          }
+        ]
+      },
+      "achv_fac_techtree_jinlong_2": {
+        "name": "武陵工业先驱奖章·Ⅱ",
+        "order": 10,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 1,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_techtree_jinlong_2_lv01.png",
+            "desc": "您已实现了武陵工业计划的更多内容。",
+            "conditions": [
+              "完成武陵工业计划的25个技术研究"
+            ],
+            "progressToCompare": [
+              25
             ]
           }
         ]
@@ -352,9 +479,9 @@
           }
         ]
       },
-      "achv_fac_coupon_wuling_3": {
-        "name": "武陵调度专家奖章·Ⅲ",
-        "order": 14,
+      "achv_fac_techtree_tundra": {
+        "name": "谷地工业先驱奖章",
+        "order": 1,
         "canBeUpgraded": false,
         "canBePlated": false,
         "applyRareEffect": false,
@@ -362,146 +489,40 @@
         "level": [
           {
             "level": 3,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_coupon_wuling_3_lv03.png",
-            "desc": "您已获得了大量武陵调度券。\n越多的票券出现在您手中，就代表着越多的人获得了急需的物资，您厥功至伟。",
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_techtree_tundra_lv03.png",
+            "desc": "您已实现了基础工业计划中的所有研究内容。\n在您的努力下，集成工业系统已完全与四号谷地适配。",
             "conditions": [
-              "累计获得25,000,000张武陵调度券"
+              "完成基础工业计划的所有技术研究"
             ],
             "progressToCompare": [
-              25000000
-            ]
-          }
-        ]
-      },
-      "achv_fac_coupon_wuling_4": {
-        "name": "武陵调度专家奖章·Ⅳ",
-        "order": 16,
-        "canBeUpgraded": false,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 3,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_coupon_wuling_4_lv03.png",
-            "desc": "您已获得了许多武陵调度券。\n更多的调度券，更清晰的了解，武陵山水间的物资流转逃不过您的双眼。",
-            "conditions": [
-              "累计获得80,000,000张武陵调度券"
-            ],
-            "progressToCompare": [
-              80000000
-            ]
-          }
-        ]
-      },
-      "achv_fac_domain_depot": {
-        "name": "货物运送奖章",
-        "order": 8,
-        "canBeUpgraded": false,
-        "canBePlated": true,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_domain_depot_lv02.png",
-            "desc": "您已完成了多次货物运送。\n即便拥有协议技术，但在运输货物上，您仍坚持亲力亲为，这令您的“客户们”无比感动。",
-            "conditions": [
-              "累计完成20次货物运送"
-            ],
-            "progressToCompare": [
-              20
-            ]
-          },
-          {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_domain_depot_lv02_plating.png",
-            "desc": "",
-            "conditions": [
-              "在不损失货物完整度的情况下，累计完成20次精密制品货箱（极易损）的运送"
-            ],
-            "progressToCompare": [
-              20
-            ]
-          }
-        ]
-      },
-      "achv_fac_settlement_tundra": {
-        "name": "谷地据点开拓奖章",
-        "order": 2,
-        "canBeUpgraded": false,
-        "canBePlated": true,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_settlement_tundra_lv02.png",
-            "desc": "四号谷地的所有据点都已在您的支援计划之中。\n授人以钓鳞竿，您的支援方针无比正确。",
-            "conditions": [
-              "将四号谷地的所有据点纳入支援计划"
-            ],
-            "progressToCompare": [
-              3
-            ]
-          },
-          {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_settlement_tundra_lv02_plating.png",
-            "desc": "",
-            "conditions": [
-              "将四号谷地的所有据点等级提升到最高级"
-            ],
-            "progressToCompare": [
-              12
-            ]
-          }
-        ]
-      },
-      "achv_fac_techtree_jinlong_1": {
-        "name": "武陵工业先驱奖章·Ⅰ",
-        "order": 4,
-        "canBeUpgraded": false,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 1,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_techtree_jinlong_1_lv01.png",
-            "desc": "您已实现了武陵工业计划的第一期内容。",
-            "conditions": [
-              "完成武陵工业一期的所有技术研究"
-            ],
-            "progressToCompare": [
-              18
-            ]
-          }
-        ]
-      },
-      "achv_fac_techtree_jinlong_2": {
-        "name": "武陵工业先驱奖章·Ⅱ",
-        "order": 10,
-        "canBeUpgraded": false,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 1,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_techtree_jinlong_2_lv01.png",
-            "desc": "您已实现了武陵工业计划的更多内容。",
-            "conditions": [
-              "完成武陵工业计划的25个技术研究"
-            ],
-            "progressToCompare": [
-              25
+              37
             ]
           }
         ]
       }
     },
     "帝江号奖章": {
+      "achv_fac_spaceship_level_1": {
+        "name": "总控升级奖章",
+        "order": 1,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_spaceship_level_1_lv03.png",
+            "desc": "您已将总控中枢性能提高至一定水平。\n您是否感受到了帝江号的欢欣愉悦？",
+            "conditions": [
+              "将帝江号总控中枢提升至5级"
+            ],
+            "progressToCompare": [
+              5
+            ]
+          }
+        ]
+      },
       "achv_fac_spaceship_fever_point": {
         "name": "深情厚谊奖章",
         "order": 3,
@@ -584,27 +605,6 @@
             ],
             "progressToCompare": [
               1000
-            ]
-          }
-        ]
-      },
-      "achv_fac_spaceship_level_1": {
-        "name": "总控升级奖章",
-        "order": 1,
-        "canBeUpgraded": false,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 3,
-            "icon": "/public/images/achievement/medaliconbig/achv_fac_spaceship_level_1_lv03.png",
-            "desc": "您已将总控中枢性能提高至一定水平。\n您是否感受到了帝江号的欢欣愉悦？",
-            "conditions": [
-              "将帝江号总控中枢提升至5级"
-            ],
-            "progressToCompare": [
-              5
             ]
           }
         ]

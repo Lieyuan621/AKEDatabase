@@ -3,80 +3,6 @@
   "categoryName": "技艺奖章",
   "group": {
     "战斗技巧奖章": {
-      "achv_bat_eny_cannot_move": {
-        "name": "多维禁锢奖章",
-        "order": 8,
-        "canBeUpgraded": false,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_bat_eny_cannot_move_lv02.png",
-            "desc": "多方位全面压制，您的战斗技巧令人叹服。",
-            "conditions": [
-              "于战斗中让同一个敌人连续20秒无法行动"
-            ],
-            "progressToCompare": [
-              20
-            ]
-          }
-        ]
-      },
-      "achv_bat_defeat_palesent": {
-        "name": "“苍白的溃灭”",
-        "order": 6,
-        "canBeUpgraded": false,
-        "canBePlated": true,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 3,
-            "icon": "/public/images/achievement/medaliconbig/achv_bat_defeat_palesent_lv03.png",
-            "desc": "在协议空间的幻影中，您再一次击溃了苍白的巨像。",
-            "conditions": [
-              "通关“危境祸影·白垩界卫”"
-            ],
-            "progressToCompare": [
-              1
-            ]
-          },
-          {
-            "level": 3,
-            "icon": "/public/images/achievement/medaliconbig/achv_bat_defeat_palesent_lv03_plating.png",
-            "desc": "",
-            "conditions": [
-              "在240秒内通关“危境祸影·白垩界卫”"
-            ],
-            "progressToCompare": [
-              240
-            ]
-          }
-        ]
-      },
-      "achv_bat_charged_hsbear": {
-        "name": "“截雷”",
-        "order": 16,
-        "canBeUpgraded": false,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_bat_charged_hsbear_lv02.png",
-            "desc": "您成功扼住了雷鸣的咽喉。",
-            "conditions": [
-              "于战斗中打断天鼓的咆哮声波"
-            ],
-            "progressToCompare": [
-              1
-            ]
-          }
-        ]
-      },
       "achv_bat_charged": {
         "name": "熟练截击奖章",
         "order": 7,
@@ -116,6 +42,80 @@
             ],
             "progressToCompare": [
               100
+            ]
+          }
+        ]
+      },
+      "achv_bat_defeat_dodge_jzogre": {
+        "name": "“穿风以行”",
+        "order": 19,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_defeat_dodge_jzogre_lv02.png",
+            "desc": "您于沉重的风暴中灵巧移动，与每一道足以撕裂血肉的嘶吼擦身而过。",
+            "conditions": [
+              "在披甲裂兽的九连旋转攻击中，主控干员极限闪避5次以上攻击，且在此攻击全程中未受到伤害"
+            ],
+            "progressToCompare": [
+              1
+            ]
+          }
+        ]
+      },
+      "achv_bat_defeat_agtrinit": {
+        "name": "“星体的残肢”",
+        "order": 5,
+        "canBeUpgraded": false,
+        "canBePlated": true,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_defeat_agtrinit_lv03.png",
+            "desc": "在协议空间的幻影中，您阻止了象征着毁灭的星体重归大地。",
+            "conditions": [
+              "通关“危境祸影·三位一体”"
+            ],
+            "progressToCompare": [
+              1
+            ]
+          },
+          {
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_defeat_agtrinit_lv03_plating.png",
+            "desc": "",
+            "conditions": [
+              "在240秒内通关“危境祸影·三位一体”"
+            ],
+            "progressToCompare": [
+              240
+            ]
+          }
+        ]
+      },
+      "achv_bat_charged_hsbear": {
+        "name": "“截雷”",
+        "order": 16,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_charged_hsbear_lv02.png",
+            "desc": "您成功扼住了雷鸣的咽喉。",
+            "conditions": [
+              "于战斗中打断天鼓的咆哮声波"
+            ],
+            "progressToCompare": [
+              1
             ]
           }
         ]
@@ -163,59 +163,6 @@
           }
         ]
       },
-      "achv_bat_defeat_agtrinit": {
-        "name": "“星体的残肢”",
-        "order": 5,
-        "canBeUpgraded": false,
-        "canBePlated": true,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 3,
-            "icon": "/public/images/achievement/medaliconbig/achv_bat_defeat_agtrinit_lv03.png",
-            "desc": "在协议空间的幻影中，您阻止了象征着毁灭的星体重归大地。",
-            "conditions": [
-              "通关“危境祸影·三位一体”"
-            ],
-            "progressToCompare": [
-              1
-            ]
-          },
-          {
-            "level": 3,
-            "icon": "/public/images/achievement/medaliconbig/achv_bat_defeat_agtrinit_lv03_plating.png",
-            "desc": "",
-            "conditions": [
-              "在240秒内通关“危境祸影·三位一体”"
-            ],
-            "progressToCompare": [
-              240
-            ]
-          }
-        ]
-      },
-      "achv_bat_defeat_dodge_jzogre": {
-        "name": "“穿风以行”",
-        "order": 19,
-        "canBeUpgraded": false,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_bat_defeat_dodge_jzogre_lv02.png",
-            "desc": "您于沉重的风暴中灵巧移动，与每一道足以撕裂血肉的嘶吼擦身而过。",
-            "conditions": [
-              "在披甲裂兽的九连旋转攻击中，主控干员极限闪避5次以上攻击，且在此攻击全程中未受到伤害"
-            ],
-            "progressToCompare": [
-              1
-            ]
-          }
-        ]
-      },
       "achv_bat_defeat_ethillu": {
         "name": "“不稳定表象”",
         "order": 17,
@@ -258,27 +205,6 @@
           }
         ]
       },
-      "achv_bat_defeat_jzmking": {
-        "name": "“兽王降伏”",
-        "order": 18,
-        "canBeUpgraded": false,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_bat_defeat_jzmking_lv02.png",
-            "desc": "您降服了兽群的首领，或许您可以成为它们的新王？",
-            "conditions": [
-              "击败巨山犼兽"
-            ],
-            "progressToCompare": [
-              1
-            ]
-          }
-        ]
-      },
       "achv_bat_defeat_nefarp": {
         "name": "“征服者的遗恨”",
         "order": 14,
@@ -307,6 +233,80 @@
             ],
             "progressToCompare": [
               200
+            ]
+          }
+        ]
+      },
+      "achv_bat_eny_ace": {
+        "name": "全面抹消奖章",
+        "order": 9,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_eny_ace_lv02.png",
+            "desc": "我们或许可以相信，在某一天，您甚至能够拥有仅以眼神抹消敌人的能力。",
+            "conditions": [
+              "单次伤害同时击败至少5个敌人"
+            ],
+            "progressToCompare": [
+              5
+            ]
+          }
+        ]
+      },
+      "achv_bat_defeat_jzmking": {
+        "name": "“兽王降伏”",
+        "order": 18,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_defeat_jzmking_lv02.png",
+            "desc": "您降服了兽群的首领，或许您可以成为它们的新王？",
+            "conditions": [
+              "击败巨山犼兽"
+            ],
+            "progressToCompare": [
+              1
+            ]
+          }
+        ]
+      },
+      "achv_bat_defeat_palesent": {
+        "name": "“苍白的溃灭”",
+        "order": 6,
+        "canBeUpgraded": false,
+        "canBePlated": true,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_defeat_palesent_lv03.png",
+            "desc": "在协议空间的幻影中，您再一次击溃了苍白的巨像。",
+            "conditions": [
+              "通关“危境祸影·白垩界卫”"
+            ],
+            "progressToCompare": [
+              1
+            ]
+          },
+          {
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_defeat_palesent_lv03_plating.png",
+            "desc": "",
+            "conditions": [
+              "在240秒内通关“危境祸影·白垩界卫”"
+            ],
+            "progressToCompare": [
+              240
             ]
           }
         ]
@@ -375,70 +375,6 @@
           }
         ]
       },
-      "achv_bat_magical_AS": {
-        "name": "劲力展露奖章",
-        "order": 3,
-        "canBeUpgraded": true,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 1,
-            "icon": "/public/images/achievement/medaliconbig/achv_bat_magical_AS_lv01.png",
-            "desc": "格斗技巧于此展露。",
-            "conditions": [
-              "于战斗中累计施加50次物理异常"
-            ],
-            "progressToCompare": [
-              50
-            ]
-          },
-          {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_bat_magical_AS_lv02.png",
-            "desc": "您的敌人深深畏惧您的斩击与重拳。",
-            "conditions": [
-              "于战斗中累计施加300次物理异常"
-            ],
-            "progressToCompare": [
-              300
-            ]
-          },
-          {
-            "level": 3,
-            "icon": "/public/images/achievement/medaliconbig/achv_bat_magical_AS_lv03.png",
-            "desc": "您是当之无愧的格斗宗师。",
-            "conditions": [
-              "于战斗中累计施加500次物理异常"
-            ],
-            "progressToCompare": [
-              500
-            ]
-          }
-        ]
-      },
-      "achv_bat_eny_ace": {
-        "name": "全面抹消奖章",
-        "order": 9,
-        "canBeUpgraded": false,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_bat_eny_ace_lv02.png",
-            "desc": "我们或许可以相信，在某一天，您甚至能够拥有仅以眼神抹消敌人的能力。",
-            "conditions": [
-              "单次伤害同时击败至少5个敌人"
-            ],
-            "progressToCompare": [
-              5
-            ]
-          }
-        ]
-      },
       "achv_bat_eny_building_kill": {
         "name": "智能歼灭奖章",
         "order": 10,
@@ -482,6 +418,27 @@
           }
         ]
       },
+      "achv_bat_eny_cannot_move": {
+        "name": "多维禁锢奖章",
+        "order": 8,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_eny_cannot_move_lv02.png",
+            "desc": "多方位全面压制，您的战斗技巧令人叹服。",
+            "conditions": [
+              "于战斗中让同一个敌人连续20秒无法行动"
+            ],
+            "progressToCompare": [
+              20
+            ]
+          }
+        ]
+      },
       "achv_bat_frozen": {
         "name": "“熵减”",
         "order": 13,
@@ -499,6 +456,49 @@
             ],
             "progressToCompare": [
               10
+            ]
+          }
+        ]
+      },
+      "achv_bat_magical_AS": {
+        "name": "劲力展露奖章",
+        "order": 3,
+        "canBeUpgraded": true,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 1,
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_magical_AS_lv01.png",
+            "desc": "格斗技巧于此展露。",
+            "conditions": [
+              "于战斗中累计施加50次物理异常"
+            ],
+            "progressToCompare": [
+              50
+            ]
+          },
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_magical_AS_lv02.png",
+            "desc": "您的敌人深深畏惧您的斩击与重拳。",
+            "conditions": [
+              "于战斗中累计施加300次物理异常"
+            ],
+            "progressToCompare": [
+              300
+            ]
+          },
+          {
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_magical_AS_lv03.png",
+            "desc": "您是当之无愧的格斗宗师。",
+            "conditions": [
+              "于战斗中累计施加500次物理异常"
+            ],
+            "progressToCompare": [
+              500
             ]
           }
         ]
@@ -569,49 +569,9 @@
       }
     },
     "协议空间奖章": {
-      "achv_bat_hard_2": {
-        "name": "“大地的弃子”",
-        "order": 5,
-        "canBeUpgraded": false,
-        "canBePlated": true,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_bat_hard_2_lv02.png",
-            "desc": "您直面了那些残酷撕扯文明血肉之人，您再一次于丰碑上刻下了自己的名字。",
-            "conditions": [
-              "在「影拓丰碑」中，通关普通模式“大地的弃子”的所有关卡",
-              "在「影拓丰碑」中，通关普通模式“大地的弃子”的所有关卡",
-              "在「影拓丰碑」中，通关普通模式“大地的弃子”的所有关卡"
-            ],
-            "progressToCompare": [
-              1,
-              1,
-              1
-            ]
-          },
-          {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_bat_hard_2_lv02_plating.png",
-            "desc": "",
-            "conditions": [
-              "在「影拓丰碑」中，通关苦难模式“大地的弃子”的所有关卡",
-              "在「影拓丰碑」中，通关苦难模式“大地的弃子”的所有关卡",
-              "在「影拓丰碑」中，通关苦难模式“大地的弃子”的所有关卡"
-            ],
-            "progressToCompare": [
-              1,
-              1,
-              1
-            ]
-          }
-        ]
-      },
-      "achv_bat_enemyspawner": {
-        "name": "淤积清理奖章",
-        "order": 3,
+      "achv_bat_dung_ss": {
+        "name": "高阶培养奖章",
+        "order": 2,
         "canBeUpgraded": false,
         "canBePlated": false,
         "applyRareEffect": false,
@@ -619,13 +579,73 @@
         "level": [
           {
             "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_bat_enemyspawner_lv02.png",
-            "desc": "淤积于大地上的超域能量消散了，但它仍会重聚。",
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_dung_ss_lv02.png",
+            "desc": "即便是最危险的协议空间，亦无法阻止您为干员们找到最顶尖的材料。",
             "conditions": [
-              "探索等级达到7级后，通关5个不同的重度能量淤积点"
+              "通关所有“协议空间·高阶培养”",
+              "通关所有“协议空间·高阶培养”",
+              "通关所有“协议空间·高阶培养”",
+              "通关所有“协议空间·高阶培养”",
+              "通关所有“协议空间·高阶培养”"
             ],
             "progressToCompare": [
-              5
+              1,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      "achv_bat_hard_5": {
+        "name": "“死寂争鸣”",
+        "order": 9,
+        "canBeUpgraded": false,
+        "canBePlated": true,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_hard_5_lv02.png",
+            "desc": "您于雷鸣之声、死寂之相中见证了纷争，您再一次于丰碑上刻下了自己的名字。",
+            "conditions": [
+              "在「影拓丰碑」中，通关普通模式“死寂争鸣”的所有关卡",
+              "在「影拓丰碑」中，通关普通模式“死寂争鸣”的所有关卡",
+              "在「影拓丰碑」中，通关普通模式“死寂争鸣”的所有关卡",
+              "在「影拓丰碑」中，通关普通模式“死寂争鸣”的所有关卡",
+              "在「影拓丰碑」中，通关普通模式“死寂争鸣”的所有关卡",
+              "在「影拓丰碑」中，通关普通模式“死寂争鸣”的所有关卡"
+            ],
+            "progressToCompare": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_hard_5_lv02_plating.png",
+            "desc": "",
+            "conditions": [
+              "在「影拓丰碑」中，通关苦难模式“死寂争鸣”的所有关卡",
+              "在「影拓丰碑」中，通关苦难模式“死寂争鸣”的所有关卡",
+              "在「影拓丰碑」中，通关苦难模式“死寂争鸣”的所有关卡",
+              "在「影拓丰碑」中，通关苦难模式“死寂争鸣”的所有关卡",
+              "在「影拓丰碑」中，通关苦难模式“死寂争鸣”的所有关卡",
+              "在「影拓丰碑」中，通关苦难模式“死寂争鸣”的所有关卡"
+            ],
+            "progressToCompare": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
             ]
           }
         ]
@@ -672,9 +692,9 @@
           }
         ]
       },
-      "achv_bat_dung_ss": {
-        "name": "高阶培养奖章",
-        "order": 2,
+      "achv_bat_enemyspawner": {
+        "name": "淤积清理奖章",
+        "order": 3,
         "canBeUpgraded": false,
         "canBePlated": false,
         "applyRareEffect": false,
@@ -682,21 +702,13 @@
         "level": [
           {
             "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_bat_dung_ss_lv02.png",
-            "desc": "即便是最危险的协议空间，亦无法阻止您为干员们找到最顶尖的材料。",
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_enemyspawner_lv02.png",
+            "desc": "淤积于大地上的超域能量消散了，但它仍会重聚。",
             "conditions": [
-              "通关所有“协议空间·高阶培养”",
-              "通关所有“协议空间·高阶培养”",
-              "通关所有“协议空间·高阶培养”",
-              "通关所有“协议空间·高阶培养”",
-              "通关所有“协议空间·高阶培养”"
+              "探索等级达到7级后，通关5个不同的重度能量淤积点"
             ],
             "progressToCompare": [
-              1,
-              1,
-              1,
-              1,
-              1
+              5
             ]
           }
         ]
@@ -732,6 +744,46 @@
               "在「影拓丰碑」中，通关苦难模式“无机造物”的所有关卡",
               "在「影拓丰碑」中，通关苦难模式“无机造物”的所有关卡",
               "在「影拓丰碑」中，通关苦难模式“无机造物”的所有关卡"
+            ],
+            "progressToCompare": [
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      "achv_bat_hard_2": {
+        "name": "“大地的弃子”",
+        "order": 5,
+        "canBeUpgraded": false,
+        "canBePlated": true,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_hard_2_lv02.png",
+            "desc": "您直面了那些残酷撕扯文明血肉之人，您再一次于丰碑上刻下了自己的名字。",
+            "conditions": [
+              "在「影拓丰碑」中，通关普通模式“大地的弃子”的所有关卡",
+              "在「影拓丰碑」中，通关普通模式“大地的弃子”的所有关卡",
+              "在「影拓丰碑」中，通关普通模式“大地的弃子”的所有关卡"
+            ],
+            "progressToCompare": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_bat_hard_2_lv02_plating.png",
+            "desc": "",
+            "conditions": [
+              "在「影拓丰碑」中，通关苦难模式“大地的弃子”的所有关卡",
+              "在「影拓丰碑」中，通关苦难模式“大地的弃子”的所有关卡",
+              "在「影拓丰碑」中，通关苦难模式“大地的弃子”的所有关卡"
             ],
             "progressToCompare": [
               1,

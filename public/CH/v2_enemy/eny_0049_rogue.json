@@ -26,16 +26,16 @@
         "templateId": "eny_0049_rogue"
     },
     "enemytable": {
-        "eny_0049_rogue_settlement": {
-            "aiTemplateId": "Settlement/aiconf_eny_0049_rogue_settlement",
+        "eny_0049_rogue_dungeon": {
+            "aiTemplateId": "",
             "attrModifiers": [],
             "attrTemplateId": "eny_0049_rogue",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
             "bornBuffs": [
-                "buff_settlement_addtag"
+                "buff_common_born"
             ],
-            "enemyId": "eny_0049_rogue_settlement",
+            "enemyId": "eny_0049_rogue_dungeon",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,
@@ -58,16 +58,16 @@
             "showBigHeadbar": false,
             "templateId": "eny_0049_rogue"
         },
-        "eny_0049_rogue_dungeon": {
-            "aiTemplateId": "",
+        "eny_0049_rogue_settlement": {
+            "aiTemplateId": "Settlement/aiconf_eny_0049_rogue_settlement",
             "attrModifiers": [],
             "attrTemplateId": "eny_0049_rogue",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
             "bornBuffs": [
-                "buff_common_born"
+                "buff_settlement_addtag"
             ],
-            "enemyId": "eny_0049_rogue_dungeon",
+            "enemyId": "eny_0049_rogue_settlement",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,

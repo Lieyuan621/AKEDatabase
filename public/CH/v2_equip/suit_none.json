@@ -6193,16 +6193,6 @@
         "item_equip_t4_parts_wuling01_edc_01": "item_formu_t4_parts_wuling01_edc_01"
     },
     "equippacktable": {
-        "pack_parts_tundra01_t1": {
-            "iconId": "icon_pack_parts_tundra01_t1",
-            "isSuit": false,
-            "name": {
-                "id": -8036261332112055645,
-                "text": "矿场α型装备组"
-            },
-            "packId": "pack_parts_tundra01_t1",
-            "sortId": 2
-        },
         "pack_parts_wuling01_t4": {
             "iconId": "icon_pack_parts_wuling01_t4",
             "isSuit": false,
@@ -6213,15 +6203,15 @@
             "packId": "pack_parts_wuling01_t4",
             "sortId": 5
         },
-        "pack_parts_tundra01_t2": {
-            "iconId": "icon_pack_parts_tundra01_t2",
+        "pack_parts_tundra01_t3": {
+            "iconId": "icon_pack_parts_tundra01_t3",
             "isSuit": false,
             "name": {
-                "id": -3341684990544986165,
-                "text": "矿场β型装备组"
+                "id": 1898880665490450486,
+                "text": "矿场γ型装备组"
             },
-            "packId": "pack_parts_tundra01_t2",
-            "sortId": 3
+            "packId": "pack_parts_tundra01_t3",
+            "sortId": 4
         },
         "pack_parts_tundra01_t0": {
             "iconId": "icon_pack_parts_tundra01_t0",
@@ -6233,18 +6223,122 @@
             "packId": "pack_parts_tundra01_t0",
             "sortId": 1
         },
-        "pack_parts_tundra01_t3": {
-            "iconId": "icon_pack_parts_tundra01_t3",
+        "pack_parts_tundra01_t2": {
+            "iconId": "icon_pack_parts_tundra01_t2",
             "isSuit": false,
             "name": {
-                "id": 1898880665490450486,
-                "text": "矿场γ型装备组"
+                "id": -3341684990544986165,
+                "text": "矿场β型装备组"
             },
-            "packId": "pack_parts_tundra01_t3",
-            "sortId": 4
+            "packId": "pack_parts_tundra01_t2",
+            "sortId": 3
+        },
+        "pack_parts_tundra01_t1": {
+            "iconId": "icon_pack_parts_tundra01_t1",
+            "isSuit": false,
+            "name": {
+                "id": -8036261332112055645,
+                "text": "矿场α型装备组"
+            },
+            "packId": "pack_parts_tundra01_t1",
+            "sortId": 2
         }
     },
     "equippackformulatable": {
+        "pack_parts_wuling01_t4": {
+            "itemList": [
+                {
+                    "formulaId": "item_formu_t4_parts_wuling01_body_01"
+                },
+                {
+                    "formulaId": "item_formu_t4_parts_wuling01_body_02"
+                },
+                {
+                    "formulaId": "item_formu_t4_parts_wuling01_hand_01"
+                },
+                {
+                    "formulaId": "item_formu_t4_parts_wuling01_hand_02"
+                },
+                {
+                    "formulaId": "item_formu_t4_parts_wuling01_edc_01"
+                },
+                {
+                    "formulaId": "item_formu_t4_parts_wuling01_edc_02"
+                },
+                {
+                    "formulaId": "item_formu_t4_parts_wuling01_edc_03"
+                },
+                {
+                    "formulaId": "item_formu_t4_parts_wuling01_edc_04"
+                }
+            ]
+        },
+        "pack_parts_tundra01_t3": {
+            "itemList": [
+                {
+                    "formulaId": "item_formu_t3_parts_tundra01_body_01"
+                },
+                {
+                    "formulaId": "item_formu_t3_parts_tundra01_body_02"
+                },
+                {
+                    "formulaId": "item_formu_t3_parts_tundra01_hand_01"
+                },
+                {
+                    "formulaId": "item_formu_t3_parts_tundra01_hand_02"
+                },
+                {
+                    "formulaId": "item_formu_t3_parts_tundra01_edc_01"
+                },
+                {
+                    "formulaId": "item_formu_t3_parts_tundra01_edc_02"
+                },
+                {
+                    "formulaId": "item_formu_t3_parts_tundra01_edc_03"
+                },
+                {
+                    "formulaId": "item_formu_t3_parts_tundra01_edc_04"
+                }
+            ]
+        },
+        "pack_parts_tundra01_t0": {
+            "itemList": [
+                {
+                    "formulaId": "item_formu_t0_parts_tundra01_body_01"
+                },
+                {
+                    "formulaId": "item_formu_t0_parts_tundra01_body_02"
+                },
+                {
+                    "formulaId": "item_formu_t0_parts_tundra01_hand_01"
+                },
+                {
+                    "formulaId": "item_formu_t0_parts_tundra01_hand_02"
+                }
+            ]
+        },
+        "pack_parts_tundra01_t2": {
+            "itemList": [
+                {
+                    "formulaId": "item_formu_t2_parts_tundra01_hand_01"
+                },
+                {
+                    "formulaId": "item_formu_t2_parts_tundra01_hand_02"
+                },
+                {
+                    "formulaId": "item_formu_t2_parts_tundra01_edc_01"
+                },
+                {
+                    "formulaId": "item_formu_t2_parts_tundra01_edc_02"
+                },
+                {
+                    "formulaId": "item_formu_t2_parts_tundra01_edc_03"
+                },
+                {
+                    "formulaId": "item_formu_t2_parts_tundra01_edc_04"
+                }
+            ]
+        },
         "pack_parts_tundra01_t1": {
             "itemList": [
                 {
@@ -6282,100 +6376,6 @@
                 },
                 {
                     "formulaId": "item_formu_t1_parts_tundra01_edc_02"
-                }
-            ]
-        },
-        "pack_parts_wuling01_t4": {
-            "itemList": [
-                {
-                    "formulaId": "item_formu_t4_parts_wuling01_body_01"
-                },
-                {
-                    "formulaId": "item_formu_t4_parts_wuling01_body_02"
-                },
-                {
-                    "formulaId": "item_formu_t4_parts_wuling01_hand_01"
-                },
-                {
-                    "formulaId": "item_formu_t4_parts_wuling01_hand_02"
-                },
-                {
-                    "formulaId": "item_formu_t4_parts_wuling01_edc_01"
-                },
-                {
-                    "formulaId": "item_formu_t4_parts_wuling01_edc_02"
-                },
-                {
-                    "formulaId": "item_formu_t4_parts_wuling01_edc_03"
-                },
-                {
-                    "formulaId": "item_formu_t4_parts_wuling01_edc_04"
-                }
-            ]
-        },
-        "pack_parts_tundra01_t2": {
-            "itemList": [
-                {
-                    "formulaId": "item_formu_t2_parts_tundra01_hand_01"
-                },
-                {
-                    "formulaId": "item_formu_t2_parts_tundra01_hand_02"
-                },
-                {
-                    "formulaId": "item_formu_t2_parts_tundra01_edc_01"
-                },
-                {
-                    "formulaId": "item_formu_t2_parts_tundra01_edc_02"
-                },
-                {
-                    "formulaId": "item_formu_t2_parts_tundra01_edc_03"
-                },
-                {
-                    "formulaId": "item_formu_t2_parts_tundra01_edc_04"
-                }
-            ]
-        },
-        "pack_parts_tundra01_t0": {
-            "itemList": [
-                {
-                    "formulaId": "item_formu_t0_parts_tundra01_body_01"
-                },
-                {
-                    "formulaId": "item_formu_t0_parts_tundra01_body_02"
-                },
-                {
-                    "formulaId": "item_formu_t0_parts_tundra01_hand_01"
-                },
-                {
-                    "formulaId": "item_formu_t0_parts_tundra01_hand_02"
-                }
-            ]
-        },
-        "pack_parts_tundra01_t3": {
-            "itemList": [
-                {
-                    "formulaId": "item_formu_t3_parts_tundra01_body_01"
-                },
-                {
-                    "formulaId": "item_formu_t3_parts_tundra01_body_02"
-                },
-                {
-                    "formulaId": "item_formu_t3_parts_tundra01_hand_01"
-                },
-                {
-                    "formulaId": "item_formu_t3_parts_tundra01_hand_02"
-                },
-                {
-                    "formulaId": "item_formu_t3_parts_tundra01_edc_01"
-                },
-                {
-                    "formulaId": "item_formu_t3_parts_tundra01_edc_02"
-                },
-                {
-                    "formulaId": "item_formu_t3_parts_tundra01_edc_03"
-                },
-                {
-                    "formulaId": "item_formu_t3_parts_tundra01_edc_04"
                 }
             ]
         }

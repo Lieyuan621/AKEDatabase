@@ -16711,6 +16711,108 @@
             },
             "id": "chr_0024_deepfin_talent_2_2"
         },
+        "chr_0024_deepfin_potential_3": {
+            "dataList": [
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 3,
+                    "skillBbModifier": {
+                        "bbKey": "potential_3",
+                        "floatValue": 1,
+                        "modifyType": 3,
+                        "skillId": "chr_0024_deepfin_combo_skill",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                },
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 3,
+                    "skillBbModifier": {
+                        "bbKey": "atk_up",
+                        "floatValue": 0.15,
+                        "modifyType": 3,
+                        "skillId": "chr_0024_deepfin_combo_skill",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                },
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 3,
+                    "skillBbModifier": {
+                        "bbKey": "Duration",
+                        "floatValue": 10,
+                        "modifyType": 3,
+                        "skillId": "chr_0024_deepfin_combo_skill",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                }
+            ],
+            "desc": {
+                "id": -8949880888490534380,
+                "text": "连携技<@ba.key>凿孔底钓术</>成功钓起<@ba.key>珍鳞</>后，全队攻击力<@ba.vup>+{atk_up:0%}</>，持续<@ba.vup>{Duration:0}</>秒，该效果无法叠加。"
+            },
+            "id": "chr_0024_deepfin_potential_3"
+        },
         "chr_0024_deepfin_potential_4": {
             "dataList": [
                 {
@@ -16750,6 +16852,77 @@
                 "text": "终结技<@ba.key>大鳞，上钩！</>所需的终结技能量<@ba.vup>-{1-costvalue:0%}</>。"
             },
             "id": "chr_0024_deepfin_potential_4"
+        },
+        "chr_0024_deepfin_potential_1": {
+            "dataList": [
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 3,
+                    "skillBbModifier": {
+                        "bbKey": "potential_1",
+                        "floatValue": 1,
+                        "modifyType": 3,
+                        "skillId": "chr_0024_deepfin_normal_skill",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                },
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 3,
+                    "skillBbModifier": {
+                        "bbKey": "potential_1_atb",
+                        "floatValue": 10,
+                        "modifyType": 1,
+                        "skillId": "chr_0024_deepfin_normal_skill",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                }
+            ],
+            "desc": {
+                "id": 6218274159098499929,
+                "text": "战技<@ba.key>非常规路亚</>触发恢复技力效果时，额外恢复<@ba.vup>{potential_1_atb:0}</>点技力。"
+            },
+            "id": "chr_0024_deepfin_potential_1"
         },
         "chr_0024_deepfin_potential_2": {
             "dataList": [
@@ -16923,1386 +17096,9 @@
                 "text": "终结技<@ba.key>大鳞，上钩！</>命中生命值低于<@ba.vup>{hp_tar:0%}</>的目标时，伤害倍率提升至原本的<@ba.vup>{atk_up:0.0}</>倍。"
             },
             "id": "chr_0024_deepfin_potential_5"
-        },
-        "chr_0024_deepfin_potential_1": {
-            "dataList": [
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 3,
-                    "skillBbModifier": {
-                        "bbKey": "potential_1",
-                        "floatValue": 1,
-                        "modifyType": 3,
-                        "skillId": "chr_0024_deepfin_normal_skill",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                },
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 3,
-                    "skillBbModifier": {
-                        "bbKey": "potential_1_atb",
-                        "floatValue": 10,
-                        "modifyType": 1,
-                        "skillId": "chr_0024_deepfin_normal_skill",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                }
-            ],
-            "desc": {
-                "id": 6218274159098499929,
-                "text": "战技<@ba.key>非常规路亚</>触发恢复技力效果时，额外恢复<@ba.vup>{potential_1_atb:0}</>点技力。"
-            },
-            "id": "chr_0024_deepfin_potential_1"
-        },
-        "chr_0024_deepfin_potential_3": {
-            "dataList": [
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 3,
-                    "skillBbModifier": {
-                        "bbKey": "potential_3",
-                        "floatValue": 1,
-                        "modifyType": 3,
-                        "skillId": "chr_0024_deepfin_combo_skill",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                },
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 3,
-                    "skillBbModifier": {
-                        "bbKey": "atk_up",
-                        "floatValue": 0.15,
-                        "modifyType": 3,
-                        "skillId": "chr_0024_deepfin_combo_skill",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                },
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 3,
-                    "skillBbModifier": {
-                        "bbKey": "Duration",
-                        "floatValue": 10,
-                        "modifyType": 3,
-                        "skillId": "chr_0024_deepfin_combo_skill",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                }
-            ],
-            "desc": {
-                "id": -8949880888490534380,
-                "text": "连携技<@ba.key>凿孔底钓术</>成功钓起<@ba.key>珍鳞</>后，全队攻击力<@ba.vup>+{atk_up:0%}</>，持续<@ba.vup>{Duration:0}</>秒，该效果无法叠加。"
-            },
-            "id": "chr_0024_deepfin_potential_3"
         }
     },
     "skillpatchtable": {
-        "chr_0024_deepfin_attack1": {
-            "SkillPatchDataBundle": [
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.18,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 1,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0024_deepfin_attack1",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "18%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -8306913456913415470,
-                            "text": "普攻第一段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.19,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 2,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0024_deepfin_attack1",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "19%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 8368094823109104397,
-                            "text": "普攻第一段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.21,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 3,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0024_deepfin_attack1",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "21%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -4410337946281228292,
-                            "text": "普攻第一段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.23,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 4,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0024_deepfin_attack1",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "23%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 5356400750650203038,
-                            "text": "普攻第一段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.25,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 5,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0024_deepfin_attack1",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "25%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -8098666308546278412,
-                            "text": "普攻第一段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.26,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 6,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0024_deepfin_attack1",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "26%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 3557268380402805046,
-                            "text": "普攻第一段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.28,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 7,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0024_deepfin_attack1",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "28%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 2118327502365209730,
-                            "text": "普攻第一段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.3,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 8,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0024_deepfin_attack1",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "30%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 8932613402318025575,
-                            "text": "普攻第一段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.32,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 9,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0024_deepfin_attack1",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "32%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 5840888776017277868,
-                            "text": "普攻第一段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.34,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 10,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0024_deepfin_attack1",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "34%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 5542930358026251482,
-                            "text": "普攻第一段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.36,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 11,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0024_deepfin_attack1",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "36%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -6308979459186733004,
-                            "text": "普攻第一段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 0.39,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 12,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0024_deepfin_attack1",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "39%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -38541889290471447,
-                            "text": "普攻第一段倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                }
-            ]
-        },
         "chr_0024_deepfin_power_attack": {
             "SkillPatchDataBundle": [
                 {
@@ -19501,6 +18297,1210 @@
                         {
                             "id": 6578422164275169943,
                             "text": "处决攻击倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                }
+            ]
+        },
+        "chr_0024_deepfin_attack1": {
+            "SkillPatchDataBundle": [
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.18,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 1,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0024_deepfin_attack1",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "18%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -8306913456913415470,
+                            "text": "普攻第一段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.19,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 2,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0024_deepfin_attack1",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "19%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 8368094823109104397,
+                            "text": "普攻第一段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.21,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 3,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0024_deepfin_attack1",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "21%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -4410337946281228292,
+                            "text": "普攻第一段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.23,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 4,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0024_deepfin_attack1",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "23%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 5356400750650203038,
+                            "text": "普攻第一段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.25,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 5,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0024_deepfin_attack1",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "25%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -8098666308546278412,
+                            "text": "普攻第一段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.26,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 6,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0024_deepfin_attack1",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "26%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 3557268380402805046,
+                            "text": "普攻第一段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.28,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 7,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0024_deepfin_attack1",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "28%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 2118327502365209730,
+                            "text": "普攻第一段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.3,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 8,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0024_deepfin_attack1",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "30%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 8932613402318025575,
+                            "text": "普攻第一段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.32,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 9,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0024_deepfin_attack1",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "32%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 5840888776017277868,
+                            "text": "普攻第一段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.34,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 10,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0024_deepfin_attack1",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "34%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 5542930358026251482,
+                            "text": "普攻第一段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.36,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 11,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0024_deepfin_attack1",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "36%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -6308979459186733004,
+                            "text": "普攻第一段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.39,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 12,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0024_deepfin_attack1",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "39%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -38541889290471447,
+                            "text": "普攻第一段倍率"
                         },
                         {
                             "id": 0,

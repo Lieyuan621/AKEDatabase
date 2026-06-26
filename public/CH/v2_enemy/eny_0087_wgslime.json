@@ -27,14 +27,16 @@
         "templateId": "eny_0087_wgslime"
     },
     "enemytable": {
-        "eny_0087_wgslime_zfydefend": {
-            "aiTemplateId": "aiconf_eny_0087_wgslime_zfydefend",
+        "eny_0087_wgslime_settlement": {
+            "aiTemplateId": "Settlement/aiconf_eny_0087_wgslime_settlement",
             "attrModifiers": [],
             "attrTemplateId": "eny_0087_wgslime",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
-            "bornBuffs": [],
-            "enemyId": "eny_0087_wgslime_zfydefend",
+            "bornBuffs": [
+                "buff_settlement_addtag"
+            ],
+            "enemyId": "eny_0087_wgslime_settlement",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,
@@ -64,21 +66,6 @@
             "showBigHeadbar": false,
             "templateId": "eny_0087_wgslime"
         },
-        "eny_0087_wgslime_cardefend": {
-            "aiTemplateId": "Settlement/aiconf_eny_0087_wgslime_cardefend",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0087_wgslime",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [],
-            "enemyId": "eny_0087_wgslime_cardefend",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": false,
-            "showBigHeadbar": false,
-            "templateId": "eny_0087_wgslime"
-        },
         "eny_0087_wgslime": {
             "aiTemplateId": "",
             "attrModifiers": [],
@@ -94,16 +81,29 @@
             "showBigHeadbar": false,
             "templateId": "eny_0087_wgslime"
         },
-        "eny_0087_wgslime_settlement": {
-            "aiTemplateId": "Settlement/aiconf_eny_0087_wgslime_settlement",
+        "eny_0087_wgslime_cardefend": {
+            "aiTemplateId": "Settlement/aiconf_eny_0087_wgslime_cardefend",
             "attrModifiers": [],
             "attrTemplateId": "eny_0087_wgslime",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
-            "bornBuffs": [
-                "buff_settlement_addtag"
-            ],
-            "enemyId": "eny_0087_wgslime_settlement",
+            "bornBuffs": [],
+            "enemyId": "eny_0087_wgslime_cardefend",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0087_wgslime"
+        },
+        "eny_0087_wgslime_zfydefend": {
+            "aiTemplateId": "aiconf_eny_0087_wgslime_zfydefend",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0087_wgslime",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0087_wgslime_zfydefend",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,

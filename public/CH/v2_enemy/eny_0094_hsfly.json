@@ -27,6 +27,23 @@
         "templateId": "eny_0094_hsfly"
     },
     "enemytable": {
+        "eny_0094_hsfly_settlement": {
+            "aiTemplateId": "Settlement/aiconf_eny_0094_hsfly_settlement",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0094_hsfly",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_settlement_addtag"
+            ],
+            "enemyId": "eny_0094_hsfly_settlement",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0094_hsfly"
+        },
         "eny_0094_hsfly": {
             "aiTemplateId": "",
             "attrModifiers": [],
@@ -50,23 +67,6 @@
             "autoLockCancelType": 0,
             "bornBuffs": [],
             "enemyId": "eny_0094_hsfly_capitaldefense",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": false,
-            "showBigHeadbar": false,
-            "templateId": "eny_0094_hsfly"
-        },
-        "eny_0094_hsfly_settlement": {
-            "aiTemplateId": "Settlement/aiconf_eny_0094_hsfly_settlement",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0094_hsfly",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [
-                "buff_settlement_addtag"
-            ],
-            "enemyId": "eny_0094_hsfly_settlement",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,

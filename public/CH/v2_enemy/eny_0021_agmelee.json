@@ -26,14 +26,57 @@
         "templateId": "eny_0021_agmelee"
     },
     "enemytable": {
-        "eny_0021_agmelee_bomb": {
-            "aiTemplateId": "aiconf_eny_0021_agmelee_bomb",
-            "attrModifiers": [],
+        "eny_0021_agmelee_prolog_xl": {
+            "aiTemplateId": "aiconf_eny_0021_agmelee_prolog",
+            "attrModifiers": [
+                {
+                    "attrType": 1,
+                    "attrValue": 0.256,
+                    "modifierType": 4,
+                    "modifyAttributeType": 0
+                },
+                {
+                    "attrType": 2,
+                    "attrValue": -0.8,
+                    "modifierType": 1,
+                    "modifyAttributeType": 0
+                }
+            ],
             "attrTemplateId": "eny_0021_agmelee",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
             "bornBuffs": [],
-            "enemyId": "eny_0021_agmelee_bomb",
+            "enemyId": "eny_0021_agmelee_prolog_xl",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0021_agmelee"
+        },
+        "eny_0021_agmelee_agtrinit": {
+            "aiTemplateId": "aiconf_eny_0021_agmelee_agtrinit",
+            "attrModifiers": [
+                {
+                    "attrType": 2,
+                    "attrValue": -0.1,
+                    "modifierType": 1,
+                    "modifyAttributeType": 0
+                },
+                {
+                    "attrType": 1,
+                    "attrValue": -0.1,
+                    "modifierType": 1,
+                    "modifyAttributeType": 0
+                }
+            ],
+            "attrTemplateId": "eny_0021_agmelee",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_eny_0045_agtrinit_minion_buff"
+            ],
+            "enemyId": "eny_0021_agmelee_agtrinit",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,
@@ -86,29 +129,44 @@
             "showBigHeadbar": false,
             "templateId": "eny_0021_agmelee"
         },
-        "eny_0021_agmelee_agtrinit": {
-            "aiTemplateId": "aiconf_eny_0021_agmelee_agtrinit",
+        "eny_0021_agmelee_prolog2": {
+            "aiTemplateId": "aiconf_eny_0021_agmelee_prolog2",
             "attrModifiers": [
                 {
-                    "attrType": 2,
-                    "attrValue": -0.1,
-                    "modifierType": 1,
+                    "attrType": 1,
+                    "attrValue": 0.256,
+                    "modifierType": 4,
                     "modifyAttributeType": 0
                 },
                 {
-                    "attrType": 1,
-                    "attrValue": -0.1,
+                    "attrType": 2,
+                    "attrValue": -0.8,
                     "modifierType": 1,
                     "modifyAttributeType": 0
                 }
             ],
-            "attrTemplateId": "eny_0021_agmelee",
+            "attrTemplateId": "eny_0021_agmelee_prolog2",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
             "bornBuffs": [
-                "buff_eny_0045_agtrinit_minion_buff"
+                "buff_common_born"
             ],
-            "enemyId": "eny_0021_agmelee_agtrinit",
+            "enemyId": "eny_0021_agmelee_prolog2",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0021_agmelee"
+        },
+        "eny_0021_agmelee_bomb": {
+            "aiTemplateId": "aiconf_eny_0021_agmelee_bomb",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0021_agmelee",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0021_agmelee_bomb",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,
@@ -195,64 +253,6 @@
                 "buff_common_born"
             ],
             "enemyId": "eny_0021_agmelee_prolog",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": false,
-            "showBigHeadbar": false,
-            "templateId": "eny_0021_agmelee"
-        },
-        "eny_0021_agmelee_prolog2": {
-            "aiTemplateId": "aiconf_eny_0021_agmelee_prolog2",
-            "attrModifiers": [
-                {
-                    "attrType": 1,
-                    "attrValue": 0.256,
-                    "modifierType": 4,
-                    "modifyAttributeType": 0
-                },
-                {
-                    "attrType": 2,
-                    "attrValue": -0.8,
-                    "modifierType": 1,
-                    "modifyAttributeType": 0
-                }
-            ],
-            "attrTemplateId": "eny_0021_agmelee_prolog2",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [
-                "buff_common_born"
-            ],
-            "enemyId": "eny_0021_agmelee_prolog2",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": false,
-            "showBigHeadbar": false,
-            "templateId": "eny_0021_agmelee"
-        },
-        "eny_0021_agmelee_prolog_xl": {
-            "aiTemplateId": "aiconf_eny_0021_agmelee_prolog",
-            "attrModifiers": [
-                {
-                    "attrType": 1,
-                    "attrValue": 0.256,
-                    "modifierType": 4,
-                    "modifyAttributeType": 0
-                },
-                {
-                    "attrType": 2,
-                    "attrValue": -0.8,
-                    "modifierType": 1,
-                    "modifyAttributeType": 0
-                }
-            ],
-            "attrTemplateId": "eny_0021_agmelee",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [],
-            "enemyId": "eny_0021_agmelee_prolog_xl",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,

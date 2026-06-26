@@ -16887,77 +16887,6 @@
             },
             "id": "chr_0018_dapan_potential_2"
         },
-        "chr_0018_dapan_potential_3": {
-            "dataList": [
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 39,
-                        "attrValue": 15,
-                        "modifierType": 5,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 4,
-                    "skillBbModifier": {
-                        "bbKey": "",
-                        "floatValue": 0,
-                        "modifyType": 0,
-                        "skillId": "",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                },
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 50,
-                        "attrValue": 0.08,
-                        "modifierType": 5,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 4,
-                    "skillBbModifier": {
-                        "bbKey": "",
-                        "floatValue": 0,
-                        "modifyType": 0,
-                        "skillId": "",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                }
-            ],
-            "desc": {
-                "id": -3207808868383903878,
-                "text": "力量<@ba.vup>+{Str:0}</>，造成的物理伤害<@ba.vup>+{PhysicalDamageIncrease:0%}</>。"
-            },
-            "id": "chr_0018_dapan_potential_3"
-        },
         "chr_0018_dapan_potential_1": {
             "dataList": [
                 {
@@ -17028,6 +16957,77 @@
                 "text": "如果终结技<@ba.key>切丝入锅！</>至少击败了一个敌人，大潘造成的<@ba.pd>物理伤害</><@ba.vup>+{potential_1_dmg_up:0%}</>，持续{potential_1_duration:0}秒，该效果无法叠加。"
             },
             "id": "chr_0018_dapan_potential_1"
+        },
+        "chr_0018_dapan_potential_3": {
+            "dataList": [
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 39,
+                        "attrValue": 15,
+                        "modifierType": 5,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 4,
+                    "skillBbModifier": {
+                        "bbKey": "",
+                        "floatValue": 0,
+                        "modifyType": 0,
+                        "skillId": "",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                },
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 50,
+                        "attrValue": 0.08,
+                        "modifierType": 5,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 4,
+                    "skillBbModifier": {
+                        "bbKey": "",
+                        "floatValue": 0,
+                        "modifyType": 0,
+                        "skillId": "",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                }
+            ],
+            "desc": {
+                "id": -3207808868383903878,
+                "text": "力量<@ba.vup>+{Str:0}</>，造成的物理伤害<@ba.vup>+{PhysicalDamageIncrease:0%}</>。"
+            },
+            "id": "chr_0018_dapan_potential_3"
         },
         "chr_0018_dapan_potential_4": {
             "dataList": [
@@ -18435,28 +18435,13 @@
                 }
             ]
         },
-        "chr_0018_dapan_attack3": {
+        "chr_0018_dapan_power_attack": {
             "SkillPatchDataBundle": [
                 {
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.17,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_2",
-                            "value": 0.34,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
+                            "value": 4,
                             "valueStr": ""
                         }
                     ],
@@ -18471,18 +18456,18 @@
                     "iconId": "icon_attack_claym",
                     "level": 1,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_attack3",
+                    "skillId": "chr_0018_dapan_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "50%"
+                        "400%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 510475427375273128,
-                            "text": "普攻第三段倍率"
+                            "id": 3328509115459582845,
+                            "text": "处决攻击倍率"
                         },
                         {
                             "id": 0,
@@ -18551,22 +18536,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.18,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_2",
-                            "value": 0.37,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.55,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
+                            "value": 4.4,
                             "valueStr": ""
                         }
                     ],
@@ -18581,18 +18551,18 @@
                     "iconId": "icon_attack_claym",
                     "level": 2,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_attack3",
+                    "skillId": "chr_0018_dapan_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "55%"
+                        "440%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 3732591798025071852,
-                            "text": "普攻第三段倍率"
+                            "id": 7341457635796288102,
+                            "text": "处决攻击倍率"
                         },
                         {
                             "id": 0,
@@ -18661,22 +18631,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.2,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_2",
-                            "value": 0.4,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.6,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
+                            "value": 4.8,
                             "valueStr": ""
                         }
                     ],
@@ -18691,18 +18646,18 @@
                     "iconId": "icon_attack_claym",
                     "level": 3,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_attack3",
+                    "skillId": "chr_0018_dapan_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "60%"
+                        "480%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -8963823614072461435,
-                            "text": "普攻第三段倍率"
+                            "id": 8669353267381099457,
+                            "text": "处决攻击倍率"
                         },
                         {
                             "id": 0,
@@ -18771,22 +18726,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.22,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_2",
-                            "value": 0.44,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.65,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
+                            "value": 5.2,
                             "valueStr": ""
                         }
                     ],
@@ -18801,18 +18741,18 @@
                     "iconId": "icon_attack_claym",
                     "level": 4,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_attack3",
+                    "skillId": "chr_0018_dapan_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "65%"
+                        "520%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 2484925085536956829,
-                            "text": "普攻第三段倍率"
+                            "id": -4603468714156475726,
+                            "text": "处决攻击倍率"
                         },
                         {
                             "id": 0,
@@ -18881,22 +18821,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.23,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_2",
-                            "value": 0.47,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.7,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
+                            "value": 5.6,
                             "valueStr": ""
                         }
                     ],
@@ -18911,18 +18836,18 @@
                     "iconId": "icon_attack_claym",
                     "level": 5,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_attack3",
+                    "skillId": "chr_0018_dapan_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "70%"
+                        "560%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 4031795365998991024,
-                            "text": "普攻第三段倍率"
+                            "id": -4308448315534992713,
+                            "text": "处决攻击倍率"
                         },
                         {
                             "id": 0,
@@ -18991,22 +18916,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.25,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_2",
-                            "value": 0.5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.75,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
+                            "value": 6,
                             "valueStr": ""
                         }
                     ],
@@ -19021,18 +18931,18 @@
                     "iconId": "icon_attack_claym",
                     "level": 6,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_attack3",
+                    "skillId": "chr_0018_dapan_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "75%"
+                        "600%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -691988827644362742,
-                            "text": "普攻第三段倍率"
+                            "id": -2815633749695673695,
+                            "text": "处决攻击倍率"
                         },
                         {
                             "id": 0,
@@ -19101,22 +19011,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.27,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_2",
-                            "value": 0.54,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.8,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
+                            "value": 6.4,
                             "valueStr": ""
                         }
                     ],
@@ -19131,18 +19026,18 @@
                     "iconId": "icon_attack_claym",
                     "level": 7,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_attack3",
+                    "skillId": "chr_0018_dapan_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "80%"
+                        "640%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -6804032461409057545,
-                            "text": "普攻第三段倍率"
+                            "id": 4397950364503844140,
+                            "text": "处决攻击倍率"
                         },
                         {
                             "id": 0,
@@ -19211,22 +19106,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.28,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_2",
-                            "value": 0.57,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.85,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
+                            "value": 6.8,
                             "valueStr": ""
                         }
                     ],
@@ -19241,18 +19121,18 @@
                     "iconId": "icon_attack_claym",
                     "level": 8,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_attack3",
+                    "skillId": "chr_0018_dapan_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "85%"
+                        "680%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 4154818083963867208,
-                            "text": "普攻第三段倍率"
+                            "id": 8012131253414231697,
+                            "text": "处决攻击倍率"
                         },
                         {
                             "id": 0,
@@ -19321,22 +19201,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.3,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_2",
-                            "value": 0.6,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.9,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
+                            "value": 7.2,
                             "valueStr": ""
                         }
                     ],
@@ -19351,18 +19216,18 @@
                     "iconId": "icon_attack_claym",
                     "level": 9,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_attack3",
+                    "skillId": "chr_0018_dapan_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "90%"
+                        "720%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -4055200516358967184,
-                            "text": "普攻第三段倍率"
+                            "id": 5832302623121100169,
+                            "text": "处决攻击倍率"
                         },
                         {
                             "id": 0,
@@ -19431,22 +19296,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.32,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_2",
-                            "value": 0.64,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 0.97,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
+                            "value": 7.7,
                             "valueStr": ""
                         }
                     ],
@@ -19461,18 +19311,18 @@
                     "iconId": "icon_attack_claym",
                     "level": 10,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_attack3",
+                    "skillId": "chr_0018_dapan_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "97%"
+                        "770%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 1504522481938881005,
-                            "text": "普攻第三段倍率"
+                            "id": -6081387377228305753,
+                            "text": "处决攻击倍率"
                         },
                         {
                             "id": 0,
@@ -19541,22 +19391,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.35,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_2",
-                            "value": 0.7,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 1.04,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
+                            "value": 8.3,
                             "valueStr": ""
                         }
                     ],
@@ -19571,18 +19406,18 @@
                     "iconId": "icon_attack_claym",
                     "level": 11,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_attack3",
+                    "skillId": "chr_0018_dapan_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "104%"
+                        "830%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -4821574640085129936,
-                            "text": "普攻第三段倍率"
+                            "id": -7801144408129357756,
+                            "text": "处决攻击倍率"
                         },
                         {
                             "id": 0,
@@ -19651,22 +19486,7 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.38,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atk_scale_2",
-                            "value": 0.75,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 1.13,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 0,
+                            "value": 9,
                             "valueStr": ""
                         }
                     ],
@@ -19681,18 +19501,18 @@
                     "iconId": "icon_attack_claym",
                     "level": 12,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_attack3",
+                    "skillId": "chr_0018_dapan_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "113%"
+                        "900%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 7518259352317584411,
-                            "text": "普攻第三段倍率"
+                            "id": -5896550659814114837,
+                            "text": "处决攻击倍率"
                         },
                         {
                             "id": 0,
@@ -22101,6 +21921,1330 @@
                         {
                             "id": 5458871259586669145,
                             "text": "普攻第二段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                }
+            ]
+        },
+        "chr_0018_dapan_attack3": {
+            "SkillPatchDataBundle": [
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.17,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_2",
+                            "value": 0.34,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 1,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0018_dapan_attack3",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "50%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 510475427375273128,
+                            "text": "普攻第三段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.18,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_2",
+                            "value": 0.37,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.55,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 2,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0018_dapan_attack3",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "55%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 3732591798025071852,
+                            "text": "普攻第三段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.2,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_2",
+                            "value": 0.4,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.6,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 3,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0018_dapan_attack3",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "60%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -8963823614072461435,
+                            "text": "普攻第三段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.22,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_2",
+                            "value": 0.44,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.65,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 4,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0018_dapan_attack3",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "65%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 2484925085536956829,
+                            "text": "普攻第三段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.23,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_2",
+                            "value": 0.47,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.7,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 5,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0018_dapan_attack3",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "70%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 4031795365998991024,
+                            "text": "普攻第三段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.25,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_2",
+                            "value": 0.5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.75,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 6,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0018_dapan_attack3",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "75%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -691988827644362742,
+                            "text": "普攻第三段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.27,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_2",
+                            "value": 0.54,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.8,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 7,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0018_dapan_attack3",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "80%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -6804032461409057545,
+                            "text": "普攻第三段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.28,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_2",
+                            "value": 0.57,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.85,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 8,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0018_dapan_attack3",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "85%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 4154818083963867208,
+                            "text": "普攻第三段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.3,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_2",
+                            "value": 0.6,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.9,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 9,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0018_dapan_attack3",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "90%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -4055200516358967184,
+                            "text": "普攻第三段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.32,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_2",
+                            "value": 0.64,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 0.97,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 10,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0018_dapan_attack3",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "97%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 1504522481938881005,
+                            "text": "普攻第三段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.35,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_2",
+                            "value": 0.7,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 1.04,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 11,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0018_dapan_attack3",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "104%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -4821574640085129936,
+                            "text": "普攻第三段倍率"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.38,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atk_scale_2",
+                            "value": 0.75,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 1.13,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 0,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 0,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_attack_claym",
+                    "level": 12,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0018_dapan_attack3",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "113%"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 7518259352317584411,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -27337,1150 +28481,6 @@
                         {
                             "id": -3006111296370383795,
                             "text": "下落攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                }
-            ]
-        },
-        "chr_0018_dapan_power_attack": {
-            "SkillPatchDataBundle": [
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 4,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 1,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "400%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 3328509115459582845,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 4.4,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 2,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "440%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 7341457635796288102,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 4.8,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 3,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "480%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 8669353267381099457,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 5.2,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 4,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "520%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -4603468714156475726,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 5.6,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 5,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "560%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -4308448315534992713,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 6,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 6,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "600%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -2815633749695673695,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 6.4,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 7,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "640%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 4397950364503844140,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 6.8,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 8,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "680%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 8012131253414231697,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 7.2,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 9,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "720%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 5832302623121100169,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 7.7,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 10,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "770%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -6081387377228305753,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 8.3,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 11,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "830%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -7801144408129357756,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 9,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_claym",
-                    "level": 12,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0018_dapan_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "900%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -5896550659814114837,
-                            "text": "处决攻击倍率"
                         },
                         {
                             "id": 0,

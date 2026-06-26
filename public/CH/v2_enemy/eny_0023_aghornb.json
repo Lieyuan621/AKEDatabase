@@ -25,6 +25,30 @@
         "templateId": "eny_0023_aghornb"
     },
     "enemytable": {
+        "eny_0023_aghornb_hdg001": {
+            "aiTemplateId": "aiconf_eny_0023_aghornb_hard",
+            "attrModifiers": [
+                {
+                    "attrType": 1,
+                    "attrValue": 0.5,
+                    "modifierType": 1,
+                    "modifyAttributeType": 0
+                }
+            ],
+            "attrTemplateId": "eny_0023_aghornb",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_eny_0023_aghornb_hdg001_burst"
+            ],
+            "enemyId": "eny_0023_aghornb_hdg001",
+            "isDangerous": false,
+            "modelId": "eny_0023_aghornb_race_postmodel",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0023_aghornb"
+        },
         "eny_0023_aghornb": {
             "aiTemplateId": "",
             "attrModifiers": [],
@@ -112,30 +136,6 @@
             "enemyId": "eny_0023_aghornb_dungeon",
             "isDangerous": false,
             "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": true,
-            "showBigHeadbar": false,
-            "templateId": "eny_0023_aghornb"
-        },
-        "eny_0023_aghornb_hdg001": {
-            "aiTemplateId": "aiconf_eny_0023_aghornb_hard",
-            "attrModifiers": [
-                {
-                    "attrType": 1,
-                    "attrValue": 0.5,
-                    "modifierType": 1,
-                    "modifyAttributeType": 0
-                }
-            ],
-            "attrTemplateId": "eny_0023_aghornb",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [
-                "buff_eny_0023_aghornb_hdg001_burst"
-            ],
-            "enemyId": "eny_0023_aghornb_hdg001",
-            "isDangerous": false,
-            "modelId": "eny_0023_aghornb_race_postmodel",
             "serverDeathCheck": false,
             "showBigEffect": true,
             "showBigHeadbar": false,

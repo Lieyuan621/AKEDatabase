@@ -78,38 +78,6 @@
           }
         ]
       },
-      "achv_adv_tundra_documents": {
-        "name": "谷地调查者奖章",
-        "order": 6,
-        "canBeUpgraded": true,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 2,
-            "icon": "/public/images/achievement/medaliconbig/achv_adv_tundra_documents_lv02.png",
-            "desc": "事无巨细，您留意到了散落于四号谷地角落的情报。",
-            "conditions": [
-              "于四号谷地收集4份调查报告"
-            ],
-            "progressToCompare": [
-              4
-            ]
-          },
-          {
-            "level": 3,
-            "icon": "/public/images/achievement/medaliconbig/achv_adv_tundra_documents_lv03.png",
-            "desc": "事无巨细，您细心留意到了散落于四号谷地角落的情报。\n一张纸片，一页杂志……大事往往隐于微末。",
-            "conditions": [
-              "于四号谷地收集6份调查报告"
-            ],
-            "progressToCompare": [
-              6
-            ]
-          }
-        ]
-      },
       "achv_adv_tundra_ether": {
         "name": "“碎片的再会”",
         "order": 2,
@@ -149,6 +117,38 @@
             ],
             "progressToCompare": [
               166
+            ]
+          }
+        ]
+      },
+      "achv_adv_tundra_documents": {
+        "name": "谷地调查者奖章",
+        "order": 6,
+        "canBeUpgraded": true,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_adv_tundra_documents_lv02.png",
+            "desc": "事无巨细，您留意到了散落于四号谷地角落的情报。",
+            "conditions": [
+              "于四号谷地收集4份调查报告"
+            ],
+            "progressToCompare": [
+              4
+            ]
+          },
+          {
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_adv_tundra_documents_lv03.png",
+            "desc": "事无巨细，您细心留意到了散落于四号谷地角落的情报。\n一张纸片，一页杂志……大事往往隐于微末。",
+            "conditions": [
+              "于四号谷地收集6份调查报告"
+            ],
+            "progressToCompare": [
+              6
             ]
           }
         ]
@@ -320,6 +320,27 @@
           }
         ]
       },
+      "achv_adv_wuling_hyper_clean": {
+        "name": "过活跃消除奖章",
+        "order": 14,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 1,
+            "icon": "/public/images/achievement/medaliconbig/achv_adv_wuling_hyper_clean_lv01.png",
+            "desc": "您已成功消除了许多过活跃侵蚀。",
+            "conditions": [
+              "消除藏剑谷所有的过活跃侵蚀"
+            ],
+            "progressToCompare": [
+              6
+            ]
+          }
+        ]
+      },
       "achv_adv_wuling_clean": {
         "name": "“涤荡浊流”",
         "order": 7,
@@ -415,27 +436,6 @@
           }
         ]
       },
-      "achv_adv_wuling_frog_2": {
-        "name": "“击股传虫·其之二”",
-        "order": 12,
-        "canBeUpgraded": false,
-        "canBePlated": false,
-        "applyRareEffect": false,
-        "noObtainCanView": true,
-        "level": [
-          {
-            "level": 1,
-            "icon": "/public/images/achievement/medaliconbig/achv_adv_wuling_frog_2_lv01.png",
-            "desc": "您又陪同长股兽玩耍了一番。经分析，这似乎是长股兽们向您道谢，邀您再来的鸣声。\n“呱呱呱呱呱呱，呱呱呱呱呱。”",
-            "conditions": [
-              "完成清波寨、首墩、首墩内部和试验园区的3次萤火虫传递"
-            ],
-            "progressToCompare": [
-              3
-            ]
-          }
-        ]
-      },
       "achv_adv_wuling_floor_1": {
         "name": "“羽兽三抄水”",
         "order": 5,
@@ -499,9 +499,9 @@
           }
         ]
       },
-      "achv_adv_wuling_hyper_clean": {
-        "name": "过活跃消除奖章",
-        "order": 14,
+      "achv_adv_wuling_frog_2": {
+        "name": "“击股传虫·其之二”",
+        "order": 12,
         "canBeUpgraded": false,
         "canBePlated": false,
         "applyRareEffect": false,
@@ -509,13 +509,13 @@
         "level": [
           {
             "level": 1,
-            "icon": "/public/images/achievement/medaliconbig/achv_adv_wuling_hyper_clean_lv01.png",
-            "desc": "您已成功消除了许多过活跃侵蚀。",
+            "icon": "/public/images/achievement/medaliconbig/achv_adv_wuling_frog_2_lv01.png",
+            "desc": "您又陪同长股兽玩耍了一番。经分析，这似乎是长股兽们向您道谢，邀您再来的鸣声。\n“呱呱呱呱呱呱，呱呱呱呱呱。”",
             "conditions": [
-              "消除藏剑谷所有的过活跃侵蚀"
+              "完成清波寨、首墩、首墩内部和试验园区的3次萤火虫传递"
             ],
             "progressToCompare": [
-              6
+              3
             ]
           }
         ]

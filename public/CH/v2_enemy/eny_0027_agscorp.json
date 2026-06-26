@@ -26,14 +26,29 @@
         "templateId": "eny_0027_agscorp"
     },
     "enemytable": {
-        "eny_0027_agscorp": {
-            "aiTemplateId": "",
-            "attrModifiers": [],
+        "eny_0027_agscorp_quest01": {
+            "aiTemplateId": "aiconf_eny_0027_agscorp_quest01",
+            "attrModifiers": [
+                {
+                    "attrType": 20,
+                    "attrValue": -5,
+                    "modifierType": 0,
+                    "modifyAttributeType": 0
+                },
+                {
+                    "attrType": 2,
+                    "attrValue": -0.65,
+                    "modifierType": 1,
+                    "modifyAttributeType": 0
+                }
+            ],
             "attrTemplateId": "eny_0027_agscorp",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
-            "bornBuffs": [],
-            "enemyId": "eny_0027_agscorp",
+            "bornBuffs": [
+                "buff_eny_0027_agscorp_quest01_born"
+            ],
+            "enemyId": "eny_0027_agscorp_quest01",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,
@@ -64,6 +79,38 @@
                 "buff_eny_0045_agtrinit_minion_buff"
             ],
             "enemyId": "eny_0027_agscorp_agtrinit",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0027_agscorp"
+        },
+        "eny_0027_agscorp": {
+            "aiTemplateId": "",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0027_agscorp",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0027_agscorp",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0027_agscorp"
+        },
+        "eny_0027_agscorp_settlement": {
+            "aiTemplateId": "Settlement/aiconf_eny_0027_agscorp_settlement",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0027_agscorp",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_settlement_addtag"
+            ],
+            "enemyId": "eny_0027_agscorp_settlement",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,
@@ -176,53 +223,6 @@
             "serverDeathCheck": false,
             "showBigEffect": true,
             "showBigHeadbar": true,
-            "templateId": "eny_0027_agscorp"
-        },
-        "eny_0027_agscorp_quest01": {
-            "aiTemplateId": "aiconf_eny_0027_agscorp_quest01",
-            "attrModifiers": [
-                {
-                    "attrType": 20,
-                    "attrValue": -5,
-                    "modifierType": 0,
-                    "modifyAttributeType": 0
-                },
-                {
-                    "attrType": 2,
-                    "attrValue": -0.65,
-                    "modifierType": 1,
-                    "modifyAttributeType": 0
-                }
-            ],
-            "attrTemplateId": "eny_0027_agscorp",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [
-                "buff_eny_0027_agscorp_quest01_born"
-            ],
-            "enemyId": "eny_0027_agscorp_quest01",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": true,
-            "showBigHeadbar": false,
-            "templateId": "eny_0027_agscorp"
-        },
-        "eny_0027_agscorp_settlement": {
-            "aiTemplateId": "Settlement/aiconf_eny_0027_agscorp_settlement",
-            "attrModifiers": [],
-            "attrTemplateId": "eny_0027_agscorp",
-            "autoLockCancelTime": -1,
-            "autoLockCancelType": 0,
-            "bornBuffs": [
-                "buff_settlement_addtag"
-            ],
-            "enemyId": "eny_0027_agscorp_settlement",
-            "isDangerous": false,
-            "modelId": "",
-            "serverDeathCheck": false,
-            "showBigEffect": true,
-            "showBigHeadbar": false,
             "templateId": "eny_0027_agscorp"
         }
     },

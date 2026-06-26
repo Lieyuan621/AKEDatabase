@@ -33,7 +33,8 @@
             "dung_tangtang_chartrain01",
             "dung_wulfa_chartrain01",
             "dung_zhuangfy_chartrain01",
-            "dung_mifu_chartrain01"
+            "dung_mifu_chartrain01",
+            "dung_camille_chartrain01"
         ],
         "name": {
             "id": 4684052785318419718,
@@ -3776,6 +3777,180 @@
                     ],
                     "probItemBundles": [],
                     "rewardId": "reward_dung_mifu_chartrain01"
+                }
+            },
+            "itemTable": {
+                "item_diamond": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -8713379589258447987,
+                        "text": "由衍质源石加工来的特殊产物，因其瑰丽的外观和广泛的用途而倍受欢迎。"
+                    },
+                    "desc": {
+                        "id": -5909420414296930437,
+                        "text": "合成物质，常用于招募干员。"
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_diamond",
+                    "id": "item_diamond",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_gold_1",
+                    "name": {
+                        "id": 2239345069872003978,
+                        "text": "嵌晶玉"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_diamond",
+                        "item_obtain_bp",
+                        "item_obtain_adventurebook",
+                        "item_obtain_payshop_credit",
+                        "item_obtain_mission_daily",
+                        "item_obtain_explore",
+                        "item_obtain_mission"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 6,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -11,
+                    "sortId2": 1,
+                    "type": 2,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 6
+                },
+                "item_gold": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -5111871529363494289,
+                        "text": "广泛流通的货币，防伪技术极为高超。能买到东西的钞票才是好钞票。"
+                    },
+                    "desc": {
+                        "id": -3278457396295353288,
+                        "text": "广泛流通的货币，用途广泛。"
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_gold",
+                    "id": "item_gold",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_gold_1",
+                    "name": {
+                        "id": 5406428249689377671,
+                        "text": "折金票"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_dungeon_0005_untouched",
+                        "item_obtain_dungeon_0005",
+                        "item_obtain_mission_daily",
+                        "item_obtain_shop_greenticket",
+                        "item_obtain_explore"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 4,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -25,
+                    "sortId2": 30,
+                    "type": 1,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 6
+                }
+            },
+            "BuffData": {}
+        },
+        "dung_camille_chartrain01": {
+            "canDirectlyGetReward": true,
+            "costStamina": 0,
+            "customRewardId": "",
+            "domainId": "",
+            "dungeonCategory": "dungeon_chartutorial",
+            "dungeonDesc": {
+                "id": -5576968119677912560,
+                "text": "<@ct.key>卡缪是一名灼热属性的先锋干员，他可以通过召唤衔火血翼对敌人施加灼热附着、虚弱和灼热脆弱，还能通过连携技和终结技恢复大量技力。</>"
+            },
+            "dungeonId": "dung_camille_chartrain01",
+            "dungeonImg": "",
+            "dungeonLevelDesc": {
+                "id": 1803436627426918173,
+                "text": "卡缪"
+            },
+            "dungeonName": {
+                "id": 1345504672345402602,
+                "text": "干员教学·卡缪"
+            },
+            "dungeonPicPath": "dung_train_normal",
+            "dungeonSeriesId": "dung_group_chartrain",
+            "enemyIds": [],
+            "enemyLevels": [],
+            "extraGoalDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "extraRewardId": "",
+            "featureDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "firstPassRewardId": "reward_dung_camille_chartrain01",
+            "forceIgnoreFeaturePopup": false,
+            "hunterModeCostStamina": 0,
+            "hunterModeRewardId": "",
+            "levelId": "base01_dg002",
+            "mainGoalDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "needShowPass": false,
+            "recommendLv": 0,
+            "relatedCharId": "chr_0033_camille",
+            "rewardId": "",
+            "sceneId": "",
+            "sortId": 24,
+            "tabGroupName": {
+                "id": 0,
+                "text": ""
+            },
+            "unlockSpCond": false,
+            "LevelData": {},
+            "SpawnerConfig": {},
+            "enemyTable": {},
+            "enemyTemplateDisplayInfoTable": {},
+            "enemyAttributeTemplateTable": {},
+            "rewardTable": {
+                "reward_dung_camille_chartrain01": {
+                    "itemBundleVisibleList": [
+                        0,
+                        0
+                    ],
+                    "itemBundles": [
+                        {
+                            "count": 20,
+                            "id": "item_diamond"
+                        },
+                        {
+                            "count": 2000,
+                            "id": "item_gold"
+                        }
+                    ],
+                    "probItemBundles": [],
+                    "rewardId": "reward_dung_camille_chartrain01"
                 }
             },
             "itemTable": {

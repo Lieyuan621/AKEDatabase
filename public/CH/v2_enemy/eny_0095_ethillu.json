@@ -25,16 +25,17 @@
         "templateId": "eny_0095_ethillu"
     },
     "enemytable": {
-        "eny_0095_ethillu_bomb": {
+        "eny_0095_ethillu": {
             "aiTemplateId": "",
             "attrModifiers": [],
             "attrTemplateId": "eny_0095_ethillu",
             "autoLockCancelTime": -1,
             "autoLockCancelType": 0,
             "bornBuffs": [
-                "buff_eny_0095_ethillu_bomb"
+                "buff_eny_0095_ethillu_dead",
+                "buff_eny_0095_ethillu_undeadable"
             ],
-            "enemyId": "eny_0095_ethillu_bomb",
+            "enemyId": "eny_0095_ethillu",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,
@@ -60,8 +61,25 @@
             "showBigHeadbar": false,
             "templateId": "eny_0095_ethillu"
         },
-        "eny_0095_ethillu": {
+        "eny_0095_ethillu_bomb": {
             "aiTemplateId": "",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0095_ethillu",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_eny_0095_ethillu_bomb"
+            ],
+            "enemyId": "eny_0095_ethillu_bomb",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0095_ethillu"
+        },
+        "eny_0095_ethillu_hdg017": {
+            "aiTemplateId": "aiconf_eny_0095_ethillu_hdg017",
             "attrModifiers": [],
             "attrTemplateId": "eny_0095_ethillu",
             "autoLockCancelTime": -1,
@@ -70,7 +88,7 @@
                 "buff_eny_0095_ethillu_dead",
                 "buff_eny_0095_ethillu_undeadable"
             ],
-            "enemyId": "eny_0095_ethillu",
+            "enemyId": "eny_0095_ethillu_hdg017",
             "isDangerous": false,
             "modelId": "",
             "serverDeathCheck": false,

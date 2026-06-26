@@ -16779,86 +16779,6 @@
             },
             "id": "chr_0007_ikut_talent_2_2"
         },
-        "chr_0007_ikut_potential_1": {
-            "dataList": [
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 3,
-                    "skillBbModifier": {
-                        "bbKey": "atb",
-                        "floatValue": 10,
-                        "modifyType": 1,
-                        "skillId": "chr_0007_ikut_normal_skill",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 0,
-                        "paramType": 0,
-                        "paramValue": 0,
-                        "skillId": ""
-                    }
-                }
-            ],
-            "desc": {
-                "id": -4951719432890778558,
-                "text": "使用战技<@ba.key>疾风迅雷</>成功触发额外效果后，额外恢复<@ba.vup>{atb:0}</>点技力。"
-            },
-            "id": "chr_0007_ikut_potential_1"
-        },
-        "chr_0007_ikut_potential_4": {
-            "dataList": [
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 2,
-                    "skillBbModifier": {
-                        "bbKey": "",
-                        "floatValue": 0,
-                        "modifyType": 0,
-                        "skillId": "",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 2,
-                        "paramType": 1,
-                        "paramValue": 0.85,
-                        "skillId": "chr_0007_ikut_ultimate_skill"
-                    }
-                }
-            ],
-            "desc": {
-                "id": -2338836074283326582,
-                "text": "终结技<@ba.key>轰雷掣电</>所需的终结技能量<@ba.vup>-{1-costvalue:0%}</>。"
-            },
-            "id": "chr_0007_ikut_potential_4"
-        },
         "chr_0007_ikut_potential_5": {
             "dataList": [
                 {
@@ -16929,6 +16849,86 @@
                 "text": "天赋<@ba.key>荒野游人</>效果加强：触发所需次数降低至<@ba.vup>{count:0}</>次。"
             },
             "id": "chr_0007_ikut_potential_5"
+        },
+        "chr_0007_ikut_potential_4": {
+            "dataList": [
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 2,
+                    "skillBbModifier": {
+                        "bbKey": "",
+                        "floatValue": 0,
+                        "modifyType": 0,
+                        "skillId": "",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 2,
+                        "paramType": 1,
+                        "paramValue": 0.85,
+                        "skillId": "chr_0007_ikut_ultimate_skill"
+                    }
+                }
+            ],
+            "desc": {
+                "id": -2338836074283326582,
+                "text": "终结技<@ba.key>轰雷掣电</>所需的终结技能量<@ba.vup>-{1-costvalue:0%}</>。"
+            },
+            "id": "chr_0007_ikut_potential_4"
+        },
+        "chr_0007_ikut_potential_1": {
+            "dataList": [
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 3,
+                    "skillBbModifier": {
+                        "bbKey": "atb",
+                        "floatValue": 10,
+                        "modifyType": 1,
+                        "skillId": "chr_0007_ikut_normal_skill",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 0,
+                        "paramType": 0,
+                        "paramValue": 0,
+                        "skillId": ""
+                    }
+                }
+            ],
+            "desc": {
+                "id": -4951719432890778558,
+                "text": "使用战技<@ba.key>疾风迅雷</>成功触发额外效果后，额外恢复<@ba.vup>{atb:0}</>点技力。"
+            },
+            "id": "chr_0007_ikut_potential_1"
         },
         "chr_0007_ikut_potential_2": {
             "dataList": [
@@ -17043,37 +17043,17 @@
         }
     },
     "skillpatchtable": {
-        "chr_0007_ikut_combo_skill": {
+        "chr_0007_ikut_power_attack": {
             "SkillPatchDataBundle": [
                 {
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.52,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 8,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "usp",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 1.55,
+                            "value": 4,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 3,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -17081,36 +17061,33 @@
                         "text": ""
                     },
                     "iconBgType": 0,
-                    "iconId": "icon_combo_skill_ikut_01",
+                    "iconId": "icon_attack_sword",
                     "level": 1,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillId": "chr_0007_ikut_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "155%",
-                        "8",
-                        "5",
-                        "5"
+                        "400%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -1608670591629043893,
-                            "text": "伤害倍率"
+                            "id": 4855027106581061600,
+                            "text": "处决攻击倍率"
                         },
                         {
-                            "id": 5965951610036613827,
-                            "text": "恢复技力"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": 6990351394805168197,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": -370461119302399053,
-                            "text": "获得终结技能量"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -17167,31 +17144,11 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.57,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 8,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "usp",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 1.71,
+                            "value": 4.4,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 3,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -17199,36 +17156,33 @@
                         "text": ""
                     },
                     "iconBgType": 0,
-                    "iconId": "icon_combo_skill_ikut_01",
+                    "iconId": "icon_attack_sword",
                     "level": 2,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillId": "chr_0007_ikut_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "171%",
-                        "8",
-                        "5",
-                        "5"
+                        "440%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 2246647608101794050,
-                            "text": "伤害倍率"
+                            "id": -6176675034702653817,
+                            "text": "处决攻击倍率"
                         },
                         {
-                            "id": 3746850882428160604,
-                            "text": "恢复技力"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": -6388097936698122577,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": 3399812556677807940,
-                            "text": "获得终结技能量"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -17285,31 +17239,11 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.62,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 8,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "usp",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 1.86,
+                            "value": 4.8,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 3,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -17317,36 +17251,33 @@
                         "text": ""
                     },
                     "iconBgType": 0,
-                    "iconId": "icon_combo_skill_ikut_01",
+                    "iconId": "icon_attack_sword",
                     "level": 3,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillId": "chr_0007_ikut_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "186%",
-                        "8",
-                        "5",
-                        "5"
+                        "480%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -7732003035144974519,
-                            "text": "伤害倍率"
+                            "id": 5581938108846887511,
+                            "text": "处决攻击倍率"
                         },
                         {
-                            "id": -8064360410941525615,
-                            "text": "恢复技力"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": -1026064644979875831,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": -4417900704306932503,
-                            "text": "获得终结技能量"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -17403,31 +17334,11 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.67,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 8,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "usp",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 2.02,
+                            "value": 5.2,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 3,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -17435,36 +17346,33 @@
                         "text": ""
                     },
                     "iconBgType": 0,
-                    "iconId": "icon_combo_skill_ikut_01",
+                    "iconId": "icon_attack_sword",
                     "level": 4,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillId": "chr_0007_ikut_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "202%",
-                        "8",
-                        "5",
-                        "5"
+                        "520%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 4300961553803583532,
-                            "text": "伤害倍率"
+                            "id": 6167826093734543662,
+                            "text": "处决攻击倍率"
                         },
                         {
-                            "id": 7069331529605814129,
-                            "text": "恢复技力"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": 3394988956947528321,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": -5148425019815697956,
-                            "text": "获得终结技能量"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -17521,31 +17429,11 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.73,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 8,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "usp",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 2.18,
+                            "value": 5.6,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 3,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -17553,36 +17441,33 @@
                         "text": ""
                     },
                     "iconBgType": 0,
-                    "iconId": "icon_combo_skill_ikut_01",
+                    "iconId": "icon_attack_sword",
                     "level": 5,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillId": "chr_0007_ikut_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "218%",
-                        "8",
-                        "5",
-                        "5"
+                        "560%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -357456713021604366,
-                            "text": "伤害倍率"
+                            "id": 1667581627497728205,
+                            "text": "处决攻击倍率"
                         },
                         {
-                            "id": -6408835109433570532,
-                            "text": "恢复技力"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": -2191451393139872238,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": -693919745508787532,
-                            "text": "获得终结技能量"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -17639,31 +17524,11 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.78,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 9,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "usp",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 2.33,
+                            "value": 6,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 3,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -17671,36 +17536,33 @@
                         "text": ""
                     },
                     "iconBgType": 0,
-                    "iconId": "icon_combo_skill_ikut_01",
+                    "iconId": "icon_attack_sword",
                     "level": 6,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillId": "chr_0007_ikut_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "233%",
-                        "9",
-                        "5",
-                        "5"
+                        "600%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 3432270212210113676,
-                            "text": "伤害倍率"
+                            "id": -2198012240132125428,
+                            "text": "处决攻击倍率"
                         },
                         {
-                            "id": -5949468835620383973,
-                            "text": "恢复技力"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": -4420418466892666235,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": 3045933932906489785,
-                            "text": "获得终结技能量"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -17757,31 +17619,11 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.83,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 9,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "usp",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 2.49,
+                            "value": 6.4,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 3,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -17789,36 +17631,33 @@
                         "text": ""
                     },
                     "iconBgType": 0,
-                    "iconId": "icon_combo_skill_ikut_01",
+                    "iconId": "icon_attack_sword",
                     "level": 7,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillId": "chr_0007_ikut_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "249%",
-                        "9",
-                        "5",
-                        "5"
+                        "640%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 2299824795804158240,
-                            "text": "伤害倍率"
+                            "id": -6181164176909530533,
+                            "text": "处决攻击倍率"
                         },
                         {
-                            "id": 4301214073984250585,
-                            "text": "恢复技力"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": -875021216688739227,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": 5981669460886055527,
-                            "text": "获得终结技能量"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -17875,31 +17714,11 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.88,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 9,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "usp",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 2.64,
+                            "value": 6.8,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 3,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -17907,36 +17726,33 @@
                         "text": ""
                     },
                     "iconBgType": 0,
-                    "iconId": "icon_combo_skill_ikut_01",
+                    "iconId": "icon_attack_sword",
                     "level": 8,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillId": "chr_0007_ikut_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "264%",
-                        "9",
-                        "5",
-                        "5"
+                        "680%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 363195418888694876,
-                            "text": "伤害倍率"
+                            "id": -3052142177031531957,
+                            "text": "处决攻击倍率"
                         },
                         {
-                            "id": 4184451999571564550,
-                            "text": "恢复技力"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": 3767465940759915680,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": 4899639079577086974,
-                            "text": "获得终结技能量"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -17993,31 +17809,11 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.93,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 9,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "usp",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 2.8,
+                            "value": 7.2,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 3,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -18025,36 +17821,33 @@
                         "text": ""
                     },
                     "iconBgType": 0,
-                    "iconId": "icon_combo_skill_ikut_01",
+                    "iconId": "icon_attack_sword",
                     "level": 9,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillId": "chr_0007_ikut_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "280%",
-                        "9",
-                        "5",
-                        "5"
+                        "720%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 630132101934100817,
-                            "text": "伤害倍率"
+                            "id": 1784751561421394254,
+                            "text": "处决攻击倍率"
                         },
                         {
-                            "id": -5157113224207555788,
-                            "text": "恢复技力"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": 4045086861825856608,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": -1775147831882675853,
-                            "text": "获得终结技能量"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -18111,31 +17904,11 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 1,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 10,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "usp",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 2.99,
+                            "value": 7.7,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 3,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -18143,36 +17916,33 @@
                         "text": ""
                     },
                     "iconBgType": 0,
-                    "iconId": "icon_combo_skill_ikut_01",
+                    "iconId": "icon_attack_sword",
                     "level": 10,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillId": "chr_0007_ikut_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "299%",
-                        "10",
-                        "5",
-                        "5"
+                        "770%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 933447452818994655,
-                            "text": "伤害倍率"
+                            "id": -490835224156864466,
+                            "text": "处决攻击倍率"
                         },
                         {
-                            "id": -2396562058854280697,
-                            "text": "恢复技力"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": -6387900841223016513,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": 364391825599443475,
-                            "text": "获得终结技能量"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -18229,31 +17999,11 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 1.07,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 10,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "usp",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 3.22,
+                            "value": 8.3,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 3,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -18261,36 +18011,33 @@
                         "text": ""
                     },
                     "iconBgType": 0,
-                    "iconId": "icon_combo_skill_ikut_01",
+                    "iconId": "icon_attack_sword",
                     "level": 11,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillId": "chr_0007_ikut_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "322%",
-                        "10",
-                        "5",
-                        "5"
+                        "830%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -7769188253985789936,
-                            "text": "伤害倍率"
+                            "id": 4213137388299811265,
+                            "text": "处决攻击倍率"
                         },
                         {
-                            "id": 4440283022687641825,
-                            "text": "恢复技力"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": -3680776304452514109,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": 1923848528780045639,
-                            "text": "获得终结技能量"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -18347,31 +18094,11 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 1.17,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "poise",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "atb",
-                            "value": 10,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "usp",
-                            "value": 5,
-                            "valueStr": ""
-                        },
-                        {
-                            "key": "display_atk_scale",
-                            "value": 3.5,
+                            "value": 9,
                             "valueStr": ""
                         }
                     ],
-                    "coolDown": 3,
+                    "coolDown": 0,
                     "costType": 0,
                     "costValue": 0,
                     "description": {
@@ -18379,36 +18106,33 @@
                         "text": ""
                     },
                     "iconBgType": 0,
-                    "iconId": "icon_combo_skill_ikut_01",
+                    "iconId": "icon_attack_sword",
                     "level": 12,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillId": "chr_0007_ikut_power_attack",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "350%",
-                        "10",
-                        "5",
-                        "5"
+                        "900%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 442884105204776850,
-                            "text": "伤害倍率"
+                            "id": -7970404568697994431,
+                            "text": "处决攻击倍率"
                         },
                         {
-                            "id": 4251951440888817182,
-                            "text": "恢复技力"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": 3586218545174146172,
-                            "text": "失衡值"
+                            "id": 0,
+                            "text": ""
                         },
                         {
-                            "id": -8512572267576427723,
-                            "text": "获得终结技能量"
+                            "id": 0,
+                            "text": ""
                         },
                         {
                             "id": 0,
@@ -24663,6 +24387,1426 @@
                 }
             ]
         },
+        "chr_0007_ikut_combo_skill": {
+            "SkillPatchDataBundle": [
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.52,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 8,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "usp",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 1.55,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 3,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_combo_skill_ikut_01",
+                    "level": 1,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "155%",
+                        "8",
+                        "5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -1608670591629043893,
+                            "text": "伤害倍率"
+                        },
+                        {
+                            "id": 5965951610036613827,
+                            "text": "恢复技力"
+                        },
+                        {
+                            "id": 6990351394805168197,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": -370461119302399053,
+                            "text": "获得终结技能量"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.57,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 8,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "usp",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 1.71,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 3,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_combo_skill_ikut_01",
+                    "level": 2,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "171%",
+                        "8",
+                        "5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 2246647608101794050,
+                            "text": "伤害倍率"
+                        },
+                        {
+                            "id": 3746850882428160604,
+                            "text": "恢复技力"
+                        },
+                        {
+                            "id": -6388097936698122577,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 3399812556677807940,
+                            "text": "获得终结技能量"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.62,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 8,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "usp",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 1.86,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 3,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_combo_skill_ikut_01",
+                    "level": 3,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "186%",
+                        "8",
+                        "5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -7732003035144974519,
+                            "text": "伤害倍率"
+                        },
+                        {
+                            "id": -8064360410941525615,
+                            "text": "恢复技力"
+                        },
+                        {
+                            "id": -1026064644979875831,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": -4417900704306932503,
+                            "text": "获得终结技能量"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.67,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 8,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "usp",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.02,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 3,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_combo_skill_ikut_01",
+                    "level": 4,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "202%",
+                        "8",
+                        "5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 4300961553803583532,
+                            "text": "伤害倍率"
+                        },
+                        {
+                            "id": 7069331529605814129,
+                            "text": "恢复技力"
+                        },
+                        {
+                            "id": 3394988956947528321,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": -5148425019815697956,
+                            "text": "获得终结技能量"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.73,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 8,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "usp",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.18,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 3,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_combo_skill_ikut_01",
+                    "level": 5,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "218%",
+                        "8",
+                        "5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -357456713021604366,
+                            "text": "伤害倍率"
+                        },
+                        {
+                            "id": -6408835109433570532,
+                            "text": "恢复技力"
+                        },
+                        {
+                            "id": -2191451393139872238,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": -693919745508787532,
+                            "text": "获得终结技能量"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.78,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 9,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "usp",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.33,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 3,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_combo_skill_ikut_01",
+                    "level": 6,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "233%",
+                        "9",
+                        "5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 3432270212210113676,
+                            "text": "伤害倍率"
+                        },
+                        {
+                            "id": -5949468835620383973,
+                            "text": "恢复技力"
+                        },
+                        {
+                            "id": -4420418466892666235,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 3045933932906489785,
+                            "text": "获得终结技能量"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.83,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 9,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "usp",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.49,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 3,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_combo_skill_ikut_01",
+                    "level": 7,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "249%",
+                        "9",
+                        "5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 2299824795804158240,
+                            "text": "伤害倍率"
+                        },
+                        {
+                            "id": 4301214073984250585,
+                            "text": "恢复技力"
+                        },
+                        {
+                            "id": -875021216688739227,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 5981669460886055527,
+                            "text": "获得终结技能量"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.88,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 9,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "usp",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.64,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 3,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_combo_skill_ikut_01",
+                    "level": 8,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "264%",
+                        "9",
+                        "5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 363195418888694876,
+                            "text": "伤害倍率"
+                        },
+                        {
+                            "id": 4184451999571564550,
+                            "text": "恢复技力"
+                        },
+                        {
+                            "id": 3767465940759915680,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 4899639079577086974,
+                            "text": "获得终结技能量"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 0.93,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 9,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "usp",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.8,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 3,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_combo_skill_ikut_01",
+                    "level": 9,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "280%",
+                        "9",
+                        "5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 630132101934100817,
+                            "text": "伤害倍率"
+                        },
+                        {
+                            "id": -5157113224207555788,
+                            "text": "恢复技力"
+                        },
+                        {
+                            "id": 4045086861825856608,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": -1775147831882675853,
+                            "text": "获得终结技能量"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 1,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 10,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "usp",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 2.99,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 3,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_combo_skill_ikut_01",
+                    "level": 10,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "299%",
+                        "10",
+                        "5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 933447452818994655,
+                            "text": "伤害倍率"
+                        },
+                        {
+                            "id": -2396562058854280697,
+                            "text": "恢复技力"
+                        },
+                        {
+                            "id": -6387900841223016513,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 364391825599443475,
+                            "text": "获得终结技能量"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 1.07,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 10,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "usp",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 3.22,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 3,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_combo_skill_ikut_01",
+                    "level": 11,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "322%",
+                        "10",
+                        "5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": -7769188253985789936,
+                            "text": "伤害倍率"
+                        },
+                        {
+                            "id": 4440283022687641825,
+                            "text": "恢复技力"
+                        },
+                        {
+                            "id": -3680776304452514109,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": 1923848528780045639,
+                            "text": "获得终结技能量"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                },
+                {
+                    "blackboard": [
+                        {
+                            "key": "atk_scale",
+                            "value": 1.17,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "poise",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "atb",
+                            "value": 10,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "usp",
+                            "value": 5,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "display_atk_scale",
+                            "value": 3.5,
+                            "valueStr": ""
+                        }
+                    ],
+                    "coolDown": 3,
+                    "costType": 0,
+                    "costValue": 0,
+                    "description": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "iconBgType": 0,
+                    "iconId": "icon_combo_skill_ikut_01",
+                    "level": 12,
+                    "maxChargeTime": 1,
+                    "skillId": "chr_0007_ikut_combo_skill",
+                    "skillName": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "subDescList": [
+                        "350%",
+                        "10",
+                        "5",
+                        "5"
+                    ],
+                    "subDescNameList": [
+                        {
+                            "id": 442884105204776850,
+                            "text": "伤害倍率"
+                        },
+                        {
+                            "id": 4251951440888817182,
+                            "text": "恢复技力"
+                        },
+                        {
+                            "id": 3586218545174146172,
+                            "text": "失衡值"
+                        },
+                        {
+                            "id": -8512572267576427723,
+                            "text": "获得终结技能量"
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        },
+                        {
+                            "id": 0,
+                            "text": ""
+                        }
+                    ],
+                    "tagId": ""
+                }
+            ]
+        },
         "chr_0007_ikut_dash_attack": {
             "SkillPatchDataBundle": [
                 {
@@ -28629,1150 +29773,6 @@
                         {
                             "id": 5577211565730849066,
                             "text": "下落攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                }
-            ]
-        },
-        "chr_0007_ikut_power_attack": {
-            "SkillPatchDataBundle": [
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 4,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_sword",
-                    "level": 1,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "400%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 4855027106581061600,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 4.4,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_sword",
-                    "level": 2,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "440%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -6176675034702653817,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 4.8,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_sword",
-                    "level": 3,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "480%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 5581938108846887511,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 5.2,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_sword",
-                    "level": 4,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "520%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 6167826093734543662,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 5.6,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_sword",
-                    "level": 5,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "560%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 1667581627497728205,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 6,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_sword",
-                    "level": 6,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "600%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -2198012240132125428,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 6.4,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_sword",
-                    "level": 7,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "640%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -6181164176909530533,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 6.8,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_sword",
-                    "level": 8,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "680%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -3052142177031531957,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 7.2,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_sword",
-                    "level": 9,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "720%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 1784751561421394254,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 7.7,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_sword",
-                    "level": 10,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "770%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -490835224156864466,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 8.3,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_sword",
-                    "level": 11,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "830%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": 4213137388299811265,
-                            "text": "处决攻击倍率"
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        },
-                        {
-                            "id": 0,
-                            "text": ""
-                        }
-                    ],
-                    "tagId": ""
-                },
-                {
-                    "blackboard": [
-                        {
-                            "key": "atk_scale",
-                            "value": 9,
-                            "valueStr": ""
-                        }
-                    ],
-                    "coolDown": 0,
-                    "costType": 0,
-                    "costValue": 0,
-                    "description": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "iconBgType": 0,
-                    "iconId": "icon_attack_sword",
-                    "level": 12,
-                    "maxChargeTime": 1,
-                    "skillId": "chr_0007_ikut_power_attack",
-                    "skillName": {
-                        "id": 0,
-                        "text": ""
-                    },
-                    "subDescList": [
-                        "900%"
-                    ],
-                    "subDescNameList": [
-                        {
-                            "id": -7970404568697994431,
-                            "text": "处决攻击倍率"
                         },
                         {
                             "id": 0,

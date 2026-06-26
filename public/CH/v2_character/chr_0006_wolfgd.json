@@ -16632,46 +16632,6 @@
             },
             "id": "chr_0006_wolfgd_talent_2_2"
         },
-        "chr_0006_wolfgd_potential_4": {
-            "dataList": [
-                {
-                    "attachBuff": {
-                        "blackboard": [],
-                        "buffId": ""
-                    },
-                    "attachSkill": {
-                        "blackboard": [],
-                        "skillId": "",
-                        "skillPath": ""
-                    },
-                    "attrModifier": {
-                        "attrType": 0,
-                        "attrValue": 0,
-                        "modifierType": 0,
-                        "modifyAttributeType": 0
-                    },
-                    "modifyType": 2,
-                    "skillBbModifier": {
-                        "bbKey": "",
-                        "floatValue": 0,
-                        "modifyType": 0,
-                        "skillId": "",
-                        "stringValue": ""
-                    },
-                    "skillParamModifier": {
-                        "modifyType": 2,
-                        "paramType": 1,
-                        "paramValue": 0.85,
-                        "skillId": "chr_0006_wolfgd_ultimate_skill"
-                    }
-                }
-            ],
-            "desc": {
-                "id": -781557117168535763,
-                "text": "终结技<@ba.key>狼之怒</>所需的终结技能量<@ba.vup>-{1-costvalue:0%}</>。"
-            },
-            "id": "chr_0006_wolfgd_potential_4"
-        },
         "chr_0006_wolfgd_potential_1": {
             "dataList": [
                 {
@@ -16885,6 +16845,46 @@
             },
             "id": "chr_0006_wolfgd_potential_3"
         },
+        "chr_0006_wolfgd_potential_4": {
+            "dataList": [
+                {
+                    "attachBuff": {
+                        "blackboard": [],
+                        "buffId": ""
+                    },
+                    "attachSkill": {
+                        "blackboard": [],
+                        "skillId": "",
+                        "skillPath": ""
+                    },
+                    "attrModifier": {
+                        "attrType": 0,
+                        "attrValue": 0,
+                        "modifierType": 0,
+                        "modifyAttributeType": 0
+                    },
+                    "modifyType": 2,
+                    "skillBbModifier": {
+                        "bbKey": "",
+                        "floatValue": 0,
+                        "modifyType": 0,
+                        "skillId": "",
+                        "stringValue": ""
+                    },
+                    "skillParamModifier": {
+                        "modifyType": 2,
+                        "paramType": 1,
+                        "paramValue": 0.85,
+                        "skillId": "chr_0006_wolfgd_ultimate_skill"
+                    }
+                }
+            ],
+            "desc": {
+                "id": -781557117168535763,
+                "text": "终结技<@ba.key>狼之怒</>所需的终结技能量<@ba.vup>-{1-costvalue:0%}</>。"
+            },
+            "id": "chr_0006_wolfgd_potential_4"
+        },
         "chr_0006_wolfgd_potential_5": {
             "dataList": [
                 {
@@ -16927,23 +16927,23 @@
         }
     },
     "skillpatchtable": {
-        "chr_0006_wolfgd_attack4": {
+        "chr_0006_wolfgd_attack3": {
             "SkillPatchDataBundle": [
                 {
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.68,
+                            "value": 0.19,
                             "valueStr": ""
                         },
                         {
-                            "key": "poise",
-                            "value": 18,
+                            "key": "display_atk_scale",
+                            "value": 0.56,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 18,
+                            "value": 0,
                             "valueStr": ""
                         }
                     ],
@@ -16958,18 +16958,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 1,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "68%"
+                        "56%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 2357481342740817680,
-                            "text": "普攻第四段倍率"
+                            "id": 488319274558021898,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -17038,17 +17038,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.74,
+                            "value": 0.2,
                             "valueStr": ""
                         },
                         {
-                            "key": "poise",
-                            "value": 18,
+                            "key": "display_atk_scale",
+                            "value": 0.61,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 18,
+                            "value": 0,
                             "valueStr": ""
                         }
                     ],
@@ -17063,18 +17063,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 2,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "74%"
+                        "61%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 7575134507732265653,
-                            "text": "普攻第四段倍率"
+                            "id": 6389336409751848718,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -17143,17 +17143,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.81,
+                            "value": 0.22,
                             "valueStr": ""
                         },
                         {
-                            "key": "poise",
-                            "value": 18,
+                            "key": "display_atk_scale",
+                            "value": 0.67,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 18,
+                            "value": 0,
                             "valueStr": ""
                         }
                     ],
@@ -17168,18 +17168,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 3,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "81%"
+                        "67%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 2934886871670892679,
-                            "text": "普攻第四段倍率"
+                            "id": -4256892855314386869,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -17248,17 +17248,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.88,
+                            "value": 0.24,
                             "valueStr": ""
                         },
                         {
-                            "key": "poise",
-                            "value": 18,
+                            "key": "display_atk_scale",
+                            "value": 0.72,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 18,
+                            "value": 0,
                             "valueStr": ""
                         }
                     ],
@@ -17273,18 +17273,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 4,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "88%"
+                        "72%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -1270195632608690956,
-                            "text": "普攻第四段倍率"
+                            "id": -5893672543858723716,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -17353,17 +17353,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.95,
+                            "value": 0.26,
                             "valueStr": ""
                         },
                         {
-                            "key": "poise",
-                            "value": 18,
+                            "key": "display_atk_scale",
+                            "value": 0.78,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 18,
+                            "value": 0,
                             "valueStr": ""
                         }
                     ],
@@ -17378,18 +17378,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 5,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "95%"
+                        "78%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -8178918261901941856,
-                            "text": "普攻第四段倍率"
+                            "id": 4942645041881678597,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -17458,17 +17458,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 1.01,
+                            "value": 0.28,
                             "valueStr": ""
                         },
                         {
-                            "key": "poise",
-                            "value": 18,
+                            "key": "display_atk_scale",
+                            "value": 0.83,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 18,
+                            "value": 0,
                             "valueStr": ""
                         }
                     ],
@@ -17483,18 +17483,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 6,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "101%"
+                        "83%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 4106484398940714457,
-                            "text": "普攻第四段倍率"
+                            "id": 4010836348568325412,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -17563,17 +17563,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 1.08,
+                            "value": 0.3,
                             "valueStr": ""
                         },
                         {
-                            "key": "poise",
-                            "value": 18,
+                            "key": "display_atk_scale",
+                            "value": 0.89,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 18,
+                            "value": 0,
                             "valueStr": ""
                         }
                     ],
@@ -17588,18 +17588,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 7,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "108%"
+                        "89%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 4170499496759392399,
-                            "text": "普攻第四段倍率"
+                            "id": -3081516901989009062,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -17668,17 +17668,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 1.15,
+                            "value": 0.31,
                             "valueStr": ""
                         },
                         {
-                            "key": "poise",
-                            "value": 18,
+                            "key": "display_atk_scale",
+                            "value": 0.94,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 18,
+                            "value": 0,
                             "valueStr": ""
                         }
                     ],
@@ -17693,18 +17693,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 8,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "115%"
+                        "94%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -6573823027013022748,
-                            "text": "普攻第四段倍率"
+                            "id": 1005931215566247455,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -17773,17 +17773,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 1.22,
+                            "value": 0.33,
                             "valueStr": ""
                         },
                         {
-                            "key": "poise",
-                            "value": 18,
+                            "key": "display_atk_scale",
+                            "value": 1,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 18,
+                            "value": 0,
                             "valueStr": ""
                         }
                     ],
@@ -17798,18 +17798,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 9,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "122%"
+                        "100%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 8548986167042105458,
-                            "text": "普攻第四段倍率"
+                            "id": 8680874792354133251,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -17878,17 +17878,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 1.3,
+                            "value": 0.36,
                             "valueStr": ""
                         },
                         {
-                            "key": "poise",
-                            "value": 18,
+                            "key": "display_atk_scale",
+                            "value": 1.07,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 18,
+                            "value": 0,
                             "valueStr": ""
                         }
                     ],
@@ -17903,18 +17903,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 10,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "130%"
+                        "107%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 971824317724038810,
-                            "text": "普攻第四段倍率"
+                            "id": -3178097900645127658,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -17983,17 +17983,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 1.4,
+                            "value": 0.38,
                             "valueStr": ""
                         },
                         {
-                            "key": "poise",
-                            "value": 18,
+                            "key": "display_atk_scale",
+                            "value": 1.15,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 18,
+                            "value": 0,
                             "valueStr": ""
                         }
                     ],
@@ -18008,18 +18008,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 11,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "140%"
+                        "115%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 7018135440342185858,
-                            "text": "普攻第四段倍率"
+                            "id": -5871657553577588565,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -18088,17 +18088,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 1.52,
+                            "value": 0.42,
                             "valueStr": ""
                         },
                         {
-                            "key": "poise",
-                            "value": 18,
+                            "key": "display_atk_scale",
+                            "value": 1.25,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 18,
+                            "value": 0,
                             "valueStr": ""
                         }
                     ],
@@ -18113,18 +18113,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 12,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack4",
+                    "skillId": "chr_0006_wolfgd_attack3",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "152%"
+                        "125%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -7384030490500388048,
-                            "text": "普攻第四段倍率"
+                            "id": 3641183917525173121,
+                            "text": "普攻第三段倍率"
                         },
                         {
                             "id": 0,
@@ -20719,23 +20719,23 @@
                 }
             ]
         },
-        "chr_0006_wolfgd_attack3": {
+        "chr_0006_wolfgd_attack4": {
             "SkillPatchDataBundle": [
                 {
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.19,
+                            "value": 0.68,
                             "valueStr": ""
                         },
                         {
-                            "key": "display_atk_scale",
-                            "value": 0.56,
+                            "key": "poise",
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 0,
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
@@ -20750,18 +20750,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 1,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack3",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "56%"
+                        "68%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 488319274558021898,
-                            "text": "普攻第三段倍率"
+                            "id": 2357481342740817680,
+                            "text": "普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -20830,17 +20830,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.2,
+                            "value": 0.74,
                             "valueStr": ""
                         },
                         {
-                            "key": "display_atk_scale",
-                            "value": 0.61,
+                            "key": "poise",
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 0,
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
@@ -20855,18 +20855,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 2,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack3",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "61%"
+                        "74%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 6389336409751848718,
-                            "text": "普攻第三段倍率"
+                            "id": 7575134507732265653,
+                            "text": "普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -20935,17 +20935,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.22,
+                            "value": 0.81,
                             "valueStr": ""
                         },
                         {
-                            "key": "display_atk_scale",
-                            "value": 0.67,
+                            "key": "poise",
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 0,
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
@@ -20960,18 +20960,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 3,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack3",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "67%"
+                        "81%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -4256892855314386869,
-                            "text": "普攻第三段倍率"
+                            "id": 2934886871670892679,
+                            "text": "普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -21040,17 +21040,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.24,
+                            "value": 0.88,
                             "valueStr": ""
                         },
                         {
-                            "key": "display_atk_scale",
-                            "value": 0.72,
+                            "key": "poise",
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 0,
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
@@ -21065,18 +21065,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 4,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack3",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "72%"
+                        "88%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -5893672543858723716,
-                            "text": "普攻第三段倍率"
+                            "id": -1270195632608690956,
+                            "text": "普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -21145,17 +21145,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.26,
+                            "value": 0.95,
                             "valueStr": ""
                         },
                         {
-                            "key": "display_atk_scale",
-                            "value": 0.78,
+                            "key": "poise",
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 0,
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
@@ -21170,18 +21170,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 5,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack3",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "78%"
+                        "95%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 4942645041881678597,
-                            "text": "普攻第三段倍率"
+                            "id": -8178918261901941856,
+                            "text": "普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -21250,17 +21250,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.28,
+                            "value": 1.01,
                             "valueStr": ""
                         },
                         {
-                            "key": "display_atk_scale",
-                            "value": 0.83,
+                            "key": "poise",
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 0,
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
@@ -21275,18 +21275,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 6,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack3",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "83%"
+                        "101%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 4010836348568325412,
-                            "text": "普攻第三段倍率"
+                            "id": 4106484398940714457,
+                            "text": "普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -21355,17 +21355,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.3,
+                            "value": 1.08,
                             "valueStr": ""
                         },
                         {
-                            "key": "display_atk_scale",
-                            "value": 0.89,
+                            "key": "poise",
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 0,
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
@@ -21380,18 +21380,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 7,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack3",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "89%"
+                        "108%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -3081516901989009062,
-                            "text": "普攻第三段倍率"
+                            "id": 4170499496759392399,
+                            "text": "普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -21460,17 +21460,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.31,
+                            "value": 1.15,
                             "valueStr": ""
                         },
                         {
-                            "key": "display_atk_scale",
-                            "value": 0.94,
+                            "key": "poise",
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 0,
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
@@ -21485,18 +21485,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 8,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack3",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "94%"
+                        "115%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 1005931215566247455,
-                            "text": "普攻第三段倍率"
+                            "id": -6573823027013022748,
+                            "text": "普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -21565,17 +21565,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.33,
+                            "value": 1.22,
                             "valueStr": ""
                         },
                         {
-                            "key": "display_atk_scale",
-                            "value": 1,
+                            "key": "poise",
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 0,
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
@@ -21590,18 +21590,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 9,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack3",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "100%"
+                        "122%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 8680874792354133251,
-                            "text": "普攻第三段倍率"
+                            "id": 8548986167042105458,
+                            "text": "普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -21670,17 +21670,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.36,
+                            "value": 1.3,
                             "valueStr": ""
                         },
                         {
-                            "key": "display_atk_scale",
-                            "value": 1.07,
+                            "key": "poise",
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 0,
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
@@ -21695,18 +21695,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 10,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack3",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "107%"
+                        "130%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -3178097900645127658,
-                            "text": "普攻第三段倍率"
+                            "id": 971824317724038810,
+                            "text": "普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -21775,17 +21775,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.38,
+                            "value": 1.4,
                             "valueStr": ""
                         },
                         {
-                            "key": "display_atk_scale",
-                            "value": 1.15,
+                            "key": "poise",
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 0,
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
@@ -21800,18 +21800,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 11,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack3",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "115%"
+                        "140%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": -5871657553577588565,
-                            "text": "普攻第三段倍率"
+                            "id": 7018135440342185858,
+                            "text": "普攻第四段倍率"
                         },
                         {
                             "id": 0,
@@ -21880,17 +21880,17 @@
                     "blackboard": [
                         {
                             "key": "atk_scale",
-                            "value": 0.42,
+                            "value": 1.52,
                             "valueStr": ""
                         },
                         {
-                            "key": "display_atk_scale",
-                            "value": 1.25,
+                            "key": "poise",
+                            "value": 18,
                             "valueStr": ""
                         },
                         {
                             "key": "atb",
-                            "value": 0,
+                            "value": 18,
                             "valueStr": ""
                         }
                     ],
@@ -21905,18 +21905,18 @@
                     "iconId": "icon_attack_pistol",
                     "level": 12,
                     "maxChargeTime": 1,
-                    "skillId": "chr_0006_wolfgd_attack3",
+                    "skillId": "chr_0006_wolfgd_attack4",
                     "skillName": {
                         "id": 0,
                         "text": ""
                     },
                     "subDescList": [
-                        "125%"
+                        "152%"
                     ],
                     "subDescNameList": [
                         {
-                            "id": 3641183917525173121,
-                            "text": "普攻第三段倍率"
+                            "id": -7384030490500388048,
+                            "text": "普攻第四段倍率"
                         },
                         {
                             "id": 0,
