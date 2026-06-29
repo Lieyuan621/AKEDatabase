@@ -37,7 +37,7 @@
 
         async function loadBuffManifest(showHidden) {
             try {
-                const res = await fetch('/public/Json/BuffData/manifest.json?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)('/public/Json/BuffData/manifest.json');
                 if (!res.ok) throw new Error('无法加载效果清单');
                 const all = await res.json();
                 rawAllBuffs = all || [];
@@ -143,7 +143,7 @@
         async function loadBuffDetail(buff, container) {
             container.innerHTML = '<div class="loader">加载效果数据...</div>';
             try {
-                const data = await fetch(buff.contentFile + '?t=' + Date.now()).then(r => r.json());
+                const data = await (window.akeFetch || fetch)(buff.contentFile).then(r => r.json());
                 currentBuffData = data;
                 container.innerHTML = renderDetail(data);
                 // 绑定查看完整数据的按钮

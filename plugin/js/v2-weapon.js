@@ -110,7 +110,7 @@
 
     async function loadWeaponManifest(showHidden) {
         try {
-            const res = await fetch('/public/CH/v2_weapon/manifest.json?t=' + Date.now());
+            const res = await (window.akeFetch || fetch)('/public/CH/v2_weapon/manifest.json');
             if (!res.ok) throw new Error('无法加载武器清单');
             const all = await res.json();
         rawAllWeapons = all;
@@ -465,7 +465,7 @@
     async function loadWeaponDetail(weapon, container) {
         container.innerHTML = '<div class="loader">加载武器数据...</div>';
         try {
-            const data = await fetch(weapon.contentFile + '?t=' + Date.now()).then(r => r.json());
+            const data = await (window.akeFetch || fetch)(weapon.contentFile).then(r => r.json());
             currentWeaponData = data;
             currentWeapon = weapon;
             container.innerHTML = renderDetail(data, weapon);

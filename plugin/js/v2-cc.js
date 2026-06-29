@@ -209,7 +209,7 @@
 
     async function loadGameManifest(showHidden) {
         try {
-            const res = await fetch('/public/CH/v2_cc/manifest.json?t=' + Date.now());
+            const res = await (window.akeFetch || fetch)('/public/CH/v2_cc/manifest.json');
             if (!res.ok) throw new Error('无法加载合约清单');
             const all = await res.json();
             let games = showHidden ? all : all.filter(g => !g.hidden);
@@ -340,7 +340,7 @@
     async function loadGameDetail(game, container) {
         container.innerHTML = '<div class="v2cc-loader">加载合约数据...</div>';
         try {
-            const data = await fetch(game.contentFile + '?t=' + Date.now()).then(r => r.json());
+            const data = await (window.akeFetch || fetch)(game.contentFile).then(r => r.json());
             currentData = data;
             currentGame = game;
             currentDungeonData = null;
@@ -355,7 +355,7 @@
             if (game.dungeonFile) {
                 try {
                     await loadCcMaps();
-                    const dgData = await fetch(game.dungeonFile + '?t=' + Date.now()).then(r => r.json());
+                    const dgData = await (window.akeFetch || fetch)(game.dungeonFile).then(r => r.json());
                     const embeddedBuffData = {};
                     Object.values(dgData.dungeontable || {}).forEach(dg => {
                         if (dg.BuffData) Object.assign(embeddedBuffData, dg.BuffData);
@@ -752,7 +752,7 @@
 
     async function loadCcMaps() {
         try {
-            const res = await fetch('/public/CH/maps.json?t=' + Date.now());
+            const res = await (window.akeFetch || fetch)('/public/CH/maps.json');
             if (!res.ok) return;
             const data = await res.json();
             ccAttrMap = data.ATTR_MAP || {};
@@ -768,7 +768,7 @@
             return ccBuffCache[buffId];
         }
         try {
-            const res = await fetch(`/public/Json/BuffData/${buffId}.json?t=${Date.now()}`);
+            const res = await (window.akeFetch || fetch)(`/public/Json/BuffData/${buffId}.json`);
             if (!res.ok) { ccBuffCache[buffId] = null; return null; }
             ccBuffCache[buffId] = await res.json();
             return ccBuffCache[buffId];

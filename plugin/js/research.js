@@ -309,7 +309,7 @@
 
         async function loadResearchManifest(showHidden) {
             try {
-                const res = await fetch('/public/CH/research/manifest.json?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)('/public/CH/research/manifest.json');
                 if (!res.ok) throw new Error('无法加载研究文档清单');
                 const all = await res.json();
                 rawAllDocs = all;
@@ -461,7 +461,7 @@
             }
             container.innerHTML = '<div class="loader">加载文档内容...</div>';
             try {
-                const res = await fetch(doc.contentFile + '?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)(doc.contentFile);
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const mdText = await res.text();
                 const rendered = parseMarkdown(mdText);

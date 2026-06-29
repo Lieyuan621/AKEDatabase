@@ -237,7 +237,7 @@
 
         async function loadMaps() {
             try {
-                const res = await fetch('/public/CH/maps.json?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)('/public/CH/maps.json');
                 if (!res.ok) throw new Error('无法加载映射数据');
                 const data = await res.json();
                 attrMap = data.ATTR_MAP || {};
@@ -427,7 +427,7 @@
 
         async function loadCharacterManifest(showHidden) {
             try {
-                const res = await fetch('/public/CH/v2_character/manifest.json?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)('/public/CH/v2_character/manifest.json');
                 if (!res.ok) throw new Error('无法加载角色清单');
                 const allChars = await res.json();
                 rawAllCharacters = allChars;
@@ -539,7 +539,7 @@
             try {
                 const fileName = (character.contentFile || '').split('/').pop() || `${character.charId}.json`;
                 const contentFile = `/public/CH/v2_character/${fileName}`;
-                const rawData = await fetch(contentFile + '?t=' + Date.now()).then(r => r.json());
+                const rawData = await (window.akeFetch || fetch)(contentFile).then(r => r.json());
                 const data = normalizeV2ToLegacy(character, rawData);
                 currentCharData = data;
                 currentCharacter = character;

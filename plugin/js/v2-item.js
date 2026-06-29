@@ -74,7 +74,7 @@
 
         async function loadMaps() {
             try {
-                const res = await fetch('/public/CH/maps.json?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)('/public/CH/maps.json');
                 if (res.ok) {
                     const data = await res.json();
                     itemTypeMap = data.item_type_map || {};
@@ -155,7 +155,7 @@
 
         async function loadItemManifest(showHidden) {
             try {
-                const res = await fetch('/public/CH/v2_item/manifest.json?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)('/public/CH/v2_item/manifest.json');
                 if (!res.ok) throw new Error('无法加载物品清单');
                 const all = await res.json();
                 rawAllItems = all;
@@ -256,7 +256,7 @@
         async function loadItemDetail(item, container) {
             container.innerHTML = '<div class="v2i-loader">加载物品数据...</div>';
             try {
-                const data = await fetch(item.contentFile + '?t=' + Date.now()).then(r => r.json());
+                const data = await (window.akeFetch || fetch)(item.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data, item);
             } catch (err) {
                 container.innerHTML = `<div class="v2i-error">加载失败: ${err.message}</div>`;

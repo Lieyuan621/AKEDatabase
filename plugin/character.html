@@ -276,7 +276,7 @@
 
         async function loadCharacterManifest(showHidden) {
             try {
-                const res = await fetch('/public/CH/character/manifest.json?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)('/public/CH/character/manifest.json');
                 if (!res.ok) throw new Error('无法加载角色清单');
                 const allChars = await res.json();
                 rawAllCharacters = allChars || [];
@@ -385,7 +385,7 @@
         async function loadCharacterDetail(character, container) {
             container.innerHTML = '<div class="loader">加载干员数据...</div>';
             try {
-                const data = await fetch(character.contentFile + '?t=' + Date.now()).then(r => r.json());
+                const data = await (window.akeFetch || fetch)(character.contentFile).then(r => r.json());
                 currentCharData = data;
                 currentCharacter = character;
                 container.innerHTML = renderDetail(data);

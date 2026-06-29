@@ -59,7 +59,7 @@
 
         async function loadEnemyManifest(showHidden) {
             try {
-                const res = await fetch('/public/CH/enemy/manifest.json?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)('/public/CH/enemy/manifest.json');
                 if (!res.ok) throw new Error('无法加载敌人清单');
                 const all = await res.json();
                 rawAllEnemies = all || [];
@@ -161,7 +161,7 @@
         async function loadEnemyDetail(enemy, container) {
             container.innerHTML = '<div class="loader">加载敌人数据...</div>';
             try {
-                const data = await fetch(enemy.contentFile + '?t=' + Date.now()).then(r => r.json());
+                const data = await (window.akeFetch || fetch)(enemy.contentFile).then(r => r.json());
                 currentEnemyData = data;
                 currentEnemy = enemy;
 

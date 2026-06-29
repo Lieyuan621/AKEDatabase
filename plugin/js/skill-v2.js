@@ -128,7 +128,7 @@
     }
 
     async function fetchManifest() {
-        const res = await fetch('/public/Json/SkillData/manifest.json?t=' + Date.now());
+        const res = await (window.akeFetch || fetch)('/public/Json/SkillData/manifest.json');
         if (!res.ok) throw new Error('无法加载 SkillData 清单');
         const json = await res.json();
         rawAllSkills = json || [];
@@ -136,7 +136,7 @@
     }
 
     async function fetchSkillData(contentFile) {
-        const res = await fetch(contentFile + '?t=' + Date.now());
+        const res = await (window.akeFetch || fetch)(contentFile);
         if (!res.ok) throw new Error('无法加载技能详情: ' + contentFile);
         return res.json();
     }

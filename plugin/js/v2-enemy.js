@@ -30,7 +30,7 @@
 
         async function loadMaps() {
             try {
-                const res = await fetch('/public/CH/maps.json?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)('/public/CH/maps.json');
                 if (!res.ok) throw new Error('无法加载映射数据');
                 const data = await res.json();
                 attrMap = data.ATTR_MAP || {};
@@ -85,7 +85,7 @@
 
         async function loadEnemyManifest(showHidden) {
             try {
-                const res = await fetch('/public/CH/v2_enemy/manifest.json?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)('/public/CH/v2_enemy/manifest.json');
                 if (!res.ok) throw new Error('无法加载敌人清单');
                 const all = await res.json();
                 rawAllEnemies = all;
@@ -420,7 +420,7 @@
         async function loadEnemyDetail(enemy, container) {
             container.innerHTML = '<div class="v2e-loader">加载敌人数据...</div>';
             try {
-                const rawData = await fetch(enemy.contentFile + '?t=' + Date.now()).then(r => r.json());
+                const rawData = await (window.akeFetch || fetch)(enemy.contentFile).then(r => r.json());
                 const data = normalizeV2ToLegacy(enemy, rawData);
                 currentEnemyData = data;
                 currentEnemy = enemy;

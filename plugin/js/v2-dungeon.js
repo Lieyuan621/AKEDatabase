@@ -33,7 +33,7 @@
 
         async function loadMaps() {
             try {
-                const res = await fetch('/public/CH/maps.json?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)('/public/CH/maps.json');
                 if (!res.ok) throw new Error('无法加载映射数据');
                 const data = await res.json();
                 attrMap = data.ATTR_MAP || {};
@@ -50,7 +50,7 @@
         async function loadBuff(buffId) {
             if (buffCache[buffId] !== undefined) return buffCache[buffId];
             try {
-                const res = await fetch(`/public/Json/BuffData/${buffId}.json?t=${Date.now()}`);
+                const res = await (window.akeFetch || fetch)(`/public/Json/BuffData/${buffId}.json`);
                 if (!res.ok) { buffCache[buffId] = null; return null; }
                 buffCache[buffId] = await res.json();
                 return buffCache[buffId];
@@ -334,7 +334,7 @@
 
         async function loadSeriesManifest(showHidden) {
             try {
-                const res = await fetch('/public/CH/v2_dungeon/manifest.json?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)('/public/CH/v2_dungeon/manifest.json');
                 if (!res.ok) throw new Error('无法加载副本系列清单');
                 const all = await res.json();
                 rawAllSeries = all;
@@ -432,7 +432,7 @@
         async function loadSeriesDetail(seriesItem, container) {
             container.innerHTML = '<div class="v2d-loader">加载副本数据...</div>';
             try {
-                const data = await fetch(seriesItem.contentFile + '?t=' + Date.now()).then(r => r.json());
+                const data = await (window.akeFetch || fetch)(seriesItem.contentFile).then(r => r.json());
                 const buffIds = collectBuffIds(data);
                 if (buffIds.length > 0) await loadAllBuffs(buffIds);
                 container.innerHTML = renderDetail(data, seriesItem);

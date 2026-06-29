@@ -138,7 +138,7 @@
 
         async function loadActivityManifest(showHidden) {
             try {
-                const res = await fetch('/public/CH/activity/manifest.json?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)('/public/CH/activity/manifest.json');
                 if (!res.ok) throw new Error('无法加载活动清单');
                 const all = await res.json();
                 rawAllActivities = all;
@@ -238,7 +238,7 @@
         async function loadActivityDetail(activity, container) {
             container.innerHTML = '<div class="loader">加载活动数据...</div>';
             try {
-                const data = await fetch(activity.contentFile + '?t=' + Date.now()).then(r => r.json());
+                const data = await (window.akeFetch || fetch)(activity.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data, activity);
             } catch (err) {
                 container.innerHTML = `<div class="error-message">加载失败: ${err.message}</div>`;

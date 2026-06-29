@@ -60,7 +60,7 @@
 
         async function loadCategoryManifest(showHidden) {
             try {
-                const res = await fetch('/public/CH/achievement/manifest.json?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)('/public/CH/achievement/manifest.json');
                 if (!res.ok) throw new Error('无法加载奖章分类清单');
                 const all = await res.json();
                 rawAllCategories = all;
@@ -144,7 +144,7 @@
         async function loadCategoryDetail(category, container) {
             container.innerHTML = '<div class="loader">加载奖章数据...</div>';
             try {
-                const data = await fetch(category.contentFile + '?t=' + Date.now()).then(r => r.json());
+                const data = await (window.akeFetch || fetch)(category.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data);
             } catch (err) {
                 container.innerHTML = `<div class="error-message">加载失败: ${err.message}</div>`;

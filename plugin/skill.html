@@ -74,7 +74,7 @@
 
         async function loadSkillManifest(showHidden) {
             try {
-                const res = await fetch('/public/Json/SkillData/manifest.json?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)('/public/Json/SkillData/manifest.json');
                 if (!res.ok) throw new Error('无法加载技能清单');
                 const all = await res.json();
                 rawAllSkills = all;
@@ -181,7 +181,7 @@
         async function loadSkillDetail(skill, container) {
             container.innerHTML = '<div class="loader">加载技能数据...</div>';
             try {
-                const data = await fetch(skill.contentFile + '?t=' + Date.now()).then(r => r.json());
+                const data = await (window.akeFetch || fetch)(skill.contentFile).then(r => r.json());
                 currentSkillData = data;
                 container.innerHTML = renderDetail(data);
                 // 绑定查看完整数据的按钮（打开模态框）

@@ -160,7 +160,7 @@
                 }
                 setContent(`<div class="loader">⏳ 加载模块内容...</div>`);
                 try {
-                    const response = await fetch(module.contentFile, { cache: "no-cache" });
+                    const response = await (window.akeFetch || fetch)(module.contentFile);
                     if (!response.ok) throw new Error(`HTTP ${response.status}`);
                     const html = await response.text();
                     contentArea.innerHTML = '';
@@ -386,7 +386,7 @@
 
             async function loadModulesFromManifest() {
                 try {
-                    const response = await fetch(`plugin/manifest.json?t=${Date.now()}`);
+                    const response = await (window.akeFetch || fetch)('plugin/manifest.json');
                     if (!response.ok) return [];
                     const manifest = await response.json();
                     if (!Array.isArray(manifest)) return [];
@@ -431,8 +431,8 @@
                 }
             };
             window.configLoaded = Promise.all([
-                fetch('/theme/hyperlink.json?t=' + Date.now()).then(r => r.json()).then(cfg => window.hyperlinkConfig = cfg).catch(() => {}),
-                fetch('/theme/textstyle.json?t=' + Date.now()).then(r => r.json()).then(cfg => window.textstyleConfig = cfg).catch(() => {})
+                (window.akeFetch || fetch)('/theme/hyperlink.json').then(r => r.json()).then(cfg => window.hyperlinkConfig = cfg).catch(() => {}),
+                (window.akeFetch || fetch)('/theme/textstyle.json').then(r => r.json()).then(cfg => window.textstyleConfig = cfg).catch(() => {})
             ]);
 
             window.renderRawValueTip = function(displayValue, rawValue, variableName) {

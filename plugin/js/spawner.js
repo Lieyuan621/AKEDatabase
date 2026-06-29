@@ -49,9 +49,9 @@
 
         // ---------- 加载根清单 ----------
         async function loadRootManifest() {
-            const url = '/public/Json/SpawnerConfig/manifest.json?t=' + Date.now();
+            const url = '/public/Json/SpawnerConfig/manifest.json';
             try {
-                const resp = await fetch(url);
+                const resp = await (window.akeFetch || fetch)(url);
                 if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
                 const items = await resp.json();
                 rawGroups = items;
@@ -74,9 +74,9 @@
         // 按需加载分组的子清单
         async function loadGroupSpawners(group) {
             if (group.spawners !== null) return group.spawners;
-            const url = group.manifestPath + '?t=' + Date.now();
+            const url = group.manifestPath;
             try {
-                const resp = await fetch(url);
+                const resp = await (window.akeFetch || fetch)(url);
                 if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
                 const items = await resp.json();
                 const showHidden = window.akeData?.getConfig().showHidden ?? false;
@@ -149,8 +149,8 @@
 
             const fetchPromises = spawners.map(async (spawner) => {
                 try {
-                    const url = spawner.dataPath + '?t=' + Date.now();
-                    const resp = await fetch(url, { signal: abortController.signal });
+                    const url = spawner.dataPath;
+                    const resp = await (window.akeFetch || fetch)(url, { signal: abortController.signal });
                     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
                     const data = await resp.json();
                     return { spawner, data };

@@ -110,7 +110,7 @@
 
         async function loadMaps() {
             try {
-                const res = await fetch('/public/CH/maps.json?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)('/public/CH/maps.json');
                 if (res.ok) {
                     const data = await res.json();
                     attrMap = data.ATTR_MAP || {};
@@ -123,7 +123,7 @@
 
         async function loadSuitManifest(showHidden) {
             try {
-                const res = await fetch('/public/CH/v2_equip/manifest.json?t=' + Date.now());
+                const res = await (window.akeFetch || fetch)('/public/CH/v2_equip/manifest.json');
                 if (!res.ok) throw new Error('无法加载装备清单');
                 const all = await res.json();
                 rawAllSuits = all;
@@ -562,7 +562,7 @@
         async function loadSuitDetail(suit, container) {
             container.innerHTML = '<div class="v2eq-loader">加载套组数据...</div>';
             try {
-                const data = await fetch(suit.contentFile + '?t=' + Date.now()).then(r => r.json());
+                const data = await (window.akeFetch || fetch)(suit.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data, suit);
             } catch (err) {
                 container.innerHTML = `<div class="v2eq-error">加载失败: ${err.message}</div>`;
