@@ -76,7 +76,8 @@
             const pctKeywords = ['暴击', '伤害加成', '充能', '抗性', '承伤', '减免', '吸血', '增幅', '脆弱', '强度'];
             const isPct = pctKeywords.some(k => name.includes(k)) || Math.abs(val) < 1;
             if (isPct && Math.abs(val) < 10) {
-                return (val * 100).toFixed(2) + '%';
+                const displayVal = compositeAttr === 'AllDamageTakenScalar' ? 1 - val : val;
+                return (displayVal * 100).toFixed(2) + '%';
             }
             if (Number.isInteger(val)) return val.toString();
             return val.toFixed(2);
@@ -505,12 +506,12 @@
 
             const partOrder = { 0: 0, 1: 1, 2: 2 };
             const sortedItems = Object.entries(equipTable).sort((a, b) => {
-                const pa = partOrder[a[1].partType] ?? 99;
-                const pb = partOrder[b[1].partType] ?? 99;
-                if (pa !== pb) return pa - pb;
                 const ra = itemTable[a[0]]?.rarity ?? 0;
                 const rb = itemTable[b[0]]?.rarity ?? 0;
                 if (ra !== rb) return rb - ra;
+                const pa = partOrder[a[1].partType] ?? 99;
+                const pb = partOrder[b[1].partType] ?? 99;
+                if (pa !== pb) return pa - pb;
                 return a[0].localeCompare(b[0]);
             });
 

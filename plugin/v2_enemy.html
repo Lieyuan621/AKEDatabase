@@ -78,8 +78,9 @@
                 const val = m.attrValue;
                 const isMult = (m.modifierType === 1 || m.modifierType === 4 ||
                     m.modifierType === 6 || m.modifierType === 8);
+                const displayVal = (m.modifierType === 4 || m.modifierType === 8) ? val - 1 : val;
                 let text = isMult
-                    ? `${name} ${(val * 100).toFixed(1) > 0 ? '+' : ''}${(val * 100).toFixed(1)}%`
+                    ? `${name} ${displayVal > 0 ? '+' : ''}${(displayVal * 100).toFixed(1)}%`
                     : `${name} ${val > 0 ? '+' : ''}${val}`;
                 if (showHidden) {
                     const modName = modifierTypeMap[String(m.modifierType)] || '';
@@ -101,9 +102,9 @@
                     case 5: baseAddition += v; break;
                     case 6: baseMultiplier *= (1 + v); break;
                     case 7: baseFinalAddition += v; break;
-                    case 8: baseFinalMultiplier *= (1 + v); break;
+                    case 8: baseFinalMultiplier *= v; break;
                     case 3: finalAddition += v; break;
-                    case 4: finalMultiplier *= (1 + v); break;
+                    case 4: finalMultiplier *= v; break;
                     case 0: addition += v; break;
                     case 1: multiplier *= (1 + v); break;
                 }

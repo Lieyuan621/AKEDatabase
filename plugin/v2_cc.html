@@ -833,7 +833,7 @@
                 case 5: baseAddition += v; break;
                 case 6: baseMultiplier *= (1 + v); break;
                 case 7: baseFinalAddition += v; break;
-                case 8: baseFinalMultiplier *= (1 + v); break;
+                case 8: baseFinalMultiplier *= v; break;
             }
         });
         return ((((baseValue + baseAddition) * baseMultiplier + baseFinalAddition) * baseFinalMultiplier + finalAddition) * finalMultiplier + addition) * multiplier;
@@ -938,7 +938,9 @@
                     val = bbEntry ? bbVal(bbEntry) : mod.param.value;
                 } else { val = mod.param.value; }
                 const pctTypes = ['Multiplier', 'FinalMultiplier', 'BaseMultiplier', 'BaseFinalMultiplier'];
-                const display = pctTypes.includes(formula) ? `${(val * 100).toFixed(0)}%` : val;
+                const directMultiplierTypes = ['FinalMultiplier', 'BaseFinalMultiplier'];
+                const displayVal = directMultiplierTypes.includes(formula) ? val - 1 : val;
+                const display = pctTypes.includes(formula) ? `${(displayVal * 100).toFixed(0)}%` : val;
                 rows.push(`${label} ${formula} ${display}`);
             });
             bb.forEach(b => {
@@ -1433,7 +1435,9 @@
                 const inlineModifiers = enemyConfig.attrModifiers || [];
 
                 const libBuffs = JSON.parse(card.dataset.libBuffs || '[]');
+                const ownBuffs = enemyConfig.bornBuffs || [];
                 const buffModifiers = [];
+                ownBuffs.forEach(id => buffModifiers.push(...getBuffModifiers(id, [])));
                 libBuffs.forEach(b => buffModifiers.push(...getBuffModifiers(b.buffId, b.blackboard)));
                 const allModifiers = [...inlineModifiers, ...buffModifiers, ...tagModifiers];
 
@@ -1447,7 +1451,6 @@
                     attrGrid.innerHTML = statsHtml;
                 }
 
-                const ownBuffs = enemyConfig.bornBuffs || [];
                 const newBuffTagsHtml = buildEnemyBuffTagsHtml(ownBuffs, libBuffs, ccTagBuffs);
                 const oldBuffTags = card.querySelector('.v2d-enemy-buffs');
                 if (newBuffTagsHtml) {

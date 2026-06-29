@@ -288,11 +288,11 @@
                     case 0: addition += v; break;
                     case 1: multiplier *= (1 + v); break;
                     case 3: finalAddition += v; break;
-                    case 4: finalMultiplier *= (1 + v); break;
+                    case 4: finalMultiplier *= v; break;
                     case 5: baseAddition += v; break;
                     case 6: baseMultiplier *= (1 + v); break;
                     case 7: baseFinalAddition += v; break;
-                    case 8: baseFinalMultiplier *= (1 + v); break;
+                    case 8: baseFinalMultiplier *= v; break;
                 }
             });
 
@@ -307,8 +307,9 @@
                 const val = m.attrValue;
                 const isMult = (m.modifierType === 1 || m.modifierType === 4 ||
                     m.modifierType === 6 || m.modifierType === 8);
+                const displayVal = (m.modifierType === 4 || m.modifierType === 8) ? val - 1 : val;
                 let text = isMult
-                    ? `${name} ${(val * 100).toFixed(1) > 0 ? '+' : ''}${(val * 100).toFixed(1)}%`
+                    ? `${name} ${displayVal > 0 ? '+' : ''}${(displayVal * 100).toFixed(1)}%`
                     : `${name} ${val > 0 ? '+' : ''}${val}`;
                 if (showHidden) {
                     const modName = modifierTypeMap[String(m.modifierType)] || '';
@@ -622,7 +623,9 @@
                             val = bbEntry ? (bbEntry.valueFloat ?? bbEntry.valueDouble ?? 0) : mod.param.value;
                         } else { val = mod.param.value; }
                         const pctTypes = ['Multiplier', 'FinalMultiplier', 'BaseMultiplier', 'BaseFinalMultiplier'];
-                        const display = pctTypes.includes(formula) ? `${(val * 100).toFixed(0)}%` : val;
+                        const directMultiplierTypes = ['FinalMultiplier', 'BaseFinalMultiplier'];
+                        const displayVal = directMultiplierTypes.includes(formula) ? val - 1 : val;
+                        const display = pctTypes.includes(formula) ? `${(displayVal * 100).toFixed(0)}%` : val;
                         rows.push(`${label} ${formula} ${display}`);
                     });
                     bb.forEach(b => {
