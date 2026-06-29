@@ -1,0 +1,1519 @@
+(function() {
+        let allCharacters = [];
+        let rawAllCharacters = [];
+        let activeCharId = null;
+        let isInitialized = false;
+        let attrMap = {};
+        let attrEnMap = {};
+        let paramTypeMap = {};
+        let modifierTypeMap = {};
+        let charTypeMap = {};
+        let weaponMap = {};
+        let professionMap = {};
+        let roomTypeMap = {};
+        let searchTerm = '';
+        let currentCharacter = null;
+        let currentCharData = null;
+        let charLevelsToShow = null;
+        let skillLevelsToShow = null;
+        let globalSkillExpand = false;
+        let skillExpandMap = {};
+        let showAllCharLevels = false;
+
+        // 筛选状态
+        let selectedRarities = new Set();
+        let selectedCharTypes = new Set();
+        let selectedProfessions = new Set();
+        let selectedWeaponTypes = new Set();
+
+        const TYPE_CLASS_MAP = {
+            '物理': 'physical',
+            '自然': 'nature',
+            '寒冷': 'cold',
+            '灼热': 'hot',
+            '电磁': 'electro'
+        };
+
+        const IMAGE_BASE_PATH = '/public/images/bufficon/';
+        const COLUMN_MAP = {
+            'coolDown': '冷却时间',
+            'costValue': '消耗能量',
+        };
+        const ALWAYS_SHOW_COLS = ['coolDown', 'costValue'];
+        const SKILL_GROUP_ORDER = { 0: 0, 1: 1, 2: 3, 3: 2 };
+        const HIDDEN_KEYWORDS = ['atb', 'scale', 'usp', 'duration', 'poise', '_', 'count', 'layer', 'prob'];
+
+        function getCurrentLanguage() {
+            const lang = window.akeData?.getLanguage?.() || 'CH';
+            return lang === 'CN' ? 'CH' : lang;
+        }
+
+        function getCurrentShowHidden() {
+            return window.akeData?.getConfig().showHidden ?? false;
+        }
+
+        function parseText(text) {
+            return window.parseText(text, IMAGE_BASE_PATH);
+        }
+
+        function parseLevelInput(input, maxLevel = 90) {
+            if (!input || input.trim() === '') return [];
+            const parts = input.split(',').map(s => parseInt(s.trim(), 10)).filter(n => !isNaN(n) && n >= 1 && n <= maxLevel);
+            return parts.length ? parts : [maxLevel];
+        }
+
+        function replacePlaceholders(desc, valueMap, modifierTypes, showModTag) {
+            const lowerValueMap = {};
+            for (const [key, val] of Object.entries(valueMap || {})) {
+                lowerValueMap[String(key).toLowerCase()] = val;
+            }
+            const lowerModTypes = {};
+            if (modifierTypes) {
+                for (const [key, val] of Object.entries(modifierTypes)) {
+                    lowerModTypes[String(key).toLowerCase()] = val;
+                }
+            }
+            return String(desc || '').replace(/\{([^}]+)\}/g, (match, p1) => {
+                const parts = p1.split(':');
+                const expr = parts[0].replace(/\s+/g, '');
+                const format = parts[1] ? parts[1].trim() : '';
+                const varNames = expr.match(/[a-zA-Z_][a-zA-Z0-9_]*/g) || [];
+                const missingVar = varNames.find(name => !(name.toLowerCase() in lowerValueMap));
+                if (missingVar) return match;
+                let evalExpr = expr;
+                for (const name of varNames) {
+                    const value = lowerValueMap[name.toLowerCase()];
+                    const regex = new RegExp(`\\b${name}\\b`, 'g');
+                    evalExpr = evalExpr.replace(regex, `(${value})`);
+                }
+                let result;
+                try {
+                    result = new Function('return ' + evalExpr)();
+                } catch (e) {
+                    return match;
+                }
+                let formatted;
+                if (format.includes('%')) formatted = (result * 100).toFixed(1) + '%';
+                else if (format.includes('.')) {
+                    const precision = format.split('.')[1]?.length || 1;
+                    formatted = result.toFixed(precision);
+                }
+                else if (format.includes('0')) formatted = Math.round(result).toString();
+                else formatted = result.toString();
+                if (showModTag && lowerModTypes) {
+                    const matchedModType = varNames.map(name => lowerModTypes[name.toLowerCase()]).find(v => v != null);
+                    if (matchedModType != null) {
+                        const modName = modifierTypeMap[String(matchedModType)] || '';
+                        if (modName) formatted += ` <span class="attr-node-modifier-tag">${modName}</span>`;
+                    }
+                }
+                const tipKey = varNames.length === 1 ? varNames[0] : expr;
+                return window.renderRawValueTip ? window.renderRawValueTip(formatted, result, tipKey) : formatted;
+            });
+        }
+
+        function replaceV2Placeholders(desc, objWithBlackboard) {
+            if (!desc || !desc.includes('{')) return desc;
+            const lookup = {};
+            function traverse(o) {
+                if (!o || typeof o !== 'object') return;
+                if (Array.isArray(o)) {
+                    o.forEach(traverse);
+                } else {
+                    if (o.key !== undefined && (o.value !== undefined || o.valueStr !== undefined)) {
+                        let v = o.valueStr !== undefined && o.valueStr !== "" ? o.valueStr : o.value;
+                        lookup[o.key.toLowerCase()] = v;
+                    }
+                    if (o.bbKey !== undefined && (o.floatValue !== undefined || o.stringValue !== undefined)) {
+                        let v = o.stringValue !== undefined && o.stringValue !== "" ? o.stringValue : o.floatValue;
+                        lookup[o.bbKey.toLowerCase()] = v;
+                    }
+                    if (o.paramType !== undefined && o.paramValue !== undefined) {
+                        const ptName = paramTypeMap[o.paramType];
+                        if (ptName) {
+                            lookup[ptName.toLowerCase()] = o.paramValue;
+                        }
+                    }
+                    if (o.attrType !== undefined && o.attrValue !== undefined) {
+                        const atName = attrEnMap[o.attrType];
+                        if (atName) {
+                            lookup[atName.toLowerCase()] = o.attrValue;
+                        }
+                    }
+                    if (o.modifyAttributeType !== undefined && o.attrValue !== undefined) {
+                        const atModName = attrEnMap[o.modifyAttributeType];
+                        if (atModName) {
+                            lookup[atModName.toLowerCase()] = o.attrValue;
+                        }
+                    }
+                    Object.values(o).forEach(traverse);
+                }
+            }
+            traverse(objWithBlackboard);
+
+            return desc.replace(/\{([^}]+)\}/g, (match, fullExpr) => {
+                const parts = fullExpr.split(':');
+                const expr = parts[0].trim();
+                const format = parts[1] ? parts[1].trim() : '';
+
+                const exactKey = expr.toLowerCase();
+                let finalValue;
+
+                if (lookup[exactKey] !== undefined) {
+                    finalValue = lookup[exactKey];
+                } else {
+                    let evalExpr = expr.replace(/[a-zA-Z_][a-zA-Z0-9_]*/g, (varName) => {
+                        const lowerVar = varName.toLowerCase();
+                        if (lookup[lowerVar] !== undefined) {
+                            let val = lookup[lowerVar];
+                            return (typeof val === 'number' && val < 0) ? '(' + val + ')' : val;
+                        }
+                        return varName;
+                    });
+                    
+                    try {
+                        // eslint-disable-next-line no-new-func
+                        finalValue = new Function('return ' + evalExpr)();
+                    } catch (e) {
+                        return match;
+                    }
+                }
+
+                if (typeof finalValue === 'number') {
+                    let formatted;
+                    if (format === '0%') formatted = Math.round(finalValue * 100) + '%';
+                    else if (format === '0.0%') formatted = (finalValue * 100).toFixed(1) + '%';
+                    else if (format === '0') formatted = Math.round(finalValue).toString();
+                    else if (format === '0.0') formatted = finalValue.toFixed(1);
+                    else formatted = finalValue.toString();
+                    return window.renderRawValueTip ? window.renderRawValueTip(formatted, finalValue, expr) : formatted;
+                } else if (typeof finalValue === 'string') {
+                    if (format === '0%' && !finalValue.includes('%')) {
+                        let num = parseFloat(finalValue);
+                        if (!isNaN(num)) return Math.round(num * 100) + '%';
+                    }
+                }
+
+                return finalValue !== undefined ? String(finalValue) : match;
+            });
+        }
+
+        function replaceTalentPlaceholders(desc, dataList) {
+            if (!desc || !desc.includes('{') || !dataList || !dataList.length) return desc || '';
+            return desc.replace(/\{(\d+),(\d+)(?::([^}]+))?\}/g, (match, dataIdx, valIdx, format) => {
+                const di = parseInt(dataIdx, 10);
+                const vi = parseInt(valIdx, 10);
+                const item = dataList[di];
+                if (!item) return match;
+
+                let finalValue;
+                const bb = item.attachBuff?.blackboard;
+                if (bb && bb[vi] !== undefined) {
+                    finalValue = bb[vi].value;
+                }
+                if (finalValue === undefined && vi === 0) {
+                    if (item.skillBbModifier?.floatValue !== undefined && item.skillBbModifier.floatValue !== 0) {
+                        finalValue = item.skillBbModifier.floatValue;
+                    } else if (item.skillParamModifier?.paramValue !== undefined && item.skillParamModifier.paramValue !== 0) {
+                        finalValue = item.skillParamModifier.paramValue;
+                    } else if (item.attrModifier?.attrValue !== undefined && item.attrModifier.attrValue !== 0) {
+                        finalValue = item.attrModifier.attrValue;
+                    }
+                }
+                if (finalValue === undefined) finalValue = 0;
+
+                if (typeof finalValue === 'number') {
+                    let formatted;
+                    if (format === '0%') formatted = Math.round(finalValue * 100) + '%';
+                    else if (format === '0.0%') formatted = (finalValue * 100).toFixed(1) + '%';
+                    else if (format === '0') formatted = Math.round(finalValue).toString();
+                    else if (format === '0.0') formatted = finalValue.toFixed(1);
+                    else formatted = finalValue.toString();
+                    return window.renderRawValueTip ? window.renderRawValueTip(formatted, finalValue, `${dataIdx},${valIdx}`) : formatted;
+                }
+                return String(finalValue);
+            });
+        }
+
+        async function loadMaps() {
+            try {
+                const res = await fetch('/public/CH/maps.json?t=' + Date.now());
+                if (!res.ok) throw new Error('无法加载映射数据');
+                const data = await res.json();
+                attrMap = data.ATTR_MAP || {};
+                attrEnMap = data.ATTR_MAP_EN || {};
+                paramTypeMap = data.param_type_map || {};
+                modifierTypeMap = data.MODIFIER_TYPE_MAP || {};
+                charTypeMap = data.char_type_map || {};
+                weaponMap = data.weapon_map || {};
+                professionMap = data.profession_map || {};
+                roomTypeMap = data.room_type_map || {};
+            } catch (err) {
+                console.error('加载映射数据失败:', err);
+                attrMap = {};
+                attrEnMap = {};
+                paramTypeMap = {};
+                charTypeMap = {};
+                weaponMap = {};
+                professionMap = {};
+                roomTypeMap = {};
+            }
+        }
+
+        function getAttrName(attrType) {
+            return attrMap[attrType] || `属性${attrType}`;
+        }
+
+        function getCharTypeName(charType) {
+            return charTypeMap[charType] || charType;
+        }
+
+        function getWeaponName(weapon) {
+            return weaponMap[weapon] || weapon;
+        }
+
+        function getProfessionName(prof) {
+            return professionMap[prof] || prof;
+        }
+
+        function filterCharacters(chars) {
+            return chars.filter(c => {
+                // 搜索过滤
+                if (searchTerm) {
+                    const term = searchTerm.toLowerCase();
+                    const nameMatch = c.name && c.name.toLowerCase().includes(term);
+                    const idMatch = c.charId && c.charId.toLowerCase().includes(term);
+                    if (!nameMatch && !idMatch) return false;
+                }
+                // 稀有度筛选
+                if (selectedRarities.size > 0 && !selectedRarities.has(c.rarity)) return false;
+                // 属性筛选
+                if (selectedCharTypes.size > 0 && !selectedCharTypes.has(c.charType)) return false;
+                // 职业筛选
+                if (selectedProfessions.size > 0 && !selectedProfessions.has(c.profession)) return false;
+                // 武器类型筛选
+                if (selectedWeaponTypes.size > 0 && !selectedWeaponTypes.has(c.weapontype)) return false;
+                return true;
+            });
+        }
+
+        // 生成筛选按钮
+        function generateFilterButtons() {
+            const rarityContainer = document.getElementById('v2charRarityFilter');
+            const typeContainer = document.getElementById('v2charTypeFilter');
+            const profContainer = document.getElementById('v2charProfessionFilter');
+            const weaponContainer = document.getElementById('v2charWeaponFilter');
+            if (!rarityContainer || !typeContainer || !profContainer || !weaponContainer) return;
+
+            // 稀有度按钮
+            const existingRarities = new Set(allCharacters.map(c => c.rarity));
+            rarityContainer.innerHTML = '';
+            for (let r = 1; r <= 6; r++) {
+                if (existingRarities.has(r)) {
+                    const btn = document.createElement('span');
+                    btn.className = `filter-btn ${selectedRarities.has(r) ? 'active' : ''}`;
+                    btn.dataset.rarity = r;
+                    btn.textContent = r + '星';
+                    btn.addEventListener('click', () => {
+                        if (selectedRarities.has(r)) {
+                            selectedRarities.delete(r);
+                        } else {
+                            selectedRarities.add(r);
+                        }
+                        btn.classList.toggle('active');
+                        renderCharacterList();
+                    });
+                    rarityContainer.appendChild(btn);
+                }
+            }
+
+            // 属性按钮
+            const existingTypes = new Set(allCharacters.map(c => c.charType).filter(t => t));
+            typeContainer.innerHTML = '';
+            existingTypes.forEach(type => {
+                const btn = document.createElement('span');
+                const tName = getCharTypeName(type) || type;
+                btn.className = `filter-btn ${selectedCharTypes.has(type) ? 'active' : ''}`;
+                btn.dataset.type = type;
+                btn.textContent = tName;
+                btn.addEventListener('click', () => {
+                    if (selectedCharTypes.has(type)) {
+                        selectedCharTypes.delete(type);
+                    } else {
+                        selectedCharTypes.add(type);
+                    }
+                    btn.classList.toggle('active');
+                    renderCharacterList();
+                });
+                typeContainer.appendChild(btn);
+            });
+
+            // 职业按钮
+            const existingProfessions = new Set(allCharacters.map(c => c.profession).filter(p => p));
+            profContainer.innerHTML = '';
+            existingProfessions.forEach(prof => {
+                const btn = document.createElement('span');
+                const pName = getProfessionName(prof) || prof;
+                btn.className = `filter-btn ${selectedProfessions.has(prof) ? 'active' : ''}`;
+                btn.dataset.profession = prof;
+                btn.textContent = pName;
+                btn.addEventListener('click', () => {
+                    if (selectedProfessions.has(prof)) {
+                        selectedProfessions.delete(prof);
+                    } else {
+                        selectedProfessions.add(prof);
+                    }
+                    btn.classList.toggle('active');
+                    renderCharacterList();
+                });
+                profContainer.appendChild(btn);
+            });
+
+            // 武器类型按钮
+            const existingWeapons = new Set(allCharacters.map(c => c.weapontype).filter(w => w));
+            weaponContainer.innerHTML = '';
+            existingWeapons.forEach(weapon => {
+                const btn = document.createElement('span');
+                const wName = getWeaponName(weapon) || weapon;
+                btn.className = `filter-btn ${selectedWeaponTypes.has(weapon) ? 'active' : ''}`;
+                btn.dataset.weapon = weapon;
+                btn.textContent = wName;
+                btn.addEventListener('click', () => {
+                    if (selectedWeaponTypes.has(weapon)) {
+                        selectedWeaponTypes.delete(weapon);
+                    } else {
+                        selectedWeaponTypes.add(weapon);
+                    }
+                    btn.classList.toggle('active');
+                    renderCharacterList();
+                });
+                weaponContainer.appendChild(btn);
+            });
+        }
+
+        const mobileBtn = document.getElementById('v2charMobileListBtn');
+        const mobileOverlay = document.getElementById('v2charMobileListOverlay');
+        const mobileContent = document.getElementById('v2charMobileListContent');
+
+        function buildMobileList() {
+            const filtered = filterCharacters(allCharacters);
+            mobileContent.innerHTML = '';
+            filtered.forEach(char => {
+                const item = document.createElement('div');
+                item.className = 'mobile-list-item';
+                if (char.charId === activeCharId) item.classList.add('active');
+                item.innerHTML = `
+                    <div class="item-name">${char.name}</div>
+                    <div class="item-id">${char.charId}</div>
+                `;
+                item.addEventListener('click', () => {
+                    activeCharId = char.charId;
+                    loadCharacterDetail(char, document.getElementById('v2characterDetail'));
+                    closeMobileList();
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_character', char.charId);
+                });
+                mobileContent.appendChild(item);
+            });
+        }
+
+        function openMobileList() {
+            buildMobileList();
+            mobileOverlay.style.display = 'flex';
+        }
+
+        function closeMobileList() {
+            mobileOverlay.style.display = 'none';
+        }
+
+        async function loadCharacterManifest(showHidden) {
+            try {
+                const res = await fetch('/public/CH/v2_character/manifest.json?t=' + Date.now());
+                if (!res.ok) throw new Error('无法加载角色清单');
+                const allChars = await res.json();
+                rawAllCharacters = allChars;
+                let chars = showHidden ? allChars : allChars.filter(c => !c.hidden);
+                chars.sort((a, b) => (a.priority || 999) - (b.priority || 999));
+                return chars;
+            } catch (err) {
+                console.error('加载角色清单失败:', err);
+                return [];
+            }
+        }
+
+        function renderCharacterList() {
+            const container = document.getElementById('v2characterList');
+            const detailContainer = document.getElementById('v2characterDetail');
+            if (!container) return;
+
+            const filtered = filterCharacters(allCharacters);
+
+            container.innerHTML = '';
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="loader">无匹配角色</div>';
+                if (detailContainer) detailContainer.innerHTML = '<div class="loader">请选择角色</div>';
+                activeCharId = null;
+                return;
+            }
+
+            filtered.forEach((char, index) => {
+                const item = document.createElement('div');
+                item.className = `character-item ${char.charId === activeCharId ? 'active' : (index === 0 && !activeCharId ? 'active' : '')}`;
+                item.dataset.charId = char.charId;
+                item.dataset.contentFile = char.contentFile;
+
+                const rarityBar = document.createElement('span');
+                rarityBar.className = `rarity-bar rarity-${char.rarity}`;
+                rarityBar.title = `稀有度 ${char.rarity}`;
+
+                const icon = document.createElement('img');
+                icon.className = 'character-icon';
+                icon.src = char.icon || '';
+                icon.onerror = function() { this.onerror = null; this.src = ''; };
+
+                const textContainer = document.createElement('div');
+                textContainer.className = 'character-info';
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'character-name';
+                nameDiv.textContent = char.name;
+                const idDiv = document.createElement('div');
+                idDiv.className = 'character-id';
+                idDiv.textContent = char.charId;
+                textContainer.appendChild(nameDiv);
+                textContainer.appendChild(idDiv);
+
+                const typeDisplayName = getCharTypeName(char.charType) || char.charType || '未知';
+                const typeClass = TYPE_CLASS_MAP[typeDisplayName] || 'unknown';
+                const typeDot = document.createElement('span');
+                typeDot.className = `char-type-dot type-${typeClass}`;
+                typeDot.title = typeDisplayName;
+
+                item.appendChild(rarityBar);
+                item.appendChild(icon);
+                item.appendChild(textContainer);
+                item.appendChild(typeDot);
+
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.character-item').forEach(el => el.classList.remove('active'));
+                    item.classList.add('active');
+                    activeCharId = char.charId;
+                    loadCharacterDetail(char, detailContainer);
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_character', char.charId);
+                });
+
+                container.appendChild(item);
+            });
+
+            if (window.__deepLinkId) {
+                const deepChar = filtered.find(c => c.charId === window.__deepLinkId);
+                if (deepChar) {
+                    activeCharId = deepChar.charId;
+                } else {
+                    const existsInRaw = rawAllCharacters.some(c => c.charId === window.__deepLinkId);
+                    if (window.__akeRouter && window.__akeRouter.onDeepLinkNotFound) {
+                        window.__akeRouter.onDeepLinkNotFound(window.__deepLinkId, existsInRaw);
+                    }
+                }
+                window.__deepLinkId = null;
+            }
+
+            const activeExists = filtered.some(c => c.charId === activeCharId);
+            if (!activeExists && filtered.length > 0) {
+                activeCharId = filtered[0].charId;
+                const firstItem = container.querySelector('.character-item');
+                if (firstItem) firstItem.classList.add('active');
+                loadCharacterDetail(filtered[0], detailContainer);
+                if (window.__akeRouter) window.__akeRouter.updateUrl('v2_character', filtered[0].charId);
+            } else if (activeExists) {
+                const activeChar = filtered.find(c => c.charId === activeCharId);
+                if (activeChar) {
+                    const activeItem = container.querySelector(`.character-item[data-char-id="${activeCharId}"]`);
+                    if (activeItem) activeItem.classList.add('active');
+                    loadCharacterDetail(activeChar, detailContainer);
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_character', activeCharId);
+                }
+            }
+        }
+
+        async function loadCharacterDetail(character, container) {
+            container.innerHTML = '<div class="loader">加载干员数据...</div>';
+            try {
+                const fileName = (character.contentFile || '').split('/').pop() || `${character.charId}.json`;
+                const contentFile = `/public/CH/v2_character/${fileName}`;
+                const rawData = await fetch(contentFile + '?t=' + Date.now()).then(r => r.json());
+                const data = normalizeV2ToLegacy(character, rawData);
+                currentCharData = data;
+                currentCharacter = character;
+                container.innerHTML = renderDetail(data);
+
+                const globalSkillBtn = container.querySelector('.global-skill-toggle-btn');
+                if (globalSkillBtn) {
+                    globalSkillBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        globalSkillExpand = !globalSkillExpand;
+                        if (globalSkillExpand) skillExpandMap = {};
+                        updateAllSkillTables();
+                    });
+                }
+
+                const skillToggleBtns = container.querySelectorAll('.skill-toggle-btn');
+                skillToggleBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const skillName = btn.dataset.skillName;
+                        if (!skillName) return;
+                        if (globalSkillExpand) globalSkillExpand = false;
+                        skillExpandMap[skillName] = !skillExpandMap[skillName];
+                        updateSkillTable(skillName);
+                    });
+                });
+
+                const toggleCharBtn = container.querySelector('.toggle-char-levels-btn');
+                if (toggleCharBtn) {
+                    toggleCharBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        showAllCharLevels = !showAllCharLevels;
+                        updateGrowthTable();
+                    });
+                }
+
+                container.querySelectorAll('.section-header').forEach(header => {
+                    header.addEventListener('click', () => {
+                        const indicator = header.querySelector('.collapse-indicator');
+                        const content = header.nextElementSibling;
+                        if (content && content.classList.contains('collapse-content')) {
+                            const isHidden = getComputedStyle(content).display === 'none';
+                            content.style.display = isHidden ? 'block' : 'none';
+                            indicator.textContent = isHidden ? '▼' : '▶';
+                        }
+                    });
+                });
+            } catch (err) {
+                container.innerHTML = `<div class="error-message">加载失败: ${err.message}</div>`;
+            }
+        }
+
+        function normalizeV2ToLegacy(baseInfo, rawData) {
+            const legacy = {
+                charId: baseInfo.charId,
+                icon: baseInfo.icon || '',
+                pic: rawData.pic || `/public/images/character/charpic/${baseInfo.charId}.png`,
+                potentialpics: [],
+                name: baseInfo.name || rawData.name || '',
+                rarity: baseInfo.rarity,
+                charType: baseInfo.charType,
+                profession: baseInfo.profession,
+                weapontype: baseInfo.weapontype,
+                mainAttrType: getAttrName(rawData.charactertable?.mainAttrType) || baseInfo.mainAttrType || '-',
+                subAttrType: getAttrName(rawData.chargrowthtable?.subAttrType) || baseInfo.subAttrType || '-',
+                charBattleTag: rawData.chargrowthtable?.charBattleTag || baseInfo.charBattleTag || [],
+                profile: rawData.itemtable?.desc?.text || baseInfo.profile || '',
+                feature: rawData.charprofessiontable?.desc?.text || baseInfo.feature || '',
+                cvName: (function() {
+                    const cv = rawData.charactertable?.cvName;
+                    if (!cv) return baseInfo.cvName || [];
+                    const names = [];
+                    if (cv.ChiCVName?.text) names.push(cv.ChiCVName.text);
+                    if (cv.JapCVName?.text) names.push(cv.JapCVName.text);
+                    if (cv.EngCVName?.text) names.push(cv.EngCVName.text);
+                    if (cv.KorCVName?.text) names.push(cv.KorCVName.text);
+                    return names.length ? names : (baseInfo.cvName || []);
+                })(),
+                growth: {},
+                talents: [],
+                potentials: [],
+                attributeNodes: [],
+                skills: [],
+                skill: {},
+                spaceshipSkills: [],
+                profileRecord: [],
+                profileVoice: []
+            };
+
+            const preferredAttrs = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '防御力', '法术异常伤害系数', '物理异常伤害系数'];
+            const attrTypeToName = {};
+            Object.keys(attrMap || {}).forEach(k => {
+                attrTypeToName[parseInt(k, 10)] = attrMap[k];
+            });
+            preferredAttrs.forEach(name => {
+                legacy.growth[name] = [];
+            });
+
+            const attributes = rawData.charactertable?.attributes || [];
+            const levelMap = {};
+            attributes.forEach(levelData => {
+                const attrs = levelData?.Attribute?.attrs || [];
+                const breakStage = levelData?.breakStage ?? 0;
+                const levelEntry = attrs.find(a => a.attrType === 0);
+                const level = levelEntry ? levelEntry.attrValue : null;
+                if (level == null) return;
+                if (!levelMap[level] || breakStage >= levelMap[level].breakStage) {
+                    const nameValueMap = {};
+                    attrs.forEach(a => {
+                        const n = attrTypeToName[a.attrType];
+                        if (n) nameValueMap[n] = a.attrValue;
+                    });
+                    levelMap[level] = { breakStage, nameValueMap };
+                }
+            });
+            const sortedLevels = Object.keys(levelMap).map(Number).sort((a, b) => a - b);
+            sortedLevels.forEach(level => {
+                const nameValueMap = levelMap[level].nameValueMap;
+                preferredAttrs.forEach(name => {
+                    const val = nameValueMap[name];
+                    legacy.growth[name].push(typeof val === 'number' ? val : 0);
+                });
+            });
+
+            if (sortedLevels.length > 0) {
+                legacy.growth['生命值'] = sortedLevels.map(level => Math.round((500 + 5500 / 98 * (level - 1)) * 100) / 100);
+            }
+
+            const itemNameMap = {};
+            Object.values(rawData.chargrowthtable?.talentNodeMap || {}).forEach(n => {
+                (n.requiredItem || []).forEach(item => {
+                    if (item.id && item.name?.text) itemNameMap[item.id] = item.name.text;
+                });
+            });
+            legacy.itemNameMap = itemNameMap;
+
+            const talentNodes = Object.values(rawData.chargrowthtable?.talentNodeMap || {}).filter(n => n.nodeType === 4 && n.passiveSkillNodeInfo?.talentEffectId);
+            talentNodes.sort((a, b) => {
+                const ai = a.passiveSkillNodeInfo.index ?? 0;
+                const bi = b.passiveSkillNodeInfo.index ?? 0;
+                if (ai !== bi) return ai - bi;
+                return (a.passiveSkillNodeInfo.level ?? 0) - (b.passiveSkillNodeInfo.level ?? 0);
+            });
+            legacy.talents = talentNodes.map(n => {
+                const effect = rawData.potentialtalenteffecttable?.[n.passiveSkillNodeInfo.talentEffectId];
+                if (!effect) return null;
+                const descRaw = effect.desc?.text || effect.desc || '';
+                const values = {};
+                const modifierTypes = {};
+                (effect.dataList || []).forEach(item => {
+                    (item.attachSkill?.blackboard || []).forEach(bb => {
+                        if (bb && bb.key !== undefined) values[bb.key] = bb.value;
+                    });
+                    (item.attachBuff?.blackboard || []).forEach(bb => {
+                        if (bb && bb.key !== undefined) values[bb.key] = bb.value;
+                    });
+                    if (item.skillBbModifier?.bbKey && item.skillBbModifier.bbKey !== '') {
+                        values[item.skillBbModifier.bbKey] = item.skillBbModifier.floatValue;
+                    }
+                    if (item.skillParamModifier?.paramType && item.skillParamModifier.paramValue) {
+                        const ptName = paramTypeMap[item.skillParamModifier.paramType];
+                        if (ptName) values[ptName] = item.skillParamModifier.paramValue;
+                    }
+                    if (item.attrModifier?.attrType && item.attrModifier.attrValue) {
+                        const atName = attrEnMap[item.attrModifier.attrType];
+                        if (atName) {
+                            values[atName] = item.attrModifier.attrValue;
+                            if (item.attrModifier.modifierType != null) {
+                                modifierTypes[atName] = item.attrModifier.modifierType;
+                            }
+                        }
+                    }
+                });
+                return {
+                    name: n.passiveSkillNodeInfo.name?.text || effect.name?.text || effect.name || '天赋',
+                    description: descRaw,
+                    values: values,
+                    modifierTypes: modifierTypes,
+                    requiredItem: n.requiredItem || []
+                };
+            }).filter(Boolean);
+
+            const potentials = rawData.characterpotentialtable?.potentialUnlockBundle || [];
+            legacy.potentials = potentials.map(p => {
+                const effId = p.potentialEffectId;
+                let effect = rawData.potentialtalenteffecttable?.[effId];
+                let desc = effect?.desc?.text || effect?.desc || '';
+                let dataList = effect?.dataList || [];
+                if (!desc) {
+                    const patch = rawData.skillpatchtable?.[effId]?.SkillPatchDataBundle?.[0];
+                    desc = patch?.description?.text || '';
+                    if (patch?.blackboard?.length) {
+                        dataList = [{ attachBuff: { blackboard: patch.blackboard } }];
+                    }
+                }
+                const values = {};
+                const modifierTypes = {};
+                dataList.forEach(item => {
+                    (item.attachSkill?.blackboard || []).forEach(bb => {
+                        if (bb && bb.key !== undefined) values[bb.key] = bb.value;
+                    });
+                    (item.attachBuff?.blackboard || []).forEach(bb => {
+                        if (bb && bb.key !== undefined) values[bb.key] = bb.value;
+                    });
+                    if (item.skillBbModifier?.bbKey && item.skillBbModifier.bbKey !== '') {
+                        values[item.skillBbModifier.bbKey] = item.skillBbModifier.floatValue;
+                    }
+                    if (item.skillParamModifier?.paramType && item.skillParamModifier.paramValue) {
+                        const ptName = paramTypeMap[item.skillParamModifier.paramType];
+                        if (ptName) values[ptName] = item.skillParamModifier.paramValue;
+                    }
+                    if (item.attrModifier?.attrType && item.attrModifier.attrValue) {
+                        const atName = attrEnMap[item.attrModifier.attrType];
+                        if (atName) {
+                            values[atName] = item.attrModifier.attrValue;
+                            if (item.attrModifier.modifierType != null) {
+                                modifierTypes[atName] = item.attrModifier.modifierType;
+                            }
+                        }
+                    }
+                });
+                const costItems = (p.itemIds || []).map((id, i) => ({ id, count: (p.itemCnts || [])[i] || 0 }));
+                return {
+                    name: p.name?.text || p.name || `潜能 ${p.level || ''}`,
+                    description: desc,
+                    values: values,
+                    modifierTypes: modifierTypes,
+                    costItems: costItems
+                };
+            });
+
+            const potentialBundles = rawData.characterpotentialtable?.potentialUnlockBundle || [];
+            potentialBundles.forEach(p => {
+                (p.unlockCharPictureItemList || []).forEach(itemId => {
+                    if (!itemId) return;
+                    const imgName = itemId.replace(/^item_/, '');
+                    legacy.potentialpics.push(`/public/images/character/imagepoaster/largesize/${imgName}.png`);
+                });
+            });
+
+            const attrNodes = Object.values(rawData.chargrowthtable?.talentNodeMap || {}).filter(n => n.nodeType === 3);
+            attrNodes.sort((a, b) => (a.attributeNodeInfo?.breakStage ?? 0) - (b.attributeNodeInfo?.breakStage ?? 0));
+            legacy.attributeNodes = attrNodes.map(n => {
+                const info = n.attributeNodeInfo || {};
+                const mod = info.attributeModifier;
+                if (!mod || (mod.attrType === 0 && mod.attrValue === 0)) return null;
+                const modName = mod ? (getAttrName(mod.attrType) || mod.attrType) : '';
+                const modText = mod ? `${modName}+${mod.attrValue}` : '';
+                return {
+                    title: info.title?.text || '',
+                    description: info.desc?.text || '',
+                    modifier: modText,
+                    modifierType: mod?.modifierType,
+                    requiredItem: n.requiredItem || []
+                };
+            }).filter(Boolean);
+
+            const skillGroupMap = rawData.chargrowthtable?.skillGroupMap || {};
+            const skillGroups = Object.values(skillGroupMap).sort((a, b) => (SKILL_GROUP_ORDER[a.skillGroupType] ?? a.skillGroupType) - (SKILL_GROUP_ORDER[b.skillGroupType] ?? b.skillGroupType));
+            legacy.skills = skillGroups.map(s => {
+                const iconPath = s.icon ? `/public/images/character/skillicon/${s.icon}.png` : '';
+                const group = {
+                    name: s.name?.text || s.name || '',
+                    icon: iconPath,
+                    description: s.desc?.text || s.desc || '',
+                    groupType: s.skillGroupType || 0,
+                    skillIds: s.skillIdList || [],
+                    skillGroupId: s.skillGroupId || ''
+                };
+
+                const skillIdList = Array.isArray(s.skillIdList) ? s.skillIdList : [];
+                const allPatchLists = [];
+                for (const sid of skillIdList) {
+                    const pl = rawData.skillpatchtable?.[sid]?.SkillPatchDataBundle;
+                    if (pl && pl.length > 0) allPatchLists.push(pl);
+                }
+                if (allPatchLists.length === 0 && s.skillGroupId) {
+                    const pl = rawData.skillpatchtable?.[s.skillGroupId]?.SkillPatchDataBundle;
+                    if (pl && pl.length > 0) allPatchLists.push(pl);
+                }
+                const values = { coolDown: [], costValue: [] };
+                const subDescNames = [];
+                const subDescValues = {};
+                if (allPatchLists.length > 0) {
+                    allPatchLists[0].forEach(patch => {
+                        values.coolDown.push(patch.coolDown ?? 0);
+                        values.costValue.push(patch.costValue ?? 0);
+                    });
+                    const seenKeys = new Set();
+                    allPatchLists.forEach(patchList => {
+                        const localKeyMap = {};
+                        (patchList[0]?.blackboard || []).forEach(bb => {
+                            if (!bb || !bb.key) return;
+                            if (!seenKeys.has(bb.key)) {
+                                localKeyMap[bb.key] = bb.key;
+                                seenKeys.add(bb.key);
+                            } else {
+                                let seq = 2;
+                                let newKey = bb.key + '_' + seq;
+                                while (seenKeys.has(newKey)) { seq++; newKey = bb.key + '_' + seq; }
+                                localKeyMap[bb.key] = newKey;
+                                seenKeys.add(newKey);
+                            }
+                        });
+                        patchList.forEach(patch => {
+                            (patch.blackboard || []).forEach(bb => {
+                                if (!bb || !bb.key) return;
+                                const finalKey = localKeyMap[bb.key] || bb.key;
+                                if (!values[finalKey]) values[finalKey] = [];
+                                values[finalKey].push(bb.value ?? 0);
+                            });
+                            const names = patch.subDescNameList || [];
+                            const vals = patch.subDescList || [];
+                            names.forEach((n, i) => {
+                                const name = n?.text || '';
+                                if (!name) return;
+                                if (!subDescValues[name]) {
+                                    subDescNames.push(name);
+                                    subDescValues[name] = [];
+                                }
+                                if (subDescValues[name].length < (values.coolDown || []).length) {
+                                    subDescValues[name].push(vals[i] ?? '');
+                                }
+                            });
+                        });
+                    });
+                }
+                legacy.skill[group.name] = {
+                    name: group.name,
+                    values,
+                    subDescNames,
+                    subDescValues
+                };
+
+                const descValueMap = {};
+                for (const sid of skillIdList) {
+                    const pl = rawData.skillpatchtable?.[sid]?.SkillPatchDataBundle;
+                    if (pl && pl.length > 0) {
+                        const lastPatch = pl[pl.length - 1];
+                        (lastPatch.blackboard || []).forEach(bb => {
+                            if (bb && bb.key !== undefined) descValueMap[bb.key] = bb.value;
+                        });
+                    }
+                }
+                group.description = replacePlaceholders(group.description, descValueMap);
+
+                return group;
+            });
+
+            const skillLevelUp = rawData.chargrowthtable?.skillLevelUp || [];
+            const skillCosts = {};
+            const skillGroupIdToName = {};
+            legacy.skills.forEach(g => { skillGroupIdToName[g.skillIds?.[0]?.split('_').slice(0, -1).join('_') || ''] = g.name; });
+            Object.values(rawData.chargrowthtable?.skillGroupMap || {}).forEach(sg => {
+                skillGroupIdToName[sg.skillGroupId] = sg.name?.text || sg.name || '';
+            });
+            skillLevelUp.forEach(entry => {
+                const gid = entry.skillGroupId;
+                if (!skillCosts[gid]) skillCosts[gid] = [];
+                skillCosts[gid].push({ level: entry.level, goldCost: entry.goldCost || 0, items: entry.itemBundle || [] });
+            });
+            Object.values(skillCosts).forEach(arr => arr.sort((a, b) => a.level - b.level));
+            legacy.skillCosts = skillCosts;
+            legacy.skillGroupIdToName = skillGroupIdToName;
+
+            const spaceshipChars = rawData.spaceshipcharskilltable?.skillList || [];
+            const spaceshipSkills = rawData.spaceshipskilltable || {};
+            const groupedSkills = {};
+            spaceshipChars.forEach(s => {
+                const skill = spaceshipSkills[s.skillId];
+                if (!skill) return;
+                const tName = skill.talentName?.text || skill.talentName || '';
+                if (!groupedSkills[tName]) {
+                    groupedSkills[tName] = {
+                        icon: skill.icon ? `/public/images/character/spaceshipskillicon/${skill.icon}.png` : '',
+                        talentName: tName,
+                        roomTypeName: roomTypeMap[String(skill.roomType)] || '',
+                        levels: []
+                    };
+                }
+                groupedSkills[tName].levels.push({
+                    postfix: skill.skillNamePostfix || '',
+                    skillName: skill.name?.text || skill.name || '',
+                    skillDesc: parseText(skill.desc?.text || skill.desc || ''),
+                    unlockHint: s.unlockHint?.text || s.unlockHint || ''
+                });
+            });
+            legacy.spaceshipSkills = Object.values(groupedSkills);
+
+            legacy.profileRecord = (rawData.charactertable?.profileRecord || []).map(rec => ({
+                title: rec.recordTitle?.text || '',
+                desc: rec.recordDesc?.text || ''
+            }));
+            legacy.profileVoice = (rawData.charactertable?.profileVoice || []).map(v => ({
+                title: v.voiceTitle?.text || v.voiceTitle || v.voId || '',
+                desc: v.voiceDesc?.text || v.voiceDesc || ''
+            }));
+
+            return legacy;
+        }
+
+        function updateGrowthTable() {
+            const tbody = document.querySelector('.growth-table tbody');
+            if (!tbody || !currentCharData) return;
+            const growth = currentCharData.growth || {};
+            const attributes = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '防御力', '法术异常伤害系数', '物理异常伤害系数'];
+            const preciseAttrs = new Set(['法术异常伤害系数', '物理异常伤害系数']);
+            const showHiddenGrowth = getCurrentShowHidden();
+            const firstAttr = attributes.find(attr => growth[attr] && growth[attr].length);
+            const levelCount = firstAttr ? growth[firstAttr].length : 0;
+            const allGrowthRows = [];
+            for (let lv = 1; lv <= levelCount; lv++) {
+                const cells = attributes.map(attr => {
+                    const val = growth[attr]?.[lv - 1];
+                    const precision = preciseAttrs.has(attr) ? (showHiddenGrowth ? 5 : 3) : 2;
+                    if (val === undefined) return '<td>-</td>';
+                    const display = Number(val).toFixed(precision);
+                    const html = window.renderRawValueTip ? window.renderRawValueTip(display, val) : display;
+                    return `<td>${html}</td>`;
+                }).join('');
+                allGrowthRows.push(`<tr data-level="${lv}"><td>${lv}</td>${cells}</tr>`);
+            }
+
+            let rowsToRender = allGrowthRows;
+            if (charLevelsToShow && !showAllCharLevels) {
+                const levelSet = new Set(charLevelsToShow);
+                rowsToRender = allGrowthRows.filter(row => {
+                    const match = row.match(/data-level="(\d+)"/);
+                    return match && levelSet.has(parseInt(match[1], 10));
+                });
+            }
+            if (rowsToRender.length === 0 && charLevelsToShow && charLevelsToShow.length > 0) {
+                const maxLevel = Math.max(...charLevelsToShow);
+                const found = allGrowthRows.find(r => r.includes(`data-level="${maxLevel}"`));
+                if (found) rowsToRender = [found];
+            }
+            tbody.innerHTML = rowsToRender.join('');
+
+            const btn = document.querySelector('.toggle-char-levels-btn');
+            if (btn) btn.textContent = showAllCharLevels ? '收起多余等级' : '展开所有等级';
+        }
+
+        function updateSkillTable(skillName) {
+            const skillContainer = document.querySelector(`.skill-item[data-skill-name="${skillName}"] .skill-detail`);
+            if (!skillContainer || !currentCharData) return;
+
+            const showHidden = getCurrentShowHidden();
+            const group = currentCharData.skills?.find(g => g.name === skillName);
+            const skillDetail = Object.values(currentCharData.skill || {}).find(s => s.name === skillName);
+            if (!group || !skillDetail) return;
+
+            const values = skillDetail.values || {};
+            const subDescNames = skillDetail.subDescNames || [];
+            const subDescValues = skillDetail.subDescValues || {};
+            const bbColumns = Object.keys(values).filter(k => Array.isArray(values[k]));
+            const hasSubDesc = subDescNames.length > 0;
+            let allColumns;
+            if (hasSubDesc) {
+                if (showHidden) {
+                    allColumns = [...subDescNames, ...bbColumns];
+                } else {
+                    const extraCols = ALWAYS_SHOW_COLS.filter(c => bbColumns.includes(c));
+                    allColumns = [...extraCols, ...subDescNames];
+                }
+            } else {
+                allColumns = bbColumns;
+            }
+            if (allColumns.length === 0) {
+                skillContainer.innerHTML = '';
+                return;
+            }
+
+            const levelCount = hasSubDesc ? (subDescValues[subDescNames[0]] || []).length : (values[bbColumns[0]] || []).length;
+            const allSkillRows = [];
+            for (let lv = 1; lv <= levelCount; lv++) {
+                const cells = allColumns.map(col => {
+                    if (hasSubDesc && subDescValues[col] !== undefined) {
+                        return `<td>${subDescValues[col][lv - 1] ?? ''}</td>`;
+                    }
+                    const arr = values[col];
+                    let val = arr ? (arr[lv - 1] !== undefined ? arr[lv - 1] : arr[arr.length - 1]) : '';
+                    if (typeof val === 'number') {
+                        const display = val.toFixed(2);
+                        val = window.renderRawValueTip ? window.renderRawValueTip(display, val, col) : display;
+                    }
+                    return `<td>${val}</td>`;
+                }).join('');
+                allSkillRows.push(`<tr data-level="${lv}"><td>Lv.${lv}</td>${cells}</tr>`);
+            }
+
+            const isExpanded = globalSkillExpand ? true : (skillExpandMap[skillName] || false);
+            let rowsToRender = allSkillRows;
+            if (!isExpanded && skillLevelsToShow) {
+                const levelSet = new Set(skillLevelsToShow);
+                rowsToRender = allSkillRows.filter(row => {
+                    const match = row.match(/data-level="(\d+)"/);
+                    return match && levelSet.has(parseInt(match[1], 10));
+                });
+            }
+            if (rowsToRender.length === 0 && !isExpanded && skillLevelsToShow && skillLevelsToShow.length > 0) {
+                const maxLevel = Math.max(...skillLevelsToShow);
+                const found = allSkillRows.find(r => r.includes(`data-level="${maxLevel}"`));
+                if (found) rowsToRender = [found];
+            }
+
+            const headerCells = allColumns.map(col => `<th>${COLUMN_MAP[col] || col}</th>`).join('');
+            const header = `<tr><th>等级</th>${headerCells}</tr>`;
+            const tableHtml = `
+                <div class="skill-toggle-container">
+                    <button class="skill-toggle-btn" data-skill-name="${skillName}">${isExpanded ? '收起多余等级' : '展开所有等级'}</button>
+                </div>
+                <table class="skill-table">
+                    <thead>${header}</thead>
+                    <tbody>${rowsToRender.join('')}</tbody>
+                </table>
+            `;
+            skillContainer.innerHTML = tableHtml;
+
+            const newBtn = skillContainer.querySelector('.skill-toggle-btn');
+            if (newBtn) {
+                newBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (globalSkillExpand) globalSkillExpand = false;
+                    skillExpandMap[skillName] = !skillExpandMap[skillName];
+                    updateSkillTable(skillName);
+                });
+            }
+        }
+
+        function updateAllSkillTables() {
+            const skillNames = currentCharData.skills?.map(g => g.name) || [];
+            skillNames.forEach(name => updateSkillTable(name));
+        }
+
+        function renderCostItemsHtml(items, goldCost, itemNameMap) {
+            const parts = [...(items || [])];
+            if (goldCost && goldCost > 0 && !parts.some(it => it.id === 'item_gold')) {
+                parts.push({ id: 'item_gold', count: goldCost });
+            }
+            if (parts.length === 0) return '';
+            return parts.map(it => {
+                const nm = (it.id === 'item_gold' ? '折金票' : (itemNameMap || {})[it.id]) || it.id;
+                return `<div class="cost-item"><img src="/public/images/item/itemicon/${it.id}.png" onerror="this.style.display='none'"><span class="ci-name">${nm}</span><span class="ci-cnt">×${it.count}</span></div>`;
+            }).join('');
+        }
+
+        function costBtnHtml(innerHtml, itemIds) {
+            if (!innerHtml) return '';
+            const icons = (itemIds || []).map(id => `<img src="/public/images/item/itemicon/${id}.png" onerror="this.style.display='none'">`).join('');
+            return `<span class="cost-wrap"><span class="cost-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.cost-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">养成消耗</span><span class="cost-btn-icons">${icons}</span><span class="cost-tip">${innerHtml}</span></span>`;
+        }
+
+        function renderDetail(data) {
+            const showHidden = getCurrentShowHidden();
+
+            const basicHtml = `
+                <div class="detail-header">
+                    <div class="detail-left">
+                        <div class="detail-icon">
+                            <img src="${data.icon || ''}" onerror="this.onerror=null; this.src='';">
+                        </div>
+                        <div class="detail-text">
+                            <div class="detail-title-row">
+                                <span class="detail-name">${data.name}</span>
+                                <span class="detail-rarity rarity-${data.rarity}" title="稀有度 ${data.rarity}"></span>
+                            </div>
+                            <div class="detail-tags">
+                                ${(data.charBattleTag || []).map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            </div>
+                            <div class="detail-meta">
+                                <div><span class="meta-label">职业</span> ${data.profession || '-'}</div>
+                                <div><span class="meta-label">武器类型</span> ${data.weapontype || '-'}</div>
+                                <div><span class="meta-label">主属性</span> ${data.mainAttrType || '-'}</div>
+                                <div><span class="meta-label">副属性</span> ${data.subAttrType || '-'}</div>
+                                <div><span class="meta-label">CV</span> ${(data.cvName || []).join(' / ')}</div>
+                            </div>
+                            <div class="detail-profile">${parseText(data.profile || '')}</div>
+                            <div class="detail-feature">${parseText(data.feature || '')}</div>
+                        </div>
+                    </div>
+                    <div class="detail-pic">
+                        <img src="${data.pic || ''}" onerror="this.style.display='none'">
+                    </div>
+                </div>
+            `;
+
+            const growth = data.growth || {};
+            const attributes = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '防御力', '法术异常伤害系数', '物理异常伤害系数'];
+            const preciseAttrs = new Set(['法术异常伤害系数', '物理异常伤害系数']);
+            const showHiddenGrowth = getCurrentShowHidden();
+            const firstAttr = attributes.find(attr => growth[attr] && growth[attr].length);
+            const levelCount = firstAttr ? growth[firstAttr].length : 0;
+            const allGrowthRows = [];
+            for (let lv = 1; lv <= levelCount; lv++) {
+                const cells = attributes.map(attr => {
+                    const val = growth[attr]?.[lv - 1];
+                    const precision = preciseAttrs.has(attr) ? (showHiddenGrowth ? 5 : 3) : 2;
+                    if (val === undefined) return '<td>-</td>';
+                    const display = Number(val).toFixed(precision);
+                    const html = window.renderRawValueTip ? window.renderRawValueTip(display, val) : display;
+                    return `<td>${html}</td>`;
+                }).join('');
+                allGrowthRows.push(`<tr data-level="${lv}"><td>${lv}</td>${cells}</tr>`);
+            }
+
+            let growthRowsToRender = allGrowthRows;
+            if (charLevelsToShow && !showAllCharLevels) {
+                const levelSet = new Set(charLevelsToShow);
+                growthRowsToRender = allGrowthRows.filter(row => {
+                    const match = row.match(/data-level="(\d+)"/);
+                    return match && levelSet.has(parseInt(match[1], 10));
+                });
+            }
+            if (growthRowsToRender.length === 0 && charLevelsToShow && charLevelsToShow.length > 0) {
+                const maxLevel = Math.max(...charLevelsToShow);
+                const found = allGrowthRows.find(r => r.includes(`data-level="${maxLevel}"`));
+                if (found) growthRowsToRender = [found];
+            }
+
+            const growthHtml = `
+                <div class="section">
+                    <div class="section-header-row">
+                        <h3>属性成长</h3>
+                        ${charLevelsToShow ? `<button class="toggle-char-levels-btn">${showAllCharLevels ? '收起多余等级' : '展开所有等级'}</button>` : ''}
+                    </div>
+                    <div class="growth-table-container">
+                        <table class="growth-table">
+                            <thead>
+                                <tr>
+                                    <th>等级</th>
+                                    ${attributes.map(attr => `<th>${attr}</th>`).join('')}
+                                </tr>
+                            </thead>
+                            <tbody>${growthRowsToRender.join('')}</tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+
+            const inm = data.itemNameMap || {};
+            const showHiddenAttr = getCurrentShowHidden();
+            const talentsHtml = (data.talents || []).map(talent => {
+                const valueMap = talent.values || {};
+                let desc = replacePlaceholders(talent.description, valueMap, talent.modifierTypes, showHiddenAttr);
+                desc = parseText(desc);
+                const costHtml = renderCostItemsHtml(talent.requiredItem, 0, inm);
+                const costIconIds = (talent.requiredItem || []).map(it => it.id);
+                return `
+                    <div class="talent-item">
+                        <div class="talent-name">${talent.name} ${costBtnHtml(costHtml, costIconIds)}</div>
+                        <div class="talent-desc">${desc}</div>
+                    </div>
+                `;
+            }).join('');
+
+            const potentialsHtml = (data.potentials || []).map(pot => {
+                const valueMap = pot.values || {};
+                let desc = replacePlaceholders(pot.description, valueMap, pot.modifierTypes, showHiddenAttr);
+                desc = parseText(desc);
+                const costHtml = renderCostItemsHtml(pot.costItems, 0, inm);
+                const costIconIds = (pot.costItems || []).map(it => it.id);
+                return `
+                    <div class="potential-item">
+                        <div class="potential-name">${pot.name} ${costBtnHtml(costHtml, costIconIds)}</div>
+                        <div class="potential-desc">${desc}</div>
+                    </div>
+                `;
+            }).join('');
+
+            const attrNodes = data.attributeNodes || [];
+            const attrNodesHtml = `
+                <div class="section">
+                    <h3>属性节点</h3>
+                    <div class="attr-nodes-grid">
+                        ${attrNodes.map(node => {
+                            const costHtml = renderCostItemsHtml(node.requiredItem, 0, inm);
+                            const costIconIds = (node.requiredItem || []).map(it => it.id);
+                            const modTypeTag = (showHiddenAttr && node.modifierType != null)
+                                ? ` <span class="attr-node-modifier-tag">${modifierTypeMap[String(node.modifierType)] || ''}</span>`
+                                : '';
+                            return `<div class="attr-node-item">
+                                <div class="attr-node-title">${node.title} ${costBtnHtml(costHtml, costIconIds)}</div>
+                                <div class="attr-node-desc">${node.description}</div>
+                                <div class="attr-node-modifier">${node.modifier}${modTypeTag}</div>
+                            </div>`;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+
+            const skillsGroups = data.skills || [];
+            const skillTypePrefix = ['普攻', '战技', '连携技', '终结技'];
+            const skillsHtml = skillsGroups.map((group, index) => {
+                const skillDetail = Object.values(data.skill || {}).find(s => s.name === group.name);
+                if (!skillDetail) return '';
+
+                const values = skillDetail.values || {};
+                const subDescNames = skillDetail.subDescNames || [];
+                const subDescValues = skillDetail.subDescValues || {};
+                const level1Values = {};
+                for (const [key, val] of Object.entries(values)) {
+                    if (Array.isArray(val) && val.length > 0) level1Values[key] = val[0];
+                    else level1Values[key] = val;
+                }
+
+                const groupDesc = parseText(replacePlaceholders(group.description || '', level1Values));
+                const prefix = (index < skillTypePrefix.length) ? skillTypePrefix[index] : '技能';
+                const displayName = `${prefix}·${group.name}`;
+
+                const bbColumns = Object.keys(values).filter(k => Array.isArray(values[k]));
+                const hasSubDesc = subDescNames.length > 0;
+                let allColumns;
+                if (hasSubDesc) {
+                    if (showHidden) {
+                        allColumns = [...subDescNames, ...bbColumns];
+                    } else {
+                        const extraCols = ALWAYS_SHOW_COLS.filter(c => bbColumns.includes(c));
+                        allColumns = [...extraCols, ...subDescNames];
+                    }
+                } else {
+                    allColumns = bbColumns;
+                }
+
+                let skillTables = '';
+                if (allColumns.length > 0) {
+                    const levelCount = hasSubDesc ? (subDescValues[subDescNames[0]] || []).length : (values[bbColumns[0]] || []).length;
+                    const allSkillRows = [];
+                    for (let lv = 1; lv <= levelCount; lv++) {
+                        const cells = allColumns.map(col => {
+                            if (hasSubDesc && subDescValues[col] !== undefined) {
+                                return `<td>${subDescValues[col][lv - 1] ?? ''}</td>`;
+                            }
+                            const arr = values[col];
+                            let val = arr ? (arr[lv - 1] !== undefined ? arr[lv - 1] : arr[arr.length - 1]) : '';
+                            if (typeof val === 'number') {
+                                const display = val.toFixed(2);
+                                val = window.renderRawValueTip ? window.renderRawValueTip(display, val, col) : display;
+                            }
+                            return `<td>${val}</td>`;
+                        }).join('');
+                        allSkillRows.push(`<tr data-level="${lv}"><td>Lv.${lv}</td>${cells}</tr>`);
+                    }
+
+                    const isExpanded = globalSkillExpand ? true : (skillExpandMap[group.name] || false);
+                    let skillRowsToRender = allSkillRows;
+                    if (!isExpanded && skillLevelsToShow) {
+                        const levelSet = new Set(skillLevelsToShow);
+                        skillRowsToRender = allSkillRows.filter(row => {
+                            const match = row.match(/data-level="(\d+)"/);
+                            return match && levelSet.has(parseInt(match[1], 10));
+                        });
+                    }
+                    if (skillRowsToRender.length === 0 && !isExpanded && skillLevelsToShow && skillLevelsToShow.length > 0) {
+                        const maxLevel = Math.max(...skillLevelsToShow);
+                        const found = allSkillRows.find(r => r.includes(`data-level="${maxLevel}"`));
+                        if (found) skillRowsToRender = [found];
+                    }
+
+                    const headerCells = allColumns.map(col => `<th>${COLUMN_MAP[col] || col}</th>`).join('');
+                    const header = `<tr><th>等级</th>${headerCells}</tr>`;
+                    const btnText = isExpanded ? '收起多余等级' : '展开所有等级';
+
+                    skillTables = `
+                        <div class="skill-detail">
+                            <div class="skill-toggle-container">
+                                <button class="skill-toggle-btn" data-skill-name="${group.name}">${btnText}</button>
+                            </div>
+                            <table class="skill-table">
+                                <thead>${header}</thead>
+                                <tbody>${skillRowsToRender.join('')}</tbody>
+                            </table>
+                        </div>
+                    `;
+                }
+
+                const skCosts = (data.skillCosts || {})[group.skillGroupId] || [];
+                let skCostHtml = '';
+                if (skCosts.length > 0) {
+                    const rows = skCosts.map(c => {
+                        const itemParts = [{ id: 'item_gold', count: c.goldCost, name: { text: '折金票' } }, ...c.items.filter(it => it.id !== 'item_gold')];
+                        const itemsStr = itemParts.map(it => {
+                            const nm = it.name?.text || inm[it.id] || it.id;
+                            return `<span class="ci-ri"><img src="/public/images/item/itemicon/${it.id}.png" onerror="this.style.display='none'">${nm} ×${it.count}</span>`;
+                        }).join('');
+                        return `<div class="sk-cost-row"><span class="cost-section-title">Lv.${c.level - 1}→${c.level}</span>${itemsStr}</div>`;
+                    }).join('');
+                    skCostHtml = rows;
+                }
+
+                return `
+                    <div class="skill-item" data-skill-name="${group.name}">
+                        <div class="skill-name">
+                            <img class="skill-icon" src="${group.icon}" alt="" onerror="this.onerror=null; this.src='';">
+                            ${displayName} ${costBtnHtml(skCostHtml, ['item_gold', ...new Set(skCosts.flatMap(c => c.items.map(it => it.id)))])}
+                        </div>
+                        <div class="skill-desc">${groupDesc}</div>
+                        ${skillTables}
+                    </div>
+                `;
+            }).join('');
+
+            const potentialPics = data.potentialpics || [];
+            const potentialPicsHtml = potentialPics.length > 0 ? `
+                <div class="section collapsible-section">
+                    <h3 class="section-header">
+                        <span class="collapse-indicator">▶</span> 潜能图片
+                    </h3>
+                    <div class="collapse-content">
+                        <div class="potential-pics">
+                            ${potentialPics.map(src => `<img src="${src}" onerror="this.style.display='none'">`).join('')}
+                        </div>
+                    </div>
+                </div>
+            ` : '';
+
+            const profileRecordsHtml = (data.profileRecord || []).map(rec => `
+                <div class="profile-record">
+                    <div class="profile-title">${rec.title}</div>
+                    <div class="profile-desc">${parseText(rec.desc)}</div>
+                </div>
+            `).join('');
+
+            const voiceHtml = (data.profileVoice || []).length ? `
+                <table class="voice-table">
+                    ${(data.profileVoice || []).map(v => `
+                        <tr>
+                            <td class="voice-title">${v.title}</td>
+                            <td class="voice-desc">${v.desc}</td>
+                        </tr>
+                    `).join('')}
+                </table>
+            ` : '<p>无</p>';
+
+            const spaceshipSkills = data.spaceshipSkills || [];
+            const spaceshipHtml = spaceshipSkills.length ? spaceshipSkills.map(slot => `
+                <div class="spaceship-skill-item">
+                    <div class="spaceship-skill-header">
+                        <img class="spaceship-icon" src="${slot.icon}" alt="" onerror="this.onerror=null; this.src='';">
+                        <span class="spaceship-skill-name">${slot.talentName}</span>
+                        <span class="spaceship-skill-room">${slot.roomTypeName}</span>
+                    </div>
+                    <div class="spaceship-skill-levels">
+                        ${slot.levels.map(lv => `
+                            <div class="spaceship-skill-level">
+                                <span class="spaceship-skill-postfix">${lv.postfix}</span>
+                                <div class="spaceship-skill-info">
+                                    <div class="spaceship-skill-fullname">${lv.skillName}</div>
+                                    <div class="spaceship-skill-desc">${lv.skillDesc}</div>
+                                    <div class="spaceship-skill-unlock">${lv.unlockHint}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('') : '<p>无</p>';
+
+            return `
+                ${basicHtml}
+                ${growthHtml}
+                <div class="section">
+                    <h3>天赋</h3>
+                    ${talentsHtml || '<p>无</p>'}
+                </div>
+                <div class="section">
+                    <h3>潜能</h3>
+                    ${potentialsHtml || '<p>无</p>'}
+                </div>
+                ${attrNodesHtml}
+                <div class="section">
+                    <div class="section-header-row">
+                        <h3>技能</h3>
+                        ${skillLevelsToShow ? `<button class="global-skill-toggle-btn">${globalSkillExpand ? '收起所有技能等级' : '展开所有技能等级'}</button>` : ''}
+                    </div>
+                    ${skillsHtml || '<p>无</p>'}
+                </div>
+                <div class="section">
+                    <h3>后勤技能</h3>
+                    ${spaceshipHtml}
+                </div>
+                ${potentialPicsHtml}
+                <div class="section collapsible-section">
+                    <h3 class="section-header">
+                        <span class="collapse-indicator">▶</span> 档案
+                    </h3>
+                    <div class="collapse-content">
+                        ${profileRecordsHtml || '<p>无</p>'}
+                    </div>
+                </div>
+                <div class="section collapsible-section">
+                    <h3 class="section-header">
+                        <span class="collapse-indicator">▶</span> 语音记录
+                    </h3>
+                    <div class="collapse-content">
+                        ${voiceHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        async function refreshModule() {
+            const list = document.getElementById('v2characterList');
+            const detail = document.getElementById('v2characterDetail');
+            if (!list || !detail) return;
+            const showHidden = window.akeData?.getConfig().showHidden ?? false;
+            const chars = await loadCharacterManifest(showHidden);
+            allCharacters = chars;
+            generateFilterButtons();
+            renderCharacterList();
+        }
+
+        async function initModule() {
+            if (isInitialized) return;
+            isInitialized = true;
+            if (window.configLoaded) await window.configLoaded;
+            await loadMaps();
+
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.cost-tip.pinned').forEach(t => t.classList.remove('pinned'));
+            });
+
+            const settings = window.akeData?.getLevelSettings?.() || {};
+            if (settings.enabled) {
+                charLevelsToShow = parseLevelInput(settings.characterLevels, 90);
+                const skillEnabled = settings.skillLevels || Array(12).fill(true);
+                skillLevelsToShow = skillEnabled.reduce((acc, checked, idx) => {
+                    if (checked) acc.push(idx + 1);
+                    return acc;
+                }, []);
+            }
+
+            if (mobileBtn) mobileBtn.addEventListener('click', openMobileList);
+            if (mobileOverlay) mobileOverlay.addEventListener('click', (e) => {
+                if (e.target === mobileOverlay) closeMobileList();
+            });
+
+            window.addEventListener('globalConfigChanged', (e) => {
+                searchTerm = '';
+                const searchInput = document.getElementById('v2charSearchInput');
+                if (searchInput) searchInput.value = '';
+
+                const settings = window.akeData?.getLevelSettings?.() || {};
+                if (settings.enabled) {
+                    charLevelsToShow = parseLevelInput(settings.characterLevels, 90);
+                    const skillEnabled = settings.skillLevels || Array(12).fill(true);
+                    skillLevelsToShow = skillEnabled.reduce((acc, checked, idx) => {
+                        if (checked) acc.push(idx + 1);
+                        return acc;
+                    }, []);
+                } else {
+                    charLevelsToShow = null;
+                    skillLevelsToShow = null;
+                }
+                showAllCharLevels = false;
+                globalSkillExpand = false;
+                skillExpandMap = {};
+
+                selectedRarities.clear();
+                selectedCharTypes.clear();
+                selectedProfessions.clear();
+                selectedWeaponTypes.clear();
+                refreshModule();
+            });
+
+            document.getElementById('v2charSearchInput')?.addEventListener('input', (e) => {
+                searchTerm = e.target.value;
+                renderCharacterList();
+            });
+
+            await refreshModule();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initModule);
+        } else {
+            initModule();
+        }
+    })();
