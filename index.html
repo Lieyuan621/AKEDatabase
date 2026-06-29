@@ -120,10 +120,10 @@
             </div>
 
             <div class="about-box">
-                <p>AKEData · 版本 1.0.27</p>
+                <p>AKEData · 版本 1.0.28</p>
                 <p>游戏版本 CN_WIN_REL_1.3.3_C7123154_E7075779</p>
                 <p>Hotfix版本 7905387-25</p>
-                <p>最后更新于:2026/6/26 11:18:38(nagiyume)</p>
+                <p>最后更新于:2026/6/29 17:04:37(nagiyume)</p>
             </div>
         </div>
     </div>
@@ -604,6 +604,15 @@
                 fetch('/theme/hyperlink.json?t=' + Date.now()).then(r => r.json()).then(cfg => window.hyperlinkConfig = cfg).catch(() => {}),
                 fetch('/theme/textstyle.json?t=' + Date.now()).then(r => r.json()).then(cfg => window.textstyleConfig = cfg).catch(() => {})
             ]);
+
+            window.renderRawValueTip = function(displayValue, rawValue, variableName) {
+                const showHidden = window.akeData?.getConfig().showHidden ?? false;
+                if (!showHidden || rawValue === undefined || rawValue === null || rawValue === '') return String(displayValue);
+                const escape = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+                const rawText = typeof rawValue === 'number' ? String(rawValue) : String(rawValue);
+                const title = variableName ? `${variableName}: ${rawText}` : `原始值: ${rawText}`;
+                return `<span class="raw-value-tip" title="${escape(title)}">${displayValue}</span>`;
+            };
 
             window.parseText = function(text, baseImagePath = '/public/images/', depth = 0) {
                 if (!text) return '';

@@ -75,12 +75,14 @@
             const name = getAttrName(attrType, compositeAttr);
             const pctKeywords = ['暴击', '伤害加成', '充能', '抗性', '承伤', '减免', '吸血', '增幅', '脆弱', '强度'];
             const isPct = pctKeywords.some(k => name.includes(k)) || Math.abs(val) < 1;
+            let display;
             if (isPct && Math.abs(val) < 10) {
                 const displayVal = compositeAttr === 'AllDamageTakenScalar' ? 1 - val : val;
-                return (displayVal * 100).toFixed(2) + '%';
+                display = (displayVal * 100).toFixed(2) + '%';
+                return window.renderRawValueTip ? window.renderRawValueTip(display, val) : display;
             }
-            if (Number.isInteger(val)) return val.toString();
-            return val.toFixed(2);
+            display = Number.isInteger(val) ? val.toString() : val.toFixed(2);
+            return window.renderRawValueTip ? window.renderRawValueTip(display, val) : display;
         }
 
         function getEquipIconSrc(itemId, iconId) {
@@ -438,7 +440,8 @@
                             const displayVal = (typeof b.value === 'number')
                                 ? (Math.abs(b.value) < 10 ? (b.value * 100).toFixed(1) + '%' : b.value)
                                 : b.value;
-                            html += `<span class="v2eq-blackboard-item"><strong>${escapeHtml(b.key)}</strong> = ${displayVal}</span>`;
+                            const valueHtml = window.renderRawValueTip ? window.renderRawValueTip(displayVal, b.value, b.key) : displayVal;
+                            html += `<span class="v2eq-blackboard-item"><strong>${escapeHtml(b.key)}</strong> = ${valueHtml}</span>`;
                         });
                         html += `</div>`;
                     }
@@ -472,13 +475,16 @@
                 } catch (e) {
                     return match;
                 }
-                if (format.includes('%')) return (result * 100).toFixed(1) + '%';
-                if (format.includes('.')) {
+                let formatted;
+                if (format.includes('%')) formatted = (result * 100).toFixed(1) + '%';
+                else if (format.includes('.')) {
                     const precision = format.split('.')[1]?.length || 1;
-                    return result.toFixed(precision);
+                    formatted = result.toFixed(precision);
                 }
-                if (format.includes('0')) return Math.round(result);
-                return result.toString();
+                else if (format.includes('0')) formatted = Math.round(result).toString();
+                else formatted = result.toString();
+                const tipKey = varNames.length === 1 ? varNames[0] : expr;
+                return window.renderRawValueTip ? window.renderRawValueTip(formatted, result, tipKey) : formatted;
             });
         }
 
@@ -540,13 +546,13 @@
             if (techConst.equipProduceMaxCount !== undefined) {
                 html += `<div class="v2eq-enhance-item">
                     <span class="v2eq-enhance-label">最大制造数量</span>
-                    <span class="v2eq-enhance-value">${techConst.equipProduceMaxCount}</span>
+                    <span class="v2eq-enhance-value">${window.renderRawValueTip ? window.renderRawValueTip(techConst.equipProduceMaxCount, techConst.equipProduceMaxCount, 'equipProduceMaxCount') : techConst.equipProduceMaxCount}</span>
                 </div>`;
             }
             if (techConst.equipRecycleRatio !== undefined) {
                 html += `<div class="v2eq-enhance-item">
                     <span class="v2eq-enhance-label">回收返还比例</span>
-                    <span class="v2eq-enhance-value">${(techConst.equipRecycleRatio * 100).toFixed(0)}%</span>
+                    <span class="v2eq-enhance-value">${window.renderRawValueTip ? window.renderRawValueTip((techConst.equipRecycleRatio * 100).toFixed(0) + '%', techConst.equipRecycleRatio) : (techConst.equipRecycleRatio * 100).toFixed(0) + '%'}</span>
                 </div>`;
             }
             html += `</div>`;

@@ -79,8 +79,11 @@
                 const isMult = (m.modifierType === 1 || m.modifierType === 4 ||
                     m.modifierType === 6 || m.modifierType === 8);
                 const displayVal = (m.modifierType === 4 || m.modifierType === 8) ? val - 1 : val;
+                const displayRaw = (m.modifierType === 4 || m.modifierType === 8) ? displayVal : val;
+                const displayText = `${displayVal > 0 ? '+' : ''}${(displayVal * 100).toFixed(1)}%`;
+                const displayHtml = window.renderRawValueTip ? window.renderRawValueTip(displayText, displayRaw) : displayText;
                 let text = isMult
-                    ? `${name} ${displayVal > 0 ? '+' : ''}${(displayVal * 100).toFixed(1)}%`
+                    ? `${name} ${displayHtml}`
                     : `${name} ${val > 0 ? '+' : ''}${val}`;
                 if (showHidden) {
                     const modName = modifierTypeMap[String(m.modifierType)] || '';
@@ -347,7 +350,10 @@
                 const d = (nv || 0) - (bv || 0);
                 const sign = d > 0 ? '+' : '';
                 const fmt = Number.isInteger(d) ? d : d.toFixed(2);
-                items.push(`<div class="v2e-diff-item"><span class="v2e-diff-label">${f.label}:</span><span class="v2e-diff-val ${d < 0 ? 'neg' : ''}">${bv ?? '-'} → ${nv ?? '-'} (${sign}${fmt})</span></div>`);
+                const bvHtml = window.renderRawValueTip ? window.renderRawValueTip(bv ?? '-', bv) : (bv ?? '-');
+                const nvHtml = window.renderRawValueTip ? window.renderRawValueTip(nv ?? '-', nv) : (nv ?? '-');
+                const diffHtml = window.renderRawValueTip ? window.renderRawValueTip(sign + fmt, d) : sign + fmt;
+                items.push(`<div class="v2e-diff-item"><span class="v2e-diff-label">${f.label}:</span><span class="v2e-diff-val ${d < 0 ? 'neg' : ''}">${bvHtml} → ${nvHtml} (${diffHtml})</span></div>`);
             });
 
             if (!items.length) return '';
@@ -359,7 +365,11 @@
             if (!fa) return '';
             const fields = META_FIELDS.filter(f => fa[f.key] !== undefined && fa[f.key] !== null);
             if (!fields.length) return '';
-            const items = fields.map(f => `<div class="v2e-tooltip-item"><span class="v2e-tooltip-label">${f.label}</span><span class="v2e-tooltip-value">${fa[f.key]}</span></div>`).join('');
+            const items = fields.map(f => {
+                const val = fa[f.key];
+                const valueHtml = window.renderRawValueTip ? window.renderRawValueTip(val, val) : val;
+                return `<div class="v2e-tooltip-item"><span class="v2e-tooltip-label">${f.label}</span><span class="v2e-tooltip-value">${valueHtml}</span></div>`;
+            }).join('');
             return `<span class="v2e-variant-template"><span class="v2e-tag-id">${variant.attrTemplateId}</span><span class="v2e-tooltip"><div class="v2e-tooltip-grid">${items}</div></span></span>`;
         }
 
@@ -492,10 +502,17 @@
             const count = variant.levels.length;
             let allRows = '';
             for (let i = 0; i < count; i++) {
-                const hp = typeof variant.hp[i] === 'number' ? (Number.isInteger(variant.hp[i]) ? variant.hp[i] : variant.hp[i].toFixed(2)) : variant.hp[i];
-                const atk = typeof variant.atk[i] === 'number' ? (Number.isInteger(variant.atk[i]) ? variant.atk[i] : variant.atk[i].toFixed(2)) : variant.atk[i];
-                const def = typeof variant.def[i] === 'number' ? (Number.isInteger(variant.def[i]) ? variant.def[i] : variant.def[i].toFixed(2)) : variant.def[i];
-                allRows += `<tr data-level="${variant.levels[i]}"><td>${variant.levels[i]}</td><td>${hp}</td><td>${atk}</td><td>${def}</td></tr>`;
+                const hpRaw = variant.hp[i];
+                const atkRaw = variant.atk[i];
+                const defRaw = variant.def[i];
+                const hp = typeof hpRaw === 'number' ? (Number.isInteger(hpRaw) ? hpRaw : hpRaw.toFixed(2)) : hpRaw;
+                const atk = typeof atkRaw === 'number' ? (Number.isInteger(atkRaw) ? atkRaw : atkRaw.toFixed(2)) : atkRaw;
+                const def = typeof defRaw === 'number' ? (Number.isInteger(defRaw) ? defRaw : defRaw.toFixed(2)) : defRaw;
+                const lvHtml = window.renderRawValueTip ? window.renderRawValueTip(variant.levels[i], variant.levels[i]) : variant.levels[i];
+                const hpHtml = window.renderRawValueTip ? window.renderRawValueTip(hp, hpRaw) : hp;
+                const atkHtml = window.renderRawValueTip ? window.renderRawValueTip(atk, atkRaw) : atk;
+                const defHtml = window.renderRawValueTip ? window.renderRawValueTip(def, defRaw) : def;
+                allRows += `<tr data-level="${variant.levels[i]}"><td>${lvHtml}</td><td>${hpHtml}</td><td>${atkHtml}</td><td>${defHtml}</td></tr>`;
             }
             return allRows;
         }

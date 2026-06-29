@@ -77,6 +77,10 @@
             return window.akeData?.getConfig().showHidden ?? false;
         }
 
+        function valueTip(displayValue, rawValue, variableName) {
+            return window.renderRawValueTip ? window.renderRawValueTip(displayValue, rawValue, variableName) : displayValue;
+        }
+
         function parseText(text) {
             return window.parseText(text, IMAGE_BASE_PATH);
         }
@@ -333,7 +337,7 @@
                         ${props.map(p => `
                             <div class="v2i-prop-item">
                                 <span class="v2i-prop-label">${p.l}</span>
-                                <span class="v2i-prop-value">${p.v}</span>
+                                <span class="v2i-prop-value">${valueTip(p.v, p.v, p.l)}</span>
                             </div>
                         `).join('')}
                     </div>
@@ -358,7 +362,7 @@
                 const ch = data.usableitemchesttable;
                 const rwd = ch.rewardIdList || [];
                 h += `<div class="v2i-section"><h3>自选箱内容</h3>`;
-                if (ch.selectedCount) h += `<div class="v2i-chest-meta">可选数量: ${ch.selectedCount}</div>`;
+                if (ch.selectedCount) h += `<div class="v2i-chest-meta">可选数量: ${valueTip(ch.selectedCount, ch.selectedCount, 'selectedCount')}</div>`;
                 if (rwd.length) h += `<div class="v2i-tags">${rwd.map(id => `<span class="v2i-tag">${id}</span>`).join('')}</div>`;
                 h += `</div>`;
             }
@@ -366,8 +370,8 @@
             if (data.itemiconcompositetable) {
                 const c = data.itemiconcompositetable;
                 h += `<div class="v2i-section"><h3>图标合成</h3><div class="v2i-props-grid">`;
-                h += `<div class="v2i-prop-item"><span class="v2i-prop-label">合成类型</span><span class="v2i-prop-value">${c.iconTransType}</span></div>`;
-                if (c.showRarity !== undefined) h += `<div class="v2i-prop-item"><span class="v2i-prop-label">显示稀有度</span><span class="v2i-prop-value">${c.showRarity ? '是' : '否'}</span></div>`;
+                h += `<div class="v2i-prop-item"><span class="v2i-prop-label">合成类型</span><span class="v2i-prop-value">${valueTip(c.iconTransType, c.iconTransType, 'iconTransType')}</span></div>`;
+                if (c.showRarity !== undefined) h += `<div class="v2i-prop-item"><span class="v2i-prop-label">显示稀有度</span><span class="v2i-prop-value">${valueTip(c.showRarity ? '是' : '否', c.showRarity, 'showRarity')}</span></div>`;
                 if (c.markIcon) h += `<div class="v2i-prop-item"><span class="v2i-prop-label">标记图标</span><span class="v2i-prop-value">${c.markIcon}</span></div>`;
                 h += `</div></div>`;
             }

@@ -308,8 +308,11 @@
                 const isMult = (m.modifierType === 1 || m.modifierType === 4 ||
                     m.modifierType === 6 || m.modifierType === 8);
                 const displayVal = (m.modifierType === 4 || m.modifierType === 8) ? val - 1 : val;
+                const displayRaw = (m.modifierType === 4 || m.modifierType === 8) ? displayVal : val;
+                const displayText = `${displayVal > 0 ? '+' : ''}${(displayVal * 100).toFixed(1)}%`;
+                const displayHtml = window.renderRawValueTip ? window.renderRawValueTip(displayText, displayRaw) : displayText;
                 let text = isMult
-                    ? `${name} ${displayVal > 0 ? '+' : ''}${(displayVal * 100).toFixed(1)}%`
+                    ? `${name} ${displayHtml}`
                     : `${name} ${val > 0 ? '+' : ''}${val}`;
                 if (showHidden) {
                     const modName = modifierTypeMap[String(m.modifierType)] || '';
@@ -321,11 +324,13 @@
 
         function formatValue(val) {
             if (typeof val !== 'number') return val;
+            let display;
             if (Math.abs(val) < 1 && val !== 0) {
-                return (val * 100).toFixed(1) + '%';
+                display = (val * 100).toFixed(1) + '%';
+                return window.renderRawValueTip ? window.renderRawValueTip(display, val) : display;
             }
-            if (Number.isInteger(val)) return val.toString();
-            return val.toFixed(2);
+            display = Number.isInteger(val) ? val.toString() : val.toFixed(2);
+            return window.renderRawValueTip ? window.renderRawValueTip(display, val) : display;
         }
 
         function filterSeriesBySearch(series) {
@@ -626,11 +631,14 @@
                         const directMultiplierTypes = ['FinalMultiplier', 'BaseFinalMultiplier'];
                         const displayVal = directMultiplierTypes.includes(formula) ? val - 1 : val;
                         const display = pctTypes.includes(formula) ? `${(displayVal * 100).toFixed(0)}%` : val;
-                        rows.push(`${label} ${formula} ${display}`);
+                        const valueHtml = window.renderRawValueTip ? window.renderRawValueTip(display, val, mod.param.blackboardKey || label) : display;
+                        rows.push(`${escH(label)} ${escH(formula)} ${valueHtml}`);
                     });
                     bb.forEach(b => {
                         if (!attrMods.find(m => m.param.useBlackboardKey && m.param.blackboardKey === b.key)) {
-                            rows.push(`${b.key}: ${b.valueFloat ?? b.valueDouble ?? 0}`);
+                            const rawVal = b.valueFloat ?? b.valueDouble ?? 0;
+                            const valueHtml = window.renderRawValueTip ? window.renderRawValueTip(rawVal, rawVal, b.key) : rawVal;
+                            rows.push(`${escH(b.key)}: ${valueHtml}`);
                         }
                     });
                     if (rows.length === 0) return `<span class="v2d-buff-tag">${id}</span>`;
