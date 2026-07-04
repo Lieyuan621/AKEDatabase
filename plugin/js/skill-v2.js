@@ -107,7 +107,12 @@
     function formatType(typeText) {
         if (!typeText) return 'UnknownAction';
         const typePart = String(typeText).split(',')[0] || String(typeText);
-        return typePart.split('+')[0].split('.').pop() || typePart;
+        const plusParts = typePart.split('+').map(part => part.split('.').pop()).filter(Boolean);
+        if (plusParts.length <= 1) return plusParts[0] || typePart;
+
+        const root = plusParts[0];
+        const nested = plusParts.slice(1).filter(part => part !== 'Data' && part !== (root + 'Data'));
+        return nested.length ? (root + '.' + nested.join('.')) : root;
     }
 
     function normalizeManifest(list) {
@@ -232,12 +237,159 @@
         return cn + ' (' + value + ')';
     }
 
+    function isPlainObject(value) {
+        return !!value && typeof value === 'object' && !Array.isArray(value);
+    }
+
+    function hasOwn(obj, key) {
+        return Object.prototype.hasOwnProperty.call(obj || {}, key);
+    }
+
+    function isBlackboardValueRef(value) {
+        return isPlainObject(value) && hasOwn(value, 'useBlackboardKey') && hasOwn(value, 'value') && hasOwn(value, 'blackboardKey');
+    }
+
+    function formatNumber(value) {
+        const num = Number(value);
+        if (!Number.isFinite(num)) return summarizePrimitive(value);
+        return String(Math.round(num * 10000) / 10000);
+    }
+
+    function formatBlackboardEntry(entry) {
+        if (!entry || typeof entry !== 'object') return '';
+        const valueText = entry.valueStr ? entry.valueStr : formatNumber(entry.valueDouble ?? entry.value ?? 0);
+        return valueText + (entry.isDynamic ? ' / dynamic' : '');
+    }
+
+    function getBlackboardMap(data) {
+        const map = new Map();
+        (data?.blackboard || []).forEach(item => {
+            if (item && item.key) map.set(String(item.key), item);
+        });
+        return map;
+    }
+
+    function formatBlackboardValueRef(value, blackboardMap) {
+        if (!isBlackboardValueRef(value)) return null;
+        if (value.useBlackboardKey && value.blackboardKey) {
+            const entry = blackboardMap?.get(String(value.blackboardKey));
+            const resolved = entry ? ' = ' + formatBlackboardEntry(entry) : '';
+            return 'BB(' + value.blackboardKey + ')' + resolved;
+        }
+        return formatNumber(value.value);
+    }
+
+    function formatVectorValue(value, blackboardMap) {
+        if (!isPlainObject(value)) return null;
+        const keys = ['x', 'y', 'z'];
+        if (!keys.every(k => hasOwn(value, k))) return null;
+        return keys.map(k => k + '=' + (formatBlackboardValueRef(value[k], blackboardMap) || summarizePrimitive(value[k]))).join(', ');
+    }
+
+    function getObjectTypeName(value) {
+        return value?.$type ? formatType(value.$type) : '';
+    }
+
+    function summarizeShape(shape, blackboardMap) {
+        if (!isPlainObject(shape)) return '';
+        const parts = [];
+        if (shape.shapeType) parts.push(shape.shapeType);
+        if (shape.size) parts.push('size(' + (formatVectorValue(shape.size, blackboardMap) || summarizePrimitive(shape.size)) + ')');
+        if (shape.radius) parts.push('radius=' + (formatBlackboardValueRef(shape.radius, blackboardMap) || summarizePrimitive(shape.radius)));
+        if (shape.height) parts.push('height=' + (formatBlackboardValueRef(shape.height, blackboardMap) || summarizePrimitive(shape.height)));
+        if (shape.centerOffset) parts.push('offset(' + (formatVectorValue(shape.centerOffset, blackboardMap) || summarizePrimitive(shape.centerOffset)) + ')');
+        if (shape.positionRef) parts.push('pos=' + shape.positionRef);
+        if (shape.directionRef) parts.push('dir=' + shape.directionRef);
+        return parts.filter(Boolean).join(' | ');
+    }
+
+    function summarizeSelector(selectorData, blackboardMap) {
+        if (!isPlainObject(selectorData)) return '';
+        const finder = selectorData.finderData || {};
+        const parts = [];
+        const finderType = getObjectTypeName(finder);
+        if (finderType) parts.push('finder: ' + finderType);
+        if (finder.factionTarget) parts.push('faction=' + finder.factionTarget);
+        if (Array.isArray(finder.shapeList) && finder.shapeList.length) {
+            const shapes = finder.shapeList.slice(0, 2).map(shape => summarizeShape(shape, blackboardMap)).filter(Boolean);
+            parts.push('shape: ' + shapes.join(' / ') + (finder.shapeList.length > 2 ? ' ...' : ''));
+        }
+        if (Array.isArray(selectorData.validatorData) && selectorData.validatorData.length) {
+            parts.push('validators: ' + selectorData.validatorData.map(getObjectTypeName).filter(Boolean).join(', '));
+        }
+        if (Array.isArray(selectorData.postProcessorData) && selectorData.postProcessorData.length) {
+            parts.push('post: ' + selectorData.postProcessorData.map(getObjectTypeName).filter(Boolean).join(', '));
+        }
+        return parts.join(' | ');
+    }
+
+    function summarizeTargetSettings(target, blackboardMap) {
+        if (!isPlainObject(target)) return '';
+        const parts = [];
+        ['targetSource', 'target', 'targetGroupKey', 'centerType', 'selectorOwner', 'selectorDirection'].forEach(key => {
+            if (target[key]) parts.push(key + '=' + target[key]);
+        });
+        const selector = summarizeSelector(target.selectorData, blackboardMap);
+        if (selector) parts.push(selector);
+        return parts.join(' | ');
+    }
+
+    function summarizeStructuredValue(value, key, blackboardMap) {
+        if (!value || typeof value !== 'object') return null;
+        if (isBlackboardValueRef(value)) return formatBlackboardValueRef(value, blackboardMap);
+        const vector = formatVectorValue(value, blackboardMap);
+        if (vector) return vector;
+        const lowerKey = String(key || '').toLowerCase();
+        if (lowerKey.includes('selector') && value.finderData) return summarizeSelector(value, blackboardMap);
+        if (lowerKey.includes('target') || lowerKey === 'source' || lowerKey === 'destination' || lowerKey === 'bornat' || lowerKey === 'moveto' || lowerKey === 'teleportto') {
+            const target = summarizeTargetSettings(value, blackboardMap);
+            if (target) return target;
+        }
+        if (value.shapeType) return summarizeShape(value, blackboardMap);
+        return null;
+    }
+
+    function findFirstDeep(value, keys) {
+        const wanted = new Set(keys || []);
+        const seen = new Set();
+
+        const walk = (node) => {
+            if (!node || typeof node !== 'object' || seen.has(node)) return undefined;
+            seen.add(node);
+            if (!Array.isArray(node)) {
+                for (const key of Object.keys(node)) {
+                    const candidate = node[key];
+                    const isEmptyArray = Array.isArray(candidate) && candidate.length === 0;
+                    if (wanted.has(key) && candidate !== '' && candidate !== null && candidate !== undefined && !isEmptyArray) return candidate;
+                }
+            }
+            const children = Array.isArray(node) ? node : Object.keys(node).map(k => node[k]);
+            for (const child of children) {
+                const found = walk(child);
+                if (found !== undefined) return found;
+            }
+            return undefined;
+        };
+
+        return walk(value);
+    }
+
     function summarizeAction(action) {
         const shortType = formatType(action?.$type || 'UnknownAction');
         if (action?.animName) return shortType + ': ' + action.animName;
         if (action?.abilityEvent) return shortType + ': ' + action.abilityEvent;
         if (action?.targetGroupKey) return shortType + ': target=' + action.targetGroupKey;
         if (action?.costType) return shortType + ': cost=' + action.costType;
+        const effect = findFirstDeep(action, ['effectName', 'effectKey', 'effectId', 'effectPath']);
+        if (effect) return shortType + ': effect=' + summarizePrimitive(effect);
+        const sound = findFirstDeep(action, ['soundEvent', 'soundName', 'eventName', 'wwiseEvent']);
+        if (sound) return shortType + ': sound=' + summarizePrimitive(sound);
+        const buff = findFirstDeep(action, ['buffId', 'buffID', 'buffIds', 'buffIdList']);
+        if (buff) return shortType + ': buff=' + summarizePrimitive(buff);
+        const skill = findFirstDeep(action, ['skillId', 'castSkillId', 'abilityEntityId', 'entityId', 'projectileId']);
+        if (skill) return shortType + ': ' + summarizePrimitive(skill);
+        const atkScale = findFirstDeep(action, ['atkScale', 'damageScale', 'damageRate']);
+        if (atkScale) return shortType + ': scale=' + summarizePrimitive(atkScale);
         return shortType;
     }
 
@@ -354,19 +506,46 @@
         };
     }
 
-    function renderKeyValueRows(obj, omitKeys) {
+    function extractAllActionTypes(value) {
+        const typeSet = new Set();
+        collectActionTypesDeep(value, typeSet);
+        return Array.from(typeSet).sort();
+    }
+
+    function analyzeTimeline(timeline) {
+        const groups = Array.isArray(timeline) ? timeline : [];
+        let negativeRanges = 0;
+        let emptyGroups = 0;
+        let unsortedPairs = 0;
+        let lastStart = Number.NEGATIVE_INFINITY;
+
+        groups.forEach(group => {
+            const start = Number(group?._startFrame ?? 0);
+            const end = Number(group?._endFrame ?? start);
+            const actions = group?._sequenceActionData?.actionData || [];
+            if (end < start) negativeRanges += 1;
+            if (!actions.length) emptyGroups += 1;
+            if (start < lastStart) unsortedPairs += 1;
+            lastStart = start;
+        });
+
+        return { negativeRanges, emptyGroups, unsortedPairs };
+    }
+
+    function renderKeyValueRows(obj, omitKeys, blackboardMap) {
         const rows = [];
         const omitted = new Set(omitKeys || []);
 
-        const renderValueCell = (value) => {
+        const renderValueCell = (value, key) => {
             const translated = translateValue(value);
+            const structuredSummary = summarizeStructuredValue(value, key, blackboardMap);
             const isComplex = value && typeof value === 'object';
             if (!isComplex) return escapeHtml(translated);
 
             const fullText = safeJson(value);
             return `
                 <details class="skillv2-value-details">
-                    <summary class="skillv2-value-summary" title="${escapeHtml(fullText)}">${escapeHtml(translated)}</summary>
+                    <summary class="skillv2-value-summary" title="${escapeHtml(fullText)}">${escapeHtml(structuredSummary || translated)}</summary>
                     <pre class="skillv2-value-expanded">${escapeHtml(fullText)}</pre>
                 </details>
             `;
@@ -378,7 +557,7 @@
             rows.push(`
                 <tr>
                     <td>${escapeHtml(translateKey(key))}</td>
-                    <td>${renderValueCell(value)}</td>
+                    <td>${renderValueCell(value, key)}</td>
                 </tr>
             `);
         });
@@ -393,7 +572,7 @@
         `;
     }
 
-    function renderActionSequence(actions, depth, pathLabel) {
+    function renderActionSequence(actions, depth, pathLabel, blackboardMap) {
         if (!Array.isArray(actions) || actions.length === 0) {
             return '<div class="skillv2-empty">无动作节点</div>';
         }
@@ -411,15 +590,15 @@
                     <div class="skillv2-branch-wrap">
                         <div class="skillv2-branch-block">
                             <div class="skillv2-branch-title">条件节点 conditionAction</div>
-                            ${renderActionSequence(action.conditionAction?.actionData || [], depth + 1, nodePath + '.if')}
+                            ${renderActionSequence(action.conditionAction?.actionData || [], depth + 1, nodePath + '.if', blackboardMap)}
                         </div>
                         <div class="skillv2-branch-block">
                             <div class="skillv2-branch-title">成立分支 succeedActions</div>
-                            ${renderActionSequence(action.succeedActions?.actionData || [], depth + 1, nodePath + '.then')}
+                            ${renderActionSequence(action.succeedActions?.actionData || [], depth + 1, nodePath + '.then', blackboardMap)}
                         </div>
                         <div class="skillv2-branch-block">
                             <div class="skillv2-branch-title">失败分支 failActions</div>
-                            ${renderActionSequence(action.failActions?.actionData || [], depth + 1, nodePath + '.else')}
+                            ${renderActionSequence(action.failActions?.actionData || [], depth + 1, nodePath + '.else', blackboardMap)}
                         </div>
                     </div>
                 `;
@@ -435,7 +614,7 @@
                     </div>
                     <div class="skillv2-action-body">
                         <div class="skillv2-subtitle">参数摘要</div>
-                        ${renderKeyValueRows(action || {}, ['$type', 'conditionAction', 'succeedActions', 'failActions'])}
+                        ${renderKeyValueRows(action || {}, ['$type', 'conditionAction', 'succeedActions', 'failActions'], blackboardMap)}
                         ${branchHtml}
                     </div>
                 </div>
@@ -562,7 +741,9 @@
             const s = Number(group?._startFrame ?? 0);
             const e = Number(group?._endFrame ?? s);
             if (s < minFrame) minFrame = s;
+            if (e < minFrame) minFrame = e;
             if (e > maxFrame) maxFrame = e;
+            if (s > maxFrame) maxFrame = s;
         });
         if (!Number.isFinite(minFrame)) minFrame = 0;
         const span = Math.max(1, maxFrame - minFrame);
@@ -570,11 +751,14 @@
         const lines = timeline.map((group, index) => {
             const s = Number(group?._startFrame ?? 0);
             const e = Number(group?._endFrame ?? s);
-            const left = ((s - minFrame) / span) * 100;
-            const duration = Math.max(0, e - s);
+            const visualStart = Math.min(s, e);
+            const left = ((visualStart - minFrame) / span) * 100;
+            const rawDuration = e - s;
+            const duration = Math.abs(rawDuration);
             const width = Math.max(0.35, (duration / span) * 100);
             const actions = group?._sequenceActionData?.actionData || [];
             const isSingleFrame = duration <= 1;
+            const isInvalidRange = e < s;
             const groupTypes = groupTypeList[index] || [];
             const groupCats = groupCategoryList[index] || [];
             const groupTypeData = groupTypes.join('|');
@@ -583,13 +767,13 @@
             const nodeSummary = summarizeTimelineNodes(actions);
 
             return `
-                <div class="skillv2-timeline-line" data-group-index="${index}" data-start-frame="${s}" data-end-frame="${e}" data-action-types="${escapeHtml(groupTypeData)}" data-action-cats="${escapeHtml(groupCatData)}" data-node-summary="${escapeHtml(nodeSummary)}">
-                    <div class="skillv2-timeline-label">组 ${index + 1}</div>
+                <div class="skillv2-timeline-line${isInvalidRange ? ' invalid-range' : ''}" data-group-index="${index}" data-start-frame="${s}" data-end-frame="${e}" data-action-types="${escapeHtml(groupTypeData)}" data-action-cats="${escapeHtml(groupCatData)}" data-node-summary="${escapeHtml(nodeSummary)}">
+                    <div class="skillv2-timeline-label">组 ${index + 1}${isInvalidRange ? '<br><span class="skillv2-warn-text">反向</span>' : ''}</div>
                     <div class="skillv2-timeline-body">
                         <div class="skillv2-timeline-track">
                             ${isSingleFrame
                                 ? `<div class="skillv2-timeline-point" style="left:${left.toFixed(2)}%;" title="帧 ${s}"><span>F${s}</span></div>`
-                                : `<div class="skillv2-timeline-seg" style="left:${left.toFixed(2)}%;width:${width.toFixed(2)}%;">${s} - ${e}</div>`
+                                : `<div class="skillv2-timeline-seg${isInvalidRange ? ' invalid-range' : ''}" style="left:${left.toFixed(2)}%;width:${width.toFixed(2)}%;">${s} - ${e}</div>`
                             }
                         </div>
                         <div class="skillv2-flow-row">
@@ -632,7 +816,7 @@
         `;
     }
 
-    function renderSingleTimelineGroupDetail(group, index) {
+    function renderSingleTimelineGroupDetail(group, index, blackboardMap) {
         const actions = group?._sequenceActionData?.actionData || [];
         return `
             <div class="skillv2-time-group compact-open">
@@ -642,7 +826,7 @@
                     <span>节点数 ${actions.length}</span>
                 </div>
                 <div class="skillv2-time-body">
-                    ${renderActionSequence(actions, 0, 'T' + (index + 1))}
+                    ${renderActionSequence(actions, 0, 'T' + (index + 1), blackboardMap)}
                 </div>
             </div>
         `;
@@ -665,7 +849,7 @@
             return;
         }
 
-        panel.innerHTML = renderSingleTimelineGroupDetail(groups[index], index);
+        panel.innerHTML = renderSingleTimelineGroupDetail(groups[index], index, getBlackboardMap(currentSkillData));
     }
 
     function bindTimelineInteractions() {
@@ -767,10 +951,12 @@
             const nodeSummary = line.dataset.nodeSummary || '节点: 无';
             const startNum = Number(start);
             const endNum = Number(end);
-            const durationFrame = (Number.isFinite(startNum) && Number.isFinite(endNum)) ? Math.max(0, endNum - startNum) : 0;
+            const rawDurationFrame = (Number.isFinite(startNum) && Number.isFinite(endNum)) ? endNum - startNum : 0;
+            const durationFrame = Math.abs(rawDurationFrame);
             const durationText = formatFrameDuration(durationFrame);
+            const rangeNote = rawDurationFrame < 0 ? ' ｜ 异常: 结束帧早于起始帧' : '';
             tooltip.innerHTML = `
-                <div class="skillv2-tooltip-line-main">起始帧: ${escapeHtml(start)} ｜ 结束帧: ${escapeHtml(end)} ｜ 持续帧: ${escapeHtml(durationFrame)} ｜ 持续时间: ${escapeHtml(durationText)}</div>
+                <div class="skillv2-tooltip-line-main">起始帧: ${escapeHtml(start)} ｜ 结束帧: ${escapeHtml(end)} ｜ 持续帧: ${escapeHtml(durationFrame)} ｜ 持续时间: ${escapeHtml(durationText)}${rangeNote}</div>
                 <div class="skillv2-tooltip-line-node">${escapeHtml(nodeSummary)}</div>
             `;
             tooltip.classList.add('show');
@@ -922,7 +1108,7 @@
         });
     }
 
-    function renderTimelineSection(actionGroupData) {
+    function renderTimelineSection(actionGroupData, blackboardMap) {
         const timeline = actionGroupData?.timelineActions || [];
         if (!timeline.length) {
             return '<div class="skillv2-empty">timelineActions 为空</div>';
@@ -938,14 +1124,14 @@
                         <span>节点数 ${actions.length}</span>
                     </div>
                     <div class="skillv2-time-body">
-                        ${renderActionSequence(actions, 0, 'T' + (index + 1))}
+                        ${renderActionSequence(actions, 0, 'T' + (index + 1), blackboardMap)}
                     </div>
                 </div>
             `;
         }).join('');
     }
 
-    function renderPassiveEventsSection(actionGroupData) {
+    function renderPassiveEventsSection(actionGroupData, blackboardMap) {
         const events = actionGroupData?.passiveEventActions || [];
         if (!events.length) {
             return '<div class="skillv2-empty">passiveEventActions 为空</div>';
@@ -958,7 +1144,7 @@
                 return `
                     <div class="skillv2-passive-block">
                         <div class="skillv2-passive-title">触发序列 ${idx + 1}（节点 ${actions.length}）</div>
-                        ${renderActionSequence(actions, 0, 'P' + (eventIndex + 1) + '.' + (idx + 1))}
+                        ${renderActionSequence(actions, 0, 'P' + (eventIndex + 1) + '.' + (idx + 1), blackboardMap)}
                     </div>
                 `;
             }).join('');
@@ -970,6 +1156,168 @@
                 </div>
             `;
         }).join('');
+    }
+
+    function renderPill(label, value) {
+        return `
+            <div class="skillv2-pill">
+                <span>${escapeHtml(label)}</span>
+                <strong>${escapeHtml(value)}</strong>
+            </div>
+        `;
+    }
+
+    function renderMetricGrid(items) {
+        return `<div class="skillv2-metric-grid">${items.map(item => renderPill(item[0], translateValue(item[1]))).join('')}</div>`;
+    }
+
+    function renderBlackboardSection(data) {
+        const blackboard = Array.isArray(data?.blackboard) ? data.blackboard : [];
+        if (!blackboard.length) {
+            return '<div class="skillv2-empty">blackboard 为空</div>';
+        }
+
+        const rows = blackboard.map((item, index) => `
+            <tr>
+                <td>${index + 1}</td>
+                <td><code>${escapeHtml(item?.key || '')}</code></td>
+                <td>${escapeHtml(formatBlackboardEntry(item))}</td>
+                <td>${escapeHtml(item?.isDynamic ? '动态' : '固定')}</td>
+            </tr>
+        `).join('');
+
+        return `
+            <table class="skillv2-table skillv2-blackboard-table">
+                <thead><tr><th>#</th><th>Key</th><th>值</th><th>类型</th></tr></thead>
+                <tbody>${rows}</tbody>
+            </table>
+        `;
+    }
+
+    function renderCastSection(data, blackboardMap) {
+        const castData = data?.castData || {};
+        const distance = formatBlackboardValueRef(castData.castDistance, blackboardMap) || summarizePrimitive(castData.castDistance);
+        const height = formatBlackboardValueRef(castData.heightDiffLimit, blackboardMap) || summarizePrimitive(castData.heightDiffLimit);
+        return `
+            <div class="skillv2-structured-grid">
+                <div class="skillv2-structured-panel">
+                    <div class="skillv2-structured-title">施放规则</div>
+                    ${renderMetricGrid([
+                        ['距离检查', castData.checkCastDistanceType ?? ''],
+                        ['自定义距离', castData.useCustomCastDistance ?? false],
+                        ['施放距离', distance],
+                        ['高度差检查', castData.checkHeightDiff ?? false],
+                        ['高度差限制', height],
+                        ['旋转', castData.rotateType ?? ''],
+                        ['角度', castData.castAngle ?? ''],
+                        ['冷却', castData.cooldownTime ?? 0],
+                        ['起始CD帧', castData.startCdFrame ?? 0],
+                        ['最大充能', castData.maxChargeTime ?? 0]
+                    ])}
+                </div>
+                <div class="skillv2-structured-panel">
+                    <div class="skillv2-structured-title">消耗</div>
+                    ${renderKeyValueRows(castData.costData || {}, [], blackboardMap)}
+                </div>
+            </div>
+        `;
+    }
+
+    function renderTagsSection(data) {
+        const renderTagList = (tags) => {
+            const list = Array.isArray(tags) ? tags : [];
+            if (!list.length) return '<span class="skillv2-muted">无</span>';
+            return list.map(tag => `<span class="skillv2-tag">${escapeHtml(tag)}</span>`).join('');
+        };
+
+        return `
+            <div class="skillv2-structured-grid">
+                <div class="skillv2-structured-panel">
+                    <div class="skillv2-structured-title">skillTags</div>
+                    <div class="skillv2-tag-list">${renderTagList(data?.skillTags?.predefinedTag)}</div>
+                </div>
+                <div class="skillv2-structured-panel">
+                    <div class="skillv2-structured-title">tagDuringAttach</div>
+                    <div class="skillv2-tag-list">${renderTagList(data?.tagDuringAttach?.predefinedTag)}</div>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderDataMap(data, blackboardMap) {
+        const actionGroupData = data?.actionGroupData || {};
+        const timeline = actionGroupData.timelineActions || [];
+        const passiveEvents = actionGroupData.passiveEventActions || [];
+        const actionTypes = extractAllActionTypes(actionGroupData);
+        const categories = new Map();
+        actionTypes.forEach(typeName => getActionCategories(typeName).forEach(cat => categories.set(cat.key, cat.label)));
+        const timelineHealth = analyzeTimeline(timeline);
+
+        const basicFields = [
+            ['图标背景', data?.iconBgType],
+            ['攻击范围', data?.attackRangeType],
+            ['选择策略', data?.selectStrategy],
+            ['智能选目标', data?.smartTargetSelectStrategy],
+            ['可空放', data?.canDummyCast],
+            ['可移动', data?.canMove],
+            ['可空中施放', data?.canCastInAir],
+            ['RootMotion悬崖检查', data?.rootMotionCliffCheck],
+            ['返回待机', data?.characterReturnToIdle],
+            ['黑板项', (data?.blackboard || []).length],
+            ['buffs', (data?.buffs || []).length],
+            ['toggleBuffs', (data?.toggleBuffs || []).length]
+        ];
+
+        const catTags = Array.from(categories.values()).map(label => `<span class="skillv2-tag">${escapeHtml(label)}</span>`).join('') || '<span class="skillv2-muted">无动作节点</span>';
+
+        return `
+            <div class="skillv2-card">
+                <div class="skillv2-card-title">SkillData 数据地图</div>
+                ${renderMetricGrid(basicFields)}
+                <div class="skillv2-block-title">动作类型概览</div>
+                <div class="skillv2-tag-list">${catTags}</div>
+                <div class="skillv2-block-title">时间轴健康</div>
+                ${renderMetricGrid([
+                    ['时间组', timeline.length],
+                    ['反向帧组', timelineHealth.negativeRanges],
+                    ['空动作组', timelineHealth.emptyGroups],
+                    ['乱序相邻组', timelineHealth.unsortedPairs]
+                ])}
+                <div class="skillv2-block-title">施放数据 castData</div>
+                ${renderCastSection(data, blackboardMap)}
+                <div class="skillv2-block-title">黑板 blackboard</div>
+                ${renderBlackboardSection(data)}
+                <div class="skillv2-block-title">标签</div>
+                ${renderTagsSection(data)}
+                <div class="skillv2-block-title">被动事件摘要</div>
+                ${passiveEvents.length
+                    ? `<div class="skillv2-tag-list">${passiveEvents.map((eventItem, index) => `<span class="skillv2-tag">#${index + 1} ${escapeHtml(eventItem?.abilityEvent || 'Unknown')} (${(eventItem?.actions || []).length})</span>`).join('')}</div>`
+                    : '<div class="skillv2-empty">无被动事件</div>'}
+            </div>
+        `;
+    }
+
+    function renderAdditionalDataSection(data, blackboardMap) {
+        const omitted = new Set(['skillId', 'level', 'skillName', 'castType', 'skillSpecification', 'durationFrame', 'exclusiveFrame', 'castData', 'actionGroupData', 'blackboard', 'skillTags', 'tagDuringAttach']);
+        return `
+            <div class="skillv2-card">
+                <div class="skillv2-card-title">其他顶层字段</div>
+                ${renderKeyValueRows(data || {}, Array.from(omitted), blackboardMap)}
+            </div>
+        `;
+    }
+
+    function renderRawDataSection(data) {
+        return `
+            <div class="skillv2-card">
+                <div class="skillv2-card-title">完整原始数据</div>
+                <div class="skillv2-raw-note">用于审计遗漏字段。默认折叠，展开后可查看完整 SkillData JSON。</div>
+                <details class="skillv2-raw-details">
+                    <summary>展开完整 JSON</summary>
+                    <pre class="skillv2-raw-json">${escapeHtml(safeJson(data))}</pre>
+                </details>
+            </div>
+        `;
     }
 
     function renderJsonTree(value, keyPath, depth) {
@@ -1055,9 +1403,11 @@
 
     function renderDetail(data, manifestItem) {
         const actionGroupData = data?.actionGroupData || {};
+        const blackboardMap = getBlackboardMap(data);
         return `
             <div class="skillv2-detail-wrap">
                 ${renderOverview(data, manifestItem)}
+                ${renderDataMap(data, blackboardMap)}
 
                 <div class="skillv2-card">
                     <div class="skillv2-card-title">ActionGroupData 节点执行视图</div>
@@ -1068,8 +1418,10 @@
                         <div class="skillv2-empty">默认隐藏全部 timelineActions 详情。请点击上方时间轴中的动作组查看。</div>
                     </div>
                     <div class="skillv2-block-title">passiveEventActions（被动事件触发）</div>
-                    ${renderPassiveEventsSection(actionGroupData)}
+                    ${renderPassiveEventsSection(actionGroupData, blackboardMap)}
                 </div>
+                ${renderAdditionalDataSection(data, blackboardMap)}
+                ${renderRawDataSection(data)}
             </div>
         `;
     }

@@ -97,6 +97,110 @@
     color: var(--text-color, #1e2b3c);
 }
 
+.skillv2-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 8px;
+}
+
+.skillv2-pill {
+    border: 1px solid var(--border-color, #d9e0e8);
+    border-radius: 10px;
+    background: var(--content-bg, #ffffff);
+    padding: 8px;
+    min-width: 0;
+}
+
+.skillv2-pill span {
+    display: block;
+    font-size: 11px;
+    color: var(--desc-color, #5b6f86);
+    margin-bottom: 4px;
+}
+
+.skillv2-pill strong {
+    display: block;
+    font-size: 13px;
+    color: var(--text-color, #1e2b3c);
+    word-break: break-word;
+}
+
+.skillv2-structured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 10px;
+}
+
+.skillv2-structured-panel {
+    border: 1px solid var(--border-color, #d9e0e8);
+    border-radius: 10px;
+    background: var(--module-bg, #f8fafd);
+    padding: 10px;
+    min-width: 0;
+}
+
+.skillv2-structured-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-color, #1e2b3c);
+    margin-bottom: 8px;
+}
+
+.skillv2-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.skillv2-tag {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    border: 1px solid #bfd1e0;
+    border-radius: 999px;
+    background: #eef6fd;
+    color: #274c66;
+    padding: 3px 8px;
+    font-size: 12px;
+    line-height: 1.25;
+    word-break: break-word;
+}
+
+.skillv2-muted {
+    color: var(--desc-color, #5b6f86);
+    font-size: 12px;
+}
+
+.skillv2-blackboard-table code {
+    font-family: Consolas, "Courier New", monospace;
+    color: #204a66;
+}
+
+.skillv2-raw-note {
+    color: var(--desc-color, #5b6f86);
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.skillv2-raw-details {
+    border: 1px solid var(--border-color, #d9e0e8);
+    border-radius: 10px;
+    background: var(--content-bg, #ffffff);
+    overflow: hidden;
+}
+
+.skillv2-raw-details > summary {
+    cursor: pointer;
+    padding: 8px 10px;
+    font-weight: 700;
+    background: var(--table-header-bg, #eef3fa);
+}
+
+.skillv2-warn-text {
+    color: #9a5c00;
+    font-size: 10px;
+}
+
 .skillv2-overview-id {
     font-family: Consolas, "Courier New", monospace;
     font-size: 13px;
@@ -245,6 +349,10 @@
     outline: 1px solid rgba(30, 111, 159, 0.25);
 }
 
+.skillv2-timeline-line.invalid-range {
+    background: rgba(255, 190, 60, 0.08);
+}
+
 .skillv2-timeline-track {
     position: relative;
     height: 16px;
@@ -268,6 +376,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 0 4px;
+}
+
+.skillv2-timeline-seg.invalid-range {
+    background: repeating-linear-gradient(45deg, #f0a33a 0, #f0a33a 6px, #ffd58d 6px, #ffd58d 12px);
+    color: #3d2a00;
 }
 
 .skillv2-timeline-point {
