@@ -1,0 +1,115 @@
+{
+    "itemId": "item_gift_jinlong_1",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -5969419207824631232,
+            "text": "Special grade tea leaves offered by Eureka Teashop. The emerging brand is really proud of this product. Comes with a designer package that can be assembled into a mini-tea table."
+        },
+        "desc": {
+            "id": -6892502742815251538,
+            "text": "Give it to operators whose hobbies are [Lifestyle] and/or [Culture] to build trust with them."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_gift_jinlong_1",
+        "id": "item_gift_jinlong_1",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_gem",
+        "name": {
+            "id": -153811336746676288,
+            "text": "Eureka Teabox"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 5436052188596575188,
+            "text": "Stock Redistribution"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_2",
+            "item_obtain_domain_shop_levelup"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -301,
+        "sortId2": 26,
+        "type": 33,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 10
+    },
+    "giftitemtable": {
+        "favorablePoint": 20,
+        "finishPopularTimeId": "time_gift_1_0_wuling_2",
+        "giftPreferTag": "tag_giftperfer_wuling_1",
+        "id": "item_gift_jinlong_1",
+        "isPopular": true,
+        "isShowPopularFinishTime": true,
+        "tagList": [
+            "tag_hobby_life",
+            "tag_hobby_culture"
+        ]
+    },
+    "wikientryid": "wiki_item_gift_jinlong_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_gift",
+        "id": "wiki_item_gift_jinlong_1",
+        "order": 8,
+        "prtsId": "",
+        "refItemId": "item_gift_jinlong_1",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_2": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 7739198979412470305,
+                "text": "Purchase: Wuling Stock Redistribution"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_2",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_2\"\r\n}",
+            "phaseId": "ShopTrade"
+        },
+        "item_obtain_domain_shop_levelup": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 1665065042415592699,
+                "text": "Stock Redistribution Terminal Upgrade"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_levelup",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 33,
+        "name": {
+            "id": -6412188518960810535,
+            "text": "Gift"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "giftprefertagconfigtable": {
+        "iconName": "tag_giftperfer_wuling_1",
+        "tag": "tag_giftperfer_wuling_1"
+    },
+    "name": "Eureka Teabox"
+}

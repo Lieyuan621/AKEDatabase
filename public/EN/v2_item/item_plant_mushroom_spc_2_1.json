@@ -1,0 +1,87 @@
+{
+    "itemId": "item_plant_mushroom_spc_2_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 462022158095546726,
+            "text": "A rare fungus that grows in Valley IV. It can be used as a catalyst when making medication. UWST scientist Linnaeus was the first to discover this property."
+        },
+        "desc": {
+            "id": 5389410688994087067,
+            "text": "A rare fungus that UWST scientist Linnaeus needs for his pharmaceutical preparation."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_mission_gm01m16_mushroom",
+        "id": "item_plant_mushroom_spc_2_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_drop_mushroom_spc_2_1",
+        "name": {
+            "id": -3016042128886348062,
+            "text": "Rare Fungus"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -5599310005016998252,
+            "text": "Exploring and Gathering"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_explore"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 1,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -210,
+        "sortId2": 82,
+        "type": 13,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 5
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [],
+        "dischargeType": false,
+        "id": "item_plant_mushroom_spc_2_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 20
+    },
+    "systemjumptable": {
+        "item_obtain_explore": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 8888980312357865895,
+                "text": "Exploring and Gathering"
+            },
+            "iconId": "icon_tips_explore",
+            "id": "item_obtain_explore",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 13,
+        "name": {
+            "id": -1915876893364188807,
+            "text": "Mission Item"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 5
+    },
+    "name": "Rare Fungus"
+}

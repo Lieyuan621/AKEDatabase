@@ -1,0 +1,111 @@
+{
+    "itemId": "wpn_pistol_0001",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 5722461716236993852,
+            "text": "One of the standard-issue operator weapons manufactured by Endfield Industries. This weapon is designed by Endfield Arsenal Engineer Peco. Mastery of etched ammo and firearms is no longer a skill exclusive to the Sankta."
+        },
+        "desc": {
+            "id": 1154865879980167077,
+            "text": "A weapon equipped by Endfield operators to significantly boost their combat capabilities."
+        },
+        "iconCompositeId": "",
+        "iconId": "wpn_pistol_0001",
+        "id": "wpn_pistol_0001",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_weapon",
+        "name": {
+            "id": 7335365171316261327,
+            "text": "Peco 5"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_explore"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -35,
+        "sortId2": 4,
+        "type": 5,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 1
+    },
+    "weaponbasictable": {
+        "breakthroughTemplateId": "weapon_breakthrough_3star_D_2",
+        "engName": {
+            "id": 3892588126272251607,
+            "text": "Peco 5"
+        },
+        "levelTemplateId": "weapon_upgrade_curve_3star_1",
+        "maxLv": 90,
+        "modelPath": "Gameplay/Prefabs/Weapons/wpn_pistol_0001.prefab",
+        "potentialUpItemList": [],
+        "rarity": 3,
+        "talentTemplateId": "wpn_potential_3star",
+        "weaponDesc": {
+            "id": -5109535873955950855,
+            "text": "I've asked Operator Ember and she agreed to take part in the Peco 5 performance trials. Ember might be a Sankta, but I'd never seen her fight with guns before. In fact, I thought she would turn me down outright. Guess I got lucky.\n\nEmber also told me how the Order of Steel Oath operate their own firearms manufactories in the north. She also said that Peco 5 was \"comparable\" to the standard issues produced by Fort Forgefane. I might be overthinking things, but I truly wished she would set aside her diplomatic niceties of being an Endfield partner. I would feel safer if she gave us an honest review or even outright criticisms."
+        },
+        "weaponId": "wpn_pistol_0001",
+        "weaponPotentialSkill": "sk_wpn_pistol_0001",
+        "weaponSkillList": [
+            "wpn_attr_main_low",
+            "sk_wpn_pistol_0001"
+        ],
+        "weaponType": 6
+    },
+    "wikientryid": "wiki_wpn_pistol_0001",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_weapon_pistol",
+        "id": "wiki_wpn_pistol_0001",
+        "order": 1,
+        "prtsId": "",
+        "refItemId": "wpn_pistol_0001",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_explore": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 8888980312357865895,
+                "text": "Exploring and Gathering"
+            },
+            "iconId": "icon_tips_explore",
+            "id": "item_obtain_explore",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 5,
+        "name": {
+            "id": 8230458971049120788,
+            "text": "Weapon"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 2,
+        "unlockSystemType": 251,
+        "valuableTabType": 1
+    },
+    "name": "Peco 5"
+}

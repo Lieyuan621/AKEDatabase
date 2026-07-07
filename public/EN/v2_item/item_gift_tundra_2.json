@@ -1,0 +1,115 @@
+{
+    "itemId": "item_gift_tundra_2",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -7550014120893481717,
+            "text": "A toy designed according to key components of the Cosmic Gate. These puzzles come in all sorts of assembling difficulties. Legends say those who complete the most challenging puzzles may have a chance of repairing the Cosmic Gate itself."
+        },
+        "desc": {
+            "id": -7440922523315887694,
+            "text": "Give it to operators whose hobbies are [Mind Honing] and/or [Culture] to build trust with them."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_gift_tundra_2",
+        "id": "item_gift_tundra_2",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_gem",
+        "name": {
+            "id": -2168227373104445191,
+            "text": "Cosmic Gate Puzzle"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 7889643862599090788,
+            "text": "Stock Redistribution"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_1",
+            "item_obtain_domain_shop_levelup"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -301,
+        "sortId2": 20,
+        "type": 33,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 10
+    },
+    "giftitemtable": {
+        "favorablePoint": 20,
+        "finishPopularTimeId": "",
+        "giftPreferTag": "tag_giftperfer_tundra_2",
+        "id": "item_gift_tundra_2",
+        "isPopular": false,
+        "isShowPopularFinishTime": false,
+        "tagList": [
+            "tag_hobby_knowledge",
+            "tag_hobby_culture"
+        ]
+    },
+    "wikientryid": "wiki_item_gift_tundra_2",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_gift",
+        "id": "wiki_item_gift_tundra_2",
+        "order": 2,
+        "prtsId": "",
+        "refItemId": "item_gift_tundra_2",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_1": {
+            "bindSystem": 512,
+            "desc": {
+                "id": -2131723199710794539,
+                "text": "Purchase: Valley IV Stock Redistribution"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_1",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "ShopTrade"
+        },
+        "item_obtain_domain_shop_levelup": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 1665065042415592699,
+                "text": "Stock Redistribution Terminal Upgrade"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_levelup",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 33,
+        "name": {
+            "id": -6412188518960810535,
+            "text": "Gift"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "giftprefertagconfigtable": {
+        "iconName": "tag_giftperfer_tundra_2",
+        "tag": "tag_giftperfer_tundra_2"
+    },
+    "name": "Cosmic Gate Puzzle"
+}

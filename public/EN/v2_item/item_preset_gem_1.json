@@ -1,0 +1,86 @@
+{
+    "itemId": "item_preset_gem_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -1078441765765833284,
+            "text": "A reactive material dropped by dangerous enemies. Can be used for weapon activation and performance boosting. This sample is rated as turbid."
+        },
+        "desc": {
+            "id": 3397181311457164399,
+            "text": "Infuse this into a weapon to improve its skill level."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_gem_rarity_2",
+        "id": "item_preset_gem_1",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": 1,
+        "modelKey": "int_drop_gem",
+        "name": {
+            "id": -1102299008607373924,
+            "text": "Turbid Essence"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_energy_point",
+            "item_obtain_monster_common"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 1,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -45,
+        "sortId2": 1,
+        "type": 19,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 2
+    },
+    "systemjumptable": {
+        "item_obtain_energy_point": {
+            "bindSystem": 70,
+            "desc": {
+                "id": -3375255889921506488,
+                "text": "Energy Alluvium"
+            },
+            "iconId": "icon_tips_enemy_spawner",
+            "id": "item_obtain_energy_point",
+            "phaseArgs": "{\r\n  \"panelId\": \"AdventureDungeon\",\r\n  \"dungeonTab\": \"EnemySpawner\"\r\n}",
+            "phaseId": "AdventureBook"
+        },
+        "item_obtain_monster_common": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": -8833444707159090547,
+                "text": "Enemy Drops"
+            },
+            "iconId": "icon_tips_monster",
+            "id": "item_obtain_monster_common",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 19,
+        "name": {
+            "id": 4637724733292378828,
+            "text": "Essence"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 2,
+        "unlockSystemType": 251,
+        "valuableTabType": 2
+    },
+    "name": "Turbid Essence"
+}

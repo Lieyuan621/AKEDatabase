@@ -1,0 +1,90 @@
+{
+    "itemId": "item_bp_battle_turret_1",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 0,
+            "text": ""
+        },
+        "desc": {
+            "id": -505852578157879255,
+            "text": "This template lets the Protocol Automation-Core (PAC) construct Gun Towers."
+        },
+        "iconCompositeId": "item_icon_composite_blueprint",
+        "iconId": "item_port_battle_turret_1",
+        "id": "item_bp_battle_turret_1",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 7858979514728664807,
+            "text": "Gun Tower Template"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -620569353597666249,
+            "text": "Basic AIC Plan tech research"
+        },
+        "noObtainWayId": [
+            "item_obtain_onway_techtree_1"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_techtree"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 1,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -120,
+        "sortId2": 29,
+        "type": 12,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "systemjumptable": {
+        "item_obtain_techtree": {
+            "bindSystem": 104,
+            "desc": {
+                "id": -5929385360001250908,
+                "text": "Research: AIC Factory Plan Technologies"
+            },
+            "iconId": "icon_tips_factory",
+            "id": "item_obtain_techtree",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 1,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 12,
+        "name": {
+            "id": 4330298383300559225,
+            "text": "Standard Template Assembly"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemiconcompositetable": {
+        "bgIcons": [
+            "item_icon_bg_blueprint",
+            "item_icon_bg_blueprint",
+            "item_icon_bg_blueprint",
+            "item_icon_bg_blueprint",
+            "item_icon_bg_blueprint",
+            "item_icon_bg_blueprint"
+        ],
+        "iconTransType": 1,
+        "id": "item_icon_composite_blueprint",
+        "markIcon": "item_icon_mark_unlocked",
+        "showRarity": false
+    },
+    "name": "Gun Tower Template"
+}

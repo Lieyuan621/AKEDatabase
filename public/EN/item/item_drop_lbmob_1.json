@@ -1,0 +1,30 @@
+{
+    "id": "item_drop_lbmob_1",
+    "icon": "/public/images/item/itemiconbig/item_drop_lbmob_1.png",
+    "name": "Powdered Grass Seed",
+    "description": "Gatherable from defeated Bonekrusher Raiders, Bonekrusher Ballistas, or Bonekrusher Infiltrators. Can be used to make fine food and medicine (Fine F&M).",
+    "rarity": 1,
+    "type": 8,
+    "obtainWayIds": [
+        "item_obtain_lbmob_1"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_lbmob_1",
+            "desc": "Chance Drop: Bonekrusher Raider",
+            "bindSystem": 55,
+            "phaseId": "Wiki",
+            "phaseArgs": "{\r\n  \"monsterId\": \"eny_0029_lbmob\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_monster.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": [
+        "eny_0029_lbmob",
+        "eny_0033_lbhunt",
+        "eny_0049_rogue",
+        "eny_0065_lbmob2",
+        "eny_0066_lbhunt2"
+    ]
+}

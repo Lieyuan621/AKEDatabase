@@ -1,0 +1,74 @@
+{
+    "itemId": "item_cbp_exp",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -1970208303150152029,
+            "text": "Every item on the Protocol Pass is gathered from official operator interviews conducted by the Arsenal Engineers. These items include support projects that everyone hopes to see."
+        },
+        "desc": {
+            "id": 3498921735277737535,
+            "text": "Use this to level up the Protocol Pass."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_cbp_exp",
+        "id": "item_cbp_exp",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_collection_item_gold_1",
+        "name": {
+            "id": -2827572004896212154,
+            "text": "Pass EXP"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_bp_mission"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -11,
+        "sortId2": 7,
+        "type": 84,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "systemjumptable": {
+        "item_obtain_bp_mission": {
+            "bindSystem": 802,
+            "desc": {
+                "id": -8246668181672295499,
+                "text": "Reward: Pass Missions"
+            },
+            "iconId": "icon_tips_bp",
+            "id": "item_obtain_bp_mission",
+            "phaseArgs": "{\r\n  \"panelId\": \"BattlePassTask\"\r\n}",
+            "phaseId": "BattlePass"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": true,
+        "hideNewToast": true,
+        "itemType": 84,
+        "name": {
+            "id": 3264026369679876168,
+            "text": "Pass EXP"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "name": "Pass EXP"
+}

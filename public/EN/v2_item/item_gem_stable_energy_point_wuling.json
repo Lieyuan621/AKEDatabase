@@ -1,0 +1,99 @@
+{
+    "itemId": "item_gem_stable_energy_point_wuling",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -3401788739413973521,
+            "text": "A permit for expanded engraving produced in Wuling. Engraving must be done in a strictly sealed environment to prevent uncontrollable corruption between different essences."
+        },
+        "desc": {
+            "id": 1438959181110472139,
+            "text": "Use this at Severe Energy Alluvium sites of Wuling. It can pre-engrave the stats of weapon essences acquired."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_gem_stable_energy_point_wuling",
+        "id": "item_gem_stable_energy_point_wuling",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": -1290910860559366736,
+            "text": "Wuling Engraving Permit"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_2",
+            "item_obtain_domain_shop_levelup"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -43,
+        "sortId2": 1,
+        "type": 78,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 10
+    },
+    "wikientryid": "wiki_item_gem_stable_energy_point_wuling",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_special",
+        "id": "wiki_item_gem_stable_energy_point_wuling",
+        "order": 25,
+        "prtsId": "",
+        "refItemId": "item_gem_stable_energy_point_wuling",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_2": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 7739198979412470305,
+                "text": "Purchase: Wuling Stock Redistribution"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_2",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_2\"\r\n}",
+            "phaseId": "ShopTrade"
+        },
+        "item_obtain_domain_shop_levelup": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 1665065042415592699,
+                "text": "Stock Redistribution Terminal Upgrade"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_levelup",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 78,
+        "name": {
+            "id": 4751778788080812233,
+            "text": "Engraving Permit"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "name": "Wuling Engraving Permit"
+}

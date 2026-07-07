@@ -1,0 +1,127 @@
+{
+    "itemId": "item_port_soil_moss_3",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -157858979701733032,
+            "text": "A cultivation plot with various parameters adjusted for growing Sandleaves. Overall soil quality of the plot is far better than that of the average arable land in Valley IV."
+        },
+        "desc": {
+            "id": 4555668692477613092,
+            "text": "To use this plot, follow the steps of fine cultivation and harvest the ripened crops to get plenty of Sandleaves."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_port_soil_moss_3",
+        "id": "item_port_soil_moss_3",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_drop_building",
+        "name": {
+            "id": -3953943552774500357,
+            "text": "Sandleaf Plot"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -257083047035559457,
+            "text": "Explore the world to unlock its <@obt.key>Crafting</> formula."
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [
+            "item_plant_moss_3"
+        ],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 17,
+        "sortId1": -110,
+        "sortId2": 5,
+        "type": 9,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [],
+        "dischargeType": false,
+        "id": "item_port_soil_moss_3",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 1
+    },
+    "wikientryid": "wiki_item_port_soil_moss_3",
+    "wikientrydatatable": {
+        "desc": {
+            "id": -6402547829048853658,
+            "text": "Water and grow this plot to harvest <@gd.key>Sandleaf</>."
+        },
+        "groupId": "wiki_group_building_soil",
+        "id": "wiki_item_port_soil_moss_3",
+        "order": 3,
+        "prtsId": "",
+        "refItemId": "item_port_soil_moss_3",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 9,
+        "name": {
+            "id": 1216850085743131878,
+            "text": "Basic Facility"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_tools_building",
+        "name": {
+            "id": -802861162360212509,
+            "text": "Production"
+        },
+        "sortId": 7,
+        "type": 17
+    },
+    "factorymanualcrafttable": [
+        {
+            "defaultUnlock": false,
+            "domainId": "domain_1",
+            "id": "handwork_port_soil_moss_3",
+            "ingredients": [
+                {
+                    "count": 1,
+                    "id": "item_plant_moss_seed_3"
+                },
+                {
+                    "count": 1,
+                    "id": "item_carbon_mtl"
+                }
+            ],
+            "itemId": "item_plant_moss_3",
+            "name": {
+                "id": 846092700828750975,
+                "text": "Sandleaf Plot"
+            },
+            "outcomes": [
+                {
+                    "count": 1,
+                    "id": "item_port_soil_moss_3"
+                }
+            ],
+            "rarity": 2,
+            "showingType": 20,
+            "sortId": 102
+        }
+    ],
+    "name": "Sandleaf Plot"
+}

@@ -1,0 +1,3670 @@
+{
+    "dungeonSeriesId": "dung02_group_bossrush02",
+    "dungeonseriestable": {
+        "desc": {
+            "id": 6753948857038784589,
+            "text": "An extremely dangerous Protocol Space. Be fully prepared if you wish to dive into it."
+        },
+        "dungeonCategory": 3,
+        "dungeonCategory2nd": 0,
+        "dungeonImg": "",
+        "dungeonRoleImg": "eny_0078_nefarp1",
+        "gameCategory": "dungeon_bossrush",
+        "id": "dung02_group_bossrush02",
+        "includeDungeonIds": [
+            "dung02_bossrush02_01",
+            "dung02_bossrush02_02",
+            "dung02_bossrush02_03"
+        ],
+        "name": {
+            "id": 8557758600827709774,
+            "text": "RE-Crisis: Nefarith"
+        },
+        "sortId": 5,
+        "staminaText": {
+            "id": 0,
+            "text": ""
+        }
+    },
+    "dungeontable": {
+        "dung02_bossrush02_01": {
+            "canDirectlyGetReward": false,
+            "costStamina": 0,
+            "customRewardId": "",
+            "domainId": "",
+            "dungeonCategory": "dungeon_bossrush",
+            "dungeonDesc": {
+                "id": -2847140861911392996,
+                "text": "An extremely dangerous Protocol Space. Be fully prepared if you wish to dive into it.\n\"The cruel and bloody path of conquest has never ended.\""
+            },
+            "dungeonId": "dung02_bossrush02_01",
+            "dungeonImg": "",
+            "dungeonLevelDesc": {
+                "id": 4285558120909130779,
+                "text": "Level 1"
+            },
+            "dungeonName": {
+                "id": -750656096749146851,
+                "text": "Crisis Reflection: Nefarith"
+            },
+            "dungeonPicPath": "dung02_boss_nepharith",
+            "dungeonSeriesId": "dung02_group_bossrush02",
+            "enemyIds": [
+                "eny_0078_nefarp1"
+            ],
+            "enemyLevels": [
+                70
+            ],
+            "extraGoalDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "extraRewardId": "",
+            "featureDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "firstPassRewardId": "reward_dung02_bossrush02_01_firstpass",
+            "forceIgnoreFeaturePopup": false,
+            "hunterModeCostStamina": 0,
+            "hunterModeRewardId": "",
+            "levelId": "indie_dg005",
+            "mainGoalDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "needShowPass": false,
+            "recommendLv": 70,
+            "relatedCharId": "",
+            "rewardId": "",
+            "sceneId": "dung02_bdg002",
+            "sortId": 0,
+            "tabGroupName": {
+                "id": 0,
+                "text": ""
+            },
+            "unlockSpCond": false,
+            "LevelData": {
+                "dung02_bdg002_lv_data": {
+                    "sceneId": "dung02_bdg002",
+                    "levelIdNum": 411,
+                    "guideHints": [],
+                    "enemies": [
+                        {
+                            "levelLogicId": 41100000007,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0078_nefarp1",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 26.6621513,
+                                "y": -3.862381e-05,
+                                "z": 294.28
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 80,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 41100000008,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0079_nefarp2",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 14.17,
+                                "y": -366.000031,
+                                "z": -701.24
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 80,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 41100000009,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0078_nefarp1",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 26.6621513,
+                                "y": -3.862381e-05,
+                                "z": 294.28
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 90,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 41100000010,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0079_nefarp2",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 14.17,
+                                "y": -366.000031,
+                                "z": -701.24
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 90,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 41100000011,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0078_nefarp1",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 26.6621513,
+                                "y": -3.862381e-05,
+                                "z": 294.28
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 70,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 41100000012,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0079_nefarp2",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 14.17,
+                                "y": -366.000031,
+                                "z": -701.24
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 70,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        }
+                    ],
+                    "interactives": [
+                        {
+                            "levelLogicId": 41100000002,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_dungeon_exit_bossrush",
+                            "createState": "Disable",
+                            "position": {
+                                "x": -10.8,
+                                "y": -366.000031,
+                                "z": -703.8
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "WholeLevel",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [],
+                            "componentProperties": {}
+                        }
+                    ],
+                    "interactiveLockData": [],
+                    "factoryRegions": [],
+                    "factoryMines": [],
+                    "npcs": [],
+                    "npcClusters": [],
+                    "levelScriptDataPathDict": {},
+                    "levelScriptBriefDataDict": {
+                        "41100000004": {
+                            "scriptId": 41100000004,
+                            "dataPath": "Data/Json/LevelScriptData/dung02_bdg002/41100000004.json",
+                            "levelScriptType": "Master",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 2,
+                            "refWorldEntityIdList": [
+                                41100000007,
+                                41100000008,
+                                41100000009,
+                                41100000010,
+                                41100000011,
+                                41100000012
+                            ],
+                            "properties": [
+                                {
+                                    "key": "Position2",
+                                    "value": {
+                                        "type": "Vector3",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": -1038646693
+                                            },
+                                            {
+                                                "valueBit64": 0
+                                            },
+                                            {
+                                                "valueBit64": 1133672658
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "60boss",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000011
+                                            },
+                                            {
+                                                "valueBit64": 41100000012
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "60NFS",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000011
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "60Dragon",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000012
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "60NFS2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000011
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "60Dragon2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000012
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "80boss",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000007
+                                            },
+                                            {
+                                                "valueBit64": 41100000008
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "80NFS",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000007
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "80Dragon",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000008
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "80NFS2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000007
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "80Dragon2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000008
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "90boss",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000009
+                                            },
+                                            {
+                                                "valueBit64": 41100000010
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "90NFS",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000009
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "90Dragon",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000010
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "90NFS2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000009
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "90Dragon2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000010
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "step1finish",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "guide1",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "guide2",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "P1_died",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "P2_died",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "step2ready",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "humandie",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "propertyIdToKeyMap": {
+                                "5": "step1finish",
+                                "7": "guide1",
+                                "8": "guide2",
+                                "34": "P1_died",
+                                "35": "P2_died",
+                                "36": "step2ready",
+                                "58": "humandie",
+                                "1033": "Position2",
+                                "1061": "60NFS",
+                                "1062": "60boss",
+                                "1065": "80boss",
+                                "1068": "90boss",
+                                "1071": "60Dragon",
+                                "1072": "60NFS2",
+                                "1073": "60Dragon2",
+                                "1074": "80NFS",
+                                "1075": "80Dragon",
+                                "1076": "80NFS2",
+                                "1077": "80Dragon2",
+                                "1078": "90NFS",
+                                "1079": "90Dragon",
+                                "1080": "90NFS2",
+                                "1081": "90Dragon2"
+                            }
+                        },
+                        "41100000005": {
+                            "scriptId": 41100000005,
+                            "dataPath": "Data/Json/LevelScriptData/dung02_bdg002/41100000005.json",
+                            "levelScriptType": "World",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 1,
+                            "properties": [
+                                {
+                                    "key": "lt:p:3b8c7cd1:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "lt:mp:3b8c7cd1:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 2
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "propertyIdToKeyMap": {
+                                "1": "lt:p:3b8c7cd1:4ebcd56b",
+                                "1026": "lt:mp:3b8c7cd1:4ebcd56b"
+                            }
+                        },
+                        "41100000006": {
+                            "scriptId": 41100000006,
+                            "dataPath": "Data/Json/LevelScriptData/dung02_bdg002/41100000006.json",
+                            "levelScriptType": "World",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 1,
+                            "properties": [
+                                {
+                                    "key": "lt:p:dfb08def:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "lt:mp:dfb08def:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 2
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "propertyIdToKeyMap": {
+                                "1": "lt:p:dfb08def:4ebcd56b",
+                                "1026": "lt:mp:dfb08def:4ebcd56b"
+                            }
+                        },
+                        "41100000007": {
+                            "scriptId": 41100000007,
+                            "dataPath": "Data/Json/LevelScriptData/dung02_bdg002/41100000007.json",
+                            "levelScriptType": "World",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 1,
+                            "properties": [
+                                {
+                                    "key": "lt:p:45bda136:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "lt:mp:45bda136:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 2
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "propertyIdToKeyMap": {
+                                "1": "lt:p:45bda136:4ebcd56b",
+                                "1026": "lt:mp:45bda136:4ebcd56b"
+                            }
+                        }
+                    },
+                    "patrols": [],
+                    "enemyPatrol": [],
+                    "charPatrol": [],
+                    "npcPatrol": [],
+                    "npcAttractPointData": [],
+                    "missionAreas": [],
+                    "enemyGroup": [],
+                    "npcGroup": [],
+                    "cameraPoses": [],
+                    "splines": [],
+                    "airWalls": [],
+                    "environmentVolumes": [],
+                    "spawners": [],
+                    "worldWayPointData": [],
+                    "waterVolumes": [],
+                    "levelUIs": [],
+                    "aiTransData": [
+                        {
+                            "transId": 2,
+                            "key": "center",
+                            "position": {
+                                "x": 12.15,
+                                "y": -366.0,
+                                "z": -700.14
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            }
+                        }
+                    ],
+                    "sludgeDatas": [],
+                    "safeZone": {
+                        "boxes": []
+                    },
+                    "factoryPredefineData": {
+                        "powerGates": []
+                    },
+                    "predefinedParams": [],
+                    "functionArea": {
+                        "ranges": [],
+                        "baseData": [],
+                        "specificDatas": [],
+                        "functionAreaConditions": []
+                    },
+                    "doodadGroup": [],
+                    "mapVolumeDatas": [],
+                    "dynamicOccludeAreas": [],
+                    "autoSpawnedInteractives": [],
+                    "levelWideConfigs": {}
+                }
+            },
+            "SpawnerConfig": {},
+            "enemyTable": {
+                "eny_0078_nefarp1": {
+                    "aiTemplateId": "",
+                    "attrModifiers": [],
+                    "attrTemplateId": "eny_0078_nefarp1",
+                    "autoLockCancelTime": -1,
+                    "autoLockCancelType": 0,
+                    "bornBuffs": [],
+                    "enemyId": "eny_0078_nefarp1",
+                    "isDangerous": false,
+                    "modelId": "",
+                    "serverDeathCheck": false,
+                    "showBigEffect": true,
+                    "showBigHeadbar": true,
+                    "templateId": "eny_0078_nefarp1"
+                }
+            },
+            "enemyTemplateDisplayInfoTable": {
+                "eny_0078_nefarp1": {
+                    "abilityDescIds": [
+                        "eny_0078_nefarp1_ability_1",
+                        "eny_0078_nefarp1_ability_2"
+                    ],
+                    "description": {
+                        "id": 3500072013469204915,
+                        "text": "Thanks to Nefarith, the \"Bonekrushers\" became a byword for terror in the Civilization Band. Her brutal conquest has not yet ended, and her true ambitions have not yet been revealed."
+                    },
+                    "displayType": 2,
+                    "distributionIds": [
+                        "distribution_map02_lv002"
+                    ],
+                    "name": {
+                        "id": 2632939405357622100,
+                        "text": "Nefarith, \"Bonekrusher\""
+                    },
+                    "nickname": {
+                        "id": 8205265993373735364,
+                        "text": "Nefarith, \"Bonekrusher\""
+                    },
+                    "tags": [],
+                    "templateId": "eny_0078_nefarp1"
+                }
+            },
+            "enemyAttributeTemplateTable": {
+                "eny_0078_nefarp1": {
+                    "aoiRadius": 0,
+                    "attackValueAgainstTower": 0,
+                    "breakingAttackedAtbObtain": 100,
+                    "crystDmgResistScalar": 1,
+                    "fireDmgResistScalar": 1,
+                    "initialSuperArmor": 30,
+                    "levelDependentAttributes": [
+                        {
+                            "attrs": [
+                                {
+                                    "attrType": 0,
+                                    "attrValue": 70
+                                },
+                                {
+                                    "attrType": 1,
+                                    "attrValue": 727197
+                                },
+                                {
+                                    "attrType": 2,
+                                    "attrValue": 2171
+                                },
+                                {
+                                    "attrType": 3,
+                                    "attrValue": 100
+                                }
+                            ]
+                        }
+                    ],
+                    "levelIndependentAttributes": {
+                        "attrs": [
+                            {
+                                "attrType": 20,
+                                "attrValue": 480
+                            },
+                            {
+                                "attrType": 21,
+                                "attrValue": 11
+                            },
+                            {
+                                "attrType": 27,
+                                "attrValue": 1.75
+                            },
+                            {
+                                "attrType": 12,
+                                "attrValue": 12
+                            },
+                            {
+                                "attrType": 8,
+                                "attrValue": 2
+                            },
+                            {
+                                "attrType": 11,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 9,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 10,
+                                "attrValue": 0.5
+                            },
+                            {
+                                "attrType": 80,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 84,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 83,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 82,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 81,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 85,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 15,
+                                "attrValue": 1
+                            }
+                        ]
+                    },
+                    "maxResilience": 65,
+                    "naturalDmgResistScalar": 1,
+                    "physicalDmgResistScalar": 1,
+                    "poiseKnotBuffList": [],
+                    "poiseKnotPctList": [],
+                    "pulseDmgResistScalar": 1,
+                    "pushedBackCoefficient": 0,
+                    "resilienceDecreaseWhenHurt": 0,
+                    "resilienceFullRecoverTime": 0,
+                    "resilienceRecover": 0,
+                    "resilienceRecoverInterval": 0,
+                    "superArmorWhenResilienceZero": 0,
+                    "templateId": "eny_0078_nefarp1",
+                    "zeroPoiseSuperArmor": 30
+                }
+            },
+            "rewardTable": {
+                "reward_dung02_bossrush02_01_firstpass": {
+                    "itemBundleVisibleList": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "itemBundles": [
+                        {
+                            "count": 200,
+                            "id": "item_adventureexp"
+                        },
+                        {
+                            "count": 50,
+                            "id": "item_diamond"
+                        },
+                        {
+                            "count": 5,
+                            "id": "item_expcard_stage2_low"
+                        },
+                        {
+                            "count": 9,
+                            "id": "item_weapon_expcard_mid"
+                        },
+                        {
+                            "count": 1,
+                            "id": "item_char_skill_level_7_12"
+                        },
+                        {
+                            "count": 4050,
+                            "id": "item_gold"
+                        }
+                    ],
+                    "probItemBundles": [],
+                    "rewardId": "reward_dung02_bossrush02_01_firstpass"
+                }
+            },
+            "itemTable": {
+                "item_adventureexp": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -5480569680702485231,
+                        "text": "A form of experience you earn as you explore Talos-II. Like always, these lands await your discovery, Endministrator."
+                    },
+                    "desc": {
+                        "id": -9181496066040191941,
+                        "text": "Raises the Endministrator's Authority Level."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_adventureexp",
+                    "id": "item_adventureexp",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "",
+                    "name": {
+                        "id": 7902272277769874042,
+                        "text": "Operational EXP"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_adventurebook"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 5,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -999,
+                    "sortId2": 1,
+                    "type": 37,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 7
+                },
+                "item_diamond": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -8713379589258447987,
+                        "text": "A special product of cut Origeometry. These stones are extremely popular due to their beauty and wide range of uses."
+                    },
+                    "desc": {
+                        "id": -5909420414296930437,
+                        "text": "An artificial material often used for recruiting operators."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_diamond",
+                    "id": "item_diamond",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_gold_1",
+                    "name": {
+                        "id": 2239345069872003978,
+                        "text": "Oroberyl"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_diamond",
+                        "item_obtain_bp",
+                        "item_obtain_adventurebook",
+                        "item_obtain_payshop_credit",
+                        "item_obtain_mission_daily",
+                        "item_obtain_explore",
+                        "item_obtain_mission"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 6,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -11,
+                    "sortId2": 1,
+                    "type": 2,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 6
+                },
+                "item_expcard_stage2_low": {
+                    "backpackCanDiscard": true,
+                    "decoDesc": {
+                        "id": 4935393366322988082,
+                        "text": "A data storage unit developed by Endfield Industries. It is compatible with various data access devices. New operators can use it to effectively acquire combat knowledge."
+                    },
+                    "desc": {
+                        "id": -1279800976078486357,
+                        "text": "A material that provides some EXP for leveling up Lv.61-90 operators."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_expcard_stage2_low",
+                    "id": "item_expcard_stage2_low",
+                    "maxBackpackStackCount": 50,
+                    "maxStackCount": -1,
+                    "modelKey": "int_drop_cardexp",
+                    "name": {
+                        "id": 2104604942033761137,
+                        "text": "Elementary Cognitive Carrier"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_dungeon_0001_untouched",
+                        "item_obtain_dungeon_0001",
+                        "item_obtain_spaceship_manu",
+                        "item_obtain_explore"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 4,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -32,
+                    "sortId2": 5,
+                    "type": 7,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 4
+                },
+                "item_weapon_expcard_mid": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": 8068646352702783660,
+                        "text": "A single-use mini-kit with AIC technology. Provides automated inspection of the entire weapon structure. Also repairs internal material damage and enhances weapon performance."
+                    },
+                    "desc": {
+                        "id": 3272344311239951932,
+                        "text": "A material that gives decent weapon EXP."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_weapon_expcard_mid",
+                    "id": "item_weapon_expcard_mid",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_drop_cardexp",
+                    "name": {
+                        "id": 7173586241325326549,
+                        "text": "Arms INSP Kit"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_dungeon_0002_untouched",
+                        "item_obtain_dungeon_0002",
+                        "item_obtain_spaceship_manu",
+                        "item_obtain_explore"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 3,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -41,
+                    "sortId2": 2,
+                    "type": 25,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 4
+                },
+                "item_char_skill_level_7_12": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": 6466841694267957130,
+                        "text": "A special crystal polyhedron manufactured using Techno-Protocol and advanced crystallization processes. Often combined with other devices to improve physiological absorption of enhancement materials."
+                    },
+                    "desc": {
+                        "id": 8818133186577058299,
+                        "text": "A material that upgrades operator skills."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_char_skill_level_7_12",
+                    "id": "item_char_skill_level_7_12",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_2",
+                    "name": {
+                        "id": -5685904010576788364,
+                        "text": "Protohedron"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_dungeon_0006_untouched",
+                        "item_obtain_dungeon_0006",
+                        "item_obtain_shop_greenticket_char_skill_level_7_12",
+                        "item_obtain_shop_yellowticket_char_skill_level_7_12",
+                        "item_obtain_explore"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 4,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -34,
+                    "sortId2": 9,
+                    "type": 27,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 4
+                },
+                "item_gold": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -5111871529363494289,
+                        "text": "A popular currency furnished with highly advanced anti-counterfeiting technologies. You know it's good money when you can purchase things with it."
+                    },
+                    "desc": {
+                        "id": -3278457396295353288,
+                        "text": "TC for short. This currency is recognized and used in many places."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_gold",
+                    "id": "item_gold",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_gold_1",
+                    "name": {
+                        "id": 5406428249689377671,
+                        "text": "T-Creds"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_dungeon_0005_untouched",
+                        "item_obtain_dungeon_0005",
+                        "item_obtain_mission_daily",
+                        "item_obtain_shop_greenticket",
+                        "item_obtain_explore"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 4,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -25,
+                    "sortId2": 30,
+                    "type": 1,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 6
+                }
+            },
+            "BuffData": {}
+        },
+        "dung02_bossrush02_02": {
+            "canDirectlyGetReward": false,
+            "costStamina": 0,
+            "customRewardId": "",
+            "domainId": "",
+            "dungeonCategory": "dungeon_bossrush",
+            "dungeonDesc": {
+                "id": -4134995950251843865,
+                "text": "An extremely dangerous Protocol Space. Be fully prepared if you wish to dive into it.\n\"The desire to lay waste to Civilization has never been hidden away.\""
+            },
+            "dungeonId": "dung02_bossrush02_02",
+            "dungeonImg": "",
+            "dungeonLevelDesc": {
+                "id": 1693927430692155469,
+                "text": "Level 2"
+            },
+            "dungeonName": {
+                "id": -6379330004813757637,
+                "text": "Crisis Extension: Nefarith"
+            },
+            "dungeonPicPath": "dung02_boss_nepharith",
+            "dungeonSeriesId": "dung02_group_bossrush02",
+            "enemyIds": [
+                "eny_0078_nefarp1"
+            ],
+            "enemyLevels": [
+                80
+            ],
+            "extraGoalDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "extraRewardId": "",
+            "featureDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "firstPassRewardId": "reward_dung02_bossrush02_02_firstpass",
+            "forceIgnoreFeaturePopup": false,
+            "hunterModeCostStamina": 0,
+            "hunterModeRewardId": "",
+            "levelId": "indie_dg005",
+            "mainGoalDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "needShowPass": false,
+            "recommendLv": 80,
+            "relatedCharId": "",
+            "rewardId": "",
+            "sceneId": "dung02_bdg002",
+            "sortId": 0,
+            "tabGroupName": {
+                "id": 0,
+                "text": ""
+            },
+            "unlockSpCond": false,
+            "LevelData": {
+                "dung02_bdg002_lv_data": {
+                    "sceneId": "dung02_bdg002",
+                    "levelIdNum": 411,
+                    "guideHints": [],
+                    "enemies": [
+                        {
+                            "levelLogicId": 41100000007,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0078_nefarp1",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 26.6621513,
+                                "y": -3.862381e-05,
+                                "z": 294.28
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 80,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 41100000008,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0079_nefarp2",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 14.17,
+                                "y": -366.000031,
+                                "z": -701.24
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 80,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 41100000009,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0078_nefarp1",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 26.6621513,
+                                "y": -3.862381e-05,
+                                "z": 294.28
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 90,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 41100000010,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0079_nefarp2",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 14.17,
+                                "y": -366.000031,
+                                "z": -701.24
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 90,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 41100000011,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0078_nefarp1",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 26.6621513,
+                                "y": -3.862381e-05,
+                                "z": 294.28
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 70,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 41100000012,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0079_nefarp2",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 14.17,
+                                "y": -366.000031,
+                                "z": -701.24
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 70,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        }
+                    ],
+                    "interactives": [
+                        {
+                            "levelLogicId": 41100000002,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_dungeon_exit_bossrush",
+                            "createState": "Disable",
+                            "position": {
+                                "x": -10.8,
+                                "y": -366.000031,
+                                "z": -703.8
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "WholeLevel",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [],
+                            "componentProperties": {}
+                        }
+                    ],
+                    "interactiveLockData": [],
+                    "factoryRegions": [],
+                    "factoryMines": [],
+                    "npcs": [],
+                    "npcClusters": [],
+                    "levelScriptDataPathDict": {},
+                    "levelScriptBriefDataDict": {
+                        "41100000004": {
+                            "scriptId": 41100000004,
+                            "dataPath": "Data/Json/LevelScriptData/dung02_bdg002/41100000004.json",
+                            "levelScriptType": "Master",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 2,
+                            "refWorldEntityIdList": [
+                                41100000007,
+                                41100000008,
+                                41100000009,
+                                41100000010,
+                                41100000011,
+                                41100000012
+                            ],
+                            "properties": [
+                                {
+                                    "key": "Position2",
+                                    "value": {
+                                        "type": "Vector3",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": -1038646693
+                                            },
+                                            {
+                                                "valueBit64": 0
+                                            },
+                                            {
+                                                "valueBit64": 1133672658
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "60boss",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000011
+                                            },
+                                            {
+                                                "valueBit64": 41100000012
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "60NFS",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000011
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "60Dragon",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000012
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "60NFS2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000011
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "60Dragon2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000012
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "80boss",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000007
+                                            },
+                                            {
+                                                "valueBit64": 41100000008
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "80NFS",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000007
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "80Dragon",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000008
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "80NFS2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000007
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "80Dragon2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000008
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "90boss",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000009
+                                            },
+                                            {
+                                                "valueBit64": 41100000010
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "90NFS",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000009
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "90Dragon",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000010
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "90NFS2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000009
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "90Dragon2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000010
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "step1finish",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "guide1",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "guide2",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "P1_died",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "P2_died",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "step2ready",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "humandie",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "propertyIdToKeyMap": {
+                                "5": "step1finish",
+                                "7": "guide1",
+                                "8": "guide2",
+                                "34": "P1_died",
+                                "35": "P2_died",
+                                "36": "step2ready",
+                                "58": "humandie",
+                                "1033": "Position2",
+                                "1061": "60NFS",
+                                "1062": "60boss",
+                                "1065": "80boss",
+                                "1068": "90boss",
+                                "1071": "60Dragon",
+                                "1072": "60NFS2",
+                                "1073": "60Dragon2",
+                                "1074": "80NFS",
+                                "1075": "80Dragon",
+                                "1076": "80NFS2",
+                                "1077": "80Dragon2",
+                                "1078": "90NFS",
+                                "1079": "90Dragon",
+                                "1080": "90NFS2",
+                                "1081": "90Dragon2"
+                            }
+                        },
+                        "41100000005": {
+                            "scriptId": 41100000005,
+                            "dataPath": "Data/Json/LevelScriptData/dung02_bdg002/41100000005.json",
+                            "levelScriptType": "World",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 1,
+                            "properties": [
+                                {
+                                    "key": "lt:p:3b8c7cd1:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "lt:mp:3b8c7cd1:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 2
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "propertyIdToKeyMap": {
+                                "1": "lt:p:3b8c7cd1:4ebcd56b",
+                                "1026": "lt:mp:3b8c7cd1:4ebcd56b"
+                            }
+                        },
+                        "41100000006": {
+                            "scriptId": 41100000006,
+                            "dataPath": "Data/Json/LevelScriptData/dung02_bdg002/41100000006.json",
+                            "levelScriptType": "World",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 1,
+                            "properties": [
+                                {
+                                    "key": "lt:p:dfb08def:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "lt:mp:dfb08def:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 2
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "propertyIdToKeyMap": {
+                                "1": "lt:p:dfb08def:4ebcd56b",
+                                "1026": "lt:mp:dfb08def:4ebcd56b"
+                            }
+                        },
+                        "41100000007": {
+                            "scriptId": 41100000007,
+                            "dataPath": "Data/Json/LevelScriptData/dung02_bdg002/41100000007.json",
+                            "levelScriptType": "World",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 1,
+                            "properties": [
+                                {
+                                    "key": "lt:p:45bda136:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "lt:mp:45bda136:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 2
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "propertyIdToKeyMap": {
+                                "1": "lt:p:45bda136:4ebcd56b",
+                                "1026": "lt:mp:45bda136:4ebcd56b"
+                            }
+                        }
+                    },
+                    "patrols": [],
+                    "enemyPatrol": [],
+                    "charPatrol": [],
+                    "npcPatrol": [],
+                    "npcAttractPointData": [],
+                    "missionAreas": [],
+                    "enemyGroup": [],
+                    "npcGroup": [],
+                    "cameraPoses": [],
+                    "splines": [],
+                    "airWalls": [],
+                    "environmentVolumes": [],
+                    "spawners": [],
+                    "worldWayPointData": [],
+                    "waterVolumes": [],
+                    "levelUIs": [],
+                    "aiTransData": [
+                        {
+                            "transId": 2,
+                            "key": "center",
+                            "position": {
+                                "x": 12.15,
+                                "y": -366.0,
+                                "z": -700.14
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            }
+                        }
+                    ],
+                    "sludgeDatas": [],
+                    "safeZone": {
+                        "boxes": []
+                    },
+                    "factoryPredefineData": {
+                        "powerGates": []
+                    },
+                    "predefinedParams": [],
+                    "functionArea": {
+                        "ranges": [],
+                        "baseData": [],
+                        "specificDatas": [],
+                        "functionAreaConditions": []
+                    },
+                    "doodadGroup": [],
+                    "mapVolumeDatas": [],
+                    "dynamicOccludeAreas": [],
+                    "autoSpawnedInteractives": [],
+                    "levelWideConfigs": {}
+                }
+            },
+            "SpawnerConfig": {},
+            "enemyTable": {
+                "eny_0078_nefarp1": {
+                    "aiTemplateId": "",
+                    "attrModifiers": [],
+                    "attrTemplateId": "eny_0078_nefarp1",
+                    "autoLockCancelTime": -1,
+                    "autoLockCancelType": 0,
+                    "bornBuffs": [],
+                    "enemyId": "eny_0078_nefarp1",
+                    "isDangerous": false,
+                    "modelId": "",
+                    "serverDeathCheck": false,
+                    "showBigEffect": true,
+                    "showBigHeadbar": true,
+                    "templateId": "eny_0078_nefarp1"
+                }
+            },
+            "enemyTemplateDisplayInfoTable": {
+                "eny_0078_nefarp1": {
+                    "abilityDescIds": [
+                        "eny_0078_nefarp1_ability_1",
+                        "eny_0078_nefarp1_ability_2"
+                    ],
+                    "description": {
+                        "id": 3500072013469204915,
+                        "text": "Thanks to Nefarith, the \"Bonekrushers\" became a byword for terror in the Civilization Band. Her brutal conquest has not yet ended, and her true ambitions have not yet been revealed."
+                    },
+                    "displayType": 2,
+                    "distributionIds": [
+                        "distribution_map02_lv002"
+                    ],
+                    "name": {
+                        "id": 2632939405357622100,
+                        "text": "Nefarith, \"Bonekrusher\""
+                    },
+                    "nickname": {
+                        "id": 8205265993373735364,
+                        "text": "Nefarith, \"Bonekrusher\""
+                    },
+                    "tags": [],
+                    "templateId": "eny_0078_nefarp1"
+                }
+            },
+            "enemyAttributeTemplateTable": {
+                "eny_0078_nefarp1": {
+                    "aoiRadius": 0,
+                    "attackValueAgainstTower": 0,
+                    "breakingAttackedAtbObtain": 100,
+                    "crystDmgResistScalar": 1,
+                    "fireDmgResistScalar": 1,
+                    "initialSuperArmor": 30,
+                    "levelDependentAttributes": [
+                        {
+                            "attrs": [
+                                {
+                                    "attrType": 0,
+                                    "attrValue": 80
+                                },
+                                {
+                                    "attrType": 1,
+                                    "attrValue": 1012106
+                                },
+                                {
+                                    "attrType": 2,
+                                    "attrValue": 2523
+                                },
+                                {
+                                    "attrType": 3,
+                                    "attrValue": 100
+                                }
+                            ]
+                        }
+                    ],
+                    "levelIndependentAttributes": {
+                        "attrs": [
+                            {
+                                "attrType": 20,
+                                "attrValue": 480
+                            },
+                            {
+                                "attrType": 21,
+                                "attrValue": 11
+                            },
+                            {
+                                "attrType": 27,
+                                "attrValue": 1.75
+                            },
+                            {
+                                "attrType": 12,
+                                "attrValue": 12
+                            },
+                            {
+                                "attrType": 8,
+                                "attrValue": 2
+                            },
+                            {
+                                "attrType": 11,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 9,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 10,
+                                "attrValue": 0.5
+                            },
+                            {
+                                "attrType": 80,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 84,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 83,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 82,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 81,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 85,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 15,
+                                "attrValue": 1
+                            }
+                        ]
+                    },
+                    "maxResilience": 65,
+                    "naturalDmgResistScalar": 1,
+                    "physicalDmgResistScalar": 1,
+                    "poiseKnotBuffList": [],
+                    "poiseKnotPctList": [],
+                    "pulseDmgResistScalar": 1,
+                    "pushedBackCoefficient": 0,
+                    "resilienceDecreaseWhenHurt": 0,
+                    "resilienceFullRecoverTime": 0,
+                    "resilienceRecover": 0,
+                    "resilienceRecoverInterval": 0,
+                    "superArmorWhenResilienceZero": 0,
+                    "templateId": "eny_0078_nefarp1",
+                    "zeroPoiseSuperArmor": 30
+                }
+            },
+            "rewardTable": {
+                "reward_dung02_bossrush02_02_firstpass": {
+                    "itemBundleVisibleList": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "itemBundles": [
+                        {
+                            "count": 200,
+                            "id": "item_adventureexp"
+                        },
+                        {
+                            "count": 50,
+                            "id": "item_diamond"
+                        },
+                        {
+                            "count": 5,
+                            "id": "item_expcard_stage2_low"
+                        },
+                        {
+                            "count": 9,
+                            "id": "item_weapon_expcard_mid"
+                        },
+                        {
+                            "count": 1,
+                            "id": "item_char_skill_level_7_12"
+                        },
+                        {
+                            "count": 5750,
+                            "id": "item_gold"
+                        }
+                    ],
+                    "probItemBundles": [],
+                    "rewardId": "reward_dung02_bossrush02_02_firstpass"
+                }
+            },
+            "itemTable": {
+                "item_adventureexp": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -5480569680702485231,
+                        "text": "A form of experience you earn as you explore Talos-II. Like always, these lands await your discovery, Endministrator."
+                    },
+                    "desc": {
+                        "id": -9181496066040191941,
+                        "text": "Raises the Endministrator's Authority Level."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_adventureexp",
+                    "id": "item_adventureexp",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "",
+                    "name": {
+                        "id": 7902272277769874042,
+                        "text": "Operational EXP"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_adventurebook"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 5,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -999,
+                    "sortId2": 1,
+                    "type": 37,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 7
+                },
+                "item_diamond": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -8713379589258447987,
+                        "text": "A special product of cut Origeometry. These stones are extremely popular due to their beauty and wide range of uses."
+                    },
+                    "desc": {
+                        "id": -5909420414296930437,
+                        "text": "An artificial material often used for recruiting operators."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_diamond",
+                    "id": "item_diamond",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_gold_1",
+                    "name": {
+                        "id": 2239345069872003978,
+                        "text": "Oroberyl"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_diamond",
+                        "item_obtain_bp",
+                        "item_obtain_adventurebook",
+                        "item_obtain_payshop_credit",
+                        "item_obtain_mission_daily",
+                        "item_obtain_explore",
+                        "item_obtain_mission"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 6,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -11,
+                    "sortId2": 1,
+                    "type": 2,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 6
+                },
+                "item_expcard_stage2_low": {
+                    "backpackCanDiscard": true,
+                    "decoDesc": {
+                        "id": 4935393366322988082,
+                        "text": "A data storage unit developed by Endfield Industries. It is compatible with various data access devices. New operators can use it to effectively acquire combat knowledge."
+                    },
+                    "desc": {
+                        "id": -1279800976078486357,
+                        "text": "A material that provides some EXP for leveling up Lv.61-90 operators."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_expcard_stage2_low",
+                    "id": "item_expcard_stage2_low",
+                    "maxBackpackStackCount": 50,
+                    "maxStackCount": -1,
+                    "modelKey": "int_drop_cardexp",
+                    "name": {
+                        "id": 2104604942033761137,
+                        "text": "Elementary Cognitive Carrier"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_dungeon_0001_untouched",
+                        "item_obtain_dungeon_0001",
+                        "item_obtain_spaceship_manu",
+                        "item_obtain_explore"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 4,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -32,
+                    "sortId2": 5,
+                    "type": 7,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 4
+                },
+                "item_weapon_expcard_mid": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": 8068646352702783660,
+                        "text": "A single-use mini-kit with AIC technology. Provides automated inspection of the entire weapon structure. Also repairs internal material damage and enhances weapon performance."
+                    },
+                    "desc": {
+                        "id": 3272344311239951932,
+                        "text": "A material that gives decent weapon EXP."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_weapon_expcard_mid",
+                    "id": "item_weapon_expcard_mid",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_drop_cardexp",
+                    "name": {
+                        "id": 7173586241325326549,
+                        "text": "Arms INSP Kit"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_dungeon_0002_untouched",
+                        "item_obtain_dungeon_0002",
+                        "item_obtain_spaceship_manu",
+                        "item_obtain_explore"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 3,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -41,
+                    "sortId2": 2,
+                    "type": 25,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 4
+                },
+                "item_char_skill_level_7_12": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": 6466841694267957130,
+                        "text": "A special crystal polyhedron manufactured using Techno-Protocol and advanced crystallization processes. Often combined with other devices to improve physiological absorption of enhancement materials."
+                    },
+                    "desc": {
+                        "id": 8818133186577058299,
+                        "text": "A material that upgrades operator skills."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_char_skill_level_7_12",
+                    "id": "item_char_skill_level_7_12",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_2",
+                    "name": {
+                        "id": -5685904010576788364,
+                        "text": "Protohedron"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_dungeon_0006_untouched",
+                        "item_obtain_dungeon_0006",
+                        "item_obtain_shop_greenticket_char_skill_level_7_12",
+                        "item_obtain_shop_yellowticket_char_skill_level_7_12",
+                        "item_obtain_explore"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 4,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -34,
+                    "sortId2": 9,
+                    "type": 27,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 4
+                },
+                "item_gold": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -5111871529363494289,
+                        "text": "A popular currency furnished with highly advanced anti-counterfeiting technologies. You know it's good money when you can purchase things with it."
+                    },
+                    "desc": {
+                        "id": -3278457396295353288,
+                        "text": "TC for short. This currency is recognized and used in many places."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_gold",
+                    "id": "item_gold",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_gold_1",
+                    "name": {
+                        "id": 5406428249689377671,
+                        "text": "T-Creds"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_dungeon_0005_untouched",
+                        "item_obtain_dungeon_0005",
+                        "item_obtain_mission_daily",
+                        "item_obtain_shop_greenticket",
+                        "item_obtain_explore"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 4,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -25,
+                    "sortId2": 30,
+                    "type": 1,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 6
+                }
+            },
+            "BuffData": {}
+        },
+        "dung02_bossrush02_03": {
+            "canDirectlyGetReward": false,
+            "costStamina": 0,
+            "customRewardId": "",
+            "domainId": "",
+            "dungeonCategory": "dungeon_bossrush",
+            "dungeonDesc": {
+                "id": -3105948706966672252,
+                "text": "An extremely dangerous Protocol Space. Be fully prepared if you wish to dive into it.\n\"The relentless ambition to tear apart all existence is still coalescing.\""
+            },
+            "dungeonId": "dung02_bossrush02_03",
+            "dungeonImg": "",
+            "dungeonLevelDesc": {
+                "id": 8813670234695832143,
+                "text": "Level 3"
+            },
+            "dungeonName": {
+                "id": 1528962134470678454,
+                "text": "Crisis Calamity: Nefarith"
+            },
+            "dungeonPicPath": "dung02_boss_nepharith",
+            "dungeonSeriesId": "dung02_group_bossrush02",
+            "enemyIds": [
+                "eny_0078_nefarp1"
+            ],
+            "enemyLevels": [
+                90
+            ],
+            "extraGoalDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "extraRewardId": "",
+            "featureDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "firstPassRewardId": "reward_dung02_bossrush02_03_firstpass",
+            "forceIgnoreFeaturePopup": false,
+            "hunterModeCostStamina": 120,
+            "hunterModeRewardId": "reward_dung02_bossrush02_03",
+            "levelId": "indie_dg005",
+            "mainGoalDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "needShowPass": false,
+            "recommendLv": 90,
+            "relatedCharId": "",
+            "rewardId": "",
+            "sceneId": "dung02_bdg002",
+            "sortId": 0,
+            "tabGroupName": {
+                "id": 0,
+                "text": ""
+            },
+            "unlockSpCond": false,
+            "LevelData": {
+                "dung02_bdg002_lv_data": {
+                    "sceneId": "dung02_bdg002",
+                    "levelIdNum": 411,
+                    "guideHints": [],
+                    "enemies": [
+                        {
+                            "levelLogicId": 41100000007,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0078_nefarp1",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 26.6621513,
+                                "y": -3.862381e-05,
+                                "z": 294.28
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 80,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 41100000008,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0079_nefarp2",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 14.17,
+                                "y": -366.000031,
+                                "z": -701.24
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 80,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 41100000009,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0078_nefarp1",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 26.6621513,
+                                "y": -3.862381e-05,
+                                "z": 294.28
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 90,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 41100000010,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0079_nefarp2",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 14.17,
+                                "y": -366.000031,
+                                "z": -701.24
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 90,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 41100000011,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0078_nefarp1",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 26.6621513,
+                                "y": -3.862381e-05,
+                                "z": 294.28
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 70,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        },
+                        {
+                            "levelLogicId": 41100000012,
+                            "entityType": "Enemy",
+                            "entityDataIdKey": "eny_0079_nefarp2",
+                            "createState": "Disable",
+                            "position": {
+                                "x": 14.17,
+                                "y": -366.000031,
+                                "z": -701.24
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "respawnable": false,
+                            "level": 70,
+                            "isDangerousEnemy": false,
+                            "overrideAIConfig": "",
+                            "enemyGroupId": 0,
+                            "patrolCfgType": "Patrol",
+                            "enemyDefaultActionType": "Patrol",
+                            "enemyPatrolId": 0,
+                            "overrideIdleBreak": false,
+                            "buffs": []
+                        }
+                    ],
+                    "interactives": [
+                        {
+                            "levelLogicId": 41100000002,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_dungeon_exit_bossrush",
+                            "createState": "Disable",
+                            "position": {
+                                "x": -10.8,
+                                "y": -366.000031,
+                                "z": -703.8
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": true,
+                            "aoiRadiusType": "WholeLevel",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [],
+                            "componentProperties": {}
+                        }
+                    ],
+                    "interactiveLockData": [],
+                    "factoryRegions": [],
+                    "factoryMines": [],
+                    "npcs": [],
+                    "npcClusters": [],
+                    "levelScriptDataPathDict": {},
+                    "levelScriptBriefDataDict": {
+                        "41100000004": {
+                            "scriptId": 41100000004,
+                            "dataPath": "Data/Json/LevelScriptData/dung02_bdg002/41100000004.json",
+                            "levelScriptType": "Master",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 2,
+                            "refWorldEntityIdList": [
+                                41100000007,
+                                41100000008,
+                                41100000009,
+                                41100000010,
+                                41100000011,
+                                41100000012
+                            ],
+                            "properties": [
+                                {
+                                    "key": "Position2",
+                                    "value": {
+                                        "type": "Vector3",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": -1038646693
+                                            },
+                                            {
+                                                "valueBit64": 0
+                                            },
+                                            {
+                                                "valueBit64": 1133672658
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "60boss",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000011
+                                            },
+                                            {
+                                                "valueBit64": 41100000012
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "60NFS",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000011
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "60Dragon",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000012
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "60NFS2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000011
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "60Dragon2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000012
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "80boss",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000007
+                                            },
+                                            {
+                                                "valueBit64": 41100000008
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "80NFS",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000007
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "80Dragon",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000008
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "80NFS2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000007
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "80Dragon2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000008
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "90boss",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000009
+                                            },
+                                            {
+                                                "valueBit64": 41100000010
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "90NFS",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000009
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "90Dragon",
+                                    "value": {
+                                        "type": "EntityPtr",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000010
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "90NFS2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000009
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "90Dragon2",
+                                    "value": {
+                                        "type": "EntityPtrList",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 41100000010
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "step1finish",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "guide1",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "guide2",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "P1_died",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "P2_died",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "step2ready",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "humandie",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "propertyIdToKeyMap": {
+                                "5": "step1finish",
+                                "7": "guide1",
+                                "8": "guide2",
+                                "34": "P1_died",
+                                "35": "P2_died",
+                                "36": "step2ready",
+                                "58": "humandie",
+                                "1033": "Position2",
+                                "1061": "60NFS",
+                                "1062": "60boss",
+                                "1065": "80boss",
+                                "1068": "90boss",
+                                "1071": "60Dragon",
+                                "1072": "60NFS2",
+                                "1073": "60Dragon2",
+                                "1074": "80NFS",
+                                "1075": "80Dragon",
+                                "1076": "80NFS2",
+                                "1077": "80Dragon2",
+                                "1078": "90NFS",
+                                "1079": "90Dragon",
+                                "1080": "90NFS2",
+                                "1081": "90Dragon2"
+                            }
+                        },
+                        "41100000005": {
+                            "scriptId": 41100000005,
+                            "dataPath": "Data/Json/LevelScriptData/dung02_bdg002/41100000005.json",
+                            "levelScriptType": "World",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 1,
+                            "properties": [
+                                {
+                                    "key": "lt:p:3b8c7cd1:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "lt:mp:3b8c7cd1:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 2
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "propertyIdToKeyMap": {
+                                "1": "lt:p:3b8c7cd1:4ebcd56b",
+                                "1026": "lt:mp:3b8c7cd1:4ebcd56b"
+                            }
+                        },
+                        "41100000006": {
+                            "scriptId": 41100000006,
+                            "dataPath": "Data/Json/LevelScriptData/dung02_bdg002/41100000006.json",
+                            "levelScriptType": "World",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 1,
+                            "properties": [
+                                {
+                                    "key": "lt:p:dfb08def:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "lt:mp:dfb08def:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 2
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "propertyIdToKeyMap": {
+                                "1": "lt:p:dfb08def:4ebcd56b",
+                                "1026": "lt:mp:dfb08def:4ebcd56b"
+                            }
+                        },
+                        "41100000007": {
+                            "scriptId": 41100000007,
+                            "dataPath": "Data/Json/LevelScriptData/dung02_bdg002/41100000007.json",
+                            "levelScriptType": "World",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 1,
+                            "properties": [
+                                {
+                                    "key": "lt:p:45bda136:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "lt:mp:45bda136:4ebcd56b",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 2
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "propertyIdToKeyMap": {
+                                "1": "lt:p:45bda136:4ebcd56b",
+                                "1026": "lt:mp:45bda136:4ebcd56b"
+                            }
+                        }
+                    },
+                    "patrols": [],
+                    "enemyPatrol": [],
+                    "charPatrol": [],
+                    "npcPatrol": [],
+                    "npcAttractPointData": [],
+                    "missionAreas": [],
+                    "enemyGroup": [],
+                    "npcGroup": [],
+                    "cameraPoses": [],
+                    "splines": [],
+                    "airWalls": [],
+                    "environmentVolumes": [],
+                    "spawners": [],
+                    "worldWayPointData": [],
+                    "waterVolumes": [],
+                    "levelUIs": [],
+                    "aiTransData": [
+                        {
+                            "transId": 2,
+                            "key": "center",
+                            "position": {
+                                "x": 12.15,
+                                "y": -366.0,
+                                "z": -700.14
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            }
+                        }
+                    ],
+                    "sludgeDatas": [],
+                    "safeZone": {
+                        "boxes": []
+                    },
+                    "factoryPredefineData": {
+                        "powerGates": []
+                    },
+                    "predefinedParams": [],
+                    "functionArea": {
+                        "ranges": [],
+                        "baseData": [],
+                        "specificDatas": [],
+                        "functionAreaConditions": []
+                    },
+                    "doodadGroup": [],
+                    "mapVolumeDatas": [],
+                    "dynamicOccludeAreas": [],
+                    "autoSpawnedInteractives": [],
+                    "levelWideConfigs": {}
+                }
+            },
+            "SpawnerConfig": {},
+            "enemyTable": {
+                "eny_0078_nefarp1": {
+                    "aiTemplateId": "",
+                    "attrModifiers": [],
+                    "attrTemplateId": "eny_0078_nefarp1",
+                    "autoLockCancelTime": -1,
+                    "autoLockCancelType": 0,
+                    "bornBuffs": [],
+                    "enemyId": "eny_0078_nefarp1",
+                    "isDangerous": false,
+                    "modelId": "",
+                    "serverDeathCheck": false,
+                    "showBigEffect": true,
+                    "showBigHeadbar": true,
+                    "templateId": "eny_0078_nefarp1"
+                }
+            },
+            "enemyTemplateDisplayInfoTable": {
+                "eny_0078_nefarp1": {
+                    "abilityDescIds": [
+                        "eny_0078_nefarp1_ability_1",
+                        "eny_0078_nefarp1_ability_2"
+                    ],
+                    "description": {
+                        "id": 3500072013469204915,
+                        "text": "Thanks to Nefarith, the \"Bonekrushers\" became a byword for terror in the Civilization Band. Her brutal conquest has not yet ended, and her true ambitions have not yet been revealed."
+                    },
+                    "displayType": 2,
+                    "distributionIds": [
+                        "distribution_map02_lv002"
+                    ],
+                    "name": {
+                        "id": 2632939405357622100,
+                        "text": "Nefarith, \"Bonekrusher\""
+                    },
+                    "nickname": {
+                        "id": 8205265993373735364,
+                        "text": "Nefarith, \"Bonekrusher\""
+                    },
+                    "tags": [],
+                    "templateId": "eny_0078_nefarp1"
+                }
+            },
+            "enemyAttributeTemplateTable": {
+                "eny_0078_nefarp1": {
+                    "aoiRadius": 0,
+                    "attackValueAgainstTower": 0,
+                    "breakingAttackedAtbObtain": 100,
+                    "crystDmgResistScalar": 1,
+                    "fireDmgResistScalar": 1,
+                    "initialSuperArmor": 30,
+                    "levelDependentAttributes": [
+                        {
+                            "attrs": [
+                                {
+                                    "attrType": 0,
+                                    "attrValue": 90
+                                },
+                                {
+                                    "attrType": 1,
+                                    "attrValue": 1559178
+                                },
+                                {
+                                    "attrType": 2,
+                                    "attrValue": 2891
+                                },
+                                {
+                                    "attrType": 3,
+                                    "attrValue": 100
+                                }
+                            ]
+                        }
+                    ],
+                    "levelIndependentAttributes": {
+                        "attrs": [
+                            {
+                                "attrType": 20,
+                                "attrValue": 480
+                            },
+                            {
+                                "attrType": 21,
+                                "attrValue": 11
+                            },
+                            {
+                                "attrType": 27,
+                                "attrValue": 1.75
+                            },
+                            {
+                                "attrType": 12,
+                                "attrValue": 12
+                            },
+                            {
+                                "attrType": 8,
+                                "attrValue": 2
+                            },
+                            {
+                                "attrType": 11,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 9,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 10,
+                                "attrValue": 0.5
+                            },
+                            {
+                                "attrType": 80,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 84,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 83,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 82,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 81,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 85,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 15,
+                                "attrValue": 1
+                            }
+                        ]
+                    },
+                    "maxResilience": 65,
+                    "naturalDmgResistScalar": 1,
+                    "physicalDmgResistScalar": 1,
+                    "poiseKnotBuffList": [],
+                    "poiseKnotPctList": [],
+                    "pulseDmgResistScalar": 1,
+                    "pushedBackCoefficient": 0,
+                    "resilienceDecreaseWhenHurt": 0,
+                    "resilienceFullRecoverTime": 0,
+                    "resilienceRecover": 0,
+                    "resilienceRecoverInterval": 0,
+                    "superArmorWhenResilienceZero": 0,
+                    "templateId": "eny_0078_nefarp1",
+                    "zeroPoiseSuperArmor": 30
+                }
+            },
+            "rewardTable": {
+                "reward_dung02_bossrush02_03_firstpass": {
+                    "itemBundleVisibleList": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "itemBundles": [
+                        {
+                            "count": 200,
+                            "id": "item_adventureexp"
+                        },
+                        {
+                            "count": 50,
+                            "id": "item_diamond"
+                        },
+                        {
+                            "count": 3,
+                            "id": "item_char_skill_specialize_5"
+                        }
+                    ],
+                    "probItemBundles": [],
+                    "rewardId": "reward_dung02_bossrush02_03_firstpass"
+                }
+            },
+            "itemTable": {
+                "item_adventureexp": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -5480569680702485231,
+                        "text": "A form of experience you earn as you explore Talos-II. Like always, these lands await your discovery, Endministrator."
+                    },
+                    "desc": {
+                        "id": -9181496066040191941,
+                        "text": "Raises the Endministrator's Authority Level."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_adventureexp",
+                    "id": "item_adventureexp",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "",
+                    "name": {
+                        "id": 7902272277769874042,
+                        "text": "Operational EXP"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_adventurebook"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 5,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -999,
+                    "sortId2": 1,
+                    "type": 37,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 7
+                },
+                "item_diamond": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -8713379589258447987,
+                        "text": "A special product of cut Origeometry. These stones are extremely popular due to their beauty and wide range of uses."
+                    },
+                    "desc": {
+                        "id": -5909420414296930437,
+                        "text": "An artificial material often used for recruiting operators."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_diamond",
+                    "id": "item_diamond",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_gold_1",
+                    "name": {
+                        "id": 2239345069872003978,
+                        "text": "Oroberyl"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_diamond",
+                        "item_obtain_bp",
+                        "item_obtain_adventurebook",
+                        "item_obtain_payshop_credit",
+                        "item_obtain_mission_daily",
+                        "item_obtain_explore",
+                        "item_obtain_mission"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 6,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -11,
+                    "sortId2": 1,
+                    "type": 2,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 6
+                },
+                "item_char_skill_specialize_5": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -6606727973372245263,
+                        "text": "A device that is extremely sensitive to ambient Originium. It can boost Originium sensitivity of all weapons and devices within a significantly large area. The Triphasic Nanoflake is a key component for containing and storing the Arts, and offers better performance in non-realspace environments compared to the older Bipolar Nanoflakes."
+                    },
+                    "desc": {
+                        "id": 4493270439778949740,
+                        "text": "A rare material for operator promotion, weapon tuning, and operator skill mastery."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_char_skill_specialize_5",
+                    "id": "item_char_skill_specialize_5",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_2",
+                    "name": {
+                        "id": -3425064405892993043,
+                        "text": "Triphasic Nanoflake"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_case_bp_selfselect_skillsp_1_5",
+                        "item_obtain_dungeon_ss05_untouched",
+                        "item_obtain_dungeon_ss05",
+                        "item_obtain_dung02_bossrush02_03",
+                        "item_obtain_shop_greenticket_char_skill_specialize_5",
+                        "item_obtain_shop_yellowticket_char_skill_specialize_5",
+                        "item_obtain_dungeon_common",
+                        "item_obtain_dungeon_bossrush_common"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 5,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -34,
+                    "sortId2": 15,
+                    "type": 95,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 4
+                }
+            },
+            "BuffData": {}
+        }
+    },
+    "name": "RE-Crisis: Nefarith"
+}

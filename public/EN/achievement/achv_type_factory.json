@@ -1,0 +1,614 @@
+{
+  "categoryId": "achv_type_factory",
+  "categoryName": "Construction",
+  "group": {
+    "AIC Factory": {
+      "achv_fac_domain_shop": {
+        "name": "Steady Sales",
+        "order": 7,
+        "canBeUpgraded": false,
+        "canBePlated": true,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_domain_shop_lv02.png",
+            "desc": "You have successfully sold plenty of supplies. \nThanks to your intuition, keen observations, and timely allocations, you kept every region free of protracted supplies shortage.",
+            "conditions": [
+              "Sell supplies at Stock Redistribution 15 times"
+            ],
+            "progressToCompare": [
+              15
+            ]
+          },
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_domain_shop_lv02_plating.png",
+            "desc": "",
+            "conditions": [
+              "In 1 selling action of Elastic Goods, achieve a selling price that is at least 500% better than the average holding price."
+            ],
+            "progressToCompare": [
+              1
+            ]
+          }
+        ]
+      },
+      "achv_fac_settlement_tundra": {
+        "name": "Valley Outpost Builder",
+        "order": 2,
+        "canBeUpgraded": false,
+        "canBePlated": true,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_settlement_tundra_lv02.png",
+            "desc": "Every Valley IV outpost is now a part of your support program. \nGive them angling rods and teach them to fin. Your support program is proving to be absolutely on track.",
+            "conditions": [
+              "Add all Valley IV outposts into the Endfield support program"
+            ],
+            "progressToCompare": [
+              3
+            ]
+          },
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_settlement_tundra_lv02_plating.png",
+            "desc": "",
+            "conditions": [
+              "Raise all Valley IV outposts to the highest level"
+            ],
+            "progressToCompare": [
+              12
+            ]
+          }
+        ]
+      },
+      "achv_fac_blackbox_1": {
+        "name": "Factory Simulation",
+        "order": 10,
+        "canBeUpgraded": true,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 1,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_blackbox_1_lv01.png",
+            "desc": "You have completed a few simulations.",
+            "conditions": [
+              "Manually start and complete 5 simulations"
+            ],
+            "progressToCompare": [
+              5
+            ]
+          },
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_blackbox_1_lv02.png",
+            "desc": "You have completed many simulations.",
+            "conditions": [
+              "Manually start and complete 10 simulations"
+            ],
+            "progressToCompare": [
+              10
+            ]
+          },
+          {
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_blackbox_1_lv03.png",
+            "desc": "You have completed numerous simulations. Your eagerness for mastering factory know-hows is much appreciated.",
+            "conditions": [
+              "Manually start and complete 20 simulations"
+            ],
+            "progressToCompare": [
+              20
+            ]
+          }
+        ]
+      },
+      "achv_fac_coupon_wuling_4": {
+        "name": "Wuling Stock Redistributor Ⅳ",
+        "order": 16,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_coupon_wuling_4_lv03.png",
+            "desc": "You have acquired many Wuling Stock Bills. \nMore stock bills mean greater understanding. The flow of goods in Wuling does not escape your eyes.",
+            "conditions": [
+              "Earn 80,000,000 Wuling Stock Bills"
+            ],
+            "progressToCompare": [
+              80000000
+            ]
+          }
+        ]
+      },
+      "achv_fac_domain_depot": {
+        "name": "Goods Delivery",
+        "order": 8,
+        "canBeUpgraded": false,
+        "canBePlated": true,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_domain_depot_lv02.png",
+            "desc": "You have successfully completed multiple goods deliveries. \nDespite having Techno-Protocol, you insist on delivering the goods in person. Your \"clients\" are extremely moved by such dedication.",
+            "conditions": [
+              "Complete Goods Delivery 20 times"
+            ],
+            "progressToCompare": [
+              20
+            ]
+          },
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_domain_depot_lv02_plating.png",
+            "desc": "",
+            "conditions": [
+              "Pack and deliver 20 Factory Goods (Super Fragile) packages without reducing Goods Integrity."
+            ],
+            "progressToCompare": [
+              20
+            ]
+          }
+        ]
+      },
+      "achv_fac_techtree_jinlong_1": {
+        "name": "Wuling Factory Pioneer Ⅰ",
+        "order": 4,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 1,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_techtree_jinlong_1_lv01.png",
+            "desc": "You have successfully realized Phase 1 of the Wuling AIC Plan.",
+            "conditions": [
+              "Research every technology in Wuling AIC I"
+            ],
+            "progressToCompare": [
+              18
+            ]
+          }
+        ]
+      },
+      "achv_fac_kite_station": {
+        "name": "Environment Monitor",
+        "order": 9,
+        "canBeUpgraded": false,
+        "canBePlated": true,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_kite_station_lv02.png",
+            "desc": "You have performed multiple rounds of environment monitoring. \nWuling hereby thanks you on behalf of all the critters you protected.",
+            "conditions": [
+              "Complete environment monitoring 5 times"
+            ],
+            "progressToCompare": [
+              5
+            ]
+          },
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_kite_station_lv02_plating.png",
+            "desc": "",
+            "conditions": [
+              "Complete Ecology Overview Progress of the Wuling Outskirts Monitoring Terminal",
+              "Complete Ecology Overview Progress of the Wuling Outskirts Monitoring Terminal",
+              "Complete Ecology Overview Progress of the Wuling Outskirts Monitoring Terminal",
+              "Complete Ecology Overview Progress of the Wuling Outskirts Monitoring Terminal",
+              "Complete Ecology Overview Progress of the Wuling Outskirts Monitoring Terminal",
+              "Complete Ecology Overview Progress of the Wuling Outskirts Monitoring Terminal",
+              "Complete Ecology Overview Progress of the Wuling Outskirts Monitoring Terminal",
+              "Complete Ecology Overview Progress of the Wuling Outskirts Monitoring Terminal",
+              "Complete Ecology Overview Progress of the Wuling Outskirts Monitoring Terminal",
+              "Complete Ecology Overview Progress of the Wuling Outskirts Monitoring Terminal",
+              "Complete Ecology Overview Progress of the Wuling Outskirts Monitoring Terminal",
+              "Complete Ecology Overview Progress of the Wuling Outskirts Monitoring Terminal",
+              "Complete Ecology Overview Progress of the Wuling Outskirts Monitoring Terminal",
+              "Complete Ecology Overview Progress of the Wuling Outskirts Monitoring Terminal",
+              "Complete Ecology Overview Progress of the Wuling Outskirts Monitoring Terminal",
+              "Complete Ecology Overview Progress of the Wuling Outskirts Monitoring Terminal"
+            ],
+            "progressToCompare": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      "achv_fac_coupon_wuling_2": {
+        "name": "Wuling Stock Redistributor Ⅱ",
+        "order": 11,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_coupon_wuling_2_lv02.png",
+            "desc": "You have acquired quite a lot of Wuling Stock Bills. \nEarning more stock bills means that you have delivered desperately needed supplies to more people. You have done monumental work.",
+            "conditions": [
+              "Earn 10,000,000 Wuling Stock Bills"
+            ],
+            "progressToCompare": [
+              10000000
+            ]
+          }
+        ]
+      },
+      "achv_fac_coupon_tundra": {
+        "name": "Valley Stock Redistributor",
+        "order": 3,
+        "canBeUpgraded": true,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 1,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_coupon_tundra_lv01.png",
+            "desc": "You have acquired some Valley Stock Bills.",
+            "conditions": [
+              "Earn 20,000,000 Valley Stock Bills"
+            ],
+            "progressToCompare": [
+              20000000
+            ]
+          },
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_coupon_tundra_lv02.png",
+            "desc": "You have acquired quite a bit of Valley Stock Bills.",
+            "conditions": [
+              "Earn 40,000,000 Valley Stock Bills"
+            ],
+            "progressToCompare": [
+              40000000
+            ]
+          },
+          {
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_coupon_tundra_lv03.png",
+            "desc": "You have acquired quite a lot of Valley Stock Bills. \nEarning more stock bills means that you have delivered desperately needed supplies to more people. You have done monumental work.",
+            "conditions": [
+              "Earn 80,000,000 Valley Stock Bills"
+            ],
+            "progressToCompare": [
+              80000000
+            ]
+          }
+        ]
+      },
+      "achv_fac_coupon_wuling_1": {
+        "name": "Wuling Stock Redistributor",
+        "order": 5,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 1,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_coupon_wuling_1_lv01.png",
+            "desc": "You have acquired some Wuling Stock Bills.",
+            "conditions": [
+              "Earn 2,000,000 Wuling Stock Bills"
+            ],
+            "progressToCompare": [
+              2000000
+            ]
+          }
+        ]
+      },
+      "achv_fac_coupon_wuling_3": {
+        "name": "Wuling Stock Redistributor Ⅲ",
+        "order": 14,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_coupon_wuling_3_lv03.png",
+            "desc": "You have acquired quite a lot of Wuling Stock Bills. \nEarning more stock bills means that you have delivered desperately needed supplies to more people. You have done monumental work.",
+            "conditions": [
+              "Earn 25,000,000 Wuling Stock Bills"
+            ],
+            "progressToCompare": [
+              25000000
+            ]
+          }
+        ]
+      },
+      "achv_fac_recycle_station": {
+        "name": "Resource Recycler",
+        "order": 6,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 1,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_recycle_station_lv01.png",
+            "desc": "You have gathered plenty of materials from Recycling Stations. \nIn fact, you could almost hear the fowlbeast hoot: \"Thank you for another punctual visit.\"",
+            "conditions": [
+              "Gather resources from Recycling Stations 50 times"
+            ],
+            "progressToCompare": [
+              50
+            ]
+          }
+        ]
+      },
+      "achv_fac_settlement_wuling_1": {
+        "name": "Wuling Outpost Builder Ⅰ",
+        "order": 12,
+        "canBeUpgraded": false,
+        "canBePlated": true,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_settlement_wuling_1_lv02.png",
+            "desc": "A number of Wuling outposts are now part of your support program. \nGive them angling rods and teach them to fin. Your support program is proving to be absolutely on track.",
+            "conditions": [
+              "Add Sky King Flats Construction Site and Cardiac Remediation Station into the Endfield support program"
+            ],
+            "progressToCompare": [
+              2
+            ]
+          },
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_settlement_wuling_1_lv02_plating.png",
+            "desc": "",
+            "conditions": [
+              "Raise Sky King Flats Construction Site and Cardiac Remediation Station to the highest level"
+            ],
+            "progressToCompare": [
+              2
+            ]
+          }
+        ]
+      },
+      "achv_fac_simulation_training": {
+        "name": "\"Zenith of the Trials\"",
+        "order": 15,
+        "canBeUpgraded": false,
+        "canBePlated": true,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_simulation_training_lv02.png",
+            "desc": "With impeccable tact, you ascended the zenith in the Trial of Swordmancy.",
+            "conditions": [
+              "Complete 1 Trial with a total of 10 Battle Points"
+            ],
+            "progressToCompare": [
+              1
+            ]
+          },
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_simulation_training_lv02_plating.png",
+            "desc": "",
+            "conditions": [
+              "After 1 instance of Data Overflow, complete 1 Trial with a total of 10 Battle Points"
+            ],
+            "progressToCompare": [
+              2
+            ]
+          }
+        ]
+      },
+      "achv_fac_techtree_jinlong_2": {
+        "name": "Wuling Factory Pioneer Ⅱ",
+        "order": 10,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 1,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_techtree_jinlong_2_lv01.png",
+            "desc": "You have successfully researched more technologies in the Wuling AIC Plan.",
+            "conditions": [
+              "Research 25 technologies in the Wuling AIC Plan"
+            ],
+            "progressToCompare": [
+              25
+            ]
+          }
+        ]
+      },
+      "achv_fac_techtree_jinlong_3": {
+        "name": "Wuling Factory Pioneer Ⅲ",
+        "order": 13,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 1,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_techtree_jinlong_3_lv01.png",
+            "desc": "You have successfully researched more technologies in the Wuling AIC Plan.\nYou are now at the very forefront of technology in Talos-II.",
+            "conditions": [
+              "Research 34 technologies in the Wuling AIC Plan"
+            ],
+            "progressToCompare": [
+              34
+            ]
+          }
+        ]
+      },
+      "achv_fac_techtree_tundra": {
+        "name": "Valley Factory Pioneer",
+        "order": 1,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_techtree_tundra_lv03.png",
+            "desc": "You have researched every technology in the Basic AIC Plan. \nYour hard work has completely adapted the AIC Factory to the rigors of Valley IV.",
+            "conditions": [
+              "Research every technology in the Basic AIC Plan"
+            ],
+            "progressToCompare": [
+              37
+            ]
+          }
+        ]
+      }
+    },
+    "Dijiang": {
+      "achv_fac_spaceship_level_1": {
+        "name": "Nexus Upgrader",
+        "order": 1,
+        "canBeUpgraded": false,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_spaceship_level_1_lv03.png",
+            "desc": "You have significantly boosted the performance of the Control Nexus. \nCan you feel the happiness and joy of Dijiang?",
+            "conditions": [
+              "Upgrade the Control Nexus of Dijiang to Level 5"
+            ],
+            "progressToCompare": [
+              5
+            ]
+          }
+        ]
+      },
+      "achv_fac_spaceship_fever_point": {
+        "name": "Immense Trust",
+        "order": 3,
+        "canBeUpgraded": true,
+        "canBePlated": false,
+        "applyRareEffect": true,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 1,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_spaceship_fever_point_lv01.png",
+            "desc": "You have met companions who will defend you with their lives.",
+            "conditions": [
+              "Raise the trust of 5 operators to 100%"
+            ],
+            "progressToCompare": [
+              5
+            ]
+          },
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_spaceship_fever_point_lv02.png",
+            "desc": "You have met multiple companions who will defend you with their lives. \nIt seems you have the ability to attract those who share your vision.",
+            "conditions": [
+              "Raise the trust of 10 operators to 100%"
+            ],
+            "progressToCompare": [
+              10
+            ]
+          },
+          {
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_spaceship_fever_point_lv03.png",
+            "desc": "You have met many companions who will defend you with their lives. \nOne day will come when the world has complete faith in you.",
+            "conditions": [
+              "Raise the trust of 20 operators to 100%"
+            ],
+            "progressToCompare": [
+              20
+            ]
+          }
+        ]
+      },
+      "achv_fac_spaceship_gift": {
+        "name": "Friendly Giveaway",
+        "order": 2,
+        "canBeUpgraded": true,
+        "canBePlated": false,
+        "applyRareEffect": false,
+        "noObtainCanView": true,
+        "level": [
+          {
+            "level": 1,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_spaceship_gift_lv01.png",
+            "desc": "Your operators have received a substantial number of gifts from you.",
+            "conditions": [
+              "Offer 300 gifts that your operators prefer"
+            ],
+            "progressToCompare": [
+              300
+            ]
+          },
+          {
+            "level": 2,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_spaceship_gift_lv02.png",
+            "desc": "Your operators have received a substantial number of gifts from you. \nAre you sure all these presents would fit in their dorm rooms?",
+            "conditions": [
+              "Offer 500 gifts that your operators prefer"
+            ],
+            "progressToCompare": [
+              500
+            ]
+          },
+          {
+            "level": 3,
+            "icon": "/public/images/achievement/medaliconbig/achv_fac_spaceship_gift_lv03.png",
+            "desc": "Your operators have received a substantial number of gifts from you. \nPresents offer merely an opportunity. Trust and sincerity are the true reasons why the operators hold you so closely to their hearts.",
+            "conditions": [
+              "Offer 1000 gifts that your operators prefer"
+            ],
+            "progressToCompare": [
+              1000
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

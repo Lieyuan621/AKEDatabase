@@ -1,0 +1,96 @@
+{
+    "itemId": "item_port_sp_hub_1",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -2494438039003875560,
+            "text": "The Protocol PAC (PAC) represents the core technology of Endfield Industries. The seed was planted when they stepped through the door, and it is slowly growing to become a massive technological oak."
+        },
+        "desc": {
+            "id": 1341561626397951932,
+            "text": "A massive Endfield core facility that can supply power to various facilities and industrial processes."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_port_sp_hub_1",
+        "id": "item_port_sp_hub_1",
+        "maxBackpackStackCount": 1,
+        "maxStackCount": 1,
+        "modelKey": "int_drop_building",
+        "name": {
+            "id": -8746808255750701913,
+            "text": "Protocol Automation-Core (PAC)"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_hub"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 17,
+        "sortId1": -102,
+        "sortId2": 1,
+        "type": 10,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [],
+        "dischargeType": false,
+        "id": "item_port_sp_hub_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 100
+    },
+    "systemjumptable": {
+        "item_obtain_hub": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 9201317426074543161,
+                "text": "Special Asset: Endfield Industries"
+            },
+            "iconId": "icon_tips_factory",
+            "id": "item_obtain_hub",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 10,
+        "name": {
+            "id": 2565861888535879709,
+            "text": "Special Facility"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_tools_building",
+        "name": {
+            "id": -802861162360212509,
+            "text": "Production"
+        },
+        "sortId": 7,
+        "type": 17
+    },
+    "name": "Protocol Automation-Core (PAC)"
+}

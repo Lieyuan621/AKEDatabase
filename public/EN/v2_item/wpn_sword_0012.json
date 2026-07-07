@@ -1,0 +1,112 @@
+{
+    "itemId": "wpn_sword_0012",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -797532084361456966,
+            "text": "A basic product from the Pioneer-series released by Northmarch Support Hub. The Mk IV Thermite Cutter was constructed using patented thermal materials and delivers powerful cutting performance. Positively reviewed by many UWST engineers."
+        },
+        "desc": {
+            "id": 8943550966839607509,
+            "text": "A weapon equipped by Endfield operators to significantly boost their combat capabilities."
+        },
+        "iconCompositeId": "",
+        "iconId": "wpn_sword_0012",
+        "id": "wpn_sword_0012",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_weapon",
+        "name": {
+            "id": 504161328765825530,
+            "text": "Thermite Cutter"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_payshop_weapon"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 6,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -35,
+        "sortId2": 52,
+        "type": 5,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 1
+    },
+    "weaponbasictable": {
+        "breakthroughTemplateId": "weapon_breakthrough_456star_B_1",
+        "engName": {
+            "id": -5631570377110167605,
+            "text": "Thermite Cutter"
+        },
+        "levelTemplateId": "weapon_upgrade_curve_6star_0.99",
+        "maxLv": 90,
+        "modelPath": "Gameplay/Prefabs/Weapons/wpn_sword_0012.prefab",
+        "potentialUpItemList": [],
+        "rarity": 6,
+        "talentTemplateId": "wpn_potential_456star",
+        "weaponDesc": {
+            "id": 721985578290447280,
+            "text": "Northmarch Support Hub has, on multiple occasions, emphasized that their products were personal power tools designed for industrial and construction uses. This particular cutter proved mediocre for its intended purpose. However, it worked pretty well as a two-handed claymore.\n— Reviewer 1\n\nThe user manual is misleading. The product feels more like a weapon than a cutting tool. Just be careful when using it, though. This thing gets seriously hot.\n— Reviewer 2\n\nThink of it this way. Owning this cutter means you don't need to bring a weapon to work, right?\n— Reviewer 3"
+        },
+        "weaponId": "wpn_sword_0012",
+        "weaponPotentialSkill": "sk_wpn_sword_0012",
+        "weaponSkillList": [
+            "wpn_attr_will_high",
+            "wpn_sp_attr_atk_high",
+            "sk_wpn_sword_0012"
+        ],
+        "weaponType": 1
+    },
+    "wikientryid": "wiki_wpn_sword_0012",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_weapon_sword",
+        "id": "wiki_wpn_sword_0012",
+        "order": 15,
+        "prtsId": "",
+        "refItemId": "wpn_sword_0012",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_payshop_weapon": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 6097231837213620507,
+                "text": "Acquisition Center: Arsenal Exchange"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_payshop_weapon",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 5,
+        "name": {
+            "id": 8230458971049120788,
+            "text": "Weapon"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 2,
+        "unlockSystemType": 251,
+        "valuableTabType": 1
+    },
+    "name": "Thermite Cutter"
+}

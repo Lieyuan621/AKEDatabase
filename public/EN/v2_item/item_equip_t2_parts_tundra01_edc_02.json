@@ -1,0 +1,190 @@
+{
+    "itemId": "item_equip_t2_parts_tundra01_edc_02",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 8922503412944872386,
+            "text": "Protective equipment for mining operations. \nValley IV Safety and Protection Standards dictate that minimum requirements for work protection must comprise a 2-layered protection of (i) a soft, cushioning layer and (ii) hard, rigid protection."
+        },
+        "desc": {
+            "id": -4019030971246022934,
+            "text": "Independently designed by Endfield Industries and assembled by the AIC. This equipment improves the wearer's combat capabilities."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_equip_t2_parts_tundra01_edc_02",
+        "id": "item_equip_t2_parts_tundra01_edc_02",
+        "maxBackpackStackCount": 1,
+        "maxStackCount": 1,
+        "modelKey": "int_drop_equip",
+        "name": {
+            "id": 6474712868403884294,
+            "text": "Miner Drive Wheel"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_equip"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 10,
+        "sortId1": -50,
+        "sortId2": 20,
+        "type": 6,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 3
+    },
+    "equiptable": {
+        "displayAttrModifiers": [
+            {
+                "attrIndex": 1,
+                "attrType": 40,
+                "attrValue": 22,
+                "compositeAttr": "",
+                "enhanceGuaranteeTimesRuleId": "",
+                "enhancedAttrIndex": 1,
+                "enhancedAttrValues": [],
+                "modifierType": 5
+            },
+            {
+                "attrIndex": 3,
+                "attrType": 9,
+                "attrValue": 0.057,
+                "compositeAttr": "",
+                "enhanceGuaranteeTimesRuleId": "",
+                "enhancedAttrIndex": 2,
+                "enhancedAttrValues": [],
+                "modifierType": 5
+            }
+        ],
+        "displayBaseAttrModifier": {
+            "attrIndex": 0,
+            "attrType": 3,
+            "attrValue": 10.799999999999999,
+            "compositeAttr": "",
+            "enhanceGuaranteeTimesRuleId": "",
+            "enhancedAttrIndex": 0,
+            "enhancedAttrValues": [],
+            "modifierType": 5
+        },
+        "domainId": "domain_1",
+        "equipAttrModifiers": [
+            {
+                "attrIndex": 0,
+                "attrType": 3,
+                "attrValues": [
+                    10.799999999999999,
+                    10.799999999999999,
+                    10.799999999999999,
+                    10.799999999999999
+                ],
+                "modifierType": 5,
+                "modifyAttributeType": 0
+            },
+            {
+                "attrIndex": 1,
+                "attrType": 40,
+                "attrValues": [
+                    22,
+                    22,
+                    22,
+                    22
+                ],
+                "modifierType": 5,
+                "modifyAttributeType": 0
+            },
+            {
+                "attrIndex": 2,
+                "attrType": 9,
+                "attrValues": [
+                    0.057,
+                    0.057,
+                    0.057,
+                    0.057
+                ],
+                "modifierType": 5,
+                "modifyAttributeType": 0
+            }
+        ],
+        "itemId": "item_equip_t2_parts_tundra01_edc_02",
+        "minWearLv": 36,
+        "partType": 2,
+        "suitID": ""
+    },
+    "equipformulatable": {
+        "costGoldId": "item_domain_tundra_coupon",
+        "costGoldNum": 1200,
+        "costItemId": [
+            "item_equip_script_2"
+        ],
+        "costItemNum": [
+            50
+        ],
+        "formulaId": "item_formu_t2_parts_tundra01_edc_02",
+        "isNew": false,
+        "outcomeEquipId": "item_equip_t2_parts_tundra01_edc_02",
+        "packId": "pack_parts_tundra01_t2",
+        "unlockKey": "",
+        "unlockType": 1,
+        "unlockValue": 24
+    },
+    "wikientryid": "wiki_item_equip_t2_parts_tundra01_edc_02",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_equip_default",
+        "id": "wiki_item_equip_t2_parts_tundra01_edc_02",
+        "order": 20,
+        "prtsId": "",
+        "refItemId": "item_equip_t2_parts_tundra01_edc_02",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_equip": {
+            "bindSystem": 67,
+            "desc": {
+                "id": 4170146291278779065,
+                "text": "Gear Assembly"
+            },
+            "iconId": "icon_tips_proc",
+            "id": "item_obtain_equip",
+            "phaseArgs": "",
+            "phaseId": "EquipTech"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 6,
+        "name": {
+            "id": -2365265597869215300,
+            "text": "Gear"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 3
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_equip_ring",
+        "name": {
+            "id": -6894194081602645229,
+            "text": "Kit"
+        },
+        "sortId": 10,
+        "type": 10
+    },
+    "name": "Miner Drive Wheel"
+}

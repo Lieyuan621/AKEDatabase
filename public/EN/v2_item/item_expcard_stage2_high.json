@@ -1,0 +1,151 @@
+{
+    "itemId": "item_expcard_stage2_high",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -3113901782089962151,
+            "text": "A data storage unit developed by Endfield Industries. It is compatible with various data access devices. New operators can use it to effectively acquire combat knowledge. Thanks to support offered by the Cabal of Tranquility, this carrier features data compression technology and thus stores even more information."
+        },
+        "desc": {
+            "id": -2930328368287287953,
+            "text": "A material that provides a lot of EXP for leveling up Lv.61-90 operators."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_expcard_stage2_high",
+        "id": "item_expcard_stage2_high",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_cardexp",
+        "name": {
+            "id": 3051938166510576506,
+            "text": "Advanced Cognitive Carrier"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_dungeon_0001_untouched",
+            "item_obtain_dungeon_0001",
+            "item_obtain_spaceship_manu",
+            "item_obtain_shop_greenticket",
+            "item_obtain_shop_yellowticket_expcard_stage2_high",
+            "item_obtain_explore"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -32,
+        "sortId2": 6,
+        "type": 7,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 4
+    },
+    "expitemdatamap": {
+        "expGain": 10000,
+        "expType": 2
+    },
+    "wikientryid": "wiki_item_expcard_stage2_high",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_special",
+        "id": "wiki_item_expcard_stage2_high",
+        "order": 5,
+        "prtsId": "",
+        "refItemId": "item_expcard_stage2_high",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_dungeon_0001_untouched": {
+            "bindSystem": 52,
+            "desc": {
+                "id": -6223987024747570091,
+                "text": "Protocol Space: Operator EXP"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_0001_untouched",
+            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource200001663\"\r\n}",
+            "phaseId": "Map"
+        },
+        "item_obtain_dungeon_0001": {
+            "bindSystem": 52,
+            "desc": {
+                "id": 577935024931940560,
+                "text": "Protocol Space: Operator EXP"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_0001",
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung01_group_exp01\"\r\n}",
+            "phaseId": "DungeonEntry"
+        },
+        "item_obtain_spaceship_manu": {
+            "bindSystem": 404,
+            "desc": {
+                "id": 3246750984102486862,
+                "text": "Dijiang Production: MFG Cabin"
+            },
+            "iconId": "icon_tips_mfg",
+            "id": "item_obtain_spaceship_manu",
+            "phaseArgs": "{\r\n  \"instId\": \"ss_room_a_1_base01_lv001\"\r\n}",
+            "phaseId": "Map"
+        },
+        "item_obtain_shop_greenticket": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 7484611790132137642,
+                "text": "Acquisition Center: AIC Trading"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_shop_greenticket",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_green_1\"\r\n}",
+            "phaseId": "CashShop"
+        },
+        "item_obtain_shop_yellowticket_expcard_stage2_high": {
+            "bindSystem": 51,
+            "desc": {
+                "id": -944029731898029274,
+                "text": "Acquisition Center: Bond Quota Exchange"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_shop_yellowticket_expcard_stage2_high",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_yellow_1\",\r\n  \"goodsId\": \"payshop_yellow_item_expcard_stage2_high\"\r\n}",
+            "phaseId": "CashShop"
+        },
+        "item_obtain_explore": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 8888980312357865895,
+                "text": "Exploring and Gathering"
+            },
+            "iconId": "icon_tips_explore",
+            "id": "item_obtain_explore",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 7,
+        "name": {
+            "id": -1890166261439686755,
+            "text": "Operator Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 4
+    },
+    "name": "Advanced Cognitive Carrier"
+}

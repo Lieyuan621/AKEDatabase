@@ -1,0 +1,149 @@
+{
+    "itemId": "item_iron_ore",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 8225528461528226002,
+            "text": "Many theories have been proposed about the origins of Ferrium. Before the age of industrial metallurgy, Ferrium was the most common metal that people used."
+        },
+        "desc": {
+            "id": 3220974934079664715,
+            "text": "A natural-occurring metal complex with blue coloration. It can be processed with the AIC."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_iron_ore",
+        "id": "item_iron_ore",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_drop_iron_ore",
+        "name": {
+            "id": -554680815829661323,
+            "text": "Ferrium Ore"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -5459118349589041951,
+            "text": "Exploring and Gathering"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_gather_iron_ore",
+            "item_obtain_gather_common_ore",
+            "item_obtain_gather_map01_lv005"
+        ],
+        "outcomeItemIds": [
+            "item_iron_nugget",
+            "item_iron_bottle",
+            "item_equip_script_2"
+        ],
+        "rarity": 1,
+        "showAllDepotCount": false,
+        "showingType": 1,
+        "sortId1": -80,
+        "sortId2": 3,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [
+            3,
+            1
+        ],
+        "dischargeType": false,
+        "id": "item_iron_ore",
+        "itemState": false,
+        "losslessDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "showInHubDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "showInUnloader": true,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 1
+    },
+    "wikientryid": "wiki_item_iron_ore",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_nature",
+        "id": "wiki_item_iron_ore",
+        "order": 3,
+        "prtsId": "",
+        "refItemId": "item_iron_ore",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_gather_iron_ore": {
+            "bindSystem": 0,
+            "desc": {
+                "id": -2486169480447278408,
+                "text": "Ferrium Mining Spots"
+            },
+            "iconId": "icon_tips_doodad",
+            "id": "item_obtain_gather_iron_ore",
+            "phaseArgs": "{\r\n  \"resourceTemplateId\": \"mark_p_minepoint_team\",\r\n  \"resourceItemId\": \"item_iron_ore\"\r\n}",
+            "phaseId": "Map"
+        },
+        "item_obtain_gather_common_ore": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 4358366094021137956,
+                "text": "Extraction: Mining Rigs"
+            },
+            "iconId": "icon_tips_doodad",
+            "id": "item_obtain_gather_common_ore",
+            "phaseArgs": "",
+            "phaseId": ""
+        },
+        "item_obtain_gather_map01_lv005": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": -2610992938167397096,
+                "text": "Originium Science Park"
+            },
+            "iconId": "icon_tips_doodad",
+            "id": "item_obtain_gather_map01_lv005",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_ore",
+        "name": {
+            "id": -5438101795722332144,
+            "text": "Minerals"
+        },
+        "sortId": 1,
+        "type": 1
+    },
+    "name": "Ferrium Ore"
+}

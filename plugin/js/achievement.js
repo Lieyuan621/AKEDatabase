@@ -60,7 +60,7 @@
 
         async function loadCategoryManifest(showHidden) {
             try {
-                const res = await (window.akeFetch || fetch)('/public/CH/achievement/manifest.json');
+                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/achievement/manifest.json') || '/public/CH/achievement/manifest.json');
                 if (!res.ok) throw new Error('无法加载奖章分类清单');
                 const all = await res.json();
                 rawAllCategories = all;

@@ -1,0 +1,222 @@
+{
+  "weaponId": "wpn_sword_0017",
+  "title": "Glorious Memory",
+  "rarity": 6,
+  "weapontype": 1,
+  "icon": "/public/images/weapon/icon/wpn_sword_0017.png",
+  "iconbig": "/public/images/weapon/iconbig/wpn_sword_0017.png",
+  "iconfull": "/public/images/weapon/full/wpn_sword_0017.png",
+  "desc": "A weapon equipped by Endfield operators to significantly boost their combat capabilities.",
+  "decoDesc": "One of the weapons forged by Fort Forgefane. This fine and elegant piece is often used by Order of Steel Oath during ceremonies instead of frontline combat. Nevertheless, the blade has undergone multiple rounds of polishing and sports a razor sharp edge.",
+  "baseAtk": [
+    50,
+    54,
+    59,
+    64,
+    69,
+    74,
+    79,
+    84,
+    89,
+    94,
+    99,
+    104,
+    109,
+    114,
+    119,
+    124,
+    129,
+    134,
+    139,
+    144,
+    149,
+    153,
+    158,
+    163,
+    168,
+    173,
+    178,
+    183,
+    188,
+    193,
+    198,
+    203,
+    208,
+    213,
+    218,
+    223,
+    228,
+    233,
+    238,
+    243,
+    248,
+    252,
+    257,
+    262,
+    267,
+    272,
+    277,
+    282,
+    287,
+    292,
+    297,
+    302,
+    307,
+    312,
+    317,
+    322,
+    327,
+    332,
+    337,
+    342,
+    347,
+    351,
+    356,
+    361,
+    366,
+    371,
+    376,
+    381,
+    386,
+    391,
+    396,
+    401,
+    406,
+    411,
+    416,
+    421,
+    426,
+    431,
+    436,
+    441,
+    446,
+    450,
+    455,
+    460,
+    465,
+    470,
+    475,
+    480,
+    485,
+    490
+  ],
+  "skilllist": [
+    {
+      "skillName": "Agility Boost [L]",
+      "description": "Agility <@ba.vup>+{agi}</>",
+      "blackboard": [
+        {
+          "key": "agi",
+          "value": [
+            20,
+            36,
+            52,
+            68,
+            84,
+            100,
+            116,
+            132,
+            156
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "Critical Rate Boost [L]",
+      "description": "Critical Rate <@ba.vup>+{crirate:0.0%}</>",
+      "blackboard": [
+        {
+          "key": "crirate",
+          "value": [
+            0.025,
+            0.045,
+            0.065,
+            0.085,
+            0.105,
+            0.125,
+            0.145,
+            0.165,
+            0.195
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "Twilight: Lingering Glow",
+      "description": "ATK <@ba.vup>+{atk_up:0.0%}</>.\nWhen the wielder's skill applies <#ba.noguard>Vulnerability</>, during the next ultimate cast within {duration:0}s, the wielder gains DMG Dealt <@ba.vup>+{dmg_up:0.0%}</>.\n<@ba.info>Max stacks for effects of the same name: {max_stack:0}. Duration of each stack is counted separately. Effect only triggers once every 0.5s.</>",
+      "blackboard": [
+        {
+          "key": "atk_up",
+          "value": [
+            0.07,
+            0.084,
+            0.098,
+            0.112,
+            0.126,
+            0.14,
+            0.154,
+            0.168,
+            0.196
+          ]
+        },
+        {
+          "key": "dmg_up",
+          "value": [
+            0.12,
+            0.144,
+            0.168,
+            0.192,
+            0.216,
+            0.24,
+            0.264,
+            0.288,
+            0.336
+          ]
+        },
+        {
+          "key": "max_stack",
+          "value": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "key": "duration",
+          "value": [
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30
+          ]
+        },
+        {
+          "key": "cd",
+          "value": [
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ]
+        }
+      ]
+    }
+  ],
+  "weaponDesc": "[AUDIO LOG EXCERPT 1]\n\"AHEM— Talosian Calendar Year 15, ██ of ██. Day three after moving into the temporary shelters... QUIET, TORY! You're supposed to fix the chair, not bring down the house!\n\"Quit nagging already. And enough yapping about your fine studio at downtown Wrankwood. Hell, even I like a hot water bath and trashy movies to go along with it. But clean towels are a luxury now, okay?\n\"Oh, why don't you heard north, find 'Mr. Angels', take him out for a drink, and ask where his blighted kind hid the keys to the Cosmic Gate? —OF COURSE I KNOW IT DOESN'T EXIST. Where did your sense of humor go? Blown to pieces along with the stabilizer and the blighted Aggeloi?\n\"What am I doing? I'm making an audio log. Say, how about lending me that camcorder of yours? Your documentary project is on a temporary hold, right...? No? Fine. Blighted camera crew and their pride.\n\"Where was I again? Oh, yes. Today is Talosian Calendar Year 15—\"\n\n[AUDIO LOG EXCERPT 2]\n\"Dallied around for two weeks and still no news about the others. Murray, Ellie, Henry... I think they're still alive. I gotta keep thinking positive.\n\"We're one of the lucky ones. At least we got a roof here. The other shelters are jam-packed of people. They told me the war is over but there's no heading back to Terra. Meals are getting worse, too. Sheesh...\n\"...You're back? Wait. What the hell is that? A sword? You traded a can-o-food for a friggin' razor?! Are you friggin' nuts...?! Oh yeah, great! It killed a buggerloid! So what? Your backup camera almost got one of those buggers too —— KYAA! STOP! I'm sorry! It was my fault!\n\"You heard Ellie and Murray ended up at the shelters organized by the United Workers' HQ? Awesome. But I heard they have some serious hunger games going on at that place. I heard the UW is meeting up with the Corporate Security Council to talk about some 'shelter program'. Hah. This reminds me of the friggin' boring news on Terra. Never thought I would actually start reading these articles.\n\"Just ... try to stay here, Tory. Enough scavenging and trading already. Save your pitiful rations.\n\"And try to check your camcorder... Why? I don't know. I just ... just kinda feel we might get to use it again.\"\n\n[AUDIO LOG EXCERPT III]\n\"Hmm... how long has it been? I hardly kept count. Maybe more than five months, maybe?\n\"Tory and I are now part of the Corporate Security Council entourage — Temporary, of course. We just tag along for a chance to get some worthy footage.\n\"So this entourage just got demolished yesterday. While beating the retreat, they ran into another equally ragtag band. Turned out to be peeps from the UW. Both sides got into some staring match for half a minute or so. Nobody said anything, but nobody reached for their weapons either. They just ... walked past each other. It felt so friggin' funny — but I couldn't even laugh during that encounter.\n\"We don't wanna fight, and they don't wanna fight either. But this war lasted more than five months. Why? Tory, got anything to say?\n\"Oh, right! Tory's out to get some footage. I told him to stick around but he won't listen. I kinda admire how he could still pick up his camcorder. I for one, got no idea why I'm recording anything and I don't feel like it anymore. Nobody's gonna watch our documentaries. But maybe Tory's right. Someone's gotta record the dumb crap and blightery that's going on.\n\"And oh yes, Tory's can-for-a-sword is still around. It's the reason why we're still breathing. I heard its OG owner was fighting too. Poor dude got un-alived because he refused to point his weapon at a pardner during the Aggeloi War. HAH! Now I'm laughing. Maybe I'm really mad.\n\"Crap! Crap! CRAP! It's starting again! Who's fighting who? I don't know. I never figured it out.\n\"...Blight this blightery. Where the hell is Tory?\"\n\n[VIDEO FOOTAGE (Blurry)]\n\"—HAHA! UP YOURS! We won, pardner! Our war friggin' drove the heavens MAD!! This is an Originium Catastrophe with CAPITAL C! The first of its kind on Talos-II! And we got ourselves some exclusive footage! LOOK, TORY!! It's exactly like what we got on Terra! See it, Tory?! You should be here, with me! Our reel will be nabbing tons of serious awards, Tory! NAME! Give our documentary a name, Tory! Lemme think... OH YES! Call it EFFIN' GLORIOUS MEMORY! That's super rad! We are SOOOOO totally gonna win those bling-bling trophies!\n\"OH! CHECK THAT OUT! That blighted tower is coming down — THERE! A perfect concluding shot! CONGRATULATIONS, HUMANITY!!\""
+}

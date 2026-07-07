@@ -1,0 +1,24 @@
+{
+    "id": "item_domainshop_cargo_tundra_7",
+    "icon": "/public/images/item/itemiconbig/item_domainshop_cargo_tundra_7.png",
+    "name": "Seš'qamam Knucklebones [pkg]",
+    "description": "A package loaded with daily commodities. Such goods are subject to large price fluctuations. They can also be used in Stock Redistribution to generate revenue.",
+    "rarity": 2,
+    "type": 56,
+    "obtainWayIds": [
+        "item_obtain_domain_shop_1"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_domain_shop_1",
+            "desc": "Purchase: Valley IV Stock Redistribution",
+            "bindSystem": 512,
+            "phaseId": "ShopTrade",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_domain_shop.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": []
+}

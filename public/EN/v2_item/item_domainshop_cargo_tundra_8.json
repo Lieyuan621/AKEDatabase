@@ -1,0 +1,74 @@
+{
+    "itemId": "item_domainshop_cargo_tundra_8",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -8485138012665323582,
+            "text": "Blocks of crystals found within the remains of the giant Aggelos that once attacked Valley IV. Most were moved to various institutions for research and testing. However, given the beauteous appearances and ample supply of the crystals, many were fashioned into brooches, necklaces, and other jewelry by the workers."
+        },
+        "desc": {
+            "id": -3326666107754893790,
+            "text": "A package loaded with daily commodities. Such goods are subject to large price fluctuations. They can also be used in Stock Redistribution to generate revenue."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_domainshop_cargo_tundra_8",
+        "id": "item_domainshop_cargo_tundra_8",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 7377415603313943648,
+            "text": "Astarron Crystals [pkg]"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -6216041250088788280,
+            "text": "Purchasable at <@obt.key>Stock Redistribution</>"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_1"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -321,
+        "sortId2": 8,
+        "type": 56,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 7
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_1": {
+            "bindSystem": 512,
+            "desc": {
+                "id": -2131723199710794539,
+                "text": "Purchase: Valley IV Stock Redistribution"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_1",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "ShopTrade"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 56,
+        "name": {
+            "id": 5514429341118358800,
+            "text": "Elastic Goods"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 7
+    },
+    "name": "Astarron Crystals [pkg]"
+}

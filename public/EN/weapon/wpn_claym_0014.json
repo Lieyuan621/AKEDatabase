@@ -1,0 +1,194 @@
+{
+  "weaponId": "wpn_claym_0014",
+  "title": "Ancient Canal",
+  "rarity": 5,
+  "weapontype": 3,
+  "icon": "/public/images/weapon/icon/wpn_claym_0014.png",
+  "iconbig": "/public/images/weapon/iconbig/wpn_claym_0014.png",
+  "iconfull": "/public/images/weapon/full/wpn_claym_0014.png",
+  "desc": "A weapon equipped by Endfield operators to significantly boost their combat capabilities.",
+  "decoDesc": "A quality greatsword manufactured by Hongshan Swordmancers. When compared to other greatswords, this one is lighter but just as deadly.",
+  "baseAtk": [
+    42,
+    46,
+    50,
+    54,
+    58,
+    62,
+    66,
+    71,
+    75,
+    79,
+    83,
+    87,
+    91,
+    95,
+    100,
+    104,
+    108,
+    112,
+    116,
+    120,
+    125,
+    129,
+    133,
+    137,
+    141,
+    145,
+    149,
+    154,
+    158,
+    162,
+    166,
+    170,
+    174,
+    178,
+    183,
+    187,
+    191,
+    195,
+    199,
+    203,
+    208,
+    212,
+    216,
+    220,
+    224,
+    228,
+    232,
+    237,
+    241,
+    245,
+    249,
+    253,
+    257,
+    261,
+    266,
+    270,
+    274,
+    278,
+    282,
+    286,
+    291,
+    295,
+    299,
+    303,
+    307,
+    311,
+    315,
+    320,
+    324,
+    328,
+    332,
+    336,
+    340,
+    344,
+    349,
+    353,
+    357,
+    361,
+    365,
+    369,
+    374,
+    378,
+    382,
+    386,
+    390,
+    394,
+    398,
+    403,
+    407,
+    411
+  ],
+  "skilllist": [
+    {
+      "skillName": "Strength Boost [M]",
+      "description": "Strength <@ba.vup>+{str}</>",
+      "blackboard": [
+        {
+          "key": "str",
+          "value": [
+            16,
+            28,
+            41,
+            54,
+            67,
+            80,
+            92,
+            105,
+            124
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "Arts Intensity Boost [M]",
+      "description": "Arts Intensity <@ba.vup>+{physpell:0}</>",
+      "blackboard": [
+        {
+          "key": "physpell",
+          "value": [
+            8,
+            14,
+            20,
+            27,
+            33,
+            40,
+            46,
+            52,
+            62
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "Brutality: Lands of Yore",
+      "description": "Arts Intensity <@ba.vup>+{phy_spell_up:0}</>.\nAfter the wielder <#ba.consume>consumes</> <#ba.noguard>Vulnerability</> stack(s), the wielder gains Physical DMG Dealt <@ba.vup>+[{phy_dmg_up_mult:0.0%}×Stacks Consumed]</> for {duration:0}s.\n<@ba.info>Effects of the same name cannot stack. </>",
+      "blackboard": [
+        {
+          "key": "phy_spell_up",
+          "value": [
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            28
+          ]
+        },
+        {
+          "key": "phy_dmg_up_mult",
+          "value": [
+            0.05,
+            0.06,
+            0.07,
+            0.08,
+            0.09,
+            0.1,
+            0.11,
+            0.12,
+            0.14
+          ]
+        },
+        {
+          "key": "duration",
+          "value": [
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20
+          ]
+        }
+      ]
+    }
+  ],
+  "weaponDesc": "Not everyone's heart was mine to touch, but I could read my own like a book.\nIn this very instant, my heart is filled with nothing but fear. Our science station, the \"observatory\" we constructed to defeat the boundless Very Large Rift, has been engulfed by the Blight and despair did likewise to my mind. Will the Xiranite succeed? Is the entirety of our efforts completely meaningless? The Æther made us realize how insignificant we are. It will devour Wuling and everything in existence. How are we supposed to oppose this astronomical phenomenon?\n......\nA canal must be constructed. Although rescue work of victims from the disaster site is top priority right now, this canal is of utmost necessity. It will prevent the aquifers from contamination by the Blight Tide seeping into the soil. But this is ultimately futile. It only delays the inevitable death of everything upon this land.\n......\nMy hands are covered in blisters. Though I'm just a worker at the production floor with zero knowledge on construction, I have been assigned to a building crew... We must fight off the disaster until reinforcements arrive from our HQ.\n......\nI got a cut in my hand. I unearthed a broken dagger from the canal construction site. How long has it been buried here? A century? By Talos, take a good look at your bleeding hand! To hell with glory and sacrifice! Why am I still alive? Why do I want to be alive? Why should I be alive at all? WHY?\n......\nBlighted hell. I'll off myself tomorrow.\n......\nI chose the night. At the construction site. Good place. Perfect weather, with pouring rain that soaks everything in the friggin' mud. Losers like us deserve to die and get buried in the mud.\nThe rain-swollen torrents tore through the last unfinished section of the canal. I spotted a metallic sheen in the freshly exposed mud. I don't know why I walked over to the glint and scooped out the mud with my bare hands. I unearthed the thing buried beneath — a rusty valve.\nThat was it.\nOurs was an ad-hoc rush job with neither infrastructure map data nor verification. And as chance would have it, we completed the canal that our predecessors failed to finish.\nMy view of the thoroughly rusted valve transformed at once. It was my father's will, my mother's portrait, the paper flowers offered to my grandparents' grave...\n...and me... I saw my reflection in the muddy water.\nThat was it.\nSomeone always wanted to survive. And someone always survived.\nThe heavens and earth are not without boundaries. Fear itself could disintegrate completely.\nWith that, I stopped thinking about death.\nI but extend the facet of survival and persistence, the never-ending cycle that has endured for since time immemorial."
+}

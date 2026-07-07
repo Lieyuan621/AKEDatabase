@@ -1,4 +1,5 @@
 (function() {
+        const t = (key, params) => window.akeI18n ? window.akeI18n.t(key, params) : key;
         let allSuits = [];
         let rawAllSuits = [];
         let activeSuitId = null;
@@ -110,7 +111,7 @@
 
         async function loadMaps() {
             try {
-                const res = await (window.akeFetch || fetch)('/public/CH/maps.json');
+                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/maps.json') || '/public/CH/maps.json');
                 if (res.ok) {
                     const data = await res.json();
                     attrMap = data.ATTR_MAP || {};
@@ -123,7 +124,7 @@
 
         async function loadSuitManifest(showHidden) {
             try {
-                const res = await (window.akeFetch || fetch)('/public/CH/v2_equip/manifest.json');
+                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/v2_equip/manifest.json') || '/public/CH/v2_equip/manifest.json');
                 if (!res.ok) throw new Error('无法加载装备清单');
                 const all = await res.json();
                 rawAllSuits = all;
@@ -145,8 +146,8 @@
             container.innerHTML = '';
 
             if (filtered.length === 0) {
-                container.innerHTML = '<div class="v2eq-loader">无匹配套组</div>';
-                if (detailContainer) detailContainer.innerHTML = '<div class="v2eq-loader">请选择套组</div>';
+                container.innerHTML = `<div class="v2eq-loader">${t('moduleInternal.v2Equip.noMatch')}</div>`;
+                if (detailContainer) detailContainer.innerHTML = `<div class="v2eq-loader">${t('moduleInternal.v2Equip.choose')}</div>`;
                 activeSuitId = null;
                 return;
             }
@@ -158,7 +159,7 @@
 
                 const rb = document.createElement('span');
                 rb.className = `v2eq-rarity-bar rarity-${suit.rarity}`;
-                rb.title = `稀有度 ${suit.rarity}`;
+                rb.title = t('common.rarityValue', { value: suit.rarity });
 
                 const icon = document.createElement('img');
                 icon.className = 'v2eq-item-icon';
@@ -361,7 +362,7 @@
                         <div class="v2eq-card-title">
                             <div class="v2eq-card-name-row">
                                 <span class="v2eq-card-name">${escapeHtml(name)}</span>
-                                <span class="v2eq-rarity-dot rarity-${rarity}" title="稀有度 ${rarity}"></span>
+                                <span class="v2eq-rarity-dot rarity-${rarity}" title="${t('common.rarityValue', { value: rarity })}"></span>
                             </div>
                             ${showHidden ? `<span class="v2eq-card-item-id">${escapeHtml(itemId)}</span>` : ''}
                         </div>
@@ -560,12 +561,12 @@
         }
 
         async function loadSuitDetail(suit, container) {
-            container.innerHTML = '<div class="v2eq-loader">加载套组数据...</div>';
+            container.innerHTML = `<div class="v2eq-loader">${t('moduleInternal.v2Equip.loading')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(suit.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data, suit);
             } catch (err) {
-                container.innerHTML = `<div class="v2eq-error">加载失败: ${err.message}</div>`;
+                container.innerHTML = `<div class="v2eq-error">${t('moduleInternal.v2Equip.loadFailed', { message: err.message })}</div>`;
             }
         }
 
@@ -583,7 +584,7 @@
                         <div class="v2eq-header-text">
                             <div class="v2eq-title-row">
                                 <span class="v2eq-name">${escapeHtml(suitName)}</span>
-                                <span class="v2eq-rarity-dot rarity-${suit.rarity}" title="稀有度 ${suit.rarity}"></span>
+                                <span class="v2eq-rarity-dot rarity-${suit.rarity}" title="${t('common.rarityValue', { value: suit.rarity })}"></span>
                                 <span class="v2eq-id">${escapeHtml(suit.suitID)}</span>
                             </div>
                             ${packHtml}

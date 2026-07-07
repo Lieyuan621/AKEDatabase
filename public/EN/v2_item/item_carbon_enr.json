@@ -1,0 +1,112 @@
+{
+    "itemId": "item_carbon_enr",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 1190129754983197198,
+            "text": "Multiple processing steps have achieved a delicate balance for this brick of elemental carbon."
+        },
+        "desc": {
+            "id": -8462768177902273119,
+            "text": "An advanced material prepared by refining Dense Carbon Powder. Can be used to make other materials."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_carbon_enr",
+        "id": "item_carbon_enr",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": -1808556653885083208,
+            "text": "Stabilized Carbon"
+        },
+        "noObtainWayConditionId": [
+            "condition_item_obtain_noway_tech_thickener",
+            "condition_item_obtain_noway_item_moss_3"
+        ],
+        "noObtainWayHint": {
+            "id": -5048050955997561248,
+            "text": "Production: AIC Factory Facilities"
+        },
+        "noObtainWayId": [
+            "item_obtain_noway_tech_thickener",
+            "item_obtain_noway_item_moss_3"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 4,
+        "sortId1": -81,
+        "sortId2": 32,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_carbon_enr",
+        "itemState": false,
+        "losslessDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "showInHubDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "showInUnloader": true,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 1
+    },
+    "wikientryid": "wiki_item_carbon_enr",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_product",
+        "id": "wiki_item_carbon_enr",
+        "order": 15,
+        "prtsId": "",
+        "refItemId": "item_carbon_enr",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_product",
+        "name": {
+            "id": 5543235263987292884,
+            "text": "Products"
+        },
+        "sortId": 3,
+        "type": 4
+    },
+    "name": "Stabilized Carbon"
+}

@@ -1,0 +1,26 @@
+{
+    "id": "item_drop_firebat_1",
+    "icon": "/public/images/item/itemiconbig/item_drop_firebat_1.png",
+    "name": "Chromatic Lipids",
+    "description": "Gatherable from defeated Bonekrusher Arsonists. Can be used to make fine food and medicine (Fine F&M).",
+    "rarity": 2,
+    "type": 8,
+    "obtainWayIds": [
+        "item_obtain_eny_0047_firebat"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_eny_0047_firebat",
+            "desc": "Chance Drop: Bonekrusher Arsonist",
+            "bindSystem": 55,
+            "phaseId": "Wiki",
+            "phaseArgs": "{\r\n  \"monsterId\": \"eny_0047_firebat\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_monster.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": [
+        "eny_0047_firebat"
+    ]
+}

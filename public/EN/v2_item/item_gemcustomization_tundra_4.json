@@ -1,0 +1,86 @@
+{
+    "itemId": "item_gemcustomization_tundra_4",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 185846211838970114,
+            "text": "An engraving kit for customizing essences.\nTechno-Protocol has made overall improvements that have broadened its applications in precision machinery. This led to the successful development of the multi-line engraving kit."
+        },
+        "desc": {
+            "id": 4206143673759870323,
+            "text": "Use this to acquire an essence with 3 customized stats."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_gemcustomization_tundra_4",
+        "id": "item_gemcustomization_tundra_4",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 1497317068163071450,
+            "text": "Valley Multi-Line Engraving Kit"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_1",
+            "item_obtain_domain_shop_levelup"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -20,
+        "sortId2": 8,
+        "type": 60,
+        "valuableDepotRedDot": true,
+        "valuableTabType": 10
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_1": {
+            "bindSystem": 512,
+            "desc": {
+                "id": -2131723199710794539,
+                "text": "Purchase: Valley IV Stock Redistribution"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_1",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "ShopTrade"
+        },
+        "item_obtain_domain_shop_levelup": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 1665065042415592699,
+                "text": "Stock Redistribution Terminal Upgrade"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_levelup",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 60,
+        "name": {
+            "id": 1579148728124071748,
+            "text": "Essence Engraving Kit"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "name": "Valley Multi-Line Engraving Kit"
+}

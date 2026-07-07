@@ -1,0 +1,87 @@
+{
+    "itemId": "item_log_pipe_splitter",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -4827002261020893501,
+            "text": "A pipeline adjustment unit with a smart sorting module. Can be used to reduce the complexity of various facility supply lines."
+        },
+        "desc": {
+            "id": -1681150497084689892,
+            "text": "A logistics unit that evenly divides product flow from 1 pipeline into multiple pipelines (up to 3)."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_log_pipe_splitter",
+        "id": "item_log_pipe_splitter",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 8545558265099097613,
+            "text": "Pipe Splitter"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -6379539075723056797,
+            "text": "Research the specified tech in the Wuling AIC Plan to use this."
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_techtree"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -103,
+        "sortId2": 8,
+        "type": 11,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "wikientryid": "wiki_item_log_pipe_splitter",
+    "wikientrydatatable": {
+        "desc": {
+            "id": -4500894000774095554,
+            "text": "<@gd.key>Pipe Splitters</> can <@gd.key>split 1 pipeline into 2 or 3 pipelines</> to divide fluid flow."
+        },
+        "groupId": "wiki_group_building_logistic",
+        "id": "wiki_item_log_pipe_splitter",
+        "order": 6,
+        "prtsId": "",
+        "refItemId": "item_log_pipe_splitter",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_techtree": {
+            "bindSystem": 104,
+            "desc": {
+                "id": -5929385360001250908,
+                "text": "Research: AIC Factory Plan Technologies"
+            },
+            "iconId": "icon_tips_factory",
+            "id": "item_obtain_techtree",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 1,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 11,
+        "name": {
+            "id": -6597940580029514091,
+            "text": "Logistics"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "name": "Pipe Splitter"
+}

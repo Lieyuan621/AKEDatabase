@@ -90,7 +90,7 @@
 
         async function loadSeriesManifest(showHidden) {
             try {
-                const res = await (window.akeFetch || fetch)('/public/CH/dungeon/manifest.json');
+                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/dungeon/manifest.json') || '/public/CH/dungeon/manifest.json');
                 if (!res.ok) throw new Error('无法加载副本系列清单');
                 const all = await res.json();
                 rawAllSeries = all;

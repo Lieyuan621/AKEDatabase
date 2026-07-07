@@ -1,0 +1,42 @@
+{
+    "id": "item_iron_ore",
+    "icon": "/public/images/item/itemiconbig/item_iron_ore.png",
+    "name": "Ferrium Ore",
+    "description": "A natural-occurring metal complex with blue coloration. It can be processed with the AIC.",
+    "rarity": 1,
+    "type": 8,
+    "obtainWayIds": [
+        "item_obtain_gather_iron_ore",
+        "item_obtain_gather_common_ore",
+        "item_obtain_gather_map01_lv005"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_gather_iron_ore",
+            "desc": "Ferrium Mining Spots",
+            "bindSystem": 0,
+            "phaseId": "Map",
+            "phaseArgs": "{\r\n  \"resourceTemplateId\": \"mark_p_minepoint_team\",\r\n  \"resourceItemId\": \"item_iron_ore\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_doodad.png"
+        },
+        {
+            "id": "item_obtain_gather_common_ore",
+            "desc": "Extraction: Mining Rigs",
+            "bindSystem": 10000000,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_doodad.png"
+        },
+        {
+            "id": "item_obtain_gather_map01_lv005",
+            "desc": "Originium Science Park",
+            "bindSystem": 10000000,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_doodad.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": []
+}

@@ -1,0 +1,176 @@
+{
+    "itemId": "item_lbmob_1_dog_1_moss_1_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 3739286538499083831,
+            "text": "A wholly black fillet with bits of bone inside it. Seš'qamam cuisine? Probably not. This feels more like a Landbreakers' fantasy about Seš'qamam food."
+        },
+        "desc": {
+            "id": -7581220236769472578,
+            "text": "Use this consumable to improve the operator's combat performance."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_lbmob_1_dog_1_moss_1_1",
+        "id": "item_lbmob_1_dog_1_moss_1_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": -3591720393984036021,
+            "text": "Seš'qa Style Fillet"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 708953179202541891,
+            "text": "Unlock <@obt.key>Crafting Manual</> formula to make this"
+        },
+        "noObtainWayId": [
+            "item_obtain_hdwk_item_drop_lbmob_1"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 5,
+        "sortId1": -82,
+        "sortId2": 23,
+        "type": 52,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "useitemtable": {
+        "duration": 300,
+        "effectType": 2,
+        "isPersistentBuff": true,
+        "isValuableDepot": false,
+        "itemId": "item_lbmob_1_dog_1_moss_1_1",
+        "itemUseDesc": {
+            "id": 7540502178530134514,
+            "text": "Use this to grant All Attributes +<@ba.vup>{value:0}</>. Duration: <@ba.vup>{duration:0}</>s."
+        },
+        "stackingKey": "buff",
+        "targetNumType": 0,
+        "uiType": 3,
+        "useActions": [
+            {
+                "buffBBData": {
+                    "blackboard": [
+                        {
+                            "key": "value",
+                            "value": 15,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 300,
+                            "valueStr": ""
+                        }
+                    ],
+                    "buffId": "buff_common_mainattri_up_potion_1"
+                },
+                "skillBBData": {
+                    "blackboard": [],
+                    "skillId": "",
+                    "skillPath": ""
+                },
+                "useType": 2
+            }
+        ]
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_lbmob_1_dog_1_moss_1_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 200
+    },
+    "wikientryid": "wiki_item_lbmob_1_dog_1_moss_1_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_usable",
+        "id": "wiki_item_lbmob_1_dog_1_moss_1_1",
+        "order": 37,
+        "prtsId": "",
+        "refItemId": "item_lbmob_1_dog_1_moss_1_1",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 52,
+        "name": {
+            "id": 6865863074684715813,
+            "text": "Consumable"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_usable",
+        "name": {
+            "id": -2232813154053962573,
+            "text": "Usables"
+        },
+        "sortId": 6,
+        "type": 5
+    },
+    "factorymanualcrafttable": [
+        {
+            "defaultUnlock": false,
+            "domainId": "domain_1",
+            "id": "hdwk_lbmob_1_dog_1_moss_1_1",
+            "ingredients": [
+                {
+                    "count": 1,
+                    "id": "item_drop_lbmob_1"
+                },
+                {
+                    "count": 1,
+                    "id": "item_drop_dog_1"
+                },
+                {
+                    "count": 1,
+                    "id": "item_plant_moss_powder_1"
+                }
+            ],
+            "itemId": "item_formula_lbmob_1_dog_1_moss_1_1",
+            "name": {
+                "id": 7437390662710324595,
+                "text": "Seš'qa Style Fillet"
+            },
+            "outcomes": [
+                {
+                    "count": 1,
+                    "id": "item_lbmob_1_dog_1_moss_1_1"
+                }
+            ],
+            "rarity": 2,
+            "showingType": 19,
+            "sortId": 63
+        }
+    ],
+    "name": "Seš'qa Style Fillet"
+}

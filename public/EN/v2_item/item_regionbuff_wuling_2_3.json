@@ -1,0 +1,81 @@
+{
+    "itemId": "item_regionbuff_wuling_2_3",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -627978073010884375,
+            "text": "Collecting Aurylenes gave you a good understanding of the local region. You have learned the best places to consolidate your fortitude for holding these grounds."
+        },
+        "desc": {
+            "id": 601111168552847281,
+            "text": "Resting at the TP Point gives a temporary DEF buff to all operators in the team. \nOnly effective in Wuling."
+        },
+        "iconCompositeId": "item_icon_composite_regionbuff_level_3",
+        "iconId": "item_regionbuff_wuling_2",
+        "id": "item_regionbuff_wuling_2_3",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 54557182566563862,
+            "text": "Rested Defensive"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_ether_collection"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 1,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -999,
+        "sortId2": 13,
+        "type": 91,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "systemjumptable": {
+        "item_obtain_ether_collection": {
+            "bindSystem": 57,
+            "desc": {
+                "id": -3964044095403417609,
+                "text": "Submit Aurylene at TP Points"
+            },
+            "iconId": "icon_tips_explore",
+            "id": "item_obtain_ether_collection",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 1,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 91,
+        "name": {
+            "id": 767543481696728672,
+            "text": "Regional Buff"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemiconcompositetable": {
+        "bgIcons": [],
+        "iconTransType": 0,
+        "id": "item_icon_composite_regionbuff_level_3",
+        "markIcon": "item_icon_subscript_level_3",
+        "showRarity": false
+    },
+    "name": "Rested Defensive"
+}

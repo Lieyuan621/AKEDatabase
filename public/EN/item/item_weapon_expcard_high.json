@@ -1,0 +1,69 @@
+{
+    "id": "item_weapon_expcard_high",
+    "icon": "/public/images/item/itemiconbig/item_weapon_expcard_high.png",
+    "name": "Arms INSP Set",
+    "description": "A material that provides a lot of weapon EXP.",
+    "rarity": 4,
+    "type": 25,
+    "obtainWayIds": [
+        "item_obtain_dungeon_0002_untouched",
+        "item_obtain_dungeon_0002",
+        "item_obtain_spaceship_manu",
+        "item_obtain_shop_greenticket",
+        "item_obtain_shop_yellowticket_weapon_expcard_high",
+        "item_obtain_explore"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_dungeon_0002_untouched",
+            "desc": "Protocol Space: Weapon EXP",
+            "bindSystem": 52,
+            "phaseId": "Map",
+            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource2100320002\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
+        },
+        {
+            "id": "item_obtain_dungeon_0002",
+            "desc": "Protocol Space: Weapon EXP",
+            "bindSystem": 52,
+            "phaseId": "DungeonEntry",
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung01_group_wpexp01\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
+        },
+        {
+            "id": "item_obtain_spaceship_manu",
+            "desc": "Dijiang Production: MFG Cabin",
+            "bindSystem": 404,
+            "phaseId": "Map",
+            "phaseArgs": "{\r\n  \"instId\": \"ss_room_a_1_base01_lv001\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_mfg.png"
+        },
+        {
+            "id": "item_obtain_shop_greenticket",
+            "desc": "Acquisition Center: AIC Trading",
+            "bindSystem": 51,
+            "phaseId": "CashShop",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_green_1\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_payshop.png"
+        },
+        {
+            "id": "item_obtain_shop_yellowticket_weapon_expcard_high",
+            "desc": "Acquisition Center: Bond Quota Exchange",
+            "bindSystem": 51,
+            "phaseId": "CashShop",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_yellow_1\",\r\n  \"goodsId\": \"payshop_yellow_item_weapon_expcard_high\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_payshop.png"
+        },
+        {
+            "id": "item_obtain_explore",
+            "desc": "Exploring and Gathering",
+            "bindSystem": 10000000,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_explore.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": []
+}

@@ -1,4 +1,5 @@
 (function() {
+        const t = (key, params) => window.akeI18n ? window.akeI18n.t(key, params) : key;
         let allEnemies = [];
         let rawAllEnemies = [];
         let activeEnemyId = null;
@@ -30,7 +31,7 @@
 
         async function loadMaps() {
             try {
-                const res = await (window.akeFetch || fetch)('/public/CH/maps.json');
+                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/maps.json') || '/public/CH/maps.json');
                 if (!res.ok) throw new Error('无法加载映射数据');
                 const data = await res.json();
                 attrMap = data.ATTR_MAP || {};
@@ -85,7 +86,7 @@
 
         async function loadEnemyManifest(showHidden) {
             try {
-                const res = await (window.akeFetch || fetch)('/public/CH/v2_enemy/manifest.json');
+                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/v2_enemy/manifest.json') || '/public/CH/v2_enemy/manifest.json');
                 if (!res.ok) throw new Error('无法加载敌人清单');
                 const all = await res.json();
                 rawAllEnemies = all;
@@ -340,8 +341,8 @@
             container.innerHTML = '';
 
             if (!filtered.length) {
-                container.innerHTML = '<div class="v2e-loader">无匹配敌人</div>';
-                if (detailContainer) detailContainer.innerHTML = '<div class="v2e-loader">请选择敌人</div>';
+                container.innerHTML = `<div class="v2e-loader">${t('moduleInternal.v2Enemy.noMatch')}</div>`;
+                if (detailContainer) detailContainer.innerHTML = `<div class="v2e-loader">${t('moduleInternal.v2Enemy.choose')}</div>`;
                 activeEnemyId = null;
                 return;
             }
@@ -353,7 +354,7 @@
 
                 const rarityBar = document.createElement('span');
                 rarityBar.className = `v2e-rarity-bar rarity-${enemy.rarity}`;
-                rarityBar.title = `稀有度 ${enemy.rarity}`;
+                rarityBar.title = t('common.rarityValue', { value: enemy.rarity });
 
                 const icon = document.createElement('img');
                 icon.className = 'v2e-item-icon';
@@ -418,7 +419,7 @@
         }
 
         async function loadEnemyDetail(enemy, container) {
-            container.innerHTML = '<div class="v2e-loader">加载敌人数据...</div>';
+            container.innerHTML = `<div class="v2e-loader">${t('moduleInternal.v2Enemy.loading')}</div>`;
             try {
                 const rawData = await (window.akeFetch || fetch)(enemy.contentFile).then(r => r.json());
                 const data = normalizeV2ToLegacy(enemy, rawData);
@@ -452,7 +453,7 @@
                     });
                 });
             } catch (err) {
-                container.innerHTML = `<div class="v2e-error">加载失败: ${err.message}</div>`;
+                container.innerHTML = `<div class="v2e-error">${t('moduleInternal.v2Enemy.loadFailed', { message: err.message })}</div>`;
             }
         }
 
@@ -570,7 +571,7 @@
                         <div class="v2e-header-text">
                             <div class="v2e-title-row">
                                 <span class="v2e-name">${data.name}</span>
-                                <span class="v2e-rarity-dot rarity-${rarity}" title="稀有度 ${rarity}"></span>
+                                <span class="v2e-rarity-dot rarity-${rarity}" title="${t('common.rarityValue', { value: rarity })}"></span>
                                 <span class="v2e-id">${enemy.templateId}</span>
                             </div>
                             <div class="v2e-tags">

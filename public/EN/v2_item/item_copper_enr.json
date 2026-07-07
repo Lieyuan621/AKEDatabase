@@ -1,0 +1,114 @@
+{
+    "itemId": "item_copper_enr",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 2225007480126466101,
+            "text": "A novel material that sparkles and gleams. The Tianshi have great hopes for this metal and thus named it Hetonite (literal meaning: bright red cuprium). Perhaps they caught a glimpse of hope for humanity within the flaming, crimson hues."
+        },
+        "desc": {
+            "id": 1318283534175294849,
+            "text": "Hetonite is acquired via replacement-precipitation. Can be used to produce other materials."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_copper_enr",
+        "id": "item_copper_enr",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": -9192255873805571277,
+            "text": "Hetonite"
+        },
+        "noObtainWayConditionId": [
+            "condition_item_obtain_noway_item_liquid_acid",
+            "condition_item_obtain_noway_item_copper",
+            "condition_item_obtain_noway_tech_furnance_mode",
+            "condition_item_obtain_noway_tech_liquid_purifier"
+        ],
+        "noObtainWayHint": {
+            "id": -3821503551248980251,
+            "text": "Product of AIC facility processes"
+        },
+        "noObtainWayId": [
+            "item_obtain_noway_item_liquid_acid",
+            "item_obtain_noway_item_copper",
+            "item_obtain_noway_tech_furnance_mode",
+            "item_obtain_noway_tech_liquid_purifier"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 4,
+        "sortId1": -81,
+        "sortId2": 36,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_copper_enr",
+        "itemState": false,
+        "losslessDomainIds": [
+            "domain_2"
+        ],
+        "showInHubDomainIds": [
+            "domain_2"
+        ],
+        "showInUnloader": true,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 20
+    },
+    "wikientryid": "wiki_item_copper_enr",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_product",
+        "id": "wiki_item_copper_enr",
+        "order": 19,
+        "prtsId": "",
+        "refItemId": "item_copper_enr",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_product",
+        "name": {
+            "id": 5543235263987292884,
+            "text": "Products"
+        },
+        "sortId": 3,
+        "type": 4
+    },
+    "name": "Hetonite"
+}

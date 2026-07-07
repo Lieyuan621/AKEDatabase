@@ -1,0 +1,27 @@
+{
+    "id": "item_drop_wgshoal_1",
+    "icon": "/public/images/item/itemiconbig/item_drop_wgshoal_1.png",
+    "name": "Black Treacle",
+    "description": "Gatherable from defeated Tidewalkers. Can be used to make fine food and medicine (Fine F&M).",
+    "rarity": 2,
+    "type": 8,
+    "obtainWayIds": [
+        "item_obtain_eny_0091_wgshoal"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_eny_0091_wgshoal",
+            "desc": "Chance Drop: Tidewalker",
+            "bindSystem": 55,
+            "phaseId": "Wiki",
+            "phaseArgs": "{\r\n  \"monsterId\": \"eny_0091_wgshoal\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_monster.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": [
+        "eny_0091_wgshoal",
+        "eny_0107_wgshoal2"
+    ]
+}

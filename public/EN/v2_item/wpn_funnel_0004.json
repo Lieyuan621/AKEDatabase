@@ -1,0 +1,112 @@
+{
+    "itemId": "wpn_funnel_0004",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 6082085916333879899,
+            "text": "An Arts unit developed by RAYTHEAN Industries. This particular weapon is known for its minimalist and lightweight designs. Making it requires only half of the materials needed to produce a standard-issue Arts unit."
+        },
+        "desc": {
+            "id": -132542204808007434,
+            "text": "A weapon equipped by Endfield operators to significantly boost their combat capabilities."
+        },
+        "iconCompositeId": "",
+        "iconId": "wpn_funnel_0004",
+        "id": "wpn_funnel_0004",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_weapon",
+        "name": {
+            "id": -5407485926004336253,
+            "text": "Wild Wanderer"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_payshop_weapon"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -35,
+        "sortId2": 29,
+        "type": 5,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 1
+    },
+    "weaponbasictable": {
+        "breakthroughTemplateId": "weapon_breakthrough_456star_C_1",
+        "engName": {
+            "id": 905051504107081792,
+            "text": "Wild Wanderer"
+        },
+        "levelTemplateId": "weapon_upgrade_curve_5star_1",
+        "maxLv": 90,
+        "modelPath": "Gameplay/Prefabs/Weapons/wpn_funnel_0004.prefab",
+        "potentialUpItemList": [],
+        "rarity": 5,
+        "talentTemplateId": "wpn_potential_456star",
+        "weaponDesc": {
+            "id": -4822791132468596286,
+            "text": "I met them in the wilderness.\nThey were not friendly at first. One of their Aldertones inspected my wounds and permitted me to stay until I became well enough to move on my own. The others, however, refused to converse with me. Perhaps this was the price that I had to pay for wearing a uniform of TGCC origin.\nTheir way of life left quite ... an impression on me. These people developed a unique culture centered around the idea of \"simplicity\". No. \"Restraint\" would be a better word. They might not have the best technology, but they made the most out of every material. These people crafted tools with a unique minimalist aesthetic — a style of beauty molded by the harsh and unforgiving wildlands of this untamed world.\nI told them I was a crafter and it gave me a chance to take part in their work. Observing their craftsmanship up close gave me a rather shocking revelation — their weapons were fashioned using far less materials and simpler processes, but overall performance was only marginally less than our TGCC counterparts. This discovery made me realize that our designs actually have plenty of room for improvement.\nI left the Circuit after spending three whole years with them, and they gave me honors befitting their own Aldertones. Deep down, I learned far more from the people of the Circuit than what I taught them in return."
+        },
+        "weaponId": "wpn_funnel_0004",
+        "weaponPotentialSkill": "sk_wpn_funnel_0004",
+        "weaponSkillList": [
+            "wpn_attr_wisd_mid",
+            "wpn_sp_attr_electrondam_mid",
+            "sk_wpn_funnel_0004"
+        ],
+        "weaponType": 2
+    },
+    "wikientryid": "wiki_wpn_funnel_0004",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_weapon_wand",
+        "id": "wiki_wpn_funnel_0004",
+        "order": 6,
+        "prtsId": "",
+        "refItemId": "wpn_funnel_0004",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_payshop_weapon": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 6097231837213620507,
+                "text": "Acquisition Center: Arsenal Exchange"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_payshop_weapon",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 5,
+        "name": {
+            "id": 8230458971049120788,
+            "text": "Weapon"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 2,
+        "unlockSystemType": 251,
+        "valuableTabType": 1
+    },
+    "name": "Wild Wanderer"
+}

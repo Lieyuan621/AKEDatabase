@@ -1,0 +1,87 @@
+{
+    "itemId": "item_log_conditioner",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 4841863464514814913,
+            "text": "Sorting creates order."
+        },
+        "desc": {
+            "id": -4829989380316556905,
+            "text": "An adjustable belt logistics unit that controls the type and quantity of items passed through the belt."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_log_conditioner",
+        "id": "item_log_conditioner",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 8302010020143580787,
+            "text": "Item Control Port"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 2970627905408685597,
+            "text": "Research the specified tech in the Basic AIC Plan to get this."
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_techtree"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -103,
+        "sortId2": 5,
+        "type": 11,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "wikientryid": "wiki_item_log_conditioner",
+    "wikientrydatatable": {
+        "desc": {
+            "id": -5067980817733457359,
+            "text": "<@gd.key>Item Control Ports</> limit the type and quantity of items allowed to pass through transport belts. Use <@gd.key>Item Control Ports</> in blueprints to mark the type of items to be moved onto various transport belt sections."
+        },
+        "groupId": "wiki_group_building_logistic",
+        "id": "wiki_item_log_conditioner",
+        "order": 1,
+        "prtsId": "",
+        "refItemId": "item_log_conditioner",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_techtree": {
+            "bindSystem": 104,
+            "desc": {
+                "id": -5929385360001250908,
+                "text": "Research: AIC Factory Plan Technologies"
+            },
+            "iconId": "icon_tips_factory",
+            "id": "item_obtain_techtree",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 1,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 11,
+        "name": {
+            "id": -6597940580029514091,
+            "text": "Logistics"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "name": "Item Control Port"
+}

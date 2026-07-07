@@ -1,0 +1,208 @@
+{
+  "weaponId": "wpn_funnel_0012",
+  "title": "Freedom to Proselytize",
+  "rarity": 5,
+  "weapontype": 2,
+  "icon": "/public/images/weapon/icon/wpn_funnel_0012.png",
+  "iconbig": "/public/images/weapon/iconbig/wpn_funnel_0012.png",
+  "iconfull": "/public/images/weapon/full/wpn_funnel_0012.png",
+  "desc": "A weapon equipped by Endfield operators to significantly boost their combat capabilities.",
+  "decoDesc": "An Arts Unit designed by Mieszko Industries for Cabal of Tranquility. Every step from product design, verification, manufacturing, to tuning has been carried out under the guidance of a Cabal cleric.",
+  "baseAtk": [
+    42,
+    46,
+    50,
+    54,
+    58,
+    62,
+    66,
+    71,
+    75,
+    79,
+    83,
+    87,
+    91,
+    95,
+    100,
+    104,
+    108,
+    112,
+    116,
+    120,
+    125,
+    129,
+    133,
+    137,
+    141,
+    145,
+    149,
+    154,
+    158,
+    162,
+    166,
+    170,
+    174,
+    178,
+    183,
+    187,
+    191,
+    195,
+    199,
+    203,
+    208,
+    212,
+    216,
+    220,
+    224,
+    228,
+    232,
+    237,
+    241,
+    245,
+    249,
+    253,
+    257,
+    261,
+    266,
+    270,
+    274,
+    278,
+    282,
+    286,
+    291,
+    295,
+    299,
+    303,
+    307,
+    311,
+    315,
+    320,
+    324,
+    328,
+    332,
+    336,
+    340,
+    344,
+    349,
+    353,
+    357,
+    361,
+    365,
+    369,
+    374,
+    378,
+    382,
+    386,
+    390,
+    394,
+    398,
+    403,
+    407,
+    411
+  ],
+  "skilllist": [
+    {
+      "skillName": "Will Boost [M]",
+      "description": "Will <@ba.vup>+{will}</>",
+      "blackboard": [
+        {
+          "key": "will",
+          "value": [
+            16,
+            28,
+            41,
+            54,
+            67,
+            80,
+            92,
+            105,
+            124
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "Treatment Efficiency Boost [M]",
+      "description": "Treatment Efficiency <@ba.vup>+{heal:0.0%}</>.",
+      "blackboard": [
+        {
+          "key": "heal",
+          "value": [
+            0.04761905,
+            0.08571429,
+            0.123809524,
+            0.16190477,
+            0.2,
+            0.23809524,
+            0.2761905,
+            0.31428573,
+            0.37142858
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "Medicant: Redemption of Faith",
+      "description": "Main Attribute <@ba.vup>+{all_attr_up:0.0%}</>.\nWhen the wielder's battle skill provides HP treatment, the controlled operator is restored for another <@ba.heal>[{hp_will_add:0} + Will×{hp_will_mult:0.0}]</> HP.\n<@ba.info>Effect only triggers once every {cd:0}s.</>",
+      "blackboard": [
+        {
+          "key": "all_attr_up",
+          "value": [
+            0.05,
+            0.06,
+            0.07,
+            0.08,
+            0.09,
+            0.1,
+            0.11,
+            0.12,
+            0.14
+          ]
+        },
+        {
+          "key": "hp_will_add",
+          "value": [
+            60,
+            72,
+            84,
+            96,
+            108,
+            120,
+            132,
+            144,
+            168
+          ]
+        },
+        {
+          "key": "hp_will_mult",
+          "value": [
+            0.5,
+            0.6,
+            0.7,
+            0.8,
+            0.9,
+            1,
+            1.1,
+            1.2,
+            1.4
+          ]
+        },
+        {
+          "key": "cd",
+          "value": [
+            15,
+            15,
+            15,
+            15,
+            15,
+            15,
+            15,
+            15,
+            15
+          ]
+        }
+      ]
+    }
+  ],
+  "weaponDesc": "The cleric named \"Sessionite\" thus entered the wildlands.\nAnd he arrived at an abandoned village. The creek had long dried up and the soil was cracked.\nAnd the Fortes, suffering hunger and thirst, asked him for salvation.\n\"You need knowledge that will lead you to where the water flows and the thick grasses grow.\"\n\"I shall teach you how to read these lands.\"\nAnd so his hand gleamed with the light of the Originium Network,\nAnd he imparted upon them knowledge that came from those from afar.\nAfter seven days and seven nights,\nThe enlightened Fortes learned how to dig a water well in the barrens,\nAnd thus the water flowed and the grasses grew forever more.\n\nThe cleric named \"Resurgonite\" thus entered the wildlands.\nAnd he arrived at an abandoned village. The creek had long dried up and the soil was cracked.\nAnd the Fortes, suffering hunger and thirst, asked him for salvation.\n\"You need strength to retake the watering hole that you once called yours.\"\n\"I shall grant you weapons to protect your kin.\"\nAnd then he removed the guns he carried on his back,\nAnd together with the relics of the old, he gave them to the Fortes he met.\nAfter seven days and seven nights,\nThe armed Fortes drove the Landbreakers that occupied the upper flows of the river and chased them out of these lands,\nAnd thus the water flowed and the grasses grew forever more.\n\nThe cleric named \"Veritarite\" thus entered the wildlands.\nAnd he arrived at an abandoned village. The creek had long dried up and the soil was cracked.\nAnd the Fortes, suffering hunger and thirst, asked him for salvation.\n\"You must converge your faith as one, and pray for a rain of abundance.\"\n\"I shall be with you, and lead you to wait for the destined season of rain.\"\nAnd then he codified the Law and the commandments, and taught them unity and forbearance,\nAnd he patiently encouraged every Forte whose despair was great in their hearts, and gave them peace and hope.\nAfter seven days and seven nights,\nA torrent of life-giving rain fell for the persevering Fortes,\nAnd thus the water flowed and the grasses grew forever more.\n\nIf you are the thirsty Forte,\nWhich of these clerics' teachings will you accept?\n\n— The Parable of the Three Clerics, engraved at one corner of the Sanctilamina Cathedralis Tranquillae"
+}

@@ -1,0 +1,171 @@
+{
+    "itemId": "item_char_skill_specialize_3",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 7628019141103217893,
+            "text": "An ion trap that might be leveraging its innate Æther properties. The lattice ignores temporal factors and is capable of detecting and screening naturally occurring tachyon beams in realspace. Since the people of Talos-II are still incapable of activating and firing tachyons, the lattice is thus essential for any experiments involving random outcome solidification."
+        },
+        "desc": {
+            "id": -296615242945173428,
+            "text": "A rare material for operator promotion, weapon tuning, and operator skill mastery."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_char_skill_specialize_3",
+        "id": "item_char_skill_specialize_3",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": 4396280472537802462,
+            "text": "Tachyon Screening Lattice"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_case_bp_selfselect_skillsp_1_3",
+            "item_obtain_dungeon_ss03_untouched",
+            "item_obtain_dungeon_ss03",
+            "item_obtain_dungeon_bossrush_03_03",
+            "item_obtain_shop_greenticket_char_skill_specialize_3",
+            "item_obtain_shop_yellowticket_char_skill_specialize_3",
+            "item_obtain_dungeon_common",
+            "item_obtain_dungeon_bossrush_common"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -34,
+        "sortId2": 13,
+        "type": 95,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 4
+    },
+    "wikientryid": "wiki_item_char_skill_specialize_3",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_special",
+        "id": "wiki_item_char_skill_specialize_3",
+        "order": 13,
+        "prtsId": "",
+        "refItemId": "item_char_skill_specialize_3",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_case_bp_selfselect_skillsp_1_3": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 1944912251393428861,
+                "text": "Advanced Progression Selection Crate Ⅰ"
+            },
+            "iconId": "icon_tips_trd",
+            "id": "item_obtain_case_bp_selfselect_skillsp_1_3",
+            "phaseArgs": "{\r\n  \"itemId\": \"item_case_bp_selfselect_skillsp_1\",\r\n  \"selectedRewardId\": \"reward_case_bp_selfselect_skillsp_1_3\"\r\n}",
+            "phaseId": "UsableItemChest"
+        },
+        "item_obtain_dungeon_ss03_untouched": {
+            "bindSystem": 52,
+            "desc": {
+                "id": 3150501843358249717,
+                "text": "Protocol Space: Hazardous Material Management Room"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_ss03_untouched",
+            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_ss10100033017\"\r\n}",
+            "phaseId": "Map"
+        },
+        "item_obtain_dungeon_ss03": {
+            "bindSystem": 52,
+            "desc": {
+                "id": 5882973757492222160,
+                "text": "Protocol Space: Hazardous Material Management Room"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_ss03",
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung_group_ss03\"\r\n}",
+            "phaseId": "DungeonEntry"
+        },
+        "item_obtain_dungeon_bossrush_03_03": {
+            "bindSystem": 52,
+            "desc": {
+                "id": 842213826082395583,
+                "text": "Crisis Calamity: Marble Aggelomoirai (Deep Dive)"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_bossrush_03_03",
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung01_group_bossrush03\",\r\n  \"dungeonId\": \"dung01_bossrush03_03\"\r\n}",
+            "phaseId": "DungeonEntry"
+        },
+        "item_obtain_shop_greenticket_char_skill_specialize_3": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 76764889667503273,
+                "text": "Acquisition Center: AIC Quota Exchange"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_shop_greenticket_char_skill_specialize_3",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_green_1\",\r\n  \"goodsId\": \"payshop_green_item_char_skill_specialize_3\"\r\n}",
+            "phaseId": "CashShop"
+        },
+        "item_obtain_shop_yellowticket_char_skill_specialize_3": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 4887568130256525020,
+                "text": "Acquisition Center: Bond Quota Exchange"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_shop_yellowticket_char_skill_specialize_3",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_yellow_1\",\r\n  \"goodsId\": \"payshop_yellow_item_char_skill_specialize_3\"\r\n}",
+            "phaseId": "CashShop"
+        },
+        "item_obtain_dungeon_common": {
+            "bindSystem": 52,
+            "desc": {
+                "id": -8523774279803415166,
+                "text": "Chance Drop: Certain Protocol Space: Crisis Drills"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_common",
+            "phaseArgs": "{\r\n  \"panelId\": \"AdventureDungeon\",\r\n  \"dungeonTab\": \"SpecialResource\"\r\n}",
+            "phaseId": "AdventureBook"
+        },
+        "item_obtain_dungeon_bossrush_common": {
+            "bindSystem": 52,
+            "desc": {
+                "id": 775163229969626046,
+                "text": "Chance Drop: Certain Protocol Space: RE-Crisis (Deep Dive)"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_bossrush_common",
+            "phaseArgs": "{\r\n  \"panelId\": \"AdventureDungeon\",\r\n  \"dungeonTab\": \"BossRush\"\r\n}",
+            "phaseId": "AdventureBook"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 95,
+        "name": {
+            "id": -6298492876840579785,
+            "text": "Rare Progression Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 4
+    },
+    "name": "Tachyon Screening Lattice"
+}

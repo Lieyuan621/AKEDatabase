@@ -1,0 +1,117 @@
+{
+    "itemId": "item_proc_battery_4",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 6564254885147324338,
+            "text": "Xiranite Power is a key project jointly pursued by Wuling and Endfield Industries."
+        },
+        "desc": {
+            "id": -3387432093122548610,
+            "text": "A battery packaged by AIC Factory facilities. It can be used to supply power, charge up facilities, or traded at various outposts."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_proc_battery_4",
+        "id": "item_proc_battery_4",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": -377329690534775792,
+            "text": "LC Wuling Battery"
+        },
+        "noObtainWayConditionId": [
+            "condition_item_obtain_noway_tech_asm",
+            "condition_item_obtain_noway_item_moss_3",
+            "condition_item_obtain_noway_tech_xiranite"
+        ],
+        "noObtainWayHint": {
+            "id": -1911297010586485562,
+            "text": "Production: AIC Factory Facilities"
+        },
+        "noObtainWayId": [
+            "item_obtain_noway_tech_asm",
+            "item_obtain_noway_item_moss_3",
+            "item_obtain_noway_tech_xiranite"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 4,
+        "sortId1": -82,
+        "sortId2": 204,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_proc_battery_4",
+        "itemState": false,
+        "losslessDomainIds": [
+            "domain_2"
+        ],
+        "showInHubDomainIds": [
+            "domain_2"
+        ],
+        "showInUnloader": true,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 50
+    },
+    "wikicraftjumptable": {
+        "blackboxId": "dung_blackbox_xiraniteoven_1",
+        "blueprintId": "sysbp_wuling_proc_battery_4_1",
+        "itemId": "item_proc_battery_4"
+    },
+    "wikientryid": "wiki_item_proc_battery_4",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_product",
+        "id": "wiki_item_proc_battery_4",
+        "order": 64,
+        "prtsId": "",
+        "refItemId": "item_proc_battery_4",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_product",
+        "name": {
+            "id": 5543235263987292884,
+            "text": "Products"
+        },
+        "sortId": 3,
+        "type": 4
+    },
+    "name": "LC Wuling Battery"
+}

@@ -1,0 +1,74 @@
+{
+    "itemId": "item_domainshop_cargo_tundra_10",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -4980997126518410035,
+            "text": "An Originium formation that looks like a young sapling. After the destruction of the Great Originium Oak, the UWST began farming these saplings on a large scale. Each of them has a chance of growing into a new Oak. Though hardly any saplings showed any sign of growth, they remain highly sought after by Originium scientists from across the world."
+        },
+        "desc": {
+            "id": -2150716388622785947,
+            "text": "A package loaded with cultural commodities. Such goods are subject to massive price fluctuations. They can also be used in Stock Redistribution to generate revenue."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_domainshop_cargo_tundra_10",
+        "id": "item_domainshop_cargo_tundra_10",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 3839211331532219332,
+            "text": "Originium Saplings [pkg]"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 5485024440486769066,
+            "text": "Purchasable at <@obt.key>Stock Redistribution</>"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_1"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -321,
+        "sortId2": 10,
+        "type": 56,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 7
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_1": {
+            "bindSystem": 512,
+            "desc": {
+                "id": -2131723199710794539,
+                "text": "Purchase: Valley IV Stock Redistribution"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_1",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "ShopTrade"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 56,
+        "name": {
+            "id": 5514429341118358800,
+            "text": "Elastic Goods"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 7
+    },
+    "name": "Originium Saplings [pkg]"
+}

@@ -1,0 +1,222 @@
+{
+  "weaponId": "wpn_sword_0012",
+  "title": "Thermite Cutter",
+  "rarity": 6,
+  "weapontype": 1,
+  "icon": "/public/images/weapon/icon/wpn_sword_0012.png",
+  "iconbig": "/public/images/weapon/iconbig/wpn_sword_0012.png",
+  "iconfull": "/public/images/weapon/full/wpn_sword_0012.png",
+  "desc": "A weapon equipped by Endfield operators to significantly boost their combat capabilities.",
+  "decoDesc": "A basic product from the Pioneer-series released by Northmarch Support Hub. The Mk IV Thermite Cutter was constructed using patented thermal materials and delivers powerful cutting performance. Positively reviewed by many UWST engineers.",
+  "baseAtk": [
+    50,
+    54,
+    59,
+    64,
+    69,
+    74,
+    79,
+    84,
+    89,
+    94,
+    99,
+    104,
+    109,
+    114,
+    119,
+    124,
+    129,
+    134,
+    139,
+    144,
+    149,
+    153,
+    158,
+    163,
+    168,
+    173,
+    178,
+    183,
+    188,
+    193,
+    198,
+    203,
+    208,
+    213,
+    218,
+    223,
+    228,
+    233,
+    238,
+    243,
+    248,
+    252,
+    257,
+    262,
+    267,
+    272,
+    277,
+    282,
+    287,
+    292,
+    297,
+    302,
+    307,
+    312,
+    317,
+    322,
+    327,
+    332,
+    337,
+    342,
+    347,
+    351,
+    356,
+    361,
+    366,
+    371,
+    376,
+    381,
+    386,
+    391,
+    396,
+    401,
+    406,
+    411,
+    416,
+    421,
+    426,
+    431,
+    436,
+    441,
+    446,
+    450,
+    455,
+    460,
+    465,
+    470,
+    475,
+    480,
+    485,
+    490
+  ],
+  "skilllist": [
+    {
+      "skillName": "Will Boost [L]",
+      "description": "Will <@ba.vup>+{will}</>",
+      "blackboard": [
+        {
+          "key": "will",
+          "value": [
+            20,
+            36,
+            52,
+            68,
+            84,
+            100,
+            116,
+            132,
+            156
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "Attack Boost [L]",
+      "description": "Attack <@ba.vup>+{atk:0.0%}</>",
+      "blackboard": [
+        {
+          "key": "atk",
+          "value": [
+            0.05,
+            0.09,
+            0.13,
+            0.17,
+            0.21,
+            0.25,
+            0.29,
+            0.33,
+            0.39
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "Flow: Thermal Release",
+      "description": "ATK <@ba.vup>+{atk_up:0.0%}</>.\nAfter the wielder's skill recovers SP or grants a <#ba.combo>Link</> state, the entire team gains ATK <@ba.vup>+{atk_up2:0.0%}</> for {duration:0}s.\n<@ba.info>Max stacks for effects of the same name: {max_stack:0}. Duration of each stack is counted separately.</>",
+      "blackboard": [
+        {
+          "key": "atk_up",
+          "value": [
+            0.1,
+            0.12,
+            0.14,
+            0.16,
+            0.18,
+            0.2,
+            0.22,
+            0.24,
+            0.28
+          ]
+        },
+        {
+          "key": "atk_up2",
+          "value": [
+            0.05,
+            0.06,
+            0.07,
+            0.08,
+            0.09,
+            0.1,
+            0.11,
+            0.12,
+            0.14
+          ]
+        },
+        {
+          "key": "duration",
+          "value": [
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20
+          ]
+        },
+        {
+          "key": "max_stack",
+          "value": [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "key": "lv",
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ]
+        }
+      ]
+    }
+  ],
+  "weaponDesc": "Northmarch Support Hub has, on multiple occasions, emphasized that their products were personal power tools designed for industrial and construction uses. This particular cutter proved mediocre for its intended purpose. However, it worked pretty well as a two-handed claymore.\n— Reviewer 1\n\nThe user manual is misleading. The product feels more like a weapon than a cutting tool. Just be careful when using it, though. This thing gets seriously hot.\n— Reviewer 2\n\nThink of it this way. Owning this cutter means you don't need to bring a weapon to work, right?\n— Reviewer 3"
+}

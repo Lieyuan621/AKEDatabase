@@ -1,0 +1,120 @@
+{
+    "itemId": "item_drop_agrange_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 7341573539649480266,
+            "text": "Strange minerals can sometimes be gathered from the Aggeloi's \"energy-focusing tail stingers\". They can be used as a food marinate to give it special flavors."
+        },
+        "desc": {
+            "id": -5277807349623996674,
+            "text": "Gatherable from Stings or Heavy Stings. Can be used to make fine food and medicine (Fine F&M)."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_drop_agrange_1",
+        "id": "item_drop_agrange_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_drop_enemy_common_1",
+        "name": {
+            "id": -6194894703248628871,
+            "text": "Energized Aggagrit"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -7802976963493058963,
+            "text": "Drop: Enemy Encounters during Exploration"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_agrange_1"
+        ],
+        "outcomeItemIds": [
+            "item_jlebm_grass1_1"
+        ],
+        "rarity": 1,
+        "showAllDepotCount": false,
+        "showingType": 15,
+        "sortId1": -65,
+        "sortId2": 3,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            1
+        ],
+        "dischargeType": false,
+        "id": "item_drop_agrange_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 50
+    },
+    "enemydroplist": [
+        "eny_0025_agrange",
+        "eny_0027_agscorp",
+        "eny_0064_agrange2",
+        "eny_0070_agscorp2"
+    ],
+    "wikientryid": "wiki_item_drop_agrange_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_material",
+        "id": "wiki_item_drop_agrange_1",
+        "order": 5,
+        "prtsId": "",
+        "refItemId": "item_drop_agrange_1",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_agrange_1": {
+            "bindSystem": 55,
+            "desc": {
+                "id": -2252744242545520774,
+                "text": "Chance Drop: Ranged Aggeloi"
+            },
+            "iconId": "icon_tips_monster",
+            "id": "item_obtain_agrange_1",
+            "phaseArgs": "{\r\n  \"monsterId\": \"eny_0025_agrange\"\r\n}",
+            "phaseId": "Wiki"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_doodad",
+        "name": {
+            "id": -4889980326384875610,
+            "text": "Gatherables"
+        },
+        "sortId": 4,
+        "type": 15
+    },
+    "name": "Energized Aggagrit"
+}

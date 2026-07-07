@@ -1,0 +1,2660 @@
+{
+    "dungeonSeriesId": "dung01_group_puzzle02",
+    "dungeonseriestable": {
+        "desc": {
+            "id": -5616334791782816313,
+            "text": "An extremely unstable Protocol Space. Expect the unexpected."
+        },
+        "dungeonCategory": 0,
+        "dungeonCategory2nd": 0,
+        "dungeonImg": "icon_adventure_d_brushingmonsters",
+        "dungeonRoleImg": "",
+        "gameCategory": "dungeon_challenge",
+        "id": "dung01_group_puzzle02",
+        "includeDungeonIds": [
+            "dung01_puzzle02"
+        ],
+        "name": {
+            "id": -1987242049009835848,
+            "text": "Cryptic First Revealed"
+        },
+        "sortId": 2,
+        "staminaText": {
+            "id": 0,
+            "text": ""
+        }
+    },
+    "dungeontable": {
+        "dung01_puzzle02": {
+            "canDirectlyGetReward": false,
+            "costStamina": 0,
+            "customRewardId": "",
+            "domainId": "",
+            "dungeonCategory": "dungeon_challenge",
+            "dungeonDesc": {
+                "id": 7477466408911159700,
+                "text": "An extremely unstable Protocol Space. Expect the unexpected. \n\"Careful. These crane lifters might be dangerous. Now that you've been warned, getting hurt will not be categorized as work injury.\""
+            },
+            "dungeonId": "dung01_puzzle02",
+            "dungeonImg": "",
+            "dungeonLevelDesc": {
+                "id": 1757868549268856074,
+                "text": "Crane Support"
+            },
+            "dungeonName": {
+                "id": 5164207832155822057,
+                "text": "Crane Support"
+            },
+            "dungeonPicPath": "dung_puzzle_02",
+            "dungeonSeriesId": "dung01_group_puzzle02",
+            "enemyIds": [],
+            "enemyLevels": [],
+            "extraGoalDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "extraRewardId": "",
+            "featureDesc": {
+                "id": 7187397025713096018,
+                "text": "Use the machinery in this place to reach the exit."
+            },
+            "firstPassRewardId": "reward_dung01_puzzle02",
+            "forceIgnoreFeaturePopup": false,
+            "hunterModeCostStamina": 0,
+            "hunterModeRewardId": "",
+            "levelId": "",
+            "mainGoalDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "needShowPass": true,
+            "recommendLv": 0,
+            "relatedCharId": "",
+            "rewardId": "",
+            "sceneId": "dung01_cdg002",
+            "sortId": 0,
+            "tabGroupName": {
+                "id": 0,
+                "text": ""
+            },
+            "unlockSpCond": true,
+            "LevelData": {
+                "dung01_cdg002_lv_data": {
+                    "sceneId": "dung01_cdg002",
+                    "levelIdNum": 118,
+                    "guideHints": [],
+                    "enemies": [],
+                    "interactives": [
+                        {
+                            "levelLogicId": 11800000256,
+                            "dependencyGroupId": 11800000256,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_door_common_v2",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -13.4790459,
+                                "y": 18.5,
+                                "z": 8.0
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 358.1868,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [],
+                            "componentProperties": {}
+                        },
+                        {
+                            "levelLogicId": 11800000283,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_gantry_tiltedPlatform",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -31.0756111,
+                                "y": 18.03,
+                                "z": 1.469902
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 90.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.00000024,
+                                "y": 1.0,
+                                "z": 1.00000024
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [],
+                            "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 11800000286,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_gantry_tiltedPlatform",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -50.5394745,
+                                "y": 17.9305973,
+                                "z": 1.39475632
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 270.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.00000024,
+                                "y": 1.0,
+                                "z": 1.00000024
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [],
+                            "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 11800000309,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_gantry_terminal2",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -33.06817,
+                                "y": 8.960001,
+                                "z": 16.67
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 180.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "state",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "is_locked",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "PlayerInteractPerform": [
+                                    {
+                                        "key": "available_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ],
+                                "ClickTrigger": [
+                                    {
+                                        "key": "use_level_event_click",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "level_event_id_click",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "click_option_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_gantry_terminal2"
+                                                },
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_gantry_terminal2"
+                                                },
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_submit_option"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveHintPerformComponent": [
+                                    {
+                                        "key": "override_special_mode_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_brushing_distance_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_min_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_max_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 11800000310,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_gantry_terminal2",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -49.56817,
+                                "y": 8.960001,
+                                "z": 16.42345
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 180.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "state",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "is_locked",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "PlayerInteractPerform": [
+                                    {
+                                        "key": "available_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ],
+                                "ClickTrigger": [
+                                    {
+                                        "key": "use_level_event_click",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "level_event_id_click",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "click_option_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_gantry_terminal2"
+                                                },
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_gantry_terminal2"
+                                                },
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_submit_option"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveHintPerformComponent": [
+                                    {
+                                        "key": "override_special_mode_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_brushing_distance_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_min_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_max_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 11800000324,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_gantry_terminal",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -53.06817,
+                                "y": 8.960001,
+                                "z": 16.5
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 180.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "state",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "is_locked",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "PlayerInteractPerform": [
+                                    {
+                                        "key": "available_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ],
+                                "ClickTrigger": [
+                                    {
+                                        "key": "use_level_event_click",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "level_event_id_click",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "click_option_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_gantry_terminal1"
+                                                },
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_gantry_terminal1"
+                                                },
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_submit_option"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveHintPerformComponent": [
+                                    {
+                                        "key": "override_special_mode_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_brushing_distance_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_min_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_max_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 11800000353,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_trchest_common_high",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -55.31,
+                                "y": -2.99755,
+                                "z": 59.445
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 180.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "reward_id",
+                                    "value": {
+                                        "type": "String",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": "reward_eco_dung01_cdg002_int_353"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "should_destroy",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "PlayerInteractPerform": [
+                                    {
+                                        "key": "available_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ],
+                                "ClickTrigger": [
+                                    {
+                                        "key": "use_level_event_click",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "level_event_id_click",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": ""
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "click_option_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_trchest_common_option"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "TreasureComponent": [
+                                    {
+                                        "key": "destroy_self",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "reward_id",
+                                        "value": {
+                                            "type": "String",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "reward_eco_dung01_cdg002_int_353"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveHintPerformComponent": [
+                                    {
+                                        "key": "override_special_mode_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_brushing_distance_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_min_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_max_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 11800000355,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_dungeon_exit_challenge",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -133.49,
+                                "y": 18.9397278,
+                                "z": 0.01
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 15.2000427,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [],
+                            "componentProperties": {}
+                        },
+                        {
+                            "levelLogicId": 11800000365,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_trchest_common_high",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -33.06,
+                                "y": 9.0,
+                                "z": 52.04
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 90.41732,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "reward_id",
+                                    "value": {
+                                        "type": "String",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": "reward_eco_dung01_cdg002_int_365"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "should_destroy",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "PlayerInteractPerform": [
+                                    {
+                                        "key": "available_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ],
+                                "ClickTrigger": [
+                                    {
+                                        "key": "use_level_event_click",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "level_event_id_click",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": ""
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "click_option_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_trchest_common_option"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "TreasureComponent": [
+                                    {
+                                        "key": "destroy_self",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "reward_id",
+                                        "value": {
+                                            "type": "String",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "reward_eco_dung01_cdg002_int_365"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveHintPerformComponent": [
+                                    {
+                                        "key": "override_special_mode_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_brushing_distance_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_min_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_max_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 11800000371,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_gantry_terminal",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -27.0,
+                                "y": 8.99,
+                                "z": 16.5
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 180.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "state",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "is_locked",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "KeepRelativeOffset": [
+                                    {
+                                        "key": "dont_log_error",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "PlayerInteractPerform": [
+                                    {
+                                        "key": "available_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ],
+                                "ClickTrigger": [
+                                    {
+                                        "key": "use_level_event_click",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "level_event_id_click",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "click_option_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_gantry_terminal1"
+                                                },
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_gantry_terminal1"
+                                                },
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_submit_option"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveHintPerformComponent": [
+                                    {
+                                        "key": "override_special_mode_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_brushing_distance_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_min_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_max_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 11800000389,
+                            "dependencyGroupId": 11800000256,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_switch_common",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -0.7950001,
+                                "y": 24.7236061,
+                                "z": 2.193493
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 90.0,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.00000024,
+                                "y": 1.0,
+                                "z": 1.00000024
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "state",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "is_locked",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "PlayerInteractPerform": [
+                                    {
+                                        "key": "available_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ],
+                                "ClickTrigger": [
+                                    {
+                                        "key": "use_level_event_click",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "level_event_id_click",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                },
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "click_option_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_collection_eswitch_option"
+                                                },
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_collection_eswitch_option"
+                                                },
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_submit_option"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveHintPerformComponent": [
+                                    {
+                                        "key": "override_special_mode_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_brushing_distance_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_min_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_max_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ],
+                                "SwitchCommonNoElectric": [
+                                    {
+                                        "key": "is_do_once",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 1
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "target_list",
+                                        "value": {
+                                            "type": "EntityPtrList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 11800000256
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "levelLogicId": 11800000478,
+                            "entityType": "Interactive",
+                            "entityDataIdKey": "int_trchest_common_high",
+                            "createState": "EnableAndShow",
+                            "position": {
+                                "x": -10.92,
+                                "y": 24.5,
+                                "z": -27.77
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 356.8,
+                                "z": 0.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            },
+                            "forceLoad": false,
+                            "aoiRadiusType": "Default",
+                            "overrideSendDieEvent": false,
+                            "sendDieEvent": false,
+                            "keepCrossMap": false,
+                            "isLocked": false,
+                            "isClientOnly": false,
+                            "hideInDialog": false,
+                            "modelScale": 0.0,
+                            "properties": [
+                                {
+                                    "key": "reward_id",
+                                    "value": {
+                                        "type": "String",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": "reward_eco_dung01_cdg002_int_478"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "should_destroy",
+                                    "value": {
+                                        "type": "Bool",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "componentProperties": {
+                                "PlayerInteractPerform": [
+                                    {
+                                        "key": "available_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ],
+                                "ClickTrigger": [
+                                    {
+                                        "key": "use_level_event_click",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "level_event_id_click",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": ""
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "click_option_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "lang_int_trchest_common_option"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "TreasureComponent": [
+                                    {
+                                        "key": "destroy_self",
+                                        "value": {
+                                            "type": "Bool",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "key": "reward_id",
+                                        "value": {
+                                            "type": "String",
+                                            "valueArray": [
+                                                {
+                                                    "valueBit64": 0,
+                                                    "valueString": "reward_eco_dung01_cdg002_int_478"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "InteractiveHintPerformComponent": [
+                                    {
+                                        "key": "override_special_mode_list",
+                                        "value": {
+                                            "type": "IntList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_outline_name_list",
+                                        "value": {
+                                            "type": "StringList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "is_override_special_mode_brushing_distance_list",
+                                        "value": {
+                                            "type": "BoolList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_min_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    },
+                                    {
+                                        "key": "override_special_mode_brushing_max_distance_list",
+                                        "value": {
+                                            "type": "FloatList",
+                                            "valueArray": []
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "interactiveLockData": [],
+                    "factoryRegions": [],
+                    "factoryMines": [],
+                    "npcs": [],
+                    "npcClusters": [],
+                    "levelScriptDataPathDict": {},
+                    "levelScriptBriefDataDict": {
+                        "11800000001": {
+                            "scriptId": 11800000001,
+                            "dataPath": "Data/Json/LevelScriptData/dung01_cdg002/11800000001.json",
+                            "levelScriptType": "World",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 1,
+                            "refWorldEntityIdList": [
+                                11800000283,
+                                11800000286
+                            ],
+                            "properties": [],
+                            "propertyIdToKeyMap": {}
+                        },
+                        "11800000008": {
+                            "scriptId": 11800000008,
+                            "dataPath": "Data/Json/LevelScriptData/dung01_cdg002/11800000008.json",
+                            "levelScriptType": "World",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 1,
+                            "properties": [
+                                {
+                                    "key": "TreasureOpened",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0,
+                                                "valueString": ""
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "lt:p:12e526b7:3595a0e4",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": "lt:mp:12e526b7:3595a0e4",
+                                    "value": {
+                                        "type": "Int",
+                                        "valueArray": [
+                                            {
+                                                "valueBit64": 1
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "propertyIdToKeyMap": {
+                                "1": "lt:p:12e526b7:3595a0e4",
+                                "15": "TreasureOpened",
+                                "1026": "lt:mp:12e526b7:3595a0e4"
+                            }
+                        },
+                        "11800000011": {
+                            "scriptId": 11800000011,
+                            "dataPath": "Data/Json/LevelScriptData/dung01_cdg002/11800000011.json",
+                            "levelScriptType": "World",
+                            "parentLevelScriptId": 0,
+                            "maxStage": 1,
+                            "properties": [],
+                            "propertyIdToKeyMap": {}
+                        }
+                    },
+                    "patrols": [],
+                    "enemyPatrol": [],
+                    "charPatrol": [],
+                    "npcPatrol": [],
+                    "npcAttractPointData": [],
+                    "missionAreas": [],
+                    "enemyGroup": [],
+                    "npcGroup": [],
+                    "cameraPoses": [],
+                    "splines": [],
+                    "airWalls": [
+                        {
+                            "groupId": 0,
+                            "slotId": 80002,
+                            "scriptId": 11800000001,
+                            "defaultOn": true,
+                            "bounds": {
+                                "m_center": {
+                                    "x": -23.8758068,
+                                    "y": 12.4184055,
+                                    "z": 1.84344864
+                                },
+                                "m_size": {
+                                    "x": 1.0,
+                                    "y": 11.8368111,
+                                    "z": 26.0
+                                }
+                            },
+                            "polyLineWalls": [
+                                {
+                                    "bounds": {
+                                        "m_center": {
+                                            "x": -23.8758068,
+                                            "y": 12.4184055,
+                                            "z": 1.84344864
+                                        },
+                                        "m_size": {
+                                            "x": 0.0,
+                                            "y": 10.8368111,
+                                            "z": 25.0
+                                        }
+                                    },
+                                    "posList": [
+                                        {
+                                            "x": -23.8758068,
+                                            "y": -10.6565514
+                                        },
+                                        {
+                                            "x": -23.8758068,
+                                            "y": 14.3434486
+                                        }
+                                    ],
+                                    "heightRange": {
+                                        "x": 7.0,
+                                        "y": 17.8368111
+                                    },
+                                    "visualHeightRange": {
+                                        "x": 7.0,
+                                        "y": 7.0
+                                    },
+                                    "usage": 5,
+                                    "pushDis": 2.0,
+                                    "pushWarnDis": 5.0,
+                                    "disableDefaultEffect": false
+                                }
+                            ],
+                            "checkData": {
+                                "checkType": 0
+                            }
+                        },
+                        {
+                            "groupId": 0,
+                            "slotId": 80001,
+                            "scriptId": 11800000001,
+                            "defaultOn": true,
+                            "bounds": {
+                                "m_center": {
+                                    "x": -30.1458054,
+                                    "y": 14.3684063,
+                                    "z": 21.30345
+                                },
+                                "m_size": {
+                                    "x": 1.0,
+                                    "y": 11.836812,
+                                    "z": 13.0
+                                }
+                            },
+                            "polyLineWalls": [
+                                {
+                                    "bounds": {
+                                        "m_center": {
+                                            "x": -30.1458054,
+                                            "y": 14.3684063,
+                                            "z": 21.30345
+                                        },
+                                        "m_size": {
+                                            "x": 0.0,
+                                            "y": 10.836812,
+                                            "z": 12.0
+                                        }
+                                    },
+                                    "posList": [
+                                        {
+                                            "x": -30.1458054,
+                                            "y": 15.30345
+                                        },
+                                        {
+                                            "x": -30.1458054,
+                                            "y": 27.30345
+                                        }
+                                    ],
+                                    "heightRange": {
+                                        "x": 8.95,
+                                        "y": 19.7868118
+                                    },
+                                    "visualHeightRange": {
+                                        "x": 8.95,
+                                        "y": 8.95
+                                    },
+                                    "usage": 5,
+                                    "pushDis": 2.0,
+                                    "pushWarnDis": 5.0,
+                                    "disableDefaultEffect": false
+                                }
+                            ],
+                            "checkData": {
+                                "checkType": 0
+                            }
+                        },
+                        {
+                            "groupId": 0,
+                            "slotId": 80003,
+                            "scriptId": 11800000001,
+                            "defaultOn": true,
+                            "bounds": {
+                                "m_center": {
+                                    "x": -27.175806,
+                                    "y": 14.2115955,
+                                    "z": 14.9714508
+                                },
+                                "m_size": {
+                                    "x": 6.0,
+                                    "y": 11.836812,
+                                    "z": 1.000001
+                                }
+                            },
+                            "polyLineWalls": [
+                                {
+                                    "bounds": {
+                                        "m_center": {
+                                            "x": -27.175806,
+                                            "y": 14.2115955,
+                                            "z": 14.9714508
+                                        },
+                                        "m_size": {
+                                            "x": 5.0,
+                                            "y": 10.836812,
+                                            "z": 9.536743e-07
+                                        }
+                                    },
+                                    "posList": [
+                                        {
+                                            "x": -29.675806,
+                                            "y": 14.9714518
+                                        },
+                                        {
+                                            "x": -24.675806,
+                                            "y": 14.9714508
+                                        }
+                                    ],
+                                    "heightRange": {
+                                        "x": 8.793189,
+                                        "y": 19.6300011
+                                    },
+                                    "visualHeightRange": {
+                                        "x": 8.793189,
+                                        "y": 8.793189
+                                    },
+                                    "usage": 5,
+                                    "pushDis": 2.0,
+                                    "pushWarnDis": 5.0,
+                                    "disableDefaultEffect": false
+                                }
+                            ],
+                            "checkData": {
+                                "checkType": 0
+                            }
+                        }
+                    ],
+                    "environmentVolumes": [],
+                    "spawners": [],
+                    "worldWayPointData": [],
+                    "waterVolumes": [],
+                    "levelUIs": [],
+                    "aiTransData": [],
+                    "sludgeDatas": [],
+                    "safeZone": {
+                        "boxes": []
+                    },
+                    "factoryPredefineData": {
+                        "powerGates": []
+                    },
+                    "predefinedParams": [],
+                    "functionArea": {
+                        "ranges": [
+                            {
+                                "m_center": {
+                                    "x": -38.21,
+                                    "y": 5.057183,
+                                    "z": 62.64
+                                },
+                                "m_size": {
+                                    "x": 5.0,
+                                    "y": 5.0,
+                                    "z": 5.0
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": -31.45,
+                                    "y": 4.90961075,
+                                    "z": 83.44
+                                },
+                                "m_size": {
+                                    "x": 5.0,
+                                    "y": 5.0,
+                                    "z": 5.0
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": -17.4684753,
+                                    "y": 5.057183,
+                                    "z": 62.6742859
+                                },
+                                "m_size": {
+                                    "x": 5.0,
+                                    "y": 5.0,
+                                    "z": 5.000004
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": -53.466,
+                                    "y": 1.33978057,
+                                    "z": 69.511
+                                },
+                                "m_size": {
+                                    "x": 5.0,
+                                    "y": 5.0,
+                                    "z": 5.0
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": -41.3,
+                                    "y": 11.29,
+                                    "z": 52.97
+                                },
+                                "m_size": {
+                                    "x": 7.0,
+                                    "y": 5.0,
+                                    "z": 7.0
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": -52.69,
+                                    "y": 10.5,
+                                    "z": 60.75
+                                },
+                                "m_size": {
+                                    "x": 5.0,
+                                    "y": 5.0,
+                                    "z": 5.0
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": -73.02,
+                                    "y": 19.86,
+                                    "z": 0.8500004
+                                },
+                                "m_size": {
+                                    "x": 6.0,
+                                    "y": 5.0,
+                                    "z": 20.0
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": -24.95,
+                                    "y": -1.07999992,
+                                    "z": 61.8399963
+                                },
+                                "m_size": {
+                                    "x": 5.0,
+                                    "y": 5.0,
+                                    "z": 4.999996
+                                }
+                            },
+                            {
+                                "m_center": {
+                                    "x": -52.33,
+                                    "y": 10.28,
+                                    "z": 80.34
+                                },
+                                "m_size": {
+                                    "x": 5.0,
+                                    "y": 5.0,
+                                    "z": 5.0
+                                }
+                            }
+                        ],
+                        "baseData": [
+                            {
+                                "functionType": "SafeZone",
+                                "shapeType": "Box",
+                                "index": -1,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 5.0,
+                                    "y": 5.0,
+                                    "z": 5.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -38.21,
+                                    "y": 5.057183,
+                                    "z": 62.64
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "SafeZone",
+                                "shapeType": "Box",
+                                "index": -1,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 5.0,
+                                    "y": 5.0,
+                                    "z": 5.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -31.45,
+                                    "y": 4.90961075,
+                                    "z": 83.44
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "SafeZone",
+                                "shapeType": "Box",
+                                "index": -1,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 5.0,
+                                    "y": 5.0,
+                                    "z": 5.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -17.4684753,
+                                    "y": 5.057183,
+                                    "z": 62.6742821
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "SafeZone",
+                                "shapeType": "Box",
+                                "index": -1,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 5.0,
+                                    "y": 5.0,
+                                    "z": 5.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -53.466,
+                                    "y": 1.33978057,
+                                    "z": 69.511
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "SafeZone",
+                                "shapeType": "Box",
+                                "index": -1,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 7.0,
+                                    "y": 5.0,
+                                    "z": 7.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -41.3,
+                                    "y": 11.29,
+                                    "z": 52.97
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "SafeZone",
+                                "shapeType": "Box",
+                                "index": -1,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 5.0,
+                                    "y": 5.0,
+                                    "z": 5.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -52.69,
+                                    "y": 10.5,
+                                    "z": 60.75
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "SafeZone",
+                                "shapeType": "Box",
+                                "index": -1,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 6.0,
+                                    "y": 5.0,
+                                    "z": 20.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -73.02,
+                                    "y": 19.86,
+                                    "z": 0.85
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "SafeZone",
+                                "shapeType": "Box",
+                                "index": -1,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 5.0,
+                                    "y": 5.0,
+                                    "z": 5.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -24.95,
+                                    "y": -1.08,
+                                    "z": 61.84
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            },
+                            {
+                                "functionType": "SafeZone",
+                                "shapeType": "Box",
+                                "index": -1,
+                                "offset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "size": {
+                                    "x": 5.0,
+                                    "y": 5.0,
+                                    "z": 5.0
+                                },
+                                "radius": 0.0,
+                                "postion": {
+                                    "x": -52.33,
+                                    "y": 10.28,
+                                    "z": 80.34
+                                },
+                                "euler": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "uniqueId": 0,
+                                "defaultOff": true,
+                                "hasCondition": false,
+                                "bufferDistance": 0.0
+                            }
+                        ],
+                        "specificDatas": [],
+                        "functionAreaConditions": []
+                    },
+                    "doodadGroup": [],
+                    "mapVolumeDatas": [],
+                    "dynamicOccludeAreas": [],
+                    "autoSpawnedInteractives": [],
+                    "levelWideConfigs": {}
+                }
+            },
+            "SpawnerConfig": {},
+            "enemyTable": {},
+            "enemyTemplateDisplayInfoTable": {},
+            "enemyAttributeTemplateTable": {},
+            "rewardTable": {
+                "reward_dung01_puzzle02": {
+                    "itemBundleVisibleList": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "itemBundles": [
+                        {
+                            "count": 200,
+                            "id": "item_diamond"
+                        },
+                        {
+                            "count": 2,
+                            "id": "item_expcard_stage2_high"
+                        },
+                        {
+                            "count": 4,
+                            "id": "item_weapon_expcard_high"
+                        },
+                        {
+                            "count": 6,
+                            "id": "item_char_skill_level_7_12"
+                        },
+                        {
+                            "count": 20000,
+                            "id": "item_gold"
+                        },
+                        {
+                            "count": 1,
+                            "id": "item_char_skill_crown"
+                        }
+                    ],
+                    "probItemBundles": [],
+                    "rewardId": "reward_dung01_puzzle02"
+                }
+            },
+            "itemTable": {
+                "item_diamond": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -8713379589258447987,
+                        "text": "A special product of cut Origeometry. These stones are extremely popular due to their beauty and wide range of uses."
+                    },
+                    "desc": {
+                        "id": -5909420414296930437,
+                        "text": "An artificial material often used for recruiting operators."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_diamond",
+                    "id": "item_diamond",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_gold_1",
+                    "name": {
+                        "id": 2239345069872003978,
+                        "text": "Oroberyl"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_diamond",
+                        "item_obtain_bp",
+                        "item_obtain_adventurebook",
+                        "item_obtain_payshop_credit",
+                        "item_obtain_mission_daily",
+                        "item_obtain_explore",
+                        "item_obtain_mission"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 6,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -11,
+                    "sortId2": 1,
+                    "type": 2,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 6
+                },
+                "item_expcard_stage2_high": {
+                    "backpackCanDiscard": true,
+                    "decoDesc": {
+                        "id": -3113901782089962151,
+                        "text": "A data storage unit developed by Endfield Industries. It is compatible with various data access devices. New operators can use it to effectively acquire combat knowledge. Thanks to support offered by the Cabal of Tranquility, this carrier features data compression technology and thus stores even more information."
+                    },
+                    "desc": {
+                        "id": -2930328368287287953,
+                        "text": "A material that provides a lot of EXP for leveling up Lv.61-90 operators."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_expcard_stage2_high",
+                    "id": "item_expcard_stage2_high",
+                    "maxBackpackStackCount": 50,
+                    "maxStackCount": -1,
+                    "modelKey": "int_drop_cardexp",
+                    "name": {
+                        "id": 3051938166510576506,
+                        "text": "Advanced Cognitive Carrier"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_dungeon_0001_untouched",
+                        "item_obtain_dungeon_0001",
+                        "item_obtain_spaceship_manu",
+                        "item_obtain_shop_greenticket",
+                        "item_obtain_shop_yellowticket_expcard_stage2_high",
+                        "item_obtain_explore"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 5,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -32,
+                    "sortId2": 6,
+                    "type": 7,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 4
+                },
+                "item_weapon_expcard_high": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -8755825169003099574,
+                        "text": "A single-use toolset with AIC technology. Provides automated in-depth inspection of the entire weapon structure. Also repairs internal material damage and significantly enhances weapon performance."
+                    },
+                    "desc": {
+                        "id": -9113418679880727755,
+                        "text": "A material that provides a lot of weapon EXP."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_weapon_expcard_high",
+                    "id": "item_weapon_expcard_high",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_drop_cardexp",
+                    "name": {
+                        "id": 6826735377194748722,
+                        "text": "Arms INSP Set"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_dungeon_0002_untouched",
+                        "item_obtain_dungeon_0002",
+                        "item_obtain_spaceship_manu",
+                        "item_obtain_shop_greenticket",
+                        "item_obtain_shop_yellowticket_weapon_expcard_high",
+                        "item_obtain_explore"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 4,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -41,
+                    "sortId2": 3,
+                    "type": 25,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 4
+                },
+                "item_char_skill_level_7_12": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": 6466841694267957130,
+                        "text": "A special crystal polyhedron manufactured using Techno-Protocol and advanced crystallization processes. Often combined with other devices to improve physiological absorption of enhancement materials."
+                    },
+                    "desc": {
+                        "id": 8818133186577058299,
+                        "text": "A material that upgrades operator skills."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_char_skill_level_7_12",
+                    "id": "item_char_skill_level_7_12",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_2",
+                    "name": {
+                        "id": -5685904010576788364,
+                        "text": "Protohedron"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_dungeon_0006_untouched",
+                        "item_obtain_dungeon_0006",
+                        "item_obtain_shop_greenticket_char_skill_level_7_12",
+                        "item_obtain_shop_yellowticket_char_skill_level_7_12",
+                        "item_obtain_explore"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 4,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -34,
+                    "sortId2": 9,
+                    "type": 27,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 4
+                },
+                "item_gold": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -5111871529363494289,
+                        "text": "A popular currency furnished with highly advanced anti-counterfeiting technologies. You know it's good money when you can purchase things with it."
+                    },
+                    "desc": {
+                        "id": -3278457396295353288,
+                        "text": "TC for short. This currency is recognized and used in many places."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_gold",
+                    "id": "item_gold",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_gold_1",
+                    "name": {
+                        "id": 5406428249689377671,
+                        "text": "T-Creds"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_dungeon_0005_untouched",
+                        "item_obtain_dungeon_0005",
+                        "item_obtain_mission_daily",
+                        "item_obtain_shop_greenticket",
+                        "item_obtain_explore"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 4,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -25,
+                    "sortId2": 30,
+                    "type": 1,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 6
+                },
+                "item_char_skill_crown": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -4761746726719634934,
+                        "text": "The perseverance of life and continuation of civilization have left their marks upon this place."
+                    },
+                    "desc": {
+                        "id": -5061177374052410168,
+                        "text": "A rare material that upgrades operator skill mastery."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_char_skill_crown",
+                    "id": "item_char_skill_crown",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_2",
+                    "name": {
+                        "id": -5843006072967753631,
+                        "text": "Mark of Perseverance"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_bp",
+                        "item_obtain_shop_yellowticket",
+                        "item_obtain_activity"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 5,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -32,
+                    "sortId2": 1,
+                    "type": 96,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 4
+                }
+            },
+            "BuffData": {}
+        }
+    },
+    "name": "Cryptic First Revealed"
+}

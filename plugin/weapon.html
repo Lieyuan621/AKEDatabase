@@ -197,7 +197,7 @@
 
         async function loadWeaponManifest(showHidden) {
             try {
-                const res = await (window.akeFetch || fetch)('/public/CH/weapon/manifest.json');
+                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/weapon/manifest.json') || '/public/CH/weapon/manifest.json');
                 if (!res.ok) throw new Error('无法加载武器清单');
                 const allWeaponsRaw = await res.json();
                 rawAllWeapons = allWeaponsRaw || [];

@@ -1,0 +1,87 @@
+{
+    "itemId": "item_wpngem_enhance_dust",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 5580473529002753308,
+            "text": "A special coolant gel used in the essence etching process. Results of etching are extremely sensitive to temperature changes. This process thus requires the use of coolant gels, which can be extremely expensive to make."
+        },
+        "desc": {
+            "id": 1679666067670659269,
+            "text": "A rare material that upgrades essence skills."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_wpngem_enhance_dust",
+        "id": "item_wpngem_enhance_dust",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": -3081384260572334961,
+            "text": "Coolant Gel"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_gem_enhance"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -46,
+        "sortId2": 2,
+        "type": 61,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 4
+    },
+    "wikientryid": "wiki_item_wpngem_enhance_dust",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_special",
+        "id": "wiki_item_wpngem_enhance_dust",
+        "order": 23,
+        "prtsId": "",
+        "refItemId": "item_wpngem_enhance_dust",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_gem_enhance": {
+            "bindSystem": 67,
+            "desc": {
+                "id": 9003259202170401125,
+                "text": "Essence Etching"
+            },
+            "iconId": "icon_tips_proc",
+            "id": "item_obtain_gem_enhance",
+            "phaseArgs": "",
+            "phaseId": "GemEnhance"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 61,
+        "name": {
+            "id": -8519335282291560854,
+            "text": "Essence Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 4
+    },
+    "name": "Coolant Gel"
+}

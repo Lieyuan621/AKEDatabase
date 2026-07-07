@@ -1,0 +1,86 @@
+{
+    "itemId": "item_case_wpn_selfselect_bp_1",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 5121692842571884383,
+            "text": "A supply option with plenty of weapons. Most soldiers who fought in the Second Aggeloi War mastered so many weapons that they could take anything from this and put up quite an impressive fight."
+        },
+        "desc": {
+            "id": -701942685476703927,
+            "text": "Open this to select and receive one weapon provided within."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_case_wpn_selfselect_bp_1",
+        "id": "item_case_wpn_selfselect_bp_1",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": -2992806729729422126,
+            "text": "Weapon Supply: Awakening"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_bp"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 6,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -20,
+        "sortId2": 121,
+        "type": 43,
+        "valuableDepotRedDot": true,
+        "valuableTabType": 10
+    },
+    "usableitemchesttable": {
+        "id": "item_case_wpn_selfselect_bp_1",
+        "randomChestItemCounts": [],
+        "randomChestItemIds": [],
+        "rewardIdList": [
+            "reward_case_wpn_sword_0010",
+            "reward_case_wpn_funnel_0006",
+            "reward_case_wpn_pistol_0005"
+        ],
+        "selectedCount": 1,
+        "type": 2
+    },
+    "systemjumptable": {
+        "item_obtain_bp": {
+            "bindSystem": 802,
+            "desc": {
+                "id": 6001254325945104002,
+                "text": "Reward: Protocol Pass"
+            },
+            "iconId": "icon_tips_bp",
+            "id": "item_obtain_bp",
+            "phaseArgs": "{\r\n  \"panelId\": \"BattlePassPlan\"\r\n}",
+            "phaseId": "BattlePass"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 43,
+        "name": {
+            "id": 5868273933160474249,
+            "text": "Crate"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "name": "Weapon Supply: Awakening"
+}

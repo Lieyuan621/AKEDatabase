@@ -1,0 +1,42 @@
+{
+    "id": "item_copper_ore",
+    "icon": "/public/images/item/itemiconbig/item_copper_ore.png",
+    "name": "Cuprium Ore",
+    "description": "A reddish metal that can be processed with the AIC Factory.",
+    "rarity": 1,
+    "type": 8,
+    "obtainWayIds": [
+        "item_obtain_gather_copper_ore",
+        "item_obtain_gather_common_ore",
+        "item_obtain_gather_map02_lv003"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_gather_copper_ore",
+            "desc": "Cuprium Mining Spot",
+            "bindSystem": 0,
+            "phaseId": "Map",
+            "phaseArgs": "{\r\n  \"resourceTemplateId\": \"mark_p_minepoint_team\",\r\n  \"resourceItemId\": \"item_copper_ore\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_doodad.png"
+        },
+        {
+            "id": "item_obtain_gather_common_ore",
+            "desc": "Extraction: Mining Rigs",
+            "bindSystem": 10000000,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_doodad.png"
+        },
+        {
+            "id": "item_obtain_gather_map02_lv003",
+            "desc": "Qingbo Stockade",
+            "bindSystem": 10000000,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_doodad.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": []
+}

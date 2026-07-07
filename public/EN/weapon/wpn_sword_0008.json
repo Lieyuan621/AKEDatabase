@@ -1,0 +1,180 @@
+{
+  "weaponId": "wpn_sword_0008",
+  "title": "Prominent Edge",
+  "rarity": 4,
+  "weapontype": 1,
+  "icon": "/public/images/weapon/icon/wpn_sword_0008.png",
+  "iconbig": "/public/images/weapon/iconbig/wpn_sword_0008.png",
+  "iconfull": "/public/images/weapon/full/wpn_sword_0008.png",
+  "desc": "A weapon equipped by Endfield operators to significantly boost their combat capabilities.",
+  "decoDesc": "One of the advanced weaponry manufactured by Endfield for their operators. Minimalist modular architecture resulted in a lightweight weapon with excellent balance and handling. The blade itself is extremely durable.",
+  "baseAtk": [
+    34,
+    38,
+    41,
+    45,
+    48,
+    52,
+    55,
+    59,
+    62,
+    65,
+    69,
+    72,
+    76,
+    79,
+    83,
+    86,
+    90,
+    93,
+    96,
+    100,
+    103,
+    107,
+    110,
+    114,
+    117,
+    121,
+    124,
+    127,
+    131,
+    134,
+    138,
+    141,
+    145,
+    148,
+    152,
+    155,
+    158,
+    162,
+    165,
+    169,
+    172,
+    176,
+    179,
+    183,
+    186,
+    189,
+    193,
+    196,
+    200,
+    203,
+    207,
+    210,
+    214,
+    217,
+    220,
+    224,
+    227,
+    231,
+    234,
+    238,
+    241,
+    245,
+    248,
+    251,
+    255,
+    258,
+    262,
+    265,
+    269,
+    272,
+    276,
+    279,
+    282,
+    286,
+    289,
+    293,
+    296,
+    300,
+    303,
+    307,
+    310,
+    313,
+    317,
+    320,
+    324,
+    327,
+    331,
+    334,
+    338,
+    341
+  ],
+  "skilllist": [
+    {
+      "skillName": "Agility Boost [S]",
+      "description": "Agility <@ba.vup>+{agi}</>",
+      "blackboard": [
+        {
+          "key": "agi",
+          "value": [
+            12,
+            21,
+            31,
+            40,
+            50,
+            60,
+            69,
+            79,
+            93
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "Physical DMG Boost [S]",
+      "description": "Physical DMG Dealt <@ba.vup>+{phydam:0.0%}</>",
+      "blackboard": [
+        {
+          "key": "phydam",
+          "value": [
+            0.033333335,
+            0.06,
+            0.086666666,
+            0.11333334,
+            0.14,
+            0.16666667,
+            0.19333333,
+            0.22,
+            0.26
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "Suppression: Emergency Boost",
+      "description": "When the wielder's battle skill hits the enemy, the wielder gains ATK <@ba.vup>+{atk_up:0.0%}</> for {duration:0}s.\n<@ba.info>Effects of the same name cannot stack. </>",
+      "blackboard": [
+        {
+          "key": "atk_up",
+          "value": [
+            0.12,
+            0.144,
+            0.168,
+            0.192,
+            0.216,
+            0.24,
+            0.264,
+            0.288,
+            0.336
+          ]
+        },
+        {
+          "key": "duration",
+          "value": [
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20
+          ]
+        }
+      ]
+    }
+  ],
+  "weaponDesc": "Don't worry. What you see is what you get.\nTwin edges, a rather thick ridge, and center of gravity near the holding end towards the grip.\nThe crossguard is slightly curved, but it might be too small for a novice.\nGo on. Hold it.\nThis is a single-handed weapon. Tighten your grip, but keep your wrist supple enough for movement.\nNow, stand before the dummy. Swing and strike with your entire body.\nMake a descending hew from above the shoulder to the other side of the chest. Repeat the motion.\nSo you want to fight like the Endmin? And you're afraid you'll never succeed?\nDon't let that idea get in your head. What you see is what you get."
+}

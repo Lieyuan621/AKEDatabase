@@ -1,0 +1,120 @@
+{
+    "itemId": "item_drop_agmelee_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -5881794354230802435,
+            "text": "Strange minerals can sometimes be gathered from the Aggeloi's \"ramming horns\". They can be used as a food marinade to give it special flavors."
+        },
+        "desc": {
+            "id": 3975954761880331607,
+            "text": "Gatherable from Rams or Heavy Rams. Can be used to make fine food and medicine (Fine F&M)."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_drop_agmelee_1",
+        "id": "item_drop_agmelee_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_drop_enemy_common_1",
+        "name": {
+            "id": 2303375297912561294,
+            "text": "Hard Aggagrit"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -7353331908405301108,
+            "text": "Drop: Enemy Encounters during Exploration"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_agmelee_1"
+        ],
+        "outcomeItemIds": [
+            "item_jlebm_grass1_1"
+        ],
+        "rarity": 1,
+        "showAllDepotCount": false,
+        "showingType": 15,
+        "sortId1": -65,
+        "sortId2": 2,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            1
+        ],
+        "dischargeType": false,
+        "id": "item_drop_agmelee_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 50
+    },
+    "enemydroplist": [
+        "eny_0021_agmelee",
+        "eny_0023_aghornb",
+        "eny_0069_aghornb2",
+        "eny_0063_agmelee2"
+    ],
+    "wikientryid": "wiki_item_drop_agmelee_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_material",
+        "id": "wiki_item_drop_agmelee_1",
+        "order": 4,
+        "prtsId": "",
+        "refItemId": "item_drop_agmelee_1",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_agmelee_1": {
+            "bindSystem": 55,
+            "desc": {
+                "id": -2551001774757658262,
+                "text": "Chance Drop: Melee Aggeloi"
+            },
+            "iconId": "icon_tips_monster",
+            "id": "item_obtain_agmelee_1",
+            "phaseArgs": "{\r\n  \"monsterId\": \"eny_0021_agmelee\"\r\n}",
+            "phaseId": "Wiki"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_doodad",
+        "name": {
+            "id": -4889980326384875610,
+            "text": "Gatherables"
+        },
+        "sortId": 4,
+        "type": 15
+    },
+    "name": "Hard Aggagrit"
+}

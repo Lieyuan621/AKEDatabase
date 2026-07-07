@@ -1,0 +1,176 @@
+{
+    "itemId": "item_bottled_moss_1_2_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -750488948457670437,
+            "text": "A medicine prepared by Linnaeus. It is infused with his personal emotions and has a perplexing yet rich blend of flavors."
+        },
+        "desc": {
+            "id": -5463739177059268704,
+            "text": "Use this consumable to improve the operator's combat performance."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_bottled_moss_1_2_1",
+        "id": "item_bottled_moss_1_2_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": 6738530931157310964,
+            "text": "Perplexing Medication"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -5254801080671991783,
+            "text": "Mission rewards"
+        },
+        "noObtainWayId": [
+            "item_obtain_noway_booklet"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 5,
+        "sortId1": -82,
+        "sortId2": 42,
+        "type": 52,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "useitemtable": {
+        "duration": 300,
+        "effectType": 2,
+        "isPersistentBuff": true,
+        "isValuableDepot": false,
+        "itemId": "item_bottled_moss_1_2_1",
+        "itemUseDesc": {
+            "id": -5193459224506014976,
+            "text": "Use this to grant Ultimate Gain Efficiency +<@ba.vup>{value:0%}</>. Duration: <@ba.vup>{duration:0}</>s."
+        },
+        "stackingKey": "buff",
+        "targetNumType": 0,
+        "uiType": 3,
+        "useActions": [
+            {
+                "buffBBData": {
+                    "blackboard": [
+                        {
+                            "key": "value",
+                            "value": 0.23760933,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 300,
+                            "valueStr": ""
+                        }
+                    ],
+                    "buffId": "buff_common_usprt_buff_potion_1"
+                },
+                "skillBBData": {
+                    "blackboard": [],
+                    "skillId": "",
+                    "skillPath": ""
+                },
+                "useType": 2
+            }
+        ]
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_bottled_moss_1_2_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 100
+    },
+    "wikientryid": "wiki_item_bottled_moss_1_2_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_usable",
+        "id": "wiki_item_bottled_moss_1_2_1",
+        "order": 32,
+        "prtsId": "",
+        "refItemId": "item_bottled_moss_1_2_1",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 52,
+        "name": {
+            "id": 6865863074684715813,
+            "text": "Consumable"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_usable",
+        "name": {
+            "id": -2232813154053962573,
+            "text": "Usables"
+        },
+        "sortId": 6,
+        "type": 5
+    },
+    "factorymanualcrafttable": [
+        {
+            "defaultUnlock": false,
+            "domainId": "domain_1",
+            "id": "handwork_bottled_moss_1_2_1",
+            "ingredients": [
+                {
+                    "count": 2,
+                    "id": "item_plant_moss_powder_1"
+                },
+                {
+                    "count": 2,
+                    "id": "item_plant_moss_spc_powder_2"
+                },
+                {
+                    "count": 1,
+                    "id": "item_glass_bottle"
+                }
+            ],
+            "itemId": "item_formula_bottled_moss_1_2_1",
+            "name": {
+                "id": -2572508707673804807,
+                "text": "Perplexing Medication"
+            },
+            "outcomes": [
+                {
+                    "count": 1,
+                    "id": "item_bottled_moss_1_2_1"
+                }
+            ],
+            "rarity": 4,
+            "showingType": 19,
+            "sortId": 25
+        }
+    ],
+    "name": "Perplexing Medication"
+}

@@ -1,0 +1,146 @@
+{
+    "itemId": "item_diamond",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -8713379589258447987,
+            "text": "A special product of cut Origeometry. These stones are extremely popular due to their beauty and wide range of uses."
+        },
+        "desc": {
+            "id": -5909420414296930437,
+            "text": "An artificial material often used for recruiting operators."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_diamond",
+        "id": "item_diamond",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_collection_item_gold_1",
+        "name": {
+            "id": 2239345069872003978,
+            "text": "Oroberyl"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_diamond",
+            "item_obtain_bp",
+            "item_obtain_adventurebook",
+            "item_obtain_payshop_credit",
+            "item_obtain_mission_daily",
+            "item_obtain_explore",
+            "item_obtain_mission"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 6,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -11,
+        "sortId2": 1,
+        "type": 2,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "systemjumptable": {
+        "item_obtain_diamond": {
+            "bindSystem": 51,
+            "desc": {
+                "id": -5595308452948862428,
+                "text": "Exchangeable with Origeometry"
+            },
+            "iconId": "icon_tips_shop",
+            "id": "item_obtain_diamond",
+            "phaseArgs": "{\r\n  \"sourceId\": \"item_originium_recharge\",\r\n  \"targetId\": \"item_diamond\"\r\n}",
+            "phaseId": "CommonMoneyExchange"
+        },
+        "item_obtain_bp": {
+            "bindSystem": 802,
+            "desc": {
+                "id": 6001254325945104002,
+                "text": "Reward: Protocol Pass"
+            },
+            "iconId": "icon_tips_bp",
+            "id": "item_obtain_bp",
+            "phaseArgs": "{\r\n  \"panelId\": \"BattlePassPlan\"\r\n}",
+            "phaseId": "BattlePass"
+        },
+        "item_obtain_adventurebook": {
+            "bindSystem": 652,
+            "desc": {
+                "id": 5098488839752036361,
+                "text": "Reward: Operational Manual"
+            },
+            "iconId": "icon_tips_adventure_book",
+            "id": "item_obtain_adventurebook",
+            "phaseArgs": "{\r\n  \"panelId\": \"AdventureStage\"\r\n}",
+            "phaseId": "AdventureBook"
+        },
+        "item_obtain_payshop_credit": {
+            "bindSystem": 407,
+            "desc": {
+                "id": 1106765165418026854,
+                "text": "Acquisition Center: Credit Store"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_payshop_credit",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_spaceship_credit\"\r\n}",
+            "phaseId": "CashShop"
+        },
+        "item_obtain_mission_daily": {
+            "bindSystem": 61,
+            "desc": {
+                "id": -5313750530282173482,
+                "text": "Reward: Daily Missions"
+            },
+            "iconId": "icon_tips_mission",
+            "id": "item_obtain_mission_daily",
+            "phaseArgs": "{\r\n  \"panelId\": \"AdventureDaily\"\r\n}",
+            "phaseId": "AdventureBook"
+        },
+        "item_obtain_explore": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 8888980312357865895,
+                "text": "Exploring and Gathering"
+            },
+            "iconId": "icon_tips_explore",
+            "id": "item_obtain_explore",
+            "phaseArgs": "",
+            "phaseId": ""
+        },
+        "item_obtain_mission": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": -7981115273960520862,
+                "text": "Reward: Mission"
+            },
+            "iconId": "icon_tips_mission",
+            "id": "item_obtain_mission",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 2,
+        "name": {
+            "id": 7765027482279404137,
+            "text": "Currency"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "name": "Oroberyl"
+}

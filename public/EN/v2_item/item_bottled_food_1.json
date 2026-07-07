@@ -1,0 +1,224 @@
+{
+    "itemId": "item_bottled_food_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -2893461989200775814,
+            "text": "A cheap can of citromes. It is the most accessible and easily preserved source of vitamins for explorers."
+        },
+        "desc": {
+            "id": 9000468057282519243,
+            "text": "Use this tactical to restore the operator's HP."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_bottled_food_1",
+        "id": "item_bottled_food_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": 9115364125515121323,
+            "text": "Canned Citrome [C]"
+        },
+        "noObtainWayConditionId": [
+            "condition_item_obtain_noway_item_moss_2",
+            "condition_item_obtain_noway_tech_filling"
+        ],
+        "noObtainWayHint": {
+            "id": -893951504057458345,
+            "text": "Production: AIC Factory Facilities"
+        },
+        "noObtainWayId": [
+            "item_obtain_noway_item_moss_2",
+            "item_obtain_noway_tech_filling"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 5,
+        "sortId1": -82,
+        "sortId2": 1,
+        "type": 48,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "useitemtable": {
+        "duration": 0,
+        "effectType": 0,
+        "isPersistentBuff": false,
+        "isValuableDepot": false,
+        "itemId": "item_bottled_food_1",
+        "itemUseDesc": {
+            "id": 5997570654930529416,
+            "text": "Use this to restore <@ba.vup>{triggerheal:0}</> HP per second for <@ba.vup>{duration:0}</>s."
+        },
+        "stackingKey": "",
+        "targetNumType": 0,
+        "uiType": 0,
+        "useActions": [
+            {
+                "buffBBData": {
+                    "blackboard": [
+                        {
+                            "key": "value",
+                            "value": 0,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "triggerheal",
+                            "value": 117.47449,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 6,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "maxcount",
+                            "value": 5,
+                            "valueStr": ""
+                        }
+                    ],
+                    "buffId": "buff_common_heal_moss_1"
+                },
+                "skillBBData": {
+                    "blackboard": [],
+                    "skillId": "",
+                    "skillPath": ""
+                },
+                "useType": 2
+            }
+        ]
+    },
+    "equipitemtable": {
+        "autoCheckNotInFight": true,
+        "castTime": 2,
+        "chargeCount": 3,
+        "checkTarget": 1,
+        "condParams": [
+            "0.5",
+            "lt"
+        ],
+        "condType": 0,
+        "cooldown": 3,
+        "equipDesc": {
+            "id": -6131556303160143714,
+            "text": "Once equipped, item is automatically used on any operator in the team who falls below <@ba.vup>{param1:0%}</> HP. Max uses per battle: <@ba.vup>{count:0}</>.\n - <@tips.purple>Can support the controlled operator (no limit)</>\n - <@tips.orange>Uses are restored after depletion</>"
+        },
+        "equipExtraDesc": {
+            "id": -4650949147196682735,
+            "text": "Once equipped, item is automatically used on any operator in the team who falls below <@ba.vup>{param1:0%}</> HP. Max uses per battle: <@ba.vup>{count:0}</>.\n<@tips.purple>Can support the controlled operator (no limit)</>: There is no limit to the number of times this item can be used to support the controlled operator.\n<@tips.orange>Uses are restored after depletion</>: When uses are depleted in battle, <@ba.vup>1</> more use becomes available after a while."
+        },
+        "itemId": "item_bottled_food_1",
+        "levelUpChargeCount": 4,
+        "levelUpRecoverUpperCount": 1,
+        "recoverTime": 60,
+        "recoverUpperCount": 1,
+        "toMainCharCount": 0,
+        "useTarget": 1
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_bottled_food_1",
+        "itemState": false,
+        "losslessDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "showInHubDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "showInUnloader": true,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 10
+    },
+    "wikicraftjumptable": {
+        "blackboxId": "dung_blackbox_filling_1",
+        "blueprintId": "sysbp_tundra_bottled_food_1_1",
+        "itemId": "item_bottled_food_1"
+    },
+    "wikientryid": "wiki_item_bottled_food_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_usable",
+        "id": "wiki_item_bottled_food_1",
+        "order": 12,
+        "prtsId": "",
+        "refItemId": "item_bottled_food_1",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 48,
+        "name": {
+            "id": -8745995051935114781,
+            "text": "Tactical"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_usable",
+        "name": {
+            "id": -2232813154053962573,
+            "text": "Usables"
+        },
+        "sortId": 6,
+        "type": 5
+    },
+    "factorymanualcrafttable": [
+        {
+            "defaultUnlock": false,
+            "domainId": "domain_1",
+            "id": "handwork_bottled_food_1",
+            "ingredients": [
+                {
+                    "count": 5,
+                    "id": "item_plant_moss_powder_2"
+                },
+                {
+                    "count": 5,
+                    "id": "item_glass_bottle"
+                }
+            ],
+            "itemId": "item_formula_bottled_food_1",
+            "name": {
+                "id": 3630655637052776410,
+                "text": "Canned Citrome [C]"
+            },
+            "outcomes": [
+                {
+                    "count": 1,
+                    "id": "item_bottled_food_1"
+                }
+            ],
+            "rarity": 3,
+            "showingType": 17,
+            "sortId": 42
+        }
+    ],
+    "name": "Canned Citrome [C]"
+}

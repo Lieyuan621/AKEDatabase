@@ -1,0 +1,222 @@
+{
+  "weaponId": "wpn_sword_0005",
+  "title": "Sundering Steel",
+  "rarity": 5,
+  "weapontype": 1,
+  "icon": "/public/images/weapon/icon/wpn_sword_0005.png",
+  "iconbig": "/public/images/weapon/iconbig/wpn_sword_0005.png",
+  "iconfull": "/public/images/weapon/full/wpn_sword_0005.png",
+  "desc": "A weapon equipped by Endfield operators to significantly boost their combat capabilities.",
+  "decoDesc": "One of the elite weaponry manufactured by Endfield for their operators. The sword features a seamless grip-and-guard hilt and stress-triggered energy storage mechanisms to enhance its damage potential.",
+  "baseAtk": [
+    42,
+    46,
+    50,
+    54,
+    58,
+    62,
+    66,
+    71,
+    75,
+    79,
+    83,
+    87,
+    91,
+    95,
+    100,
+    104,
+    108,
+    112,
+    116,
+    120,
+    125,
+    129,
+    133,
+    137,
+    141,
+    145,
+    149,
+    154,
+    158,
+    162,
+    166,
+    170,
+    174,
+    178,
+    183,
+    187,
+    191,
+    195,
+    199,
+    203,
+    208,
+    212,
+    216,
+    220,
+    224,
+    228,
+    232,
+    237,
+    241,
+    245,
+    249,
+    253,
+    257,
+    261,
+    266,
+    270,
+    274,
+    278,
+    282,
+    286,
+    291,
+    295,
+    299,
+    303,
+    307,
+    311,
+    315,
+    320,
+    324,
+    328,
+    332,
+    336,
+    340,
+    344,
+    349,
+    353,
+    357,
+    361,
+    365,
+    369,
+    374,
+    378,
+    382,
+    386,
+    390,
+    394,
+    398,
+    403,
+    407,
+    411
+  ],
+  "skilllist": [
+    {
+      "skillName": "Agility Boost [M]",
+      "description": "Agility <@ba.vup>+{agi}</>",
+      "blackboard": [
+        {
+          "key": "agi",
+          "value": [
+            16,
+            28,
+            41,
+            54,
+            67,
+            80,
+            92,
+            105,
+            124
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "Physical DMG Boost [M]",
+      "description": "Physical DMG Dealt <@ba.vup>+{phydam:0.0%}</>",
+      "blackboard": [
+        {
+          "key": "phydam",
+          "value": [
+            0.044444446,
+            0.08,
+            0.115555555,
+            0.15111111,
+            0.18666667,
+            0.22222222,
+            0.25777778,
+            0.29333332,
+            0.34666666
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "Combative: Anthem of Cinder",
+      "description": "ATK <@ba.vup>+{atk_up1:0.0%}</>.\nWhen the wielder deals a <#ba.physicalstatus>Physical Status</>, the wielder gains ATK <@ba.vup>+{atk_up2:0.0%}</> for {duration:0}s.\n<@ba.info>Max stacks for effects of the same name: {max_stack:0}. Duration of each stack is counted separately. Effect only triggers once every 0.1s.</>",
+      "blackboard": [
+        {
+          "key": "atk_up1",
+          "value": [
+            0.05,
+            0.06,
+            0.07,
+            0.08,
+            0.09,
+            0.1,
+            0.11,
+            0.12,
+            0.14
+          ]
+        },
+        {
+          "key": "atk_up2",
+          "value": [
+            0.075,
+            0.09,
+            0.105,
+            0.12,
+            0.135,
+            0.15,
+            0.165,
+            0.18,
+            0.21
+          ]
+        },
+        {
+          "key": "duration",
+          "value": [
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20
+          ]
+        },
+        {
+          "key": "max_stack",
+          "value": [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "key": "cd ",
+          "value": [
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1
+          ]
+        }
+      ]
+    }
+  ],
+  "weaponDesc": "I know who you are. I know where you came from.\nYou were one of them. You must be. I see the forge fire in your eyes. You stood vigils over the smelting furnaces for years.\nYou came to the south because you could no longer face the Aggeloid nightmares. But you feared of being called a deserter. That was why you changed your name and joined us as an arsenal engineer. You found this simpler life at Endfield worth living. You helped fellow Endfielders survive their battles. They were grateful and praised the weapons you designed. Your work was balanced and operated smoothly. Your designs incorporated years of actual combat experience. You read Endfield science and research and it probably made you think about things. If the Fort had these technologies, you might have stayed at that place.\nDespite your reputation as a cranky old man, the girl likes you a lot. You always had a story to tell, stories that her parents never talked about. Stories about heroes, how they lived, how they fought without a care of their lives, and how their sacrifices went unsung and unremembered. You even learned a thing or two from her, right? This seamless design feature ... would be an oddity at the place where you once served.\nThis was why you hesitated when the girl asked you to teach her how to swing a sword. At first, you thought of your dashing, youthful years. Fencing skills would help the girl better protect herself. But your mind changed. The girl had the entire Endfield arsenal as well as loving parents to support her. She did not need to know about fencing. You then convinced yourself that the girl needed no instructions from a deserter and ex-butcher who broke his oaths. The old road had been abandoned for years. No one should take it anymore. It calls for no one, and needs none.\nThus, you applied for divisional transfer. You wanted to leave the arsenal and force yourself back to field service — you believe you should be able to stomach the frontlines of Endfield Industries.\nPlease do not look at me like I'm some sort of a Sarkaz Djall mind-floggers. And no. I wasn't using any mind-reading instruments.\nI do have a message for you: Supervisor Perlica will not oppose any decision you make, but please, don't make the girl sad."
+}

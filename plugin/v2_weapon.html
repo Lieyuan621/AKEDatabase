@@ -2,31 +2,31 @@
 <link rel="stylesheet" href="/theme/v2_weapon.css">
 
 <div class="weapon-module">
-    <div class="mobile-list-btn" id="v2wpnMobileListBtn">📋 列表</div>
+    <div class="mobile-list-btn" id="v2wpnMobileListBtn">📋 <span data-i18n="common.list">列表</span></div>
     <div id="v2wpnMobileListOverlay" class="mobile-list-overlay">
         <div class="mobile-list-container">
-            <div class="mobile-list-header">选择武器</div>
+            <div class="mobile-list-header" data-i18n="moduleInternal.v2Weapon.select">选择武器</div>
             <div class="mobile-list-content" id="v2wpnMobileListContent"></div>
         </div>
     </div>
     <div class="weapon-list" id="v2wpnList">
         <div class="list-search-fixed">
-            <input type="text" id="v2wpnSearchInput" placeholder="搜索武器 (名称/ID)" class="search-input">
+            <input type="text" id="v2wpnSearchInput" placeholder="搜索武器 (名称/ID)" class="search-input" data-i18n-placeholder="moduleInternal.v2Weapon.search">
         </div>
         <div class="filter-bar" id="v2wpnFilterBar">
             <div class="filter-section">
-                <span class="filter-label">星级:</span>
+                <span class="filter-label" data-i18n="common.rarity">星级:</span>
                 <div class="filter-buttons" id="v2wpnRarityFilter"></div>
             </div>
             <div class="filter-section">
-                <span class="filter-label">类型:</span>
+                <span class="filter-label" data-i18n="common.type">类型:</span>
                 <div class="filter-buttons" id="v2wpnTypeFilter"></div>
             </div>
         </div>
         <div class="list-items" id="v2wpnListItems"></div>
     </div>
     <div class="weapon-detail" id="v2wpnDetail">
-        <div class="loader">加载武器数据...</div>
+        <div class="loader" data-i18n="moduleInternal.v2Weapon.loading">加载武器数据...</div>
     </div>
 </div>
 

@@ -1,0 +1,33 @@
+{
+    "id": "item_plant_grass_spc_2",
+    "icon": "/public/images/item/itemiconbig/item_plant_grass_spc_2.png",
+    "name": "Thorny Yazhen",
+    "description": "A special plant that only grows in the wild. Shred it to acquire materials for making food or other products.",
+    "rarity": 2,
+    "type": 8,
+    "obtainWayIds": [
+        "item_obtain_plant_grass_spc_2",
+        "item_obtain_plant"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_plant_grass_spc_2",
+            "desc": "Chance Gathering: Yazhen",
+            "bindSystem": 10000000,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_doodad.png"
+        },
+        {
+            "id": "item_obtain_plant",
+            "desc": "Plant crops at the Eco-Farm",
+            "bindSystem": 201,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_doodad.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": []
+}

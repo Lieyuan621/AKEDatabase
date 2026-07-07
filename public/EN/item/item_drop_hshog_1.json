@@ -1,0 +1,27 @@
+{
+    "id": "item_drop_hshog_1",
+    "icon": "/public/images/item/itemiconbig/item_drop_hshog_1.png",
+    "name": "Quillbeast Liver",
+    "description": "Gatherable from defeated Quillbeasts. Can be used to make fine food and medicine (Fine F&M).",
+    "rarity": 2,
+    "type": 8,
+    "obtainWayIds": [
+        "item_obtain_eny_0093_hshog"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_eny_0093_hshog",
+            "desc": "Chance Drop: Quillbeast",
+            "bindSystem": 55,
+            "phaseId": "Wiki",
+            "phaseArgs": "{\r\n  \"monsterId\": \"eny_0093_hshog\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_monster.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": [
+        "eny_0109_hshog2",
+        "eny_0093_hshog"
+    ]
+}

@@ -138,7 +138,7 @@
 
         async function loadActivityManifest(showHidden) {
             try {
-                const res = await (window.akeFetch || fetch)('/public/CH/activity/manifest.json');
+                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/activity/manifest.json') || '/public/CH/activity/manifest.json');
                 if (!res.ok) throw new Error('无法加载活动清单');
                 const all = await res.json();
                 rawAllActivities = all;

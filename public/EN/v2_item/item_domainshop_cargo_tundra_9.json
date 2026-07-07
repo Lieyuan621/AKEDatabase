@@ -1,0 +1,74 @@
+{
+    "itemId": "item_domainshop_cargo_tundra_9",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 5388984904308090925,
+            "text": "A set of building blocks made using scrap stone, metal, and wood. Many workers spent their break time (when they're not dismantling the Aggeloi or recycling various resources) building various things with all sorts of easy-to-find scraps. Someone eventually took this concept and created a franchise of toys out of it."
+        },
+        "desc": {
+            "id": 4246153252987515529,
+            "text": "A package loaded with cultural commodities. Such goods are subject to massive price fluctuations. They can also be used in Stock Redistribution to generate revenue."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_domainshop_cargo_tundra_9",
+        "id": "item_domainshop_cargo_tundra_9",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 2235929060408663249,
+            "text": "Scrap Toy Blocks [pkg]"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -1086450341594158636,
+            "text": "Purchasable at <@obt.key>Stock Redistribution</>"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_1"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -321,
+        "sortId2": 9,
+        "type": 56,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 7
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_1": {
+            "bindSystem": 512,
+            "desc": {
+                "id": -2131723199710794539,
+                "text": "Purchase: Valley IV Stock Redistribution"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_1",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "ShopTrade"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 56,
+        "name": {
+            "id": 5514429341118358800,
+            "text": "Elastic Goods"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 7
+    },
+    "name": "Scrap Toy Blocks [pkg]"
+}

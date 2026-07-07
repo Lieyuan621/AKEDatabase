@@ -1,0 +1,84 @@
+{
+    "itemId": "item_case_bp_random_2",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 5490112005145707557,
+            "text": "A supply crate filled with leftovers from a weapon production line. This crate-o-surprise seems to have way too many leftovers."
+        },
+        "desc": {
+            "id": -3418198689107496163,
+            "text": "Open this to get a random reward. You might even get Oroberyls."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_case_bp_random_2",
+        "id": "item_case_bp_random_2",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 3664084819052752316,
+            "text": "Exchange Crate-o-Surprise [M]"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_bp"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -20,
+        "sortId2": 102,
+        "type": 43,
+        "valuableDepotRedDot": true,
+        "valuableTabType": 10
+    },
+    "usableitemchesttable": {
+        "id": "item_case_bp_random_2",
+        "randomChestItemCounts": [],
+        "randomChestItemIds": [],
+        "rewardIdList": [
+            "reward_case_bp_random_2"
+        ],
+        "selectedCount": 0,
+        "type": 0
+    },
+    "systemjumptable": {
+        "item_obtain_bp": {
+            "bindSystem": 802,
+            "desc": {
+                "id": 6001254325945104002,
+                "text": "Reward: Protocol Pass"
+            },
+            "iconId": "icon_tips_bp",
+            "id": "item_obtain_bp",
+            "phaseArgs": "{\r\n  \"panelId\": \"BattlePassPlan\"\r\n}",
+            "phaseId": "BattlePass"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 43,
+        "name": {
+            "id": 5868273933160474249,
+            "text": "Crate"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "name": "Exchange Crate-o-Surprise [M]"
+}

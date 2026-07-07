@@ -1,0 +1,33 @@
+{
+    "id": "item_spaceship_exhibits_jinlong_3",
+    "icon": "/public/images/item/itemiconbig/item_spaceship_exhibits_jinlong_3.png",
+    "name": "Deluxe Chubby Lung",
+    "description": "This can be showcased at the Tower of Trails at the Central Ring of Dijiang.",
+    "rarity": 5,
+    "type": 69,
+    "obtainWayIds": [
+        "item_obtain_domain_shop_2",
+        "item_obtain_domain_shop_levelup"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_domain_shop_2",
+            "desc": "Purchase: Wuling Stock Redistribution",
+            "bindSystem": 512,
+            "phaseId": "ShopTrade",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_2\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_domain_shop.png"
+        },
+        {
+            "id": "item_obtain_domain_shop_levelup",
+            "desc": "Stock Redistribution Terminal Upgrade",
+            "bindSystem": 512,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_domain_shop.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": []
+}

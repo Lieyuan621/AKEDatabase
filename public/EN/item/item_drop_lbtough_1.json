@@ -1,0 +1,27 @@
+{
+    "id": "item_drop_lbtough_1",
+    "icon": "/public/images/item/itemiconbig/item_drop_lbtough_1.png",
+    "name": "Shattered Axe Blade",
+    "description": "Gatherable from defeated Bonekrusher Executioners. Can be used at a depot node for Pack and Deliver.",
+    "rarity": 4,
+    "type": 8,
+    "obtainWayIds": [
+        "item_obtain_eny_0018_lbtough"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_eny_0018_lbtough",
+            "desc": "Chance Drop: Bonekrusher Executioner",
+            "bindSystem": 55,
+            "phaseId": "Wiki",
+            "phaseArgs": "{\r\n  \"monsterId\": \"eny_0018_lbtough\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_monster.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": [
+        "eny_0018_lbtough",
+        "eny_0068_lbtough2"
+    ]
+}

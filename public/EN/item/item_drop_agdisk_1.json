@@ -1,0 +1,26 @@
+{
+    "id": "item_drop_agdisk_1",
+    "icon": "/public/images/item/itemiconbig/item_drop_agdisk_1.png",
+    "name": "Conductive Effigy Stone",
+    "description": "Gatherable from defeated Effigies. Can be used at a depot node for Pack and Deliver.",
+    "rarity": 4,
+    "type": 8,
+    "obtainWayIds": [
+        "item_obtain_eny_0058_agdisk"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_eny_0058_agdisk",
+            "desc": "Chance Drop: Effigy",
+            "bindSystem": 55,
+            "phaseId": "Wiki",
+            "phaseArgs": "{\r\n  \"monsterId\": \"eny_0058_agdisk\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_monster.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": [
+        "eny_0058_agdisk"
+    ]
+}

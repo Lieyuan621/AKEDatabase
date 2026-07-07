@@ -1,0 +1,2483 @@
+{
+    "dungeonSeriesId": "dung_group_ss04",
+    "dungeonseriestable": {
+        "desc": {
+            "id": 4233791884918814245,
+            "text": "A Protocol Space containing the unknown. Explore it properly and you might find some advanced operator progression items."
+        },
+        "dungeonCategory": 6,
+        "dungeonCategory2nd": 0,
+        "dungeonImg": "item_char_skill_specialize_4",
+        "dungeonRoleImg": "",
+        "gameCategory": "dungeon_ss",
+        "id": "dung_group_ss04",
+        "includeDungeonIds": [
+            "dung_ss04"
+        ],
+        "name": {
+            "id": 2498991679144785407,
+            "text": "Protocol Space: Advanced Progression Ⅳ"
+        },
+        "sortId": 4,
+        "staminaText": {
+            "id": 3245191133911727418,
+            "text": "90"
+        }
+    },
+    "dungeontable": {
+        "dung_ss04": {
+            "canDirectlyGetReward": false,
+            "costStamina": 0,
+            "customRewardId": "",
+            "domainId": "",
+            "dungeonCategory": "dungeon_ss",
+            "dungeonDesc": {
+                "id": 8170154657276261946,
+                "text": "A Protocol Space containing the unknown. Explore it properly and you might find some advanced operator progression items.\n\"Listen to the gentle whimpering that caress the permafrost. Our way home, long buried beneath the Aurora, still awaits our re-discovery.\""
+            },
+            "dungeonId": "dung_ss04",
+            "dungeonImg": "",
+            "dungeonLevelDesc": {
+                "id": 7488160932182314408,
+                "text": "Hazardous Material Institute"
+            },
+            "dungeonName": {
+                "id": 8804655167020970555,
+                "text": "Hazardous Material Institute"
+            },
+            "dungeonPicPath": "dung_ss_04",
+            "dungeonSeriesId": "dung_group_ss04",
+            "enemyIds": [
+                "eny_0072_slimeml",
+                "eny_0099_slimeml2",
+                "eny_0073_slimerg",
+                "eny_0109_hshog2",
+                "eny_0102_hstiger2"
+            ],
+            "enemyLevels": [
+                70,
+                70,
+                70,
+                70,
+                70
+            ],
+            "extraGoalDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "extraRewardId": "",
+            "featureDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "firstPassRewardId": "reward_dung_ss04_firstpass",
+            "forceIgnoreFeaturePopup": false,
+            "hunterModeCostStamina": 80,
+            "hunterModeRewardId": "reward_dung_ss04",
+            "levelId": "map02_lv002",
+            "mainGoalDesc": {
+                "id": 0,
+                "text": ""
+            },
+            "needShowPass": false,
+            "recommendLv": 80,
+            "relatedCharId": "",
+            "rewardId": "",
+            "sceneId": "",
+            "sortId": 0,
+            "tabGroupName": {
+                "id": 0,
+                "text": ""
+            },
+            "unlockSpCond": false,
+            "LevelData": {},
+            "SpawnerConfig": {},
+            "enemyTable": {
+                "eny_0072_slimeml": {
+                    "aiTemplateId": "",
+                    "attrModifiers": [],
+                    "attrTemplateId": "eny_0072_slimeml",
+                    "autoLockCancelTime": -1,
+                    "autoLockCancelType": 0,
+                    "bornBuffs": [],
+                    "enemyId": "eny_0072_slimeml",
+                    "isDangerous": false,
+                    "modelId": "",
+                    "serverDeathCheck": false,
+                    "showBigEffect": false,
+                    "showBigHeadbar": false,
+                    "templateId": "eny_0072_slimeml"
+                },
+                "eny_0099_slimeml2": {
+                    "aiTemplateId": "",
+                    "attrModifiers": [],
+                    "attrTemplateId": "eny_0099_slimeml2",
+                    "autoLockCancelTime": -1,
+                    "autoLockCancelType": 0,
+                    "bornBuffs": [],
+                    "enemyId": "eny_0099_slimeml2",
+                    "isDangerous": false,
+                    "modelId": "",
+                    "serverDeathCheck": false,
+                    "showBigEffect": false,
+                    "showBigHeadbar": false,
+                    "templateId": "eny_0099_slimeml2"
+                },
+                "eny_0073_slimerg": {
+                    "aiTemplateId": "",
+                    "attrModifiers": [],
+                    "attrTemplateId": "eny_0073_slimerg",
+                    "autoLockCancelTime": -1,
+                    "autoLockCancelType": 0,
+                    "bornBuffs": [],
+                    "enemyId": "eny_0073_slimerg",
+                    "isDangerous": false,
+                    "modelId": "",
+                    "serverDeathCheck": false,
+                    "showBigEffect": false,
+                    "showBigHeadbar": false,
+                    "templateId": "eny_0073_slimerg"
+                },
+                "eny_0109_hshog2": {
+                    "aiTemplateId": "",
+                    "attrModifiers": [],
+                    "attrTemplateId": "eny_0109_hshog2",
+                    "autoLockCancelTime": -1,
+                    "autoLockCancelType": 0,
+                    "bornBuffs": [
+                        "buff_eny_0109_hshog_setsuperarmor"
+                    ],
+                    "enemyId": "eny_0109_hshog2",
+                    "isDangerous": false,
+                    "modelId": "",
+                    "serverDeathCheck": false,
+                    "showBigEffect": true,
+                    "showBigHeadbar": false,
+                    "templateId": "eny_0109_hshog2"
+                },
+                "eny_0102_hstiger2": {
+                    "aiTemplateId": "",
+                    "attrModifiers": [],
+                    "attrTemplateId": "eny_0102_hstiger2",
+                    "autoLockCancelTime": -1,
+                    "autoLockCancelType": 0,
+                    "bornBuffs": [
+                        "buff_common_superarmor_behit_hstiger2"
+                    ],
+                    "enemyId": "eny_0102_hstiger2",
+                    "isDangerous": false,
+                    "modelId": "",
+                    "serverDeathCheck": false,
+                    "showBigEffect": true,
+                    "showBigHeadbar": false,
+                    "templateId": "eny_0102_hstiger2"
+                }
+            },
+            "enemyTemplateDisplayInfoTable": {
+                "eny_0072_slimeml": {
+                    "abilityDescIds": [
+                        "eny_0072_slimeml_ability_1"
+                    ],
+                    "description": {
+                        "id": -1686802747779476871,
+                        "text": "A wild creature infected by Originium. The large beast carries multiple Originium clusters and is capable of ripping apart its prey with its sickle-like frontal limbs."
+                    },
+                    "displayType": 0,
+                    "distributionIds": [
+                        "distribution_map01_lv001",
+                        "distribution_map01_lv005",
+                        "distribution_map01_lv006",
+                        "distribution_map01_lv007",
+                        "distribution_world_energy_point01"
+                    ],
+                    "name": {
+                        "id": -2401588833476034411,
+                        "text": "Indigenous Pincerbeast"
+                    },
+                    "nickname": {
+                        "id": 4652837767440482572,
+                        "text": "Indigenous Pincerbeast"
+                    },
+                    "tags": [],
+                    "templateId": "eny_0072_slimeml"
+                },
+                "eny_0099_slimeml2": {
+                    "abilityDescIds": [
+                        "eny_0099_slimeml2_ability_1"
+                    ],
+                    "description": {
+                        "id": 1415973158702290608,
+                        "text": "A wild creature infected by Originium. The giant beast carries numerous clusters of Originium that exhibit higher levels of activity. It also sports a thicker carapace than its ordinary counterparts."
+                    },
+                    "displayType": 0,
+                    "distributionIds": [
+                        "distribution_map01_lv001",
+                        "distribution_map01_lv005",
+                        "distribution_map01_lv007",
+                        "distribution_world_energy_point01"
+                    ],
+                    "name": {
+                        "id": -591883019231785245,
+                        "text": "Brutal Pincerbeast"
+                    },
+                    "nickname": {
+                        "id": -7095607089313461237,
+                        "text": "Brutal Pincerbeast"
+                    },
+                    "tags": [],
+                    "templateId": "eny_0099_slimeml2"
+                },
+                "eny_0073_slimerg": {
+                    "abilityDescIds": [
+                        "eny_0073_slimerg_ability_1"
+                    ],
+                    "description": {
+                        "id": -3220377999742671000,
+                        "text": "A wild creature infected by Originium. This slug secretes an acidic material. When threatened, it will attempt to intimidate its foe by shaking violently and projecting shards from the Originium cluster carried on its back."
+                    },
+                    "displayType": 0,
+                    "distributionIds": [
+                        "distribution_map01_lv001",
+                        "distribution_map01_lv005",
+                        "distribution_map01_lv006",
+                        "distribution_map01_lv007",
+                        "distribution_world_energy_point01"
+                    ],
+                    "name": {
+                        "id": -6595982480522739496,
+                        "text": "Acid Originium Slug"
+                    },
+                    "nickname": {
+                        "id": -4618261091825512815,
+                        "text": "Acid Originium Slug"
+                    },
+                    "tags": [],
+                    "templateId": "eny_0073_slimerg"
+                },
+                "eny_0109_hshog2": {
+                    "abilityDescIds": [
+                        "eny_0109_hshog2_ability_1",
+                        "eny_0109_hshog2_ability_2"
+                    ],
+                    "description": {
+                        "id": -3987028357494740952,
+                        "text": "A quillbeast infected by active Originium dust. The creature's spines are imbued with high levels of energy, making them extremely destructive."
+                    },
+                    "displayType": 3,
+                    "distributionIds": [
+                        "distribution_world_energy_point08"
+                    ],
+                    "name": {
+                        "id": -4535577304813227166,
+                        "text": "Imbued Quillbeast"
+                    },
+                    "nickname": {
+                        "id": -970260702008480973,
+                        "text": "Imbued Quillbeast"
+                    },
+                    "tags": [],
+                    "templateId": "eny_0109_hshog2"
+                },
+                "eny_0102_hstiger2": {
+                    "abilityDescIds": [
+                        "eny_0102_hstiger2_ability_1",
+                        "eny_0102_hstiger2_ability_2"
+                    ],
+                    "description": {
+                        "id": 7408160406081939652,
+                        "text": "A rakerbeast variant featuring a different colored coat, shorter lifespan, but greater strength. Its eyes seem to glow like liquid fire."
+                    },
+                    "displayType": 1,
+                    "distributionIds": [],
+                    "name": {
+                        "id": 2374553634349349588,
+                        "text": "Glaring Rakerbeast"
+                    },
+                    "nickname": {
+                        "id": 377911308091336772,
+                        "text": "Glaring Rakerbeast"
+                    },
+                    "tags": [],
+                    "templateId": "eny_0102_hstiger2"
+                }
+            },
+            "enemyAttributeTemplateTable": {
+                "eny_0072_slimeml": {
+                    "aoiRadius": 0,
+                    "attackValueAgainstTower": 10,
+                    "breakingAttackedAtbObtain": 25,
+                    "crystDmgResistScalar": 1,
+                    "fireDmgResistScalar": 1,
+                    "initialSuperArmor": 0,
+                    "levelDependentAttributes": [
+                        {
+                            "attrs": [
+                                {
+                                    "attrType": 0,
+                                    "attrValue": 70
+                                },
+                                {
+                                    "attrType": 1,
+                                    "attrValue": 51332
+                                },
+                                {
+                                    "attrType": 2,
+                                    "attrValue": 1241
+                                },
+                                {
+                                    "attrType": 3,
+                                    "attrValue": 100
+                                }
+                            ]
+                        }
+                    ],
+                    "levelIndependentAttributes": {
+                        "attrs": [
+                            {
+                                "attrType": 20,
+                                "attrValue": 60
+                            },
+                            {
+                                "attrType": 21,
+                                "attrValue": 6
+                            },
+                            {
+                                "attrType": 27,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 12,
+                                "attrValue": 6
+                            },
+                            {
+                                "attrType": 8,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 11,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 9,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 10,
+                                "attrValue": 0.5
+                            },
+                            {
+                                "attrType": 80,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 84,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 83,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 82,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 81,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 85,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 15,
+                                "attrValue": 1
+                            }
+                        ]
+                    },
+                    "maxResilience": 65,
+                    "naturalDmgResistScalar": 1,
+                    "physicalDmgResistScalar": 1,
+                    "poiseKnotBuffList": [],
+                    "poiseKnotPctList": [],
+                    "pulseDmgResistScalar": 1,
+                    "pushedBackCoefficient": 1,
+                    "resilienceDecreaseWhenHurt": 79.3,
+                    "resilienceFullRecoverTime": 3,
+                    "resilienceRecover": 100,
+                    "resilienceRecoverInterval": 1,
+                    "superArmorWhenResilienceZero": 5,
+                    "templateId": "eny_0072_slimeml",
+                    "zeroPoiseSuperArmor": 0
+                },
+                "eny_0099_slimeml2": {
+                    "aoiRadius": 0,
+                    "attackValueAgainstTower": 10,
+                    "breakingAttackedAtbObtain": 25,
+                    "crystDmgResistScalar": 1,
+                    "fireDmgResistScalar": 1,
+                    "initialSuperArmor": 5,
+                    "levelDependentAttributes": [
+                        {
+                            "attrs": [
+                                {
+                                    "attrType": 0,
+                                    "attrValue": 70
+                                },
+                                {
+                                    "attrType": 1,
+                                    "attrValue": 85553
+                                },
+                                {
+                                    "attrType": 2,
+                                    "attrValue": 1396
+                                },
+                                {
+                                    "attrType": 3,
+                                    "attrValue": 100
+                                }
+                            ]
+                        }
+                    ],
+                    "levelIndependentAttributes": {
+                        "attrs": [
+                            {
+                                "attrType": 20,
+                                "attrValue": 60
+                            },
+                            {
+                                "attrType": 21,
+                                "attrValue": 6
+                            },
+                            {
+                                "attrType": 27,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 12,
+                                "attrValue": 6
+                            },
+                            {
+                                "attrType": 8,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 11,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 9,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 10,
+                                "attrValue": 0.5
+                            },
+                            {
+                                "attrType": 80,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 84,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 83,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 82,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 81,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 85,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 15,
+                                "attrValue": 1
+                            }
+                        ]
+                    },
+                    "maxResilience": 65,
+                    "naturalDmgResistScalar": 1,
+                    "physicalDmgResistScalar": 1,
+                    "poiseKnotBuffList": [],
+                    "poiseKnotPctList": [],
+                    "pulseDmgResistScalar": 1,
+                    "pushedBackCoefficient": 1,
+                    "resilienceDecreaseWhenHurt": 79.3,
+                    "resilienceFullRecoverTime": 3,
+                    "resilienceRecover": 100,
+                    "resilienceRecoverInterval": 1,
+                    "superArmorWhenResilienceZero": 5,
+                    "templateId": "eny_0099_slimeml2",
+                    "zeroPoiseSuperArmor": 0
+                },
+                "eny_0073_slimerg": {
+                    "aoiRadius": 0,
+                    "attackValueAgainstTower": 10,
+                    "breakingAttackedAtbObtain": 25,
+                    "crystDmgResistScalar": 1,
+                    "fireDmgResistScalar": 1,
+                    "initialSuperArmor": 0,
+                    "levelDependentAttributes": [
+                        {
+                            "attrs": [
+                                {
+                                    "attrType": 0,
+                                    "attrValue": 70
+                                },
+                                {
+                                    "attrType": 1,
+                                    "attrValue": 47054
+                                },
+                                {
+                                    "attrType": 2,
+                                    "attrValue": 1241
+                                },
+                                {
+                                    "attrType": 3,
+                                    "attrValue": 100
+                                }
+                            ]
+                        }
+                    ],
+                    "levelIndependentAttributes": {
+                        "attrs": [
+                            {
+                                "attrType": 20,
+                                "attrValue": 60
+                            },
+                            {
+                                "attrType": 21,
+                                "attrValue": 6
+                            },
+                            {
+                                "attrType": 27,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 12,
+                                "attrValue": 6
+                            },
+                            {
+                                "attrType": 8,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 11,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 9,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 10,
+                                "attrValue": 0.5
+                            },
+                            {
+                                "attrType": 80,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 84,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 83,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 82,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 81,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 85,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 15,
+                                "attrValue": 1
+                            }
+                        ]
+                    },
+                    "maxResilience": 65,
+                    "naturalDmgResistScalar": 1,
+                    "physicalDmgResistScalar": 1,
+                    "poiseKnotBuffList": [],
+                    "poiseKnotPctList": [],
+                    "pulseDmgResistScalar": 1,
+                    "pushedBackCoefficient": 1,
+                    "resilienceDecreaseWhenHurt": 79.3,
+                    "resilienceFullRecoverTime": 3,
+                    "resilienceRecover": 100,
+                    "resilienceRecoverInterval": 1,
+                    "superArmorWhenResilienceZero": 5,
+                    "templateId": "eny_0073_slimerg",
+                    "zeroPoiseSuperArmor": 0
+                },
+                "eny_0109_hshog2": {
+                    "aoiRadius": 0,
+                    "attackValueAgainstTower": 10,
+                    "breakingAttackedAtbObtain": 35,
+                    "crystDmgResistScalar": 1,
+                    "fireDmgResistScalar": 0.8,
+                    "initialSuperArmor": 30,
+                    "levelDependentAttributes": [
+                        {
+                            "attrs": [
+                                {
+                                    "attrType": 0,
+                                    "attrValue": 70
+                                },
+                                {
+                                    "attrType": 1,
+                                    "attrValue": 384986
+                                },
+                                {
+                                    "attrType": 2,
+                                    "attrValue": 2094
+                                },
+                                {
+                                    "attrType": 3,
+                                    "attrValue": 100
+                                }
+                            ]
+                        }
+                    ],
+                    "levelIndependentAttributes": {
+                        "attrs": [
+                            {
+                                "attrType": 20,
+                                "attrValue": 200
+                            },
+                            {
+                                "attrType": 21,
+                                "attrValue": 7
+                            },
+                            {
+                                "attrType": 27,
+                                "attrValue": 1.25
+                            },
+                            {
+                                "attrType": 12,
+                                "attrValue": 6
+                            },
+                            {
+                                "attrType": 8,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 11,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 9,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 10,
+                                "attrValue": 0.5
+                            },
+                            {
+                                "attrType": 80,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 84,
+                                "attrValue": 0.8
+                            },
+                            {
+                                "attrType": 83,
+                                "attrValue": 0.8
+                            },
+                            {
+                                "attrType": 82,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 81,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 85,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 15,
+                                "attrValue": 1
+                            }
+                        ]
+                    },
+                    "maxResilience": 65,
+                    "naturalDmgResistScalar": 1,
+                    "physicalDmgResistScalar": 1,
+                    "poiseKnotBuffList": [],
+                    "poiseKnotPctList": [],
+                    "pulseDmgResistScalar": 0.8,
+                    "pushedBackCoefficient": 0.3,
+                    "resilienceDecreaseWhenHurt": 0,
+                    "resilienceFullRecoverTime": 3,
+                    "resilienceRecover": 0,
+                    "resilienceRecoverInterval": 1,
+                    "superArmorWhenResilienceZero": 5,
+                    "templateId": "eny_0109_hshog2",
+                    "zeroPoiseSuperArmor": 30
+                },
+                "eny_0102_hstiger2": {
+                    "aoiRadius": 0,
+                    "attackValueAgainstTower": 20,
+                    "breakingAttackedAtbObtain": 50,
+                    "crystDmgResistScalar": 0.8,
+                    "fireDmgResistScalar": 1,
+                    "initialSuperArmor": 30,
+                    "levelDependentAttributes": [
+                        {
+                            "attrs": [
+                                {
+                                    "attrType": 0,
+                                    "attrValue": 70
+                                },
+                                {
+                                    "attrType": 1,
+                                    "attrValue": 577480
+                                },
+                                {
+                                    "attrType": 2,
+                                    "attrValue": 3412
+                                },
+                                {
+                                    "attrType": 3,
+                                    "attrValue": 100
+                                }
+                            ]
+                        }
+                    ],
+                    "levelIndependentAttributes": {
+                        "attrs": [
+                            {
+                                "attrType": 20,
+                                "attrValue": 320
+                            },
+                            {
+                                "attrType": 21,
+                                "attrValue": 9
+                            },
+                            {
+                                "attrType": 27,
+                                "attrValue": 1.5
+                            },
+                            {
+                                "attrType": 12,
+                                "attrValue": 7
+                            },
+                            {
+                                "attrType": 8,
+                                "attrValue": 2
+                            },
+                            {
+                                "attrType": 11,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 9,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 10,
+                                "attrValue": 0.5
+                            },
+                            {
+                                "attrType": 80,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 84,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 83,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 82,
+                                "attrValue": 0.8
+                            },
+                            {
+                                "attrType": 81,
+                                "attrValue": 0.8
+                            },
+                            {
+                                "attrType": 85,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 15,
+                                "attrValue": 1
+                            }
+                        ]
+                    },
+                    "maxResilience": 65,
+                    "naturalDmgResistScalar": 0.8,
+                    "physicalDmgResistScalar": 1,
+                    "poiseKnotBuffList": [
+                        "buff_common_mini_poise_break"
+                    ],
+                    "poiseKnotPctList": [],
+                    "pulseDmgResistScalar": 1,
+                    "pushedBackCoefficient": 0.3,
+                    "resilienceDecreaseWhenHurt": 0,
+                    "resilienceFullRecoverTime": 0,
+                    "resilienceRecover": 0,
+                    "resilienceRecoverInterval": 0,
+                    "superArmorWhenResilienceZero": 0,
+                    "templateId": "eny_0102_hstiger2",
+                    "zeroPoiseSuperArmor": 30
+                }
+            },
+            "rewardTable": {
+                "reward_dung_ss04_firstpass": {
+                    "itemBundleVisibleList": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "itemBundles": [
+                        {
+                            "count": 200,
+                            "id": "item_adventureexp"
+                        },
+                        {
+                            "count": 50,
+                            "id": "item_diamond"
+                        },
+                        {
+                            "count": 3,
+                            "id": "item_char_skill_specialize_4"
+                        }
+                    ],
+                    "probItemBundles": [],
+                    "rewardId": "reward_dung_ss04_firstpass"
+                }
+            },
+            "itemTable": {
+                "item_adventureexp": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -5480569680702485231,
+                        "text": "A form of experience you earn as you explore Talos-II. Like always, these lands await your discovery, Endministrator."
+                    },
+                    "desc": {
+                        "id": -9181496066040191941,
+                        "text": "Raises the Endministrator's Authority Level."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_adventureexp",
+                    "id": "item_adventureexp",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "",
+                    "name": {
+                        "id": 7902272277769874042,
+                        "text": "Operational EXP"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_adventurebook"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 5,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -999,
+                    "sortId2": 1,
+                    "type": 37,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 7
+                },
+                "item_diamond": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -8713379589258447987,
+                        "text": "A special product of cut Origeometry. These stones are extremely popular due to their beauty and wide range of uses."
+                    },
+                    "desc": {
+                        "id": -5909420414296930437,
+                        "text": "An artificial material often used for recruiting operators."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_diamond",
+                    "id": "item_diamond",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_gold_1",
+                    "name": {
+                        "id": 2239345069872003978,
+                        "text": "Oroberyl"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_diamond",
+                        "item_obtain_bp",
+                        "item_obtain_adventurebook",
+                        "item_obtain_payshop_credit",
+                        "item_obtain_mission_daily",
+                        "item_obtain_explore",
+                        "item_obtain_mission"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 6,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -11,
+                    "sortId2": 1,
+                    "type": 2,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 6
+                },
+                "item_char_skill_specialize_4": {
+                    "backpackCanDiscard": false,
+                    "decoDesc": {
+                        "id": -8957338165959904752,
+                        "text": "A hypothetical condensed matter in fluid state. Though it could be synthesized and the optical properties of the resulting materials could be observed, the actual structure and state of the fluid have yet to be successfully measured. The fluid effectively suppresses Originium sublimation in all Depths that could be artificially created, making it an extraordinarily effective filler."
+                    },
+                    "desc": {
+                        "id": 1035214361788932388,
+                        "text": "A rare material for operator promotion, weapon tuning, and operator skill mastery."
+                    },
+                    "iconCompositeId": "",
+                    "iconId": "item_char_skill_specialize_4",
+                    "id": "item_char_skill_specialize_4",
+                    "maxBackpackStackCount": -1,
+                    "maxStackCount": -1,
+                    "modelKey": "int_collection_item_2",
+                    "name": {
+                        "id": 8834622992079709163,
+                        "text": "Quadrant Fitting Fluid"
+                    },
+                    "noObtainWayConditionId": [],
+                    "noObtainWayHint": {
+                        "id": 0,
+                        "text": ""
+                    },
+                    "noObtainWayId": [],
+                    "notObtainShow": true,
+                    "notObtainShowTimeId": "",
+                    "obtainWayIds": [
+                        "item_obtain_case_bp_selfselect_skillsp_1_4",
+                        "item_obtain_dungeon_ss04_untouched",
+                        "item_obtain_dungeon_ss04",
+                        "item_obtain_dung02_bossrush01_03",
+                        "item_obtain_shop_greenticket_char_skill_specialize_4",
+                        "item_obtain_shop_yellowticket_char_skill_specialize_4",
+                        "item_obtain_dungeon_common",
+                        "item_obtain_dungeon_bossrush_common"
+                    ],
+                    "outcomeItemIds": [],
+                    "rarity": 5,
+                    "showAllDepotCount": false,
+                    "showingType": 0,
+                    "sortId1": -34,
+                    "sortId2": 14,
+                    "type": 95,
+                    "valuableDepotRedDot": false,
+                    "valuableTabType": 4
+                }
+            },
+            "BuffData": {
+                "buff_eny_0109_hshog_setsuperarmor": {
+                    "id": "buff_eny_0109_hshog_setsuperarmor",
+                    "iconConfig": {
+                        "_spritePath": "",
+                        "showInHeadBarCommon": false,
+                        "showInHeadBarAttached": false,
+                        "showInSquadIcon": false,
+                        "onlyShowForMainCharacter": false,
+                        "blinkInMainCharHpBar": false,
+                        "showProgressInHpBar": false,
+                        "showProgressInNormalSkillButton": false,
+                        "iconStyleInSquad": "Default",
+                        "abnormalColorType": "Physical",
+                        "_orderPriorityConfig": {
+                            "useDirectoryValue": false,
+                            "priorityValue": 0,
+                            "priorityEnum": "CommonCharDebuff"
+                        },
+                        "showWarningBackground": false,
+                        "playStrongInAnimation": false,
+                        "hasCharHpBarVfxType": false,
+                        "charHpBarVfxType": "Fire"
+                    },
+                    "hasIcon": false,
+                    "ignoreTagImmune": false,
+                    "useTimeDilationDt": false,
+                    "finishOnRepatriate": false,
+                    "hasAddingCooldown": false,
+                    "addingCooldown": {
+                        "useBlackboardKey": false,
+                        "value": 0.0,
+                        "blackboardKey": ""
+                    },
+                    "ignoreCooldownWhenAdding": false,
+                    "attributeModifier": {
+                        "isConvertedAttribute": false,
+                        "attributeModifiers": []
+                    },
+                    "damageModifier": [],
+                    "healModifier": [],
+                    "poiseModifier": [],
+                    "globalModifier": [],
+                    "shieldConfigs": [],
+                    "applyTags": [],
+                    "tagsAfterTriggerExtendBuffAction": [],
+                    "lifeType": "Infinity",
+                    "duration": {
+                        "useBlackboardKey": false,
+                        "value": 30.0,
+                        "blackboardKey": ""
+                    },
+                    "triggerInterval": {
+                        "useBlackboardKey": false,
+                        "value": -1.0,
+                        "blackboardKey": ""
+                    },
+                    "waitFirstTriggerInterval": false,
+                    "maxTriggerCnt": {
+                        "useBlackboardKey": false,
+                        "value": 1,
+                        "blackboardKey": ""
+                    },
+                    "stackingSettings": {
+                        "identifierType": "Id",
+                        "stackingType": "Stack",
+                        "stackingKey": "",
+                        "usePriorityKey": false,
+                        "priorityKey": "",
+                        "negatePriority": false,
+                        "priority": 0.0,
+                        "useMaxStackCntKey": false,
+                        "maxStackCntKey": "",
+                        "maxStackCnt": 1,
+                        "isNeedStackEffect": false,
+                        "stackEffects": []
+                    },
+                    "dispelConfig": {
+                        "canBeDispelled": false,
+                        "dispelledLevel": "Default"
+                    },
+                    "buffEventAction": [],
+                    "abilityEventAction": [
+                        {
+                            "abilityEvent": "OnAddedBuff",
+                            "actions": [
+                                {
+                                    "actionData": [
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.Conditions.CheckTagMatch+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 0,
+                                            "checkTarget": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "query": {
+                                                "queryType": "HasAny",
+                                                "tags": [
+                                                    {
+                                                        "tagName": "Status/Immobilized/Airborne",
+                                                        "tagId": 969179177
+                                                    },
+                                                    {
+                                                        "tagName": "Status/Immobilized/Frozen",
+                                                        "tagId": -717418722
+                                                    },
+                                                    {
+                                                        "tagName": "Status/Immobilized/KnockBack",
+                                                        "tagId": 1090132039
+                                                    },
+                                                    {
+                                                        "tagName": "Status/Immobilized/KnockDown",
+                                                        "tagId": 835406155
+                                                    },
+                                                    {
+                                                        "tagName": "Status/Immobilized/OriginumFrozen",
+                                                        "tagId": -503420352
+                                                    },
+                                                    {
+                                                        "tagName": "Status/Immobilized/Stunned",
+                                                        "tagId": -1691196651
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.Conditions.CheckTimedMarkerCondition+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 1,
+                                            "checkTarget": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "id": "hshog_immobilized_cd",
+                                            "blackboardKey": "",
+                                            "useBlackboardKey": false,
+                                            "returnTrueIfNotExists": true
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.CheckBuffStackNumAdvanced+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 2,
+                                            "checkTarget": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "buffSettings": {
+                                                "checkType": "Id",
+                                                "buffIdList": [
+                                                    "buff_eny_0109_hshog_setsuperarmor_02"
+                                                ],
+                                                "tagQuery": {
+                                                    "queryType": "HasAny",
+                                                    "tags": []
+                                                }
+                                            },
+                                            "buffStackNumType": "BuffCount",
+                                            "compareType": "LE",
+                                            "value": {
+                                                "useBlackboardKey": false,
+                                                "value": 0.0,
+                                                "blackboardKey": ""
+                                            },
+                                            "limitSkillCastId": false
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.CreateTimedMarker+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 3,
+                                            "targetSettings": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "markerId": {
+                                                "useBlackboardKey": false,
+                                                "value": "hshog_immobilized_cd",
+                                                "blackboardKey": ""
+                                            },
+                                            "duration": {
+                                                "useBlackboardKey": false,
+                                                "value": 0.5,
+                                                "blackboardKey": ""
+                                            },
+                                            "autoFinishByAction": false,
+                                            "useTimeDilationDt": false
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.CreateBuffAction+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 4,
+                                            "buffs": [
+                                                {
+                                                    "buffId": "buff_eny_0109_hshog_setsuperarmor_01",
+                                                    "assignBlackboard": false,
+                                                    "assignItems": [],
+                                                    "readIdFromBlackboard": false,
+                                                    "buffIdKey": ""
+                                                }
+                                            ],
+                                            "count": {
+                                                "useBlackboardKey": false,
+                                                "value": 1.0,
+                                                "blackboardKey": ""
+                                            },
+                                            "targetSettings": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "buffSource": "ActionOwner",
+                                            "contextKey": "",
+                                            "autoFinishByAction": false,
+                                            "inheritSkillIdList": [],
+                                            "asChildBuff": true,
+                                            "inheritSourceSkillCastId": false,
+                                            "inheritSourceSkillCastInfo": false,
+                                            "isExtra": false,
+                                            "overrideBuffIconDuration": false,
+                                            "buffIconDurationSource": {
+                                                "durationSourceType": "AbilityEntity",
+                                                "timedMarkerId": ""
+                                            }
+                                        }
+                                    ],
+                                    "onlyExecuteWhenSourceIsMainChar": false,
+                                    "onlyExecuteWhenSourceIsGuard": false
+                                }
+                            ]
+                        },
+                        {
+                            "abilityEvent": "OnAddedBuff",
+                            "actions": [
+                                {
+                                    "actionData": [
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.Conditions.CheckBuffIdInContext+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 5,
+                                            "checkType": "Id",
+                                            "buffIdList": [
+                                                {
+                                                    "buffId": "buff_eny_0109_hshog_setsuperarmor_01"
+                                                }
+                                            ],
+                                            "query": {
+                                                "queryType": "HasAny",
+                                                "tags": []
+                                            },
+                                            "blackboardKey": ""
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.CheckBuffStackNumAdvanced+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 6,
+                                            "checkTarget": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "buffSettings": {
+                                                "checkType": "Id",
+                                                "buffIdList": [
+                                                    "buff_eny_0109_hshog_setsuperarmor_01"
+                                                ],
+                                                "tagQuery": {
+                                                    "queryType": "HasAny",
+                                                    "tags": []
+                                                }
+                                            },
+                                            "buffStackNumType": "BuffCount",
+                                            "compareType": "GE",
+                                            "value": {
+                                                "useBlackboardKey": false,
+                                                "value": 4.0,
+                                                "blackboardKey": ""
+                                            },
+                                            "limitSkillCastId": false
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.FinishBuffAdvanced+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 7,
+                                            "buffOwner": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "buffSettings": {
+                                                "checkType": "Id",
+                                                "buffIdList": [
+                                                    "buff_eny_0109_hshog_setsuperarmor_01"
+                                                ],
+                                                "tagQuery": {
+                                                    "queryType": "HasAny",
+                                                    "tags": []
+                                                }
+                                            },
+                                            "finishAll": true,
+                                            "finishLayerCnt": {
+                                                "useBlackboardKey": false,
+                                                "value": 1.0,
+                                                "blackboardKey": ""
+                                            },
+                                            "limitSource": false,
+                                            "buffSource": {
+                                                "targetSource": "Source",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "isFinishedEarly": false,
+                                            "isAbsorbed": false,
+                                            "finishSource": {
+                                                "targetSource": "Source",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            }
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.CreateBuffAction+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 8,
+                                            "buffs": [
+                                                {
+                                                    "buffId": "buff_eny_0109_hshog_setsuperarmor_02",
+                                                    "assignBlackboard": false,
+                                                    "assignItems": [],
+                                                    "readIdFromBlackboard": false,
+                                                    "buffIdKey": ""
+                                                }
+                                            ],
+                                            "count": {
+                                                "useBlackboardKey": false,
+                                                "value": 1.0,
+                                                "blackboardKey": ""
+                                            },
+                                            "targetSettings": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "buffSource": "ActionSource",
+                                            "contextKey": "",
+                                            "autoFinishByAction": false,
+                                            "inheritSkillIdList": [],
+                                            "asChildBuff": true,
+                                            "inheritSourceSkillCastId": false,
+                                            "inheritSourceSkillCastInfo": false,
+                                            "isExtra": false,
+                                            "overrideBuffIconDuration": false,
+                                            "buffIconDurationSource": {
+                                                "durationSourceType": "AbilityEntity",
+                                                "timedMarkerId": ""
+                                            }
+                                        }
+                                    ],
+                                    "onlyExecuteWhenSourceIsMainChar": false,
+                                    "onlyExecuteWhenSourceIsGuard": false
+                                }
+                            ]
+                        },
+                        {
+                            "abilityEvent": "OnOwnerHpZero",
+                            "actions": [
+                                {
+                                    "actionData": [
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.FinishBuffAdvanced+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 9,
+                                            "buffOwner": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "buffSettings": {
+                                                "checkType": "Environment",
+                                                "buffIdList": [],
+                                                "tagQuery": {
+                                                    "queryType": "HasAny",
+                                                    "tags": []
+                                                }
+                                            },
+                                            "finishAll": true,
+                                            "finishLayerCnt": {
+                                                "useBlackboardKey": false,
+                                                "value": 1.0,
+                                                "blackboardKey": ""
+                                            },
+                                            "limitSource": false,
+                                            "buffSource": {
+                                                "targetSource": "Source",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "isFinishedEarly": false,
+                                            "isAbsorbed": false,
+                                            "finishSource": {
+                                                "targetSource": "Source",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            }
+                                        }
+                                    ],
+                                    "onlyExecuteWhenSourceIsMainChar": false,
+                                    "onlyExecuteWhenSourceIsGuard": false
+                                }
+                            ]
+                        }
+                    ],
+                    "igniteEventAction": [],
+                    "timelineActions": [],
+                    "blackboard": []
+                },
+                "buff_common_superarmor_behit_hstiger2": {
+                    "id": "buff_common_superarmor_behit_hstiger2",
+                    "iconConfig": {
+                        "_spritePath": "",
+                        "showInHeadBarCommon": true,
+                        "showInHeadBarAttached": false,
+                        "showInSquadIcon": false,
+                        "onlyShowForMainCharacter": false,
+                        "blinkInMainCharHpBar": false,
+                        "showProgressInHpBar": false,
+                        "showProgressInNormalSkillButton": false,
+                        "iconStyleInSquad": "Default",
+                        "abnormalColorType": "Physical",
+                        "_orderPriorityConfig": {
+                            "useDirectoryValue": false,
+                            "priorityValue": 0,
+                            "priorityEnum": "CommonCharBuff"
+                        },
+                        "showWarningBackground": false,
+                        "playStrongInAnimation": false,
+                        "hasCharHpBarVfxType": false,
+                        "charHpBarVfxType": "Fire"
+                    },
+                    "hasIcon": false,
+                    "ignoreTagImmune": false,
+                    "useTimeDilationDt": false,
+                    "finishOnRepatriate": false,
+                    "hasAddingCooldown": false,
+                    "addingCooldown": {
+                        "useBlackboardKey": false,
+                        "value": 0.0,
+                        "blackboardKey": ""
+                    },
+                    "ignoreCooldownWhenAdding": false,
+                    "attributeModifier": {
+                        "isConvertedAttribute": false,
+                        "attributeModifiers": []
+                    },
+                    "damageModifier": [],
+                    "healModifier": [],
+                    "poiseModifier": [],
+                    "globalModifier": [],
+                    "shieldConfigs": [],
+                    "applyTags": [],
+                    "tagsAfterTriggerExtendBuffAction": [],
+                    "lifeType": "Infinity",
+                    "duration": {
+                        "useBlackboardKey": true,
+                        "value": 1.4,
+                        "blackboardKey": "duration"
+                    },
+                    "triggerInterval": {
+                        "useBlackboardKey": false,
+                        "value": -1.0,
+                        "blackboardKey": ""
+                    },
+                    "waitFirstTriggerInterval": false,
+                    "maxTriggerCnt": {
+                        "useBlackboardKey": false,
+                        "value": -1,
+                        "blackboardKey": ""
+                    },
+                    "stackingSettings": {
+                        "identifierType": "Id",
+                        "stackingType": "Unique",
+                        "stackingKey": "",
+                        "usePriorityKey": false,
+                        "priorityKey": "",
+                        "negatePriority": false,
+                        "priority": 0.0,
+                        "useMaxStackCntKey": false,
+                        "maxStackCntKey": "",
+                        "maxStackCnt": 0,
+                        "isNeedStackEffect": false,
+                        "stackEffects": []
+                    },
+                    "dispelConfig": {
+                        "canBeDispelled": false,
+                        "dispelledLevel": "Default"
+                    },
+                    "buffEventAction": [],
+                    "abilityEventAction": [
+                        {
+                            "abilityEvent": "OnTakeDamage",
+                            "actions": [
+                                {
+                                    "actionData": [
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.Conditions.CheckSuperArmor+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 0,
+                                            "checkTarget": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "compareType": "GE",
+                                            "value": {
+                                                "useBlackboardKey": true,
+                                                "value": 30.0,
+                                                "blackboardKey": "superarmor"
+                                            }
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.Conditions.CheckMainCharacterCondition+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 1,
+                                            "checkTarget": {
+                                                "targetSource": "Target",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            }
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.EffectAction+EffectActionData, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 2,
+                                            "targetSettings": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "effectSource": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "isMainCharacterActive": false,
+                                            "isTargetMainCharacterActive": false,
+                                            "isShowBigEffect": false,
+                                            "bigEffectName": "",
+                                            "playOnHittableObjects": false,
+                                            "effectActionCfg": {
+                                                "fxType": "Normal",
+                                                "effectName": "P_fxgp_common_enemy_hit_hstiger_02_asset",
+                                                "guardEffect": false,
+                                                "isCenterChangeLod": false,
+                                                "useScaleBB": false,
+                                                "scale": {
+                                                    "x": 1.0,
+                                                    "y": 1.0,
+                                                    "z": 1.0
+                                                },
+                                                "scaleBB": {
+                                                    "x": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    },
+                                                    "y": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    },
+                                                    "z": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    }
+                                                },
+                                                "useLengthBB": false,
+                                                "lengthBB": {
+                                                    "useBlackboardKey": false,
+                                                    "value": 0.0,
+                                                    "blackboardKey": ""
+                                                },
+                                                "releaseByAction": false,
+                                                "ignoreOwnerTimeScale": true,
+                                                "interruptTime": 0.0,
+                                                "terrainPrefab": false,
+                                                "effectPosData": [],
+                                                "isShowInDialog": false,
+                                                "isLimitEffectCount": false,
+                                                "limitCount": 0,
+                                                "protectTime": 0.0,
+                                                "limitTime": 0.0,
+                                                "limitKey": "",
+                                                "assetOnlyAffectModelRoot": false,
+                                                "isUltimateShow": false,
+                                                "visibleWithEntity": true,
+                                                "visibleWithEntityType": "Source",
+                                                "moveType": "FollowTarget",
+                                                "positionRef": "Target",
+                                                "grounded": false,
+                                                "followGrounded": false,
+                                                "followGroundedMaxDistance": 3.0,
+                                                "followHideTarget": false,
+                                                "visibleWhenHideTarget": false,
+                                                "slotIndex": 0,
+                                                "useWeaponMountPoint": false,
+                                                "mountPoint": "None",
+                                                "useAccurateMp": false,
+                                                "isClothMountPoint": false,
+                                                "weaponIndex": 0,
+                                                "weaponMountPoint": "Root",
+                                                "showHideWithWeapon": false,
+                                                "offsetDir": "Self",
+                                                "offsetDirRevert": false,
+                                                "usePositionOffsetBB": false,
+                                                "positionOffset": {
+                                                    "x": 0.0,
+                                                    "y": 0.0,
+                                                    "z": 0.0
+                                                },
+                                                "positionOffsetBB": {
+                                                    "x": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    },
+                                                    "y": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    },
+                                                    "z": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    }
+                                                },
+                                                "useTargetRotation": true,
+                                                "scaleWithTargetSize": false,
+                                                "fxSize": 0.0,
+                                                "unpackPosDelayFrame": 0,
+                                                "unpackFollowTargetOnRelease": false,
+                                                "rotType": "Stationary",
+                                                "rotRef": "Target",
+                                                "directionRef": "TargetToSource",
+                                                "rotUseWeaponMountPoint": false,
+                                                "rotMountPoint": "None",
+                                                "rotWeaponIndex": 0,
+                                                "rotWeaponMountPoint": "Root",
+                                                "revertDir": false,
+                                                "useSelfRotationBB": false,
+                                                "selfRotation": {
+                                                    "x": 0.0,
+                                                    "y": 0.0,
+                                                    "z": 0.0
+                                                },
+                                                "selfRotationBB": {
+                                                    "x": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    },
+                                                    "y": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    },
+                                                    "z": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    }
+                                                },
+                                                "lockYRotation": true,
+                                                "unpackRotDelayFrame": 0,
+                                                "unpackFollowTargetRotOnRelease": false,
+                                                "weaponVfxKey": "",
+                                                "weaponVfxIndex": -1,
+                                                "weaponVfxPersistent": false,
+                                                "alertType": "Decal",
+                                                "animateAlert": false,
+                                                "alertAnimateDuration": 0.0,
+                                                "isAlertAnimateReverse": false,
+                                                "angle": 0.0,
+                                                "hollow": 0.0,
+                                                "modifyType": "StartLifeTime",
+                                                "value": 0.0
+                                            },
+                                            "saveEffectIdToBlackboard": "",
+                                            "forceMainBody": false,
+                                            "isCreateWithSourceModelActive": false
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.CreateTimedMarker+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 3,
+                                            "targetSettings": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "markerId": {
+                                                "useBlackboardKey": false,
+                                                "value": "hit_flash_cd",
+                                                "blackboardKey": ""
+                                            },
+                                            "duration": {
+                                                "useBlackboardKey": false,
+                                                "value": 0.25,
+                                                "blackboardKey": ""
+                                            },
+                                            "autoFinishByAction": false,
+                                            "useTimeDilationDt": false
+                                        }
+                                    ],
+                                    "onlyExecuteWhenSourceIsMainChar": false,
+                                    "onlyExecuteWhenSourceIsGuard": false
+                                }
+                            ]
+                        },
+                        {
+                            "abilityEvent": "OnTakeDamage",
+                            "actions": [
+                                {
+                                    "actionData": [
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.Conditions.CheckSuperArmor+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 4,
+                                            "checkTarget": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "compareType": "GE",
+                                            "value": {
+                                                "useBlackboardKey": true,
+                                                "value": 30.0,
+                                                "blackboardKey": "superarmor"
+                                            }
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.NotNextCheckAction+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 5
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.Conditions.CheckMainCharacterCondition+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 6,
+                                            "checkTarget": {
+                                                "targetSource": "Target",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            }
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.Conditions.CheckDamageDecorateMask+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 7,
+                                            "checkType": "HasAny",
+                                            "mask": 8960
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.EffectAction+EffectActionData, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 8,
+                                            "targetSettings": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "effectSource": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "isMainCharacterActive": false,
+                                            "isTargetMainCharacterActive": false,
+                                            "isShowBigEffect": false,
+                                            "bigEffectName": "",
+                                            "playOnHittableObjects": false,
+                                            "effectActionCfg": {
+                                                "fxType": "Normal",
+                                                "effectName": "P_fxgp_common_enemy_hit_hstiger_02_asset",
+                                                "guardEffect": false,
+                                                "isCenterChangeLod": false,
+                                                "useScaleBB": false,
+                                                "scale": {
+                                                    "x": 1.0,
+                                                    "y": 1.0,
+                                                    "z": 1.0
+                                                },
+                                                "scaleBB": {
+                                                    "x": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    },
+                                                    "y": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    },
+                                                    "z": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    }
+                                                },
+                                                "useLengthBB": false,
+                                                "lengthBB": {
+                                                    "useBlackboardKey": false,
+                                                    "value": 0.0,
+                                                    "blackboardKey": ""
+                                                },
+                                                "releaseByAction": false,
+                                                "ignoreOwnerTimeScale": true,
+                                                "interruptTime": 0.0,
+                                                "terrainPrefab": false,
+                                                "effectPosData": [],
+                                                "isShowInDialog": false,
+                                                "isLimitEffectCount": false,
+                                                "limitCount": 0,
+                                                "protectTime": 0.0,
+                                                "limitTime": 0.0,
+                                                "limitKey": "",
+                                                "assetOnlyAffectModelRoot": false,
+                                                "isUltimateShow": false,
+                                                "visibleWithEntity": true,
+                                                "visibleWithEntityType": "Source",
+                                                "moveType": "FollowTarget",
+                                                "positionRef": "Target",
+                                                "grounded": false,
+                                                "followGrounded": false,
+                                                "followGroundedMaxDistance": 3.0,
+                                                "followHideTarget": false,
+                                                "visibleWhenHideTarget": false,
+                                                "slotIndex": 0,
+                                                "useWeaponMountPoint": false,
+                                                "mountPoint": "None",
+                                                "useAccurateMp": false,
+                                                "isClothMountPoint": false,
+                                                "weaponIndex": 0,
+                                                "weaponMountPoint": "Root",
+                                                "showHideWithWeapon": false,
+                                                "offsetDir": "Self",
+                                                "offsetDirRevert": false,
+                                                "usePositionOffsetBB": false,
+                                                "positionOffset": {
+                                                    "x": 0.0,
+                                                    "y": 0.0,
+                                                    "z": 0.0
+                                                },
+                                                "positionOffsetBB": {
+                                                    "x": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    },
+                                                    "y": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    },
+                                                    "z": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    }
+                                                },
+                                                "useTargetRotation": true,
+                                                "scaleWithTargetSize": false,
+                                                "fxSize": 0.0,
+                                                "unpackPosDelayFrame": 0,
+                                                "unpackFollowTargetOnRelease": false,
+                                                "rotType": "Stationary",
+                                                "rotRef": "Target",
+                                                "directionRef": "TargetToSource",
+                                                "rotUseWeaponMountPoint": false,
+                                                "rotMountPoint": "None",
+                                                "rotWeaponIndex": 0,
+                                                "rotWeaponMountPoint": "Root",
+                                                "revertDir": false,
+                                                "useSelfRotationBB": false,
+                                                "selfRotation": {
+                                                    "x": 0.0,
+                                                    "y": 0.0,
+                                                    "z": 0.0
+                                                },
+                                                "selfRotationBB": {
+                                                    "x": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    },
+                                                    "y": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    },
+                                                    "z": {
+                                                        "useBlackboardKey": true,
+                                                        "value": 0.0,
+                                                        "blackboardKey": ""
+                                                    }
+                                                },
+                                                "lockYRotation": true,
+                                                "unpackRotDelayFrame": 0,
+                                                "unpackFollowTargetRotOnRelease": false,
+                                                "weaponVfxKey": "",
+                                                "weaponVfxIndex": -1,
+                                                "weaponVfxPersistent": false,
+                                                "alertType": "Decal",
+                                                "animateAlert": false,
+                                                "alertAnimateDuration": 0.0,
+                                                "isAlertAnimateReverse": false,
+                                                "angle": 0.0,
+                                                "hollow": 0.0,
+                                                "modifyType": "StartLifeTime",
+                                                "value": 0.0
+                                            },
+                                            "saveEffectIdToBlackboard": "",
+                                            "forceMainBody": false,
+                                            "isCreateWithSourceModelActive": false
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.CreateTimedMarker+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 9,
+                                            "targetSettings": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "markerId": {
+                                                "useBlackboardKey": false,
+                                                "value": "hit_flash_cd",
+                                                "blackboardKey": ""
+                                            },
+                                            "duration": {
+                                                "useBlackboardKey": false,
+                                                "value": 0.25,
+                                                "blackboardKey": ""
+                                            },
+                                            "autoFinishByAction": false,
+                                            "useTimeDilationDt": false
+                                        }
+                                    ],
+                                    "onlyExecuteWhenSourceIsMainChar": false,
+                                    "onlyExecuteWhenSourceIsGuard": false
+                                }
+                            ]
+                        }
+                    ],
+                    "igniteEventAction": [],
+                    "timelineActions": [],
+                    "blackboard": [
+                        {
+                            "key": "superarmor",
+                            "valueDouble": 30.0,
+                            "valueStr": "",
+                            "isDynamic": false
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "name": "Protocol Space: Advanced Progression Ⅳ"
+}

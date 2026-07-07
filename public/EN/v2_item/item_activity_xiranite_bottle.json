@@ -1,0 +1,103 @@
+{
+    "itemId": "item_activity_xiranite_bottle",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -2917845212929984636,
+            "text": "A gourd-shaped Xiranite bottle. Many Wulingers dreamed of traveling the world armed with a sword and a gourd."
+        },
+        "desc": {
+            "id": -1683579193268196619,
+            "text": "A container made by processing Xiranite during a special period. It can be used to produce other materials."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_activity_xiranite_bottle",
+        "id": "item_activity_xiranite_bottle",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": 6693873765078043271,
+            "text": "Experimental Xiranite Bottle"
+        },
+        "noObtainWayConditionId": [
+            "condition_item_obtain_noway_tech_xiranite",
+            "condition_item_obtain_noway_tech_shaper"
+        ],
+        "noObtainWayHint": {
+            "id": -1620268885526004629,
+            "text": "Product of AIC facility processes"
+        },
+        "noObtainWayId": [
+            "item_obtain_noway_tech_xiranite",
+            "item_obtain_noway_tech_shaper",
+            "item_obtain_activity_formula"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 4,
+        "sortId1": -83,
+        "sortId2": 1,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [],
+        "dischargeType": false,
+        "id": "item_activity_xiranite_bottle",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [
+            "domain_2"
+        ],
+        "showInUnloader": true,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 10
+    },
+    "wikientryid": "wiki_item_activity_xiranite_bottle",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_product",
+        "id": "wiki_item_activity_xiranite_bottle",
+        "order": 67,
+        "prtsId": "",
+        "refItemId": "item_activity_xiranite_bottle",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_product",
+        "name": {
+            "id": 5543235263987292884,
+            "text": "Products"
+        },
+        "sortId": 3,
+        "type": 4
+    },
+    "name": "Experimental Xiranite Bottle"
+}

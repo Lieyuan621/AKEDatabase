@@ -1,0 +1,29 @@
+{
+    "id": "item_drop_agmelee_1",
+    "icon": "/public/images/item/itemiconbig/item_drop_agmelee_1.png",
+    "name": "Hard Aggagrit",
+    "description": "Gatherable from Rams or Heavy Rams. Can be used to make fine food and medicine (Fine F&M).",
+    "rarity": 1,
+    "type": 8,
+    "obtainWayIds": [
+        "item_obtain_agmelee_1"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_agmelee_1",
+            "desc": "Chance Drop: Melee Aggeloi",
+            "bindSystem": 55,
+            "phaseId": "Wiki",
+            "phaseArgs": "{\r\n  \"monsterId\": \"eny_0021_agmelee\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_monster.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": [
+        "eny_0021_agmelee",
+        "eny_0023_aghornb",
+        "eny_0069_aghornb2",
+        "eny_0063_agmelee2"
+    ]
+}

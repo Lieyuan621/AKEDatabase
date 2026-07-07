@@ -1,0 +1,122 @@
+{
+    "itemId": "item_fbottle_ironenr_grass_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -5448128704359527971,
+            "text": "A bottle made of Steel, the most common of its kind in the market."
+        },
+        "desc": {
+            "id": -1690665247669832241,
+            "text": "A metallic bottle made by moulding Steel. Can be used to produce other items."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_iron_enr_bottle_liquid",
+        "id": "item_fbottle_ironenr_grass_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": -1517327255685776737,
+            "text": "Steel Bottle"
+        },
+        "noObtainWayConditionId": [
+            "condition_item_obtain_noway_tech_shaper",
+            "condition_item_obtain_noway_tech_thickener",
+            "condition_item_obtain_noway_item_iron",
+            "condition_item_obtain_noway_item_moss_3"
+        ],
+        "noObtainWayHint": {
+            "id": -5006791479735925372,
+            "text": "Production: AIC Factory Facilities"
+        },
+        "noObtainWayId": [
+            "item_obtain_noway_tech_shaper",
+            "item_obtain_noway_tech_thickener",
+            "item_obtain_noway_item_iron",
+            "item_obtain_noway_item_moss_3"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [
+            "item_bottled_rec_hp_3",
+            "item_bottled_food_3",
+            "item_bottled_flower1spc_3"
+        ],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 4,
+        "sortId1": -81,
+        "sortId2": 40,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_fbottle_ironenr_grass_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [
+            "domain_2"
+        ],
+        "showInUnloader": true,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 5
+    },
+    "fullbottletable": {
+        "emptyBottleId": "item_iron_enr_bottle",
+        "id": "item_fbottle_ironenr_grass_1",
+        "liquidCapacity": 1,
+        "liquidId": "item_liquid_plant_grass_1"
+    },
+    "wikientryid": "wiki_item_fbottle_ironenr_grass_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": -8624508000977492178,
+            "text": "Filled with <@obt.key>Jincao Solution</>"
+        },
+        "groupId": "wiki_group_item_product",
+        "id": "wiki_item_fbottle_ironenr_grass_1",
+        "order": 111,
+        "prtsId": "",
+        "refItemId": "item_fbottle_ironenr_grass_1",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_product",
+        "name": {
+            "id": 5543235263987292884,
+            "text": "Products"
+        },
+        "sortId": 3,
+        "type": 4
+    },
+    "name": "Steel Bottle"
+}

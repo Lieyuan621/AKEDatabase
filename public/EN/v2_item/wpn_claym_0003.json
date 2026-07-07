@@ -1,0 +1,112 @@
+{
+    "itemId": "wpn_claym_0003",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -3554723212001215749,
+            "text": "A weapon commonly seen in the frontiers. No one knows who came up with the basic designs. This particular piece can be easily produced by common industrial machinery."
+        },
+        "desc": {
+            "id": -5882524634547190244,
+            "text": "A weapon equipped by Endfield operators to significantly boost their combat capabilities."
+        },
+        "iconCompositeId": "",
+        "iconId": "wpn_claym_0003",
+        "id": "wpn_claym_0003",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_weapon",
+        "name": {
+            "id": -5195668008198752422,
+            "text": "Industry 0.1"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_payshop_weapon"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -35,
+        "sortId2": 14,
+        "type": 5,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 1
+    },
+    "weaponbasictable": {
+        "breakthroughTemplateId": "weapon_breakthrough_456star_D_1",
+        "engName": {
+            "id": 549857783526871073,
+            "text": "Industry 0.1"
+        },
+        "levelTemplateId": "weapon_upgrade_curve_4star_1",
+        "maxLv": 90,
+        "modelPath": "Gameplay/Prefabs/Weapons/wpn_claym_0003.prefab",
+        "potentialUpItemList": [],
+        "rarity": 4,
+        "talentTemplateId": "wpn_potential_456star",
+        "weaponDesc": {
+            "id": 4711117997990448919,
+            "text": "Though this wasn't the first time they talked about Bander Scavs, I never really saw one myself.\nPeople can't really appreciate how difficult life could be out there on Talos-II. Band cities and neighborhoods must work closely together to survive, yet many Banders chose to leave the city behind to live as a nomad or prospector in the frontiers.\nI myself wasn't too surprised by this. These people had lost too much. I interviewed around a dozen refugees last week from a disaster-stricken neighborhood that ran out of food. They had no other choice.\nHowever, there were also some who refused to live in a world of law or were simply sociopaths. These individuals preferred a life filled with constant violence and danger.\nRegardless of their intents, no Bander nomads could truly give up the touch of civilization. Also last week, I saw them craft weapons with a scavenged machine tool. I was extremely curious how they managed to get their hands on a working lathe. The answer was simple. They got lucky with a scavenging run through a Bander city dumpsite. These landfills provided for their every need.\nTurned out that Bander Scav was a pretty accurate name for these people.\nIf you're reading this, tell that little Bander journalist to stop stalking me. People who complain about sleeping bags do not belong in the wildlands. She should get back to her cushy Bander place and stick to being a celebrity tabloid writer."
+        },
+        "weaponId": "wpn_claym_0003",
+        "weaponPotentialSkill": "sk_wpn_claym_0003",
+        "weaponSkillList": [
+            "wpn_attr_str_low",
+            "wpn_sp_attr_atk_low",
+            "sk_wpn_claym_0003"
+        ],
+        "weaponType": 3
+    },
+    "wikientryid": "wiki_wpn_claym_0003",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_weapon_claymores",
+        "id": "wiki_wpn_claym_0003",
+        "order": 2,
+        "prtsId": "",
+        "refItemId": "wpn_claym_0003",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_payshop_weapon": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 6097231837213620507,
+                "text": "Acquisition Center: Arsenal Exchange"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_payshop_weapon",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 5,
+        "name": {
+            "id": 8230458971049120788,
+            "text": "Weapon"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 2,
+        "unlockSystemType": 251,
+        "valuableTabType": 1
+    },
+    "name": "Industry 0.1"
+}

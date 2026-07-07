@@ -1,0 +1,130 @@
+{
+    "itemId": "item_plant_sp_4",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 2331276143469115347,
+            "text": "The rounded, jade-like endosperm of the Amber Rice is also regarded as \"amber pearls\"."
+        },
+        "desc": {
+            "id": -952538300681950241,
+            "text": "This crop can only be grown with fine cultivation. Can be directly used in making quality food and pharmaceuticals."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_plant_sp_4",
+        "id": "item_plant_sp_4",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_drop_droppack_1",
+        "name": {
+            "id": 3027383598905699166,
+            "text": "Amber Rice"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -6527077273803473286,
+            "text": "Exploring and Gathering"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_gather_map02_lv002_2",
+            "item_obtain_plant"
+        ],
+        "outcomeItemIds": [
+            "item_corp4_grass2_1",
+            "item_corp4_animal_1"
+        ],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 2,
+        "sortId1": -80,
+        "sortId2": 26,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [
+            3,
+            1
+        ],
+        "dischargeType": false,
+        "id": "item_plant_sp_4",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": true,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 10
+    },
+    "wikientryid": "wiki_item_plant_sp_4",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_nature",
+        "id": "wiki_item_plant_sp_4",
+        "order": 27,
+        "prtsId": "",
+        "refItemId": "item_plant_sp_4",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_gather_map02_lv002_2": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 1231776342217456980,
+                "text": "Wuling City: Technological Production Office"
+            },
+            "iconId": "icon_tips_doodad",
+            "id": "item_obtain_gather_map02_lv002_2",
+            "phaseArgs": "",
+            "phaseId": ""
+        },
+        "item_obtain_plant": {
+            "bindSystem": 201,
+            "desc": {
+                "id": -358406319131326489,
+                "text": "Plant crops at the Eco-Farm"
+            },
+            "iconId": "icon_tips_doodad",
+            "id": "item_obtain_plant",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_plant",
+        "name": {
+            "id": 6281814164593113046,
+            "text": "Plants"
+        },
+        "sortId": 2,
+        "type": 2
+    },
+    "name": "Amber Rice"
+}

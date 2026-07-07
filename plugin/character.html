@@ -276,7 +276,7 @@
 
         async function loadCharacterManifest(showHidden) {
             try {
-                const res = await (window.akeFetch || fetch)('/public/CH/character/manifest.json');
+                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/character/manifest.json') || '/public/CH/character/manifest.json');
                 if (!res.ok) throw new Error('无法加载角色清单');
                 const allChars = await res.json();
                 rawAllCharacters = allChars || [];

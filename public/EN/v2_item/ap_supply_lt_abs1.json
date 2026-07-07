@@ -1,0 +1,74 @@
+{
+    "itemId": "ap_supply_lt_abs1",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 2296584615258462913,
+            "text": "A pharmaceutical agent capable of restoring sanity. Consider doubling your intake if you see double while reading these instructions."
+        },
+        "desc": {
+            "id": 1135170545017773747,
+            "text": "Use this to recover Sanity. This item also has an expiration date."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_ap_supply_lt",
+        "id": "ap_supply_lt_abs1",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_collection_item_1",
+        "name": {
+            "id": 4074752360504232204,
+            "text": "LTO Sanity Syrup"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_activity"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -21,
+        "sortId2": 503,
+        "type": 62,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 10
+    },
+    "systemjumptable": {
+        "item_obtain_activity": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": -1457834971849491159,
+                "text": "Reward: Events"
+            },
+            "iconId": "icon_tips_activity",
+            "id": "item_obtain_activity",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 1,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 62,
+        "name": {
+            "id": 2722884457964412418,
+            "text": "LTO Sanity Meds"
+        },
+        "showCount": true,
+        "showCountInTips": false,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "name": "LTO Sanity Syrup"
+}

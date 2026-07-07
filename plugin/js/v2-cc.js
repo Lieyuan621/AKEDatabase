@@ -1,4 +1,5 @@
 (function() {
+    const t = (key, params) => window.akeI18n ? window.akeI18n.t(key, params) : key;
     let allGames = [];
     let activeGameId = null;
     let isInitialized = false;
@@ -209,7 +210,7 @@
 
     async function loadGameManifest(showHidden) {
         try {
-            const res = await (window.akeFetch || fetch)('/public/CH/v2_cc/manifest.json');
+            const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/v2_cc/manifest.json') || '/public/CH/v2_cc/manifest.json');
             if (!res.ok) throw new Error('无法加载合约清单');
             const all = await res.json();
             let games = showHidden ? all : all.filter(g => !g.hidden);
@@ -263,8 +264,8 @@
         container.innerHTML = '';
 
         if (filtered.length === 0) {
-            container.innerHTML = '<div class="v2cc-loader">无匹配合约</div>';
-            if (detailContainer) detailContainer.innerHTML = '<div class="v2cc-loader">请选择合约赛季</div>';
+            container.innerHTML = `<div class="v2cc-loader">${t('moduleInternal.v2Cc.noMatch')}</div>`;
+            if (detailContainer) detailContainer.innerHTML = `<div class="v2cc-loader">${t('moduleInternal.v2Cc.selectSeason')}</div>`;
             activeGameId = null;
             return;
         }
@@ -338,7 +339,7 @@
     }
 
     async function loadGameDetail(game, container) {
-        container.innerHTML = '<div class="v2cc-loader">加载合约数据...</div>';
+        container.innerHTML = `<div class="v2cc-loader">${t('moduleInternal.v2Cc.loading')}</div>`;
         try {
             const data = await (window.akeFetch || fetch)(game.contentFile).then(r => r.json());
             currentData = data;
@@ -378,7 +379,7 @@
             bindTagEvents();
             updateSelectedSummary(data.cctagtable || {});
         } catch (err) {
-            container.innerHTML = `<div class="v2cc-error">加载失败: ${escapeHtml(err.message)}</div>`;
+            container.innerHTML = `<div class="v2cc-error">${t('moduleInternal.v2Cc.loadFailed', { message: escapeHtml(err.message) })}</div>`;
         }
     }
 
@@ -752,7 +753,7 @@
 
     async function loadCcMaps() {
         try {
-            const res = await (window.akeFetch || fetch)('/public/CH/maps.json');
+            const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/maps.json') || '/public/CH/maps.json');
             if (!res.ok) return;
             const data = await res.json();
             ccAttrMap = data.ATTR_MAP || {};

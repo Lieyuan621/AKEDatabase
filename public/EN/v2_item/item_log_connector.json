@@ -1,0 +1,87 @@
+{
+    "itemId": "item_log_connector",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 6494316316358359737,
+            "text": "A logistics unit that AIC Factory managers can use to create an organized transport system and avoid the \"spaghetti\"."
+        },
+        "desc": {
+            "id": -5766646421058221584,
+            "text": "A logistics unit that lets 2 transport belts intersect without obstructing each other."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_log_connector",
+        "id": "item_log_connector",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": -537318491966737329,
+            "text": "Belt Bridge"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 5275502634276494770,
+            "text": "Research the specified tech in the Basic AIC Plan to get this."
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_techtree"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -103,
+        "sortId2": 2,
+        "type": 11,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "wikientryid": "wiki_item_log_connector",
+    "wikientrydatatable": {
+        "desc": {
+            "id": -3679116810201257393,
+            "text": "The <@gd.key>Belt Bridge</> allows a transport belt to go over another without disrupting the flow of items on both belts."
+        },
+        "groupId": "wiki_group_building_logistic",
+        "id": "wiki_item_log_connector",
+        "order": 3,
+        "prtsId": "",
+        "refItemId": "item_log_connector",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_techtree": {
+            "bindSystem": 104,
+            "desc": {
+                "id": -5929385360001250908,
+                "text": "Research: AIC Factory Plan Technologies"
+            },
+            "iconId": "icon_tips_factory",
+            "id": "item_obtain_techtree",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 1,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 11,
+        "name": {
+            "id": -6597940580029514091,
+            "text": "Logistics"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "name": "Belt Bridge"
+}

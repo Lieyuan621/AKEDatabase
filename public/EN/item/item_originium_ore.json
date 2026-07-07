@@ -1,0 +1,42 @@
+{
+    "id": "item_originium_ore",
+    "icon": "/public/images/item/itemiconbig/item_originium_ore.png",
+    "name": "Originium Ore",
+    "description": "A raw formation of Originium unearthed in its most natural form. This can be processed in the AIC.",
+    "rarity": 1,
+    "type": 8,
+    "obtainWayIds": [
+        "item_obtain_gather_originium_ore",
+        "item_obtain_gather_common_ore",
+        "item_obtain_gather_map01_lv001"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_gather_originium_ore",
+            "desc": "Originium Mining Spots",
+            "bindSystem": 0,
+            "phaseId": "Map",
+            "phaseArgs": "{\r\n  \"resourceTemplateId\": \"mark_p_minepoint_team\",\r\n  \"resourceItemId\": \"item_originium_ore\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_doodad.png"
+        },
+        {
+            "id": "item_obtain_gather_common_ore",
+            "desc": "Extraction: Mining Rigs",
+            "bindSystem": 10000000,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_doodad.png"
+        },
+        {
+            "id": "item_obtain_gather_map01_lv001",
+            "desc": "The Hub",
+            "bindSystem": 10000000,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_doodad.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": []
+}

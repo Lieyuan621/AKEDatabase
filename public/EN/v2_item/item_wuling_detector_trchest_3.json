@@ -1,0 +1,101 @@
+{
+    "itemId": "item_wuling_detector_trchest_3",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -1380444498313874746,
+            "text": "A small detector furnished with Xiranite technology, giving it the ability to accurately locate metallic objects. The detector can thus be used to locate storage crates. \nFresh off the production line! Look how it shimmers!"
+        },
+        "desc": {
+            "id": 7770457287362856343,
+            "text": "Consumable. Usage reveals an undiscovered storage crate within the current area. Usable only after all fogged places of the map have been charted. This item only works in Wuling."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_wuling_detector_trchest_3",
+        "id": "item_wuling_detector_trchest_3",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": -2261743838891719258,
+            "text": "Keen Wuling Detector"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_2",
+            "item_obtain_domain_shop_levelup"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -21,
+        "sortId2": 4,
+        "type": 55,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 10
+    },
+    "useitemtable": {
+        "duration": 0,
+        "effectType": 2,
+        "isPersistentBuff": false,
+        "isValuableDepot": true,
+        "itemId": "item_wuling_detector_trchest_3",
+        "itemUseDesc": {
+            "id": 7986400820427938043,
+            "text": "Consumable. Usage reveals an undiscovered storage crate within the current area. Usable only after all fogged places of the map have been charted. This item only works in Wuling."
+        },
+        "stackingKey": "",
+        "targetNumType": 0,
+        "uiType": 2,
+        "useActions": []
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_2": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 7739198979412470305,
+                "text": "Purchase: Wuling Stock Redistribution"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_2",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_2\"\r\n}",
+            "phaseId": "ShopTrade"
+        },
+        "item_obtain_domain_shop_levelup": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 1665065042415592699,
+                "text": "Stock Redistribution Terminal Upgrade"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_levelup",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 55,
+        "name": {
+            "id": -5504206337339733588,
+            "text": "Detector"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "name": "Keen Wuling Detector"
+}

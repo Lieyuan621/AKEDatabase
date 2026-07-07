@@ -1,0 +1,2475 @@
+{
+    "templateId": "eny_0023_aghornb",
+    "enemytemplatedisplayinfotable": {
+        "abilityDescIds": [
+            "common_ability"
+        ],
+        "description": {
+            "id": -6649738233758478966,
+            "text": "The \"Thrylissoron\" (archive ID: ACL072) is a non-standard variant of ACL071. It can manipulate its environment and make tactical decisions."
+        },
+        "displayType": 3,
+        "distributionIds": [
+            "distribution_map01_lv003",
+            "distribution_map01_lv006"
+        ],
+        "name": {
+            "id": 9163046261065889097,
+            "text": "Heavy Ram"
+        },
+        "nickname": {
+            "id": -3736403157231176262,
+            "text": "Heavy Ram"
+        },
+        "tags": [],
+        "templateId": "eny_0023_aghornb"
+    },
+    "enemytable": {
+        "eny_0023_aghornb_hdg001": {
+            "aiTemplateId": "aiconf_eny_0023_aghornb_hard",
+            "attrModifiers": [
+                {
+                    "attrType": 1,
+                    "attrValue": 0.5,
+                    "modifierType": 1,
+                    "modifyAttributeType": 0
+                }
+            ],
+            "attrTemplateId": "eny_0023_aghornb",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_eny_0023_aghornb_hdg001_burst"
+            ],
+            "enemyId": "eny_0023_aghornb_hdg001",
+            "isDangerous": false,
+            "modelId": "eny_0023_aghornb_race_postmodel",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0023_aghornb"
+        },
+        "eny_0023_aghornb": {
+            "aiTemplateId": "",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0023_aghornb",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0023_aghornb",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0023_aghornb"
+        },
+        "eny_0023_aghornb_001": {
+            "aiTemplateId": "aiconf_eny_0023_aghornb_001",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0023_aghornb",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0023_aghornb_001",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0023_aghornb"
+        },
+        "eny_0023_aghornb_agtrinit": {
+            "aiTemplateId": "",
+            "attrModifiers": [
+                {
+                    "attrType": 2,
+                    "attrValue": 1,
+                    "modifierType": 1,
+                    "modifyAttributeType": 0
+                },
+                {
+                    "attrType": 1,
+                    "attrValue": -0.5,
+                    "modifierType": 1,
+                    "modifyAttributeType": 0
+                }
+            ],
+            "attrTemplateId": "eny_0023_aghornb",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_eny_0045_agtrinit_minion_buff"
+            ],
+            "enemyId": "eny_0023_aghornb_agtrinit",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0023_aghornb"
+        },
+        "eny_0023_aghornb_bomb": {
+            "aiTemplateId": "aiconf_eny_0023_aghornb_bomb",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0023_aghornb",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0023_aghornb_bomb",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0023_aghornb"
+        },
+        "eny_0023_aghornb_dungeon": {
+            "aiTemplateId": "",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0023_aghornb",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_common_born"
+            ],
+            "enemyId": "eny_0023_aghornb_dungeon",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0023_aghornb"
+        },
+        "eny_0023_aghornb_hdg001_assult": {
+            "aiTemplateId": "aiconf_eny_0023_aghornb_hard",
+            "attrModifiers": [
+                {
+                    "attrType": 1,
+                    "attrValue": 0.5,
+                    "modifierType": 1,
+                    "modifyAttributeType": 0
+                }
+            ],
+            "attrTemplateId": "eny_0023_aghornb",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_eny_0023_aghornb_hdg001_burst"
+            ],
+            "enemyId": "eny_0023_aghornb_hdg001_assult",
+            "isDangerous": false,
+            "modelId": "eny_0023_aghornb_race_postmodel",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0023_aghornb"
+        },
+        "eny_0023_aghornb_noborneffect": {
+            "aiTemplateId": "",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0023_aghornb",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0023_aghornb_noborneffect",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0023_aghornb"
+        },
+        "eny_0023_aghornb_prolog": {
+            "aiTemplateId": "aiconf_eny_0023_aghornb_prolog",
+            "attrModifiers": [
+                {
+                    "attrType": 1,
+                    "attrValue": 0.8,
+                    "modifierType": 4,
+                    "modifyAttributeType": 0
+                },
+                {
+                    "attrType": 20,
+                    "attrValue": -120,
+                    "modifierType": 0,
+                    "modifyAttributeType": 0
+                },
+                {
+                    "attrType": 2,
+                    "attrValue": -0.8,
+                    "modifierType": 1,
+                    "modifyAttributeType": 0
+                }
+            ],
+            "attrTemplateId": "eny_0023_aghornb",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_prolog_born",
+                "buff_prolog_no_poise_rec"
+            ],
+            "enemyId": "eny_0023_aghornb_prolog",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0023_aghornb"
+        },
+        "eny_0023_aghornb_race": {
+            "aiTemplateId": "aiconf_eny_0023_aghornb_endinggame",
+            "attrModifiers": [
+                {
+                    "attrType": 20,
+                    "attrValue": 80,
+                    "modifierType": 0,
+                    "modifyAttributeType": 0
+                },
+                {
+                    "attrType": 1,
+                    "attrValue": 2.5,
+                    "modifierType": 4,
+                    "modifyAttributeType": 0
+                }
+            ],
+            "attrTemplateId": "eny_0023_aghornb",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_common_born",
+                "buff_eny_0023_aghornb_endinggame_vfx",
+                "buff_common_superarmor_infinity"
+            ],
+            "enemyId": "eny_0023_aghornb_race",
+            "isDangerous": false,
+            "modelId": "eny_0023_aghornb_race_postmodel",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": true,
+            "templateId": "eny_0023_aghornb"
+        },
+        "eny_0023_aghornb_reaper": {
+            "aiTemplateId": "aiconf_eny_0023_aghornb_reaper",
+            "attrModifiers": [
+                {
+                    "attrType": 2,
+                    "attrValue": 0.5,
+                    "modifierType": 1,
+                    "modifyAttributeType": 0
+                },
+                {
+                    "attrType": 1,
+                    "attrValue": -0.9,
+                    "modifierType": 1,
+                    "modifyAttributeType": 0
+                }
+            ],
+            "attrTemplateId": "eny_0023_aghornb",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_eny_0080_reaper_summon_born"
+            ],
+            "enemyId": "eny_0023_aghornb_reaper",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0023_aghornb"
+        },
+        "eny_0023_aghornb_settlement": {
+            "aiTemplateId": "Settlement/aiconf_eny_0023_aghornb_settlement",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0023_aghornb",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_settlement_addtag"
+            ],
+            "enemyId": "eny_0023_aghornb_settlement",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0023_aghornb"
+        },
+        "eny_0023_aghornb_train": {
+            "aiTemplateId": "aiconf_eny_0023_aghornb_train",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0023_aghornb",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0023_aghornb_train",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0023_aghornb"
+        },
+        "eny_0023_aghornb_train_attack4": {
+            "aiTemplateId": "aiconf_eny_0023_aghornb_train_attack4",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0023_aghornb",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_eny_0023_aghornb_skill04nocd"
+            ],
+            "enemyId": "eny_0023_aghornb_train_attack4",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0023_aghornb"
+        },
+        "eny_0023_aghornb_train_noattack3": {
+            "aiTemplateId": "aiconf_eny_0023_aghornb_train_noattack3",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0023_aghornb",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0023_aghornb_train_noattack3",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": true,
+            "showBigHeadbar": false,
+            "templateId": "eny_0023_aghornb"
+        }
+    },
+    "enemyattributetemplatetable": {
+        "eny_0023_aghornb": {
+            "aoiRadius": 0,
+            "attackValueAgainstTower": 20,
+            "breakingAttackedAtbObtain": 35,
+            "crystDmgResistScalar": 1,
+            "fireDmgResistScalar": 0.8,
+            "initialSuperArmor": 20,
+            "levelDependentAttributes": [
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 1
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 831
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 66
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 2
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 948
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 75
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 3
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 1072
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 85
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 4
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 1204
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 96
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 5
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 1342
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 107
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 6
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 1575
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 118
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 7
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 1834
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 129
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 8
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 2120
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 141
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 9
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 2435
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 153
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 10
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 2781
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 166
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 11
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 2976
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 179
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 12
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 3175
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 192
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 13
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 3530
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 205
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 14
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 3907
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 219
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 15
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 4305
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 233
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 16
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 4726
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 248
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 17
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 5168
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 263
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 18
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 5431
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 278
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 19
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 5695
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 294
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 20
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 5961
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 310
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 21
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 6557
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 328
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 22
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 7199
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 345
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 23
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 7890
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 364
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 24
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 8633
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 382
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 25
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 9432
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 401
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 26
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 10290
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 421
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 27
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 11209
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 441
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 28
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 12280
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 461
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 29
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 13433
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 482
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 30
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 14674
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 503
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 31
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 16554
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 546
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 32
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 18216
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 584
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 33
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 20023
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 625
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 34
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 21984
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 668
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 35
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 24112
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 712
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 36
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 26419
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 758
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 37
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 28919
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 807
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 38
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 31626
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 857
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 39
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 34554
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 910
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 40
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 37721
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 965
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 41
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 40825
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1022
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 42
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 44128
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1081
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 43
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 47642
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1143
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 44
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 51376
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1207
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 45
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 55339
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1274
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 46
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 59543
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1343
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 47
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 63999
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1414
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 48
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 68717
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1489
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 49
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 73709
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1565
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 50
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 78986
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1645
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 51
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 86014
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1735
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 52
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 91545
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1820
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 53
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 97387
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1908
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 54
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 103557
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2000
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 55
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 110073
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2094
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 56
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 116952
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2152
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 57
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 124214
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2212
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 58
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 131879
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2272
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 59
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 139968
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2333
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 60
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 148502
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2395
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 61
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 157595
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2462
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 62
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 166682
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2528
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 63
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 176574
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2597
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 64
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 186448
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2664
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 65
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 196768
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2735
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 66
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 207018
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2805
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 67
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 218150
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2878
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 68
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 229194
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2949
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 69
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 242410
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3026
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 70
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 256658
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3102
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 71
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 266136
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3152
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 72
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 275253
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3201
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 73
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 285177
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3252
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 74
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 294719
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3301
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 75
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 305098
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3352
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 76
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 315075
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3401
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 77
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 325920
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3453
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 78
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 336340
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3503
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 79
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 347661
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3554
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 80
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 357214
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3604
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 81
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 373882
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3656
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 82
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 391105
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3708
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 83
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 408895
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3760
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 84
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 427264
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3812
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 85
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 446223
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3865
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 86
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 465784
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3918
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 87
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 485960
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 3970
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 88
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 506763
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 4023
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 89
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 528205
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 4076
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 90
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 550298
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 4130
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 91
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 563775
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 4180
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 92
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 577465
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 4231
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 93
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 591368
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 4283
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 94
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 605487
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 4334
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 95
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 614829
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 4381
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 96
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 624241
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 4428
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 97
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 633724
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 4476
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 98
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 643278
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 4524
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 99
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 652904
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 4572
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 100
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 662600
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 4620
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                }
+            ],
+            "levelIndependentAttributes": {
+                "attrs": [
+                    {
+                        "attrType": 20,
+                        "attrValue": 160
+                    },
+                    {
+                        "attrType": 21,
+                        "attrValue": 7
+                    },
+                    {
+                        "attrType": 27,
+                        "attrValue": 1.25
+                    },
+                    {
+                        "attrType": 12,
+                        "attrValue": 3.2
+                    },
+                    {
+                        "attrType": 8,
+                        "attrValue": 1.5
+                    },
+                    {
+                        "attrType": 11,
+                        "attrValue": 0
+                    },
+                    {
+                        "attrType": 9,
+                        "attrValue": 0
+                    },
+                    {
+                        "attrType": 10,
+                        "attrValue": 0.5
+                    },
+                    {
+                        "attrType": 80,
+                        "attrValue": 0.8
+                    },
+                    {
+                        "attrType": 84,
+                        "attrValue": 0.8
+                    },
+                    {
+                        "attrType": 83,
+                        "attrValue": 1
+                    },
+                    {
+                        "attrType": 82,
+                        "attrValue": 1
+                    },
+                    {
+                        "attrType": 81,
+                        "attrValue": 0.8
+                    },
+                    {
+                        "attrType": 85,
+                        "attrValue": 1
+                    },
+                    {
+                        "attrType": 15,
+                        "attrValue": 1
+                    }
+                ]
+            },
+            "maxResilience": 65,
+            "naturalDmgResistScalar": 0.8,
+            "physicalDmgResistScalar": 0.8,
+            "poiseKnotBuffList": [],
+            "poiseKnotPctList": [],
+            "pulseDmgResistScalar": 1,
+            "pushedBackCoefficient": 0.3,
+            "resilienceDecreaseWhenHurt": 0,
+            "resilienceFullRecoverTime": 0,
+            "resilienceRecover": 0,
+            "resilienceRecoverInterval": 0,
+            "superArmorWhenResilienceZero": 0,
+            "templateId": "eny_0023_aghornb",
+            "zeroPoiseSuperArmor": 20
+        }
+    },
+    "enemyabilitydesctable": {
+        "common_ability": {
+            "abilityId": "common_ability",
+            "description": {
+                "id": -1633731920999524535,
+                "text": "This enemy has no special abilities."
+            },
+            "name": {
+                "id": 0,
+                "text": ""
+            }
+        }
+    },
+    "displayenemytypetable": {
+        "name": {
+            "id": -1307598238676421031,
+            "text": "Advanced"
+        }
+    },
+    "distributioninfotable": {
+        "distribution_map01_lv003": {
+            "areaName": {
+                "id": 6164779947969424768,
+                "text": "Aburrey Quarry"
+            },
+            "distributionId": "distribution_map01_lv003",
+            "jumpId": "jump_map01_lv003"
+        },
+        "distribution_map01_lv006": {
+            "areaName": {
+                "id": 4212856077090034288,
+                "text": "Origin Lodespring"
+            },
+            "distributionId": "distribution_map01_lv006",
+            "jumpId": "jump_map01_lv006"
+        }
+    },
+    "name": "Heavy Ram"
+}

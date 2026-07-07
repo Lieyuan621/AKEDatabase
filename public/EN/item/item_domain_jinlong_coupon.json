@@ -1,0 +1,51 @@
+{
+    "id": "item_domain_jinlong_coupon",
+    "icon": "/public/images/item/itemiconbig/item_domain_jinlong_coupon.png",
+    "name": "Wuling Stock Bill",
+    "description": "Stock bills issued in Wuling and only usable in the said region. They have all sorts of uses.",
+    "rarity": 5,
+    "type": 53,
+    "obtainWayIds": [
+        "item_obtain_settlement_jinlong",
+        "item_obtain_domain_depot_2",
+        "item_obtain_kitestation_mission",
+        "item_obtain_monster_common"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_settlement_jinlong",
+            "desc": "Reward: Wuling Outpost Orders",
+            "bindSystem": 501,
+            "phaseId": "SettlementMain",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_2\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_settlement.png"
+        },
+        {
+            "id": "item_obtain_domain_depot_2",
+            "desc": "Reward: Wuling Pack and Deliver",
+            "bindSystem": 503,
+            "phaseId": "DomainDepotPackage",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_2\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_domain_depot.png"
+        },
+        {
+            "id": "item_obtain_kitestation_mission",
+            "desc": "Reward: Environment Monitoring",
+            "bindSystem": 511,
+            "phaseId": "KiteStation",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_2\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_kite_station.png"
+        },
+        {
+            "id": "item_obtain_monster_common",
+            "desc": "Enemy Drops",
+            "bindSystem": 10000000,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_monster.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": []
+}

@@ -1,0 +1,100 @@
+{
+    "itemId": "item_wpnpotentialup_bp",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 4201206143919363573,
+            "text": "The Arsenal Engineers are always recording operator weapon preferences and other expectations they have... The Protocol Pass is an attempt used by the Arsenal to boost weapon R&D efficiency in Endfield."
+        },
+        "desc": {
+            "id": 8424732458721937834,
+            "text": "This can raise the potential of any weapon provided by Protocol Pass weapon supplies, including weapon supplies from future pass seasons.\nGo to the Database for details on applicable weapons."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_wpnpotentialup_bp",
+        "id": "item_wpnpotentialup_bp",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_collection_item_gold_1",
+        "name": {
+            "id": 7450719155694254826,
+            "text": "Protocolized Weapon Pattern"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_bp_pay"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 6,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -11,
+        "sortId2": 11,
+        "type": 87,
+        "valuableDepotRedDot": true,
+        "valuableTabType": 4
+    },
+    "weaponpotentialuptable": {
+        "itemId": "item_wpnpotentialup_bp",
+        "weaponIds": [
+            "wpn_sword_0010",
+            "wpn_funnel_0006",
+            "wpn_pistol_0005",
+            "wpn_sword_0017",
+            "wpn_pistol_0007",
+            "wpn_funnel_0017",
+            "wpn_claym_0016",
+            "wpn_lance_0007"
+        ]
+    },
+    "wikientryid": "wiki_item_wpnpotentialup_bp",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_special",
+        "id": "wiki_item_wpnpotentialup_bp",
+        "order": 26,
+        "prtsId": "",
+        "refItemId": "item_wpnpotentialup_bp",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_bp_pay": {
+            "bindSystem": 802,
+            "desc": {
+                "id": -2171165044214956094,
+                "text": "Protocol Pass: Protocol Customized"
+            },
+            "iconId": "icon_tips_bp",
+            "id": "item_obtain_bp_pay",
+            "phaseArgs": "{\r\n  \"panelId\": \"BattlePassPlan\"\r\n}",
+            "phaseId": "BattlePass"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 87,
+        "name": {
+            "id": -4684427080981313830,
+            "text": "Weapon Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 4
+    },
+    "name": "Protocolized Weapon Pattern"
+}

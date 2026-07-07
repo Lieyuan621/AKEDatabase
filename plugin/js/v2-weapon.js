@@ -13,6 +13,7 @@
 
     const IMAGE_BASE_PATH = '/public/images/';
     const WEAPON_TYPE_MAP = { 1: '单手剑', 2: '施术单元', 3: '双手剑', 5: '长柄武器', 6: '手铳' };
+    const t = (key, params) => window.akeI18n ? window.akeI18n.t(key, params) : key;
 
     function getCurrentShowHidden() {
         return window.akeData?.getConfig().showHidden ?? false;
@@ -57,7 +58,7 @@
             if (!existR.has(r)) continue;
             const btn = document.createElement('span');
             btn.className = `filter-btn ${selectedRarities.has(r) ? 'active' : ''}`;
-            btn.textContent = r + '星';
+            btn.textContent = t('common.star', { count: r });
             btn.addEventListener('click', () => {
                 selectedRarities.has(r) ? selectedRarities.delete(r) : selectedRarities.add(r);
                 btn.classList.toggle('active');
@@ -110,7 +111,7 @@
 
     async function loadWeaponManifest(showHidden) {
         try {
-            const res = await (window.akeFetch || fetch)('/public/CH/v2_weapon/manifest.json');
+            const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/v2_weapon/manifest.json') || '/public/CH/v2_weapon/manifest.json');
             if (!res.ok) throw new Error('无法加载武器清单');
             const all = await res.json();
         rawAllWeapons = all;
@@ -131,8 +132,8 @@
         const filtered = filterWeapons(allWeapons);
         container.innerHTML = '';
         if (filtered.length === 0) {
-            container.innerHTML = '<div class="loader">无匹配武器</div>';
-            if (detailContainer) detailContainer.innerHTML = '<div class="loader">请选择武器</div>';
+            container.innerHTML = `<div class="loader">${t('moduleInternal.v2Weapon.noMatch')}</div>`;
+            if (detailContainer) detailContainer.innerHTML = `<div class="loader">${t('moduleInternal.v2Weapon.choose')}</div>`;
             activeWeaponId = null;
             return;
         }
@@ -144,7 +145,7 @@
 
             const rb = document.createElement('span');
             rb.className = `rarity-bar rarity-${w.rarity}`;
-            rb.title = `稀有度 ${w.rarity}`;
+            rb.title = t('common.rarityValue', { value: w.rarity });
 
             const icon = document.createElement('img');
             icon.className = 'weapon-icon';
@@ -164,7 +165,7 @@
 
             const typeTag = document.createElement('span');
             typeTag.className = 'weapon-type-tag';
-            typeTag.textContent = WEAPON_TYPE_MAP[w.weaponType] || '未知';
+            typeTag.textContent = WEAPON_TYPE_MAP[w.weaponType] || t('common.unknown');
 
             item.appendChild(rb);
             item.appendChild(icon);
@@ -440,7 +441,7 @@
                         <div class="detail-text">
                             <div class="detail-title-row">
                                 <span class="detail-title">${escapeHtml(name)}</span>
-                                <span class="detail-rarity rarity-${rarity}" title="稀有度 ${rarity}"></span>
+                                <span class="detail-rarity rarity-${rarity}" title="${t('common.rarityValue', { value: rarity })}"></span>
                                 <span class="detail-id">${escapeHtml(weapon.weaponId)}</span>
                             </div>
                             <div class="detail-desc">${escapeHtml(desc)}</div>
@@ -463,7 +464,7 @@
     }
 
     async function loadWeaponDetail(weapon, container) {
-        container.innerHTML = '<div class="loader">加载武器数据...</div>';
+        container.innerHTML = `<div class="loader">${t('moduleInternal.v2Weapon.loading')}</div>`;
         try {
             const data = await (window.akeFetch || fetch)(weapon.contentFile).then(r => r.json());
             currentWeaponData = data;
@@ -488,7 +489,7 @@
                 });
             }
         } catch (err) {
-            container.innerHTML = `<div class="error-message">加载失败: ${err.message}</div>`;
+            container.innerHTML = `<div class="error-message">${t('moduleInternal.v2Weapon.loadFailed', { message: err.message })}</div>`;
         }
     }
 

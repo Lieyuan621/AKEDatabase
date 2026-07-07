@@ -1,0 +1,242 @@
+{
+    "itemId": "item_equip_t3_suit_atk01_edc_05",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 5798330269454747183,
+            "text": "Novel protective equipment modified to suit the work environment of the Aburrey Quarry. \nAccording to the engineers, future iterations of this armor will focus on full automation. The aim is to evacuate the wearer to safety, even if the wearer has been incapacitated."
+        },
+        "desc": {
+            "id": 5543645339181568876,
+            "text": "Designed by Triglava Armoury and assembled by the AIC. This equipment improves the wearer's combat capabilities."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_equip_t3_suit_atk01_edc_05",
+        "id": "item_equip_t3_suit_atk01_edc_05",
+        "maxBackpackStackCount": 1,
+        "maxStackCount": 1,
+        "modelKey": "int_drop_equip",
+        "name": {
+            "id": -6687866645429918542,
+            "text": "Aburrey Sensor Chip"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_equip"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 10,
+        "sortId1": -52,
+        "sortId2": 35,
+        "type": 6,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 3
+    },
+    "equiptable": {
+        "displayAttrModifiers": [
+            {
+                "attrIndex": 1,
+                "attrType": 42,
+                "attrValue": 23,
+                "compositeAttr": "",
+                "enhanceGuaranteeTimesRuleId": "",
+                "enhancedAttrIndex": 1,
+                "enhancedAttrValues": [],
+                "modifierType": 5
+            },
+            {
+                "attrIndex": 2,
+                "attrType": 40,
+                "attrValue": 15,
+                "compositeAttr": "",
+                "enhanceGuaranteeTimesRuleId": "",
+                "enhancedAttrIndex": 2,
+                "enhancedAttrValues": [],
+                "modifierType": 5
+            },
+            {
+                "attrIndex": 3,
+                "attrType": 32,
+                "attrValue": 0.294,
+                "compositeAttr": "",
+                "enhanceGuaranteeTimesRuleId": "",
+                "enhancedAttrIndex": 3,
+                "enhancedAttrValues": [],
+                "modifierType": 5
+            }
+        ],
+        "displayBaseAttrModifier": {
+            "attrIndex": 0,
+            "attrType": 3,
+            "attrValue": 15,
+            "compositeAttr": "",
+            "enhanceGuaranteeTimesRuleId": "",
+            "enhancedAttrIndex": 0,
+            "enhancedAttrValues": [],
+            "modifierType": 5
+        },
+        "domainId": "domain_1",
+        "equipAttrModifiers": [
+            {
+                "attrIndex": 0,
+                "attrType": 3,
+                "attrValues": [
+                    15,
+                    15,
+                    15,
+                    15
+                ],
+                "modifierType": 5,
+                "modifyAttributeType": 0
+            },
+            {
+                "attrIndex": 1,
+                "attrType": 42,
+                "attrValues": [
+                    23,
+                    23,
+                    23,
+                    23
+                ],
+                "modifierType": 5,
+                "modifyAttributeType": 0
+            },
+            {
+                "attrIndex": 2,
+                "attrType": 40,
+                "attrValues": [
+                    15,
+                    15,
+                    15,
+                    15
+                ],
+                "modifierType": 5,
+                "modifyAttributeType": 0
+            },
+            {
+                "attrIndex": 3,
+                "attrType": 32,
+                "attrValues": [
+                    0.294,
+                    0.294,
+                    0.294,
+                    0.294
+                ],
+                "modifierType": 5,
+                "modifyAttributeType": 0
+            }
+        ],
+        "itemId": "item_equip_t3_suit_atk01_edc_05",
+        "minWearLv": 50,
+        "partType": 2,
+        "suitID": "suit_atk01"
+    },
+    "equipformulatable": {
+        "costGoldId": "item_domain_tundra_coupon",
+        "costGoldNum": 9600,
+        "costItemId": [
+            "item_equip_script_3"
+        ],
+        "costItemNum": [
+            50
+        ],
+        "formulaId": "item_formu_t3_suit_atk01_edc_05",
+        "isNew": false,
+        "outcomeEquipId": "item_equip_t3_suit_atk01_edc_05",
+        "packId": "pack_tundra_suit_atk01",
+        "unlockKey": "",
+        "unlockType": 1,
+        "unlockValue": 35
+    },
+    "wikientryid": "wiki_item_equip_t3_suit_atk01_edc_05",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_equip_default",
+        "id": "wiki_item_equip_t3_suit_atk01_edc_05",
+        "order": 35,
+        "prtsId": "",
+        "refItemId": "item_equip_t3_suit_atk01_edc_05",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_equip": {
+            "bindSystem": 67,
+            "desc": {
+                "id": 4170146291278779065,
+                "text": "Gear Assembly"
+            },
+            "iconId": "icon_tips_proc",
+            "id": "item_obtain_equip",
+            "phaseArgs": "",
+            "phaseId": "EquipTech"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 6,
+        "name": {
+            "id": -2365265597869215300,
+            "text": "Gear"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 3
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_equip_ring",
+        "name": {
+            "id": -6894194081602645229,
+            "text": "Kit"
+        },
+        "sortId": 10,
+        "type": 10
+    },
+    "equipsuittable": [
+        {
+            "equipList": [
+                "item_equip_t3_suit_atk01_body_01",
+                "item_equip_t3_suit_atk01_body_02",
+                "item_equip_t3_suit_atk01_body_03",
+                "item_equip_t3_suit_atk01_body_04",
+                "item_equip_t3_suit_atk01_hand_01",
+                "item_equip_t3_suit_atk01_edc_01",
+                "item_equip_t3_suit_atk01_edc_02",
+                "item_equip_t3_suit_atk01_edc_03",
+                "item_equip_t3_suit_atk01_edc_04",
+                "item_equip_t3_suit_atk01_edc_05",
+                "item_equip_t3_suit_atk01_edc_06"
+            ],
+            "list": [
+                {
+                    "equipCnt": 3,
+                    "skillID": "passive_equipsuit_atk_01",
+                    "skillLv": 1,
+                    "suitID": "suit_atk01",
+                    "suitLogoName": "icon_pack_tundra_suit_atk01",
+                    "suitName": {
+                        "id": 2134558188647797356,
+                        "text": "Aburrey's Legacy"
+                    }
+                }
+            ]
+        }
+    ],
+    "name": "Aburrey Sensor Chip"
+}

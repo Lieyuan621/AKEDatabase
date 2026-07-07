@@ -1,0 +1,111 @@
+{
+    "itemId": "item_domain_tundra_coupon",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -4179407246446456944,
+            "text": "Pursuant to relevant provisions of the Band Accord, all signatories shall, in addition to simultaneously guaranteeing that Talosian Credit Notes provide a currency circulation sufficient for the civil economy, guarantee a commodity stockpile sufficient for the agreed-upon supply of such types of allocation orders so as to achieve an orderly and effective joint allocation during extraordinary circumstances."
+        },
+        "desc": {
+            "id": 3846804401122573842,
+            "text": "Stock bills issued in Valley IV and only usable in the said region. They have all sorts of uses."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_domain_tundra_coupon",
+        "id": "item_domain_tundra_coupon",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 2982387080565386942,
+            "text": "Valley Stock Bill"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -5672885526579170028,
+            "text": "Drop: Enemy Encounters during Exploration"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_settlement_tundra",
+            "item_obtain_domain_depot_1",
+            "item_obtain_monster_common"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -12,
+        "sortId2": 2,
+        "type": 53,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "wikientryid": "wiki_item_domain_tundra_coupon",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_other",
+        "id": "wiki_item_domain_tundra_coupon",
+        "order": 5,
+        "prtsId": "",
+        "refItemId": "item_domain_tundra_coupon",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_settlement_tundra": {
+            "bindSystem": 501,
+            "desc": {
+                "id": 1330808358215359157,
+                "text": "Reward: Valley IV Outpost Orders"
+            },
+            "iconId": "icon_tips_settlement",
+            "id": "item_obtain_settlement_tundra",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "SettlementMain"
+        },
+        "item_obtain_domain_depot_1": {
+            "bindSystem": 503,
+            "desc": {
+                "id": -3469576558392305777,
+                "text": "Reward: Valley IV Pack and Deliver"
+            },
+            "iconId": "icon_tips_domain_depot",
+            "id": "item_obtain_domain_depot_1",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "DomainDepotPackage"
+        },
+        "item_obtain_monster_common": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": -8833444707159090547,
+                "text": "Enemy Drops"
+            },
+            "iconId": "icon_tips_monster",
+            "id": "item_obtain_monster_common",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 53,
+        "name": {
+            "id": 6456409470881217971,
+            "text": "Stock Bill"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "name": "Valley Stock Bill"
+}

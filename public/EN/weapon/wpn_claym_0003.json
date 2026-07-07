@@ -1,0 +1,180 @@
+{
+  "weaponId": "wpn_claym_0003",
+  "title": "Industry 0.1",
+  "rarity": 4,
+  "weapontype": 3,
+  "icon": "/public/images/weapon/icon/wpn_claym_0003.png",
+  "iconbig": "/public/images/weapon/iconbig/wpn_claym_0003.png",
+  "iconfull": "/public/images/weapon/full/wpn_claym_0003.png",
+  "desc": "A weapon equipped by Endfield operators to significantly boost their combat capabilities.",
+  "decoDesc": "A weapon commonly seen in the frontiers. No one knows who came up with the basic designs. This particular piece can be easily produced by common industrial machinery.",
+  "baseAtk": [
+    34,
+    38,
+    41,
+    45,
+    48,
+    52,
+    55,
+    59,
+    62,
+    65,
+    69,
+    72,
+    76,
+    79,
+    83,
+    86,
+    90,
+    93,
+    96,
+    100,
+    103,
+    107,
+    110,
+    114,
+    117,
+    121,
+    124,
+    127,
+    131,
+    134,
+    138,
+    141,
+    145,
+    148,
+    152,
+    155,
+    158,
+    162,
+    165,
+    169,
+    172,
+    176,
+    179,
+    183,
+    186,
+    189,
+    193,
+    196,
+    200,
+    203,
+    207,
+    210,
+    214,
+    217,
+    220,
+    224,
+    227,
+    231,
+    234,
+    238,
+    241,
+    245,
+    248,
+    251,
+    255,
+    258,
+    262,
+    265,
+    269,
+    272,
+    276,
+    279,
+    282,
+    286,
+    289,
+    293,
+    296,
+    300,
+    303,
+    307,
+    310,
+    313,
+    317,
+    320,
+    324,
+    327,
+    331,
+    334,
+    338,
+    341
+  ],
+  "skilllist": [
+    {
+      "skillName": "Strength Boost [S]",
+      "description": "Strength <@ba.vup>+{str}</>",
+      "blackboard": [
+        {
+          "key": "str",
+          "value": [
+            12,
+            21,
+            31,
+            40,
+            50,
+            60,
+            69,
+            79,
+            93
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "ATK Boost [S]",
+      "description": "Attack <@ba.vup>+{atk:0.0%}</>",
+      "blackboard": [
+        {
+          "key": "atk",
+          "value": [
+            0.03,
+            0.054,
+            0.078,
+            0.102,
+            0.126,
+            0.15,
+            0.174,
+            0.198,
+            0.234
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "Suppression: Emergency Boost",
+      "description": "When the wielder's battle skill hits the enemy, the wielder gains ATK <@ba.vup>+{atk_up:0.0%}</> for {duration:0}s.\n<@ba.info>Effects of the same name cannot stack. </>",
+      "blackboard": [
+        {
+          "key": "atk_up",
+          "value": [
+            0.12,
+            0.144,
+            0.168,
+            0.192,
+            0.216,
+            0.24,
+            0.264,
+            0.288,
+            0.336
+          ]
+        },
+        {
+          "key": "duration",
+          "value": [
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20
+          ]
+        }
+      ]
+    }
+  ],
+  "weaponDesc": "Though this wasn't the first time they talked about Bander Scavs, I never really saw one myself.\nPeople can't really appreciate how difficult life could be out there on Talos-II. Band cities and neighborhoods must work closely together to survive, yet many Banders chose to leave the city behind to live as a nomad or prospector in the frontiers.\nI myself wasn't too surprised by this. These people had lost too much. I interviewed around a dozen refugees last week from a disaster-stricken neighborhood that ran out of food. They had no other choice.\nHowever, there were also some who refused to live in a world of law or were simply sociopaths. These individuals preferred a life filled with constant violence and danger.\nRegardless of their intents, no Bander nomads could truly give up the touch of civilization. Also last week, I saw them craft weapons with a scavenged machine tool. I was extremely curious how they managed to get their hands on a working lathe. The answer was simple. They got lucky with a scavenging run through a Bander city dumpsite. These landfills provided for their every need.\nTurned out that Bander Scav was a pretty accurate name for these people.\nIf you're reading this, tell that little Bander journalist to stop stalking me. People who complain about sleeping bags do not belong in the wildlands. She should get back to her cushy Bander place and stick to being a celebrity tabloid writer."
+}

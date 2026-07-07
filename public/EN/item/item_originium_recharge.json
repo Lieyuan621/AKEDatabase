@@ -1,0 +1,60 @@
+{
+    "id": "item_originium_recharge",
+    "icon": "/public/images/item/itemiconbig/item_originium_recharge.png",
+    "name": "Origeometry",
+    "description": "An extremely rare crystal habit of Originium with many potential uses.",
+    "rarity": 6,
+    "type": 29,
+    "obtainWayIds": [
+        "item_obtain_payshop_originium",
+        "item_obtain_bp",
+        "item_obtain_mission_main",
+        "item_obtain_ether_collection",
+        "item_obtain_second_energy_point"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_payshop_originium",
+            "desc": "Acquisition Center: Originium Exchange",
+            "bindSystem": 51,
+            "phaseId": "CashShop",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_originium_recharge\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_payshop.png"
+        },
+        {
+            "id": "item_obtain_bp",
+            "desc": "Reward: Protocol Pass",
+            "bindSystem": 802,
+            "phaseId": "BattlePass",
+            "phaseArgs": "{\r\n  \"panelId\": \"BattlePassPlan\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_bp.png"
+        },
+        {
+            "id": "item_obtain_mission_main",
+            "desc": "Reward: Main Mission",
+            "bindSystem": 10000000,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_mission.png"
+        },
+        {
+            "id": "item_obtain_ether_collection",
+            "desc": "Submit Aurylene at TP Points",
+            "bindSystem": 57,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_explore.png"
+        },
+        {
+            "id": "item_obtain_second_energy_point",
+            "desc": "Sub-Energy Alluvium",
+            "bindSystem": 10000000,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_enemy_spawner.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": []
+}

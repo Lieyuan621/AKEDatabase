@@ -1,0 +1,51 @@
+{
+    "id": "item_char_skill_level_1_6",
+    "icon": "/public/images/item/itemiconbig/item_char_skill_level_1_6.png",
+    "name": "Protoprism",
+    "description": "A material that upgrades operator skills.",
+    "rarity": 3,
+    "type": 27,
+    "obtainWayIds": [
+        "item_obtain_dungeon_0006_untouched",
+        "item_obtain_dungeon_0006",
+        "item_obtain_shop_greenticket_char_skill_level_1_6",
+        "item_obtain_explore"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_dungeon_0006_untouched",
+            "desc": "Protocol Space: Skill Up",
+            "bindSystem": 52,
+            "phaseId": "Map",
+            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource2100320001\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
+        },
+        {
+            "id": "item_obtain_dungeon_0006",
+            "desc": "Protocol Space: Skill Up",
+            "bindSystem": 52,
+            "phaseId": "DungeonEntry",
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung01_group_skill01\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_dungeon.png"
+        },
+        {
+            "id": "item_obtain_shop_greenticket_char_skill_level_1_6",
+            "desc": "Acquisition Center: AIC Quota Exchange",
+            "bindSystem": 51,
+            "phaseId": "CashShop",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_green_1\",\r\n  \"goodsId\": \"payshop_green_item_char_skill_level_1_6\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_payshop.png"
+        },
+        {
+            "id": "item_obtain_explore",
+            "desc": "Exploring and Gathering",
+            "bindSystem": 10000000,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_explore.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": []
+}

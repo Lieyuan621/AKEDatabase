@@ -1,0 +1,24 @@
+{
+    "id": "item_spaceship_cmpt_2",
+    "icon": "/public/images/item/itemiconbig/item_spaceship_cmpt_2.png",
+    "name": "Aerospace Material II",
+    "description": "An advanced industrial construction material. Can be used to upgrade <i>Dijiang</i>.",
+    "rarity": 4,
+    "type": 8,
+    "obtainWayIds": [
+        "item_obtain_recycle_tundra"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_recycle_tundra",
+            "desc": "Recycling Station",
+            "bindSystem": 0,
+            "phaseId": "Map",
+            "phaseArgs": "{\r\n  \"resourceTemplateId\": \"mark_p_recycler\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_doodad.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": []
+}

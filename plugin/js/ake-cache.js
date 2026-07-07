@@ -1,9 +1,30 @@
 (function() {
     const CACHE_MARKER_KEY = 'akedata-about-cache-marker';
+    const VERSION_INFO_PATH = '/public/version.json';
+    let cacheBustValue = '';
 
-    function getAboutMarker() {
-        const aboutBox = document.querySelector('.about-box');
-        return aboutBox ? aboutBox.textContent.replace(/\s+/g, ' ').trim() : '';
+    async function initVersionMarker() {
+        try {
+            const response = await fetch(VERSION_INFO_PATH, { cache: 'no-cache' });
+            if (!response.ok) return;
+            const currentMarker = (await response.text()).replace(/\s+/g, ' ').trim();
+            const previousMarker = localStorage.getItem(CACHE_MARKER_KEY);
+            const shouldRefreshCache = Boolean(currentMarker && previousMarker !== currentMarker);
+            if (shouldRefreshCache) {
+                cacheBustValue = String(Date.now());
+            }
+            if (currentMarker && previousMarker !== currentMarker) {
+                localStorage.setItem(CACHE_MARKER_KEY, currentMarker);
+            }
+            window.akeDataCacheRefreshRequired = shouldRefreshCache;
+            try {
+                window.akeVersionInfo = JSON.parse(currentMarker);
+            } catch (err) {
+                window.akeVersionInfo = null;
+            }
+        } catch (err) {
+            console.warn('Failed to load version marker:', err);
+        }
     }
 
     function appendCacheBust(resource, cacheBustValue) {
@@ -16,16 +37,11 @@
             : url.href;
     }
 
-    const currentMarker = getAboutMarker();
-    const previousMarker = localStorage.getItem(CACHE_MARKER_KEY);
-    const shouldRefreshCache = Boolean(currentMarker && previousMarker !== currentMarker);
-    const cacheBustValue = shouldRefreshCache ? String(Date.now()) : '';
+    const versionMarkerReady = initVersionMarker();
+    window.akeVersionReady = versionMarkerReady;
 
-    if (currentMarker && previousMarker !== currentMarker) {
-        localStorage.setItem(CACHE_MARKER_KEY, currentMarker);
-    }
-
-    window.akeFetch = function(resource, init) {
+    window.akeFetchBase = async function(resource, init) {
+        await versionMarkerReady;
         const requestInit = init ? { ...init } : undefined;
         const requestResource = appendCacheBust(resource, cacheBustValue);
 
@@ -36,5 +52,15 @@
         return fetch(requestResource, { ...requestInit, cache: requestInit?.cache || 'force-cache' });
     };
 
-    window.akeDataCacheRefreshRequired = shouldRefreshCache;
+    window.akeFetch = async function(resource, init) {
+        const localizedResource = window.akeI18n ? window.akeI18n.dataPath(resource) : resource;
+        const fallbackResource = window.akeI18n ? window.akeI18n.fallbackDataPath(localizedResource) : localizedResource;
+        const response = await window.akeFetchBase(localizedResource, init);
+        if (response.ok || !window.akeI18n) return response;
+
+        if (fallbackResource === localizedResource) return response;
+        return window.akeFetchBase(fallbackResource, init);
+    };
+
+    window.akeDataCacheRefreshRequired = false;
 })();

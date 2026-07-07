@@ -1,0 +1,171 @@
+{
+    "itemId": "item_char_skill_specialize_5",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -6606727973372245263,
+            "text": "A device that is extremely sensitive to ambient Originium. It can boost Originium sensitivity of all weapons and devices within a significantly large area. The Triphasic Nanoflake is a key component for containing and storing the Arts, and offers better performance in non-realspace environments compared to the older Bipolar Nanoflakes."
+        },
+        "desc": {
+            "id": 4493270439778949740,
+            "text": "A rare material for operator promotion, weapon tuning, and operator skill mastery."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_char_skill_specialize_5",
+        "id": "item_char_skill_specialize_5",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": -3425064405892993043,
+            "text": "Triphasic Nanoflake"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_case_bp_selfselect_skillsp_1_5",
+            "item_obtain_dungeon_ss05_untouched",
+            "item_obtain_dungeon_ss05",
+            "item_obtain_dung02_bossrush02_03",
+            "item_obtain_shop_greenticket_char_skill_specialize_5",
+            "item_obtain_shop_yellowticket_char_skill_specialize_5",
+            "item_obtain_dungeon_common",
+            "item_obtain_dungeon_bossrush_common"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -34,
+        "sortId2": 15,
+        "type": 95,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 4
+    },
+    "wikientryid": "wiki_item_char_skill_specialize_5",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_special",
+        "id": "wiki_item_char_skill_specialize_5",
+        "order": 15,
+        "prtsId": "",
+        "refItemId": "item_char_skill_specialize_5",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_case_bp_selfselect_skillsp_1_5": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 4473009150534473489,
+                "text": "Advanced Progression Selection Crate Ⅰ"
+            },
+            "iconId": "icon_tips_trd",
+            "id": "item_obtain_case_bp_selfselect_skillsp_1_5",
+            "phaseArgs": "{\r\n  \"itemId\": \"item_case_bp_selfselect_skillsp_1\",\r\n  \"selectedRewardId\": \"reward_case_bp_selfselect_skillsp_1_5\"\r\n}",
+            "phaseId": "UsableItemChest"
+        },
+        "item_obtain_dungeon_ss05_untouched": {
+            "bindSystem": 52,
+            "desc": {
+                "id": -422124837201706177,
+                "text": "Protocol Space: Hazardous Material Containment Vault"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_ss05_untouched",
+            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_ss22800020013\"\r\n}",
+            "phaseId": "Map"
+        },
+        "item_obtain_dungeon_ss05": {
+            "bindSystem": 52,
+            "desc": {
+                "id": 106637211233311224,
+                "text": "Protocol Space: Hazardous Material Containment Vault"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_ss05",
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung_group_ss05\"\r\n}",
+            "phaseId": "DungeonEntry"
+        },
+        "item_obtain_dung02_bossrush02_03": {
+            "bindSystem": 52,
+            "desc": {
+                "id": 2797074605357084831,
+                "text": "Crisis Calamity: Nefarith - Deep Dive Mode"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dung02_bossrush02_03",
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung02_group_bossrush02\",\r\n  \"dungeonId\": \"dung02_bossrush02_03\"\r\n}",
+            "phaseId": "DungeonEntry"
+        },
+        "item_obtain_shop_greenticket_char_skill_specialize_5": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 4459030130767498410,
+                "text": "Acquisition Center: AIC Quota Exchange"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_shop_greenticket_char_skill_specialize_5",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_green_1\",\r\n  \"goodsId\": \"payshop_green_item_char_skill_specialize_5\"\r\n}",
+            "phaseId": "CashShop"
+        },
+        "item_obtain_shop_yellowticket_char_skill_specialize_5": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 3798825769503625081,
+                "text": "Acquisition Center: Bond Quota Exchange"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_shop_yellowticket_char_skill_specialize_5",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_yellow_1\",\r\n  \"goodsId\": \"payshop_yellow_item_char_skill_specialize_5\"\r\n}",
+            "phaseId": "CashShop"
+        },
+        "item_obtain_dungeon_common": {
+            "bindSystem": 52,
+            "desc": {
+                "id": -8523774279803415166,
+                "text": "Chance Drop: Certain Protocol Space: Crisis Drills"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_common",
+            "phaseArgs": "{\r\n  \"panelId\": \"AdventureDungeon\",\r\n  \"dungeonTab\": \"SpecialResource\"\r\n}",
+            "phaseId": "AdventureBook"
+        },
+        "item_obtain_dungeon_bossrush_common": {
+            "bindSystem": 52,
+            "desc": {
+                "id": 775163229969626046,
+                "text": "Chance Drop: Certain Protocol Space: RE-Crisis (Deep Dive)"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_bossrush_common",
+            "phaseArgs": "{\r\n  \"panelId\": \"AdventureDungeon\",\r\n  \"dungeonTab\": \"BossRush\"\r\n}",
+            "phaseId": "AdventureBook"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 95,
+        "name": {
+            "id": -6298492876840579785,
+            "text": "Rare Progression Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 4
+    },
+    "name": "Triphasic Nanoflake"
+}

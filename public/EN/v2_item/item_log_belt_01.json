@@ -1,0 +1,74 @@
+{
+    "itemId": "item_log_belt_01",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 3386493596653680417,
+            "text": "A basic conveyor belt for transporting things. Belts are the blood vessels of the AIC Factory."
+        },
+        "desc": {
+            "id": 2142445961718090727,
+            "text": "A logistics unit for transporting solid goods and materials."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_log_belt_01",
+        "id": "item_log_belt_01",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": -1486544973969981330,
+            "text": "Transport Belt"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -6775800136485134002,
+            "text": "Research the specified tech in the Basic AIC Plan to get this."
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_techtree"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 1,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -103,
+        "sortId2": 1,
+        "type": 11,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "systemjumptable": {
+        "item_obtain_techtree": {
+            "bindSystem": 104,
+            "desc": {
+                "id": -5929385360001250908,
+                "text": "Research: AIC Factory Plan Technologies"
+            },
+            "iconId": "icon_tips_factory",
+            "id": "item_obtain_techtree",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 1,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 11,
+        "name": {
+            "id": -6597940580029514091,
+            "text": "Logistics"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "name": "Transport Belt"
+}

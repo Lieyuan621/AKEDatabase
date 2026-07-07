@@ -1,0 +1,24 @@
+{
+    "id": "item_adventureexp",
+    "icon": "/public/images/item/itemiconbig/item_adventureexp.png",
+    "name": "Operational EXP",
+    "description": "Raises the Endministrator's Authority Level.",
+    "rarity": 5,
+    "type": 37,
+    "obtainWayIds": [
+        "item_obtain_adventurebook"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_adventurebook",
+            "desc": "Reward: Operational Manual",
+            "bindSystem": 652,
+            "phaseId": "AdventureBook",
+            "phaseArgs": "{\r\n  \"panelId\": \"AdventureStage\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_adventure_book.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": []
+}

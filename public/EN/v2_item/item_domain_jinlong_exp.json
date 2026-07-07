@@ -1,0 +1,98 @@
+{
+    "itemId": "item_domain_jinlong_exp",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -2686689525779255410,
+            "text": "The mark of regional development in Wuling. The proof of the hard work and sacrifices made by every contributor."
+        },
+        "desc": {
+            "id": 1074048553412116192,
+            "text": "Construction and development work in Wuling will raise this development metric. This can raise the Regional Development Level to provide a generous reward."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_domain_jinlong_exp",
+        "id": "item_domain_jinlong_exp",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 3053141748058850606,
+            "text": "Wuling Regional Development Metric"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -8358446289682581723,
+            "text": "Investing in regional development"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_settlement_jinlong",
+            "item_obtain_domain_depot_2",
+            "item_obtain_kitestation_mission"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -999,
+        "sortId2": 7,
+        "type": 65,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "systemjumptable": {
+        "item_obtain_settlement_jinlong": {
+            "bindSystem": 501,
+            "desc": {
+                "id": 2736656222868533497,
+                "text": "Reward: Wuling Outpost Orders"
+            },
+            "iconId": "icon_tips_settlement",
+            "id": "item_obtain_settlement_jinlong",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_2\"\r\n}",
+            "phaseId": "SettlementMain"
+        },
+        "item_obtain_domain_depot_2": {
+            "bindSystem": 503,
+            "desc": {
+                "id": 3222529787604137390,
+                "text": "Reward: Wuling Pack and Deliver"
+            },
+            "iconId": "icon_tips_domain_depot",
+            "id": "item_obtain_domain_depot_2",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_2\"\r\n}",
+            "phaseId": "DomainDepotPackage"
+        },
+        "item_obtain_kitestation_mission": {
+            "bindSystem": 511,
+            "desc": {
+                "id": -6336760271726407157,
+                "text": "Reward: Environment Monitoring"
+            },
+            "iconId": "icon_tips_kite_station",
+            "id": "item_obtain_kitestation_mission",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_2\"\r\n}",
+            "phaseId": "KiteStation"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 65,
+        "name": {
+            "id": 4655715809647990083,
+            "text": "Regional Development Metric"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 1,
+        "unlockSystemType": 502,
+        "valuableTabType": 6
+    },
+    "name": "Wuling Regional Development Metric"
+}

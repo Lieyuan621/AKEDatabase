@@ -4,7 +4,7 @@
 
     async function loadSponsors() {
         try {
-            const res = await (window.akeFetch || fetch)('/public/CH/about/sponsors.json');
+            const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/about/sponsors.json') || '/public/CH/about/sponsors.json');
             if (!res.ok) throw new Error('无法加载赞助数据');
             let sponsors = await res.json();
             if (!Array.isArray(sponsors) || sponsors.length === 0) {

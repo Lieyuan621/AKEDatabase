@@ -1,0 +1,135 @@
+{
+    "itemId": "item_plant_crylplant_1_2",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 7215602374804452333,
+            "text": "Dendras are plants native to Talos-II. Farming dendras can be quite a challenge."
+        },
+        "desc": {
+            "id": -8303721521804772674,
+            "text": "A special plant gathered from the wilderness or cultivated in the Growth Chamber. \nExtracts of this plant can be used for operator skill upgrades at skill levels 4 to 6."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_plant_crylplant_1_2",
+        "id": "item_plant_crylplant_1_2",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_orgplant_2",
+        "name": {
+            "id": 6702706149443192178,
+            "text": "Chrysodendra"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 4707751714557457456,
+            "text": "Area found: Originium Science Park"
+        },
+        "noObtainWayId": [
+            "item_obtain_gather_locked"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_gather_crylplant_1_2",
+            "item_obtain_spaceship_plant",
+            "item_obtain_gather_map01_lv006"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": true,
+        "showingType": 16,
+        "sortId1": -60,
+        "sortId2": 11,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [],
+        "dischargeType": false,
+        "id": "item_plant_crylplant_1_2",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 1
+    },
+    "wikientryid": "wiki_item_plant_crylplant_1_2",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_nurturance",
+        "id": "wiki_item_plant_crylplant_1_2",
+        "order": 9,
+        "prtsId": "",
+        "refItemId": "item_plant_crylplant_1_2",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_gather_crylplant_1_2": {
+            "bindSystem": 0,
+            "desc": {
+                "id": 135253636400820659,
+                "text": "Rare Gathering Sites"
+            },
+            "iconId": "icon_tips_doodad",
+            "id": "item_obtain_gather_crylplant_1_2",
+            "phaseArgs": "{\r\n  \"resourceTemplateId\": \"mark_p_doodad_tundranest\",\r\n  \"resourceItemId\": \"item_plant_crylplant_1_2\"\r\n}",
+            "phaseId": "Map"
+        },
+        "item_obtain_spaceship_plant": {
+            "bindSystem": 404,
+            "desc": {
+                "id": -1688300472159664104,
+                "text": "Dijiang Production: Growth Chamber"
+            },
+            "iconId": "icon_tips_explore",
+            "id": "item_obtain_spaceship_plant",
+            "phaseArgs": "{\r\n  \"instId\": \"ss_room_b_1_base01_lv001\"\r\n}",
+            "phaseId": "Map"
+        },
+        "item_obtain_gather_map01_lv006": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": -7708068555982963856,
+                "text": "Origin Lodespring"
+            },
+            "iconId": "icon_tips_doodad",
+            "id": "item_obtain_gather_map01_lv006",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_nurturance",
+        "name": {
+            "id": -3166040552457956994,
+            "text": "Progression"
+        },
+        "sortId": 5,
+        "type": 16
+    },
+    "name": "Chrysodendra"
+}

@@ -1,0 +1,81 @@
+{
+    "itemId": "item_regionbuff_wuling_5_3",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -9164607588984089286,
+            "text": "You are always medically prepared, thanks to your familiarity with local intel"
+        },
+        "desc": {
+            "id": -8941567274173465499,
+            "text": "After resting at a TP Point, acquire 1 stack of Medical Reserves buff. When any operator in the team drops below a certain HP, automatically consume the buff and immediately restore the HP of every teammate. \nOnly effective in Wuling."
+        },
+        "iconCompositeId": "item_icon_composite_regionbuff_level_3",
+        "iconId": "item_regionbuff_wuling_5",
+        "id": "item_regionbuff_wuling_5_3",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 2669466682361672949,
+            "text": "Medical Reserves"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_ether_collection"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 1,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -999,
+        "sortId2": 22,
+        "type": 91,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "systemjumptable": {
+        "item_obtain_ether_collection": {
+            "bindSystem": 57,
+            "desc": {
+                "id": -3964044095403417609,
+                "text": "Submit Aurylene at TP Points"
+            },
+            "iconId": "icon_tips_explore",
+            "id": "item_obtain_ether_collection",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 1,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 91,
+        "name": {
+            "id": 767543481696728672,
+            "text": "Regional Buff"
+        },
+        "showCount": false,
+        "showCountInTips": false,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemiconcompositetable": {
+        "bgIcons": [],
+        "iconTransType": 0,
+        "id": "item_icon_composite_regionbuff_level_3",
+        "markIcon": "item_icon_subscript_level_3",
+        "showRarity": false
+    },
+    "name": "Medical Reserves"
+}

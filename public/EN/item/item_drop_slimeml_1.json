@@ -1,0 +1,31 @@
+{
+    "id": "item_drop_slimeml_1",
+    "icon": "/public/images/item/itemiconbig/item_drop_slimeml_1.png",
+    "name": "Slug Meat",
+    "description": "Gatherable from defeated Pincerbeasts, Acid Originium Slugs, and Firemist Originium Slugs. Can be used to make fine food and medicine (Fine F&M).",
+    "rarity": 1,
+    "type": 8,
+    "obtainWayIds": [
+        "item_obtain_eny_0072_slimeml"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_eny_0072_slimeml",
+            "desc": "Chance Drop: Indigenous Pincerbeast",
+            "bindSystem": 55,
+            "phaseId": "Wiki",
+            "phaseArgs": "{\r\n  \"monsterId\": \"eny_0072_slimeml\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_monster.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": [
+        "eny_0092_slbomb",
+        "eny_0072_slimeml",
+        "eny_0073_slimerg",
+        "eny_0108_slbomb2",
+        "eny_0099_slimeml2",
+        "eny_0100_slimerg2"
+    ]
+}

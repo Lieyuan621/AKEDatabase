@@ -1,0 +1,115 @@
+{
+    "itemId": "item_gift_jinlong_3",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 5623274959282314468,
+            "text": "Old people from Hongshan often craft various toys. Stories speak of a refugee crafter who made these grass-woven Aggeloi while fleeing the devastation of war. The toy successfully soothed the children's excessive fear for these unfeeling killing constructs."
+        },
+        "desc": {
+            "id": -3097283643687237634,
+            "text": "Give it to operators whose hobbies are [Creative] and/or [Mind Honing] to build trust with them."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_gift_jinlong_3",
+        "id": "item_gift_jinlong_3",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_gem",
+        "name": {
+            "id": 7771612686759275186,
+            "text": "Woven Aggelos"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 6463876946219194230,
+            "text": "Stock Redistribution"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_2",
+            "item_obtain_domain_shop_levelup"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -301,
+        "sortId2": 28,
+        "type": 33,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 10
+    },
+    "giftitemtable": {
+        "favorablePoint": 20,
+        "finishPopularTimeId": "time_gift_1_1_tangtang_2",
+        "giftPreferTag": "tag_giftperfer_wuling_2",
+        "id": "item_gift_jinlong_3",
+        "isPopular": true,
+        "isShowPopularFinishTime": true,
+        "tagList": [
+            "tag_hobby_creativity",
+            "tag_hobby_knowledge"
+        ]
+    },
+    "wikientryid": "wiki_item_gift_jinlong_3",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_gift",
+        "id": "wiki_item_gift_jinlong_3",
+        "order": 10,
+        "prtsId": "",
+        "refItemId": "item_gift_jinlong_3",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_2": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 7739198979412470305,
+                "text": "Purchase: Wuling Stock Redistribution"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_2",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_2\"\r\n}",
+            "phaseId": "ShopTrade"
+        },
+        "item_obtain_domain_shop_levelup": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 1665065042415592699,
+                "text": "Stock Redistribution Terminal Upgrade"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_levelup",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 33,
+        "name": {
+            "id": -6412188518960810535,
+            "text": "Gift"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "giftprefertagconfigtable": {
+        "iconName": "tag_giftperfer_wuling_2",
+        "tag": "tag_giftperfer_wuling_2"
+    },
+    "name": "Woven Aggelos"
+}

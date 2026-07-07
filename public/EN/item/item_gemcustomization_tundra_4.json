@@ -1,0 +1,33 @@
+{
+    "id": "item_gemcustomization_tundra_4",
+    "icon": "/public/images/item/itemiconbig/item_gemcustomization_tundra_4.png",
+    "name": "Valley Multi-Line Engraving Kit",
+    "description": "Use this to acquire an essence with 3 customized stats.",
+    "rarity": 5,
+    "type": 60,
+    "obtainWayIds": [
+        "item_obtain_domain_shop_1",
+        "item_obtain_domain_shop_levelup"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_domain_shop_1",
+            "desc": "Purchase: Valley IV Stock Redistribution",
+            "bindSystem": 512,
+            "phaseId": "ShopTrade",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_domain_shop.png"
+        },
+        {
+            "id": "item_obtain_domain_shop_levelup",
+            "desc": "Stock Redistribution Terminal Upgrade",
+            "bindSystem": 512,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_domain_shop.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": []
+}

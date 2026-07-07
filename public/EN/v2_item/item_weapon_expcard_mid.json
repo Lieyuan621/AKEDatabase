@@ -1,0 +1,123 @@
+{
+    "itemId": "item_weapon_expcard_mid",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 8068646352702783660,
+            "text": "A single-use mini-kit with AIC technology. Provides automated inspection of the entire weapon structure. Also repairs internal material damage and enhances weapon performance."
+        },
+        "desc": {
+            "id": 3272344311239951932,
+            "text": "A material that gives decent weapon EXP."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_weapon_expcard_mid",
+        "id": "item_weapon_expcard_mid",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_cardexp",
+        "name": {
+            "id": 7173586241325326549,
+            "text": "Arms INSP Kit"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_dungeon_0002_untouched",
+            "item_obtain_dungeon_0002",
+            "item_obtain_spaceship_manu",
+            "item_obtain_explore"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 3,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -41,
+        "sortId2": 2,
+        "type": 25,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 4
+    },
+    "wikientryid": "wiki_item_weapon_expcard_mid",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_special",
+        "id": "wiki_item_weapon_expcard_mid",
+        "order": 18,
+        "prtsId": "",
+        "refItemId": "item_weapon_expcard_mid",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_dungeon_0002_untouched": {
+            "bindSystem": 52,
+            "desc": {
+                "id": -6953300977480520559,
+                "text": "Protocol Space: Weapon EXP"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_0002_untouched",
+            "phaseArgs": "{\r\n  \"instId\": \"mark_dg_resource2100320002\"\r\n}",
+            "phaseId": "Map"
+        },
+        "item_obtain_dungeon_0002": {
+            "bindSystem": 52,
+            "desc": {
+                "id": -8333512389804352789,
+                "text": "Protocol Space: Weapon EXP"
+            },
+            "iconId": "icon_tips_dungeon",
+            "id": "item_obtain_dungeon_0002",
+            "phaseArgs": "{\r\n  \"dungeonSeriesId\": \"dung01_group_wpexp01\"\r\n}",
+            "phaseId": "DungeonEntry"
+        },
+        "item_obtain_spaceship_manu": {
+            "bindSystem": 404,
+            "desc": {
+                "id": 3246750984102486862,
+                "text": "Dijiang Production: MFG Cabin"
+            },
+            "iconId": "icon_tips_mfg",
+            "id": "item_obtain_spaceship_manu",
+            "phaseArgs": "{\r\n  \"instId\": \"ss_room_a_1_base01_lv001\"\r\n}",
+            "phaseId": "Map"
+        },
+        "item_obtain_explore": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 8888980312357865895,
+                "text": "Exploring and Gathering"
+            },
+            "iconId": "icon_tips_explore",
+            "id": "item_obtain_explore",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 25,
+        "name": {
+            "id": -4437706413258917611,
+            "text": "Weapon Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 4
+    },
+    "name": "Arms INSP Kit"
+}

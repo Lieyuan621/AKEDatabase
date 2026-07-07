@@ -1,0 +1,98 @@
+{
+    "itemId": "item_spaceship_credit",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 8954706984848638863,
+            "text": "Proof of friendship."
+        },
+        "desc": {
+            "id": -677282575804598374,
+            "text": "Exchangeable for progression materials and other important resources at the Acquisition Center - Credit Store."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_spaceship_credit",
+        "id": "item_spaceship_credit",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": -3030892157890058557,
+            "text": "Credits"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -8096841936898289651,
+            "text": "Social Gameplay (Production Assist and Clue Exchange)"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_payshop_credit",
+            "item_obtain_spaceship_intelligence",
+            "item_obtain_spaceship_credit"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -12,
+        "sortId2": 4,
+        "type": 44,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "systemjumptable": {
+        "item_obtain_payshop_credit": {
+            "bindSystem": 407,
+            "desc": {
+                "id": 1106765165418026854,
+                "text": "Acquisition Center: Credit Store"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_payshop_credit",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_spaceship_credit\"\r\n}",
+            "phaseId": "CashShop"
+        },
+        "item_obtain_spaceship_intelligence": {
+            "bindSystem": 404,
+            "desc": {
+                "id": -6305270608895813012,
+                "text": "Dijiang: Reception Room Clue Search"
+            },
+            "iconId": "icon_tips_trd",
+            "id": "item_obtain_spaceship_intelligence",
+            "phaseArgs": "{\r\n  \"instId\": \"mark_ss_reception_teleport9800000031\"\r\n}",
+            "phaseId": "Map"
+        },
+        "item_obtain_spaceship_credit": {
+            "bindSystem": 404,
+            "desc": {
+                "id": 6041531376974481118,
+                "text": "Reward: Dijiang Production Assist"
+            },
+            "iconId": "icon_tips_shop",
+            "id": "item_obtain_spaceship_credit",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": true,
+        "hideNewToast": false,
+        "itemType": 44,
+        "name": {
+            "id": -325568445562451710,
+            "text": "PROXC"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "name": "Credits"
+}

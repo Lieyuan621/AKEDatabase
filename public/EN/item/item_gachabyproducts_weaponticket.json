@@ -1,0 +1,33 @@
+{
+    "id": "item_gachabyproducts_weaponticket",
+    "icon": "/public/images/item/itemiconbig/item_gachabyproducts_weaponticket.png",
+    "name": "AIC Quota",
+    "description": "Exchangeable for goods at the Quota Exchange.",
+    "rarity": 4,
+    "type": 49,
+    "obtainWayIds": [
+        "item_obtain_payshop_weapon",
+        "item_obtain_payshop_potential"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_payshop_weapon",
+            "desc": "Acquisition Center: Arsenal Exchange",
+            "bindSystem": 51,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_payshop.png"
+        },
+        {
+            "id": "item_obtain_payshop_potential",
+            "desc": "Acquisition Center: Token Exchange",
+            "bindSystem": 51,
+            "phaseId": "CashShop",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_green_1\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_payshop.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": []
+}

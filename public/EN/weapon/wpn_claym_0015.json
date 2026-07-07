@@ -1,0 +1,194 @@
+{
+  "weaponId": "wpn_claym_0015",
+  "title": "OBJ Heavy Burden",
+  "rarity": 5,
+  "weapontype": 3,
+  "icon": "/public/images/weapon/icon/wpn_claym_0015.png",
+  "iconbig": "/public/images/weapon/iconbig/wpn_claym_0015.png",
+  "iconfull": "/public/images/weapon/full/wpn_claym_0015.png",
+  "desc": "A weapon equipped by Endfield operators to significantly boost their combat capabilities.",
+  "decoDesc": "A standard weapon produced by Endfield Industries. Design is provided by the Creative Prototyping Team founded by Senior Arsenal Engineer Opero. The weapon can be furnished with various modules according to the needs of actual battle.",
+  "baseAtk": [
+    42,
+    46,
+    50,
+    54,
+    58,
+    62,
+    66,
+    71,
+    75,
+    79,
+    83,
+    87,
+    91,
+    95,
+    100,
+    104,
+    108,
+    112,
+    116,
+    120,
+    125,
+    129,
+    133,
+    137,
+    141,
+    145,
+    149,
+    154,
+    158,
+    162,
+    166,
+    170,
+    174,
+    178,
+    183,
+    187,
+    191,
+    195,
+    199,
+    203,
+    208,
+    212,
+    216,
+    220,
+    224,
+    228,
+    232,
+    237,
+    241,
+    245,
+    249,
+    253,
+    257,
+    261,
+    266,
+    270,
+    274,
+    278,
+    282,
+    286,
+    291,
+    295,
+    299,
+    303,
+    307,
+    311,
+    315,
+    320,
+    324,
+    328,
+    332,
+    336,
+    340,
+    344,
+    349,
+    353,
+    357,
+    361,
+    365,
+    369,
+    374,
+    378,
+    382,
+    386,
+    390,
+    394,
+    398,
+    403,
+    407,
+    411
+  ],
+  "skilllist": [
+    {
+      "skillName": "Strength Boost [M]",
+      "description": "Strength <@ba.vup>+{str}</>",
+      "blackboard": [
+        {
+          "key": "str",
+          "value": [
+            16,
+            28,
+            41,
+            54,
+            67,
+            80,
+            92,
+            105,
+            124
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "HP Boost [M]",
+      "description": "Max HP <@ba.vup>+{hp:0.0%}</>",
+      "blackboard": [
+        {
+          "key": "hp",
+          "value": [
+            0.08,
+            0.144,
+            0.208,
+            0.272,
+            0.336,
+            0.4,
+            0.464,
+            0.528,
+            0.624
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "Efficacy: Tenacious Will",
+      "description": "Secondary Attribute <@ba.vup>+{second_attr_up:0.0%}</>.\nWhen the wielder applies <#ba.knockdown>Knocked Down</> or <#ba.weak>Weakened</>, the wielder gains DEF <@ba.vup>+{def_up:0.0%}</> for {duration:0}s.\n<@ba.info>Effects of the same name cannot stack.</>",
+      "blackboard": [
+        {
+          "key": "second_attr_up",
+          "value": [
+            0.05,
+            0.06,
+            0.07,
+            0.08,
+            0.09,
+            0.1,
+            0.11,
+            0.12,
+            0.14
+          ]
+        },
+        {
+          "key": "def_up",
+          "value": [
+            0.18,
+            0.216,
+            0.252,
+            0.288,
+            0.324,
+            0.36,
+            0.396,
+            0.432,
+            0.504
+          ]
+        },
+        {
+          "key": "duration",
+          "value": [
+            15,
+            15,
+            15,
+            15,
+            15,
+            15,
+            15,
+            15,
+            15
+          ]
+        }
+      ]
+    }
+  ],
+  "weaponDesc": "\"...We're leaving. From what Director Qin said, it's just the usual. R&R aboard Dijiang while we wait for future assignments.\n\"Everyone wanted to take this opportunity and send you back to Kjersch... But Kuhn told us something you said to him, how you preferred a warmer place away from the foot of a snowy mountain.\n\"So, we submitted an application to the UWST — They're more than happy to do something for you. They left you a good spot at this public cemetery... According to the Workers United, you're a true hero of Valley IV.\n\"Don't worry. We've sorted out the movie ticket stubs too. We're going to mail it to that Baker friend as per your instructions.\n\"He really cares about you. Kept asking us if 'Theatre12' started working at a different place. That made me realize that your 'backup' plan is being a script supervisor at New Wrankwood... Yeah... That is indeed the type of work you'd like...\n\"Just look at you. Got it all figured out. Ten movies lined up at the booth, free crispy drumsticks at the canteen for the peeps, flashy new weapon at the Arsenal Engineer...\n\"But why did you just ... you know ... charge straight at them without thinking? Sheesh...\n\"All of the refugees you saved are doing well. We also delivered those supplies for you...\n\"That mighty explosion you pulled off blew that cluster of buggerloids to bits... The UW crew mates took care of the rest.\n\"I just wanna say that ... your sacrifice really paid off. Rest well, friend. The rest of us will visit every time we pass this place...\n\"Oh, and we left the greatsword for you... I ran the paperwork and moved it from 'emergency requisition' to a proper asset under your name...\n\"It's the deal that you always wanted, right? Never knew how you came upon it from that pile of supplies... Maybe that's what people call Fate.\n\"And it really stuck around in that explosion... Might as well let it stick around some more with you.\n\"Gotta say you're made for each other. Tough as nails ... and you took it all.\n\"I'll let you keep each other company. Keeps the loneliness out, you see.\""
+}

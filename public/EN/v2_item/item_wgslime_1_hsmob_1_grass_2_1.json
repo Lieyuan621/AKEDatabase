@@ -1,0 +1,218 @@
+{
+    "itemId": "item_wgslime_1_hsmob_1_grass_2_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 5118089102352104475,
+            "text": "These jellied greens are bouncy and jiggly to the touch. Special molds were used by the manufacturers to create jellied greens shaped like Chubby Lung. It is the only option since everyone likes Chubby Lungs so much. Kyaaa! Chubby Lung! They're so cute!"
+        },
+        "desc": {
+            "id": 3284134810945267381,
+            "text": "Use this tactical to restore the operator's HP."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_wgslime_1_hsmob_1_grass_2_1",
+        "id": "item_wgslime_1_hsmob_1_grass_2_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": -6382702542729257525,
+            "text": "Chubby Lung Jellied Greens"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 1669948519057011541,
+            "text": "Unlock <@obt.key>Crafting Manual</> formula to make this"
+        },
+        "noObtainWayId": [
+            "item_obtain_hdwk_item_drop_wgslime_1"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 5,
+        "sortId1": -82,
+        "sortId2": 54,
+        "type": 48,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "useitemtable": {
+        "duration": 0,
+        "effectType": 0,
+        "isPersistentBuff": false,
+        "isValuableDepot": false,
+        "itemId": "item_wgslime_1_hsmob_1_grass_2_1",
+        "itemUseDesc": {
+            "id": 6571688313546032447,
+            "text": "Use this to restore <@ba.vup>{triggerheal2:0%}</> Max HP per second plus <@ba.vup>{triggerheal:0}</> HP. Duration: <@ba.vup>{duration:0}</>s."
+        },
+        "stackingKey": "",
+        "targetNumType": 0,
+        "uiType": 0,
+        "useActions": [
+            {
+                "buffBBData": {
+                    "blackboard": [
+                        {
+                            "key": "value",
+                            "value": 0,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "triggerheal",
+                            "value": 370.0255,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "triggerheal2",
+                            "value": 0.05,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 6,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "maxcount",
+                            "value": 5,
+                            "valueStr": ""
+                        }
+                    ],
+                    "buffId": "buff_common_heal_moss_2"
+                },
+                "skillBBData": {
+                    "blackboard": [],
+                    "skillId": "",
+                    "skillPath": ""
+                },
+                "useType": 2
+            }
+        ]
+    },
+    "equipitemtable": {
+        "autoCheckNotInFight": true,
+        "castTime": 2,
+        "chargeCount": 3,
+        "checkTarget": 0,
+        "condParams": [
+            "0.35",
+            "lt"
+        ],
+        "condType": 0,
+        "cooldown": 3,
+        "equipDesc": {
+            "id": 4382109395031010839,
+            "text": "Once equipped, item is automatically used when the holder falls below <@ba.vup>{param1:0%}</> HP. Max uses per battle: <@ba.vup>{count:0}</>.\n - <@tips.purple>Can support the controlled operator (only once)</>\n - <@tips.orange>Uses are restored after depletion</>"
+        },
+        "equipExtraDesc": {
+            "id": 1254664909988494515,
+            "text": "Once equipped, item is automatically used when the holder falls below <@ba.vup>{param1:0%}</> HP. Max uses per battle: <@ba.vup>{count:0}</>.\n<@tips.purple>Can support the controlled operator (only once)</>: For only <@ba.vup>1</> time per battle, the item is automatically used on the controlled operator when they fall below <@ba.vup>{param1:0%}</> HP.\n<@tips.orange>Uses are restored after depletion</>: When uses are depleted in battle, <@ba.vup>1</> more use becomes available after a while."
+        },
+        "itemId": "item_wgslime_1_hsmob_1_grass_2_1",
+        "levelUpChargeCount": 4,
+        "levelUpRecoverUpperCount": 1,
+        "recoverTime": 60,
+        "recoverUpperCount": 1,
+        "toMainCharCount": 1,
+        "useTarget": 1
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_wgslime_1_hsmob_1_grass_2_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 200
+    },
+    "wikientryid": "wiki_item_wgslime_1_hsmob_1_grass_2_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_usable",
+        "id": "wiki_item_wgslime_1_hsmob_1_grass_2_1",
+        "order": 63,
+        "prtsId": "",
+        "refItemId": "item_wgslime_1_hsmob_1_grass_2_1",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 48,
+        "name": {
+            "id": -8745995051935114781,
+            "text": "Tactical"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_usable",
+        "name": {
+            "id": -2232813154053962573,
+            "text": "Usables"
+        },
+        "sortId": 6,
+        "type": 5
+    },
+    "factorymanualcrafttable": [
+        {
+            "defaultUnlock": false,
+            "domainId": "domain_2",
+            "id": "hdwk_wgslime_1_hsmob_1_grass_2_1",
+            "ingredients": [
+                {
+                    "count": 1,
+                    "id": "item_drop_wgslime_1"
+                },
+                {
+                    "count": 1,
+                    "id": "item_drop_hsmob_1"
+                },
+                {
+                    "count": 1,
+                    "id": "item_plant_grass_powder_2"
+                }
+            ],
+            "itemId": "item_formula_wgslime_1_hsmob_1_grass_2_1",
+            "name": {
+                "id": 4926959287569627600,
+                "text": "Chubby Lung Jellied Greens"
+            },
+            "outcomes": [
+                {
+                    "count": 1,
+                    "id": "item_wgslime_1_hsmob_1_grass_2_1"
+                }
+            ],
+            "rarity": 4,
+            "showingType": 19,
+            "sortId": 14
+        }
+    ],
+    "name": "Chubby Lung Jellied Greens"
+}

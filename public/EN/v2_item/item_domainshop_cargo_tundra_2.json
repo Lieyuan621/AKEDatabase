@@ -1,0 +1,74 @@
+{
+    "itemId": "item_domainshop_cargo_tundra_2",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 2930080417054510343,
+            "text": "An ornamental dangle made using musbeast bones carved into various shapes. During early development of Valley IV, Sarkaz workers were employed to support various projects. Before concluding their contracts, the Sarkaz would present fellow Valley IV crew mates with musbeast scrimshaw dangles carved into the shapes of various machines. Witchcraft within the dangles also lets them float temporarily above Originium batteries. The dangles gradually became a common piece of decor in major cities and frontier areas of the Civilization Band."
+        },
+        "desc": {
+            "id": 6900397400077764477,
+            "text": "A package loaded with daily commodities. Such goods are subject to moderate price fluctuations. They can also be used in Stock Redistribution to generate revenue."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_domainshop_cargo_tundra_2",
+        "id": "item_domainshop_cargo_tundra_2",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": -8178549958056153502,
+            "text": "Musbeast Scrimshaw Dangles [pkg]"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 8484974794689596963,
+            "text": "Purchasable at <@obt.key>Stock Redistribution</>"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_1"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -321,
+        "sortId2": 2,
+        "type": 56,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 7
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_1": {
+            "bindSystem": 512,
+            "desc": {
+                "id": -2131723199710794539,
+                "text": "Purchase: Valley IV Stock Redistribution"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_1",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "ShopTrade"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 56,
+        "name": {
+            "id": 5514429341118358800,
+            "text": "Elastic Goods"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 7
+    },
+    "name": "Musbeast Scrimshaw Dangles [pkg]"
+}

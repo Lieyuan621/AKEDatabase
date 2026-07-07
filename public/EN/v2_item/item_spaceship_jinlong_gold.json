@@ -1,0 +1,74 @@
+{
+    "itemId": "item_spaceship_jinlong_gold",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 3569902569137306400,
+            "text": "Endfield Industries and its partners have signed an agreement to trade supplies and commodities with this currency. \nThis currency can only be used in the Wuling region."
+        },
+        "desc": {
+            "id": -4746844302050429282,
+            "text": "Supply chain specialist Ladonn aboard Dijiang will accept this currency and give you Wuling goods in return."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_spaceship_jinlong_gold",
+        "id": "item_spaceship_jinlong_gold",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": -5332103214198265002,
+            "text": "Wuling Convention Certificate"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 1255700972612039509,
+            "text": "Complete Wuling outpost orders"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_settlement_jinlong"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -12,
+        "sortId2": 9,
+        "type": 44,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "systemjumptable": {
+        "item_obtain_settlement_jinlong": {
+            "bindSystem": 501,
+            "desc": {
+                "id": 2736656222868533497,
+                "text": "Reward: Wuling Outpost Orders"
+            },
+            "iconId": "icon_tips_settlement",
+            "id": "item_obtain_settlement_jinlong",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_2\"\r\n}",
+            "phaseId": "SettlementMain"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": true,
+        "hideNewToast": false,
+        "itemType": 44,
+        "name": {
+            "id": -325568445562451710,
+            "text": "PROXC"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 1,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "name": "Wuling Convention Certificate"
+}

@@ -1,0 +1,119 @@
+{
+    "itemId": "item_drop_hscrane_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -2998106281882927477,
+            "text": "Grovenymph pupae are high in protein. Although this one has escaped the fate of becoming a nymphsprout, it is a quality food ingredient and might end up as something else."
+        },
+        "desc": {
+            "id": 5405387460923200393,
+            "text": "Gatherable from defeated Cloud Stalkers or Nimbus Razors. Can be used to make fine food and medicine (Fine F&M)."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_drop_hscrane_1",
+        "id": "item_drop_hscrane_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_drop_enemy_common_1",
+        "name": {
+            "id": -3772632665657801936,
+            "text": "Grovenymph Pupa"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 8819522145321742236,
+            "text": "Drop: Enemy Encounters during Exploration"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_eny_0055_hscrane"
+        ],
+        "outcomeItemIds": [
+            "item_jlebm_grass1_1"
+        ],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 15,
+        "sortId1": -65,
+        "sortId2": 18,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            1
+        ],
+        "dischargeType": false,
+        "id": "item_drop_hscrane_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [],
+        "value": 100
+    },
+    "enemydroplist": [
+        "eny_0055_hscrane",
+        "eny_0085_hsrogue",
+        "eny_0104_hsrogue2"
+    ],
+    "wikientryid": "wiki_item_drop_hscrane_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_material",
+        "id": "wiki_item_drop_hscrane_1",
+        "order": 21,
+        "prtsId": "",
+        "refItemId": "item_drop_hscrane_1",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_eny_0055_hscrane": {
+            "bindSystem": 55,
+            "desc": {
+                "id": -3935750377094475156,
+                "text": "Chance Drop: Cloud Stalker"
+            },
+            "iconId": "icon_tips_monster",
+            "id": "item_obtain_eny_0055_hscrane",
+            "phaseArgs": "{\r\n  \"monsterId\": \"eny_0055_hscrane\"\r\n}",
+            "phaseId": "Wiki"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_doodad",
+        "name": {
+            "id": -4889980326384875610,
+            "text": "Gatherables"
+        },
+        "sortId": 4,
+        "type": 15
+    },
+    "name": "Grovenymph Pupa"
+}

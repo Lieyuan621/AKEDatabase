@@ -1,0 +1,222 @@
+{
+    "itemId": "item_slimeml_1_erhound_1_agfly_1_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -3256013003486869037,
+            "text": "Slug meat that has been completely dehydrated. The pulled jerky is incredibly chewy. This is one of the best pet foods in Valley IV."
+        },
+        "desc": {
+            "id": -1175624946477899126,
+            "text": "Use this tactical to restore the operator's HP."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_slimeml_1_erhound_1_agfly_1_1",
+        "id": "item_slimeml_1_erhound_1_agfly_1_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": 3438967851471223487,
+            "text": "Pulled Slug Meat"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -6284123771038670442,
+            "text": "Unlock <@obt.key>Crafting Manual</> formula to make this"
+        },
+        "noObtainWayId": [
+            "item_obtain_hdwk_item_drop_slimeml_1"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 4,
+        "showAllDepotCount": false,
+        "showingType": 5,
+        "sortId1": -82,
+        "sortId2": 49,
+        "type": 48,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "useitemtable": {
+        "duration": 0,
+        "effectType": 0,
+        "isPersistentBuff": false,
+        "isValuableDepot": false,
+        "itemId": "item_slimeml_1_erhound_1_agfly_1_1",
+        "itemUseDesc": {
+            "id": 2742240056969090062,
+            "text": "Use this to <#ba.dispel>dispel</> <#ba.spellinflictonchar>Arts Inflictions</> and <#ba.spellinflictonchar>Arts Reactions</>, then restore <@ba.vup>{triggerheal:0}</> HP per second for <@ba.vup>{duration:0}</>s."
+        },
+        "stackingKey": "",
+        "targetNumType": 0,
+        "uiType": 0,
+        "useActions": [
+            {
+                "buffBBData": {
+                    "blackboard": [
+                        {
+                            "key": "value",
+                            "value": 0,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "triggerheal",
+                            "value": 334.05612,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "duration",
+                            "value": 6,
+                            "valueStr": ""
+                        },
+                        {
+                            "key": "maxcount",
+                            "value": 5,
+                            "valueStr": ""
+                        }
+                    ],
+                    "buffId": "buff_common_heal_moss_1"
+                },
+                "skillBBData": {
+                    "blackboard": [],
+                    "skillId": "",
+                    "skillPath": ""
+                },
+                "useType": 2
+            },
+            {
+                "buffBBData": {
+                    "blackboard": [],
+                    "buffId": "buff_common_dispel_potion"
+                },
+                "skillBBData": {
+                    "blackboard": [],
+                    "skillId": "",
+                    "skillPath": ""
+                },
+                "useType": 2
+            }
+        ]
+    },
+    "equipitemtable": {
+        "autoCheckNotInFight": true,
+        "castTime": 0.5,
+        "chargeCount": 2,
+        "checkTarget": 1,
+        "condParams": [],
+        "condType": 5,
+        "cooldown": 3,
+        "equipDesc": {
+            "id": 6861366044094665774,
+            "text": "Once equipped, item is automatically used on any operator in the team who suffers an <#ba.spellinflictonchar>Arts Reaction</>. Max uses per battle: <@ba.vup>{count:0}</>.\n - <@tips.purple>Can support the controlled operator (no limit)</>\n - <@tips.orange>Uses are restored after depletion</>"
+        },
+        "equipExtraDesc": {
+            "id": -948169165157717398,
+            "text": "Once equipped, item is automatically used on any operator in the team who suffers an <#ba.spellinflictonchar>Arts Reaction</>. Max uses per battle: <@ba.vup>{count:0}</>.\n<@tips.purple>Can support the controlled operator (no limit)</>: There is no limit to the number of times this item can be used to support the controlled operator.\n<@tips.orange>Uses are restored after depletion</>: When uses are depleted in battle, <@ba.vup>1</> more use becomes available after a while."
+        },
+        "itemId": "item_slimeml_1_erhound_1_agfly_1_1",
+        "levelUpChargeCount": 3,
+        "levelUpRecoverUpperCount": 1,
+        "recoverTime": 60,
+        "recoverUpperCount": 1,
+        "toMainCharCount": 0,
+        "useTarget": 1
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_slimeml_1_erhound_1_agfly_1_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 300
+    },
+    "wikientryid": "wiki_item_slimeml_1_erhound_1_agfly_1_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_usable",
+        "id": "wiki_item_slimeml_1_erhound_1_agfly_1_1",
+        "order": 60,
+        "prtsId": "",
+        "refItemId": "item_slimeml_1_erhound_1_agfly_1_1",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 48,
+        "name": {
+            "id": -8745995051935114781,
+            "text": "Tactical"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_usable",
+        "name": {
+            "id": -2232813154053962573,
+            "text": "Usables"
+        },
+        "sortId": 6,
+        "type": 5
+    },
+    "factorymanualcrafttable": [
+        {
+            "defaultUnlock": false,
+            "domainId": "domain_1",
+            "id": "hdwk_slimeml_1_erhound_1_agfly_1_1",
+            "ingredients": [
+                {
+                    "count": 1,
+                    "id": "item_drop_slimeml_1"
+                },
+                {
+                    "count": 1,
+                    "id": "item_drop_erhound_1"
+                },
+                {
+                    "count": 1,
+                    "id": "item_drop_agfly_1"
+                }
+            ],
+            "itemId": "item_formula_slimeml_1_erhound_1_agfly_1_1",
+            "name": {
+                "id": -5568411589073401994,
+                "text": "Pulled Slug Meat"
+            },
+            "outcomes": [
+                {
+                    "count": 1,
+                    "id": "item_slimeml_1_erhound_1_agfly_1_1"
+                }
+            ],
+            "rarity": 4,
+            "showingType": 19,
+            "sortId": 32
+        }
+    ],
+    "name": "Pulled Slug Meat"
+}

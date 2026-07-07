@@ -1,0 +1,86 @@
+{
+    "itemId": "item_ticketgacha_special_single",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 1939674822206630183,
+            "text": "Talos-II is home to plenty of talented individuals. To satisfy the ever-increasing demand for skilled operators of Endfield Industries, the HR Division has prepared a special and temporary contingent measure for headhunting."
+        },
+        "desc": {
+            "id": 8926361917490324396,
+            "text": "An internal certificate of Endfield Industries. Use this to perform 1 headhunting in [Chartered Headhunting]."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_ticketgacha_special_single",
+        "id": "item_ticketgacha_special_single",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_collection_item_gold_1",
+        "name": {
+            "id": 4858788096663851272,
+            "text": "Chartered HH Permit"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_shop_yellowticket_ticketgacha_special_single",
+            "item_obtain_activity"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 6,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -10,
+        "sortId2": 1,
+        "type": 14,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 10
+    },
+    "systemjumptable": {
+        "item_obtain_shop_yellowticket_ticketgacha_special_single": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 3329792338069619936,
+                "text": "Acquisition Center: Bond Quota Exchange"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_shop_yellowticket_ticketgacha_special_single",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_yellow_1\",\r\n  \"goodsId\": \"payshop_yellow_ticketgacha_special_single\"\r\n}",
+            "phaseId": "CashShop"
+        },
+        "item_obtain_activity": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": -1457834971849491159,
+                "text": "Reward: Events"
+            },
+            "iconId": "icon_tips_activity",
+            "id": "item_obtain_activity",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 14,
+        "name": {
+            "id": -2569683611406938136,
+            "text": "Valuable"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "name": "Chartered HH Permit"
+}

@@ -1,0 +1,119 @@
+{
+    "itemId": "item_plant_tundra_wood",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": 1314182352039093487,
+            "text": "Let's chop down some trees first."
+        },
+        "desc": {
+            "id": 8285944568651990807,
+            "text": "Common wood that can be gathered in the Mossfield region. Can be used to produce other materials."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_plant_tundra_wood",
+        "id": "item_plant_tundra_wood",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_drop_wood",
+        "name": {
+            "id": -703979720639386569,
+            "text": "Wood"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -1072338871634548920,
+            "text": "Exploring and Gathering"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_gather"
+        ],
+        "outcomeItemIds": [
+            "item_carbon_mtl",
+            "item_unit_t05_hand_01_parts_spe",
+            "item_unit_t05_body_01_parts_spe"
+        ],
+        "rarity": 1,
+        "showAllDepotCount": false,
+        "showingType": 2,
+        "sortId1": -80,
+        "sortId2": 31,
+        "type": 8,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": 50,
+        "deliverItemTypeList": [
+            3,
+            1
+        ],
+        "dischargeType": false,
+        "id": "item_plant_tundra_wood",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 2
+    },
+    "wikientryid": "wiki_item_plant_tundra_wood",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_nature",
+        "id": "wiki_item_plant_tundra_wood",
+        "order": 17,
+        "prtsId": "",
+        "refItemId": "item_plant_tundra_wood",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_gather": {
+            "bindSystem": 10000000,
+            "desc": {
+                "id": 8758467948552192468,
+                "text": "Gatherable: World Exploration"
+            },
+            "iconId": "icon_tips_doodad",
+            "id": "item_obtain_gather",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 8,
+        "name": {
+            "id": 1257645988810273627,
+            "text": "Material"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_plant",
+        "name": {
+            "id": 6281814164593113046,
+            "text": "Plants"
+        },
+        "sortId": 2,
+        "type": 2
+    },
+    "name": "Wood"
+}

@@ -1,0 +1,88 @@
+{
+    "itemId": "item_case_bp_selfselect_skillsp_1",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -2090857158809088577,
+            "text": "A crate that contains all sorts of high-quality, general-purpose materials. Operator combat performance is not limited by race nor combat experience. Sometimes, they just need a bit of inspiration."
+        },
+        "desc": {
+            "id": 4133454831673908620,
+            "text": "Opening this lets you acquire an advanced progression material of your choice."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_case_bp_selfselect_skillsp_1",
+        "id": "item_case_bp_selfselect_skillsp_1",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 2137468606500127645,
+            "text": "Advanced Progression Selection Crate Ⅰ"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_bp_pay"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -20,
+        "sortId2": 211,
+        "type": 43,
+        "valuableDepotRedDot": true,
+        "valuableTabType": 10
+    },
+    "usableitemchesttable": {
+        "id": "item_case_bp_selfselect_skillsp_1",
+        "randomChestItemCounts": [],
+        "randomChestItemIds": [],
+        "rewardIdList": [
+            "reward_case_bp_selfselect_skillsp_1_1",
+            "reward_case_bp_selfselect_skillsp_1_2",
+            "reward_case_bp_selfselect_skillsp_1_3",
+            "reward_case_bp_selfselect_skillsp_1_4",
+            "reward_case_bp_selfselect_skillsp_1_5"
+        ],
+        "selectedCount": 1,
+        "type": 1
+    },
+    "systemjumptable": {
+        "item_obtain_bp_pay": {
+            "bindSystem": 802,
+            "desc": {
+                "id": -2171165044214956094,
+                "text": "Protocol Pass: Protocol Customized"
+            },
+            "iconId": "icon_tips_bp",
+            "id": "item_obtain_bp_pay",
+            "phaseArgs": "{\r\n  \"panelId\": \"BattlePassPlan\"\r\n}",
+            "phaseId": "BattlePass"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 43,
+        "name": {
+            "id": 5868273933160474249,
+            "text": "Crate"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "name": "Advanced Progression Selection Crate Ⅰ"
+}

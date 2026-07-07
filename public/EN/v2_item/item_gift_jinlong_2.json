@@ -1,0 +1,115 @@
+{
+    "itemId": "item_gift_jinlong_2",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": 2705299900204247036,
+            "text": "Civilian variant of Yinglung training dumbbells. Furnished with an on-board weight manipulator. Automatically adjusts the weight to fine tune your resistance training."
+        },
+        "desc": {
+            "id": 4222524945988280165,
+            "text": "Give it to operators whose hobbies are [Sports] and/or [Nature] to build trust with them."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_gift_jinlong_2",
+        "id": "item_gift_jinlong_2",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_drop_gem",
+        "name": {
+            "id": 5595102109757704001,
+            "text": "Yinglung Dumbbells"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -795858090170248895,
+            "text": "Stock Redistribution"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_2",
+            "item_obtain_domain_shop_levelup"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 5,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -301,
+        "sortId2": 27,
+        "type": 33,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 10
+    },
+    "giftitemtable": {
+        "favorablePoint": 20,
+        "finishPopularTimeId": "time_gift_1_0_wuling_2",
+        "giftPreferTag": "tag_giftperfer_wuling_1",
+        "id": "item_gift_jinlong_2",
+        "isPopular": true,
+        "isShowPopularFinishTime": true,
+        "tagList": [
+            "tag_hobby_exercise",
+            "tag_hobby_nature"
+        ]
+    },
+    "wikientryid": "wiki_item_gift_jinlong_2",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_gift",
+        "id": "wiki_item_gift_jinlong_2",
+        "order": 9,
+        "prtsId": "",
+        "refItemId": "item_gift_jinlong_2",
+        "refMonsterTemplateId": ""
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_2": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 7739198979412470305,
+                "text": "Purchase: Wuling Stock Redistribution"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_2",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_2\"\r\n}",
+            "phaseId": "ShopTrade"
+        },
+        "item_obtain_domain_shop_levelup": {
+            "bindSystem": 512,
+            "desc": {
+                "id": 1665065042415592699,
+                "text": "Stock Redistribution Terminal Upgrade"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_levelup",
+            "phaseArgs": "",
+            "phaseId": ""
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 33,
+        "name": {
+            "id": -6412188518960810535,
+            "text": "Gift"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "giftprefertagconfigtable": {
+        "iconName": "tag_giftperfer_wuling_1",
+        "tag": "tag_giftperfer_wuling_1"
+    },
+    "name": "Yinglung Dumbbells"
+}

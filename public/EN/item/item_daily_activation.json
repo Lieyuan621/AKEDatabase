@@ -1,0 +1,24 @@
+{
+    "id": "item_daily_activation",
+    "icon": "/public/images/item/itemiconbig/.png",
+    "name": "Daily Activity",
+    "description": "Earn enough of this to receive daily rewards.",
+    "rarity": 1,
+    "type": 38,
+    "obtainWayIds": [
+        "item_obtain_adventurebook"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_adventurebook",
+            "desc": "Reward: Operational Manual",
+            "bindSystem": 652,
+            "phaseId": "AdventureBook",
+            "phaseArgs": "{\r\n  \"panelId\": \"AdventureStage\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_adventure_book.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": []
+}

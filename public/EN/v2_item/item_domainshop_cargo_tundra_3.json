@@ -1,0 +1,74 @@
+{
+    "itemId": "item_domainshop_cargo_tundra_3",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -5161773903197428897,
+            "text": "A rather primitive machine jointly developed by the UWST and Seš'qa. These drills are often made using Origocrust imbued with witchcraft and commonly installed on the transport belts of various Originium factories. They can penetrate Origocrusts effectively without damaging the mineral kernel."
+        },
+        "desc": {
+            "id": -4286836663498091886,
+            "text": "A package loaded with daily commodities. Such goods are subject to moderate price fluctuations. They can also be used in Stock Redistribution to generate revenue."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_domainshop_cargo_tundra_3",
+        "id": "item_domainshop_cargo_tundra_3",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "",
+        "name": {
+            "id": 3991621432133727005,
+            "text": "Witchcraft Mining Drill [pkg]"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 7353641699573314436,
+            "text": "Purchasable at <@obt.key>Stock Redistribution</>"
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_domain_shop_1"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -321,
+        "sortId2": 3,
+        "type": 56,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 7
+    },
+    "systemjumptable": {
+        "item_obtain_domain_shop_1": {
+            "bindSystem": 512,
+            "desc": {
+                "id": -2131723199710794539,
+                "text": "Purchase: Valley IV Stock Redistribution"
+            },
+            "iconId": "icon_tips_domain_shop",
+            "id": "item_obtain_domain_shop_1",
+            "phaseArgs": "{\r\n  \"domainId\": \"domain_1\"\r\n}",
+            "phaseId": "ShopTrade"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 56,
+        "name": {
+            "id": 5514429341118358800,
+            "text": "Elastic Goods"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 7
+    },
+    "name": "Witchcraft Mining Drill [pkg]"
+}

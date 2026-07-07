@@ -1,0 +1,2330 @@
+{
+    "templateId": "eny_0050_hound",
+    "enemytemplatedisplayinfotable": {
+        "abilityDescIds": [
+            "eny_0050_hound_ability_1"
+        ],
+        "description": {
+            "id": -7655253586913263905,
+            "text": "A small warbeast controlled by the Landbreakers. Ripptusks are far more bloodthirsty and ferocious than their untamed wilderness kin. They are absolutely loyal to the Landbreakers who tamed them."
+        },
+        "displayType": 0,
+        "distributionIds": [
+            "distribution_map01_lv001",
+            "distribution_map01_lv002",
+            "distribution_map01_lv005",
+            "distribution_map01_lv006",
+            "distribution_map01_lv007",
+            "distribution_world_energy_point02",
+            "distribution_world_energy_point04"
+        ],
+        "name": {
+            "id": 2770243772645256521,
+            "text": "Bonekrusher Ripptusk"
+        },
+        "nickname": {
+            "id": -2382468390776692441,
+            "text": "Bonekrusher Ripptusk"
+        },
+        "tags": [],
+        "templateId": "eny_0050_hound"
+    },
+    "enemytable": {
+        "eny_0050_hound": {
+            "aiTemplateId": "",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0050_hound",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0050_hound",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0050_hound"
+        },
+        "eny_0050_hound_bomb": {
+            "aiTemplateId": "aiconf_eny_0050_hound_bomb",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0050_hound",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0050_hound_bomb",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0050_hound"
+        },
+        "eny_0050_hound_cardefend": {
+            "aiTemplateId": "Settlement/aiconf_eny_0050_hound_cardefend",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0050_hound",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0050_hound_cardefend",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0050_hound"
+        },
+        "eny_0050_hound_dungeon": {
+            "aiTemplateId": "",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0050_hound",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_common_born"
+            ],
+            "enemyId": "eny_0050_hound_dungeon",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0050_hound"
+        },
+        "eny_0050_hound_hdg005": {
+            "aiTemplateId": "aiconf_eny_0050_hound_hdg005",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0050_hound",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_eny_0050_hound_hdg005"
+            ],
+            "enemyId": "eny_0050_hound_hdg005",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0050_hound"
+        },
+        "eny_0050_hound_noborneffect": {
+            "aiTemplateId": "",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0050_hound",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [],
+            "enemyId": "eny_0050_hound_noborneffect",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0050_hound"
+        },
+        "eny_0050_hound_settlement": {
+            "aiTemplateId": "Settlement/aiconf_eny_0050_hound_settlement",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0050_hound",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_settlement_addtag"
+            ],
+            "enemyId": "eny_0050_hound_settlement",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0050_hound"
+        },
+        "eny_0050_hound_weekly_dung01": {
+            "aiTemplateId": "aiconf_eny_0050_hound_weekly_dungeon",
+            "attrModifiers": [],
+            "attrTemplateId": "eny_0050_hound",
+            "autoLockCancelTime": -1,
+            "autoLockCancelType": 0,
+            "bornBuffs": [
+                "buff_race_enemy_explode_on_death"
+            ],
+            "enemyId": "eny_0050_hound_weekly_dung01",
+            "isDangerous": false,
+            "modelId": "",
+            "serverDeathCheck": false,
+            "showBigEffect": false,
+            "showBigHeadbar": false,
+            "templateId": "eny_0050_hound"
+        }
+    },
+    "enemyattributetemplatetable": {
+        "eny_0050_hound": {
+            "aoiRadius": 0,
+            "attackValueAgainstTower": 10,
+            "breakingAttackedAtbObtain": 25,
+            "crystDmgResistScalar": 1,
+            "fireDmgResistScalar": 1,
+            "initialSuperArmor": 0,
+            "levelDependentAttributes": [
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 1
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 152
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 30
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 2
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 174
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 34
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 3
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 197
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 38
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 4
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 221
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 43
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 5
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 246
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 48
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 6
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 289
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 53
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 7
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 336
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 58
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 8
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 389
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 63
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 9
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 446
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 69
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 10
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 510
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 75
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 11
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 546
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 80
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 12
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 582
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 86
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 13
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 647
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 92
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 14
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 716
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 99
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 15
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 789
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 105
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 16
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 866
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 112
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 17
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 947
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 118
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 18
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 996
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 125
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 19
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 1044
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 132
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 20
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 1093
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 140
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 21
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 1202
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 147
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 22
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 1320
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 155
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 23
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 1447
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 164
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 24
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 1583
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 172
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 25
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 1729
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 181
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 26
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 1886
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 189
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 27
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 2055
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 198
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 28
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 2251
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 207
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 29
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 2463
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 217
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 30
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 2690
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 226
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 31
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 3035
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 246
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 32
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 3340
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 263
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 33
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 3671
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 281
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 34
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 4030
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 300
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 35
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 4421
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 320
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 36
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 4844
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 341
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 37
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 5302
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 363
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 38
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 5798
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 386
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 39
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 6335
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 409
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 40
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 6916
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 434
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 41
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 7485
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 460
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 42
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 8090
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 487
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 43
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 8734
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 514
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 44
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 9419
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 543
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 45
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 10146
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 573
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 46
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 10916
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 604
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 47
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 11733
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 636
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 48
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 12598
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 670
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 49
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 13513
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 704
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 50
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 14481
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 740
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 51
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 15769
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 781
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 52
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 16783
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 819
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 53
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 17854
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 859
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 54
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 18985
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 900
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 55
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 20180
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 942
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 56
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 21441
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 968
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 57
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 22773
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 995
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 58
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 24178
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1022
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 59
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 25661
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1050
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 60
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 27225
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1078
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 61
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 28892
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1108
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 62
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 30558
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1138
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 63
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 32372
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1168
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 64
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 34182
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1199
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 65
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 36074
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1231
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 66
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 37953
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1262
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 67
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 39994
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1295
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 68
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 42019
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1327
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 69
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 44442
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1362
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 70
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 47054
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1396
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 71
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 48792
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1419
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 72
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 50463
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1440
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 73
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 52282
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1463
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 74
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 54032
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1485
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 75
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 55935
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1508
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 76
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 57764
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1531
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 77
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 59752
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1554
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 78
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 61662
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1576
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 79
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 63738
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1600
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 80
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 65489
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1622
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 81
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 68545
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1645
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 82
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 71703
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1669
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 83
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 74964
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1692
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 84
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 78332
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1716
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 85
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 81808
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1739
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 86
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 85394
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1763
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 87
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 89093
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1787
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 88
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 92907
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1810
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 89
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 96838
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1834
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 90
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 100888
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1858
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 91
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 103359
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1881
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 92
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 105869
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1904
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 93
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 108418
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1927
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 94
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 111006
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1950
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 95
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 112719
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1971
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 96
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 114444
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 1993
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 97
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 116183
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2014
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 98
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 117934
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2036
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 99
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 119699
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2057
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                },
+                {
+                    "attrs": [
+                        {
+                            "attrType": 0,
+                            "attrValue": 100
+                        },
+                        {
+                            "attrType": 1,
+                            "attrValue": 121477
+                        },
+                        {
+                            "attrType": 2,
+                            "attrValue": 2079
+                        },
+                        {
+                            "attrType": 3,
+                            "attrValue": 100
+                        }
+                    ]
+                }
+            ],
+            "levelIndependentAttributes": {
+                "attrs": [
+                    {
+                        "attrType": 20,
+                        "attrValue": 60
+                    },
+                    {
+                        "attrType": 21,
+                        "attrValue": 6
+                    },
+                    {
+                        "attrType": 27,
+                        "attrValue": 1
+                    },
+                    {
+                        "attrType": 12,
+                        "attrValue": 2.1
+                    },
+                    {
+                        "attrType": 8,
+                        "attrValue": 1
+                    },
+                    {
+                        "attrType": 11,
+                        "attrValue": 0
+                    },
+                    {
+                        "attrType": 9,
+                        "attrValue": 0
+                    },
+                    {
+                        "attrType": 10,
+                        "attrValue": 0.5
+                    },
+                    {
+                        "attrType": 80,
+                        "attrValue": 1
+                    },
+                    {
+                        "attrType": 84,
+                        "attrValue": 1
+                    },
+                    {
+                        "attrType": 83,
+                        "attrValue": 1
+                    },
+                    {
+                        "attrType": 82,
+                        "attrValue": 1
+                    },
+                    {
+                        "attrType": 81,
+                        "attrValue": 1
+                    },
+                    {
+                        "attrType": 85,
+                        "attrValue": 1
+                    },
+                    {
+                        "attrType": 15,
+                        "attrValue": 1
+                    }
+                ]
+            },
+            "maxResilience": 65,
+            "naturalDmgResistScalar": 1,
+            "physicalDmgResistScalar": 1,
+            "poiseKnotBuffList": [],
+            "poiseKnotPctList": [],
+            "pulseDmgResistScalar": 1,
+            "pushedBackCoefficient": 1,
+            "resilienceDecreaseWhenHurt": 0,
+            "resilienceFullRecoverTime": 0,
+            "resilienceRecover": 0,
+            "resilienceRecoverInterval": 0,
+            "superArmorWhenResilienceZero": 0,
+            "templateId": "eny_0050_hound",
+            "zeroPoiseSuperArmor": 0
+        }
+    },
+    "enemyabilitydesctable": {
+        "eny_0050_hound_ability_1": {
+            "abilityId": "eny_0050_hound_ability_1",
+            "description": {
+                "id": -7429825097183250151,
+                "text": "This enemy is agile but can be overwhelmed when taking multiple hits."
+            },
+            "name": {
+                "id": 0,
+                "text": ""
+            }
+        }
+    },
+    "displayenemytypetable": {
+        "name": {
+            "id": 1914748764001243651,
+            "text": "Common"
+        }
+    },
+    "distributioninfotable": {
+        "distribution_map01_lv001": {
+            "areaName": {
+                "id": 7373253794023409856,
+                "text": "The Hub"
+            },
+            "distributionId": "distribution_map01_lv001",
+            "jumpId": "jump_map01_lv001"
+        },
+        "distribution_map01_lv002": {
+            "areaName": {
+                "id": 8669722945076311410,
+                "text": "Valley Pass"
+            },
+            "distributionId": "distribution_map01_lv002",
+            "jumpId": "jump_map01_lv002"
+        },
+        "distribution_map01_lv005": {
+            "areaName": {
+                "id": -286403536703446267,
+                "text": "Originium Science Park"
+            },
+            "distributionId": "distribution_map01_lv005",
+            "jumpId": "jump_map01_lv005"
+        },
+        "distribution_map01_lv006": {
+            "areaName": {
+                "id": 4212856077090034288,
+                "text": "Origin Lodespring"
+            },
+            "distributionId": "distribution_map01_lv006",
+            "jumpId": "jump_map01_lv006"
+        },
+        "distribution_map01_lv007": {
+            "areaName": {
+                "id": 8232887937264001150,
+                "text": "Power Plateau"
+            },
+            "distributionId": "distribution_map01_lv007",
+            "jumpId": "jump_map01_lv007"
+        },
+        "distribution_world_energy_point02": {
+            "areaName": {
+                "id": 7211379679969024651,
+                "text": "Energy Alluvium: Originium Science Park"
+            },
+            "distributionId": "distribution_world_energy_point02",
+            "jumpId": "jump_world_energy_point02"
+        },
+        "distribution_world_energy_point04": {
+            "areaName": {
+                "id": 3338011997281315661,
+                "text": "Energy Alluvium: Power Plateau"
+            },
+            "distributionId": "distribution_world_energy_point04",
+            "jumpId": "jump_world_energy_point04"
+        }
+    },
+    "name": "Bonekrusher Ripptusk"
+}

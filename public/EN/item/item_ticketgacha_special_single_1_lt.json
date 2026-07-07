@@ -1,0 +1,33 @@
+{
+    "id": "item_ticketgacha_special_single_1_lt",
+    "icon": "/public/images/item/itemiconbig/item_ticketgacha_special_single.png",
+    "name": "Chartered HH Permit",
+    "description": "A limited-time Endfield Industries certificate. Use this to perform 1 headhunting in [Chartered Headhunting].",
+    "rarity": 6,
+    "type": 82,
+    "obtainWayIds": [
+        "item_obtain_shop_yellowticket",
+        "item_obtain_activity"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_shop_yellowticket",
+            "desc": "Acquisition Center: Bond Quota Exchange",
+            "bindSystem": 51,
+            "phaseId": "CashShop",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_yellow_1\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_payshop.png"
+        },
+        {
+            "id": "item_obtain_activity",
+            "desc": "Reward: Events",
+            "bindSystem": 10000000,
+            "phaseId": "",
+            "phaseArgs": "",
+            "icon": "/public/images/item/itemtips/icon_tips_activity.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": []
+}

@@ -1,0 +1,24 @@
+{
+    "id": "item_case_bp_selfselect_exp",
+    "icon": "/public/images/item/itemiconbig/item_case_bp_selfselect_exp.png",
+    "name": "Multi-Purpose EXP Selection Crate",
+    "description": "Opening this lets you choose to receive either operator or weapon EXP materials.",
+    "rarity": 5,
+    "type": 43,
+    "obtainWayIds": [
+        "item_obtain_bp_pay"
+    ],
+    "obtainWays": [
+        {
+            "id": "item_obtain_bp_pay",
+            "desc": "Protocol Pass: Protocol Customized",
+            "bindSystem": 802,
+            "phaseId": "BattlePass",
+            "phaseArgs": "{\r\n  \"panelId\": \"BattlePassPlan\"\r\n}",
+            "icon": "/public/images/item/itemtips/icon_tips_bp.png"
+        }
+    ],
+    "tutorials": [],
+    "craft": null,
+    "droppedBy": []
+}

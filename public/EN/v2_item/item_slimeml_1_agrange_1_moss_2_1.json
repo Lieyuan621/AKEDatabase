@@ -1,0 +1,198 @@
+{
+    "itemId": "item_slimeml_1_agrange_1_moss_2_1",
+    "itemtable": {
+        "backpackCanDiscard": true,
+        "decoDesc": {
+            "id": -7806113047921792255,
+            "text": "Citrome-flavored pudding with balanced sour and sweet flavors. Bits of aggagrit were added during boiling. Originium Slug extracts were then used to solidify the entire thing. This cloyingly sweet aroma is simply ... magnificent."
+        },
+        "desc": {
+            "id": 7929305067935853793,
+            "text": "Use this tactical to restore the operator's Ultimate Energy."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_slimeml_1_agrange_1_moss_2_1",
+        "id": "item_slimeml_1_agrange_1_moss_2_1",
+        "maxBackpackStackCount": 50,
+        "maxStackCount": 10000,
+        "modelKey": "int_collection_item_2",
+        "name": {
+            "id": 5223405013408917842,
+            "text": "Mini Honey Slugpudding"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": -1844369404496194909,
+            "text": "Unlock <@obt.key>Crafting Manual</> formula to make this"
+        },
+        "noObtainWayId": [
+            "item_obtain_hdwk_item_drop_slimeml_1"
+        ],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [],
+        "outcomeItemIds": [],
+        "rarity": 2,
+        "showAllDepotCount": false,
+        "showingType": 5,
+        "sortId1": -82,
+        "sortId2": 26,
+        "type": 48,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 6
+    },
+    "useitemtable": {
+        "duration": 0,
+        "effectType": 0,
+        "isPersistentBuff": false,
+        "isValuableDepot": false,
+        "itemId": "item_slimeml_1_agrange_1_moss_2_1",
+        "itemUseDesc": {
+            "id": 2306241896666461324,
+            "text": "Use this for the entire team to instantly gain <@ba.vup>{value:0%}</> Ultimate Energy."
+        },
+        "stackingKey": "",
+        "targetNumType": 1,
+        "uiType": 6,
+        "useActions": [
+            {
+                "buffBBData": {
+                    "blackboard": [
+                        {
+                            "key": "value",
+                            "value": 0.08,
+                            "valueStr": ""
+                        }
+                    ],
+                    "buffId": "buff_common_ultsp_potion_1"
+                },
+                "skillBBData": {
+                    "blackboard": [],
+                    "skillId": "",
+                    "skillPath": ""
+                },
+                "useType": 3
+            }
+        ]
+    },
+    "equipitemtable": {
+        "autoCheckNotInFight": true,
+        "castTime": 2,
+        "chargeCount": 3,
+        "checkTarget": 0,
+        "condParams": [
+            "0.5",
+            "lt"
+        ],
+        "condType": 1,
+        "cooldown": 3,
+        "equipDesc": {
+            "id": 8492950084909520029,
+            "text": "Once equipped, item is automatically used when the holder's Ultimate Energy drops below <@ba.vup>{param1:0%}</>. Max uses per battle: <@ba.vup>{count:0}</>.\n - <@tips.orange>Uses are restored after depletion</>"
+        },
+        "equipExtraDesc": {
+            "id": 6120573169707181135,
+            "text": "Once equipped, item is automatically used when the holder's Ultimate Energy drops below <@ba.vup>{param1:0%}</>. Max uses per battle: <@ba.vup>{count:0}</>.\n<@tips.orange>Uses are restored after depletion</>: When uses are depleted in battle, <@ba.vup>1</> more use becomes available after a while."
+        },
+        "itemId": "item_slimeml_1_agrange_1_moss_2_1",
+        "levelUpChargeCount": 4,
+        "levelUpRecoverUpperCount": 1,
+        "recoverTime": 60,
+        "recoverUpperCount": 1,
+        "toMainCharCount": 0,
+        "useTarget": 0
+    },
+    "factoryitemtable": {
+        "buildingBufferStackLimit": -1,
+        "deliverItemTypeList": [
+            3,
+            2
+        ],
+        "dischargeType": false,
+        "id": "item_slimeml_1_agrange_1_moss_2_1",
+        "itemState": false,
+        "losslessDomainIds": [],
+        "showInHubDomainIds": [],
+        "showInUnloader": false,
+        "subType": 4,
+        "transferDomainIds": [
+            "domain_1",
+            "domain_2"
+        ],
+        "value": 200
+    },
+    "wikientryid": "wiki_item_slimeml_1_agrange_1_moss_2_1",
+    "wikientrydatatable": {
+        "desc": {
+            "id": 0,
+            "text": ""
+        },
+        "groupId": "wiki_group_item_usable",
+        "id": "wiki_item_slimeml_1_agrange_1_moss_2_1",
+        "order": 40,
+        "prtsId": "",
+        "refItemId": "item_slimeml_1_agrange_1_moss_2_1",
+        "refMonsterTemplateId": ""
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 48,
+        "name": {
+            "id": -8745995051935114781,
+            "text": "Tactical"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 3,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 6
+    },
+    "itemshowingtypetable": {
+        "icon": "icon_item_type_usable",
+        "name": {
+            "id": -2232813154053962573,
+            "text": "Usables"
+        },
+        "sortId": 6,
+        "type": 5
+    },
+    "factorymanualcrafttable": [
+        {
+            "defaultUnlock": false,
+            "domainId": "domain_1",
+            "id": "hdwk_slimeml_1_agrange_1_moss_2_1",
+            "ingredients": [
+                {
+                    "count": 1,
+                    "id": "item_drop_slimeml_1"
+                },
+                {
+                    "count": 1,
+                    "id": "item_drop_agrange_1"
+                },
+                {
+                    "count": 1,
+                    "id": "item_plant_moss_powder_2"
+                }
+            ],
+            "itemId": "item_formula_slimeml_1_agrange_1_moss_2_1",
+            "name": {
+                "id": 3314236345251259264,
+                "text": "Mini Honey Slugpudding"
+            },
+            "outcomes": [
+                {
+                    "count": 1,
+                    "id": "item_slimeml_1_agrange_1_moss_2_1"
+                }
+            ],
+            "rarity": 2,
+            "showingType": 19,
+            "sortId": 66
+        }
+    ],
+    "name": "Mini Honey Slugpudding"
+}

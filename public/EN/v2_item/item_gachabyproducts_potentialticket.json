@@ -1,0 +1,74 @@
+{
+    "itemId": "item_gachabyproducts_potentialticket",
+    "itemtable": {
+        "backpackCanDiscard": false,
+        "decoDesc": {
+            "id": -7620787969086333851,
+            "text": "A certificate that symbolizes the breadth of expertise and knowledge of Endfield operators. Your Endfielders come from all corners of the world. They have etched their names, their stories, and their lives upon this place."
+        },
+        "desc": {
+            "id": -3777162078498725121,
+            "text": "A rare quota resource. Exchangeable for goods at the Quota Exchange."
+        },
+        "iconCompositeId": "",
+        "iconId": "item_gachabyproducts_potentialticket",
+        "id": "item_gachabyproducts_potentialticket",
+        "maxBackpackStackCount": -1,
+        "maxStackCount": -1,
+        "modelKey": "int_collection_item_gold_1",
+        "name": {
+            "id": 5762829150206915971,
+            "text": "Endpoint Quota"
+        },
+        "noObtainWayConditionId": [],
+        "noObtainWayHint": {
+            "id": 0,
+            "text": ""
+        },
+        "noObtainWayId": [],
+        "notObtainShow": true,
+        "notObtainShowTimeId": "",
+        "obtainWayIds": [
+            "item_obtain_payshop_potential"
+        ],
+        "outcomeItemIds": [],
+        "rarity": 6,
+        "showAllDepotCount": false,
+        "showingType": 0,
+        "sortId1": -11,
+        "sortId2": 6,
+        "type": 49,
+        "valuableDepotRedDot": false,
+        "valuableTabType": 10
+    },
+    "systemjumptable": {
+        "item_obtain_payshop_potential": {
+            "bindSystem": 51,
+            "desc": {
+                "id": 6254505054442954177,
+                "text": "Acquisition Center: Token Exchange"
+            },
+            "iconId": "icon_tips_payshop",
+            "id": "item_obtain_payshop_potential",
+            "phaseArgs": "{\r\n  \"shopGroupId\": \"shop_pay_token\",\r\n  \"shopId\": \"shop_pay_green_1\"\r\n}",
+            "phaseId": "CashShop"
+        }
+    },
+    "itemtypetable": {
+        "barkWhenGot": false,
+        "bgType": 0,
+        "hideItemInBagToast": false,
+        "hideNewToast": false,
+        "itemType": 49,
+        "name": {
+            "id": 5649724196452011589,
+            "text": "Valuable"
+        },
+        "showCount": true,
+        "showCountInTips": true,
+        "storageSpace": 2,
+        "unlockSystemType": 10000000,
+        "valuableTabType": 10
+    },
+    "name": "Endpoint Quota"
+}

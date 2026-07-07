@@ -1,0 +1,208 @@
+{
+  "weaponId": "wpn_sword_0015",
+  "title": "Aspirant",
+  "rarity": 5,
+  "weapontype": 1,
+  "icon": "/public/images/weapon/icon/wpn_sword_0015.png",
+  "iconbig": "/public/images/weapon/iconbig/wpn_sword_0015.png",
+  "iconfull": "/public/images/weapon/full/wpn_sword_0015.png",
+  "desc": "A weapon equipped by Endfield operators to significantly boost their combat capabilities.",
+  "decoDesc": "A first tier weapon released by Hongshan Swordmancers and also the only one that achieved decent popularity in the market. Many copies have been found in the wildlands, though.",
+  "baseAtk": [
+    42,
+    46,
+    50,
+    54,
+    58,
+    62,
+    66,
+    71,
+    75,
+    79,
+    83,
+    87,
+    91,
+    95,
+    100,
+    104,
+    108,
+    112,
+    116,
+    120,
+    125,
+    129,
+    133,
+    137,
+    141,
+    145,
+    149,
+    154,
+    158,
+    162,
+    166,
+    170,
+    174,
+    178,
+    183,
+    187,
+    191,
+    195,
+    199,
+    203,
+    208,
+    212,
+    216,
+    220,
+    224,
+    228,
+    232,
+    237,
+    241,
+    245,
+    249,
+    253,
+    257,
+    261,
+    266,
+    270,
+    274,
+    278,
+    282,
+    286,
+    291,
+    295,
+    299,
+    303,
+    307,
+    311,
+    315,
+    320,
+    324,
+    328,
+    332,
+    336,
+    340,
+    344,
+    349,
+    353,
+    357,
+    361,
+    365,
+    369,
+    374,
+    378,
+    382,
+    386,
+    390,
+    394,
+    398,
+    403,
+    407,
+    411
+  ],
+  "skilllist": [
+    {
+      "skillName": "Agility Boost [M]",
+      "description": "Agility <@ba.vup>+{agi}</>",
+      "blackboard": [
+        {
+          "key": "agi",
+          "value": [
+            16,
+            28,
+            41,
+            54,
+            67,
+            80,
+            92,
+            105,
+            124
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "Physical DMG Boost [M]",
+      "description": "Physical DMG Dealt <@ba.vup>+{phydam:0.0%}</>",
+      "blackboard": [
+        {
+          "key": "phydam",
+          "value": [
+            0.044444446,
+            0.08,
+            0.115555555,
+            0.15111111,
+            0.18666667,
+            0.22222222,
+            0.25777778,
+            0.29333332,
+            0.34666666
+          ]
+        }
+      ]
+    },
+    {
+      "skillName": "Twilight: Imposing Peak",
+      "description": "Ultimate DMG Dealt <@ba.vup>+{dmg_up:0.0%}</>.\nAfter the wielder applies <#ba.airborne>Lifted</>, during the next ultimate cast within {duration:0}s, the wielder gains Physical DMG Dealt <@ba.vup>+{phy_dmg_up:0.0%}</>.\n<@ba.info>Max stacks for effects of the same name: {max_stack:0}. Duration of each stack is counted separately. Effect only triggers once every 0.5s.</>",
+      "blackboard": [
+        {
+          "key": "dmg_up",
+          "value": [
+            0.16,
+            0.192,
+            0.224,
+            0.256,
+            0.288,
+            0.32,
+            0.352,
+            0.384,
+            0.448
+          ]
+        },
+        {
+          "key": "phy_dmg_up",
+          "value": [
+            0.12,
+            0.144,
+            0.168,
+            0.192,
+            0.216,
+            0.24,
+            0.264,
+            0.288,
+            0.336
+          ]
+        },
+        {
+          "key": "duration",
+          "value": [
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30
+          ]
+        },
+        {
+          "key": "max_stack",
+          "value": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            3
+          ]
+        }
+      ]
+    }
+  ],
+  "weaponDesc": "It was early autumn and already the snow was falling in the north of Talos-II. Beneath the heavy gray skies, snowflakes fell as bone-chilling winds howled across the plains, unchallenged by the wilting grass as it burrowed into an old, leaking observation post... There the winds were briefly checked by a campfire before they stopped by a young man's cheek.\n\"ACHOO!\"\nThe sneezing did not slow the young Perro speed in stuffing two slabs of bread and a meat stew into his mouth. He even wanted to lick the plate if he could.\n\"Oh... Thanks a lot for this...\"\n\"You're welcome. The cold drove us to this campfire. We're friends now.\"\nThe grinning Forte \"chef\" sat by the campfire and gazed at him. He looked around thirty or so.\n\"So, friend, why venture to the North alone?\"\n\"I'm trying to visit the masters of the fighting arts and complete my Catalog of Warriors Under the Heavens! Oh, that's just a book with the backstories of every warrior... We have this legendary master named Chen Chichi of Hongshan but nobody knew where she went. I thought I could visit the North and find out... But as luck would have it, the Aggeloi was the one that chased me all the way here. Dammit, I bet we'd be getting another Ankhorfall soon enough.\"\nThe Forte helped himself to a ladle of the stew.\n\"I know this one. Orphaned at a young age and got admitted to Tanjian Hall where she became the worst disciple of the cohort. But after doing her Jianghu tours, she became a legend amongst those of her generation and a lauded master of swordmancy... Even got herself a happy family. Husband's quite the master in leapmancy. They also have a daughter. Name's Chen Qianyu, I think.\"\n\"That's so detailed. Are you a swordmancer as well?\"\n\"I learned a few swordmancy moves from the wildlands from a Songseeker.\"\n\"So, what do you think about Master Chen Chichi?\"\n\"A great and imposing mountain.\"\n\"Yeah... She's the dream of every swordmancer. They say her swordmancy is imbued with a state of unrestrained freedom. It's more than being faster than a comet. Those who witnessed her sword singing across the skies could feel the 'heavens and earth' itself. It felt as though everything in this world, from the tallest peaks to the deepest seas, has achieved oneness with her blade. Her sword itself is light and elegant. It's like a speck of dust and a gust of wind. It strikes with a force contained within every existence... I can hardly imagine anything that could withstand her blade. Not even the Aggelos...\"\n\"Ankhor.\"\n\"Indeed. Her sword can probably cleave the largest Ankhors in two...\"\n\"I'm saying we have an Ankhorfall.\"\nThe young Perro instantly leaped up without raising his head, jumped over the campfire, and bounded for the outside.\n\"You can't outrun an Ankhor.\"\n\"Well, at least I won't be crushed by it. I'll take my luck outrunning its Aggeloid spawn.\"\n\"Haha. That'd be quite a challenge. We lost that race years ago.\"\nThe Forte strolled out casually and slowly.\n\"When I was a lad, I herded stockbeasts for a Songseeker. We were surrounded by the Aggeloi when a swordmancer drew her iron blade and unleashed a crimson cleave that pulverized the rock buggers. A master leapmancer then grabbed me with his arms and helped me escape the encirclement... I spent years traveling and paid more than a few visits to Hongshan, but my search has found nothing. I have nothing but respect for this couple...\"\nThe Forte then drew swords from his hip scabbards.\n\"I may not achieve their levels of mastery, but such is my goal. I spent years honing my swordmancy and managed to replicate a fraction of that overwhelming cleave I have witnessed. This is one auspicious day. May you witness my achievement.\"\nThe Ankhor smote the ground and turned their former shelter to a pile of rubble.\nWhat followed was a flurry of glinting blades."
+}
