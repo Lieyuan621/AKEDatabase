@@ -309,7 +309,7 @@
 
         async function loadResearchManifest(showHidden) {
             try {
-                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/research/manifest.json') || '/public/CH/research/manifest.json');
+                const res = await (window.akeFetch || fetch)('/public/CH/research/manifest.json');
                 if (!res.ok) throw new Error('无法加载研究文档清单');
                 const all = await res.json();
                 rawAllDocs = all;

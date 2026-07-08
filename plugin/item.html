@@ -297,7 +297,7 @@
 
         async function loadItemManifest(showHidden) {
             try {
-                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/item/manifest.json') || '/public/CH/item/manifest.json');
+                const res = await (window.akeFetch || fetch)('/public/CH/item/manifest.json');
                 if (!res.ok) throw new Error('无法加载物品清单');
                 const all = await res.json();
                 rawAllItems = all;

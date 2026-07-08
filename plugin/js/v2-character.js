@@ -1,5 +1,4 @@
 (function() {
-        const t = (key, params) => window.akeI18n ? window.akeI18n.t(key, params) : key;
         let allCharacters = [];
         let rawAllCharacters = [];
         let activeCharId = null;
@@ -238,7 +237,7 @@
 
         async function loadMaps() {
             try {
-                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/maps.json') || '/public/CH/maps.json');
+                const res = await (window.akeFetch || fetch)('/public/CH/maps.json');
                 if (!res.ok) throw new Error('无法加载映射数据');
                 const data = await res.json();
                 attrMap = data.ATTR_MAP || {};
@@ -314,7 +313,7 @@
                     const btn = document.createElement('span');
                     btn.className = `filter-btn ${selectedRarities.has(r) ? 'active' : ''}`;
                     btn.dataset.rarity = r;
-                    btn.textContent = t('common.star', { count: r });
+                    btn.textContent = r + '星';
                     btn.addEventListener('click', () => {
                         if (selectedRarities.has(r)) {
                             selectedRarities.delete(r);
@@ -428,7 +427,7 @@
 
         async function loadCharacterManifest(showHidden) {
             try {
-                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/v2_character/manifest.json') || '/public/CH/v2_character/manifest.json');
+                const res = await (window.akeFetch || fetch)('/public/CH/v2_character/manifest.json');
                 if (!res.ok) throw new Error('无法加载角色清单');
                 const allChars = await res.json();
                 rawAllCharacters = allChars;
@@ -450,8 +449,8 @@
 
             container.innerHTML = '';
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="loader">${t('moduleInternal.v2Character.noMatch')}</div>`;
-                if (detailContainer) detailContainer.innerHTML = `<div class="loader">${t('moduleInternal.v2Character.choose')}</div>`;
+                container.innerHTML = '<div class="loader">无匹配角色</div>';
+                if (detailContainer) detailContainer.innerHTML = '<div class="loader">请选择角色</div>';
                 activeCharId = null;
                 return;
             }
@@ -464,7 +463,7 @@
 
                 const rarityBar = document.createElement('span');
                 rarityBar.className = `rarity-bar rarity-${char.rarity}`;
-                rarityBar.title = t('common.rarityValue', { value: char.rarity });
+                rarityBar.title = `稀有度 ${char.rarity}`;
 
                 const icon = document.createElement('img');
                 icon.className = 'character-icon';
@@ -482,7 +481,7 @@
                 textContainer.appendChild(nameDiv);
                 textContainer.appendChild(idDiv);
 
-                const typeDisplayName = getCharTypeName(char.charType) || char.charType || t('common.unknown');
+                const typeDisplayName = getCharTypeName(char.charType) || char.charType || '未知';
                 const typeClass = TYPE_CLASS_MAP[typeDisplayName] || 'unknown';
                 const typeDot = document.createElement('span');
                 typeDot.className = `char-type-dot type-${typeClass}`;
@@ -536,10 +535,10 @@
         }
 
         async function loadCharacterDetail(character, container) {
-            container.innerHTML = `<div class="loader">${t('moduleInternal.v2Character.loading')}</div>`;
+            container.innerHTML = '<div class="loader">加载干员数据...</div>';
             try {
                 const fileName = (character.contentFile || '').split('/').pop() || `${character.charId}.json`;
-                const contentFile = window.akeDataPath?.(`/public/CH/v2_character/${fileName}`) || `/public/CH/v2_character/${fileName}`;
+                const contentFile = `/public/CH/v2_character/${fileName}`;
                 const rawData = await (window.akeFetch || fetch)(contentFile).then(r => r.json());
                 const data = normalizeV2ToLegacy(character, rawData);
                 currentCharData = data;
@@ -589,7 +588,7 @@
                     });
                 });
             } catch (err) {
-                container.innerHTML = `<div class="error-message">${t('moduleInternal.v2Character.loadFailed', { message: err.message })}</div>`;
+                container.innerHTML = `<div class="error-message">加载失败: ${err.message}</div>`;
             }
         }
 
@@ -1105,7 +1104,7 @@
                         <div class="detail-text">
                             <div class="detail-title-row">
                                 <span class="detail-name">${data.name}</span>
-                                <span class="detail-rarity rarity-${data.rarity}" title="${t('common.rarityValue', { value: data.rarity })}"></span>
+                                <span class="detail-rarity rarity-${data.rarity}" title="稀有度 ${data.rarity}"></span>
                             </div>
                             <div class="detail-tags">
                                 ${(data.charBattleTag || []).map(tag => `<span class="tag">${tag}</span>`).join('')}

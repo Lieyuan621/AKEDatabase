@@ -169,7 +169,7 @@
 
         async function loadEquipManifest(showHidden) {
             try {
-                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/equip/manifest.json') || '/public/CH/equip/manifest.json');
+                const res = await (window.akeFetch || fetch)('/public/CH/equip/manifest.json');
                 if (!res.ok) throw new Error('无法加载装备清单');
                 const all = await res.json();
                 rawAllSuits = all || [];

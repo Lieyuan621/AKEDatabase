@@ -1,5 +1,4 @@
 (function() {
-        const t = (key, params) => window.akeI18n ? window.akeI18n.t(key, params) : key;
         let allItems = [];
         let rawAllItems = [];
         let activeItemId = null;
@@ -75,7 +74,7 @@
 
         async function loadMaps() {
             try {
-                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/maps.json') || '/public/CH/maps.json');
+                const res = await (window.akeFetch || fetch)('/public/CH/maps.json');
                 if (res.ok) {
                     const data = await res.json();
                     itemTypeMap = data.item_type_map || {};
@@ -94,7 +93,7 @@
                 if (!existR.has(r)) continue;
                 const btn = document.createElement('span');
                 btn.className = `v2i-filter-btn ${selectedRarities.has(r) ? 'active' : ''}`;
-                btn.textContent = t('common.star', { count: r });
+                btn.textContent = r + '星';
                 btn.addEventListener('click', () => {
                     selectedRarities.has(r) ? selectedRarities.delete(r) : selectedRarities.add(r);
                     btn.classList.toggle('active');
@@ -156,7 +155,7 @@
 
         async function loadItemManifest(showHidden) {
             try {
-                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/v2_item/manifest.json') || '/public/CH/v2_item/manifest.json');
+                const res = await (window.akeFetch || fetch)('/public/CH/v2_item/manifest.json');
                 if (!res.ok) throw new Error('无法加载物品清单');
                 const all = await res.json();
                 rawAllItems = all;
@@ -178,8 +177,8 @@
             container.innerHTML = '';
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="v2i-loader">${t('moduleInternal.v2Item.noMatch')}</div>`;
-                if (detailContainer) detailContainer.innerHTML = `<div class="v2i-loader">${t('moduleInternal.v2Item.choose')}</div>`;
+                container.innerHTML = '<div class="v2i-loader">无匹配物品</div>';
+                if (detailContainer) detailContainer.innerHTML = '<div class="v2i-loader">请选择物品</div>';
                 activeItemId = null;
                 return;
             }
@@ -191,7 +190,7 @@
 
                 const rb = document.createElement('span');
                 rb.className = `v2i-rarity-bar rarity-${item.rarity}`;
-                rb.title = t('common.rarityValue', { value: item.rarity });
+                rb.title = `稀有度 ${item.rarity}`;
 
                 const icon = document.createElement('img');
                 icon.className = 'v2i-item-icon';
@@ -255,12 +254,12 @@
         }
 
         async function loadItemDetail(item, container) {
-            container.innerHTML = `<div class="v2i-loader">${t('moduleInternal.v2Item.loading')}</div>`;
+            container.innerHTML = '<div class="v2i-loader">加载物品数据...</div>';
             try {
                 const data = await (window.akeFetch || fetch)(item.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data, item);
             } catch (err) {
-                container.innerHTML = `<div class="v2i-error">${t('moduleInternal.v2Item.loadFailed', { message: err.message })}</div>`;
+                container.innerHTML = `<div class="v2i-error">加载失败: ${err.message}</div>`;
             }
         }
 
@@ -339,7 +338,7 @@
                 const c = data.itemiconcompositetable;
                 h += `<div class="v2i-section"><h3>图标合成</h3><div class="v2i-props-grid">`;
                 h += `<div class="v2i-prop-item"><span class="v2i-prop-label">合成类型</span><span class="v2i-prop-value">${valueTip(c.iconTransType, c.iconTransType, 'iconTransType')}</span></div>`;
-                if (c.showRarity !== undefined) h += `<div class="v2i-prop-item"><span class="v2i-prop-label">${t('common.showRarity')}</span><span class="v2i-prop-value">${valueTip(c.showRarity ? t('common.yes') : t('common.no'), c.showRarity, 'showRarity')}</span></div>`;
+                if (c.showRarity !== undefined) h += `<div class="v2i-prop-item"><span class="v2i-prop-label">显示稀有度</span><span class="v2i-prop-value">${valueTip(c.showRarity ? '是' : '否', c.showRarity, 'showRarity')}</span></div>`;
                 if (c.markIcon) h += `<div class="v2i-prop-item"><span class="v2i-prop-label">标记图标</span><span class="v2i-prop-value">${c.markIcon}</span></div>`;
                 h += `</div></div>`;
             }
@@ -384,7 +383,7 @@
                         <div class="v2i-header-text">
                             <div class="v2i-title-row">
                                 <span class="v2i-name">${name}</span>
-                                <span class="v2i-rarity-dot rarity-${rarity}" title="${t('common.rarityValue', { value: rarity })}"></span>
+                                <span class="v2i-rarity-dot rarity-${rarity}" title="稀有度 ${rarity}"></span>
                                 <span class="v2i-id">${data.itemId || item.itemId}</span>
                             </div>
                             <span class="v2i-type-tag">${typeName}</span>

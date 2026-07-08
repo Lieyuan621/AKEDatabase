@@ -1,5 +1,4 @@
 (function() {
-        const t = (key, params) => window.akeI18n ? window.akeI18n.t(key, params) : key;
         let allSeries = [];
         let rawAllSeries = [];
         let activeSeriesId = null;
@@ -34,7 +33,7 @@
 
         async function loadMaps() {
             try {
-                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/maps.json') || '/public/CH/maps.json');
+                const res = await (window.akeFetch || fetch)('/public/CH/maps.json');
                 if (!res.ok) throw new Error('无法加载映射数据');
                 const data = await res.json();
                 attrMap = data.ATTR_MAP || {};
@@ -335,7 +334,7 @@
 
         async function loadSeriesManifest(showHidden) {
             try {
-                const res = await (window.akeFetch || fetch)(window.akeDataPath?.('/public/CH/v2_dungeon/manifest.json') || '/public/CH/v2_dungeon/manifest.json');
+                const res = await (window.akeFetch || fetch)('/public/CH/v2_dungeon/manifest.json');
                 if (!res.ok) throw new Error('无法加载副本系列清单');
                 const all = await res.json();
                 rawAllSeries = all;
@@ -357,8 +356,8 @@
             container.innerHTML = '';
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="v2d-loader">${t('moduleInternal.v2Dungeon.noMatch')}</div>`;
-                if (detailContainer) detailContainer.innerHTML = `<div class="v2d-loader">${t('moduleInternal.v2Dungeon.choose')}</div>`;
+                container.innerHTML = '<div class="v2d-loader">无匹配系列</div>';
+                if (detailContainer) detailContainer.innerHTML = '<div class="v2d-loader">请选择系列</div>';
                 activeSeriesId = null;
                 return;
             }
@@ -370,7 +369,7 @@
 
                 const rarityBar = document.createElement('span');
                 rarityBar.className = `v2d-rarity-bar rarity-${item.rarity || 1}`;
-                rarityBar.title = t('common.rarityValue', { value: item.rarity || 1 });
+                rarityBar.title = `稀有度 ${item.rarity || 1}`;
 
                 const infoDiv = document.createElement('div');
                 infoDiv.className = 'v2d-item-info';
@@ -431,14 +430,14 @@
         }
 
         async function loadSeriesDetail(seriesItem, container) {
-            container.innerHTML = `<div class="v2d-loader">${t('moduleInternal.v2Dungeon.loading')}</div>`;
+            container.innerHTML = '<div class="v2d-loader">加载副本数据...</div>';
             try {
                 const data = await (window.akeFetch || fetch)(seriesItem.contentFile).then(r => r.json());
                 const buffIds = collectBuffIds(data);
                 if (buffIds.length > 0) await loadAllBuffs(buffIds);
                 container.innerHTML = renderDetail(data, seriesItem);
             } catch (err) {
-                container.innerHTML = `<div class="v2d-error">${t('moduleInternal.v2Dungeon.loadFailed', { message: err.message })}</div>`;
+                container.innerHTML = `<div class="v2d-error">加载失败: ${err.message}</div>`;
             }
         }
 
