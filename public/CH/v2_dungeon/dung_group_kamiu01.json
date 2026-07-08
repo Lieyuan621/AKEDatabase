@@ -10955,17 +10955,69 @@
                 }
             },
             "SpawnerConfig": {
-                "sc_dung02_rdg005_34700000006": {
-                    "configId": "sc_dung02_rdg005_34700000006",
+                "sc_dung02_rdg005_34700000007": {
+                    "configId": "sc_dung02_rdg005_34700000007",
                     "settings": {
                         "enemyLevelUseLevelGrade": false,
                         "forbidDrop": true,
                         "autoComplete": true,
-                        "stopExploreMusic": true
+                        "stopExploreMusic": true,
+                        "preloadEffectKeyList": [
+                            "P_fxbat_monsterspawn_common_01_asset"
+                        ]
                     },
                     "waveMap": {
                         "1": {
+                            "waveId": 31,
+                            "waveMode": "Parallel",
+                            "waveModeKillCount": 0,
+                            "hasDeadlineBegin": false,
+                            "deadlineBeginDeltaTime": 999.0,
+                            "timestamp": 0.0,
+                            "isHidden": false,
+                            "repeatable": false,
+                            "groupMap": {
+                                "1": {
+                                    "groupId": 32,
+                                    "groupMode": "Sequence",
+                                    "groupModeKillCount": 1,
+                                    "hasDeadlineBegin": false,
+                                    "deadlineBeginDeltaTime": 999.0,
+                                    "limitGroupMaxCount": false,
+                                    "groupMaxCount": -1,
+                                    "groupBackUpCount": 0,
+                                    "timestamp": 0.0,
+                                    "actionMap": {
+                                        "1": {
+                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
+                                            "actionId": 15,
+                                            "timestamp": 0.1,
+                                            "libraryKey": "6AA7F237",
+                                            "spawnCount": 1,
+                                            "spawnInterval": 0.0,
+                                            "startPointInvalid": false,
+                                            "faceMainCharacter": false,
+                                            "position": {
+                                                "x": 9.962864,
+                                                "y": -0.005897522,
+                                                "z": 2.657154
+                                            },
+                                            "rotation": {
+                                                "x": 0.0,
+                                                "y": 104.0,
+                                                "z": 0.0
+                                            },
+                                            "randomizeRadius": 0.0,
+                                            "randomizeEndPointRadius": 0.0,
+                                            "routeId": 15
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "2": {
                             "waveId": 1,
+                            "waveKey": "1",
                             "waveMode": "Parallel",
                             "waveModeKillCount": 0,
                             "hasDeadlineBegin": false,
@@ -10975,29 +11027,148 @@
                             "repeatable": false,
                             "groupMap": {
                                 "1": {
-                                    "groupId": 2,
+                                    "groupId": 14,
                                     "groupMode": "Sequence",
-                                    "groupModeKillCount": 0,
+                                    "groupModeKillCount": 1,
                                     "hasDeadlineBegin": false,
                                     "deadlineBeginDeltaTime": 0.0,
                                     "limitGroupMaxCount": false,
-                                    "groupMaxCount": 0,
+                                    "groupMaxCount": -1,
+                                    "groupBackUpCount": 0,
+                                    "timestamp": 0.1,
+                                    "actionMap": {
+                                        "1": {
+                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
+                                            "actionId": 24,
+                                            "timestamp": 0.0,
+                                            "libraryKey": "4D895D8F",
+                                            "spawnCount": 1,
+                                            "spawnInterval": 0.0,
+                                            "startPointInvalid": false,
+                                            "faceMainCharacter": false,
+                                            "position": {
+                                                "x": 7.67278242,
+                                                "y": 0.0,
+                                                "z": -1.95019913
+                                            },
+                                            "rotation": {
+                                                "x": 0.0,
+                                                "y": 61.0,
+                                                "z": 0.0
+                                            },
+                                            "randomizeRadius": 0.0,
+                                            "randomizeEndPointRadius": 0.0,
+                                            "routeId": 24
+                                        },
+                                        "2": {
+                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
+                                            "actionId": 25,
+                                            "timestamp": 0.0,
+                                            "libraryKey": "4D895D8F",
+                                            "spawnCount": 1,
+                                            "spawnInterval": 0.0,
+                                            "startPointInvalid": false,
+                                            "faceMainCharacter": false,
+                                            "position": {
+                                                "x": 7.81181,
+                                                "y": 0.0,
+                                                "z": 7.085867
+                                            },
+                                            "rotation": {
+                                                "x": 0.0,
+                                                "y": 108.0,
+                                                "z": 0.0
+                                            },
+                                            "randomizeRadius": 0.0,
+                                            "randomizeEndPointRadius": 0.0,
+                                            "routeId": 25
+                                        },
+                                        "3": {
+                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
+                                            "actionId": 34,
+                                            "timestamp": 0.0,
+                                            "libraryKey": "4D895D8F",
+                                            "spawnCount": 1,
+                                            "spawnInterval": 0.0,
+                                            "startPointInvalid": false,
+                                            "faceMainCharacter": true,
+                                            "position": {
+                                                "x": 3.287746,
+                                                "y": -0.0211105347,
+                                                "z": 4.72044754
+                                            },
+                                            "rotation": {
+                                                "x": 0.0,
+                                                "y": 114.0,
+                                                "z": 0.0
+                                            },
+                                            "randomizeRadius": 0.0,
+                                            "randomizeEndPointRadius": 0.0,
+                                            "routeId": 34
+                                        },
+                                        "4": {
+                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
+                                            "actionId": 36,
+                                            "timestamp": 0.0,
+                                            "libraryKey": "4D895D8F",
+                                            "spawnCount": 1,
+                                            "spawnInterval": 0.0,
+                                            "startPointInvalid": false,
+                                            "faceMainCharacter": true,
+                                            "position": {
+                                                "x": 3.287746,
+                                                "y": -0.0211105347,
+                                                "z": -0.27955246
+                                            },
+                                            "rotation": {
+                                                "x": 0.0,
+                                                "y": 61.0,
+                                                "z": 0.0
+                                            },
+                                            "randomizeRadius": 0.0,
+                                            "randomizeEndPointRadius": 0.0,
+                                            "routeId": 36
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "3": {
+                            "waveId": 20,
+                            "waveKey": "2",
+                            "waveMode": "PartKilled",
+                            "waveModeTargetKey": "1",
+                            "waveModeKillCount": 0,
+                            "hasDeadlineBegin": false,
+                            "deadlineBeginDeltaTime": 15.0,
+                            "timestamp": 0.0,
+                            "isHidden": false,
+                            "repeatable": false,
+                            "groupMap": {
+                                "1": {
+                                    "groupId": 26,
+                                    "groupMode": "Parallel",
+                                    "groupModeKillCount": 1,
+                                    "hasDeadlineBegin": false,
+                                    "deadlineBeginDeltaTime": 0.0,
+                                    "limitGroupMaxCount": false,
+                                    "groupMaxCount": -1,
                                     "groupBackUpCount": 0,
                                     "timestamp": 0.0,
                                     "actionMap": {
                                         "1": {
                                             "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 3,
-                                            "timestamp": 0.0,
-                                            "libraryKey": "94CFCC5B",
+                                            "actionId": 27,
+                                            "timestamp": 1.0,
+                                            "libraryKey": "9F8D9030",
                                             "spawnCount": 1,
                                             "spawnInterval": 0.0,
                                             "startPointInvalid": false,
-                                            "faceMainCharacter": false,
+                                            "faceMainCharacter": true,
                                             "position": {
-                                                "x": -6.76617432,
-                                                "y": -0.09793091,
-                                                "z": -5.153801
+                                                "x": -0.712254047,
+                                                "y": -0.0459289551,
+                                                "z": -4.27955246
                                             },
                                             "rotation": {
                                                 "x": 0.0,
@@ -11006,21 +11177,21 @@
                                             },
                                             "randomizeRadius": 0.0,
                                             "randomizeEndPointRadius": 0.0,
-                                            "routeId": 3
+                                            "routeId": 27
                                         },
                                         "2": {
                                             "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 4,
-                                            "timestamp": 0.0,
-                                            "libraryKey": "D211CACE",
+                                            "actionId": 28,
+                                            "timestamp": 1.0,
+                                            "libraryKey": "9F8D9030",
                                             "spawnCount": 1,
                                             "spawnInterval": 0.0,
                                             "startPointInvalid": false,
-                                            "faceMainCharacter": false,
+                                            "faceMainCharacter": true,
                                             "position": {
-                                                "x": -0.7404175,
-                                                "y": -0.09793091,
-                                                "z": -6.06102753
+                                                "x": -0.712254047,
+                                                "y": -0.0211105347,
+                                                "z": 7.72044754
                                             },
                                             "rotation": {
                                                 "x": 0.0,
@@ -11029,21 +11200,21 @@
                                             },
                                             "randomizeRadius": 0.0,
                                             "randomizeEndPointRadius": 0.0,
-                                            "routeId": 4
+                                            "routeId": 28
                                         },
                                         "3": {
                                             "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 5,
-                                            "timestamp": 0.0,
-                                            "libraryKey": "D211CACE",
+                                            "actionId": 55,
+                                            "timestamp": 1.0,
+                                            "libraryKey": "9F8D9030",
                                             "spawnCount": 1,
                                             "spawnInterval": 0.0,
                                             "startPointInvalid": false,
-                                            "faceMainCharacter": false,
+                                            "faceMainCharacter": true,
                                             "position": {
-                                                "x": -6.55841064,
-                                                "y": -0.09793091,
-                                                "z": 2.5477066
+                                                "x": 3.287746,
+                                                "y": -0.0459289551,
+                                                "z": -5.27955246
                                             },
                                             "rotation": {
                                                 "x": 0.0,
@@ -11052,7 +11223,148 @@
                                             },
                                             "randomizeRadius": 0.0,
                                             "randomizeEndPointRadius": 0.0,
-                                            "routeId": 5
+                                            "routeId": 55
+                                        },
+                                        "4": {
+                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
+                                            "actionId": 53,
+                                            "timestamp": 1.0,
+                                            "libraryKey": "9F8D9030",
+                                            "spawnCount": 1,
+                                            "spawnInterval": 0.0,
+                                            "startPointInvalid": false,
+                                            "faceMainCharacter": true,
+                                            "position": {
+                                                "x": 3.287745,
+                                                "y": -0.0459289551,
+                                                "z": 9.720446
+                                            },
+                                            "rotation": {
+                                                "x": 0.0,
+                                                "y": 0.0,
+                                                "z": 0.0
+                                            },
+                                            "randomizeRadius": 0.0,
+                                            "randomizeEndPointRadius": 0.0,
+                                            "routeId": 53
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "4": {
+                            "waveId": 43,
+                            "waveMode": "PartKilled",
+                            "waveModeTargetKey": "2",
+                            "waveModeKillCount": 0,
+                            "hasDeadlineBegin": false,
+                            "deadlineBeginDeltaTime": 15.0,
+                            "timestamp": 0.0,
+                            "isHidden": false,
+                            "repeatable": false,
+                            "groupMap": {
+                                "1": {
+                                    "groupId": 38,
+                                    "groupMode": "Parallel",
+                                    "groupModeKillCount": 1,
+                                    "hasDeadlineBegin": false,
+                                    "deadlineBeginDeltaTime": 0.0,
+                                    "limitGroupMaxCount": false,
+                                    "groupMaxCount": -1,
+                                    "groupBackUpCount": 0,
+                                    "timestamp": 0.0,
+                                    "actionMap": {
+                                        "1": {
+                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
+                                            "actionId": 39,
+                                            "timestamp": 1.0,
+                                            "libraryKey": "9F8D9030",
+                                            "spawnCount": 1,
+                                            "spawnInterval": 0.0,
+                                            "startPointInvalid": false,
+                                            "faceMainCharacter": true,
+                                            "position": {
+                                                "x": 6.287746,
+                                                "y": -0.0459289551,
+                                                "z": -6.27955246
+                                            },
+                                            "rotation": {
+                                                "x": 0.0,
+                                                "y": 0.0,
+                                                "z": 0.0
+                                            },
+                                            "randomizeRadius": 0.0,
+                                            "randomizeEndPointRadius": 0.0,
+                                            "routeId": 39
+                                        },
+                                        "2": {
+                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
+                                            "actionId": 40,
+                                            "timestamp": 1.0,
+                                            "libraryKey": "9F8D9030",
+                                            "spawnCount": 1,
+                                            "spawnInterval": 0.0,
+                                            "startPointInvalid": false,
+                                            "faceMainCharacter": true,
+                                            "position": {
+                                                "x": 6.423802,
+                                                "y": -0.005897522,
+                                                "z": 10.5026684
+                                            },
+                                            "rotation": {
+                                                "x": 0.0,
+                                                "y": 0.0,
+                                                "z": 0.0
+                                            },
+                                            "randomizeRadius": 0.0,
+                                            "randomizeEndPointRadius": 0.0,
+                                            "routeId": 40
+                                        },
+                                        "3": {
+                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
+                                            "actionId": 41,
+                                            "timestamp": 1.0,
+                                            "libraryKey": "1AF091A8",
+                                            "spawnCount": 1,
+                                            "spawnInterval": 0.0,
+                                            "startPointInvalid": false,
+                                            "faceMainCharacter": true,
+                                            "position": {
+                                                "x": -0.712254047,
+                                                "y": -0.0459289551,
+                                                "z": -6.27955246
+                                            },
+                                            "rotation": {
+                                                "x": 0.0,
+                                                "y": 0.0,
+                                                "z": 0.0
+                                            },
+                                            "randomizeRadius": 0.0,
+                                            "randomizeEndPointRadius": 0.0,
+                                            "routeId": 41
+                                        },
+                                        "4": {
+                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
+                                            "actionId": 42,
+                                            "timestamp": 1.0,
+                                            "libraryKey": "1AF091A8",
+                                            "spawnCount": 1,
+                                            "spawnInterval": 0.0,
+                                            "startPointInvalid": false,
+                                            "faceMainCharacter": true,
+                                            "position": {
+                                                "x": -0.712254047,
+                                                "y": -0.0459289551,
+                                                "z": 10.7204437
+                                            },
+                                            "rotation": {
+                                                "x": 0.0,
+                                                "y": 0.0,
+                                                "z": 0.0
+                                            },
+                                            "randomizeRadius": 0.0,
+                                            "randomizeEndPointRadius": 0.0,
+                                            "routeId": 42
                                         }
                                     }
                                 }
@@ -11060,8 +11372,8 @@
                         }
                     },
                     "routeMap": {
-                        "3": {
-                            "routeId": 3,
+                        "15": {
+                            "routeId": 15,
                             "patrolData": {
                                 "id": 0,
                                 "worldOffset": {
@@ -11085,12 +11397,40 @@
                                     {
                                         "actionType": "Checkpoint",
                                         "position": {
-                                            "x": 2.472046,
-                                            "y": -0.09793091,
-                                            "z": 0.336586
+                                            "x": 10.242424,
+                                            "y": -0.005897522,
+                                            "z": 2.684475
                                         },
                                         "subPositions": [],
-                                        "subActions": []
+                                        "subActions": [
+                                            {
+                                                "type": "PlayAnimation",
+                                                "duration": 0.0,
+                                                "rotationY": 0.0,
+                                                "rotationOffset": 0.0,
+                                                "animName": "Alert",
+                                                "animKeyTag": {
+                                                    "tagId": 0
+                                                },
+                                                "animMaskType": "Default",
+                                                "ignoreAnimDis": 0.0,
+                                                "repeatAnim": true,
+                                                "rootMotion": true,
+                                                "actionEndType": "WaitActionEnd",
+                                                "waitTime": 0.0,
+                                                "radioWaitTime": 0.0,
+                                                "eventToLevelType": "None",
+                                                "eventBBDataPairs": [],
+                                                "configSnap": false,
+                                                "snapToGround": "None",
+                                                "configMovementStyle": false,
+                                                "movementStyle": "Walk",
+                                                "overrideSpeed": false,
+                                                "overrideSpeedValue": 4.0,
+                                                "radius": 0.0,
+                                                "npcPlayAnimationTimeEndForceToIdle": false
+                                            }
+                                        ]
                                     }
                                 ],
                                 "motionType": "None",
@@ -11118,8 +11458,8 @@
                                 "isUseCatmull": false
                             }
                         },
-                        "4": {
-                            "routeId": 4,
+                        "24": {
+                            "routeId": 24,
                             "patrolData": {
                                 "id": 0,
                                 "worldOffset": {
@@ -11131,7 +11471,7 @@
                                 "loop": "None",
                                 "snap": "Navmesh",
                                 "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": true,
+                                "addBornPositionAsCheckpoint": false,
                                 "stopWalkInplace": false,
                                 "forbidNpcInteract": true,
                                 "enableBornAction": false,
@@ -11143,12 +11483,40 @@
                                     {
                                         "actionType": "Checkpoint",
                                         "position": {
-                                            "x": -2.77972412,
-                                            "y": -0.09793091,
-                                            "z": -6.9267807
+                                            "x": 8.170811,
+                                            "y": 0.0,
+                                            "z": -1.654705
                                         },
                                         "subPositions": [],
-                                        "subActions": []
+                                        "subActions": [
+                                            {
+                                                "type": "PlayAnimation",
+                                                "duration": 0.0,
+                                                "rotationY": 0.0,
+                                                "rotationOffset": 0.0,
+                                                "animName": "Levelact05",
+                                                "animKeyTag": {
+                                                    "tagId": 0
+                                                },
+                                                "animMaskType": "Default",
+                                                "ignoreAnimDis": 0.0,
+                                                "repeatAnim": false,
+                                                "rootMotion": true,
+                                                "actionEndType": "WaitActionEnd",
+                                                "waitTime": 0.0,
+                                                "radioWaitTime": 0.0,
+                                                "eventToLevelType": "None",
+                                                "eventBBDataPairs": [],
+                                                "configSnap": false,
+                                                "snapToGround": "None",
+                                                "configMovementStyle": false,
+                                                "movementStyle": "Walk",
+                                                "overrideSpeed": false,
+                                                "overrideSpeedValue": 4.0,
+                                                "radius": 0.0,
+                                                "npcPlayAnimationTimeEndForceToIdle": false
+                                            }
+                                        ]
                                     }
                                 ],
                                 "motionType": "None",
@@ -11176,8 +11544,8 @@
                                 "isUseCatmull": false
                             }
                         },
-                        "5": {
-                            "routeId": 5,
+                        "25": {
+                            "routeId": 25,
                             "patrolData": {
                                 "id": 0,
                                 "worldOffset": {
@@ -11201,14 +11569,590 @@
                                     {
                                         "actionType": "Checkpoint",
                                         "position": {
-                                            "x": -7.1361084,
-                                            "y": -0.09793091,
-                                            "z": -6.819603
+                                            "x": 8.148012,
+                                            "y": 0.0,
+                                            "z": 6.78815269
                                         },
                                         "subPositions": [],
-                                        "subActions": []
+                                        "subActions": [
+                                            {
+                                                "type": "PlayAnimation",
+                                                "duration": 0.0,
+                                                "rotationY": 0.0,
+                                                "rotationOffset": 0.0,
+                                                "animName": "Levelact03",
+                                                "animKeyTag": {
+                                                    "tagId": 0
+                                                },
+                                                "animMaskType": "Default",
+                                                "ignoreAnimDis": 0.0,
+                                                "repeatAnim": true,
+                                                "rootMotion": true,
+                                                "actionEndType": "WaitActionEnd",
+                                                "waitTime": 0.0,
+                                                "radioWaitTime": 0.0,
+                                                "eventToLevelType": "None",
+                                                "eventBBDataPairs": [],
+                                                "configSnap": false,
+                                                "snapToGround": "None",
+                                                "configMovementStyle": false,
+                                                "movementStyle": "Walk",
+                                                "overrideSpeed": false,
+                                                "overrideSpeedValue": 4.0,
+                                                "radius": 0.0,
+                                                "npcPlayAnimationTimeEndForceToIdle": false
+                                            }
+                                        ]
                                     }
                                 ],
+                                "motionType": "None",
+                                "waitDistance": 0.0,
+                                "isStopDistance": false,
+                                "runAheadRadius": 0.0,
+                                "runBehindRadius": 0.0,
+                                "sprintAheadRadius": 0.0,
+                                "sprintBehindRadius": 0.0,
+                                "coolDownBetweenWalkAndStop": 1.0,
+                                "motionEnterDis": 10.0,
+                                "changePlayerMoveStyle": false,
+                                "forcePlayerMoveStyle": "Walk",
+                                "moveStyleWithoutLead": "Walk",
+                                "turnCheck": false,
+                                "turnCheckTime": 5.0,
+                                "turnCheckAngle": 45.0,
+                                "turnCheckDis": 30.0,
+                                "turnRadio": 0.8,
+                                "usePatrolPointEnterGaitAsLimitGait": false,
+                                "playerChangeLimitDelayTime": 0.0,
+                                "isLimitPlayerActionWhenGaitLimit": false,
+                                "limitPlayerActionType": "All",
+                                "stop2WalkBufferTime": 0.0,
+                                "isUseCatmull": false
+                            }
+                        },
+                        "27": {
+                            "routeId": 27,
+                            "patrolData": {
+                                "id": 0,
+                                "worldOffset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "useWorldOffset": false,
+                                "loop": "None",
+                                "snap": "Navmesh",
+                                "inLocalSpace": false,
+                                "addBornPositionAsCheckpoint": true,
+                                "stopWalkInplace": false,
+                                "forbidNpcInteract": true,
+                                "enableBornAction": false,
+                                "bornMoveStyle": "Walk",
+                                "enableBornSpeedOverride": false,
+                                "bornOverrideSpeed": 4.0,
+                                "bornPositionWaitDuration": 0.0,
+                                "actions": [],
+                                "motionType": "None",
+                                "waitDistance": 0.0,
+                                "isStopDistance": false,
+                                "runAheadRadius": 0.0,
+                                "runBehindRadius": 0.0,
+                                "sprintAheadRadius": 0.0,
+                                "sprintBehindRadius": 0.0,
+                                "coolDownBetweenWalkAndStop": 1.0,
+                                "motionEnterDis": 10.0,
+                                "changePlayerMoveStyle": false,
+                                "forcePlayerMoveStyle": "Walk",
+                                "moveStyleWithoutLead": "Walk",
+                                "turnCheck": false,
+                                "turnCheckTime": 5.0,
+                                "turnCheckAngle": 45.0,
+                                "turnCheckDis": 30.0,
+                                "turnRadio": 0.8,
+                                "usePatrolPointEnterGaitAsLimitGait": false,
+                                "playerChangeLimitDelayTime": 0.0,
+                                "isLimitPlayerActionWhenGaitLimit": false,
+                                "limitPlayerActionType": "All",
+                                "stop2WalkBufferTime": 0.0,
+                                "isUseCatmull": false
+                            }
+                        },
+                        "28": {
+                            "routeId": 28,
+                            "patrolData": {
+                                "id": 0,
+                                "worldOffset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "useWorldOffset": false,
+                                "loop": "None",
+                                "snap": "Navmesh",
+                                "inLocalSpace": false,
+                                "addBornPositionAsCheckpoint": true,
+                                "stopWalkInplace": false,
+                                "forbidNpcInteract": true,
+                                "enableBornAction": false,
+                                "bornMoveStyle": "Walk",
+                                "enableBornSpeedOverride": false,
+                                "bornOverrideSpeed": 4.0,
+                                "bornPositionWaitDuration": 0.0,
+                                "actions": [],
+                                "motionType": "None",
+                                "waitDistance": 0.0,
+                                "isStopDistance": false,
+                                "runAheadRadius": 0.0,
+                                "runBehindRadius": 0.0,
+                                "sprintAheadRadius": 0.0,
+                                "sprintBehindRadius": 0.0,
+                                "coolDownBetweenWalkAndStop": 1.0,
+                                "motionEnterDis": 10.0,
+                                "changePlayerMoveStyle": false,
+                                "forcePlayerMoveStyle": "Walk",
+                                "moveStyleWithoutLead": "Walk",
+                                "turnCheck": false,
+                                "turnCheckTime": 5.0,
+                                "turnCheckAngle": 45.0,
+                                "turnCheckDis": 30.0,
+                                "turnRadio": 0.8,
+                                "usePatrolPointEnterGaitAsLimitGait": false,
+                                "playerChangeLimitDelayTime": 0.0,
+                                "isLimitPlayerActionWhenGaitLimit": false,
+                                "limitPlayerActionType": "All",
+                                "stop2WalkBufferTime": 0.0,
+                                "isUseCatmull": false
+                            }
+                        },
+                        "34": {
+                            "routeId": 34,
+                            "patrolData": {
+                                "id": 0,
+                                "worldOffset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "useWorldOffset": false,
+                                "loop": "None",
+                                "snap": "Navmesh",
+                                "inLocalSpace": false,
+                                "addBornPositionAsCheckpoint": false,
+                                "stopWalkInplace": false,
+                                "forbidNpcInteract": true,
+                                "enableBornAction": false,
+                                "bornMoveStyle": "Walk",
+                                "enableBornSpeedOverride": false,
+                                "bornOverrideSpeed": 4.0,
+                                "bornPositionWaitDuration": 0.0,
+                                "actions": [
+                                    {
+                                        "actionType": "Checkpoint",
+                                        "position": {
+                                            "x": 3.78577423,
+                                            "y": -0.0211105347,
+                                            "z": 5.01594162
+                                        },
+                                        "subPositions": [],
+                                        "subActions": [
+                                            {
+                                                "type": "PlayAnimation",
+                                                "duration": 0.0,
+                                                "rotationY": 0.0,
+                                                "rotationOffset": 0.0,
+                                                "animName": "Levelact05",
+                                                "animKeyTag": {
+                                                    "tagId": 0
+                                                },
+                                                "animMaskType": "Default",
+                                                "ignoreAnimDis": 0.0,
+                                                "repeatAnim": false,
+                                                "rootMotion": true,
+                                                "actionEndType": "WaitActionEnd",
+                                                "waitTime": 0.0,
+                                                "radioWaitTime": 0.0,
+                                                "eventToLevelType": "None",
+                                                "eventBBDataPairs": [],
+                                                "configSnap": false,
+                                                "snapToGround": "None",
+                                                "configMovementStyle": false,
+                                                "movementStyle": "Walk",
+                                                "overrideSpeed": false,
+                                                "overrideSpeedValue": 4.0,
+                                                "radius": 0.0,
+                                                "npcPlayAnimationTimeEndForceToIdle": false
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "motionType": "None",
+                                "waitDistance": 0.0,
+                                "isStopDistance": false,
+                                "runAheadRadius": 0.0,
+                                "runBehindRadius": 0.0,
+                                "sprintAheadRadius": 0.0,
+                                "sprintBehindRadius": 0.0,
+                                "coolDownBetweenWalkAndStop": 1.0,
+                                "motionEnterDis": 10.0,
+                                "changePlayerMoveStyle": false,
+                                "forcePlayerMoveStyle": "Walk",
+                                "moveStyleWithoutLead": "Walk",
+                                "turnCheck": false,
+                                "turnCheckTime": 5.0,
+                                "turnCheckAngle": 45.0,
+                                "turnCheckDis": 30.0,
+                                "turnRadio": 0.8,
+                                "usePatrolPointEnterGaitAsLimitGait": false,
+                                "playerChangeLimitDelayTime": 0.0,
+                                "isLimitPlayerActionWhenGaitLimit": false,
+                                "limitPlayerActionType": "All",
+                                "stop2WalkBufferTime": 0.0,
+                                "isUseCatmull": false
+                            }
+                        },
+                        "36": {
+                            "routeId": 36,
+                            "patrolData": {
+                                "id": 0,
+                                "worldOffset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "useWorldOffset": false,
+                                "loop": "None",
+                                "snap": "Navmesh",
+                                "inLocalSpace": false,
+                                "addBornPositionAsCheckpoint": false,
+                                "stopWalkInplace": false,
+                                "forbidNpcInteract": true,
+                                "enableBornAction": false,
+                                "bornMoveStyle": "Walk",
+                                "enableBornSpeedOverride": false,
+                                "bornOverrideSpeed": 4.0,
+                                "bornPositionWaitDuration": 0.0,
+                                "actions": [
+                                    {
+                                        "actionType": "Checkpoint",
+                                        "position": {
+                                            "x": 3.78577423,
+                                            "y": -0.0211105347,
+                                            "z": 0.01594162
+                                        },
+                                        "subPositions": [],
+                                        "subActions": [
+                                            {
+                                                "type": "PlayAnimation",
+                                                "duration": 0.0,
+                                                "rotationY": 0.0,
+                                                "rotationOffset": 0.0,
+                                                "animName": "Levelact05",
+                                                "animKeyTag": {
+                                                    "tagId": 0
+                                                },
+                                                "animMaskType": "Default",
+                                                "ignoreAnimDis": 0.0,
+                                                "repeatAnim": false,
+                                                "rootMotion": true,
+                                                "actionEndType": "WaitActionEnd",
+                                                "waitTime": 0.0,
+                                                "radioWaitTime": 0.0,
+                                                "eventToLevelType": "None",
+                                                "eventBBDataPairs": [],
+                                                "configSnap": false,
+                                                "snapToGround": "None",
+                                                "configMovementStyle": false,
+                                                "movementStyle": "Walk",
+                                                "overrideSpeed": false,
+                                                "overrideSpeedValue": 4.0,
+                                                "radius": 0.0,
+                                                "npcPlayAnimationTimeEndForceToIdle": false
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "motionType": "None",
+                                "waitDistance": 0.0,
+                                "isStopDistance": false,
+                                "runAheadRadius": 0.0,
+                                "runBehindRadius": 0.0,
+                                "sprintAheadRadius": 0.0,
+                                "sprintBehindRadius": 0.0,
+                                "coolDownBetweenWalkAndStop": 1.0,
+                                "motionEnterDis": 10.0,
+                                "changePlayerMoveStyle": false,
+                                "forcePlayerMoveStyle": "Walk",
+                                "moveStyleWithoutLead": "Walk",
+                                "turnCheck": false,
+                                "turnCheckTime": 5.0,
+                                "turnCheckAngle": 45.0,
+                                "turnCheckDis": 30.0,
+                                "turnRadio": 0.8,
+                                "usePatrolPointEnterGaitAsLimitGait": false,
+                                "playerChangeLimitDelayTime": 0.0,
+                                "isLimitPlayerActionWhenGaitLimit": false,
+                                "limitPlayerActionType": "All",
+                                "stop2WalkBufferTime": 0.0,
+                                "isUseCatmull": false
+                            }
+                        },
+                        "39": {
+                            "routeId": 39,
+                            "patrolData": {
+                                "id": 0,
+                                "worldOffset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "useWorldOffset": false,
+                                "loop": "None",
+                                "snap": "Navmesh",
+                                "inLocalSpace": false,
+                                "addBornPositionAsCheckpoint": true,
+                                "stopWalkInplace": false,
+                                "forbidNpcInteract": true,
+                                "enableBornAction": false,
+                                "bornMoveStyle": "Walk",
+                                "enableBornSpeedOverride": false,
+                                "bornOverrideSpeed": 4.0,
+                                "bornPositionWaitDuration": 0.0,
+                                "actions": [],
+                                "motionType": "None",
+                                "waitDistance": 0.0,
+                                "isStopDistance": false,
+                                "runAheadRadius": 0.0,
+                                "runBehindRadius": 0.0,
+                                "sprintAheadRadius": 0.0,
+                                "sprintBehindRadius": 0.0,
+                                "coolDownBetweenWalkAndStop": 1.0,
+                                "motionEnterDis": 10.0,
+                                "changePlayerMoveStyle": false,
+                                "forcePlayerMoveStyle": "Walk",
+                                "moveStyleWithoutLead": "Walk",
+                                "turnCheck": false,
+                                "turnCheckTime": 5.0,
+                                "turnCheckAngle": 45.0,
+                                "turnCheckDis": 30.0,
+                                "turnRadio": 0.8,
+                                "usePatrolPointEnterGaitAsLimitGait": false,
+                                "playerChangeLimitDelayTime": 0.0,
+                                "isLimitPlayerActionWhenGaitLimit": false,
+                                "limitPlayerActionType": "All",
+                                "stop2WalkBufferTime": 0.0,
+                                "isUseCatmull": false
+                            }
+                        },
+                        "40": {
+                            "routeId": 40,
+                            "patrolData": {
+                                "id": 0,
+                                "worldOffset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "useWorldOffset": false,
+                                "loop": "None",
+                                "snap": "Navmesh",
+                                "inLocalSpace": false,
+                                "addBornPositionAsCheckpoint": true,
+                                "stopWalkInplace": false,
+                                "forbidNpcInteract": true,
+                                "enableBornAction": false,
+                                "bornMoveStyle": "Walk",
+                                "enableBornSpeedOverride": false,
+                                "bornOverrideSpeed": 4.0,
+                                "bornPositionWaitDuration": 0.0,
+                                "actions": [],
+                                "motionType": "None",
+                                "waitDistance": 0.0,
+                                "isStopDistance": false,
+                                "runAheadRadius": 0.0,
+                                "runBehindRadius": 0.0,
+                                "sprintAheadRadius": 0.0,
+                                "sprintBehindRadius": 0.0,
+                                "coolDownBetweenWalkAndStop": 1.0,
+                                "motionEnterDis": 10.0,
+                                "changePlayerMoveStyle": false,
+                                "forcePlayerMoveStyle": "Walk",
+                                "moveStyleWithoutLead": "Walk",
+                                "turnCheck": false,
+                                "turnCheckTime": 5.0,
+                                "turnCheckAngle": 45.0,
+                                "turnCheckDis": 30.0,
+                                "turnRadio": 0.8,
+                                "usePatrolPointEnterGaitAsLimitGait": false,
+                                "playerChangeLimitDelayTime": 0.0,
+                                "isLimitPlayerActionWhenGaitLimit": false,
+                                "limitPlayerActionType": "All",
+                                "stop2WalkBufferTime": 0.0,
+                                "isUseCatmull": false
+                            }
+                        },
+                        "41": {
+                            "routeId": 41,
+                            "patrolData": {
+                                "id": 0,
+                                "worldOffset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "useWorldOffset": false,
+                                "loop": "None",
+                                "snap": "Navmesh",
+                                "inLocalSpace": false,
+                                "addBornPositionAsCheckpoint": true,
+                                "stopWalkInplace": false,
+                                "forbidNpcInteract": true,
+                                "enableBornAction": false,
+                                "bornMoveStyle": "Walk",
+                                "enableBornSpeedOverride": false,
+                                "bornOverrideSpeed": 4.0,
+                                "bornPositionWaitDuration": 0.0,
+                                "actions": [],
+                                "motionType": "None",
+                                "waitDistance": 0.0,
+                                "isStopDistance": false,
+                                "runAheadRadius": 0.0,
+                                "runBehindRadius": 0.0,
+                                "sprintAheadRadius": 0.0,
+                                "sprintBehindRadius": 0.0,
+                                "coolDownBetweenWalkAndStop": 1.0,
+                                "motionEnterDis": 10.0,
+                                "changePlayerMoveStyle": false,
+                                "forcePlayerMoveStyle": "Walk",
+                                "moveStyleWithoutLead": "Walk",
+                                "turnCheck": false,
+                                "turnCheckTime": 5.0,
+                                "turnCheckAngle": 45.0,
+                                "turnCheckDis": 30.0,
+                                "turnRadio": 0.8,
+                                "usePatrolPointEnterGaitAsLimitGait": false,
+                                "playerChangeLimitDelayTime": 0.0,
+                                "isLimitPlayerActionWhenGaitLimit": false,
+                                "limitPlayerActionType": "All",
+                                "stop2WalkBufferTime": 0.0,
+                                "isUseCatmull": false
+                            }
+                        },
+                        "42": {
+                            "routeId": 42,
+                            "patrolData": {
+                                "id": 0,
+                                "worldOffset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "useWorldOffset": false,
+                                "loop": "None",
+                                "snap": "Navmesh",
+                                "inLocalSpace": false,
+                                "addBornPositionAsCheckpoint": true,
+                                "stopWalkInplace": false,
+                                "forbidNpcInteract": true,
+                                "enableBornAction": false,
+                                "bornMoveStyle": "Walk",
+                                "enableBornSpeedOverride": false,
+                                "bornOverrideSpeed": 4.0,
+                                "bornPositionWaitDuration": 0.0,
+                                "actions": [],
+                                "motionType": "None",
+                                "waitDistance": 0.0,
+                                "isStopDistance": false,
+                                "runAheadRadius": 0.0,
+                                "runBehindRadius": 0.0,
+                                "sprintAheadRadius": 0.0,
+                                "sprintBehindRadius": 0.0,
+                                "coolDownBetweenWalkAndStop": 1.0,
+                                "motionEnterDis": 10.0,
+                                "changePlayerMoveStyle": false,
+                                "forcePlayerMoveStyle": "Walk",
+                                "moveStyleWithoutLead": "Walk",
+                                "turnCheck": false,
+                                "turnCheckTime": 5.0,
+                                "turnCheckAngle": 45.0,
+                                "turnCheckDis": 30.0,
+                                "turnRadio": 0.8,
+                                "usePatrolPointEnterGaitAsLimitGait": false,
+                                "playerChangeLimitDelayTime": 0.0,
+                                "isLimitPlayerActionWhenGaitLimit": false,
+                                "limitPlayerActionType": "All",
+                                "stop2WalkBufferTime": 0.0,
+                                "isUseCatmull": false
+                            }
+                        },
+                        "53": {
+                            "routeId": 53,
+                            "patrolData": {
+                                "id": 0,
+                                "worldOffset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "useWorldOffset": false,
+                                "loop": "None",
+                                "snap": "Navmesh",
+                                "inLocalSpace": false,
+                                "addBornPositionAsCheckpoint": true,
+                                "stopWalkInplace": false,
+                                "forbidNpcInteract": true,
+                                "enableBornAction": false,
+                                "bornMoveStyle": "Walk",
+                                "enableBornSpeedOverride": false,
+                                "bornOverrideSpeed": 4.0,
+                                "bornPositionWaitDuration": 0.0,
+                                "actions": [],
+                                "motionType": "None",
+                                "waitDistance": 0.0,
+                                "isStopDistance": false,
+                                "runAheadRadius": 0.0,
+                                "runBehindRadius": 0.0,
+                                "sprintAheadRadius": 0.0,
+                                "sprintBehindRadius": 0.0,
+                                "coolDownBetweenWalkAndStop": 1.0,
+                                "motionEnterDis": 10.0,
+                                "changePlayerMoveStyle": false,
+                                "forcePlayerMoveStyle": "Walk",
+                                "moveStyleWithoutLead": "Walk",
+                                "turnCheck": false,
+                                "turnCheckTime": 5.0,
+                                "turnCheckAngle": 45.0,
+                                "turnCheckDis": 30.0,
+                                "turnRadio": 0.8,
+                                "usePatrolPointEnterGaitAsLimitGait": false,
+                                "playerChangeLimitDelayTime": 0.0,
+                                "isLimitPlayerActionWhenGaitLimit": false,
+                                "limitPlayerActionType": "All",
+                                "stop2WalkBufferTime": 0.0,
+                                "isUseCatmull": false
+                            }
+                        },
+                        "55": {
+                            "routeId": 55,
+                            "patrolData": {
+                                "id": 0,
+                                "worldOffset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "useWorldOffset": false,
+                                "loop": "None",
+                                "snap": "Navmesh",
+                                "inLocalSpace": false,
+                                "addBornPositionAsCheckpoint": true,
+                                "stopWalkInplace": false,
+                                "forbidNpcInteract": true,
+                                "enableBornAction": false,
+                                "bornMoveStyle": "Walk",
+                                "enableBornSpeedOverride": false,
+                                "bornOverrideSpeed": 4.0,
+                                "bornPositionWaitDuration": 0.0,
+                                "actions": [],
                                 "motionType": "None",
                                 "waitDistance": 0.0,
                                 "isStopDistance": false,
@@ -11237,11 +12181,26 @@
                     },
                     "enemyLibrary": [
                         {
-                            "key": "D211CACE",
-                            "enemyId": "eny_0029_lbmob",
-                            "enemyLevel": 35,
-                            "overrideAIConfig": "",
-                            "bornBuffList": [],
+                            "key": "6AA7F237",
+                            "enemyId": "eny_0068_lbtough2",
+                            "enemyLevel": 45,
+                            "overrideAIConfig": "EnemyInfiniteSight",
+                            "bornBuffList": [
+                                {
+                                    "buffId": "buff_common_born",
+                                    "blackboard": []
+                                },
+                                {
+                                    "buffId": "buff_chr_0033_camille_chrdg_fire_dmg_up",
+                                    "blackboard": [
+                                        {
+                                            "key": "fire_dmg_taken_up",
+                                            "valueFloat": 2.0,
+                                            "useString": false
+                                        }
+                                    ]
+                                }
+                            ],
                             "preWarnTime": 0.0,
                             "preWarnEffectFixedRotation": {
                                 "enabled": false,
@@ -11255,11 +12214,16 @@
                             "forceToBattle": false
                         },
                         {
-                            "key": "94CFCC5B",
-                            "enemyId": "eny_0049_rogue",
-                            "enemyLevel": 35,
-                            "overrideAIConfig": "",
-                            "bornBuffList": [],
+                            "key": "4D895D8F",
+                            "enemyId": "eny_0029_lbmob",
+                            "enemyLevel": 40,
+                            "overrideAIConfig": "EnemyInfiniteSight",
+                            "bornBuffList": [
+                                {
+                                    "buffId": "buff_common_born",
+                                    "blackboard": []
+                                }
+                            ],
                             "preWarnTime": 0.0,
                             "preWarnEffectFixedRotation": {
                                 "enabled": false,
@@ -11269,6 +12233,56 @@
                                     "z": 0.0
                                 }
                             },
+                            "patrolGait": "Walk",
+                            "forceToBattle": false
+                        },
+                        {
+                            "key": "9F8D9030",
+                            "enemyId": "eny_0029_lbmob",
+                            "enemyLevel": 40,
+                            "overrideAIConfig": "EnemyEnterBattle",
+                            "bornBuffList": [
+                                {
+                                    "buffId": "buff_common_born",
+                                    "blackboard": []
+                                }
+                            ],
+                            "preWarnTime": 1.0,
+                            "preWarnEffectKey": "P_fxbat_monsterspawn_common_01",
+                            "preWarnEffectFixedRotation": {
+                                "enabled": false,
+                                "value": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                }
+                            },
+                            "preWarnAudioEventKey": "au_interactive_monsterspawn_speical_1s",
+                            "patrolGait": "Walk",
+                            "forceToBattle": false
+                        },
+                        {
+                            "key": "1AF091A8",
+                            "enemyId": "eny_0033_lbhunt",
+                            "enemyLevel": 40,
+                            "overrideAIConfig": "EnemyEnterBattle",
+                            "bornBuffList": [
+                                {
+                                    "buffId": "buff_common_born",
+                                    "blackboard": []
+                                }
+                            ],
+                            "preWarnTime": 1.0,
+                            "preWarnEffectKey": "P_fxbat_monsterspawn_common_01",
+                            "preWarnEffectFixedRotation": {
+                                "enabled": false,
+                                "value": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                }
+                            },
+                            "preWarnAudioEventKey": "au_interactive_monsterspawn_speical_1s",
                             "patrolGait": "Walk",
                             "forceToBattle": false
                         }
@@ -13147,69 +14161,17 @@
                         }
                     ]
                 },
-                "sc_dung02_rdg005_34700000007": {
-                    "configId": "sc_dung02_rdg005_34700000007",
+                "sc_dung02_rdg005_34700000006": {
+                    "configId": "sc_dung02_rdg005_34700000006",
                     "settings": {
                         "enemyLevelUseLevelGrade": false,
                         "forbidDrop": true,
                         "autoComplete": true,
-                        "stopExploreMusic": true,
-                        "preloadEffectKeyList": [
-                            "P_fxbat_monsterspawn_common_01_asset"
-                        ]
+                        "stopExploreMusic": true
                     },
                     "waveMap": {
                         "1": {
-                            "waveId": 31,
-                            "waveMode": "Parallel",
-                            "waveModeKillCount": 0,
-                            "hasDeadlineBegin": false,
-                            "deadlineBeginDeltaTime": 999.0,
-                            "timestamp": 0.0,
-                            "isHidden": false,
-                            "repeatable": false,
-                            "groupMap": {
-                                "1": {
-                                    "groupId": 32,
-                                    "groupMode": "Sequence",
-                                    "groupModeKillCount": 1,
-                                    "hasDeadlineBegin": false,
-                                    "deadlineBeginDeltaTime": 999.0,
-                                    "limitGroupMaxCount": false,
-                                    "groupMaxCount": -1,
-                                    "groupBackUpCount": 0,
-                                    "timestamp": 0.0,
-                                    "actionMap": {
-                                        "1": {
-                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 15,
-                                            "timestamp": 0.1,
-                                            "libraryKey": "6AA7F237",
-                                            "spawnCount": 1,
-                                            "spawnInterval": 0.0,
-                                            "startPointInvalid": false,
-                                            "faceMainCharacter": false,
-                                            "position": {
-                                                "x": 9.962864,
-                                                "y": -0.005897522,
-                                                "z": 2.657154
-                                            },
-                                            "rotation": {
-                                                "x": 0.0,
-                                                "y": 104.0,
-                                                "z": 0.0
-                                            },
-                                            "randomizeRadius": 0.0,
-                                            "randomizeEndPointRadius": 0.0,
-                                            "routeId": 15
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "2": {
                             "waveId": 1,
-                            "waveKey": "1",
                             "waveMode": "Parallel",
                             "waveModeKillCount": 0,
                             "hasDeadlineBegin": false,
@@ -13219,148 +14181,29 @@
                             "repeatable": false,
                             "groupMap": {
                                 "1": {
-                                    "groupId": 14,
+                                    "groupId": 2,
                                     "groupMode": "Sequence",
-                                    "groupModeKillCount": 1,
+                                    "groupModeKillCount": 0,
                                     "hasDeadlineBegin": false,
                                     "deadlineBeginDeltaTime": 0.0,
                                     "limitGroupMaxCount": false,
-                                    "groupMaxCount": -1,
-                                    "groupBackUpCount": 0,
-                                    "timestamp": 0.1,
-                                    "actionMap": {
-                                        "1": {
-                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 24,
-                                            "timestamp": 0.0,
-                                            "libraryKey": "4D895D8F",
-                                            "spawnCount": 1,
-                                            "spawnInterval": 0.0,
-                                            "startPointInvalid": false,
-                                            "faceMainCharacter": false,
-                                            "position": {
-                                                "x": 7.67278242,
-                                                "y": 0.0,
-                                                "z": -1.95019913
-                                            },
-                                            "rotation": {
-                                                "x": 0.0,
-                                                "y": 61.0,
-                                                "z": 0.0
-                                            },
-                                            "randomizeRadius": 0.0,
-                                            "randomizeEndPointRadius": 0.0,
-                                            "routeId": 24
-                                        },
-                                        "2": {
-                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 25,
-                                            "timestamp": 0.0,
-                                            "libraryKey": "4D895D8F",
-                                            "spawnCount": 1,
-                                            "spawnInterval": 0.0,
-                                            "startPointInvalid": false,
-                                            "faceMainCharacter": false,
-                                            "position": {
-                                                "x": 7.81181,
-                                                "y": 0.0,
-                                                "z": 7.085867
-                                            },
-                                            "rotation": {
-                                                "x": 0.0,
-                                                "y": 108.0,
-                                                "z": 0.0
-                                            },
-                                            "randomizeRadius": 0.0,
-                                            "randomizeEndPointRadius": 0.0,
-                                            "routeId": 25
-                                        },
-                                        "3": {
-                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 34,
-                                            "timestamp": 0.0,
-                                            "libraryKey": "4D895D8F",
-                                            "spawnCount": 1,
-                                            "spawnInterval": 0.0,
-                                            "startPointInvalid": false,
-                                            "faceMainCharacter": true,
-                                            "position": {
-                                                "x": 3.287746,
-                                                "y": -0.0211105347,
-                                                "z": 4.72044754
-                                            },
-                                            "rotation": {
-                                                "x": 0.0,
-                                                "y": 114.0,
-                                                "z": 0.0
-                                            },
-                                            "randomizeRadius": 0.0,
-                                            "randomizeEndPointRadius": 0.0,
-                                            "routeId": 34
-                                        },
-                                        "4": {
-                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 36,
-                                            "timestamp": 0.0,
-                                            "libraryKey": "4D895D8F",
-                                            "spawnCount": 1,
-                                            "spawnInterval": 0.0,
-                                            "startPointInvalid": false,
-                                            "faceMainCharacter": true,
-                                            "position": {
-                                                "x": 3.287746,
-                                                "y": -0.0211105347,
-                                                "z": -0.27955246
-                                            },
-                                            "rotation": {
-                                                "x": 0.0,
-                                                "y": 61.0,
-                                                "z": 0.0
-                                            },
-                                            "randomizeRadius": 0.0,
-                                            "randomizeEndPointRadius": 0.0,
-                                            "routeId": 36
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "3": {
-                            "waveId": 20,
-                            "waveKey": "2",
-                            "waveMode": "PartKilled",
-                            "waveModeTargetKey": "1",
-                            "waveModeKillCount": 0,
-                            "hasDeadlineBegin": false,
-                            "deadlineBeginDeltaTime": 15.0,
-                            "timestamp": 0.0,
-                            "isHidden": false,
-                            "repeatable": false,
-                            "groupMap": {
-                                "1": {
-                                    "groupId": 26,
-                                    "groupMode": "Parallel",
-                                    "groupModeKillCount": 1,
-                                    "hasDeadlineBegin": false,
-                                    "deadlineBeginDeltaTime": 0.0,
-                                    "limitGroupMaxCount": false,
-                                    "groupMaxCount": -1,
+                                    "groupMaxCount": 0,
                                     "groupBackUpCount": 0,
                                     "timestamp": 0.0,
                                     "actionMap": {
                                         "1": {
                                             "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 27,
-                                            "timestamp": 1.0,
-                                            "libraryKey": "9F8D9030",
+                                            "actionId": 3,
+                                            "timestamp": 0.0,
+                                            "libraryKey": "94CFCC5B",
                                             "spawnCount": 1,
                                             "spawnInterval": 0.0,
                                             "startPointInvalid": false,
-                                            "faceMainCharacter": true,
+                                            "faceMainCharacter": false,
                                             "position": {
-                                                "x": -0.712254047,
-                                                "y": -0.0459289551,
-                                                "z": -4.27955246
+                                                "x": -6.76617432,
+                                                "y": -0.09793091,
+                                                "z": -5.153801
                                             },
                                             "rotation": {
                                                 "x": 0.0,
@@ -13369,21 +14212,21 @@
                                             },
                                             "randomizeRadius": 0.0,
                                             "randomizeEndPointRadius": 0.0,
-                                            "routeId": 27
+                                            "routeId": 3
                                         },
                                         "2": {
                                             "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 28,
-                                            "timestamp": 1.0,
-                                            "libraryKey": "9F8D9030",
+                                            "actionId": 4,
+                                            "timestamp": 0.0,
+                                            "libraryKey": "D211CACE",
                                             "spawnCount": 1,
                                             "spawnInterval": 0.0,
                                             "startPointInvalid": false,
-                                            "faceMainCharacter": true,
+                                            "faceMainCharacter": false,
                                             "position": {
-                                                "x": -0.712254047,
-                                                "y": -0.0211105347,
-                                                "z": 7.72044754
+                                                "x": -0.7404175,
+                                                "y": -0.09793091,
+                                                "z": -6.06102753
                                             },
                                             "rotation": {
                                                 "x": 0.0,
@@ -13392,21 +14235,21 @@
                                             },
                                             "randomizeRadius": 0.0,
                                             "randomizeEndPointRadius": 0.0,
-                                            "routeId": 28
+                                            "routeId": 4
                                         },
                                         "3": {
                                             "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 55,
-                                            "timestamp": 1.0,
-                                            "libraryKey": "9F8D9030",
+                                            "actionId": 5,
+                                            "timestamp": 0.0,
+                                            "libraryKey": "D211CACE",
                                             "spawnCount": 1,
                                             "spawnInterval": 0.0,
                                             "startPointInvalid": false,
-                                            "faceMainCharacter": true,
+                                            "faceMainCharacter": false,
                                             "position": {
-                                                "x": 3.287746,
-                                                "y": -0.0459289551,
-                                                "z": -5.27955246
+                                                "x": -6.55841064,
+                                                "y": -0.09793091,
+                                                "z": 2.5477066
                                             },
                                             "rotation": {
                                                 "x": 0.0,
@@ -13415,148 +14258,7 @@
                                             },
                                             "randomizeRadius": 0.0,
                                             "randomizeEndPointRadius": 0.0,
-                                            "routeId": 55
-                                        },
-                                        "4": {
-                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 53,
-                                            "timestamp": 1.0,
-                                            "libraryKey": "9F8D9030",
-                                            "spawnCount": 1,
-                                            "spawnInterval": 0.0,
-                                            "startPointInvalid": false,
-                                            "faceMainCharacter": true,
-                                            "position": {
-                                                "x": 3.287745,
-                                                "y": -0.0459289551,
-                                                "z": 9.720446
-                                            },
-                                            "rotation": {
-                                                "x": 0.0,
-                                                "y": 0.0,
-                                                "z": 0.0
-                                            },
-                                            "randomizeRadius": 0.0,
-                                            "randomizeEndPointRadius": 0.0,
-                                            "routeId": 53
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "4": {
-                            "waveId": 43,
-                            "waveMode": "PartKilled",
-                            "waveModeTargetKey": "2",
-                            "waveModeKillCount": 0,
-                            "hasDeadlineBegin": false,
-                            "deadlineBeginDeltaTime": 15.0,
-                            "timestamp": 0.0,
-                            "isHidden": false,
-                            "repeatable": false,
-                            "groupMap": {
-                                "1": {
-                                    "groupId": 38,
-                                    "groupMode": "Parallel",
-                                    "groupModeKillCount": 1,
-                                    "hasDeadlineBegin": false,
-                                    "deadlineBeginDeltaTime": 0.0,
-                                    "limitGroupMaxCount": false,
-                                    "groupMaxCount": -1,
-                                    "groupBackUpCount": 0,
-                                    "timestamp": 0.0,
-                                    "actionMap": {
-                                        "1": {
-                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 39,
-                                            "timestamp": 1.0,
-                                            "libraryKey": "9F8D9030",
-                                            "spawnCount": 1,
-                                            "spawnInterval": 0.0,
-                                            "startPointInvalid": false,
-                                            "faceMainCharacter": true,
-                                            "position": {
-                                                "x": 6.287746,
-                                                "y": -0.0459289551,
-                                                "z": -6.27955246
-                                            },
-                                            "rotation": {
-                                                "x": 0.0,
-                                                "y": 0.0,
-                                                "z": 0.0
-                                            },
-                                            "randomizeRadius": 0.0,
-                                            "randomizeEndPointRadius": 0.0,
-                                            "routeId": 39
-                                        },
-                                        "2": {
-                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 40,
-                                            "timestamp": 1.0,
-                                            "libraryKey": "9F8D9030",
-                                            "spawnCount": 1,
-                                            "spawnInterval": 0.0,
-                                            "startPointInvalid": false,
-                                            "faceMainCharacter": true,
-                                            "position": {
-                                                "x": 6.423802,
-                                                "y": -0.005897522,
-                                                "z": 10.5026684
-                                            },
-                                            "rotation": {
-                                                "x": 0.0,
-                                                "y": 0.0,
-                                                "z": 0.0
-                                            },
-                                            "randomizeRadius": 0.0,
-                                            "randomizeEndPointRadius": 0.0,
-                                            "routeId": 40
-                                        },
-                                        "3": {
-                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 41,
-                                            "timestamp": 1.0,
-                                            "libraryKey": "1AF091A8",
-                                            "spawnCount": 1,
-                                            "spawnInterval": 0.0,
-                                            "startPointInvalid": false,
-                                            "faceMainCharacter": true,
-                                            "position": {
-                                                "x": -0.712254047,
-                                                "y": -0.0459289551,
-                                                "z": -6.27955246
-                                            },
-                                            "rotation": {
-                                                "x": 0.0,
-                                                "y": 0.0,
-                                                "z": 0.0
-                                            },
-                                            "randomizeRadius": 0.0,
-                                            "randomizeEndPointRadius": 0.0,
-                                            "routeId": 41
-                                        },
-                                        "4": {
-                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 42,
-                                            "timestamp": 1.0,
-                                            "libraryKey": "1AF091A8",
-                                            "spawnCount": 1,
-                                            "spawnInterval": 0.0,
-                                            "startPointInvalid": false,
-                                            "faceMainCharacter": true,
-                                            "position": {
-                                                "x": -0.712254047,
-                                                "y": -0.0459289551,
-                                                "z": 10.7204437
-                                            },
-                                            "rotation": {
-                                                "x": 0.0,
-                                                "y": 0.0,
-                                                "z": 0.0
-                                            },
-                                            "randomizeRadius": 0.0,
-                                            "randomizeEndPointRadius": 0.0,
-                                            "routeId": 42
+                                            "routeId": 5
                                         }
                                     }
                                 }
@@ -13564,8 +14266,8 @@
                         }
                     },
                     "routeMap": {
-                        "15": {
-                            "routeId": 15,
+                        "3": {
+                            "routeId": 3,
                             "patrolData": {
                                 "id": 0,
                                 "worldOffset": {
@@ -13589,40 +14291,12 @@
                                     {
                                         "actionType": "Checkpoint",
                                         "position": {
-                                            "x": 10.242424,
-                                            "y": -0.005897522,
-                                            "z": 2.684475
+                                            "x": 2.472046,
+                                            "y": -0.09793091,
+                                            "z": 0.336586
                                         },
                                         "subPositions": [],
-                                        "subActions": [
-                                            {
-                                                "type": "PlayAnimation",
-                                                "duration": 0.0,
-                                                "rotationY": 0.0,
-                                                "rotationOffset": 0.0,
-                                                "animName": "Alert",
-                                                "animKeyTag": {
-                                                    "tagId": 0
-                                                },
-                                                "animMaskType": "Default",
-                                                "ignoreAnimDis": 0.0,
-                                                "repeatAnim": true,
-                                                "rootMotion": true,
-                                                "actionEndType": "WaitActionEnd",
-                                                "waitTime": 0.0,
-                                                "radioWaitTime": 0.0,
-                                                "eventToLevelType": "None",
-                                                "eventBBDataPairs": [],
-                                                "configSnap": false,
-                                                "snapToGround": "None",
-                                                "configMovementStyle": false,
-                                                "movementStyle": "Walk",
-                                                "overrideSpeed": false,
-                                                "overrideSpeedValue": 4.0,
-                                                "radius": 0.0,
-                                                "npcPlayAnimationTimeEndForceToIdle": false
-                                            }
-                                        ]
+                                        "subActions": []
                                     }
                                 ],
                                 "motionType": "None",
@@ -13650,8 +14324,8 @@
                                 "isUseCatmull": false
                             }
                         },
-                        "24": {
-                            "routeId": 24,
+                        "4": {
+                            "routeId": 4,
                             "patrolData": {
                                 "id": 0,
                                 "worldOffset": {
@@ -13663,7 +14337,7 @@
                                 "loop": "None",
                                 "snap": "Navmesh",
                                 "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": false,
+                                "addBornPositionAsCheckpoint": true,
                                 "stopWalkInplace": false,
                                 "forbidNpcInteract": true,
                                 "enableBornAction": false,
@@ -13675,40 +14349,12 @@
                                     {
                                         "actionType": "Checkpoint",
                                         "position": {
-                                            "x": 8.170811,
-                                            "y": 0.0,
-                                            "z": -1.654705
+                                            "x": -2.77972412,
+                                            "y": -0.09793091,
+                                            "z": -6.9267807
                                         },
                                         "subPositions": [],
-                                        "subActions": [
-                                            {
-                                                "type": "PlayAnimation",
-                                                "duration": 0.0,
-                                                "rotationY": 0.0,
-                                                "rotationOffset": 0.0,
-                                                "animName": "Levelact05",
-                                                "animKeyTag": {
-                                                    "tagId": 0
-                                                },
-                                                "animMaskType": "Default",
-                                                "ignoreAnimDis": 0.0,
-                                                "repeatAnim": false,
-                                                "rootMotion": true,
-                                                "actionEndType": "WaitActionEnd",
-                                                "waitTime": 0.0,
-                                                "radioWaitTime": 0.0,
-                                                "eventToLevelType": "None",
-                                                "eventBBDataPairs": [],
-                                                "configSnap": false,
-                                                "snapToGround": "None",
-                                                "configMovementStyle": false,
-                                                "movementStyle": "Walk",
-                                                "overrideSpeed": false,
-                                                "overrideSpeedValue": 4.0,
-                                                "radius": 0.0,
-                                                "npcPlayAnimationTimeEndForceToIdle": false
-                                            }
-                                        ]
+                                        "subActions": []
                                     }
                                 ],
                                 "motionType": "None",
@@ -13736,8 +14382,8 @@
                                 "isUseCatmull": false
                             }
                         },
-                        "25": {
-                            "routeId": 25,
+                        "5": {
+                            "routeId": 5,
                             "patrolData": {
                                 "id": 0,
                                 "worldOffset": {
@@ -13761,590 +14407,14 @@
                                     {
                                         "actionType": "Checkpoint",
                                         "position": {
-                                            "x": 8.148012,
-                                            "y": 0.0,
-                                            "z": 6.78815269
+                                            "x": -7.1361084,
+                                            "y": -0.09793091,
+                                            "z": -6.819603
                                         },
                                         "subPositions": [],
-                                        "subActions": [
-                                            {
-                                                "type": "PlayAnimation",
-                                                "duration": 0.0,
-                                                "rotationY": 0.0,
-                                                "rotationOffset": 0.0,
-                                                "animName": "Levelact03",
-                                                "animKeyTag": {
-                                                    "tagId": 0
-                                                },
-                                                "animMaskType": "Default",
-                                                "ignoreAnimDis": 0.0,
-                                                "repeatAnim": true,
-                                                "rootMotion": true,
-                                                "actionEndType": "WaitActionEnd",
-                                                "waitTime": 0.0,
-                                                "radioWaitTime": 0.0,
-                                                "eventToLevelType": "None",
-                                                "eventBBDataPairs": [],
-                                                "configSnap": false,
-                                                "snapToGround": "None",
-                                                "configMovementStyle": false,
-                                                "movementStyle": "Walk",
-                                                "overrideSpeed": false,
-                                                "overrideSpeedValue": 4.0,
-                                                "radius": 0.0,
-                                                "npcPlayAnimationTimeEndForceToIdle": false
-                                            }
-                                        ]
+                                        "subActions": []
                                     }
                                 ],
-                                "motionType": "None",
-                                "waitDistance": 0.0,
-                                "isStopDistance": false,
-                                "runAheadRadius": 0.0,
-                                "runBehindRadius": 0.0,
-                                "sprintAheadRadius": 0.0,
-                                "sprintBehindRadius": 0.0,
-                                "coolDownBetweenWalkAndStop": 1.0,
-                                "motionEnterDis": 10.0,
-                                "changePlayerMoveStyle": false,
-                                "forcePlayerMoveStyle": "Walk",
-                                "moveStyleWithoutLead": "Walk",
-                                "turnCheck": false,
-                                "turnCheckTime": 5.0,
-                                "turnCheckAngle": 45.0,
-                                "turnCheckDis": 30.0,
-                                "turnRadio": 0.8,
-                                "usePatrolPointEnterGaitAsLimitGait": false,
-                                "playerChangeLimitDelayTime": 0.0,
-                                "isLimitPlayerActionWhenGaitLimit": false,
-                                "limitPlayerActionType": "All",
-                                "stop2WalkBufferTime": 0.0,
-                                "isUseCatmull": false
-                            }
-                        },
-                        "27": {
-                            "routeId": 27,
-                            "patrolData": {
-                                "id": 0,
-                                "worldOffset": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "useWorldOffset": false,
-                                "loop": "None",
-                                "snap": "Navmesh",
-                                "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": true,
-                                "stopWalkInplace": false,
-                                "forbidNpcInteract": true,
-                                "enableBornAction": false,
-                                "bornMoveStyle": "Walk",
-                                "enableBornSpeedOverride": false,
-                                "bornOverrideSpeed": 4.0,
-                                "bornPositionWaitDuration": 0.0,
-                                "actions": [],
-                                "motionType": "None",
-                                "waitDistance": 0.0,
-                                "isStopDistance": false,
-                                "runAheadRadius": 0.0,
-                                "runBehindRadius": 0.0,
-                                "sprintAheadRadius": 0.0,
-                                "sprintBehindRadius": 0.0,
-                                "coolDownBetweenWalkAndStop": 1.0,
-                                "motionEnterDis": 10.0,
-                                "changePlayerMoveStyle": false,
-                                "forcePlayerMoveStyle": "Walk",
-                                "moveStyleWithoutLead": "Walk",
-                                "turnCheck": false,
-                                "turnCheckTime": 5.0,
-                                "turnCheckAngle": 45.0,
-                                "turnCheckDis": 30.0,
-                                "turnRadio": 0.8,
-                                "usePatrolPointEnterGaitAsLimitGait": false,
-                                "playerChangeLimitDelayTime": 0.0,
-                                "isLimitPlayerActionWhenGaitLimit": false,
-                                "limitPlayerActionType": "All",
-                                "stop2WalkBufferTime": 0.0,
-                                "isUseCatmull": false
-                            }
-                        },
-                        "28": {
-                            "routeId": 28,
-                            "patrolData": {
-                                "id": 0,
-                                "worldOffset": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "useWorldOffset": false,
-                                "loop": "None",
-                                "snap": "Navmesh",
-                                "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": true,
-                                "stopWalkInplace": false,
-                                "forbidNpcInteract": true,
-                                "enableBornAction": false,
-                                "bornMoveStyle": "Walk",
-                                "enableBornSpeedOverride": false,
-                                "bornOverrideSpeed": 4.0,
-                                "bornPositionWaitDuration": 0.0,
-                                "actions": [],
-                                "motionType": "None",
-                                "waitDistance": 0.0,
-                                "isStopDistance": false,
-                                "runAheadRadius": 0.0,
-                                "runBehindRadius": 0.0,
-                                "sprintAheadRadius": 0.0,
-                                "sprintBehindRadius": 0.0,
-                                "coolDownBetweenWalkAndStop": 1.0,
-                                "motionEnterDis": 10.0,
-                                "changePlayerMoveStyle": false,
-                                "forcePlayerMoveStyle": "Walk",
-                                "moveStyleWithoutLead": "Walk",
-                                "turnCheck": false,
-                                "turnCheckTime": 5.0,
-                                "turnCheckAngle": 45.0,
-                                "turnCheckDis": 30.0,
-                                "turnRadio": 0.8,
-                                "usePatrolPointEnterGaitAsLimitGait": false,
-                                "playerChangeLimitDelayTime": 0.0,
-                                "isLimitPlayerActionWhenGaitLimit": false,
-                                "limitPlayerActionType": "All",
-                                "stop2WalkBufferTime": 0.0,
-                                "isUseCatmull": false
-                            }
-                        },
-                        "34": {
-                            "routeId": 34,
-                            "patrolData": {
-                                "id": 0,
-                                "worldOffset": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "useWorldOffset": false,
-                                "loop": "None",
-                                "snap": "Navmesh",
-                                "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": false,
-                                "stopWalkInplace": false,
-                                "forbidNpcInteract": true,
-                                "enableBornAction": false,
-                                "bornMoveStyle": "Walk",
-                                "enableBornSpeedOverride": false,
-                                "bornOverrideSpeed": 4.0,
-                                "bornPositionWaitDuration": 0.0,
-                                "actions": [
-                                    {
-                                        "actionType": "Checkpoint",
-                                        "position": {
-                                            "x": 3.78577423,
-                                            "y": -0.0211105347,
-                                            "z": 5.01594162
-                                        },
-                                        "subPositions": [],
-                                        "subActions": [
-                                            {
-                                                "type": "PlayAnimation",
-                                                "duration": 0.0,
-                                                "rotationY": 0.0,
-                                                "rotationOffset": 0.0,
-                                                "animName": "Levelact05",
-                                                "animKeyTag": {
-                                                    "tagId": 0
-                                                },
-                                                "animMaskType": "Default",
-                                                "ignoreAnimDis": 0.0,
-                                                "repeatAnim": false,
-                                                "rootMotion": true,
-                                                "actionEndType": "WaitActionEnd",
-                                                "waitTime": 0.0,
-                                                "radioWaitTime": 0.0,
-                                                "eventToLevelType": "None",
-                                                "eventBBDataPairs": [],
-                                                "configSnap": false,
-                                                "snapToGround": "None",
-                                                "configMovementStyle": false,
-                                                "movementStyle": "Walk",
-                                                "overrideSpeed": false,
-                                                "overrideSpeedValue": 4.0,
-                                                "radius": 0.0,
-                                                "npcPlayAnimationTimeEndForceToIdle": false
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "motionType": "None",
-                                "waitDistance": 0.0,
-                                "isStopDistance": false,
-                                "runAheadRadius": 0.0,
-                                "runBehindRadius": 0.0,
-                                "sprintAheadRadius": 0.0,
-                                "sprintBehindRadius": 0.0,
-                                "coolDownBetweenWalkAndStop": 1.0,
-                                "motionEnterDis": 10.0,
-                                "changePlayerMoveStyle": false,
-                                "forcePlayerMoveStyle": "Walk",
-                                "moveStyleWithoutLead": "Walk",
-                                "turnCheck": false,
-                                "turnCheckTime": 5.0,
-                                "turnCheckAngle": 45.0,
-                                "turnCheckDis": 30.0,
-                                "turnRadio": 0.8,
-                                "usePatrolPointEnterGaitAsLimitGait": false,
-                                "playerChangeLimitDelayTime": 0.0,
-                                "isLimitPlayerActionWhenGaitLimit": false,
-                                "limitPlayerActionType": "All",
-                                "stop2WalkBufferTime": 0.0,
-                                "isUseCatmull": false
-                            }
-                        },
-                        "36": {
-                            "routeId": 36,
-                            "patrolData": {
-                                "id": 0,
-                                "worldOffset": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "useWorldOffset": false,
-                                "loop": "None",
-                                "snap": "Navmesh",
-                                "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": false,
-                                "stopWalkInplace": false,
-                                "forbidNpcInteract": true,
-                                "enableBornAction": false,
-                                "bornMoveStyle": "Walk",
-                                "enableBornSpeedOverride": false,
-                                "bornOverrideSpeed": 4.0,
-                                "bornPositionWaitDuration": 0.0,
-                                "actions": [
-                                    {
-                                        "actionType": "Checkpoint",
-                                        "position": {
-                                            "x": 3.78577423,
-                                            "y": -0.0211105347,
-                                            "z": 0.01594162
-                                        },
-                                        "subPositions": [],
-                                        "subActions": [
-                                            {
-                                                "type": "PlayAnimation",
-                                                "duration": 0.0,
-                                                "rotationY": 0.0,
-                                                "rotationOffset": 0.0,
-                                                "animName": "Levelact05",
-                                                "animKeyTag": {
-                                                    "tagId": 0
-                                                },
-                                                "animMaskType": "Default",
-                                                "ignoreAnimDis": 0.0,
-                                                "repeatAnim": false,
-                                                "rootMotion": true,
-                                                "actionEndType": "WaitActionEnd",
-                                                "waitTime": 0.0,
-                                                "radioWaitTime": 0.0,
-                                                "eventToLevelType": "None",
-                                                "eventBBDataPairs": [],
-                                                "configSnap": false,
-                                                "snapToGround": "None",
-                                                "configMovementStyle": false,
-                                                "movementStyle": "Walk",
-                                                "overrideSpeed": false,
-                                                "overrideSpeedValue": 4.0,
-                                                "radius": 0.0,
-                                                "npcPlayAnimationTimeEndForceToIdle": false
-                                            }
-                                        ]
-                                    }
-                                ],
-                                "motionType": "None",
-                                "waitDistance": 0.0,
-                                "isStopDistance": false,
-                                "runAheadRadius": 0.0,
-                                "runBehindRadius": 0.0,
-                                "sprintAheadRadius": 0.0,
-                                "sprintBehindRadius": 0.0,
-                                "coolDownBetweenWalkAndStop": 1.0,
-                                "motionEnterDis": 10.0,
-                                "changePlayerMoveStyle": false,
-                                "forcePlayerMoveStyle": "Walk",
-                                "moveStyleWithoutLead": "Walk",
-                                "turnCheck": false,
-                                "turnCheckTime": 5.0,
-                                "turnCheckAngle": 45.0,
-                                "turnCheckDis": 30.0,
-                                "turnRadio": 0.8,
-                                "usePatrolPointEnterGaitAsLimitGait": false,
-                                "playerChangeLimitDelayTime": 0.0,
-                                "isLimitPlayerActionWhenGaitLimit": false,
-                                "limitPlayerActionType": "All",
-                                "stop2WalkBufferTime": 0.0,
-                                "isUseCatmull": false
-                            }
-                        },
-                        "39": {
-                            "routeId": 39,
-                            "patrolData": {
-                                "id": 0,
-                                "worldOffset": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "useWorldOffset": false,
-                                "loop": "None",
-                                "snap": "Navmesh",
-                                "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": true,
-                                "stopWalkInplace": false,
-                                "forbidNpcInteract": true,
-                                "enableBornAction": false,
-                                "bornMoveStyle": "Walk",
-                                "enableBornSpeedOverride": false,
-                                "bornOverrideSpeed": 4.0,
-                                "bornPositionWaitDuration": 0.0,
-                                "actions": [],
-                                "motionType": "None",
-                                "waitDistance": 0.0,
-                                "isStopDistance": false,
-                                "runAheadRadius": 0.0,
-                                "runBehindRadius": 0.0,
-                                "sprintAheadRadius": 0.0,
-                                "sprintBehindRadius": 0.0,
-                                "coolDownBetweenWalkAndStop": 1.0,
-                                "motionEnterDis": 10.0,
-                                "changePlayerMoveStyle": false,
-                                "forcePlayerMoveStyle": "Walk",
-                                "moveStyleWithoutLead": "Walk",
-                                "turnCheck": false,
-                                "turnCheckTime": 5.0,
-                                "turnCheckAngle": 45.0,
-                                "turnCheckDis": 30.0,
-                                "turnRadio": 0.8,
-                                "usePatrolPointEnterGaitAsLimitGait": false,
-                                "playerChangeLimitDelayTime": 0.0,
-                                "isLimitPlayerActionWhenGaitLimit": false,
-                                "limitPlayerActionType": "All",
-                                "stop2WalkBufferTime": 0.0,
-                                "isUseCatmull": false
-                            }
-                        },
-                        "40": {
-                            "routeId": 40,
-                            "patrolData": {
-                                "id": 0,
-                                "worldOffset": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "useWorldOffset": false,
-                                "loop": "None",
-                                "snap": "Navmesh",
-                                "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": true,
-                                "stopWalkInplace": false,
-                                "forbidNpcInteract": true,
-                                "enableBornAction": false,
-                                "bornMoveStyle": "Walk",
-                                "enableBornSpeedOverride": false,
-                                "bornOverrideSpeed": 4.0,
-                                "bornPositionWaitDuration": 0.0,
-                                "actions": [],
-                                "motionType": "None",
-                                "waitDistance": 0.0,
-                                "isStopDistance": false,
-                                "runAheadRadius": 0.0,
-                                "runBehindRadius": 0.0,
-                                "sprintAheadRadius": 0.0,
-                                "sprintBehindRadius": 0.0,
-                                "coolDownBetweenWalkAndStop": 1.0,
-                                "motionEnterDis": 10.0,
-                                "changePlayerMoveStyle": false,
-                                "forcePlayerMoveStyle": "Walk",
-                                "moveStyleWithoutLead": "Walk",
-                                "turnCheck": false,
-                                "turnCheckTime": 5.0,
-                                "turnCheckAngle": 45.0,
-                                "turnCheckDis": 30.0,
-                                "turnRadio": 0.8,
-                                "usePatrolPointEnterGaitAsLimitGait": false,
-                                "playerChangeLimitDelayTime": 0.0,
-                                "isLimitPlayerActionWhenGaitLimit": false,
-                                "limitPlayerActionType": "All",
-                                "stop2WalkBufferTime": 0.0,
-                                "isUseCatmull": false
-                            }
-                        },
-                        "41": {
-                            "routeId": 41,
-                            "patrolData": {
-                                "id": 0,
-                                "worldOffset": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "useWorldOffset": false,
-                                "loop": "None",
-                                "snap": "Navmesh",
-                                "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": true,
-                                "stopWalkInplace": false,
-                                "forbidNpcInteract": true,
-                                "enableBornAction": false,
-                                "bornMoveStyle": "Walk",
-                                "enableBornSpeedOverride": false,
-                                "bornOverrideSpeed": 4.0,
-                                "bornPositionWaitDuration": 0.0,
-                                "actions": [],
-                                "motionType": "None",
-                                "waitDistance": 0.0,
-                                "isStopDistance": false,
-                                "runAheadRadius": 0.0,
-                                "runBehindRadius": 0.0,
-                                "sprintAheadRadius": 0.0,
-                                "sprintBehindRadius": 0.0,
-                                "coolDownBetweenWalkAndStop": 1.0,
-                                "motionEnterDis": 10.0,
-                                "changePlayerMoveStyle": false,
-                                "forcePlayerMoveStyle": "Walk",
-                                "moveStyleWithoutLead": "Walk",
-                                "turnCheck": false,
-                                "turnCheckTime": 5.0,
-                                "turnCheckAngle": 45.0,
-                                "turnCheckDis": 30.0,
-                                "turnRadio": 0.8,
-                                "usePatrolPointEnterGaitAsLimitGait": false,
-                                "playerChangeLimitDelayTime": 0.0,
-                                "isLimitPlayerActionWhenGaitLimit": false,
-                                "limitPlayerActionType": "All",
-                                "stop2WalkBufferTime": 0.0,
-                                "isUseCatmull": false
-                            }
-                        },
-                        "42": {
-                            "routeId": 42,
-                            "patrolData": {
-                                "id": 0,
-                                "worldOffset": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "useWorldOffset": false,
-                                "loop": "None",
-                                "snap": "Navmesh",
-                                "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": true,
-                                "stopWalkInplace": false,
-                                "forbidNpcInteract": true,
-                                "enableBornAction": false,
-                                "bornMoveStyle": "Walk",
-                                "enableBornSpeedOverride": false,
-                                "bornOverrideSpeed": 4.0,
-                                "bornPositionWaitDuration": 0.0,
-                                "actions": [],
-                                "motionType": "None",
-                                "waitDistance": 0.0,
-                                "isStopDistance": false,
-                                "runAheadRadius": 0.0,
-                                "runBehindRadius": 0.0,
-                                "sprintAheadRadius": 0.0,
-                                "sprintBehindRadius": 0.0,
-                                "coolDownBetweenWalkAndStop": 1.0,
-                                "motionEnterDis": 10.0,
-                                "changePlayerMoveStyle": false,
-                                "forcePlayerMoveStyle": "Walk",
-                                "moveStyleWithoutLead": "Walk",
-                                "turnCheck": false,
-                                "turnCheckTime": 5.0,
-                                "turnCheckAngle": 45.0,
-                                "turnCheckDis": 30.0,
-                                "turnRadio": 0.8,
-                                "usePatrolPointEnterGaitAsLimitGait": false,
-                                "playerChangeLimitDelayTime": 0.0,
-                                "isLimitPlayerActionWhenGaitLimit": false,
-                                "limitPlayerActionType": "All",
-                                "stop2WalkBufferTime": 0.0,
-                                "isUseCatmull": false
-                            }
-                        },
-                        "53": {
-                            "routeId": 53,
-                            "patrolData": {
-                                "id": 0,
-                                "worldOffset": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "useWorldOffset": false,
-                                "loop": "None",
-                                "snap": "Navmesh",
-                                "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": true,
-                                "stopWalkInplace": false,
-                                "forbidNpcInteract": true,
-                                "enableBornAction": false,
-                                "bornMoveStyle": "Walk",
-                                "enableBornSpeedOverride": false,
-                                "bornOverrideSpeed": 4.0,
-                                "bornPositionWaitDuration": 0.0,
-                                "actions": [],
-                                "motionType": "None",
-                                "waitDistance": 0.0,
-                                "isStopDistance": false,
-                                "runAheadRadius": 0.0,
-                                "runBehindRadius": 0.0,
-                                "sprintAheadRadius": 0.0,
-                                "sprintBehindRadius": 0.0,
-                                "coolDownBetweenWalkAndStop": 1.0,
-                                "motionEnterDis": 10.0,
-                                "changePlayerMoveStyle": false,
-                                "forcePlayerMoveStyle": "Walk",
-                                "moveStyleWithoutLead": "Walk",
-                                "turnCheck": false,
-                                "turnCheckTime": 5.0,
-                                "turnCheckAngle": 45.0,
-                                "turnCheckDis": 30.0,
-                                "turnRadio": 0.8,
-                                "usePatrolPointEnterGaitAsLimitGait": false,
-                                "playerChangeLimitDelayTime": 0.0,
-                                "isLimitPlayerActionWhenGaitLimit": false,
-                                "limitPlayerActionType": "All",
-                                "stop2WalkBufferTime": 0.0,
-                                "isUseCatmull": false
-                            }
-                        },
-                        "55": {
-                            "routeId": 55,
-                            "patrolData": {
-                                "id": 0,
-                                "worldOffset": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "useWorldOffset": false,
-                                "loop": "None",
-                                "snap": "Navmesh",
-                                "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": true,
-                                "stopWalkInplace": false,
-                                "forbidNpcInteract": true,
-                                "enableBornAction": false,
-                                "bornMoveStyle": "Walk",
-                                "enableBornSpeedOverride": false,
-                                "bornOverrideSpeed": 4.0,
-                                "bornPositionWaitDuration": 0.0,
-                                "actions": [],
                                 "motionType": "None",
                                 "waitDistance": 0.0,
                                 "isStopDistance": false,
@@ -14373,26 +14443,11 @@
                     },
                     "enemyLibrary": [
                         {
-                            "key": "6AA7F237",
-                            "enemyId": "eny_0068_lbtough2",
-                            "enemyLevel": 45,
-                            "overrideAIConfig": "EnemyInfiniteSight",
-                            "bornBuffList": [
-                                {
-                                    "buffId": "buff_common_born",
-                                    "blackboard": []
-                                },
-                                {
-                                    "buffId": "buff_chr_0033_camille_chrdg_fire_dmg_up",
-                                    "blackboard": [
-                                        {
-                                            "key": "fire_dmg_taken_up",
-                                            "valueFloat": 2.0,
-                                            "useString": false
-                                        }
-                                    ]
-                                }
-                            ],
+                            "key": "D211CACE",
+                            "enemyId": "eny_0029_lbmob",
+                            "enemyLevel": 35,
+                            "overrideAIConfig": "",
+                            "bornBuffList": [],
                             "preWarnTime": 0.0,
                             "preWarnEffectFixedRotation": {
                                 "enabled": false,
@@ -14406,16 +14461,11 @@
                             "forceToBattle": false
                         },
                         {
-                            "key": "4D895D8F",
-                            "enemyId": "eny_0029_lbmob",
-                            "enemyLevel": 40,
-                            "overrideAIConfig": "EnemyInfiniteSight",
-                            "bornBuffList": [
-                                {
-                                    "buffId": "buff_common_born",
-                                    "blackboard": []
-                                }
-                            ],
+                            "key": "94CFCC5B",
+                            "enemyId": "eny_0049_rogue",
+                            "enemyLevel": 35,
+                            "overrideAIConfig": "",
+                            "bornBuffList": [],
                             "preWarnTime": 0.0,
                             "preWarnEffectFixedRotation": {
                                 "enabled": false,
@@ -14425,56 +14475,6 @@
                                     "z": 0.0
                                 }
                             },
-                            "patrolGait": "Walk",
-                            "forceToBattle": false
-                        },
-                        {
-                            "key": "9F8D9030",
-                            "enemyId": "eny_0029_lbmob",
-                            "enemyLevel": 40,
-                            "overrideAIConfig": "EnemyEnterBattle",
-                            "bornBuffList": [
-                                {
-                                    "buffId": "buff_common_born",
-                                    "blackboard": []
-                                }
-                            ],
-                            "preWarnTime": 1.0,
-                            "preWarnEffectKey": "P_fxbat_monsterspawn_common_01",
-                            "preWarnEffectFixedRotation": {
-                                "enabled": false,
-                                "value": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                }
-                            },
-                            "preWarnAudioEventKey": "au_interactive_monsterspawn_speical_1s",
-                            "patrolGait": "Walk",
-                            "forceToBattle": false
-                        },
-                        {
-                            "key": "1AF091A8",
-                            "enemyId": "eny_0033_lbhunt",
-                            "enemyLevel": 40,
-                            "overrideAIConfig": "EnemyEnterBattle",
-                            "bornBuffList": [
-                                {
-                                    "buffId": "buff_common_born",
-                                    "blackboard": []
-                                }
-                            ],
-                            "preWarnTime": 1.0,
-                            "preWarnEffectKey": "P_fxbat_monsterspawn_common_01",
-                            "preWarnEffectFixedRotation": {
-                                "enabled": false,
-                                "value": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                }
-                            },
-                            "preWarnAudioEventKey": "au_interactive_monsterspawn_speical_1s",
                             "patrolGait": "Walk",
                             "forceToBattle": false
                         }
@@ -14482,6 +14482,21 @@
                 }
             },
             "enemyTable": {
+                "eny_0068_lbtough2": {
+                    "aiTemplateId": "",
+                    "attrModifiers": [],
+                    "attrTemplateId": "eny_0068_lbtough2",
+                    "autoLockCancelTime": -1,
+                    "autoLockCancelType": 0,
+                    "bornBuffs": [],
+                    "enemyId": "eny_0068_lbtough2",
+                    "isDangerous": false,
+                    "modelId": "",
+                    "serverDeathCheck": false,
+                    "showBigEffect": true,
+                    "showBigHeadbar": false,
+                    "templateId": "eny_0068_lbtough2"
+                },
                 "eny_0029_lbmob": {
                     "aiTemplateId": "",
                     "attrModifiers": [],
@@ -14496,21 +14511,6 @@
                     "showBigEffect": false,
                     "showBigHeadbar": false,
                     "templateId": "eny_0029_lbmob"
-                },
-                "eny_0049_rogue": {
-                    "aiTemplateId": "",
-                    "attrModifiers": [],
-                    "attrTemplateId": "eny_0049_rogue",
-                    "autoLockCancelTime": -1,
-                    "autoLockCancelType": 0,
-                    "bornBuffs": [],
-                    "enemyId": "eny_0049_rogue",
-                    "isDangerous": false,
-                    "modelId": "",
-                    "serverDeathCheck": false,
-                    "showBigEffect": false,
-                    "showBigHeadbar": false,
-                    "templateId": "eny_0049_rogue"
                 },
                 "eny_0033_lbhunt": {
                     "aiTemplateId": "",
@@ -14559,23 +14559,47 @@
                     "showBigHeadbar": false,
                     "templateId": "eny_0047_firebat"
                 },
-                "eny_0068_lbtough2": {
+                "eny_0049_rogue": {
                     "aiTemplateId": "",
                     "attrModifiers": [],
-                    "attrTemplateId": "eny_0068_lbtough2",
+                    "attrTemplateId": "eny_0049_rogue",
                     "autoLockCancelTime": -1,
                     "autoLockCancelType": 0,
                     "bornBuffs": [],
-                    "enemyId": "eny_0068_lbtough2",
+                    "enemyId": "eny_0049_rogue",
                     "isDangerous": false,
                     "modelId": "",
                     "serverDeathCheck": false,
-                    "showBigEffect": true,
+                    "showBigEffect": false,
                     "showBigHeadbar": false,
-                    "templateId": "eny_0068_lbtough2"
+                    "templateId": "eny_0049_rogue"
                 }
             },
             "enemyTemplateDisplayInfoTable": {
+                "eny_0068_lbtough2": {
+                    "abilityDescIds": [
+                        "eny_0068_lbtough2_ability_1",
+                        "eny_0068_lbtough2_ability_2"
+                    ],
+                    "description": {
+                        "id": 8169935742311298877,
+                        "text": "受雾火强化，装备重型斩击斧的裂地者精锐武装人员，体型高大。他们通常是碾骨氏族袭掠队伍的首领。"
+                    },
+                    "displayType": 1,
+                    "distributionIds": [
+                        "distribution_map01_lv005"
+                    ],
+                    "name": {
+                        "id": -4512253115269926861,
+                        "text": "精锐行刑人"
+                    },
+                    "nickname": {
+                        "id": -7130408315142632905,
+                        "text": "精锐行刑人"
+                    },
+                    "tags": [],
+                    "templateId": "eny_0068_lbtough2"
+                },
                 "eny_0029_lbmob": {
                     "abilityDescIds": [
                         "common_ability"
@@ -14602,31 +14626,6 @@
                     },
                     "tags": [],
                     "templateId": "eny_0029_lbmob"
-                },
-                "eny_0049_rogue": {
-                    "abilityDescIds": [
-                        "eny_0049_rogue_ability_1",
-                        "eny_0049_rogue_ability_2"
-                    ],
-                    "description": {
-                        "id": 3450056334799085385,
-                        "text": "装备成对近战武器的裂地者武装人员。他们熟练地运用双持武器作战，行动敏捷，擅长近身缠斗，必须谨慎应对。"
-                    },
-                    "displayType": 0,
-                    "distributionIds": [
-                        "distribution_map01_lv007",
-                        "distribution_world_energy_point04"
-                    ],
-                    "name": {
-                        "id": 4378148379916751513,
-                        "text": "碾骨渗透者"
-                    },
-                    "nickname": {
-                        "id": 3692888561566978258,
-                        "text": "碾骨渗透者"
-                    },
-                    "tags": [],
-                    "templateId": "eny_0049_rogue"
                 },
                 "eny_0033_lbhunt": {
                     "abilityDescIds": [
@@ -14711,32 +14710,145 @@
                     "tags": [],
                     "templateId": "eny_0047_firebat"
                 },
-                "eny_0068_lbtough2": {
+                "eny_0049_rogue": {
                     "abilityDescIds": [
-                        "eny_0068_lbtough2_ability_1",
-                        "eny_0068_lbtough2_ability_2"
+                        "eny_0049_rogue_ability_1",
+                        "eny_0049_rogue_ability_2"
                     ],
                     "description": {
-                        "id": 8169935742311298877,
-                        "text": "受雾火强化，装备重型斩击斧的裂地者精锐武装人员，体型高大。他们通常是碾骨氏族袭掠队伍的首领。"
+                        "id": 3450056334799085385,
+                        "text": "装备成对近战武器的裂地者武装人员。他们熟练地运用双持武器作战，行动敏捷，擅长近身缠斗，必须谨慎应对。"
                     },
-                    "displayType": 1,
+                    "displayType": 0,
                     "distributionIds": [
-                        "distribution_map01_lv005"
+                        "distribution_map01_lv007",
+                        "distribution_world_energy_point04"
                     ],
                     "name": {
-                        "id": -4512253115269926861,
-                        "text": "精锐行刑人"
+                        "id": 4378148379916751513,
+                        "text": "碾骨渗透者"
                     },
                     "nickname": {
-                        "id": -7130408315142632905,
-                        "text": "精锐行刑人"
+                        "id": 3692888561566978258,
+                        "text": "碾骨渗透者"
                     },
                     "tags": [],
-                    "templateId": "eny_0068_lbtough2"
+                    "templateId": "eny_0049_rogue"
                 }
             },
             "enemyAttributeTemplateTable": {
+                "eny_0068_lbtough2": {
+                    "aoiRadius": 0,
+                    "attackValueAgainstTower": 20,
+                    "breakingAttackedAtbObtain": 50,
+                    "crystDmgResistScalar": 1,
+                    "fireDmgResistScalar": 1,
+                    "initialSuperArmor": 30,
+                    "levelDependentAttributes": [
+                        {
+                            "attrs": [
+                                {
+                                    "attrType": 0,
+                                    "attrValue": 45
+                                },
+                                {
+                                    "attrType": 1,
+                                    "attrValue": 110678
+                                },
+                                {
+                                    "attrType": 2,
+                                    "attrValue": 2038
+                                },
+                                {
+                                    "attrType": 3,
+                                    "attrValue": 100
+                                }
+                            ]
+                        }
+                    ],
+                    "levelIndependentAttributes": {
+                        "attrs": [
+                            {
+                                "attrType": 20,
+                                "attrValue": 340
+                            },
+                            {
+                                "attrType": 21,
+                                "attrValue": 9
+                            },
+                            {
+                                "attrType": 27,
+                                "attrValue": 1.5
+                            },
+                            {
+                                "attrType": 12,
+                                "attrValue": 2.8
+                            },
+                            {
+                                "attrType": 8,
+                                "attrValue": 1.5
+                            },
+                            {
+                                "attrType": 11,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 9,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 10,
+                                "attrValue": 0.5
+                            },
+                            {
+                                "attrType": 80,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 84,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 83,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 82,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 81,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 85,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 15,
+                                "attrValue": 1
+                            }
+                        ]
+                    },
+                    "maxResilience": 65,
+                    "naturalDmgResistScalar": 1,
+                    "physicalDmgResistScalar": 1,
+                    "poiseKnotBuffList": [
+                        "buff_common_mini_poise_break"
+                    ],
+                    "poiseKnotPctList": [
+                        0.5
+                    ],
+                    "pulseDmgResistScalar": 1,
+                    "pushedBackCoefficient": 0,
+                    "resilienceDecreaseWhenHurt": 0,
+                    "resilienceFullRecoverTime": 0,
+                    "resilienceRecover": 0,
+                    "resilienceRecoverInterval": 0,
+                    "superArmorWhenResilienceZero": 0,
+                    "templateId": "eny_0068_lbtough2",
+                    "zeroPoiseSuperArmor": 30
+                },
                 "eny_0029_lbmob": {
                     "aoiRadius": 0,
                     "attackValueAgainstTower": 10,
@@ -14749,15 +14861,15 @@
                             "attrs": [
                                 {
                                     "attrType": 0,
-                                    "attrValue": 35
+                                    "attrValue": 40
                                 },
                                 {
                                     "attrType": 1,
-                                    "attrValue": 5626
+                                    "attrValue": 8802
                                 },
                                 {
                                     "attrType": 2,
-                                    "attrValue": 392
+                                    "attrValue": 531
                                 },
                                 {
                                     "attrType": 3,
@@ -14845,114 +14957,6 @@
                     "templateId": "eny_0029_lbmob",
                     "zeroPoiseSuperArmor": 0
                 },
-                "eny_0049_rogue": {
-                    "aoiRadius": 0,
-                    "attackValueAgainstTower": 10,
-                    "breakingAttackedAtbObtain": 25,
-                    "crystDmgResistScalar": 1,
-                    "fireDmgResistScalar": 1,
-                    "initialSuperArmor": 0,
-                    "levelDependentAttributes": [
-                        {
-                            "attrs": [
-                                {
-                                    "attrType": 0,
-                                    "attrValue": 35
-                                },
-                                {
-                                    "attrType": 1,
-                                    "attrValue": 4822
-                                },
-                                {
-                                    "attrType": 2,
-                                    "attrValue": 356
-                                },
-                                {
-                                    "attrType": 3,
-                                    "attrValue": 100
-                                }
-                            ]
-                        }
-                    ],
-                    "levelIndependentAttributes": {
-                        "attrs": [
-                            {
-                                "attrType": 20,
-                                "attrValue": 80
-                            },
-                            {
-                                "attrType": 21,
-                                "attrValue": 6
-                            },
-                            {
-                                "attrType": 27,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 12,
-                                "attrValue": 2.3
-                            },
-                            {
-                                "attrType": 8,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 11,
-                                "attrValue": 0
-                            },
-                            {
-                                "attrType": 9,
-                                "attrValue": 0
-                            },
-                            {
-                                "attrType": 10,
-                                "attrValue": 0.5
-                            },
-                            {
-                                "attrType": 80,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 84,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 83,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 82,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 81,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 85,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 15,
-                                "attrValue": 1
-                            }
-                        ]
-                    },
-                    "maxResilience": 65,
-                    "naturalDmgResistScalar": 1,
-                    "physicalDmgResistScalar": 1,
-                    "poiseKnotBuffList": [],
-                    "poiseKnotPctList": [],
-                    "pulseDmgResistScalar": 1,
-                    "pushedBackCoefficient": 1,
-                    "resilienceDecreaseWhenHurt": 79.3,
-                    "resilienceFullRecoverTime": 3,
-                    "resilienceRecover": 100,
-                    "resilienceRecoverInterval": 1,
-                    "superArmorWhenResilienceZero": 5,
-                    "templateId": "eny_0049_rogue",
-                    "zeroPoiseSuperArmor": 0
-                },
                 "eny_0033_lbhunt": {
                     "aoiRadius": 0,
                     "attackValueAgainstTower": 10,
@@ -14965,15 +14969,15 @@
                             "attrs": [
                                 {
                                     "attrType": 0,
-                                    "attrValue": 35
+                                    "attrValue": 40
                                 },
                                 {
                                     "attrType": 1,
-                                    "attrValue": 5224
+                                    "attrValue": 8173
                                 },
                                 {
                                     "attrType": 2,
-                                    "attrValue": 303
+                                    "attrValue": 410
                                 },
                                 {
                                     "attrType": 3,
@@ -15277,27 +15281,27 @@
                     "templateId": "eny_0047_firebat",
                     "zeroPoiseSuperArmor": 20
                 },
-                "eny_0068_lbtough2": {
+                "eny_0049_rogue": {
                     "aoiRadius": 0,
-                    "attackValueAgainstTower": 20,
-                    "breakingAttackedAtbObtain": 50,
+                    "attackValueAgainstTower": 10,
+                    "breakingAttackedAtbObtain": 25,
                     "crystDmgResistScalar": 1,
                     "fireDmgResistScalar": 1,
-                    "initialSuperArmor": 30,
+                    "initialSuperArmor": 0,
                     "levelDependentAttributes": [
                         {
                             "attrs": [
                                 {
                                     "attrType": 0,
-                                    "attrValue": 45
+                                    "attrValue": 35
                                 },
                                 {
                                     "attrType": 1,
-                                    "attrValue": 110678
+                                    "attrValue": 4822
                                 },
                                 {
                                     "attrType": 2,
-                                    "attrValue": 2038
+                                    "attrValue": 356
                                 },
                                 {
                                     "attrType": 3,
@@ -15310,23 +15314,23 @@
                         "attrs": [
                             {
                                 "attrType": 20,
-                                "attrValue": 340
+                                "attrValue": 80
                             },
                             {
                                 "attrType": 21,
-                                "attrValue": 9
+                                "attrValue": 6
                             },
                             {
                                 "attrType": 27,
-                                "attrValue": 1.5
+                                "attrValue": 1
                             },
                             {
                                 "attrType": 12,
-                                "attrValue": 2.8
+                                "attrValue": 2.3
                             },
                             {
                                 "attrType": 8,
-                                "attrValue": 1.5
+                                "attrValue": 1
                             },
                             {
                                 "attrType": 11,
@@ -15373,21 +15377,17 @@
                     "maxResilience": 65,
                     "naturalDmgResistScalar": 1,
                     "physicalDmgResistScalar": 1,
-                    "poiseKnotBuffList": [
-                        "buff_common_mini_poise_break"
-                    ],
-                    "poiseKnotPctList": [
-                        0.5
-                    ],
+                    "poiseKnotBuffList": [],
+                    "poiseKnotPctList": [],
                     "pulseDmgResistScalar": 1,
-                    "pushedBackCoefficient": 0,
-                    "resilienceDecreaseWhenHurt": 0,
-                    "resilienceFullRecoverTime": 0,
-                    "resilienceRecover": 0,
-                    "resilienceRecoverInterval": 0,
-                    "superArmorWhenResilienceZero": 0,
-                    "templateId": "eny_0068_lbtough2",
-                    "zeroPoiseSuperArmor": 30
+                    "pushedBackCoefficient": 1,
+                    "resilienceDecreaseWhenHurt": 79.3,
+                    "resilienceFullRecoverTime": 3,
+                    "resilienceRecover": 100,
+                    "resilienceRecoverInterval": 1,
+                    "superArmorWhenResilienceZero": 5,
+                    "templateId": "eny_0049_rogue",
+                    "zeroPoiseSuperArmor": 0
                 }
             },
             "rewardTable": {},
@@ -15699,6 +15699,134 @@
                     "igniteEventAction": [],
                     "timelineActions": [],
                     "blackboard": []
+                },
+                "buff_chr_0033_camille_chrdg_fire_dmg_up": {
+                    "id": "buff_chr_0033_camille_chrdg_fire_dmg_up",
+                    "iconConfig": {
+                        "_spritePath": "",
+                        "showInHeadBarCommon": false,
+                        "showInHeadBarAttached": false,
+                        "showInSquadIcon": false,
+                        "onlyShowForMainCharacter": false,
+                        "blinkInMainCharHpBar": false,
+                        "showProgressInHpBar": false,
+                        "showProgressInNormalSkillButton": false,
+                        "iconStyleInSquad": "Default",
+                        "abnormalColorType": "Physical",
+                        "_orderPriorityConfig": {
+                            "useDirectoryValue": false,
+                            "priorityValue": 0,
+                            "priorityEnum": "CommonCharBuff"
+                        },
+                        "showWarningBackground": false,
+                        "playStrongInAnimation": false,
+                        "hasCharHpBarVfxType": false,
+                        "charHpBarVfxType": "Fire"
+                    },
+                    "hasIcon": false,
+                    "ignoreTagImmune": false,
+                    "useTimeDilationDt": false,
+                    "finishOnRepatriate": false,
+                    "hasAddingCooldown": false,
+                    "addingCooldown": {
+                        "useBlackboardKey": true,
+                        "value": 0.0,
+                        "blackboardKey": ""
+                    },
+                    "ignoreCooldownWhenAdding": false,
+                    "attributeModifier": {
+                        "isConvertedAttribute": false,
+                        "attributeModifiers": []
+                    },
+                    "damageModifier": [
+                        {
+                            "enableSide": "Defender",
+                            "condition": {
+                                "actionData": [
+                                    {
+                                        "$type": "Beyond.Gameplay.Core.Conditions.CheckDamageType+Data, Gameplay.Beyond",
+                                        "isEnable": true,
+                                        "priorityLevel": "Default",
+                                        "priorityOffset": 0,
+                                        "serverActionIndex": 0,
+                                        "damageType": "Fire"
+                                    }
+                                ],
+                                "onlyExecuteWhenSourceIsMainChar": false,
+                                "onlyExecuteWhenSourceIsGuard": false
+                            },
+                            "damageProcessors": [
+                                {
+                                    "$type": "Beyond.Gameplay.Core.DamageScaleProcessor, Gameplay.Beyond",
+                                    "side": "Defender",
+                                    "zoneName": "ProdCalcZone",
+                                    "addition": {
+                                        "useBlackboardKey": true,
+                                        "value": 0.0,
+                                        "blackboardKey": "fire_dmg_taken_up"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "healModifier": [],
+                    "poiseModifier": [],
+                    "globalModifier": [],
+                    "shieldConfigs": [],
+                    "applyTags": [],
+                    "tagsAfterTriggerExtendBuffAction": [],
+                    "lifeType": "Infinity",
+                    "duration": {
+                        "useBlackboardKey": false,
+                        "value": 0.1,
+                        "blackboardKey": "hit_duration"
+                    },
+                    "triggerInterval": {
+                        "useBlackboardKey": false,
+                        "value": -1.0,
+                        "blackboardKey": ""
+                    },
+                    "waitFirstTriggerInterval": false,
+                    "maxTriggerCnt": {
+                        "useBlackboardKey": false,
+                        "value": -1,
+                        "blackboardKey": "duration"
+                    },
+                    "stackingSettings": {
+                        "identifierType": "Id",
+                        "stackingType": "Unique",
+                        "stackingKey": "",
+                        "usePriorityKey": false,
+                        "priorityKey": "",
+                        "negatePriority": false,
+                        "priority": 0.0,
+                        "useMaxStackCntKey": true,
+                        "maxStackCntKey": "hit_cntmax",
+                        "maxStackCnt": 1,
+                        "isNeedStackEffect": false,
+                        "stackEffects": []
+                    },
+                    "dispelConfig": {
+                        "canBeDispelled": false,
+                        "dispelledLevel": "Default"
+                    },
+                    "buffEventAction": [
+                        {
+                            "buffEvent": "OnBuffEnable",
+                            "actions": []
+                        }
+                    ],
+                    "abilityEventAction": [],
+                    "igniteEventAction": [],
+                    "timelineActions": [],
+                    "blackboard": [
+                        {
+                            "key": "fire_dmg_taken_up",
+                            "valueDouble": 1.0,
+                            "valueStr": "",
+                            "isDynamic": false
+                        }
+                    ]
                 },
                 "buff_eny_0046_lbshamman_teleport": {
                     "id": "buff_eny_0046_lbshamman_teleport",
@@ -16090,134 +16218,6 @@
                     "igniteEventAction": [],
                     "timelineActions": [],
                     "blackboard": []
-                },
-                "buff_chr_0033_camille_chrdg_fire_dmg_up": {
-                    "id": "buff_chr_0033_camille_chrdg_fire_dmg_up",
-                    "iconConfig": {
-                        "_spritePath": "",
-                        "showInHeadBarCommon": false,
-                        "showInHeadBarAttached": false,
-                        "showInSquadIcon": false,
-                        "onlyShowForMainCharacter": false,
-                        "blinkInMainCharHpBar": false,
-                        "showProgressInHpBar": false,
-                        "showProgressInNormalSkillButton": false,
-                        "iconStyleInSquad": "Default",
-                        "abnormalColorType": "Physical",
-                        "_orderPriorityConfig": {
-                            "useDirectoryValue": false,
-                            "priorityValue": 0,
-                            "priorityEnum": "CommonCharBuff"
-                        },
-                        "showWarningBackground": false,
-                        "playStrongInAnimation": false,
-                        "hasCharHpBarVfxType": false,
-                        "charHpBarVfxType": "Fire"
-                    },
-                    "hasIcon": false,
-                    "ignoreTagImmune": false,
-                    "useTimeDilationDt": false,
-                    "finishOnRepatriate": false,
-                    "hasAddingCooldown": false,
-                    "addingCooldown": {
-                        "useBlackboardKey": true,
-                        "value": 0.0,
-                        "blackboardKey": ""
-                    },
-                    "ignoreCooldownWhenAdding": false,
-                    "attributeModifier": {
-                        "isConvertedAttribute": false,
-                        "attributeModifiers": []
-                    },
-                    "damageModifier": [
-                        {
-                            "enableSide": "Defender",
-                            "condition": {
-                                "actionData": [
-                                    {
-                                        "$type": "Beyond.Gameplay.Core.Conditions.CheckDamageType+Data, Gameplay.Beyond",
-                                        "isEnable": true,
-                                        "priorityLevel": "Default",
-                                        "priorityOffset": 0,
-                                        "serverActionIndex": 0,
-                                        "damageType": "Fire"
-                                    }
-                                ],
-                                "onlyExecuteWhenSourceIsMainChar": false,
-                                "onlyExecuteWhenSourceIsGuard": false
-                            },
-                            "damageProcessors": [
-                                {
-                                    "$type": "Beyond.Gameplay.Core.DamageScaleProcessor, Gameplay.Beyond",
-                                    "side": "Defender",
-                                    "zoneName": "ProdCalcZone",
-                                    "addition": {
-                                        "useBlackboardKey": true,
-                                        "value": 0.0,
-                                        "blackboardKey": "fire_dmg_taken_up"
-                                    }
-                                }
-                            ]
-                        }
-                    ],
-                    "healModifier": [],
-                    "poiseModifier": [],
-                    "globalModifier": [],
-                    "shieldConfigs": [],
-                    "applyTags": [],
-                    "tagsAfterTriggerExtendBuffAction": [],
-                    "lifeType": "Infinity",
-                    "duration": {
-                        "useBlackboardKey": false,
-                        "value": 0.1,
-                        "blackboardKey": "hit_duration"
-                    },
-                    "triggerInterval": {
-                        "useBlackboardKey": false,
-                        "value": -1.0,
-                        "blackboardKey": ""
-                    },
-                    "waitFirstTriggerInterval": false,
-                    "maxTriggerCnt": {
-                        "useBlackboardKey": false,
-                        "value": -1,
-                        "blackboardKey": "duration"
-                    },
-                    "stackingSettings": {
-                        "identifierType": "Id",
-                        "stackingType": "Unique",
-                        "stackingKey": "",
-                        "usePriorityKey": false,
-                        "priorityKey": "",
-                        "negatePriority": false,
-                        "priority": 0.0,
-                        "useMaxStackCntKey": true,
-                        "maxStackCntKey": "hit_cntmax",
-                        "maxStackCnt": 1,
-                        "isNeedStackEffect": false,
-                        "stackEffects": []
-                    },
-                    "dispelConfig": {
-                        "canBeDispelled": false,
-                        "dispelledLevel": "Default"
-                    },
-                    "buffEventAction": [
-                        {
-                            "buffEvent": "OnBuffEnable",
-                            "actions": []
-                        }
-                    ],
-                    "abilityEventAction": [],
-                    "igniteEventAction": [],
-                    "timelineActions": [],
-                    "blackboard": [
-                        {
-                            "key": "fire_dmg_taken_up",
-                            "valueDouble": 1.0,
-                            "valueStr": "",
-                            "isDynamic": false
-                        }
-                    ]
                 }
             }
         }
