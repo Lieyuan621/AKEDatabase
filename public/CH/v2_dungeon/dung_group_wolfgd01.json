@@ -6407,6 +6407,672 @@
                 }
             },
             "SpawnerConfig": {
+                "sc_dung01_rdg001_13000020001": {
+                    "configId": "sc_dung01_rdg001_13000020001",
+                    "settings": {
+                        "enemyLevelUseLevelGrade": false,
+                        "forbidDrop": true,
+                        "autoComplete": true,
+                        "stopExploreMusic": true
+                    },
+                    "waveMap": {
+                        "1": {
+                            "waveId": 1,
+                            "waveKey": "1",
+                            "waveMode": "Parallel",
+                            "waveModeKillCount": 0,
+                            "hasDeadlineBegin": false,
+                            "deadlineBeginDeltaTime": 0.0,
+                            "timestamp": 0.0,
+                            "isHidden": false,
+                            "repeatable": false,
+                            "groupMap": {
+                                "1": {
+                                    "groupId": 2,
+                                    "groupKey": "1",
+                                    "groupMode": "Sequence",
+                                    "groupModeKillCount": 0,
+                                    "hasDeadlineBegin": false,
+                                    "deadlineBeginDeltaTime": 0.0,
+                                    "limitGroupMaxCount": false,
+                                    "groupMaxCount": 0,
+                                    "groupBackUpCount": 0,
+                                    "timestamp": 0.0,
+                                    "actionMap": {
+                                        "1": {
+                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
+                                            "actionId": 3,
+                                            "timestamp": 0.0,
+                                            "libraryKey": "2FB7C64E",
+                                            "spawnCount": 1,
+                                            "spawnInterval": 0.0,
+                                            "startPointInvalid": false,
+                                            "faceMainCharacter": false,
+                                            "position": {
+                                                "x": 10.0056019,
+                                                "y": -3.81469727e-05,
+                                                "z": -1.05777478
+                                            },
+                                            "rotation": {
+                                                "x": 0.0,
+                                                "y": 273.241058,
+                                                "z": 0.0
+                                            },
+                                            "randomizeRadius": 0.0,
+                                            "randomizeEndPointRadius": 0.0,
+                                            "routeId": 3
+                                        },
+                                        "2": {
+                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
+                                            "actionId": 7,
+                                            "timestamp": 0.0,
+                                            "libraryKey": "6F7179CD",
+                                            "spawnCount": 1,
+                                            "spawnInterval": 0.0,
+                                            "startPointInvalid": false,
+                                            "faceMainCharacter": false,
+                                            "position": {
+                                                "x": 9.977922,
+                                                "y": -3.81469727e-05,
+                                                "z": 5.861077
+                                            },
+                                            "rotation": {
+                                                "x": 0.0,
+                                                "y": 240.226776,
+                                                "z": 0.0
+                                            },
+                                            "randomizeRadius": 0.0,
+                                            "randomizeEndPointRadius": 0.0,
+                                            "routeId": 7
+                                        },
+                                        "3": {
+                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
+                                            "actionId": 8,
+                                            "timestamp": 0.0,
+                                            "libraryKey": "6F7179CD",
+                                            "spawnCount": 1,
+                                            "spawnInterval": 0.0,
+                                            "startPointInvalid": false,
+                                            "faceMainCharacter": false,
+                                            "position": {
+                                                "x": 8.615361,
+                                                "y": -3.81469727e-05,
+                                                "z": -8.915893
+                                            },
+                                            "rotation": {
+                                                "x": 0.0,
+                                                "y": 316.3423,
+                                                "z": 0.0
+                                            },
+                                            "randomizeRadius": 0.0,
+                                            "randomizeEndPointRadius": 0.0,
+                                            "routeId": 8
+                                        },
+                                        "4": {
+                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
+                                            "actionId": 9,
+                                            "timestamp": 0.0,
+                                            "libraryKey": "393D858B",
+                                            "spawnCount": 1,
+                                            "spawnInterval": 0.0,
+                                            "startPointInvalid": false,
+                                            "faceMainCharacter": false,
+                                            "position": {
+                                                "x": 8.322896,
+                                                "y": -3.81469727e-05,
+                                                "z": 3.40635324
+                                            },
+                                            "rotation": {
+                                                "x": 0.0,
+                                                "y": 248.278259,
+                                                "z": 0.0
+                                            },
+                                            "randomizeRadius": 0.0,
+                                            "randomizeEndPointRadius": 0.0,
+                                            "routeId": 9
+                                        },
+                                        "5": {
+                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
+                                            "actionId": 10,
+                                            "timestamp": 0.0,
+                                            "libraryKey": "393D858B",
+                                            "spawnCount": 1,
+                                            "spawnInterval": 0.0,
+                                            "startPointInvalid": false,
+                                            "faceMainCharacter": false,
+                                            "position": {
+                                                "x": 7.8258934,
+                                                "y": -3.81469727e-05,
+                                                "z": -5.57061958
+                                            },
+                                            "rotation": {
+                                                "x": 0.0,
+                                                "y": 305.789154,
+                                                "z": 0.0
+                                            },
+                                            "randomizeRadius": 0.0,
+                                            "randomizeEndPointRadius": 0.0,
+                                            "routeId": 10
+                                        }
+                                    }
+                                },
+                                "2": {
+                                    "groupId": 14,
+                                    "groupMode": "PartKilled",
+                                    "groupModeKillCount": 0,
+                                    "hasDeadlineBegin": false,
+                                    "deadlineBeginDeltaTime": 0.0,
+                                    "limitGroupMaxCount": false,
+                                    "groupMaxCount": -1,
+                                    "groupBackUpCount": 0,
+                                    "timestamp": 0.0,
+                                    "actionMap": {
+                                        "1": {
+                                            "$type": "Beyond.Gameplay.SpawnerActions+Pause, Gameplay.Beyond",
+                                            "actionId": 13,
+                                            "timestamp": 0.0,
+                                            "pauseKey": "Pause4CS"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "2": {
+                            "waveId": 4,
+                            "waveKey": "3",
+                            "waveMode": "Sequence",
+                            "waveModeKillCount": 0,
+                            "hasDeadlineBegin": false,
+                            "deadlineBeginDeltaTime": 0.0,
+                            "timestamp": 0.0,
+                            "isHidden": false,
+                            "repeatable": false,
+                            "groupMap": {
+                                "1": {
+                                    "groupId": 5,
+                                    "groupKey": "2",
+                                    "groupMode": "Sequence",
+                                    "groupModeKillCount": 1,
+                                    "hasDeadlineBegin": false,
+                                    "deadlineBeginDeltaTime": 0.0,
+                                    "limitGroupMaxCount": false,
+                                    "groupMaxCount": 0,
+                                    "groupBackUpCount": 0,
+                                    "timestamp": 0.0,
+                                    "actionMap": {
+                                        "1": {
+                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
+                                            "actionId": 6,
+                                            "timestamp": 0.0,
+                                            "libraryKey": "FB0DF696",
+                                            "spawnCount": 1,
+                                            "spawnInterval": 0.0,
+                                            "startPointInvalid": false,
+                                            "faceMainCharacter": false,
+                                            "position": {
+                                                "x": 14.4353428,
+                                                "y": -3.81469727e-05,
+                                                "z": -1.34535456
+                                            },
+                                            "rotation": {
+                                                "x": 0.0,
+                                                "y": 273.614868,
+                                                "z": 0.0
+                                            },
+                                            "randomizeRadius": 0.0,
+                                            "randomizeEndPointRadius": 0.0,
+                                            "routeId": 6
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "routeMap": {
+                        "3": {
+                            "routeId": 3,
+                            "patrolData": {
+                                "id": 0,
+                                "worldOffset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "useWorldOffset": false,
+                                "loop": "None",
+                                "snap": "Navmesh",
+                                "inLocalSpace": false,
+                                "addBornPositionAsCheckpoint": true,
+                                "stopWalkInplace": false,
+                                "forbidNpcInteract": true,
+                                "enableBornAction": false,
+                                "bornMoveStyle": "Walk",
+                                "enableBornSpeedOverride": false,
+                                "bornOverrideSpeed": 4.0,
+                                "bornPositionWaitDuration": 0.0,
+                                "actions": [
+                                    {
+                                        "actionType": "Checkpoint",
+                                        "position": {
+                                            "x": 3.71674681,
+                                            "y": 0.005016327,
+                                            "z": -0.5577672
+                                        },
+                                        "subPositions": [],
+                                        "subActions": []
+                                    }
+                                ],
+                                "motionType": "None",
+                                "waitDistance": 0.0,
+                                "isStopDistance": false,
+                                "runAheadRadius": 0.0,
+                                "runBehindRadius": 0.0,
+                                "sprintAheadRadius": 0.0,
+                                "sprintBehindRadius": 0.0,
+                                "coolDownBetweenWalkAndStop": 1.0,
+                                "motionEnterDis": 10.0,
+                                "changePlayerMoveStyle": false,
+                                "forcePlayerMoveStyle": "Walk",
+                                "moveStyleWithoutLead": "Walk",
+                                "turnCheck": false,
+                                "turnCheckTime": 5.0,
+                                "turnCheckAngle": 45.0,
+                                "turnCheckDis": 30.0,
+                                "turnRadio": 0.8,
+                                "usePatrolPointEnterGaitAsLimitGait": false,
+                                "playerChangeLimitDelayTime": 0.0,
+                                "isLimitPlayerActionWhenGaitLimit": false,
+                                "limitPlayerActionType": "All",
+                                "stop2WalkBufferTime": 0.0,
+                                "isUseCatmull": false
+                            }
+                        },
+                        "6": {
+                            "routeId": 6,
+                            "patrolData": {
+                                "id": 0,
+                                "worldOffset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "useWorldOffset": false,
+                                "loop": "None",
+                                "snap": "Navmesh",
+                                "inLocalSpace": false,
+                                "addBornPositionAsCheckpoint": true,
+                                "stopWalkInplace": false,
+                                "forbidNpcInteract": true,
+                                "enableBornAction": false,
+                                "bornMoveStyle": "Walk",
+                                "enableBornSpeedOverride": false,
+                                "bornOverrideSpeed": 4.0,
+                                "bornPositionWaitDuration": 0.0,
+                                "actions": [
+                                    {
+                                        "actionType": "Checkpoint",
+                                        "position": {
+                                            "x": 6.662208,
+                                            "y": -3.81469727e-05,
+                                            "z": -0.780866742
+                                        },
+                                        "subPositions": [],
+                                        "subActions": []
+                                    }
+                                ],
+                                "motionType": "None",
+                                "waitDistance": 0.0,
+                                "isStopDistance": false,
+                                "runAheadRadius": 0.0,
+                                "runBehindRadius": 0.0,
+                                "sprintAheadRadius": 0.0,
+                                "sprintBehindRadius": 0.0,
+                                "coolDownBetweenWalkAndStop": 1.0,
+                                "motionEnterDis": 10.0,
+                                "changePlayerMoveStyle": false,
+                                "forcePlayerMoveStyle": "Walk",
+                                "moveStyleWithoutLead": "Walk",
+                                "turnCheck": false,
+                                "turnCheckTime": 5.0,
+                                "turnCheckAngle": 45.0,
+                                "turnCheckDis": 30.0,
+                                "turnRadio": 0.8,
+                                "usePatrolPointEnterGaitAsLimitGait": false,
+                                "playerChangeLimitDelayTime": 0.0,
+                                "isLimitPlayerActionWhenGaitLimit": false,
+                                "limitPlayerActionType": "All",
+                                "stop2WalkBufferTime": 0.0,
+                                "isUseCatmull": false
+                            }
+                        },
+                        "7": {
+                            "routeId": 7,
+                            "patrolData": {
+                                "id": 0,
+                                "worldOffset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "useWorldOffset": false,
+                                "loop": "None",
+                                "snap": "Navmesh",
+                                "inLocalSpace": false,
+                                "addBornPositionAsCheckpoint": true,
+                                "stopWalkInplace": false,
+                                "forbidNpcInteract": true,
+                                "enableBornAction": false,
+                                "bornMoveStyle": "Walk",
+                                "enableBornSpeedOverride": false,
+                                "bornOverrideSpeed": 4.0,
+                                "bornPositionWaitDuration": 0.0,
+                                "actions": [
+                                    {
+                                        "actionType": "Checkpoint",
+                                        "position": {
+                                            "x": 4.48555,
+                                            "y": 0.005016327,
+                                            "z": 2.7189734
+                                        },
+                                        "subPositions": [],
+                                        "subActions": []
+                                    }
+                                ],
+                                "motionType": "None",
+                                "waitDistance": 0.0,
+                                "isStopDistance": false,
+                                "runAheadRadius": 0.0,
+                                "runBehindRadius": 0.0,
+                                "sprintAheadRadius": 0.0,
+                                "sprintBehindRadius": 0.0,
+                                "coolDownBetweenWalkAndStop": 1.0,
+                                "motionEnterDis": 10.0,
+                                "changePlayerMoveStyle": false,
+                                "forcePlayerMoveStyle": "Walk",
+                                "moveStyleWithoutLead": "Walk",
+                                "turnCheck": false,
+                                "turnCheckTime": 5.0,
+                                "turnCheckAngle": 45.0,
+                                "turnCheckDis": 30.0,
+                                "turnRadio": 0.8,
+                                "usePatrolPointEnterGaitAsLimitGait": false,
+                                "playerChangeLimitDelayTime": 0.0,
+                                "isLimitPlayerActionWhenGaitLimit": false,
+                                "limitPlayerActionType": "All",
+                                "stop2WalkBufferTime": 0.0,
+                                "isUseCatmull": false
+                            }
+                        },
+                        "8": {
+                            "routeId": 8,
+                            "patrolData": {
+                                "id": 0,
+                                "worldOffset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "useWorldOffset": false,
+                                "loop": "None",
+                                "snap": "Navmesh",
+                                "inLocalSpace": false,
+                                "addBornPositionAsCheckpoint": true,
+                                "stopWalkInplace": false,
+                                "forbidNpcInteract": true,
+                                "enableBornAction": false,
+                                "bornMoveStyle": "Walk",
+                                "enableBornSpeedOverride": false,
+                                "bornOverrideSpeed": 4.0,
+                                "bornPositionWaitDuration": 0.0,
+                                "actions": [
+                                    {
+                                        "actionType": "Checkpoint",
+                                        "position": {
+                                            "x": 3.88392425,
+                                            "y": 0.005016327,
+                                            "z": -3.957409
+                                        },
+                                        "subPositions": [],
+                                        "subActions": []
+                                    }
+                                ],
+                                "motionType": "None",
+                                "waitDistance": 0.0,
+                                "isStopDistance": false,
+                                "runAheadRadius": 0.0,
+                                "runBehindRadius": 0.0,
+                                "sprintAheadRadius": 0.0,
+                                "sprintBehindRadius": 0.0,
+                                "coolDownBetweenWalkAndStop": 1.0,
+                                "motionEnterDis": 10.0,
+                                "changePlayerMoveStyle": false,
+                                "forcePlayerMoveStyle": "Walk",
+                                "moveStyleWithoutLead": "Walk",
+                                "turnCheck": false,
+                                "turnCheckTime": 5.0,
+                                "turnCheckAngle": 45.0,
+                                "turnCheckDis": 30.0,
+                                "turnRadio": 0.8,
+                                "usePatrolPointEnterGaitAsLimitGait": false,
+                                "playerChangeLimitDelayTime": 0.0,
+                                "isLimitPlayerActionWhenGaitLimit": false,
+                                "limitPlayerActionType": "All",
+                                "stop2WalkBufferTime": 0.0,
+                                "isUseCatmull": false
+                            }
+                        },
+                        "9": {
+                            "routeId": 9,
+                            "patrolData": {
+                                "id": 0,
+                                "worldOffset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "useWorldOffset": false,
+                                "loop": "None",
+                                "snap": "Navmesh",
+                                "inLocalSpace": false,
+                                "addBornPositionAsCheckpoint": true,
+                                "stopWalkInplace": false,
+                                "forbidNpcInteract": true,
+                                "enableBornAction": false,
+                                "bornMoveStyle": "Walk",
+                                "enableBornSpeedOverride": false,
+                                "bornOverrideSpeed": 4.0,
+                                "bornPositionWaitDuration": 0.0,
+                                "actions": [
+                                    {
+                                        "actionType": "Checkpoint",
+                                        "position": {
+                                            "x": 2.68753242,
+                                            "y": -3.81469727e-05,
+                                            "z": 1.1612916
+                                        },
+                                        "subPositions": [],
+                                        "subActions": []
+                                    }
+                                ],
+                                "motionType": "None",
+                                "waitDistance": 0.0,
+                                "isStopDistance": false,
+                                "runAheadRadius": 0.0,
+                                "runBehindRadius": 0.0,
+                                "sprintAheadRadius": 0.0,
+                                "sprintBehindRadius": 0.0,
+                                "coolDownBetweenWalkAndStop": 1.0,
+                                "motionEnterDis": 10.0,
+                                "changePlayerMoveStyle": false,
+                                "forcePlayerMoveStyle": "Walk",
+                                "moveStyleWithoutLead": "Walk",
+                                "turnCheck": false,
+                                "turnCheckTime": 5.0,
+                                "turnCheckAngle": 45.0,
+                                "turnCheckDis": 30.0,
+                                "turnRadio": 0.8,
+                                "usePatrolPointEnterGaitAsLimitGait": false,
+                                "playerChangeLimitDelayTime": 0.0,
+                                "isLimitPlayerActionWhenGaitLimit": false,
+                                "limitPlayerActionType": "All",
+                                "stop2WalkBufferTime": 0.0,
+                                "isUseCatmull": false
+                            }
+                        },
+                        "10": {
+                            "routeId": 10,
+                            "patrolData": {
+                                "id": 0,
+                                "worldOffset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "useWorldOffset": false,
+                                "loop": "None",
+                                "snap": "Navmesh",
+                                "inLocalSpace": false,
+                                "addBornPositionAsCheckpoint": true,
+                                "stopWalkInplace": false,
+                                "forbidNpcInteract": true,
+                                "enableBornAction": false,
+                                "bornMoveStyle": "Walk",
+                                "enableBornSpeedOverride": false,
+                                "bornOverrideSpeed": 4.0,
+                                "bornPositionWaitDuration": 0.0,
+                                "actions": [
+                                    {
+                                        "actionType": "Checkpoint",
+                                        "position": {
+                                            "x": 2.428436,
+                                            "y": -3.81469727e-05,
+                                            "z": -1.67940485
+                                        },
+                                        "subPositions": [],
+                                        "subActions": []
+                                    }
+                                ],
+                                "motionType": "None",
+                                "waitDistance": 0.0,
+                                "isStopDistance": false,
+                                "runAheadRadius": 0.0,
+                                "runBehindRadius": 0.0,
+                                "sprintAheadRadius": 0.0,
+                                "sprintBehindRadius": 0.0,
+                                "coolDownBetweenWalkAndStop": 1.0,
+                                "motionEnterDis": 10.0,
+                                "changePlayerMoveStyle": false,
+                                "forcePlayerMoveStyle": "Walk",
+                                "moveStyleWithoutLead": "Walk",
+                                "turnCheck": false,
+                                "turnCheckTime": 5.0,
+                                "turnCheckAngle": 45.0,
+                                "turnCheckDis": 30.0,
+                                "turnRadio": 0.8,
+                                "usePatrolPointEnterGaitAsLimitGait": false,
+                                "playerChangeLimitDelayTime": 0.0,
+                                "isLimitPlayerActionWhenGaitLimit": false,
+                                "limitPlayerActionType": "All",
+                                "stop2WalkBufferTime": 0.0,
+                                "isUseCatmull": false
+                            }
+                        }
+                    },
+                    "enemyLibrary": [
+                        {
+                            "key": "2FB7C64E",
+                            "enemyId": "eny_0068_lbtough2_wolfgd_dg01",
+                            "enemyLevel": 35,
+                            "overrideAIConfig": "EnemyEnterBattle",
+                            "bornBuffList": [
+                                {
+                                    "buffId": "buff_common_born",
+                                    "blackboard": []
+                                }
+                            ],
+                            "preWarnTime": 0.0,
+                            "preWarnEffectFixedRotation": {
+                                "enabled": false,
+                                "value": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                }
+                            },
+                            "patrolGait": "Walk",
+                            "forceToBattle": true
+                        },
+                        {
+                            "key": "FB0DF696",
+                            "enemyId": "eny_0068_lbtough2_wolfgd_dg02",
+                            "enemyLevel": 35,
+                            "overrideAIConfig": "EnemyEnterBattle",
+                            "bornBuffList": [
+                                {
+                                    "buffId": "buff_common_born",
+                                    "blackboard": []
+                                }
+                            ],
+                            "preWarnTime": 0.0,
+                            "preWarnEffectFixedRotation": {
+                                "enabled": false,
+                                "value": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                }
+                            },
+                            "patrolGait": "Walk",
+                            "forceToBattle": true
+                        },
+                        {
+                            "key": "6F7179CD",
+                            "enemyId": "eny_0029_lbmob",
+                            "enemyLevel": 30,
+                            "overrideAIConfig": "EnemyEnterBattle",
+                            "bornBuffList": [
+                                {
+                                    "buffId": "buff_common_born",
+                                    "blackboard": []
+                                }
+                            ],
+                            "preWarnTime": 0.0,
+                            "preWarnEffectFixedRotation": {
+                                "enabled": false,
+                                "value": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                }
+                            },
+                            "patrolGait": "Run",
+                            "forceToBattle": true
+                        },
+                        {
+                            "key": "393D858B",
+                            "enemyId": "eny_0033_lbhunt",
+                            "enemyLevel": 30,
+                            "overrideAIConfig": "EnemyEnterBattle",
+                            "bornBuffList": [
+                                {
+                                    "buffId": "buff_common_born",
+                                    "blackboard": []
+                                }
+                            ],
+                            "preWarnTime": 0.0,
+                            "preWarnEffectFixedRotation": {
+                                "enabled": false,
+                                "value": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                }
+                            },
+                            "patrolGait": "Run",
+                            "forceToBattle": true
+                        }
+                    ]
+                },
                 "sc_dung01_rdg001_13000020000": {
                     "configId": "sc_dung01_rdg001_13000020000",
                     "settings": {
@@ -7127,722 +7793,9 @@
                             "forceToBattle": true
                         }
                     ]
-                },
-                "sc_dung01_rdg001_13000020001": {
-                    "configId": "sc_dung01_rdg001_13000020001",
-                    "settings": {
-                        "enemyLevelUseLevelGrade": false,
-                        "forbidDrop": true,
-                        "autoComplete": true,
-                        "stopExploreMusic": true
-                    },
-                    "waveMap": {
-                        "1": {
-                            "waveId": 1,
-                            "waveKey": "1",
-                            "waveMode": "Parallel",
-                            "waveModeKillCount": 0,
-                            "hasDeadlineBegin": false,
-                            "deadlineBeginDeltaTime": 0.0,
-                            "timestamp": 0.0,
-                            "isHidden": false,
-                            "repeatable": false,
-                            "groupMap": {
-                                "1": {
-                                    "groupId": 2,
-                                    "groupKey": "1",
-                                    "groupMode": "Sequence",
-                                    "groupModeKillCount": 0,
-                                    "hasDeadlineBegin": false,
-                                    "deadlineBeginDeltaTime": 0.0,
-                                    "limitGroupMaxCount": false,
-                                    "groupMaxCount": 0,
-                                    "groupBackUpCount": 0,
-                                    "timestamp": 0.0,
-                                    "actionMap": {
-                                        "1": {
-                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 3,
-                                            "timestamp": 0.0,
-                                            "libraryKey": "2FB7C64E",
-                                            "spawnCount": 1,
-                                            "spawnInterval": 0.0,
-                                            "startPointInvalid": false,
-                                            "faceMainCharacter": false,
-                                            "position": {
-                                                "x": 10.0056019,
-                                                "y": -3.81469727e-05,
-                                                "z": -1.05777478
-                                            },
-                                            "rotation": {
-                                                "x": 0.0,
-                                                "y": 273.241058,
-                                                "z": 0.0
-                                            },
-                                            "randomizeRadius": 0.0,
-                                            "randomizeEndPointRadius": 0.0,
-                                            "routeId": 3
-                                        },
-                                        "2": {
-                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 7,
-                                            "timestamp": 0.0,
-                                            "libraryKey": "6F7179CD",
-                                            "spawnCount": 1,
-                                            "spawnInterval": 0.0,
-                                            "startPointInvalid": false,
-                                            "faceMainCharacter": false,
-                                            "position": {
-                                                "x": 9.977922,
-                                                "y": -3.81469727e-05,
-                                                "z": 5.861077
-                                            },
-                                            "rotation": {
-                                                "x": 0.0,
-                                                "y": 240.226776,
-                                                "z": 0.0
-                                            },
-                                            "randomizeRadius": 0.0,
-                                            "randomizeEndPointRadius": 0.0,
-                                            "routeId": 7
-                                        },
-                                        "3": {
-                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 8,
-                                            "timestamp": 0.0,
-                                            "libraryKey": "6F7179CD",
-                                            "spawnCount": 1,
-                                            "spawnInterval": 0.0,
-                                            "startPointInvalid": false,
-                                            "faceMainCharacter": false,
-                                            "position": {
-                                                "x": 8.615361,
-                                                "y": -3.81469727e-05,
-                                                "z": -8.915893
-                                            },
-                                            "rotation": {
-                                                "x": 0.0,
-                                                "y": 316.3423,
-                                                "z": 0.0
-                                            },
-                                            "randomizeRadius": 0.0,
-                                            "randomizeEndPointRadius": 0.0,
-                                            "routeId": 8
-                                        },
-                                        "4": {
-                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 9,
-                                            "timestamp": 0.0,
-                                            "libraryKey": "393D858B",
-                                            "spawnCount": 1,
-                                            "spawnInterval": 0.0,
-                                            "startPointInvalid": false,
-                                            "faceMainCharacter": false,
-                                            "position": {
-                                                "x": 8.322896,
-                                                "y": -3.81469727e-05,
-                                                "z": 3.40635324
-                                            },
-                                            "rotation": {
-                                                "x": 0.0,
-                                                "y": 248.278259,
-                                                "z": 0.0
-                                            },
-                                            "randomizeRadius": 0.0,
-                                            "randomizeEndPointRadius": 0.0,
-                                            "routeId": 9
-                                        },
-                                        "5": {
-                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 10,
-                                            "timestamp": 0.0,
-                                            "libraryKey": "393D858B",
-                                            "spawnCount": 1,
-                                            "spawnInterval": 0.0,
-                                            "startPointInvalid": false,
-                                            "faceMainCharacter": false,
-                                            "position": {
-                                                "x": 7.8258934,
-                                                "y": -3.81469727e-05,
-                                                "z": -5.57061958
-                                            },
-                                            "rotation": {
-                                                "x": 0.0,
-                                                "y": 305.789154,
-                                                "z": 0.0
-                                            },
-                                            "randomizeRadius": 0.0,
-                                            "randomizeEndPointRadius": 0.0,
-                                            "routeId": 10
-                                        }
-                                    }
-                                },
-                                "2": {
-                                    "groupId": 14,
-                                    "groupMode": "PartKilled",
-                                    "groupModeKillCount": 0,
-                                    "hasDeadlineBegin": false,
-                                    "deadlineBeginDeltaTime": 0.0,
-                                    "limitGroupMaxCount": false,
-                                    "groupMaxCount": -1,
-                                    "groupBackUpCount": 0,
-                                    "timestamp": 0.0,
-                                    "actionMap": {
-                                        "1": {
-                                            "$type": "Beyond.Gameplay.SpawnerActions+Pause, Gameplay.Beyond",
-                                            "actionId": 13,
-                                            "timestamp": 0.0,
-                                            "pauseKey": "Pause4CS"
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "2": {
-                            "waveId": 4,
-                            "waveKey": "3",
-                            "waveMode": "Sequence",
-                            "waveModeKillCount": 0,
-                            "hasDeadlineBegin": false,
-                            "deadlineBeginDeltaTime": 0.0,
-                            "timestamp": 0.0,
-                            "isHidden": false,
-                            "repeatable": false,
-                            "groupMap": {
-                                "1": {
-                                    "groupId": 5,
-                                    "groupKey": "2",
-                                    "groupMode": "Sequence",
-                                    "groupModeKillCount": 1,
-                                    "hasDeadlineBegin": false,
-                                    "deadlineBeginDeltaTime": 0.0,
-                                    "limitGroupMaxCount": false,
-                                    "groupMaxCount": 0,
-                                    "groupBackUpCount": 0,
-                                    "timestamp": 0.0,
-                                    "actionMap": {
-                                        "1": {
-                                            "$type": "Beyond.Gameplay.SpawnerActions+SpawnMonsterFromTemplateV2, Gameplay.Beyond",
-                                            "actionId": 6,
-                                            "timestamp": 0.0,
-                                            "libraryKey": "FB0DF696",
-                                            "spawnCount": 1,
-                                            "spawnInterval": 0.0,
-                                            "startPointInvalid": false,
-                                            "faceMainCharacter": false,
-                                            "position": {
-                                                "x": 14.4353428,
-                                                "y": -3.81469727e-05,
-                                                "z": -1.34535456
-                                            },
-                                            "rotation": {
-                                                "x": 0.0,
-                                                "y": 273.614868,
-                                                "z": 0.0
-                                            },
-                                            "randomizeRadius": 0.0,
-                                            "randomizeEndPointRadius": 0.0,
-                                            "routeId": 6
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "routeMap": {
-                        "3": {
-                            "routeId": 3,
-                            "patrolData": {
-                                "id": 0,
-                                "worldOffset": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "useWorldOffset": false,
-                                "loop": "None",
-                                "snap": "Navmesh",
-                                "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": true,
-                                "stopWalkInplace": false,
-                                "forbidNpcInteract": true,
-                                "enableBornAction": false,
-                                "bornMoveStyle": "Walk",
-                                "enableBornSpeedOverride": false,
-                                "bornOverrideSpeed": 4.0,
-                                "bornPositionWaitDuration": 0.0,
-                                "actions": [
-                                    {
-                                        "actionType": "Checkpoint",
-                                        "position": {
-                                            "x": 3.71674681,
-                                            "y": 0.005016327,
-                                            "z": -0.5577672
-                                        },
-                                        "subPositions": [],
-                                        "subActions": []
-                                    }
-                                ],
-                                "motionType": "None",
-                                "waitDistance": 0.0,
-                                "isStopDistance": false,
-                                "runAheadRadius": 0.0,
-                                "runBehindRadius": 0.0,
-                                "sprintAheadRadius": 0.0,
-                                "sprintBehindRadius": 0.0,
-                                "coolDownBetweenWalkAndStop": 1.0,
-                                "motionEnterDis": 10.0,
-                                "changePlayerMoveStyle": false,
-                                "forcePlayerMoveStyle": "Walk",
-                                "moveStyleWithoutLead": "Walk",
-                                "turnCheck": false,
-                                "turnCheckTime": 5.0,
-                                "turnCheckAngle": 45.0,
-                                "turnCheckDis": 30.0,
-                                "turnRadio": 0.8,
-                                "usePatrolPointEnterGaitAsLimitGait": false,
-                                "playerChangeLimitDelayTime": 0.0,
-                                "isLimitPlayerActionWhenGaitLimit": false,
-                                "limitPlayerActionType": "All",
-                                "stop2WalkBufferTime": 0.0,
-                                "isUseCatmull": false
-                            }
-                        },
-                        "6": {
-                            "routeId": 6,
-                            "patrolData": {
-                                "id": 0,
-                                "worldOffset": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "useWorldOffset": false,
-                                "loop": "None",
-                                "snap": "Navmesh",
-                                "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": true,
-                                "stopWalkInplace": false,
-                                "forbidNpcInteract": true,
-                                "enableBornAction": false,
-                                "bornMoveStyle": "Walk",
-                                "enableBornSpeedOverride": false,
-                                "bornOverrideSpeed": 4.0,
-                                "bornPositionWaitDuration": 0.0,
-                                "actions": [
-                                    {
-                                        "actionType": "Checkpoint",
-                                        "position": {
-                                            "x": 6.662208,
-                                            "y": -3.81469727e-05,
-                                            "z": -0.780866742
-                                        },
-                                        "subPositions": [],
-                                        "subActions": []
-                                    }
-                                ],
-                                "motionType": "None",
-                                "waitDistance": 0.0,
-                                "isStopDistance": false,
-                                "runAheadRadius": 0.0,
-                                "runBehindRadius": 0.0,
-                                "sprintAheadRadius": 0.0,
-                                "sprintBehindRadius": 0.0,
-                                "coolDownBetweenWalkAndStop": 1.0,
-                                "motionEnterDis": 10.0,
-                                "changePlayerMoveStyle": false,
-                                "forcePlayerMoveStyle": "Walk",
-                                "moveStyleWithoutLead": "Walk",
-                                "turnCheck": false,
-                                "turnCheckTime": 5.0,
-                                "turnCheckAngle": 45.0,
-                                "turnCheckDis": 30.0,
-                                "turnRadio": 0.8,
-                                "usePatrolPointEnterGaitAsLimitGait": false,
-                                "playerChangeLimitDelayTime": 0.0,
-                                "isLimitPlayerActionWhenGaitLimit": false,
-                                "limitPlayerActionType": "All",
-                                "stop2WalkBufferTime": 0.0,
-                                "isUseCatmull": false
-                            }
-                        },
-                        "7": {
-                            "routeId": 7,
-                            "patrolData": {
-                                "id": 0,
-                                "worldOffset": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "useWorldOffset": false,
-                                "loop": "None",
-                                "snap": "Navmesh",
-                                "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": true,
-                                "stopWalkInplace": false,
-                                "forbidNpcInteract": true,
-                                "enableBornAction": false,
-                                "bornMoveStyle": "Walk",
-                                "enableBornSpeedOverride": false,
-                                "bornOverrideSpeed": 4.0,
-                                "bornPositionWaitDuration": 0.0,
-                                "actions": [
-                                    {
-                                        "actionType": "Checkpoint",
-                                        "position": {
-                                            "x": 4.48555,
-                                            "y": 0.005016327,
-                                            "z": 2.7189734
-                                        },
-                                        "subPositions": [],
-                                        "subActions": []
-                                    }
-                                ],
-                                "motionType": "None",
-                                "waitDistance": 0.0,
-                                "isStopDistance": false,
-                                "runAheadRadius": 0.0,
-                                "runBehindRadius": 0.0,
-                                "sprintAheadRadius": 0.0,
-                                "sprintBehindRadius": 0.0,
-                                "coolDownBetweenWalkAndStop": 1.0,
-                                "motionEnterDis": 10.0,
-                                "changePlayerMoveStyle": false,
-                                "forcePlayerMoveStyle": "Walk",
-                                "moveStyleWithoutLead": "Walk",
-                                "turnCheck": false,
-                                "turnCheckTime": 5.0,
-                                "turnCheckAngle": 45.0,
-                                "turnCheckDis": 30.0,
-                                "turnRadio": 0.8,
-                                "usePatrolPointEnterGaitAsLimitGait": false,
-                                "playerChangeLimitDelayTime": 0.0,
-                                "isLimitPlayerActionWhenGaitLimit": false,
-                                "limitPlayerActionType": "All",
-                                "stop2WalkBufferTime": 0.0,
-                                "isUseCatmull": false
-                            }
-                        },
-                        "8": {
-                            "routeId": 8,
-                            "patrolData": {
-                                "id": 0,
-                                "worldOffset": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "useWorldOffset": false,
-                                "loop": "None",
-                                "snap": "Navmesh",
-                                "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": true,
-                                "stopWalkInplace": false,
-                                "forbidNpcInteract": true,
-                                "enableBornAction": false,
-                                "bornMoveStyle": "Walk",
-                                "enableBornSpeedOverride": false,
-                                "bornOverrideSpeed": 4.0,
-                                "bornPositionWaitDuration": 0.0,
-                                "actions": [
-                                    {
-                                        "actionType": "Checkpoint",
-                                        "position": {
-                                            "x": 3.88392425,
-                                            "y": 0.005016327,
-                                            "z": -3.957409
-                                        },
-                                        "subPositions": [],
-                                        "subActions": []
-                                    }
-                                ],
-                                "motionType": "None",
-                                "waitDistance": 0.0,
-                                "isStopDistance": false,
-                                "runAheadRadius": 0.0,
-                                "runBehindRadius": 0.0,
-                                "sprintAheadRadius": 0.0,
-                                "sprintBehindRadius": 0.0,
-                                "coolDownBetweenWalkAndStop": 1.0,
-                                "motionEnterDis": 10.0,
-                                "changePlayerMoveStyle": false,
-                                "forcePlayerMoveStyle": "Walk",
-                                "moveStyleWithoutLead": "Walk",
-                                "turnCheck": false,
-                                "turnCheckTime": 5.0,
-                                "turnCheckAngle": 45.0,
-                                "turnCheckDis": 30.0,
-                                "turnRadio": 0.8,
-                                "usePatrolPointEnterGaitAsLimitGait": false,
-                                "playerChangeLimitDelayTime": 0.0,
-                                "isLimitPlayerActionWhenGaitLimit": false,
-                                "limitPlayerActionType": "All",
-                                "stop2WalkBufferTime": 0.0,
-                                "isUseCatmull": false
-                            }
-                        },
-                        "9": {
-                            "routeId": 9,
-                            "patrolData": {
-                                "id": 0,
-                                "worldOffset": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "useWorldOffset": false,
-                                "loop": "None",
-                                "snap": "Navmesh",
-                                "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": true,
-                                "stopWalkInplace": false,
-                                "forbidNpcInteract": true,
-                                "enableBornAction": false,
-                                "bornMoveStyle": "Walk",
-                                "enableBornSpeedOverride": false,
-                                "bornOverrideSpeed": 4.0,
-                                "bornPositionWaitDuration": 0.0,
-                                "actions": [
-                                    {
-                                        "actionType": "Checkpoint",
-                                        "position": {
-                                            "x": 2.68753242,
-                                            "y": -3.81469727e-05,
-                                            "z": 1.1612916
-                                        },
-                                        "subPositions": [],
-                                        "subActions": []
-                                    }
-                                ],
-                                "motionType": "None",
-                                "waitDistance": 0.0,
-                                "isStopDistance": false,
-                                "runAheadRadius": 0.0,
-                                "runBehindRadius": 0.0,
-                                "sprintAheadRadius": 0.0,
-                                "sprintBehindRadius": 0.0,
-                                "coolDownBetweenWalkAndStop": 1.0,
-                                "motionEnterDis": 10.0,
-                                "changePlayerMoveStyle": false,
-                                "forcePlayerMoveStyle": "Walk",
-                                "moveStyleWithoutLead": "Walk",
-                                "turnCheck": false,
-                                "turnCheckTime": 5.0,
-                                "turnCheckAngle": 45.0,
-                                "turnCheckDis": 30.0,
-                                "turnRadio": 0.8,
-                                "usePatrolPointEnterGaitAsLimitGait": false,
-                                "playerChangeLimitDelayTime": 0.0,
-                                "isLimitPlayerActionWhenGaitLimit": false,
-                                "limitPlayerActionType": "All",
-                                "stop2WalkBufferTime": 0.0,
-                                "isUseCatmull": false
-                            }
-                        },
-                        "10": {
-                            "routeId": 10,
-                            "patrolData": {
-                                "id": 0,
-                                "worldOffset": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                },
-                                "useWorldOffset": false,
-                                "loop": "None",
-                                "snap": "Navmesh",
-                                "inLocalSpace": false,
-                                "addBornPositionAsCheckpoint": true,
-                                "stopWalkInplace": false,
-                                "forbidNpcInteract": true,
-                                "enableBornAction": false,
-                                "bornMoveStyle": "Walk",
-                                "enableBornSpeedOverride": false,
-                                "bornOverrideSpeed": 4.0,
-                                "bornPositionWaitDuration": 0.0,
-                                "actions": [
-                                    {
-                                        "actionType": "Checkpoint",
-                                        "position": {
-                                            "x": 2.428436,
-                                            "y": -3.81469727e-05,
-                                            "z": -1.67940485
-                                        },
-                                        "subPositions": [],
-                                        "subActions": []
-                                    }
-                                ],
-                                "motionType": "None",
-                                "waitDistance": 0.0,
-                                "isStopDistance": false,
-                                "runAheadRadius": 0.0,
-                                "runBehindRadius": 0.0,
-                                "sprintAheadRadius": 0.0,
-                                "sprintBehindRadius": 0.0,
-                                "coolDownBetweenWalkAndStop": 1.0,
-                                "motionEnterDis": 10.0,
-                                "changePlayerMoveStyle": false,
-                                "forcePlayerMoveStyle": "Walk",
-                                "moveStyleWithoutLead": "Walk",
-                                "turnCheck": false,
-                                "turnCheckTime": 5.0,
-                                "turnCheckAngle": 45.0,
-                                "turnCheckDis": 30.0,
-                                "turnRadio": 0.8,
-                                "usePatrolPointEnterGaitAsLimitGait": false,
-                                "playerChangeLimitDelayTime": 0.0,
-                                "isLimitPlayerActionWhenGaitLimit": false,
-                                "limitPlayerActionType": "All",
-                                "stop2WalkBufferTime": 0.0,
-                                "isUseCatmull": false
-                            }
-                        }
-                    },
-                    "enemyLibrary": [
-                        {
-                            "key": "2FB7C64E",
-                            "enemyId": "eny_0068_lbtough2_wolfgd_dg01",
-                            "enemyLevel": 35,
-                            "overrideAIConfig": "EnemyEnterBattle",
-                            "bornBuffList": [
-                                {
-                                    "buffId": "buff_common_born",
-                                    "blackboard": []
-                                }
-                            ],
-                            "preWarnTime": 0.0,
-                            "preWarnEffectFixedRotation": {
-                                "enabled": false,
-                                "value": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                }
-                            },
-                            "patrolGait": "Walk",
-                            "forceToBattle": true
-                        },
-                        {
-                            "key": "FB0DF696",
-                            "enemyId": "eny_0068_lbtough2_wolfgd_dg02",
-                            "enemyLevel": 35,
-                            "overrideAIConfig": "EnemyEnterBattle",
-                            "bornBuffList": [
-                                {
-                                    "buffId": "buff_common_born",
-                                    "blackboard": []
-                                }
-                            ],
-                            "preWarnTime": 0.0,
-                            "preWarnEffectFixedRotation": {
-                                "enabled": false,
-                                "value": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                }
-                            },
-                            "patrolGait": "Walk",
-                            "forceToBattle": true
-                        },
-                        {
-                            "key": "6F7179CD",
-                            "enemyId": "eny_0029_lbmob",
-                            "enemyLevel": 30,
-                            "overrideAIConfig": "EnemyEnterBattle",
-                            "bornBuffList": [
-                                {
-                                    "buffId": "buff_common_born",
-                                    "blackboard": []
-                                }
-                            ],
-                            "preWarnTime": 0.0,
-                            "preWarnEffectFixedRotation": {
-                                "enabled": false,
-                                "value": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                }
-                            },
-                            "patrolGait": "Run",
-                            "forceToBattle": true
-                        },
-                        {
-                            "key": "393D858B",
-                            "enemyId": "eny_0033_lbhunt",
-                            "enemyLevel": 30,
-                            "overrideAIConfig": "EnemyEnterBattle",
-                            "bornBuffList": [
-                                {
-                                    "buffId": "buff_common_born",
-                                    "blackboard": []
-                                }
-                            ],
-                            "preWarnTime": 0.0,
-                            "preWarnEffectFixedRotation": {
-                                "enabled": false,
-                                "value": {
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "z": 0.0
-                                }
-                            },
-                            "patrolGait": "Run",
-                            "forceToBattle": true
-                        }
-                    ]
                 }
             },
             "enemyTable": {
-                "eny_0046_lbshamman": {
-                    "aiTemplateId": "",
-                    "attrModifiers": [],
-                    "attrTemplateId": "eny_0046_lbshamman",
-                    "autoLockCancelTime": -1,
-                    "autoLockCancelType": 0,
-                    "bornBuffs": [
-                        "buff_eny_0046_lbshamman_teleport"
-                    ],
-                    "enemyId": "eny_0046_lbshamman",
-                    "isDangerous": false,
-                    "modelId": "",
-                    "serverDeathCheck": false,
-                    "showBigEffect": true,
-                    "showBigHeadbar": false,
-                    "templateId": "eny_0046_lbshamman"
-                },
-                "eny_0029_lbmob": {
-                    "aiTemplateId": "",
-                    "attrModifiers": [],
-                    "attrTemplateId": "eny_0029_lbmob",
-                    "autoLockCancelTime": -1,
-                    "autoLockCancelType": 0,
-                    "bornBuffs": [],
-                    "enemyId": "eny_0029_lbmob",
-                    "isDangerous": false,
-                    "modelId": "",
-                    "serverDeathCheck": false,
-                    "showBigEffect": false,
-                    "showBigHeadbar": false,
-                    "templateId": "eny_0029_lbmob"
-                },
-                "eny_0050_hound": {
-                    "aiTemplateId": "",
-                    "attrModifiers": [],
-                    "attrTemplateId": "eny_0050_hound",
-                    "autoLockCancelTime": -1,
-                    "autoLockCancelType": 0,
-                    "bornBuffs": [],
-                    "enemyId": "eny_0050_hound",
-                    "isDangerous": false,
-                    "modelId": "",
-                    "serverDeathCheck": false,
-                    "showBigEffect": false,
-                    "showBigHeadbar": false,
-                    "templateId": "eny_0050_hound"
-                },
                 "eny_0068_lbtough2_wolfgd_dg01": {
                     "aiTemplateId": "aiconf_eny_0018_lbtough_wolfgd_dg01",
                     "attrModifiers": [],
@@ -7877,6 +7830,21 @@
                     "showBigHeadbar": false,
                     "templateId": "eny_0068_lbtough2"
                 },
+                "eny_0029_lbmob": {
+                    "aiTemplateId": "",
+                    "attrModifiers": [],
+                    "attrTemplateId": "eny_0029_lbmob",
+                    "autoLockCancelTime": -1,
+                    "autoLockCancelType": 0,
+                    "bornBuffs": [],
+                    "enemyId": "eny_0029_lbmob",
+                    "isDangerous": false,
+                    "modelId": "",
+                    "serverDeathCheck": false,
+                    "showBigEffect": false,
+                    "showBigHeadbar": false,
+                    "templateId": "eny_0029_lbmob"
+                },
                 "eny_0033_lbhunt": {
                     "aiTemplateId": "",
                     "attrModifiers": [],
@@ -7891,9 +7859,120 @@
                     "showBigEffect": false,
                     "showBigHeadbar": false,
                     "templateId": "eny_0033_lbhunt"
+                },
+                "eny_0046_lbshamman": {
+                    "aiTemplateId": "",
+                    "attrModifiers": [],
+                    "attrTemplateId": "eny_0046_lbshamman",
+                    "autoLockCancelTime": -1,
+                    "autoLockCancelType": 0,
+                    "bornBuffs": [
+                        "buff_eny_0046_lbshamman_teleport"
+                    ],
+                    "enemyId": "eny_0046_lbshamman",
+                    "isDangerous": false,
+                    "modelId": "",
+                    "serverDeathCheck": false,
+                    "showBigEffect": true,
+                    "showBigHeadbar": false,
+                    "templateId": "eny_0046_lbshamman"
+                },
+                "eny_0050_hound": {
+                    "aiTemplateId": "",
+                    "attrModifiers": [],
+                    "attrTemplateId": "eny_0050_hound",
+                    "autoLockCancelTime": -1,
+                    "autoLockCancelType": 0,
+                    "bornBuffs": [],
+                    "enemyId": "eny_0050_hound",
+                    "isDangerous": false,
+                    "modelId": "",
+                    "serverDeathCheck": false,
+                    "showBigEffect": false,
+                    "showBigHeadbar": false,
+                    "templateId": "eny_0050_hound"
                 }
             },
             "enemyTemplateDisplayInfoTable": {
+                "eny_0068_lbtough2": {
+                    "abilityDescIds": [
+                        "eny_0068_lbtough2_ability_1",
+                        "eny_0068_lbtough2_ability_2"
+                    ],
+                    "description": {
+                        "id": 8169935742311298877,
+                        "text": "受雾火强化，装备重型斩击斧的裂地者精锐武装人员，体型高大。他们通常是碾骨氏族袭掠队伍的首领。"
+                    },
+                    "displayType": 1,
+                    "distributionIds": [
+                        "distribution_map01_lv005"
+                    ],
+                    "name": {
+                        "id": -4512253115269926861,
+                        "text": "精锐行刑人"
+                    },
+                    "nickname": {
+                        "id": -7130408315142632905,
+                        "text": "精锐行刑人"
+                    },
+                    "tags": [],
+                    "templateId": "eny_0068_lbtough2"
+                },
+                "eny_0029_lbmob": {
+                    "abilityDescIds": [
+                        "common_ability"
+                    ],
+                    "description": {
+                        "id": -2871441656787925657,
+                        "text": "装备基础近战武器的裂地者武装人员。他们是组成裂地者团体的“大多数”，装备简陋，但常常成群出现。"
+                    },
+                    "displayType": 0,
+                    "distributionIds": [
+                        "distribution_map01_lv001",
+                        "distribution_map01_lv002",
+                        "distribution_map01_lv005",
+                        "distribution_map01_lv006",
+                        "distribution_world_energy_point02"
+                    ],
+                    "name": {
+                        "id": 2606237122980468022,
+                        "text": "碾骨劫掠者"
+                    },
+                    "nickname": {
+                        "id": 8670970341960570222,
+                        "text": "碾骨劫掠者"
+                    },
+                    "tags": [],
+                    "templateId": "eny_0029_lbmob"
+                },
+                "eny_0033_lbhunt": {
+                    "abilityDescIds": [
+                        "common_ability"
+                    ],
+                    "description": {
+                        "id": -9008203156451265326,
+                        "text": "装备基础远程武器的裂地者武装人员。他们仅受过基础的射击训练，准头不佳，但仍有许多人命丧于他们的弩箭。"
+                    },
+                    "displayType": 0,
+                    "distributionIds": [
+                        "distribution_map01_lv001",
+                        "distribution_map01_lv002",
+                        "distribution_map01_lv005",
+                        "distribution_map01_lv006",
+                        "distribution_map01_lv007",
+                        "distribution_world_energy_point02"
+                    ],
+                    "name": {
+                        "id": -1512827432792370243,
+                        "text": "碾骨伏击射手"
+                    },
+                    "nickname": {
+                        "id": 5807762151634589945,
+                        "text": "碾骨伏击射手"
+                    },
+                    "tags": [],
+                    "templateId": "eny_0033_lbhunt"
+                },
                 "eny_0046_lbshamman": {
                     "abilityDescIds": [
                         "eny_0046_lbshamman_ability_1",
@@ -7924,33 +8003,6 @@
                     "tags": [],
                     "templateId": "eny_0046_lbshamman"
                 },
-                "eny_0029_lbmob": {
-                    "abilityDescIds": [
-                        "common_ability"
-                    ],
-                    "description": {
-                        "id": -2871441656787925657,
-                        "text": "装备基础近战武器的裂地者武装人员。他们是组成裂地者团体的“大多数”，装备简陋，但常常成群出现。"
-                    },
-                    "displayType": 0,
-                    "distributionIds": [
-                        "distribution_map01_lv001",
-                        "distribution_map01_lv002",
-                        "distribution_map01_lv005",
-                        "distribution_map01_lv006",
-                        "distribution_world_energy_point02"
-                    ],
-                    "name": {
-                        "id": 2606237122980468022,
-                        "text": "碾骨劫掠者"
-                    },
-                    "nickname": {
-                        "id": 8670970341960570222,
-                        "text": "碾骨劫掠者"
-                    },
-                    "tags": [],
-                    "templateId": "eny_0029_lbmob"
-                },
                 "eny_0050_hound": {
                     "abilityDescIds": [
                         "eny_0050_hound_ability_1"
@@ -7979,385 +8031,9 @@
                     },
                     "tags": [],
                     "templateId": "eny_0050_hound"
-                },
-                "eny_0068_lbtough2": {
-                    "abilityDescIds": [
-                        "eny_0068_lbtough2_ability_1",
-                        "eny_0068_lbtough2_ability_2"
-                    ],
-                    "description": {
-                        "id": 8169935742311298877,
-                        "text": "受雾火强化，装备重型斩击斧的裂地者精锐武装人员，体型高大。他们通常是碾骨氏族袭掠队伍的首领。"
-                    },
-                    "displayType": 1,
-                    "distributionIds": [
-                        "distribution_map01_lv005"
-                    ],
-                    "name": {
-                        "id": -4512253115269926861,
-                        "text": "精锐行刑人"
-                    },
-                    "nickname": {
-                        "id": -7130408315142632905,
-                        "text": "精锐行刑人"
-                    },
-                    "tags": [],
-                    "templateId": "eny_0068_lbtough2"
-                },
-                "eny_0033_lbhunt": {
-                    "abilityDescIds": [
-                        "common_ability"
-                    ],
-                    "description": {
-                        "id": -9008203156451265326,
-                        "text": "装备基础远程武器的裂地者武装人员。他们仅受过基础的射击训练，准头不佳，但仍有许多人命丧于他们的弩箭。"
-                    },
-                    "displayType": 0,
-                    "distributionIds": [
-                        "distribution_map01_lv001",
-                        "distribution_map01_lv002",
-                        "distribution_map01_lv005",
-                        "distribution_map01_lv006",
-                        "distribution_map01_lv007",
-                        "distribution_world_energy_point02"
-                    ],
-                    "name": {
-                        "id": -1512827432792370243,
-                        "text": "碾骨伏击射手"
-                    },
-                    "nickname": {
-                        "id": 5807762151634589945,
-                        "text": "碾骨伏击射手"
-                    },
-                    "tags": [],
-                    "templateId": "eny_0033_lbhunt"
                 }
             },
             "enemyAttributeTemplateTable": {
-                "eny_0046_lbshamman": {
-                    "aoiRadius": 0,
-                    "attackValueAgainstTower": 20,
-                    "breakingAttackedAtbObtain": 35,
-                    "crystDmgResistScalar": 1,
-                    "fireDmgResistScalar": 0.5,
-                    "initialSuperArmor": 20,
-                    "levelDependentAttributes": [
-                        {
-                            "attrs": [
-                                {
-                                    "attrType": 0,
-                                    "attrValue": 30
-                                },
-                                {
-                                    "attrType": 1,
-                                    "attrValue": 13451
-                                },
-                                {
-                                    "attrType": 2,
-                                    "attrValue": 377
-                                },
-                                {
-                                    "attrType": 3,
-                                    "attrValue": 100
-                                }
-                            ]
-                        }
-                    ],
-                    "levelIndependentAttributes": {
-                        "attrs": [
-                            {
-                                "attrType": 20,
-                                "attrValue": 160
-                            },
-                            {
-                                "attrType": 21,
-                                "attrValue": 7
-                            },
-                            {
-                                "attrType": 27,
-                                "attrValue": 1.25
-                            },
-                            {
-                                "attrType": 12,
-                                "attrValue": 7
-                            },
-                            {
-                                "attrType": 8,
-                                "attrValue": 1.5
-                            },
-                            {
-                                "attrType": 11,
-                                "attrValue": 0
-                            },
-                            {
-                                "attrType": 9,
-                                "attrValue": 0
-                            },
-                            {
-                                "attrType": 10,
-                                "attrValue": 0.5
-                            },
-                            {
-                                "attrType": 80,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 84,
-                                "attrValue": 0.5
-                            },
-                            {
-                                "attrType": 83,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 82,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 81,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 85,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 15,
-                                "attrValue": 1
-                            }
-                        ]
-                    },
-                    "maxResilience": 65,
-                    "naturalDmgResistScalar": 1,
-                    "physicalDmgResistScalar": 1,
-                    "poiseKnotBuffList": [],
-                    "poiseKnotPctList": [],
-                    "pulseDmgResistScalar": 1,
-                    "pushedBackCoefficient": 0.3,
-                    "resilienceDecreaseWhenHurt": 0,
-                    "resilienceFullRecoverTime": 0,
-                    "resilienceRecover": 0,
-                    "resilienceRecoverInterval": 0,
-                    "superArmorWhenResilienceZero": 0,
-                    "templateId": "eny_0046_lbshamman",
-                    "zeroPoiseSuperArmor": 20
-                },
-                "eny_0029_lbmob": {
-                    "aoiRadius": 0,
-                    "attackValueAgainstTower": 10,
-                    "breakingAttackedAtbObtain": 25,
-                    "crystDmgResistScalar": 1,
-                    "fireDmgResistScalar": 1,
-                    "initialSuperArmor": 0,
-                    "levelDependentAttributes": [
-                        {
-                            "attrs": [
-                                {
-                                    "attrType": 0,
-                                    "attrValue": 30
-                                },
-                                {
-                                    "attrType": 1,
-                                    "attrValue": 3424
-                                },
-                                {
-                                    "attrType": 2,
-                                    "attrValue": 276
-                                },
-                                {
-                                    "attrType": 3,
-                                    "attrValue": 100
-                                }
-                            ]
-                        }
-                    ],
-                    "levelIndependentAttributes": {
-                        "attrs": [
-                            {
-                                "attrType": 20,
-                                "attrValue": 80
-                            },
-                            {
-                                "attrType": 21,
-                                "attrValue": 6
-                            },
-                            {
-                                "attrType": 27,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 12,
-                                "attrValue": 2.3
-                            },
-                            {
-                                "attrType": 8,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 11,
-                                "attrValue": 0
-                            },
-                            {
-                                "attrType": 9,
-                                "attrValue": 0
-                            },
-                            {
-                                "attrType": 10,
-                                "attrValue": 0.5
-                            },
-                            {
-                                "attrType": 80,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 84,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 83,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 82,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 81,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 85,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 15,
-                                "attrValue": 1
-                            }
-                        ]
-                    },
-                    "maxResilience": 65,
-                    "naturalDmgResistScalar": 1,
-                    "physicalDmgResistScalar": 1,
-                    "poiseKnotBuffList": [],
-                    "poiseKnotPctList": [],
-                    "pulseDmgResistScalar": 1,
-                    "pushedBackCoefficient": 1,
-                    "resilienceDecreaseWhenHurt": 79.3,
-                    "resilienceFullRecoverTime": 3,
-                    "resilienceRecover": 100,
-                    "resilienceRecoverInterval": 1,
-                    "superArmorWhenResilienceZero": 5,
-                    "templateId": "eny_0029_lbmob",
-                    "zeroPoiseSuperArmor": 0
-                },
-                "eny_0050_hound": {
-                    "aoiRadius": 0,
-                    "attackValueAgainstTower": 10,
-                    "breakingAttackedAtbObtain": 25,
-                    "crystDmgResistScalar": 1,
-                    "fireDmgResistScalar": 1,
-                    "initialSuperArmor": 0,
-                    "levelDependentAttributes": [
-                        {
-                            "attrs": [
-                                {
-                                    "attrType": 0,
-                                    "attrValue": 30
-                                },
-                                {
-                                    "attrType": 1,
-                                    "attrValue": 2690
-                                },
-                                {
-                                    "attrType": 2,
-                                    "attrValue": 226
-                                },
-                                {
-                                    "attrType": 3,
-                                    "attrValue": 100
-                                }
-                            ]
-                        }
-                    ],
-                    "levelIndependentAttributes": {
-                        "attrs": [
-                            {
-                                "attrType": 20,
-                                "attrValue": 60
-                            },
-                            {
-                                "attrType": 21,
-                                "attrValue": 6
-                            },
-                            {
-                                "attrType": 27,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 12,
-                                "attrValue": 2.1
-                            },
-                            {
-                                "attrType": 8,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 11,
-                                "attrValue": 0
-                            },
-                            {
-                                "attrType": 9,
-                                "attrValue": 0
-                            },
-                            {
-                                "attrType": 10,
-                                "attrValue": 0.5
-                            },
-                            {
-                                "attrType": 80,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 84,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 83,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 82,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 81,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 85,
-                                "attrValue": 1
-                            },
-                            {
-                                "attrType": 15,
-                                "attrValue": 1
-                            }
-                        ]
-                    },
-                    "maxResilience": 65,
-                    "naturalDmgResistScalar": 1,
-                    "physicalDmgResistScalar": 1,
-                    "poiseKnotBuffList": [],
-                    "poiseKnotPctList": [],
-                    "pulseDmgResistScalar": 1,
-                    "pushedBackCoefficient": 1,
-                    "resilienceDecreaseWhenHurt": 0,
-                    "resilienceFullRecoverTime": 0,
-                    "resilienceRecover": 0,
-                    "resilienceRecoverInterval": 0,
-                    "superArmorWhenResilienceZero": 0,
-                    "templateId": "eny_0050_hound",
-                    "zeroPoiseSuperArmor": 0
-                },
                 "eny_0068_lbtough2": {
                     "aoiRadius": 0,
                     "attackValueAgainstTower": 20,
@@ -8470,6 +8146,114 @@
                     "templateId": "eny_0068_lbtough2",
                     "zeroPoiseSuperArmor": 30
                 },
+                "eny_0029_lbmob": {
+                    "aoiRadius": 0,
+                    "attackValueAgainstTower": 10,
+                    "breakingAttackedAtbObtain": 25,
+                    "crystDmgResistScalar": 1,
+                    "fireDmgResistScalar": 1,
+                    "initialSuperArmor": 0,
+                    "levelDependentAttributes": [
+                        {
+                            "attrs": [
+                                {
+                                    "attrType": 0,
+                                    "attrValue": 30
+                                },
+                                {
+                                    "attrType": 1,
+                                    "attrValue": 3424
+                                },
+                                {
+                                    "attrType": 2,
+                                    "attrValue": 276
+                                },
+                                {
+                                    "attrType": 3,
+                                    "attrValue": 100
+                                }
+                            ]
+                        }
+                    ],
+                    "levelIndependentAttributes": {
+                        "attrs": [
+                            {
+                                "attrType": 20,
+                                "attrValue": 80
+                            },
+                            {
+                                "attrType": 21,
+                                "attrValue": 6
+                            },
+                            {
+                                "attrType": 27,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 12,
+                                "attrValue": 2.3
+                            },
+                            {
+                                "attrType": 8,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 11,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 9,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 10,
+                                "attrValue": 0.5
+                            },
+                            {
+                                "attrType": 80,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 84,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 83,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 82,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 81,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 85,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 15,
+                                "attrValue": 1
+                            }
+                        ]
+                    },
+                    "maxResilience": 65,
+                    "naturalDmgResistScalar": 1,
+                    "physicalDmgResistScalar": 1,
+                    "poiseKnotBuffList": [],
+                    "poiseKnotPctList": [],
+                    "pulseDmgResistScalar": 1,
+                    "pushedBackCoefficient": 1,
+                    "resilienceDecreaseWhenHurt": 79.3,
+                    "resilienceFullRecoverTime": 3,
+                    "resilienceRecover": 100,
+                    "resilienceRecoverInterval": 1,
+                    "superArmorWhenResilienceZero": 5,
+                    "templateId": "eny_0029_lbmob",
+                    "zeroPoiseSuperArmor": 0
+                },
                 "eny_0033_lbhunt": {
                     "aoiRadius": 0,
                     "attackValueAgainstTower": 10,
@@ -8577,11 +8361,618 @@
                     "superArmorWhenResilienceZero": 0,
                     "templateId": "eny_0033_lbhunt",
                     "zeroPoiseSuperArmor": 0
+                },
+                "eny_0046_lbshamman": {
+                    "aoiRadius": 0,
+                    "attackValueAgainstTower": 20,
+                    "breakingAttackedAtbObtain": 35,
+                    "crystDmgResistScalar": 1,
+                    "fireDmgResistScalar": 0.5,
+                    "initialSuperArmor": 20,
+                    "levelDependentAttributes": [
+                        {
+                            "attrs": [
+                                {
+                                    "attrType": 0,
+                                    "attrValue": 30
+                                },
+                                {
+                                    "attrType": 1,
+                                    "attrValue": 13451
+                                },
+                                {
+                                    "attrType": 2,
+                                    "attrValue": 377
+                                },
+                                {
+                                    "attrType": 3,
+                                    "attrValue": 100
+                                }
+                            ]
+                        }
+                    ],
+                    "levelIndependentAttributes": {
+                        "attrs": [
+                            {
+                                "attrType": 20,
+                                "attrValue": 160
+                            },
+                            {
+                                "attrType": 21,
+                                "attrValue": 7
+                            },
+                            {
+                                "attrType": 27,
+                                "attrValue": 1.25
+                            },
+                            {
+                                "attrType": 12,
+                                "attrValue": 7
+                            },
+                            {
+                                "attrType": 8,
+                                "attrValue": 1.5
+                            },
+                            {
+                                "attrType": 11,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 9,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 10,
+                                "attrValue": 0.5
+                            },
+                            {
+                                "attrType": 80,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 84,
+                                "attrValue": 0.5
+                            },
+                            {
+                                "attrType": 83,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 82,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 81,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 85,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 15,
+                                "attrValue": 1
+                            }
+                        ]
+                    },
+                    "maxResilience": 65,
+                    "naturalDmgResistScalar": 1,
+                    "physicalDmgResistScalar": 1,
+                    "poiseKnotBuffList": [],
+                    "poiseKnotPctList": [],
+                    "pulseDmgResistScalar": 1,
+                    "pushedBackCoefficient": 0.3,
+                    "resilienceDecreaseWhenHurt": 0,
+                    "resilienceFullRecoverTime": 0,
+                    "resilienceRecover": 0,
+                    "resilienceRecoverInterval": 0,
+                    "superArmorWhenResilienceZero": 0,
+                    "templateId": "eny_0046_lbshamman",
+                    "zeroPoiseSuperArmor": 20
+                },
+                "eny_0050_hound": {
+                    "aoiRadius": 0,
+                    "attackValueAgainstTower": 10,
+                    "breakingAttackedAtbObtain": 25,
+                    "crystDmgResistScalar": 1,
+                    "fireDmgResistScalar": 1,
+                    "initialSuperArmor": 0,
+                    "levelDependentAttributes": [
+                        {
+                            "attrs": [
+                                {
+                                    "attrType": 0,
+                                    "attrValue": 30
+                                },
+                                {
+                                    "attrType": 1,
+                                    "attrValue": 2690
+                                },
+                                {
+                                    "attrType": 2,
+                                    "attrValue": 226
+                                },
+                                {
+                                    "attrType": 3,
+                                    "attrValue": 100
+                                }
+                            ]
+                        }
+                    ],
+                    "levelIndependentAttributes": {
+                        "attrs": [
+                            {
+                                "attrType": 20,
+                                "attrValue": 60
+                            },
+                            {
+                                "attrType": 21,
+                                "attrValue": 6
+                            },
+                            {
+                                "attrType": 27,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 12,
+                                "attrValue": 2.1
+                            },
+                            {
+                                "attrType": 8,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 11,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 9,
+                                "attrValue": 0
+                            },
+                            {
+                                "attrType": 10,
+                                "attrValue": 0.5
+                            },
+                            {
+                                "attrType": 80,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 84,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 83,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 82,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 81,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 85,
+                                "attrValue": 1
+                            },
+                            {
+                                "attrType": 15,
+                                "attrValue": 1
+                            }
+                        ]
+                    },
+                    "maxResilience": 65,
+                    "naturalDmgResistScalar": 1,
+                    "physicalDmgResistScalar": 1,
+                    "poiseKnotBuffList": [],
+                    "poiseKnotPctList": [],
+                    "pulseDmgResistScalar": 1,
+                    "pushedBackCoefficient": 1,
+                    "resilienceDecreaseWhenHurt": 0,
+                    "resilienceFullRecoverTime": 0,
+                    "resilienceRecover": 0,
+                    "resilienceRecoverInterval": 0,
+                    "superArmorWhenResilienceZero": 0,
+                    "templateId": "eny_0050_hound",
+                    "zeroPoiseSuperArmor": 0
                 }
             },
             "rewardTable": {},
             "itemTable": {},
             "BuffData": {
+                "buff_eny_0046_lbshamman_teleport": {
+                    "id": "buff_eny_0046_lbshamman_teleport",
+                    "iconConfig": {
+                        "_spritePath": "",
+                        "showInHeadBarCommon": false,
+                        "showInHeadBarAttached": false,
+                        "showInSquadIcon": false,
+                        "onlyShowForMainCharacter": false,
+                        "blinkInMainCharHpBar": false,
+                        "showProgressInHpBar": false,
+                        "showProgressInNormalSkillButton": false,
+                        "iconStyleInSquad": "Default",
+                        "abnormalColorType": "Physical",
+                        "_orderPriorityConfig": {
+                            "useDirectoryValue": false,
+                            "priorityValue": 0,
+                            "priorityEnum": "CommonCharBuff"
+                        },
+                        "showWarningBackground": false,
+                        "playStrongInAnimation": false,
+                        "hasCharHpBarVfxType": false,
+                        "charHpBarVfxType": "Fire"
+                    },
+                    "hasIcon": false,
+                    "ignoreTagImmune": false,
+                    "useTimeDilationDt": false,
+                    "finishOnRepatriate": false,
+                    "hasAddingCooldown": false,
+                    "addingCooldown": {
+                        "useBlackboardKey": false,
+                        "value": 0.0,
+                        "blackboardKey": ""
+                    },
+                    "ignoreCooldownWhenAdding": false,
+                    "attributeModifier": {
+                        "isConvertedAttribute": false,
+                        "attributeModifiers": []
+                    },
+                    "damageModifier": [],
+                    "healModifier": [],
+                    "poiseModifier": [],
+                    "globalModifier": [],
+                    "shieldConfigs": [],
+                    "applyTags": [],
+                    "tagsAfterTriggerExtendBuffAction": [],
+                    "lifeType": "Infinity",
+                    "duration": {
+                        "useBlackboardKey": false,
+                        "value": 5.0,
+                        "blackboardKey": "duration"
+                    },
+                    "triggerInterval": {
+                        "useBlackboardKey": false,
+                        "value": -1.0,
+                        "blackboardKey": ""
+                    },
+                    "waitFirstTriggerInterval": true,
+                    "maxTriggerCnt": {
+                        "useBlackboardKey": false,
+                        "value": 0,
+                        "blackboardKey": ""
+                    },
+                    "stackingSettings": {
+                        "identifierType": "Id",
+                        "stackingType": "Stack",
+                        "stackingKey": "",
+                        "usePriorityKey": false,
+                        "priorityKey": "",
+                        "negatePriority": false,
+                        "priority": 1.0,
+                        "useMaxStackCntKey": false,
+                        "maxStackCntKey": "",
+                        "maxStackCnt": 1,
+                        "isNeedStackEffect": false,
+                        "stackEffects": []
+                    },
+                    "dispelConfig": {
+                        "canBeDispelled": false,
+                        "dispelledLevel": "Default"
+                    },
+                    "buffEventAction": [],
+                    "abilityEventAction": [
+                        {
+                            "abilityEvent": "OnTakeDamage",
+                            "actions": [
+                                {
+                                    "actionData": [
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.Conditions.CheckMainCharacterCondition+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 0,
+                                            "checkTarget": {
+                                                "targetSource": "Target",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            }
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.CheckDistanceCondition+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 1,
+                                            "source": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "target": {
+                                                "targetSource": "Target",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "distance": 5.0,
+                                            "lessThan": true,
+                                            "includeTargetRadius": false,
+                                            "containsHittableObj": false
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.Conditions.CheckBuffStackNum+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 2,
+                                            "checkTarget": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "buffId": {
+                                                "buffId": "buff_eny_0046_lbshamman_teleport_cantel"
+                                            },
+                                            "compareType": "GE",
+                                            "value": {
+                                                "useBlackboardKey": false,
+                                                "value": 1.0,
+                                                "blackboardKey": ""
+                                            }
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.Conditions.CheckBuffStackNum+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 3,
+                                            "checkTarget": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "buffId": {
+                                                "buffId": "buff_eny_0046_lbshamman_teleport_cd"
+                                            },
+                                            "compareType": "LT",
+                                            "value": {
+                                                "useBlackboardKey": false,
+                                                "value": 1.0,
+                                                "blackboardKey": ""
+                                            }
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.CreateBuffAction+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 4,
+                                            "buffs": [
+                                                {
+                                                    "buffId": "buff_eny_0046_lbshamman_teleport_main",
+                                                    "assignBlackboard": false,
+                                                    "assignItems": [],
+                                                    "readIdFromBlackboard": false,
+                                                    "buffIdKey": ""
+                                                }
+                                            ],
+                                            "count": {
+                                                "useBlackboardKey": false,
+                                                "value": 1.0,
+                                                "blackboardKey": ""
+                                            },
+                                            "targetSettings": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "buffSource": "InputTarget",
+                                            "contextKey": "",
+                                            "autoFinishByAction": false,
+                                            "inheritSkillIdList": [],
+                                            "asChildBuff": false,
+                                            "inheritSourceSkillCastId": false,
+                                            "inheritSourceSkillCastInfo": true,
+                                            "isExtra": false,
+                                            "overrideBuffIconDuration": false,
+                                            "buffIconDurationSource": {
+                                                "durationSourceType": "AbilityEntity",
+                                                "timedMarkerId": ""
+                                            }
+                                        },
+                                        {
+                                            "$type": "Beyond.Gameplay.Core.CreateBuffAction+Data, Gameplay.Beyond",
+                                            "isEnable": true,
+                                            "priorityLevel": "Default",
+                                            "priorityOffset": 0,
+                                            "serverActionIndex": 5,
+                                            "buffs": [
+                                                {
+                                                    "buffId": "buff_eny_0046_lbshamman_teleport_cd",
+                                                    "assignBlackboard": false,
+                                                    "assignItems": [],
+                                                    "readIdFromBlackboard": false,
+                                                    "buffIdKey": ""
+                                                }
+                                            ],
+                                            "count": {
+                                                "useBlackboardKey": false,
+                                                "value": 1.0,
+                                                "blackboardKey": ""
+                                            },
+                                            "targetSettings": {
+                                                "targetSource": "Owner",
+                                                "targetGroupKey": "",
+                                                "selectorOwner": "ActionOwner",
+                                                "ownerContextKey": "",
+                                                "centerType": "ActionSource",
+                                                "centerContextKey": "",
+                                                "centerToGround": false,
+                                                "selectorData": {
+                                                    "validatorData": [],
+                                                    "postProcessorData": []
+                                                },
+                                                "enableAdvancedDirection": false,
+                                                "advancedDirection": {
+                                                    "directionType": "SourceForward",
+                                                    "sourceMountPoint": "None",
+                                                    "targetMountPoint": "None",
+                                                    "customSourceAndTarget": false,
+                                                    "clampToXZ": true,
+                                                    "invertDirection": false
+                                                },
+                                                "selectorDirection": "SourceForward",
+                                                "target": "ActionSource",
+                                                "targetContextKey": ""
+                                            },
+                                            "buffSource": "ActionSource",
+                                            "contextKey": "",
+                                            "autoFinishByAction": false,
+                                            "inheritSkillIdList": [],
+                                            "asChildBuff": false,
+                                            "inheritSourceSkillCastId": false,
+                                            "inheritSourceSkillCastInfo": true,
+                                            "isExtra": false,
+                                            "overrideBuffIconDuration": false,
+                                            "buffIconDurationSource": {
+                                                "durationSourceType": "AbilityEntity",
+                                                "timedMarkerId": ""
+                                            }
+                                        }
+                                    ],
+                                    "onlyExecuteWhenSourceIsMainChar": false,
+                                    "onlyExecuteWhenSourceIsGuard": false
+                                }
+                            ]
+                        }
+                    ],
+                    "igniteEventAction": [],
+                    "timelineActions": [],
+                    "blackboard": []
+                },
                 "buff_common_born": {
                     "id": "buff_common_born",
                     "iconConfig": {
@@ -9550,397 +9941,6 @@
                                                 "targetContextKey": ""
                                             },
                                             "skipDieDisplay": false
-                                        }
-                                    ],
-                                    "onlyExecuteWhenSourceIsMainChar": false,
-                                    "onlyExecuteWhenSourceIsGuard": false
-                                }
-                            ]
-                        }
-                    ],
-                    "igniteEventAction": [],
-                    "timelineActions": [],
-                    "blackboard": []
-                },
-                "buff_eny_0046_lbshamman_teleport": {
-                    "id": "buff_eny_0046_lbshamman_teleport",
-                    "iconConfig": {
-                        "_spritePath": "",
-                        "showInHeadBarCommon": false,
-                        "showInHeadBarAttached": false,
-                        "showInSquadIcon": false,
-                        "onlyShowForMainCharacter": false,
-                        "blinkInMainCharHpBar": false,
-                        "showProgressInHpBar": false,
-                        "showProgressInNormalSkillButton": false,
-                        "iconStyleInSquad": "Default",
-                        "abnormalColorType": "Physical",
-                        "_orderPriorityConfig": {
-                            "useDirectoryValue": false,
-                            "priorityValue": 0,
-                            "priorityEnum": "CommonCharBuff"
-                        },
-                        "showWarningBackground": false,
-                        "playStrongInAnimation": false,
-                        "hasCharHpBarVfxType": false,
-                        "charHpBarVfxType": "Fire"
-                    },
-                    "hasIcon": false,
-                    "ignoreTagImmune": false,
-                    "useTimeDilationDt": false,
-                    "finishOnRepatriate": false,
-                    "hasAddingCooldown": false,
-                    "addingCooldown": {
-                        "useBlackboardKey": false,
-                        "value": 0.0,
-                        "blackboardKey": ""
-                    },
-                    "ignoreCooldownWhenAdding": false,
-                    "attributeModifier": {
-                        "isConvertedAttribute": false,
-                        "attributeModifiers": []
-                    },
-                    "damageModifier": [],
-                    "healModifier": [],
-                    "poiseModifier": [],
-                    "globalModifier": [],
-                    "shieldConfigs": [],
-                    "applyTags": [],
-                    "tagsAfterTriggerExtendBuffAction": [],
-                    "lifeType": "Infinity",
-                    "duration": {
-                        "useBlackboardKey": false,
-                        "value": 5.0,
-                        "blackboardKey": "duration"
-                    },
-                    "triggerInterval": {
-                        "useBlackboardKey": false,
-                        "value": -1.0,
-                        "blackboardKey": ""
-                    },
-                    "waitFirstTriggerInterval": true,
-                    "maxTriggerCnt": {
-                        "useBlackboardKey": false,
-                        "value": 0,
-                        "blackboardKey": ""
-                    },
-                    "stackingSettings": {
-                        "identifierType": "Id",
-                        "stackingType": "Stack",
-                        "stackingKey": "",
-                        "usePriorityKey": false,
-                        "priorityKey": "",
-                        "negatePriority": false,
-                        "priority": 1.0,
-                        "useMaxStackCntKey": false,
-                        "maxStackCntKey": "",
-                        "maxStackCnt": 1,
-                        "isNeedStackEffect": false,
-                        "stackEffects": []
-                    },
-                    "dispelConfig": {
-                        "canBeDispelled": false,
-                        "dispelledLevel": "Default"
-                    },
-                    "buffEventAction": [],
-                    "abilityEventAction": [
-                        {
-                            "abilityEvent": "OnTakeDamage",
-                            "actions": [
-                                {
-                                    "actionData": [
-                                        {
-                                            "$type": "Beyond.Gameplay.Core.Conditions.CheckMainCharacterCondition+Data, Gameplay.Beyond",
-                                            "isEnable": true,
-                                            "priorityLevel": "Default",
-                                            "priorityOffset": 0,
-                                            "serverActionIndex": 0,
-                                            "checkTarget": {
-                                                "targetSource": "Target",
-                                                "targetGroupKey": "",
-                                                "selectorOwner": "ActionOwner",
-                                                "ownerContextKey": "",
-                                                "centerType": "ActionSource",
-                                                "centerContextKey": "",
-                                                "centerToGround": false,
-                                                "selectorData": {
-                                                    "validatorData": [],
-                                                    "postProcessorData": []
-                                                },
-                                                "enableAdvancedDirection": false,
-                                                "advancedDirection": {
-                                                    "directionType": "SourceForward",
-                                                    "sourceMountPoint": "None",
-                                                    "targetMountPoint": "None",
-                                                    "customSourceAndTarget": false,
-                                                    "clampToXZ": true,
-                                                    "invertDirection": false
-                                                },
-                                                "selectorDirection": "SourceForward",
-                                                "target": "ActionSource",
-                                                "targetContextKey": ""
-                                            }
-                                        },
-                                        {
-                                            "$type": "Beyond.Gameplay.Core.CheckDistanceCondition+Data, Gameplay.Beyond",
-                                            "isEnable": true,
-                                            "priorityLevel": "Default",
-                                            "priorityOffset": 0,
-                                            "serverActionIndex": 1,
-                                            "source": {
-                                                "targetSource": "Owner",
-                                                "targetGroupKey": "",
-                                                "selectorOwner": "ActionOwner",
-                                                "ownerContextKey": "",
-                                                "centerType": "ActionSource",
-                                                "centerContextKey": "",
-                                                "centerToGround": false,
-                                                "selectorData": {
-                                                    "validatorData": [],
-                                                    "postProcessorData": []
-                                                },
-                                                "enableAdvancedDirection": false,
-                                                "advancedDirection": {
-                                                    "directionType": "SourceForward",
-                                                    "sourceMountPoint": "None",
-                                                    "targetMountPoint": "None",
-                                                    "customSourceAndTarget": false,
-                                                    "clampToXZ": true,
-                                                    "invertDirection": false
-                                                },
-                                                "selectorDirection": "SourceForward",
-                                                "target": "ActionSource",
-                                                "targetContextKey": ""
-                                            },
-                                            "target": {
-                                                "targetSource": "Target",
-                                                "targetGroupKey": "",
-                                                "selectorOwner": "ActionOwner",
-                                                "ownerContextKey": "",
-                                                "centerType": "ActionSource",
-                                                "centerContextKey": "",
-                                                "centerToGround": false,
-                                                "selectorData": {
-                                                    "validatorData": [],
-                                                    "postProcessorData": []
-                                                },
-                                                "enableAdvancedDirection": false,
-                                                "advancedDirection": {
-                                                    "directionType": "SourceForward",
-                                                    "sourceMountPoint": "None",
-                                                    "targetMountPoint": "None",
-                                                    "customSourceAndTarget": false,
-                                                    "clampToXZ": true,
-                                                    "invertDirection": false
-                                                },
-                                                "selectorDirection": "SourceForward",
-                                                "target": "ActionSource",
-                                                "targetContextKey": ""
-                                            },
-                                            "distance": 5.0,
-                                            "lessThan": true,
-                                            "includeTargetRadius": false,
-                                            "containsHittableObj": false
-                                        },
-                                        {
-                                            "$type": "Beyond.Gameplay.Core.Conditions.CheckBuffStackNum+Data, Gameplay.Beyond",
-                                            "isEnable": true,
-                                            "priorityLevel": "Default",
-                                            "priorityOffset": 0,
-                                            "serverActionIndex": 2,
-                                            "checkTarget": {
-                                                "targetSource": "Owner",
-                                                "targetGroupKey": "",
-                                                "selectorOwner": "ActionOwner",
-                                                "ownerContextKey": "",
-                                                "centerType": "ActionSource",
-                                                "centerContextKey": "",
-                                                "centerToGround": false,
-                                                "selectorData": {
-                                                    "validatorData": [],
-                                                    "postProcessorData": []
-                                                },
-                                                "enableAdvancedDirection": false,
-                                                "advancedDirection": {
-                                                    "directionType": "SourceForward",
-                                                    "sourceMountPoint": "None",
-                                                    "targetMountPoint": "None",
-                                                    "customSourceAndTarget": false,
-                                                    "clampToXZ": true,
-                                                    "invertDirection": false
-                                                },
-                                                "selectorDirection": "SourceForward",
-                                                "target": "ActionSource",
-                                                "targetContextKey": ""
-                                            },
-                                            "buffId": {
-                                                "buffId": "buff_eny_0046_lbshamman_teleport_cantel"
-                                            },
-                                            "compareType": "GE",
-                                            "value": {
-                                                "useBlackboardKey": false,
-                                                "value": 1.0,
-                                                "blackboardKey": ""
-                                            }
-                                        },
-                                        {
-                                            "$type": "Beyond.Gameplay.Core.Conditions.CheckBuffStackNum+Data, Gameplay.Beyond",
-                                            "isEnable": true,
-                                            "priorityLevel": "Default",
-                                            "priorityOffset": 0,
-                                            "serverActionIndex": 3,
-                                            "checkTarget": {
-                                                "targetSource": "Owner",
-                                                "targetGroupKey": "",
-                                                "selectorOwner": "ActionOwner",
-                                                "ownerContextKey": "",
-                                                "centerType": "ActionSource",
-                                                "centerContextKey": "",
-                                                "centerToGround": false,
-                                                "selectorData": {
-                                                    "validatorData": [],
-                                                    "postProcessorData": []
-                                                },
-                                                "enableAdvancedDirection": false,
-                                                "advancedDirection": {
-                                                    "directionType": "SourceForward",
-                                                    "sourceMountPoint": "None",
-                                                    "targetMountPoint": "None",
-                                                    "customSourceAndTarget": false,
-                                                    "clampToXZ": true,
-                                                    "invertDirection": false
-                                                },
-                                                "selectorDirection": "SourceForward",
-                                                "target": "ActionSource",
-                                                "targetContextKey": ""
-                                            },
-                                            "buffId": {
-                                                "buffId": "buff_eny_0046_lbshamman_teleport_cd"
-                                            },
-                                            "compareType": "LT",
-                                            "value": {
-                                                "useBlackboardKey": false,
-                                                "value": 1.0,
-                                                "blackboardKey": ""
-                                            }
-                                        },
-                                        {
-                                            "$type": "Beyond.Gameplay.Core.CreateBuffAction+Data, Gameplay.Beyond",
-                                            "isEnable": true,
-                                            "priorityLevel": "Default",
-                                            "priorityOffset": 0,
-                                            "serverActionIndex": 4,
-                                            "buffs": [
-                                                {
-                                                    "buffId": "buff_eny_0046_lbshamman_teleport_main",
-                                                    "assignBlackboard": false,
-                                                    "assignItems": [],
-                                                    "readIdFromBlackboard": false,
-                                                    "buffIdKey": ""
-                                                }
-                                            ],
-                                            "count": {
-                                                "useBlackboardKey": false,
-                                                "value": 1.0,
-                                                "blackboardKey": ""
-                                            },
-                                            "targetSettings": {
-                                                "targetSource": "Owner",
-                                                "targetGroupKey": "",
-                                                "selectorOwner": "ActionOwner",
-                                                "ownerContextKey": "",
-                                                "centerType": "ActionSource",
-                                                "centerContextKey": "",
-                                                "centerToGround": false,
-                                                "selectorData": {
-                                                    "validatorData": [],
-                                                    "postProcessorData": []
-                                                },
-                                                "enableAdvancedDirection": false,
-                                                "advancedDirection": {
-                                                    "directionType": "SourceForward",
-                                                    "sourceMountPoint": "None",
-                                                    "targetMountPoint": "None",
-                                                    "customSourceAndTarget": false,
-                                                    "clampToXZ": true,
-                                                    "invertDirection": false
-                                                },
-                                                "selectorDirection": "SourceForward",
-                                                "target": "ActionSource",
-                                                "targetContextKey": ""
-                                            },
-                                            "buffSource": "InputTarget",
-                                            "contextKey": "",
-                                            "autoFinishByAction": false,
-                                            "inheritSkillIdList": [],
-                                            "asChildBuff": false,
-                                            "inheritSourceSkillCastId": false,
-                                            "inheritSourceSkillCastInfo": true,
-                                            "isExtra": false,
-                                            "overrideBuffIconDuration": false,
-                                            "buffIconDurationSource": {
-                                                "durationSourceType": "AbilityEntity",
-                                                "timedMarkerId": ""
-                                            }
-                                        },
-                                        {
-                                            "$type": "Beyond.Gameplay.Core.CreateBuffAction+Data, Gameplay.Beyond",
-                                            "isEnable": true,
-                                            "priorityLevel": "Default",
-                                            "priorityOffset": 0,
-                                            "serverActionIndex": 5,
-                                            "buffs": [
-                                                {
-                                                    "buffId": "buff_eny_0046_lbshamman_teleport_cd",
-                                                    "assignBlackboard": false,
-                                                    "assignItems": [],
-                                                    "readIdFromBlackboard": false,
-                                                    "buffIdKey": ""
-                                                }
-                                            ],
-                                            "count": {
-                                                "useBlackboardKey": false,
-                                                "value": 1.0,
-                                                "blackboardKey": ""
-                                            },
-                                            "targetSettings": {
-                                                "targetSource": "Owner",
-                                                "targetGroupKey": "",
-                                                "selectorOwner": "ActionOwner",
-                                                "ownerContextKey": "",
-                                                "centerType": "ActionSource",
-                                                "centerContextKey": "",
-                                                "centerToGround": false,
-                                                "selectorData": {
-                                                    "validatorData": [],
-                                                    "postProcessorData": []
-                                                },
-                                                "enableAdvancedDirection": false,
-                                                "advancedDirection": {
-                                                    "directionType": "SourceForward",
-                                                    "sourceMountPoint": "None",
-                                                    "targetMountPoint": "None",
-                                                    "customSourceAndTarget": false,
-                                                    "clampToXZ": true,
-                                                    "invertDirection": false
-                                                },
-                                                "selectorDirection": "SourceForward",
-                                                "target": "ActionSource",
-                                                "targetContextKey": ""
-                                            },
-                                            "buffSource": "ActionSource",
-                                            "contextKey": "",
-                                            "autoFinishByAction": false,
-                                            "inheritSkillIdList": [],
-                                            "asChildBuff": false,
-                                            "inheritSourceSkillCastId": false,
-                                            "inheritSourceSkillCastInfo": true,
-                                            "isExtra": false,
-                                            "overrideBuffIconDuration": false,
-                                            "buffIconDurationSource": {
-                                                "durationSourceType": "AbilityEntity",
-                                                "timedMarkerId": ""
-                                            }
                                         }
                                     ],
                                     "onlyExecuteWhenSourceIsMainChar": false,

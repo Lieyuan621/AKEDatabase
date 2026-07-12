@@ -7,6 +7,7 @@
     let currentData = null;
     let currentGame = null;
     let currentDungeonData = null;
+    let currentDungeonError = null;
     let ccAttrMap = {};
     let ccAttrNameToId = {};
     let ccBuffCache = {};
@@ -344,6 +345,7 @@
             currentData = data;
             currentGame = game;
             currentDungeonData = null;
+            currentDungeonError = null;
             selectedTagIds.clear();
 
             if (data.buffdata) {
@@ -355,7 +357,9 @@
             if (game.dungeonFile) {
                 try {
                     await loadCcMaps();
-                    const dgData = await (window.akeFetch || fetch)(game.dungeonFile).then(r => r.json());
+                    const response = await (window.akeFetch || fetch)(game.dungeonFile);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const dgData = await response.json();
                     const embeddedBuffData = {};
                     Object.values(dgData.dungeontable || {}).forEach(dg => {
                         if (dg.BuffData) Object.assign(embeddedBuffData, dg.BuffData);
@@ -370,6 +374,7 @@
                     await Promise.all(Array.from(buffIds).map(id => loadCcBuff(id, embeddedBuffData)));
                     currentDungeonData = dgData;
                 } catch (dgErr) {
+                    currentDungeonError = dgErr;
                     console.error('加载副本数据失败:', dgErr);
                 }
             }
@@ -1251,6 +1256,7 @@
                 ${renderContractGroups(cct, tagTable)}
                 <div class="v2cc-section" id="v2ccSelectedSummary"></div>
                 ${currentDungeonData ? `<div class="v2cc-section"><h3>副本敌人</h3>${renderDungeonSection(currentDungeonData)}</div>` : ''}
+                ${currentDungeonError ? `<div class="v2cc-section"><h3>副本敌人</h3><div class="v2cc-error">副本数据加载失败: ${escapeHtml(currentDungeonError.message)}</div></div>` : ''}
                 ${renderLevelRewards(data)}
                 ${renderShopSection(data)}
                 ${renderTaskGroups(data)}
