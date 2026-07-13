@@ -114,11 +114,8 @@
                 <div id="tokenStatus" style="font-size: 0.85rem; color: var(--desc-color, #5b6f86); padding: 4px 0 0 0;"></div>
             </div>
 
-            <div class="about-box">
-                <p>AKEData · 版本 1.1.0-rc-1</p>
-                <p>游戏版本 CN_WIN_REL_1.3.3_C7123154_E7075779</p>
-                <p>Hotfix版本 8190425-29</p>
-                <p>最后更新于:2026/7/13 1:26:55(nagiyume)</p>
+            <div class="about-box" id="appVersionInfo">
+                <p>正在读取版本信息...</p>
             </div>
         </div>
     </div>
@@ -152,9 +149,33 @@
         .not-found-home-btn:hover{background:var(--hover-bg,#d0d8e0)}
     </style>
 
-    <script src="/plugin/js/toast.js"></script>
-    <script src="/plugin/js/ake-cache.js"></script>
-
-    <script src="/plugin/js/index-app.js"></script>
+    <script>
+        (async function bootstrap() {
+            let version = null;
+            try {
+                const response = await fetch(`/version.json?t=${Date.now()}`, { cache: 'no-store' });
+                if (response.ok) version = await response.json();
+            } catch (error) {
+                console.warn('无法读取 version.json，将使用无版本启动资源。', error);
+            }
+            window.__akeBootstrapVersion = version;
+            const suffix = version?.appversion ? `?v=${encodeURIComponent(version.appversion)}` : '';
+            const loadScript = src => new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src + suffix;
+                script.onload = resolve;
+                script.onerror = () => reject(new Error(`无法加载 ${src}`));
+                document.body.appendChild(script);
+            });
+            try {
+                await loadScript('/plugin/js/toast.js');
+                await loadScript('/plugin/js/ake-cache.js');
+                await loadScript('/plugin/js/index-app.js');
+            } catch (error) {
+                const content = document.getElementById('contentArea');
+                if (content) content.innerHTML = `<div class="error-message">应用启动失败：${error.message}</div>`;
+            }
+        })();
+    </script>
 </body>
 </html>

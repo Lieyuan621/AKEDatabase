@@ -1,4 +1,22 @@
 (function() {
+            const storage = window.akeStorage || {
+                get(key, fallback = null) {
+                    try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; }
+                },
+                set(key, value) {
+                    try { localStorage.setItem(key, String(value)); return true; } catch { return false; }
+                },
+                remove(key) {
+                    try { localStorage.removeItem(key); return true; } catch { return false; }
+                }
+            };
+            const moduleHtmlCache = new Map();
+            const scriptSourceCache = new Map();
+            const stylesheetCache = new Map();
+            const moduleStyleKeys = new Map();
+            let mountedModuleId = null;
+            let moduleLoadGeneration = 0;
+
             const HOME_CONTENT = `
                 <div class="welcome-home">
                     <img src="/public/images/index/main.png" 
@@ -7,6 +25,7 @@
                          onerror="this.onerror=null; this.src='';"
                          style="max-width: 80%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
                     <p style="margin-top: 20px; color: var(--text-color, #1e2b3c); font-size: 1.2rem;">AKEData · 《明日方舟：终末地》数据库</p>
+                    <div id="homeVersionInfo" style="margin-top:8px;color:#7f8c9f;font-size:.9rem;">正在读取版本信息...</div>
                     <div style="margin-top: 30px; color:#a3b6cc; font-size:1rem;">
                         游戏中所有数值通常情况下都不是整数，但是在游戏中只显示整数部分，本数据库中所有数据均比游戏内更精确一位以方便查阅计算。<br>
                         免责声明：本网站为同好爱好者项目，与鹰角网络和Gryphline官方无关。所有商标权利均归属其各自所有者。<br>
@@ -16,13 +35,20 @@
             `;
 
             function showHomePage() {
+                stashMountedModule();
+                moduleLoadGeneration++;
+                activateModuleStyles(null);
                 setContent(HOME_CONTENT);
+                renderVersionInfo();
                 document.querySelectorAll('.module-item').forEach(item => item.classList.remove('active'));
                 activeModuleId = null;
                 if (window.__akeRouter) window.__akeRouter.clearUrl();
             }
 
             function show404Page(isHidden) {
+                stashMountedModule();
+                moduleLoadGeneration++;
+                activateModuleStyles(null);
                 const hiddenHint = isHidden ? `
                     <div class="not-found-hint">
                         <p>🔒 该内容可能为隐藏内容。</p>
@@ -99,7 +125,8 @@
                         closeMobileMenu();
                         const module = allModules.find(m => m.id === mod.id);
                         if (module) {
-                            await loadModuleContent(module);
+                            const loaded = await loadModuleContent(module);
+                            if (!loaded) return;
                             activeModuleId = mod.id;
                             document.querySelectorAll('.module-item').forEach(el => el.classList.remove('active'));
                             const sidebarItem = document.querySelector(`.module-item[data-id="${mod.id}"]`);
@@ -149,48 +176,166 @@
                 contentArea.innerHTML = html;
             }
 
+            function stashMountedModule() {
+                mountedModuleId = null;
+            }
+
+            function activateModuleStyles(moduleId) {
+                const activeKeys = moduleId ? moduleStyleKeys.get(moduleId) || new Set() : new Set();
+                stylesheetCache.forEach((promise, key) => {
+                    promise.then(link => { link.disabled = !activeKeys.has(key); }).catch(() => {});
+                });
+            }
+
+            function formatUpdatedAt(value) {
+                const date = new Date(value);
+                return Number.isNaN(date.getTime()) ? value : date.toLocaleString('zh-CN', { hour12: false });
+            }
+
+            function renderVersionInfo() {
+                const version = window.akeVersion;
+                const box = document.getElementById('appVersionInfo');
+                const home = document.getElementById('homeVersionInfo');
+                if (!version) {
+                    if (box) box.textContent = '版本信息暂不可用';
+                    if (home) home.textContent = '版本信息暂不可用';
+                    return;
+                }
+                if (box) {
+                    box.replaceChildren();
+                    [
+                        `AKEData · 版本 ${version.appversion}`,
+                        `游戏版本 ${version.gameversion}`,
+                        `Hotfix 版本 ${version.hotfixversion}`,
+                        `最后更新于：${formatUpdatedAt(version.updatedAt)}${version.updatedBy ? ` (${version.updatedBy})` : ''}`
+                    ].forEach(line => {
+                        const p = document.createElement('p');
+                        p.textContent = line;
+                        box.appendChild(p);
+                    });
+                }
+                if (home) home.textContent = `AKEData ${version.appversion} · ${version.gameversion}`;
+            }
+
+            function canonicalResourceUrl(resource) {
+                const url = new URL(resource, window.location.href);
+                url.searchParams.delete('t');
+                url.searchParams.delete('v');
+                return url.href;
+            }
+
+            async function ensureStylesheet(href) {
+                const key = canonicalResourceUrl(href);
+                if (stylesheetCache.has(key)) return stylesheetCache.get(key);
+                const promise = (async () => {
+                    const version = await window.akeVersionReady;
+                    const url = new URL(href, window.location.href);
+                    if (version && url.origin === window.location.origin) url.searchParams.set('v', version.appversion);
+                    const existing = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
+                        .find(link => canonicalResourceUrl(link.href) === key);
+                    if (existing) {
+                        existing.disabled = false;
+                        return existing;
+                    }
+                    return new Promise((resolve, reject) => {
+                        const link = document.createElement('link');
+                        link.rel = 'stylesheet';
+                        link.href = url.href;
+                        link.dataset.akeModuleStyle = 'true';
+                        link.onload = () => resolve(link);
+                        link.onerror = () => reject(new Error(`无法加载样式：${href}`));
+                        document.head.appendChild(link);
+                    });
+                })();
+                stylesheetCache.set(key, promise);
+                try {
+                    return await promise;
+                } catch (error) {
+                    stylesheetCache.delete(key);
+                    throw error;
+                }
+            }
+
+            function getScriptSource(src) {
+                const key = canonicalResourceUrl(src);
+                if (!scriptSourceCache.has(key)) {
+                    const promise = (window.akeFetch || fetch)(src).then(response => {
+                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                        return response.text();
+                    }).catch(error => {
+                        scriptSourceCache.delete(key);
+                        throw error;
+                    });
+                    scriptSourceCache.set(key, promise);
+                }
+                return scriptSourceCache.get(key);
+            }
+
+            async function executeModuleScript(sourceScript) {
+                const script = document.createElement('script');
+                Array.from(sourceScript.attributes).forEach(attr => {
+                    if (attr.name !== 'src') script.setAttribute(attr.name, attr.value);
+                });
+                if (sourceScript.src) {
+                    const source = await getScriptSource(sourceScript.src);
+                    script.textContent = `${source}\n//# sourceURL=${canonicalResourceUrl(sourceScript.src)}`;
+                } else {
+                    script.textContent = sourceScript.textContent;
+                }
+                sourceScript.parentNode.replaceChild(script, sourceScript);
+            }
+
             async function loadModuleContent(module) {
+                const generation = ++moduleLoadGeneration;
                 if (module?.disabled === true) {
                     show404Page(false);
-                    return;
+                    return false;
                 }
                 if (!module || !module.contentFile) {
                     setContent(`<div class="error-message">模块内容文件未指定</div>`);
-                    return;
+                    return false;
                 }
                 if (module.token && !isModuleUnlocked(module)) {
                     show404Page(false);
-                    return;
+                    return false;
                 }
+                if (mountedModuleId === module.id) return true;
+                if (mountedModuleId !== module.id) stashMountedModule();
                 setContent(`<div class="loader">⏳ 加载模块内容...</div>`);
                 try {
-                    const response = await (window.akeFetch || fetch)(module.contentFile);
-                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                    const html = await response.text();
-                    contentArea.innerHTML = '';
-                    contentArea.insertAdjacentHTML('beforeend', html);
+                    if (!moduleHtmlCache.has(module.contentFile)) {
+                        moduleHtmlCache.set(module.contentFile, (window.akeFetch || fetch)(module.contentFile).then(response => {
+                            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                            return response.text();
+                        }).catch(error => {
+                            moduleHtmlCache.delete(module.contentFile);
+                            throw error;
+                        }));
+                    }
+                    const html = await moduleHtmlCache.get(module.contentFile);
+                    if (generation !== moduleLoadGeneration) return false;
+                    const template = document.createElement('template');
+                    template.innerHTML = html;
+                    const styles = Array.from(template.content.querySelectorAll('link[rel="stylesheet"][href]'));
+                    const styleKeys = new Set(styles.map(link => canonicalResourceUrl(link.getAttribute('href'))));
+                    moduleStyleKeys.set(module.id, styleKeys);
+                    styles.forEach(link => link.remove());
+                    await Promise.all(styles.map(link => ensureStylesheet(link.getAttribute('href'))));
+                    if (generation !== moduleLoadGeneration) return false;
+                    activateModuleStyles(module.id);
+                    contentArea.replaceChildren(template.content.cloneNode(true));
                     const scripts = Array.from(contentArea.querySelectorAll('script'));
                     for (const oldScript of scripts) {
-                        const newScript = document.createElement('script');
-                        Array.from(oldScript.attributes).forEach(attr => {
-                            newScript.setAttribute(attr.name, attr.value);
-                        });
-                        newScript.async = false;
-                        if (oldScript.textContent) {
-                            newScript.textContent = oldScript.textContent;
-                        }
-                        await new Promise((resolve, reject) => {
-                            if (oldScript.src) {
-                                newScript.onload = resolve;
-                                newScript.onerror = () => reject(new Error(`无法加载脚本：${oldScript.src}`));
-                                newScript.src = oldScript.src;
-                            }
-                            oldScript.parentNode.replaceChild(newScript, oldScript);
-                            if (!oldScript.src) resolve();
-                        });
+                        if (generation !== moduleLoadGeneration) return false;
+                        await executeModuleScript(oldScript);
                     }
+                    if (generation !== moduleLoadGeneration) return false;
+                    mountedModuleId = module.id;
+                    return true;
                 } catch (err) {
+                    if (generation !== moduleLoadGeneration) return false;
                     setContent(`<div class="error-message">❌ 无法加载模块内容：${err.message}</div>`);
+                    return false;
                 }
             }
 
@@ -251,11 +396,12 @@
                         const id = item.dataset.id;
                         const module = allModules.find(m => m.id === id);
                         if (!module) return;
+                        const loaded = await loadModuleContent(module);
+                        if (!loaded) return;
                         document.querySelectorAll('.module-item').forEach(el => el.classList.remove('active'));
                         item.classList.add('active');
                         activeModuleId = id;
                         if (window.__akeRouter) window.__akeRouter.updateUrl(id);
-                        await loadModuleContent(module);
                     });
                 });
                 if (activeModuleId) {
@@ -265,15 +411,18 @@
             }
 
             function setTheme(themeName) {
-                const lowerTheme = themeName.toLowerCase();
+                const requestedTheme = String(themeName || '').toLowerCase();
+                const lowerTheme = ['light', 'yellow', 'dark'].includes(requestedTheme) ? requestedTheme : 'light';
                 config.theme = lowerTheme;
-                themeLink.href = `theme/${lowerTheme}.css`;
-                localStorage.setItem('akedata-theme', lowerTheme);
+                const themeUrl = new URL(`theme/${lowerTheme}.css`, window.location.href);
+                if (window.akeVersion) themeUrl.searchParams.set('v', window.akeVersion.appversion);
+                themeLink.href = themeUrl.href;
+                storage.set('akedata-theme', lowerTheme);
                 if (modalThemeSelect) modalThemeSelect.value = lowerTheme;
             }
 
             function initTheme() {
-                const savedTheme = localStorage.getItem('akedata-theme') || 'light';
+                const savedTheme = storage.get('akedata-theme', 'light');
                 setTheme(savedTheme);
             }
 
@@ -350,19 +499,19 @@
                 const skillLevelNums = skillLevelsStr.split(',').map(s => parseInt(s.trim(), 10));
                 config.levelSettings.skillLevels = Array.from({ length: 12 }, (_, i) => skillLevelNums.includes(i + 1));
 
-                localStorage.setItem('akedata-levelSettings', JSON.stringify(config.levelSettings));
+                storage.set('akedata-levelSettings', JSON.stringify(config.levelSettings));
 
                 const modalShowExportCheck = document.getElementById('modalShowExportCheck');
                 if (modalShowExportCheck) {
                     config.showExportButton = modalShowExportCheck.checked;
-                    localStorage.setItem('akedata-showExportButton', config.showExportButton);
+                    storage.set('akedata-showExportButton', config.showExportButton);
                 }
 
                 const modalKeepUrlSync = document.getElementById('modalKeepUrlSync');
                 if (modalKeepUrlSync) {
                     const wasSync = config.keepUrlSync;
                     config.keepUrlSync = modalKeepUrlSync.checked;
-                    localStorage.setItem('akedata-keepUrlSync', config.keepUrlSync);
+                    storage.set('akedata-keepUrlSync', config.keepUrlSync);
                     if (wasSync !== config.keepUrlSync) {
                         settingsModal.style.display = 'none';
                         location.reload();
@@ -381,7 +530,7 @@
                 if (showHidden !== config.showHidden) {
                     config.showHidden = showHidden;
                     applyFilterAndRender();
-                    localStorage.setItem('akedata-showHidden', showHidden);
+                    storage.set('akedata-showHidden', showHidden);
                 }
 
                 window.dispatchEvent(new CustomEvent('globalConfigChanged', { detail: { config } }));
@@ -674,9 +823,11 @@
                 const deepId = urlParams.get('id');
 
                 showHomePage();
+                await window.akeVersionReady;
+                renderVersionInfo();
                 initTheme();
 
-                const savedLevelSettings = localStorage.getItem('akedata-levelSettings');
+                const savedLevelSettings = storage.get('akedata-levelSettings');
                 if (savedLevelSettings) {
                     try {
                         const parsed = JSON.parse(savedLevelSettings);
@@ -687,7 +838,7 @@
                     } catch (e) {}
                 }
 
-                const savedTokens = localStorage.getItem('akedata-unlockedTokens');
+                const savedTokens = storage.get('akedata-unlockedTokens');
                 if (savedTokens) {
                     try {
                         const parsed = JSON.parse(savedTokens);
@@ -700,7 +851,7 @@
                 allModules = await loadModulesFromManifest();
                 applyFilterAndRender();
 
-                const savedKeepUrlSync = localStorage.getItem('akedata-keepUrlSync');
+                const savedKeepUrlSync = storage.get('akedata-keepUrlSync');
                 if (savedKeepUrlSync !== null) {
                     config.keepUrlSync = savedKeepUrlSync === 'true';
                 }
@@ -721,7 +872,8 @@
                                     show404Page(isHidden);
                                 };
                             }
-                            await loadModuleContent(module);
+                            const loaded = await loadModuleContent(module);
+                            if (!loaded) return;
                             activeModuleId = deepPlugin;
                             document.querySelectorAll('.module-item').forEach(el => el.classList.remove('active'));
                             const sidebarItem = document.querySelector(`.module-item[data-id="${deepPlugin}"]`);
@@ -756,7 +908,7 @@
                         const resetTokenInput = document.getElementById('modalTokenInput');
                         if (resetTokenInput) resetTokenInput.value = '';
                         config.unlockedTokens = [];
-                        localStorage.removeItem('akedata-unlockedTokens');
+                        storage.remove('akedata-unlockedTokens');
                         updateTokenStatus();
                         closeSettingsModal(); // 立即应用
                     });
@@ -785,7 +937,7 @@
                             }
                         });
                         if (addedCount > 0) {
-                            localStorage.setItem('akedata-unlockedTokens', JSON.stringify(config.unlockedTokens));
+                            storage.set('akedata-unlockedTokens', JSON.stringify(config.unlockedTokens));
                             applyFilterAndRender();
                             window.dispatchEvent(new CustomEvent('globalConfigChanged', { detail: { config } }));
                             showToast('已添加 ' + addedCount + ' 个令牌', 'info');
@@ -807,7 +959,7 @@
                         }
                         const count = config.unlockedTokens.length;
                         config.unlockedTokens = [];
-                        localStorage.removeItem('akedata-unlockedTokens');
+                        storage.remove('akedata-unlockedTokens');
                         applyFilterAndRender();
                         window.dispatchEvent(new CustomEvent('globalConfigChanged', { detail: { config } }));
                         showToast('已清除 ' + count + ' 个令牌', 'info');
@@ -826,7 +978,7 @@
                     }
                     config.showHidden = e.target.checked;
                     applyFilterAndRender();
-                    localStorage.setItem('akedata-showHidden', config.showHidden);
+                    storage.set('akedata-showHidden', config.showHidden);
                     window.dispatchEvent(new CustomEvent('globalConfigChanged', { detail: { showHidden: config.showHidden } }));
                 });
 
@@ -939,7 +1091,7 @@
                     }
                 });
 
-                const savedShowExport = localStorage.getItem('akedata-showExportButton');
+                const savedShowExport = storage.get('akedata-showExportButton');
                 if (savedShowExport !== null) {
                     config.showExportButton = savedShowExport === 'true';
                 }
@@ -949,7 +1101,7 @@
                     updateExportButtonVisibility();
                 });
 
-                const savedShowHidden = localStorage.getItem('akedata-showHidden');
+                const savedShowHidden = storage.get('akedata-showHidden');
                 if (savedShowHidden !== null) {
                     config.showHidden = savedShowHidden === 'true';
                     applyFilterAndRender();
@@ -964,7 +1116,7 @@
                 toggleShowHidden: (val) => {
                     config.showHidden = val;
                     applyFilterAndRender();
-                    localStorage.setItem('akedata-showHidden', val);
+                    storage.set('akedata-showHidden', val);
                     if (modalShowHiddenCheck) modalShowHiddenCheck.checked = val;
                 },
                 getConfig: () => ({ ...config }),

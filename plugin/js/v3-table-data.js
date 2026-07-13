@@ -439,7 +439,7 @@
 
     async function v3Fetch(input, init) {
         const url = typeof input === 'string' ? input : input.url;
-        const mountedModule = document.querySelector('script[data-ake-v3-module]')?.dataset.akeV3Module || '';
+        const mountedModule = document.querySelector('#contentArea script[data-ake-v3-module]')?.dataset.akeV3Module || '';
         const manifestMatch = url.match(/^\/public\/CH\/(?:v2_)?(character|weapon|enemy|equip|item|dungeon|cc|activity|achievement)\/manifest\.json(?:\?|$)/);
         if (manifestMatch && manifestMatch[1] === mountedModule) return virtualResponse(await adapters[mountedModule][0]());
         const detailMatch = url.match(/^\/__v3\/(character|weapon|enemy|equip|item|dungeon|cc|activity|achievement)\/([^/?]+)\.json/);
@@ -453,7 +453,7 @@
         if (!window.__akeRouter || window.__akeRouter.__v3Patched) return;
         const originalUpdate = window.__akeRouter.updateUrl.bind(window.__akeRouter);
         window.__akeRouter.updateUrl = function (plugin, id) {
-            const marker = document.querySelector('script[data-ake-v3-module]');
+            const marker = document.querySelector('#contentArea script[data-ake-v3-module]');
             const module = marker?.dataset.akeV3Module || '';
             const alias = MODULE_ALIASES[module];
             return originalUpdate(plugin === alias ? `v3_${module}` : plugin, id);

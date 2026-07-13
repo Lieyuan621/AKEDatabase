@@ -57,6 +57,7 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 ```text
 AKEDatabase/
 ├─ index.html                     # 应用外壳、设置弹窗和全局脚本入口
+├─ version.json                   # 应用、游戏、Hotfix 与更新时间的唯一来源
 ├─ plugin/
 │  ├─ manifest.json               # 顶层模块注册表
 │  ├─ v3_*.html                   # v3 模块 DOM 壳
@@ -64,6 +65,7 @@ AKEDatabase/
 │  └─ js/
 │     ├─ index-app.js             # 模块加载、路由、设置和富文本运行时
 │     ├─ ake-cache.js             # 基于版本标记的 fetch 缓存策略
+│     ├─ ake-sw.js                # 原生 public 资源的 IndexedDB 缓存代理
 │     ├─ ake-stats.js             # 属性和 modifier 计算
 │     ├─ v3-table-data.js         # TableCfg/Json 到 v2 UI 数据契约的适配层
 │     └─ <module>.js              # 各模块控制器
@@ -94,7 +96,7 @@ AKEDatabase/
 
 ### 应用启动
 
-`index.html` 依次加载：
+`index.html` 先以 `no-store` 读取根目录 `version.json`，再以 `appversion` 查询参数依次加载：
 
 1. `plugin/js/index-parse-fallback.js`
 2. `plugin/js/toast.js`
@@ -103,7 +105,25 @@ AKEDatabase/
 
 `index-app.js` 读取 `plugin/manifest.json`，过滤禁用模块，按 `priority` 排序，然后生成桌面侧栏和移动端菜单。
 
+首页和设置弹窗中的应用版本、游戏版本、Hotfix 和最后更新时间都来自 `version.json`，不再硬编码在 HTML 中。代码、CSS 或模块结构变化时递增 `appversion`；IndexedDB 缓存版本由 `gameversion` 和 `hotfixversion` 共同派生。
+
 点击模块后，框架通过 `window.akeFetch` 获取模块 HTML并插入 `#contentArea`。因为动态插入的 `<script>` 不会自动执行，加载器会按 DOM 顺序重新创建脚本节点并等待外部脚本完成。
+
+同一标签页内，模块 HTML、脚本源码和 CSS 按规范化 URL 缓存。再次进入模块时不重复网络获取 JS/CSS，但会从内存源码重新执行控制器以挂载新 DOM。模块 CSS 每个 URL 只创建一次，并按当前模块启用或禁用。
+
+### 缓存分层
+
+- localStorage：只保存主题、隐藏开关、默认等级、URL 设置和令牌等小型偏好；所有访问都有异常保护。
+- 页面内存：缓存模块 HTML、脚本源码、CSS Promise、模块 DOM，以及 v3 已解析的 TableCfg/I18n/maps。
+- IndexedDB：数据库 `akedata-data-cache` 按 `gameversion + hotfixversion` 保存所有同源 `/public/**` GET 响应，记录内容为原始 Blob。
+- Service Worker：`plugin/js/ake-sw.js` 拦截 `<img>`、CSS 背景图等绕过 `akeFetch` 的 `/public/**` 请求，并写入同一个 IndexedDB。
+- HTTP Cache：继续负责版本化的 HTML、JS、CSS 和网络响应。
+
+`gameversion` 或 `hotfixversion` 变化时会原子清空旧 public 响应并写入新版本。IndexedDB、Service Worker 或 localStorage 不可用时，页面自动降级到内存缓存和普通网络请求，不阻止应用启动。`version.json` 每次启动均使用 `no-store` 请求。
+
+Service Worker 首次安装或应用版本更新并取得页面控制权时，会按 `appversion` 在当前会话中执行一次刷新，使 favicon、首页图片等早于缓存脚本发起的 `/public/` 请求也经过 Service Worker。
+
+由于 Service Worker 文件位于 `/plugin/js/ake-sw.js`，但注册 scope 为 `/`，服务器必须为该文件返回响应头 `Service-Worker-Allowed: /`，否则浏览器只允许它控制 `/plugin/js/`，无法拦截 `/public/`。本地或生产服务器需要显式配置该响应头。
 
 ### v3 数据适配
 
