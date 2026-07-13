@@ -150,6 +150,10 @@
             }
 
             async function loadModuleContent(module) {
+                if (module?.disabled === true) {
+                    show404Page(false);
+                    return;
+                }
                 if (!module || !module.contentFile) {
                     setContent(`<div class="error-message">模块内容文件未指定</div>`);
                     return;
@@ -396,8 +400,10 @@
                             ...m,
                             priority: m.priority !== undefined ? m.priority : 999,
                             hidden: m.hidden === true,
+                            disabled: m.disabled === true,
                             token: m.token || null
-                        }));
+                        }))
+                        .filter(m => !m.disabled);
                 } catch (err) {
                     moduleListEl.innerHTML = `<div style="color:#b0003a; padding:20px; text-align:center;">❌ 无法读取模块清单。<br>请通过本地服务器访问。</div>`;
                     return [];
