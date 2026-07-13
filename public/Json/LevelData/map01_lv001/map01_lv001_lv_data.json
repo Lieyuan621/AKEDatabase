@@ -1,0 +1,4831 @@
+{
+  "sceneId": "map01_lv001",
+  "levelIdNum": 21,
+  "guideHints": [],
+  "enemies": [],
+  "interactives": [
+    {
+      "levelLogicId": 2100000031,
+      "entityType": "Interactive",
+      "entityDataIdKey": "int_campfire_v2",
+      "createState": "EnableAndShow",
+      "position": {
+        "x": -380.614,
+        "y": 107.560905,
+        "z": -398.66
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 291.9179,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "forceLoad": false,
+      "aoiRadiusType": "Default",
+      "overrideSendDieEvent": false,
+      "sendDieEvent": false,
+      "keepCrossMap": false,
+      "isLocked": false,
+      "isClientOnly": false,
+      "hideInDialog": false,
+      "modelScale": 0.0,
+      "progressLockCondition": {
+        "$type": "Beyond.Gameplay.SimpleConditionCheckQuestState, Gameplay.Beyond",
+        "questId": "e1m1_q#46",
+        "compareOperator": "Equal",
+        "compareTarget": "Completed"
+      },
+      "properties": [
+        {
+          "key": "position",
+          "value": {
+            "type": "Vector3",
+            "valueArray": [
+              {
+                "valueBit64": -1010797171
+              },
+              {
+                "valueBit64": 1121386353
+              },
+              {
+                "valueBit64": -1010326862
+              }
+            ]
+          }
+        },
+        {
+          "key": "rotation",
+          "value": {
+            "type": "Vector3",
+            "valueArray": [
+              {
+                "valueBit64": 0
+              },
+              {
+                "valueBit64": 1118734294
+              },
+              {
+                "valueBit64": 0
+              }
+            ]
+          }
+        }
+      ],
+      "componentProperties": {
+        "PlayerInteractPerform": [
+          {
+            "key": "wait_time",
+            "value": {
+              "type": "Float",
+              "valueArray": [
+                {
+                  "valueBit64": 1056964608
+                }
+              ]
+            }
+          },
+          {
+            "key": "available_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          }
+        ],
+        "ClickTrigger": [
+          {
+            "key": "use_level_event_click",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_click",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                }
+              ]
+            }
+          },
+          {
+            "key": "click_option_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_1"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_2"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_3"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_4"
+                }
+              ]
+            }
+          }
+        ],
+        "TriggerZone": [
+          {
+            "key": "use_level_event_trigger",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_trigger",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "levelLogicId": 2100000073,
+      "entityType": "Interactive",
+      "entityDataIdKey": "int_campfire_v2",
+      "createState": "EnableAndShow",
+      "position": {
+        "x": -9.630749,
+        "y": 95.90914,
+        "z": -477.364868
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 270.0,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.00000024,
+        "y": 1.0,
+        "z": 1.00000024
+      },
+      "forceLoad": false,
+      "aoiRadiusType": "Default",
+      "overrideSendDieEvent": false,
+      "sendDieEvent": false,
+      "keepCrossMap": false,
+      "isLocked": false,
+      "isClientOnly": false,
+      "hideInDialog": false,
+      "modelScale": 0.0,
+      "progressLockCondition": {
+        "$type": "Beyond.Gameplay.SimpleConditionCheckQuestState, Gameplay.Beyond",
+        "questId": "e1m1_q#46",
+        "compareOperator": "Equal",
+        "compareTarget": "Completed"
+      },
+      "properties": [
+        {
+          "key": "position",
+          "value": {
+            "type": "Vector3",
+            "valueArray": [
+              {
+                "valueBit64": -1055674074
+              },
+              {
+                "valueBit64": 1119901862
+              },
+              {
+                "valueBit64": -1007935066
+              }
+            ]
+          }
+        },
+        {
+          "key": "rotation",
+          "value": {
+            "type": "Vector3",
+            "valueArray": [
+              {
+                "valueBit64": 0
+              },
+              {
+                "valueBit64": 1127481344
+              },
+              {
+                "valueBit64": 0
+              }
+            ]
+          }
+        }
+      ],
+      "componentProperties": {
+        "PlayerInteractPerform": [
+          {
+            "key": "wait_time",
+            "value": {
+              "type": "Float",
+              "valueArray": [
+                {
+                  "valueBit64": 1056964608
+                }
+              ]
+            }
+          },
+          {
+            "key": "available_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          }
+        ],
+        "ClickTrigger": [
+          {
+            "key": "use_level_event_click",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_click",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                }
+              ]
+            }
+          },
+          {
+            "key": "click_option_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_1"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_2"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_3"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_4"
+                }
+              ]
+            }
+          }
+        ],
+        "TriggerZone": [
+          {
+            "key": "use_level_event_trigger",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_trigger",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "levelLogicId": 2100000086,
+      "entityType": "Interactive",
+      "entityDataIdKey": "int_campfire_v2",
+      "createState": "EnableAndShow",
+      "position": {
+        "x": -273.08,
+        "y": 139.049255,
+        "z": -92.6078339
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.6756094,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "forceLoad": false,
+      "aoiRadiusType": "Default",
+      "overrideSendDieEvent": false,
+      "sendDieEvent": false,
+      "keepCrossMap": false,
+      "isLocked": false,
+      "isClientOnly": false,
+      "hideInDialog": false,
+      "modelScale": 0.0,
+      "progressLockCondition": {
+        "$type": "Beyond.Gameplay.SimpleConditionCheckQuestState, Gameplay.Beyond",
+        "questId": "e1m1_q#46",
+        "compareOperator": "Equal",
+        "compareTarget": "Completed"
+      },
+      "properties": [
+        {
+          "key": "position",
+          "value": {
+            "type": "Vector3",
+            "valueArray": [
+              {
+                "valueBit64": -1014565470
+              },
+              {
+                "valueBit64": 1124717380
+              },
+              {
+                "valueBit64": -1027612955
+              }
+            ]
+          }
+        },
+        {
+          "key": "rotation",
+          "value": {
+            "type": "Vector3",
+            "valueArray": [
+              {
+                "valueBit64": 0
+              },
+              {
+                "valueBit64": 1134519021
+              },
+              {
+                "valueBit64": 0
+              }
+            ]
+          }
+        }
+      ],
+      "componentProperties": {
+        "PlayerInteractPerform": [
+          {
+            "key": "wait_time",
+            "value": {
+              "type": "Float",
+              "valueArray": [
+                {
+                  "valueBit64": 1056964608
+                }
+              ]
+            }
+          },
+          {
+            "key": "available_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          }
+        ],
+        "ClickTrigger": [
+          {
+            "key": "use_level_event_click",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_click",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                }
+              ]
+            }
+          },
+          {
+            "key": "click_option_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_1"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_2"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_3"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_4"
+                }
+              ]
+            }
+          }
+        ],
+        "TriggerZone": [
+          {
+            "key": "use_level_event_trigger",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_trigger",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "levelLogicId": 2100000093,
+      "entityType": "Interactive",
+      "entityDataIdKey": "int_campfire_v2",
+      "createState": "EnableAndShow",
+      "position": {
+        "x": -492.82,
+        "y": 92.52753,
+        "z": -504.37
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 238.9761,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.00000024,
+        "y": 1.0,
+        "z": 1.00000024
+      },
+      "forceLoad": false,
+      "aoiRadiusType": "Level3",
+      "overrideSendDieEvent": false,
+      "sendDieEvent": false,
+      "keepCrossMap": false,
+      "isLocked": false,
+      "isClientOnly": false,
+      "hideInDialog": false,
+      "modelScale": 0.0,
+      "progressLockCondition": {
+        "$type": "Beyond.Gameplay.SimpleConditionCheckQuestState, Gameplay.Beyond",
+        "questId": "e1m1_q#46",
+        "compareOperator": "Equal",
+        "compareTarget": "Completed"
+      },
+      "properties": [
+        {
+          "key": "position",
+          "value": {
+            "type": "Vector3",
+            "valueArray": [
+              {
+                "valueBit64": -1007399133
+              },
+              {
+                "valueBit64": 1119449059
+              },
+              {
+                "valueBit64": -1006881663
+              }
+            ]
+          }
+        },
+        {
+          "key": "rotation",
+          "value": {
+            "type": "Vector3",
+            "valueArray": [
+              {
+                "valueBit64": 0
+              },
+              {
+                "valueBit64": 1116987896
+              },
+              {
+                "valueBit64": 0
+              }
+            ]
+          }
+        }
+      ],
+      "componentProperties": {
+        "PlayerInteractPerform": [
+          {
+            "key": "wait_time",
+            "value": {
+              "type": "Float",
+              "valueArray": [
+                {
+                  "valueBit64": 1056964608
+                }
+              ]
+            }
+          },
+          {
+            "key": "available_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          }
+        ],
+        "ClickTrigger": [
+          {
+            "key": "use_level_event_click",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_click",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                }
+              ]
+            }
+          },
+          {
+            "key": "click_option_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_1"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_2"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_3"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_4"
+                }
+              ]
+            }
+          }
+        ],
+        "TriggerZone": [
+          {
+            "key": "use_level_event_trigger",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_trigger",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "levelLogicId": 2100000246,
+      "entityType": "Interactive",
+      "entityDataIdKey": "int_blackbox_entry",
+      "createState": "EnableAndShow",
+      "position": {
+        "x": -397.757721,
+        "y": 116.655273,
+        "z": -234.9008
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 300.79657,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 0.9999999,
+        "y": 1.0,
+        "z": 0.9999999
+      },
+      "forceLoad": false,
+      "aoiRadiusType": "Default",
+      "overrideSendDieEvent": false,
+      "sendDieEvent": false,
+      "keepCrossMap": false,
+      "isLocked": false,
+      "isClientOnly": false,
+      "hideInDialog": false,
+      "modelScale": 0.0,
+      "progressLockCondition": {
+        "$type": "Beyond.Gameplay.SimpleConditionCheckQuestState, Gameplay.Beyond",
+        "questId": "e1m1_q#46",
+        "compareOperator": "Equal",
+        "compareTarget": "Completed"
+      },
+      "properties": [
+        {
+          "key": "dungeion_series_id",
+          "value": {
+            "type": "String",
+            "valueArray": [
+              {
+                "valueBit64": 0,
+                "valueString": "entrance_dung_blackbox_hub_1"
+              }
+            ]
+          }
+        }
+      ],
+      "componentProperties": {
+        "PlayerInteractPerform": [
+          {
+            "key": "available_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          }
+        ],
+        "ClickTrigger": [
+          {
+            "key": "use_level_event_click",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_click",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "click_option_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_dungeon_lock"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "ui_fac_blackbox_lock_active"
+                }
+              ]
+            }
+          }
+        ],
+        "TriggerZone": [
+          {
+            "key": "use_level_event_trigger",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_trigger",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          }
+        ],
+        "InteractiveHintPerformComponent": [
+          {
+            "key": "disable_when_has_perform_tag",
+            "value": {
+              "type": "Bool",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "override_special_mode_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_outline_name_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_outline_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_brushing_distance_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_min_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_max_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "levelLogicId": 2100000247,
+      "entityType": "Interactive",
+      "entityDataIdKey": "int_blackbox_entry",
+      "createState": "EnableAndShow",
+      "position": {
+        "x": -415.365,
+        "y": 109.449074,
+        "z": -294.438
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 316.755646,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "forceLoad": false,
+      "aoiRadiusType": "Default",
+      "overrideSendDieEvent": false,
+      "sendDieEvent": false,
+      "keepCrossMap": false,
+      "isLocked": false,
+      "isClientOnly": false,
+      "hideInDialog": false,
+      "modelScale": 0.0,
+      "progressLockCondition": {
+        "$type": "Beyond.Gameplay.SimpleConditionCheckQuestState, Gameplay.Beyond",
+        "questId": "e1m1_q#46",
+        "compareOperator": "Equal",
+        "compareTarget": "Completed"
+      },
+      "properties": [
+        {
+          "key": "dungeion_series_id",
+          "value": {
+            "type": "String",
+            "valueArray": [
+              {
+                "valueBit64": 0,
+                "valueString": "entrance_dung_blackbox_belt_1"
+              }
+            ]
+          }
+        }
+      ],
+      "componentProperties": {
+        "PlayerInteractPerform": [
+          {
+            "key": "available_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          }
+        ],
+        "ClickTrigger": [
+          {
+            "key": "use_level_event_click",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_click",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "click_option_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_dungeon_lock"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "ui_fac_blackbox_lock_active"
+                }
+              ]
+            }
+          }
+        ],
+        "TriggerZone": [
+          {
+            "key": "use_level_event_trigger",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_trigger",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          }
+        ],
+        "InteractiveHintPerformComponent": [
+          {
+            "key": "disable_when_has_perform_tag",
+            "value": {
+              "type": "Bool",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "override_special_mode_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_outline_name_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_outline_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_brushing_distance_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_min_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_max_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "levelLogicId": 2100000252,
+      "entityType": "Interactive",
+      "entityDataIdKey": "int_blackbox_entry",
+      "createState": "EnableAndShow",
+      "position": {
+        "x": -435.7616,
+        "y": 118.3041,
+        "z": -162.8355
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 180.0,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "forceLoad": false,
+      "aoiRadiusType": "Default",
+      "overrideSendDieEvent": false,
+      "sendDieEvent": false,
+      "keepCrossMap": false,
+      "isLocked": false,
+      "isClientOnly": false,
+      "hideInDialog": false,
+      "modelScale": 0.0,
+      "progressLockCondition": {
+        "$type": "Beyond.Gameplay.SimpleConditionCheckQuestState, Gameplay.Beyond",
+        "questId": "e1m1_q#46",
+        "compareOperator": "Equal",
+        "compareTarget": "Completed"
+      },
+      "properties": [
+        {
+          "key": "dungeion_series_id",
+          "value": {
+            "type": "String",
+            "valueArray": [
+              {
+                "valueBit64": 0,
+                "valueString": "entrance_dung_blackbox_miner_1"
+              }
+            ]
+          }
+        }
+      ],
+      "componentProperties": {
+        "PlayerInteractPerform": [
+          {
+            "key": "available_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          }
+        ],
+        "ClickTrigger": [
+          {
+            "key": "use_level_event_click",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_click",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "click_option_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_dungeon_lock"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "ui_fac_blackbox_lock_active"
+                }
+              ]
+            }
+          }
+        ],
+        "TriggerZone": [
+          {
+            "key": "use_level_event_trigger",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_trigger",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          }
+        ],
+        "InteractiveHintPerformComponent": [
+          {
+            "key": "disable_when_has_perform_tag",
+            "value": {
+              "type": "Bool",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "override_special_mode_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_outline_name_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_outline_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_brushing_distance_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_min_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_max_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "levelLogicId": 2100000253,
+      "entityType": "Interactive",
+      "entityDataIdKey": "int_blackbox_entry",
+      "createState": "EnableAndShow",
+      "position": {
+        "x": -514.64,
+        "y": 121.443184,
+        "z": -265.66
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 283.555725,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.00000024,
+        "y": 1.0,
+        "z": 1.00000024
+      },
+      "forceLoad": false,
+      "aoiRadiusType": "Default",
+      "overrideSendDieEvent": false,
+      "sendDieEvent": false,
+      "keepCrossMap": false,
+      "isLocked": false,
+      "isClientOnly": false,
+      "hideInDialog": false,
+      "modelScale": 0.0,
+      "progressLockCondition": {
+        "$type": "Beyond.Gameplay.SimpleConditionCheckQuestState, Gameplay.Beyond",
+        "questId": "e1m1_q#46",
+        "compareOperator": "Equal",
+        "compareTarget": "Completed"
+      },
+      "properties": [
+        {
+          "key": "dungeion_series_id",
+          "value": {
+            "type": "String",
+            "valueArray": [
+              {
+                "valueBit64": 0,
+                "valueString": "entrance_dung_blackbox_shaper_1"
+              }
+            ]
+          }
+        }
+      ],
+      "componentProperties": {
+        "PlayerInteractPerform": [
+          {
+            "key": "available_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          }
+        ],
+        "ClickTrigger": [
+          {
+            "key": "use_level_event_click",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_click",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "click_option_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_dungeon_lock"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "ui_fac_blackbox_lock_active"
+                }
+              ]
+            }
+          }
+        ],
+        "TriggerZone": [
+          {
+            "key": "use_level_event_trigger",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_trigger",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          }
+        ],
+        "InteractiveHintPerformComponent": [
+          {
+            "key": "disable_when_has_perform_tag",
+            "value": {
+              "type": "Bool",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "override_special_mode_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_outline_name_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_outline_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_brushing_distance_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_min_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_max_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "levelLogicId": 2100000254,
+      "entityType": "Interactive",
+      "entityDataIdKey": "int_blackbox_entry",
+      "createState": "EnableAndShow",
+      "position": {
+        "x": -344.073364,
+        "y": 121.857529,
+        "z": -120.474251
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 297.1317,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "forceLoad": false,
+      "aoiRadiusType": "Level3",
+      "overrideSendDieEvent": false,
+      "sendDieEvent": false,
+      "keepCrossMap": false,
+      "isLocked": false,
+      "isClientOnly": false,
+      "hideInDialog": false,
+      "modelScale": 0.0,
+      "progressLockCondition": {
+        "$type": "Beyond.Gameplay.SimpleConditionCheckQuestState, Gameplay.Beyond",
+        "questId": "e1m1_q#46",
+        "compareOperator": "Equal",
+        "compareTarget": "Completed"
+      },
+      "properties": [
+        {
+          "key": "dungeion_series_id",
+          "value": {
+            "type": "String",
+            "valueArray": [
+              {
+                "valueBit64": 0,
+                "valueString": "entrance_dung_blackbox_cmpt_1"
+              }
+            ]
+          }
+        }
+      ],
+      "componentProperties": {
+        "PlayerInteractPerform": [
+          {
+            "key": "available_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          }
+        ],
+        "ClickTrigger": [
+          {
+            "key": "use_level_event_click",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_click",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "click_option_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_dungeon_lock"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "ui_fac_blackbox_lock_active"
+                }
+              ]
+            }
+          }
+        ],
+        "TriggerZone": [
+          {
+            "key": "use_level_event_trigger",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_trigger",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          }
+        ],
+        "InteractiveHintPerformComponent": [
+          {
+            "key": "disable_when_has_perform_tag",
+            "value": {
+              "type": "Bool",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "override_special_mode_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_outline_name_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_outline_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_brushing_distance_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_min_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_max_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "levelLogicId": 2100000284,
+      "entityType": "Interactive",
+      "entityDataIdKey": "int_campfire_v2",
+      "createState": "EnableAndShow",
+      "position": {
+        "x": -119.87532,
+        "y": 98.14428,
+        "z": -384.195465
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 145.0234,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "forceLoad": false,
+      "aoiRadiusType": "Default",
+      "overrideSendDieEvent": false,
+      "sendDieEvent": false,
+      "keepCrossMap": false,
+      "isLocked": false,
+      "isClientOnly": false,
+      "hideInDialog": false,
+      "modelScale": 0.0,
+      "progressLockCondition": {
+        "$type": "Beyond.Gameplay.SimpleConditionCheckQuestState, Gameplay.Beyond",
+        "questId": "e1m1_q#46",
+        "compareOperator": "Equal",
+        "compareTarget": "Completed"
+      },
+      "properties": [
+        {
+          "key": "position",
+          "value": {
+            "type": "Vector3",
+            "valueArray": [
+              {
+                "valueBit64": -1023866472
+              },
+              {
+                "valueBit64": 1120194302
+              },
+              {
+                "valueBit64": -1010819987
+              }
+            ]
+          }
+        },
+        {
+          "key": "rotation",
+          "value": {
+            "type": "Vector3",
+            "valueArray": [
+              {
+                "valueBit64": 0
+              },
+              {
+                "valueBit64": 1119224051
+              },
+              {
+                "valueBit64": 0
+              }
+            ]
+          }
+        },
+        {
+          "key": "track_appear_dist",
+          "value": {
+            "type": "Int",
+            "valueArray": [
+              {
+                "valueBit64": 0
+              }
+            ]
+          }
+        }
+      ],
+      "componentProperties": {
+        "PlayerInteractPerform": [
+          {
+            "key": "wait_time",
+            "value": {
+              "type": "Float",
+              "valueArray": [
+                {
+                  "valueBit64": 1056964608
+                }
+              ]
+            }
+          },
+          {
+            "key": "available_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          }
+        ],
+        "ClickTrigger": [
+          {
+            "key": "use_level_event_click",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_click",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                }
+              ]
+            }
+          },
+          {
+            "key": "click_option_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_1"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_2"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_3"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_4"
+                }
+              ]
+            }
+          }
+        ],
+        "TriggerZone": [
+          {
+            "key": "use_level_event_trigger",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_trigger",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "levelLogicId": 2100000322,
+      "entityType": "Interactive",
+      "entityDataIdKey": "int_campfire_v2",
+      "createState": "EnableAndShow",
+      "position": {
+        "x": -152.48996,
+        "y": 104.642609,
+        "z": -480.85
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 71.5070648,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "forceLoad": false,
+      "aoiRadiusType": "Default",
+      "overrideSendDieEvent": false,
+      "sendDieEvent": false,
+      "keepCrossMap": false,
+      "isLocked": false,
+      "isClientOnly": false,
+      "hideInDialog": false,
+      "modelScale": 0.0,
+      "progressLockCondition": {
+        "$type": "Beyond.Gameplay.SimpleConditionCheckQuestState, Gameplay.Beyond",
+        "questId": "e1m1_q#46",
+        "compareOperator": "Equal",
+        "compareTarget": "Completed"
+      },
+      "properties": [
+        {
+          "key": "position",
+          "value": {
+            "type": "Vector3",
+            "valueArray": [
+              {
+                "valueBit64": -1021714846
+              },
+              {
+                "valueBit64": 1121025341
+              },
+              {
+                "valueBit64": -1007498878
+              }
+            ]
+          }
+        },
+        {
+          "key": "rotation",
+          "value": {
+            "type": "Vector3",
+            "valueArray": [
+              {
+                "valueBit64": 0
+              },
+              {
+                "valueBit64": 1099686477
+              },
+              {
+                "valueBit64": 0
+              }
+            ]
+          }
+        }
+      ],
+      "componentProperties": {
+        "PlayerInteractPerform": [
+          {
+            "key": "wait_time",
+            "value": {
+              "type": "Float",
+              "valueArray": [
+                {
+                  "valueBit64": 1056964608
+                }
+              ]
+            }
+          },
+          {
+            "key": "available_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          }
+        ],
+        "ClickTrigger": [
+          {
+            "key": "use_level_event_click",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_click",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                }
+              ]
+            }
+          },
+          {
+            "key": "click_option_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_1"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_2"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_3"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_campfire_option_4"
+                }
+              ]
+            }
+          }
+        ],
+        "TriggerZone": [
+          {
+            "key": "use_level_event_trigger",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_trigger",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": ""
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "levelLogicId": 2100000325,
+      "entityType": "Interactive",
+      "entityDataIdKey": "int_blackbox_entry",
+      "createState": "EnableAndShow",
+      "position": {
+        "x": -485.506744,
+        "y": 127.553627,
+        "z": -140.978683
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 349.082,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "forceLoad": false,
+      "aoiRadiusType": "Default",
+      "overrideSendDieEvent": false,
+      "sendDieEvent": false,
+      "keepCrossMap": false,
+      "isLocked": false,
+      "isClientOnly": false,
+      "hideInDialog": false,
+      "modelScale": 0.0,
+      "progressLockCondition": {
+        "$type": "Beyond.Gameplay.SimpleConditionCheckQuestState, Gameplay.Beyond",
+        "questId": "e1m1_q#46",
+        "compareOperator": "Equal",
+        "compareTarget": "Completed"
+      },
+      "properties": [
+        {
+          "key": "dungeion_series_id",
+          "value": {
+            "type": "String",
+            "valueArray": [
+              {
+                "valueBit64": 0,
+                "valueString": "entrance_dung_blackbox_winder_1"
+              }
+            ]
+          }
+        }
+      ],
+      "componentProperties": {
+        "PlayerInteractPerform": [
+          {
+            "key": "available_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          }
+        ],
+        "ClickTrigger": [
+          {
+            "key": "use_level_event_click",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_click",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "click_option_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_dungeon_lock"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "ui_fac_blackbox_lock_active"
+                }
+              ]
+            }
+          }
+        ],
+        "TriggerZone": [
+          {
+            "key": "use_level_event_trigger",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_trigger",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          }
+        ],
+        "InteractiveHintPerformComponent": [
+          {
+            "key": "disable_when_has_perform_tag",
+            "value": {
+              "type": "Bool",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "override_special_mode_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_outline_name_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_outline_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_brushing_distance_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_min_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_max_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "levelLogicId": 2100000326,
+      "entityType": "Interactive",
+      "entityDataIdKey": "int_blackbox_entry",
+      "createState": "EnableAndShow",
+      "position": {
+        "x": -470.993164,
+        "y": 101.83,
+        "z": -409.426819
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 270.965454,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.00000012,
+        "y": 1.0,
+        "z": 1.00000012
+      },
+      "forceLoad": false,
+      "aoiRadiusType": "Default",
+      "overrideSendDieEvent": false,
+      "sendDieEvent": false,
+      "keepCrossMap": false,
+      "isLocked": false,
+      "isClientOnly": false,
+      "hideInDialog": false,
+      "modelScale": 0.0,
+      "progressLockCondition": {
+        "$type": "Beyond.Gameplay.SimpleConditionCheckQuestState, Gameplay.Beyond",
+        "questId": "e1m1_q#46",
+        "compareOperator": "Equal",
+        "compareTarget": "Completed"
+      },
+      "properties": [
+        {
+          "key": "dungeion_series_id",
+          "value": {
+            "type": "String",
+            "valueArray": [
+              {
+                "valueBit64": 0,
+                "valueString": "entrance_dung_blackbox_basic_1"
+              }
+            ]
+          }
+        }
+      ],
+      "componentProperties": {
+        "PlayerInteractPerform": [
+          {
+            "key": "available_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          }
+        ],
+        "ClickTrigger": [
+          {
+            "key": "use_level_event_click",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_click",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "click_option_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_dungeon_lock"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "ui_fac_blackbox_lock_active"
+                }
+              ]
+            }
+          }
+        ],
+        "TriggerZone": [
+          {
+            "key": "use_level_event_trigger",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_trigger",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          }
+        ],
+        "InteractiveHintPerformComponent": [
+          {
+            "key": "disable_when_has_perform_tag",
+            "value": {
+              "type": "Bool",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "override_special_mode_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_outline_name_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_outline_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_brushing_distance_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_min_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_max_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "levelLogicId": 2100000327,
+      "entityType": "Interactive",
+      "entityDataIdKey": "int_blackbox_entry",
+      "createState": "EnableAndShow",
+      "position": {
+        "x": -338.757935,
+        "y": 109.187477,
+        "z": -537.4393
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 127.484978,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 0.999999762,
+        "y": 1.0,
+        "z": 0.999999762
+      },
+      "forceLoad": false,
+      "aoiRadiusType": "Default",
+      "overrideSendDieEvent": false,
+      "sendDieEvent": false,
+      "keepCrossMap": false,
+      "isLocked": false,
+      "isClientOnly": false,
+      "hideInDialog": false,
+      "modelScale": 0.0,
+      "progressLockCondition": {
+        "$type": "Beyond.Gameplay.SimpleConditionCheckQuestState, Gameplay.Beyond",
+        "questId": "e1m1_q#46",
+        "compareOperator": "Equal",
+        "compareTarget": "Completed"
+      },
+      "properties": [
+        {
+          "key": "dungeion_series_id",
+          "value": {
+            "type": "String",
+            "valueArray": [
+              {
+                "valueBit64": 0,
+                "valueString": "entrance_dung_blackbox_filling_1"
+              }
+            ]
+          }
+        }
+      ],
+      "componentProperties": {
+        "PlayerInteractPerform": [
+          {
+            "key": "available_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          }
+        ],
+        "ClickTrigger": [
+          {
+            "key": "use_level_event_click",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_click",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "click_option_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_dungeon_lock"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "ui_fac_blackbox_lock_active"
+                }
+              ]
+            }
+          }
+        ],
+        "TriggerZone": [
+          {
+            "key": "use_level_event_trigger",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_trigger",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          }
+        ],
+        "InteractiveHintPerformComponent": [
+          {
+            "key": "disable_when_has_perform_tag",
+            "value": {
+              "type": "Bool",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "override_special_mode_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_outline_name_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_outline_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_brushing_distance_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_min_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_max_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "levelLogicId": 2100000329,
+      "entityType": "Interactive",
+      "entityDataIdKey": "int_blackbox_entry",
+      "createState": "EnableAndShow",
+      "position": {
+        "x": -148.9,
+        "y": 106.92,
+        "z": -518.28
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 249.699982,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "forceLoad": false,
+      "aoiRadiusType": "Default",
+      "overrideSendDieEvent": false,
+      "sendDieEvent": false,
+      "keepCrossMap": false,
+      "isLocked": false,
+      "isClientOnly": false,
+      "hideInDialog": false,
+      "modelScale": 0.0,
+      "progressLockCondition": {
+        "$type": "Beyond.Gameplay.SimpleConditionCheckQuestState, Gameplay.Beyond",
+        "questId": "e1m1_q#46",
+        "compareOperator": "Equal",
+        "compareTarget": "Completed"
+      },
+      "properties": [
+        {
+          "key": "dungeion_series_id",
+          "value": {
+            "type": "String",
+            "valueArray": [
+              {
+                "valueBit64": 0,
+                "valueString": "entrance_dung_blackbox_splitter_1"
+              }
+            ]
+          }
+        }
+      ],
+      "componentProperties": {
+        "PlayerInteractPerform": [
+          {
+            "key": "available_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          }
+        ],
+        "ClickTrigger": [
+          {
+            "key": "use_level_event_click",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_click",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "click_option_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_dungeon_lock"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "ui_fac_blackbox_lock_active"
+                }
+              ]
+            }
+          }
+        ],
+        "TriggerZone": [
+          {
+            "key": "use_level_event_trigger",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_trigger",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          }
+        ],
+        "InteractiveHintPerformComponent": [
+          {
+            "key": "disable_when_has_perform_tag",
+            "value": {
+              "type": "Bool",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "override_special_mode_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_outline_name_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_outline_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_brushing_distance_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_min_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_max_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "levelLogicId": 2100000330,
+      "entityType": "Interactive",
+      "entityDataIdKey": "int_blackbox_entry",
+      "createState": "EnableAndShow",
+      "position": {
+        "x": -529.8,
+        "y": 92.8,
+        "z": -524.81
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 230.0,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.00000012,
+        "y": 1.0,
+        "z": 1.00000012
+      },
+      "forceLoad": false,
+      "aoiRadiusType": "Default",
+      "overrideSendDieEvent": false,
+      "sendDieEvent": false,
+      "keepCrossMap": false,
+      "isLocked": false,
+      "isClientOnly": false,
+      "hideInDialog": false,
+      "modelScale": 0.0,
+      "progressLockCondition": {
+        "$type": "Beyond.Gameplay.SimpleConditionCheckQuestState, Gameplay.Beyond",
+        "questId": "e1m1_q#46",
+        "compareOperator": "Equal",
+        "compareTarget": "Completed"
+      },
+      "properties": [
+        {
+          "key": "dungeion_series_id",
+          "value": {
+            "type": "String",
+            "valueArray": [
+              {
+                "valueBit64": 0,
+                "valueString": "entrance_dung_blackbox_planter_1"
+              }
+            ]
+          }
+        }
+      ],
+      "componentProperties": {
+        "PlayerInteractPerform": [
+          {
+            "key": "available_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          }
+        ],
+        "ClickTrigger": [
+          {
+            "key": "use_level_event_click",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_click",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "click_option_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_dungeon_lock"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "ui_fac_blackbox_lock_active"
+                }
+              ]
+            }
+          }
+        ],
+        "TriggerZone": [
+          {
+            "key": "use_level_event_trigger",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_trigger",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          }
+        ],
+        "InteractiveHintPerformComponent": [
+          {
+            "key": "disable_when_has_perform_tag",
+            "value": {
+              "type": "Bool",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "override_special_mode_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_outline_name_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_outline_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_brushing_distance_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_min_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_max_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "levelLogicId": 2100000331,
+      "entityType": "Interactive",
+      "entityDataIdKey": "int_blackbox_entry",
+      "createState": "EnableAndShow",
+      "position": {
+        "x": -317.7681,
+        "y": 115.026466,
+        "z": -312.013763
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 331.0,
+        "z": 0.0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "forceLoad": false,
+      "aoiRadiusType": "Default",
+      "overrideSendDieEvent": false,
+      "sendDieEvent": false,
+      "keepCrossMap": false,
+      "isLocked": false,
+      "isClientOnly": false,
+      "hideInDialog": false,
+      "modelScale": 0.0,
+      "progressLockCondition": {
+        "$type": "Beyond.Gameplay.SimpleConditionCheckQuestState, Gameplay.Beyond",
+        "questId": "e1m1_q#46",
+        "compareOperator": "Equal",
+        "compareTarget": "Completed"
+      },
+      "properties": [
+        {
+          "key": "dungeion_series_id",
+          "value": {
+            "type": "String",
+            "valueArray": [
+              {
+                "valueBit64": 0,
+                "valueString": "entrance_dung_blackbox_powerstation_1"
+              }
+            ]
+          }
+        }
+      ],
+      "componentProperties": {
+        "PlayerInteractPerform": [
+          {
+            "key": "available_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          }
+        ],
+        "ClickTrigger": [
+          {
+            "key": "use_level_event_click",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_click",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                },
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "click_option_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0,
+                  "valueString": "lang_int_dungeon_lock"
+                },
+                {
+                  "valueBit64": 0,
+                  "valueString": "ui_fac_blackbox_lock_active"
+                }
+              ]
+            }
+          }
+        ],
+        "TriggerZone": [
+          {
+            "key": "use_level_event_trigger",
+            "value": {
+              "type": "BoolList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "level_event_id_trigger",
+            "value": {
+              "type": "StringList",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          }
+        ],
+        "InteractiveHintPerformComponent": [
+          {
+            "key": "disable_when_has_perform_tag",
+            "value": {
+              "type": "Bool",
+              "valueArray": [
+                {
+                  "valueBit64": 0
+                }
+              ]
+            }
+          },
+          {
+            "key": "override_special_mode_list",
+            "value": {
+              "type": "IntList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_outline_name_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_outline_name_list",
+            "value": {
+              "type": "StringList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "is_override_special_mode_brushing_distance_list",
+            "value": {
+              "type": "BoolList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_min_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          },
+          {
+            "key": "override_special_mode_brushing_max_distance_list",
+            "value": {
+              "type": "FloatList",
+              "valueArray": []
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "interactiveLockData": [],
+  "factoryRegions": [],
+  "factoryMines": [],
+  "npcs": [],
+  "npcClusters": [],
+  "levelScriptDataPathDict": {},
+  "levelScriptBriefDataDict": {},
+  "patrols": [],
+  "enemyPatrol": [],
+  "charPatrol": [],
+  "npcPatrol": [],
+  "npcAttractPointData": [],
+  "missionAreas": [],
+  "enemyGroup": [],
+  "npcGroup": [],
+  "cameraPoses": [],
+  "splines": [],
+  "airWalls": [],
+  "environmentVolumes": [],
+  "spawners": [],
+  "worldWayPointData": [],
+  "waterVolumes": [],
+  "levelUIs": [],
+  "aiTransData": [],
+  "sludgeDatas": [],
+  "safeZone": {
+    "boxes": []
+  },
+  "factoryPredefineData": {
+    "powerGates": []
+  },
+  "predefinedParams": [],
+  "functionArea": {
+    "ranges": [
+      {
+        "m_center": {
+          "x": -151.997986,
+          "y": 94.36339,
+          "z": -163.383575
+        },
+        "m_size": {
+          "x": 137.521332,
+          "y": 54.7639,
+          "z": 136.784576
+        }
+      },
+      {
+        "m_center": {
+          "x": -384.998,
+          "y": 107.433388,
+          "z": -62.78357
+        },
+        "m_size": {
+          "x": 105.835815,
+          "y": 12.0,
+          "z": 105.835815
+        }
+      },
+      {
+        "m_center": {
+          "x": -354.457977,
+          "y": 93.16338,
+          "z": -670.6136
+        },
+        "m_size": {
+          "x": 51.6831055,
+          "y": 36.990036,
+          "z": 61.5738525
+        }
+      },
+      {
+        "m_center": {
+          "x": -570.167969,
+          "y": 100.363388,
+          "z": -145.4336
+        },
+        "m_size": {
+          "x": 85.97351,
+          "y": 12.0,
+          "z": 111.66333
+        }
+      },
+      {
+        "m_center": {
+          "x": 52.6020279,
+          "y": 82.96339,
+          "z": -357.983582
+        },
+        "m_size": {
+          "x": 80.00003,
+          "y": 10.0,
+          "z": 120.0
+        }
+      },
+      {
+        "m_center": {
+          "x": -649.3421,
+          "y": 72.76338,
+          "z": -527.623047
+        },
+        "m_size": {
+          "x": 275.488647,
+          "y": 29.9999962,
+          "z": 352.0052
+        }
+      },
+      {
+        "m_center": {
+          "x": -136.291214,
+          "y": 65.96339,
+          "z": -651.341064
+        },
+        "m_size": {
+          "x": 438.869965,
+          "y": 25.0,
+          "z": 121.948914
+        }
+      },
+      {
+        "m_center": {
+          "x": -460.687958,
+          "y": 105.693382,
+          "z": -70.99359
+        },
+        "m_size": {
+          "x": 79.97046,
+          "y": 12.0,
+          "z": 57.8227425
+        }
+      },
+      {
+        "m_center": {
+          "x": -153.820023,
+          "y": 89.0,
+          "z": -645.432861
+        },
+        "m_size": {
+          "x": 239.159943,
+          "y": 12.0,
+          "z": 92.77228
+        }
+      },
+      {
+        "m_center": {
+          "x": -303.837982,
+          "y": 70.063385,
+          "z": -646.893555
+        },
+        "m_size": {
+          "x": 80.2550049,
+          "y": 30.0,
+          "z": 30.6867676
+        }
+      },
+      {
+        "m_center": {
+          "x": -67.53797,
+          "y": 77.8533859,
+          "z": -187.663574
+        },
+        "m_size": {
+          "x": 30.0,
+          "y": 26.68016,
+          "z": 32.0975342
+        }
+      },
+      {
+        "m_center": {
+          "x": -289.297974,
+          "y": 114.863388,
+          "z": -17.0835876
+        },
+        "m_size": {
+          "x": 206.858032,
+          "y": 12.0,
+          "z": 131.816589
+        }
+      },
+      {
+        "m_center": {
+          "x": -530.9913,
+          "y": 95.76338,
+          "z": -103.460541
+        },
+        "m_size": {
+          "x": 177.446289,
+          "y": 30.0,
+          "z": 159.042969
+        }
+      },
+      {
+        "m_center": {
+          "x": -139.097427,
+          "y": 65.66338,
+          "z": -191.308731
+        },
+        "m_size": {
+          "x": 213.576721,
+          "y": 24.0,
+          "z": 237.206329
+        }
+      },
+      {
+        "m_center": {
+          "x": -528.817932,
+          "y": 101.753387,
+          "z": -83.95358
+        },
+        "m_size": {
+          "x": 89.01282,
+          "y": 12.0,
+          "z": 87.62825
+        }
+      },
+      {
+        "m_center": {
+          "x": -120.297958,
+          "y": 76.7733841,
+          "z": -620.463562
+        },
+        "m_size": {
+          "x": 64.24258,
+          "y": 16.9767761,
+          "z": 42.1030273
+        }
+      },
+      {
+        "m_center": {
+          "x": -148.697968,
+          "y": 109.763382,
+          "z": -114.683594
+        },
+        "m_size": {
+          "x": 132.382233,
+          "y": 24.0,
+          "z": 73.29014
+        }
+      },
+      {
+        "m_center": {
+          "x": -675.7553,
+          "y": 72.76338,
+          "z": -270.7791
+        },
+        "m_size": {
+          "x": 206.3385,
+          "y": 29.9999962,
+          "z": 234.43895
+        }
+      },
+      {
+        "m_center": {
+          "x": -441.128265,
+          "y": 109.963387,
+          "z": -28.3396683
+        },
+        "m_size": {
+          "x": 172.145813,
+          "y": 30.0,
+          "z": 86.74228
+        }
+      },
+      {
+        "m_center": {
+          "x": 28.3820267,
+          "y": 95.73338,
+          "z": -401.943573
+        },
+        "m_size": {
+          "x": 16.0394974,
+          "y": 5.0,
+          "z": 12.0527344
+        }
+      },
+      {
+        "m_center": {
+          "x": -70.39797,
+          "y": 89.26338,
+          "z": -108.783569
+        },
+        "m_size": {
+          "x": 132.382248,
+          "y": 24.0,
+          "z": 73.29014
+        }
+      },
+      {
+        "m_center": {
+          "x": 92.63202,
+          "y": 93.4233856,
+          "z": -340.6236
+        },
+        "m_size": {
+          "x": 35.0,
+          "y": 5.0,
+          "z": 20.0
+        }
+      },
+      {
+        "m_center": {
+          "x": -204.697968,
+          "y": 70.44338,
+          "z": -237.583588
+        },
+        "m_size": {
+          "x": 128.000046,
+          "y": 24.0,
+          "z": 128.000046
+        }
+      },
+      {
+        "m_center": {
+          "x": -220.59,
+          "y": 103.276413,
+          "z": -640.26
+        },
+        "m_size": {
+          "x": 32.0,
+          "y": 17.8521118,
+          "z": 49.1165771
+        }
+      }
+    ],
+    "baseData": [
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "Box",
+        "index": 0,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 128.0,
+          "y": 24.0,
+          "z": 64.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -151.997986,
+          "y": 94.36339,
+          "z": -163.383575
+        },
+        "euler": {
+          "x": -4.26886828E-07,
+          "y": 135.452454,
+          "z": 345.752563
+        },
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "Box",
+        "index": 1,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 100.0,
+          "y": 12.0,
+          "z": 100.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -384.998,
+          "y": 107.433388,
+          "z": -62.78357
+        },
+        "euler": {
+          "x": 4.26886828E-07,
+          "y": 273.4496,
+          "z": 0.0
+        },
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "Box",
+        "index": 2,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 30.0,
+          "y": 30.0,
+          "z": 50.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -354.457977,
+          "y": 93.16338,
+          "z": -670.6136
+        },
+        "euler": {
+          "x": 353.9357,
+          "y": 211.652725,
+          "z": 356.273773
+        },
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "Box",
+        "index": 3,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 50.0,
+          "y": 12.0,
+          "z": 100.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -570.167969,
+          "y": 100.363388,
+          "z": -145.4336
+        },
+        "euler": {
+          "x": 3.91338517E-07,
+          "y": 203.696487,
+          "z": -1.70547892E-07
+        },
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "Box",
+        "index": 4,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 120.0,
+          "y": 10.0,
+          "z": 80.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": 52.6020279,
+          "y": 82.96339,
+          "z": -357.983582
+        },
+        "euler": {
+          "x": 0.0,
+          "y": 90.0,
+          "z": 0.0
+        },
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "PolyLine",
+        "index": 5,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -754.2,
+          "y": 57.7633858,
+          "z": -379.4
+        },
+        "euler": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "posList": [
+          {
+            "x": 202.808533,
+            "y": -324.225677
+          },
+          {
+            "x": 242.602234,
+            "y": -293.184418
+          },
+          {
+            "x": 175.68811,
+            "y": -191.098114
+          },
+          {
+            "x": 171.784485,
+            "y": -126.13327
+          },
+          {
+            "x": 160.9444,
+            "y": -113.055267
+          },
+          {
+            "x": 148.076172,
+            "y": -104.313263
+          },
+          {
+            "x": 97.4112549,
+            "y": -69.9973145
+          },
+          {
+            "x": 66.51465,
+            "y": -51.6854248
+          },
+          {
+            "x": 47.14453,
+            "y": -16.72464
+          },
+          {
+            "x": 39.67987,
+            "y": 20.1259155
+          },
+          {
+            "x": 31.45935,
+            "y": 27.77951
+          },
+          {
+            "x": -32.8864136,
+            "y": -3.66970825
+          },
+          {
+            "x": -6.253296,
+            "y": -53.280365
+          },
+          {
+            "x": 67.37933,
+            "y": -185.923615
+          }
+        ],
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "PolyLine",
+        "index": 6,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -330.4,
+          "y": 53.4633865,
+          "z": -633.3
+        },
+        "euler": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "posList": [
+          {
+            "x": 0.0,
+            "y": 0.0
+          },
+          {
+            "x": -25.3262024,
+            "y": -52.5787354
+          },
+          {
+            "x": 10.9614563,
+            "y": -79.015564
+          },
+          {
+            "x": 87.15372,
+            "y": -74.3116455
+          },
+          {
+            "x": 178.79982,
+            "y": -72.5904541
+          },
+          {
+            "x": 413.543762,
+            "y": -63.49951
+          },
+          {
+            "x": 400.3972,
+            "y": 2.44708252
+          },
+          {
+            "x": 360.410431,
+            "y": -5.56365967
+          },
+          {
+            "x": 339.3652,
+            "y": 22.0670776
+          },
+          {
+            "x": 333.746,
+            "y": 42.93335
+          },
+          {
+            "x": 317.920654,
+            "y": 41.0184326
+          },
+          {
+            "x": 284.405884,
+            "y": 23.7221069
+          },
+          {
+            "x": 263.080048,
+            "y": 25.0102539
+          },
+          {
+            "x": 229.159073,
+            "y": 33.168457
+          },
+          {
+            "x": 180.066727,
+            "y": 28.4453125
+          },
+          {
+            "x": 146.002655,
+            "y": 12.8445435
+          },
+          {
+            "x": 92.47339,
+            "y": -1.46807861
+          },
+          {
+            "x": 44.9832458,
+            "y": 6.35290527
+          },
+          {
+            "x": 30.0243835,
+            "y": -0.240783691
+          },
+          {
+            "x": 13.3924866,
+            "y": 3.302124
+          }
+        ],
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "Box",
+        "index": 7,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 50.0,
+          "y": 12.0,
+          "z": 75.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -460.687958,
+          "y": 105.693382,
+          "z": -70.99359
+        },
+        "euler": {
+          "x": 4.26886828E-07,
+          "y": 263.787354,
+          "z": 0.0
+        },
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "PolyLine",
+        "index": 8,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -273.4,
+          "y": 83.0,
+          "z": -635.73
+        },
+        "euler": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "posList": [
+          {
+            "x": 0.0,
+            "y": 0.0
+          },
+          {
+            "x": 10.2629395,
+            "y": -42.600647
+          },
+          {
+            "x": 40.69084,
+            "y": -54.0928345
+          },
+          {
+            "x": 109.154694,
+            "y": -56.08905
+          },
+          {
+            "x": 209.912521,
+            "y": -29.4443359
+          },
+          {
+            "x": 239.159943,
+            "y": 29.9026489
+          },
+          {
+            "x": 220.2529,
+            "y": 20.6276855
+          },
+          {
+            "x": 205.407654,
+            "y": 19.1530762
+          },
+          {
+            "x": 187.434784,
+            "y": 26.8595581
+          },
+          {
+            "x": 153.5022,
+            "y": 36.6832275
+          },
+          {
+            "x": 125.992874,
+            "y": 29.649292
+          },
+          {
+            "x": 98.61246,
+            "y": 14.4759521
+          },
+          {
+            "x": 53.0133362,
+            "y": 18.8942871
+          },
+          {
+            "x": 33.0021667,
+            "y": -1.4755249
+          }
+        ],
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "Box",
+        "index": 9,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 30.0,
+          "y": 30.0,
+          "z": 80.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -303.837982,
+          "y": 70.063385,
+          "z": -646.893555
+        },
+        "euler": {
+          "x": 0.0,
+          "y": 269.5074,
+          "z": 0.0
+        },
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "Box",
+        "index": 10,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 30.0,
+          "y": 24.0,
+          "z": 30.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -67.53797,
+          "y": 77.8533859,
+          "z": -187.663574
+        },
+        "euler": {
+          "x": 2.13443414E-07,
+          "y": 90.0,
+          "z": 5.32415152
+        },
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "Box",
+        "index": 11,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 120.0,
+          "y": 12.0,
+          "z": 200.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -289.297974,
+          "y": 114.863388,
+          "z": -17.0835876
+        },
+        "euler": {
+          "x": 4.26886828E-07,
+          "y": 273.4496,
+          "z": 0.0
+        },
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "PolyLine",
+        "index": 12,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -531.933533,
+          "y": 80.76338,
+          "z": -96.7362061
+        },
+        "euler": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "posList": [
+          {
+            "x": -39.2905273,
+            "y": 42.5697174
+          },
+          {
+            "x": -87.78088,
+            "y": -71.42746
+          },
+          {
+            "x": -72.82312,
+            "y": -86.24582
+          },
+          {
+            "x": -43.3499146,
+            "y": -62.682663
+          },
+          {
+            "x": -33.20691,
+            "y": -26.7647324
+          },
+          {
+            "x": -16.4945068,
+            "y": 10.9880829
+          },
+          {
+            "x": 14.9589233,
+            "y": 30.9319687
+          },
+          {
+            "x": 49.24765,
+            "y": 35.15576
+          },
+          {
+            "x": 89.6654053,
+            "y": 40.9024925
+          },
+          {
+            "x": 81.2568359,
+            "y": 72.79715
+          }
+        ],
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "PolyLine",
+        "index": 13,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -164.409821,
+          "y": 53.6633835,
+          "z": -294.899048
+        },
+        "euler": {
+          "x": 0.0,
+          "y": 90.0,
+          "z": 0.0
+        },
+        "posList": [
+          {
+            "x": -0.7824137,
+            "y": 20.5971031
+          },
+          {
+            "x": 0.6749834,
+            "y": 8.84165
+          },
+          {
+            "x": 3.86291027,
+            "y": 0.7224206
+          },
+          {
+            "x": 15.0128441,
+            "y": -9.7893
+          },
+          {
+            "x": 3.18157077,
+            "y": -66.33638
+          },
+          {
+            "x": -42.81134,
+            "y": -81.47597
+          },
+          {
+            "x": -128.8894,
+            "y": -65.78039
+          },
+          {
+            "x": -141.660431,
+            "y": -0.4720747
+          },
+          {
+            "x": -148.398972,
+            "y": 26.9010372
+          },
+          {
+            "x": -204.1123,
+            "y": 42.2141533
+          },
+          {
+            "x": -222.1935,
+            "y": 84.38533
+          },
+          {
+            "x": -221.080566,
+            "y": 123.506592
+          },
+          {
+            "x": -100.363091,
+            "y": 130.670074
+          },
+          {
+            "x": -93.4862442,
+            "y": 132.100769
+          },
+          {
+            "x": -78.2770157,
+            "y": 127.064423
+          },
+          {
+            "x": -77.3711,
+            "y": 113.685287
+          },
+          {
+            "x": -75.16529,
+            "y": 84.58781
+          },
+          {
+            "x": -106.048721,
+            "y": 83.51385
+          },
+          {
+            "x": -101.792374,
+            "y": 75.48827
+          },
+          {
+            "x": -90.8859558,
+            "y": 72.6462
+          },
+          {
+            "x": -3.96148825,
+            "y": 69.81757
+          },
+          {
+            "x": 6.08483744,
+            "y": 51.78617
+          }
+        ],
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "Box",
+        "index": 14,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 50.0,
+          "y": 12.0,
+          "z": 75.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -528.817932,
+          "y": 101.753387,
+          "z": -83.95358
+        },
+        "euler": {
+          "x": 4.26886828E-07,
+          "y": 227.24437,
+          "z": 0.0
+        },
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "Box",
+        "index": 15,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 32.0,
+          "y": 12.0,
+          "z": 60.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -120.297966,
+          "y": 76.7733841,
+          "z": -620.463562
+        },
+        "euler": {
+          "x": 358.897675,
+          "y": 261.131134,
+          "z": 352.971527
+        },
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "Box",
+        "index": 16,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 128.0,
+          "y": 24.0,
+          "z": 64.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -148.697968,
+          "y": 109.763382,
+          "z": -114.683594
+        },
+        "euler": {
+          "x": 0.0,
+          "y": 175.759216,
+          "z": 0.0
+        },
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "PolyLine",
+        "index": 17,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -754.2,
+          "y": 57.7633858,
+          "z": -379.4
+        },
+        "euler": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "posList": [
+          {
+            "x": 92.43262,
+            "y": 153.254745
+          },
+          {
+            "x": 123.066406,
+            "y": 175.416748
+          },
+          {
+            "x": 134.998413,
+            "y": 167.46405
+          },
+          {
+            "x": 157.473572,
+            "y": 173.715454
+          },
+          {
+            "x": 181.613953,
+            "y": 185.723328
+          },
+          {
+            "x": 124.477112,
+            "y": 225.840347
+          },
+          {
+            "x": 20.2272339,
+            "y": 151.239548
+          },
+          {
+            "x": -24.7245483,
+            "y": 80.46445
+          },
+          {
+            "x": -11.3439941,
+            "y": -8.598602
+          },
+          {
+            "x": 35.5224,
+            "y": 21.2597961
+          },
+          {
+            "x": 25.0093384,
+            "y": 44.1204529
+          },
+          {
+            "x": 41.211853,
+            "y": 96.50491
+          },
+          {
+            "x": 82.77417,
+            "y": 99.24216
+          },
+          {
+            "x": 100.827576,
+            "y": 105.624023
+          },
+          {
+            "x": 110.362854,
+            "y": 106.797424
+          },
+          {
+            "x": 109.7641,
+            "y": 119.389526
+          },
+          {
+            "x": 101.945435,
+            "y": 128.454651
+          }
+        ],
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "PolyLine",
+        "index": 18,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -419.344452,
+          "y": 94.96339,
+          "z": -68.42322
+        },
+        "euler": {
+          "x": 0.0,
+          "y": 54.0308037,
+          "z": 0.0
+        },
+        "posList": [
+          {
+            "x": -59.90132,
+            "y": 34.00317
+          },
+          {
+            "x": -114.494308,
+            "y": -50.1752167
+          },
+          {
+            "x": -46.9142532,
+            "y": -70.24231
+          },
+          {
+            "x": -37.4846878,
+            "y": -34.48296
+          },
+          {
+            "x": -22.2170219,
+            "y": -15.233798
+          },
+          {
+            "x": -24.18627,
+            "y": -4.253393
+          },
+          {
+            "x": -11.0315275,
+            "y": 2.8407023
+          },
+          {
+            "x": -0.873570561,
+            "y": 8.184926
+          },
+          {
+            "x": 7.75014925,
+            "y": 15.7414751
+          },
+          {
+            "x": 13.41177,
+            "y": 24.1918125
+          },
+          {
+            "x": 12.4605236,
+            "y": 41.0519676
+          },
+          {
+            "x": 9.276728,
+            "y": 64.94699
+          },
+          {
+            "x": -9.710492,
+            "y": 86.48179
+          },
+          {
+            "x": -39.3136559,
+            "y": 87.91493
+          }
+        ],
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "Box",
+        "index": 19,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 12.0,
+          "y": 5.0,
+          "z": 16.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": 28.3820267,
+          "y": 95.73338,
+          "z": -401.943573
+        },
+        "euler": {
+          "x": 0.0,
+          "y": 90.18901,
+          "z": 0.0
+        },
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "Box",
+        "index": 20,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 128.0,
+          "y": 24.0,
+          "z": 64.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -70.39797,
+          "y": 89.26338,
+          "z": -108.783569
+        },
+        "euler": {
+          "x": 0.0,
+          "y": 175.759216,
+          "z": 0.0
+        },
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "Box",
+        "index": 21,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 20.0,
+          "y": 5.0,
+          "z": 35.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": 92.63202,
+          "y": 93.4233856,
+          "z": -340.6236
+        },
+        "euler": {
+          "x": 0.0,
+          "y": 90.0,
+          "z": 0.0
+        },
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "Box",
+        "index": 22,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 128.0,
+          "y": 24.0,
+          "z": 128.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -204.697968,
+          "y": 70.44338,
+          "z": -237.583588
+        },
+        "euler": {
+          "x": 0.0,
+          "y": 90.0,
+          "z": 0.0
+        },
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      },
+      {
+        "functionType": "RepatriateZone",
+        "shapeType": "Box",
+        "index": 23,
+        "offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 32.0,
+          "y": 12.0,
+          "z": 48.0
+        },
+        "radius": 0.0,
+        "postion": {
+          "x": -220.59,
+          "y": 103.276413,
+          "z": -640.26
+        },
+        "euler": {
+          "x": 7.11397,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "uniqueId": 0,
+        "defaultOff": true,
+        "hasCondition": false,
+        "bufferDistance": 0.0
+      }
+    ],
+    "specificDatas": [
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      },
+      {
+        "$type": "Beyond.Gameplay.LevelFunctionAreaData+RepatriateZoneData, Gameplay.Beyond",
+        "lifeRatio": 1.0,
+        "useRepatriateZoneType": false
+      }
+    ],
+    "functionAreaConditions": []
+  },
+  "doodadGroup": [],
+  "mapVolumeDatas": [],
+  "dynamicOccludeAreas": [],
+  "autoSpawnedInteractives": [],
+  "levelWideConfigs": {}
+}

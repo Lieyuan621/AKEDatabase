@@ -29,9 +29,18 @@
         "id": "v2_weapon",
         "title": "武器",
         "description": "查看武器详细数据",
-        "priority": 8,
+        "priority": 208,
         "icon": "🔫",
         "contentFile": "/plugin/v2_weapon.html",
+        "hidden": true
+    },
+    {
+        "id": "v3_weapon",
+        "title": "武器",
+        "description": "从 TableCfg 查看武器详细数据",
+        "priority": 8,
+        "icon": "🔫",
+        "contentFile": "/plugin/v3_weapon.html",
         "hidden": false
     },
     {
@@ -48,9 +57,18 @@
         "id": "v2_character",
         "title": "角色",
         "description": "查看干员详细数据",
-        "priority": 7,
+        "priority": 207,
         "icon": "👤",
         "contentFile": "/plugin/v2_character.html",
+        "hidden": true
+    },
+    {
+        "id": "v3_character",
+        "title": "角色",
+        "description": "从 TableCfg 查看干员详细数据",
+        "priority": 7,
+        "icon": "👤",
+        "contentFile": "/plugin/v3_character.html",
         "hidden": false
     },
     {
@@ -67,9 +85,18 @@
         "id": "v2_enemy",
         "title": "敌人",
         "description": "查看敌人详细数据",
-        "priority": 9,
+        "priority": 209,
         "icon": "👾",
         "contentFile": "/plugin/v2_enemy.html",
+        "hidden": true
+    },
+    {
+        "id": "v3_enemy",
+        "title": "敌人",
+        "description": "从 TableCfg 查看敌人详细数据",
+        "priority": 9,
+        "icon": "👾",
+        "contentFile": "/plugin/v3_enemy.html",
         "hidden": false
     },
     {
@@ -86,9 +113,18 @@
         "id": "v2_equip",
         "title": "装备",
         "description": "查看装备详细数据",
-        "priority": 10,
+        "priority": 210,
         "icon": "🛡️",
         "contentFile": "/plugin/v2_equip.html",
+        "hidden": true
+    },
+    {
+        "id": "v3_equip",
+        "title": "装备",
+        "description": "从 TableCfg 查看装备详细数据",
+        "priority": 10,
+        "icon": "🛡️",
+        "contentFile": "/plugin/v3_equip.html",
         "hidden": false
     },
     {
@@ -105,9 +141,18 @@
         "id": "v2_item",
         "title": "物品",
         "description": "查看物品详细数据",
-        "priority": 20,
+        "priority": 220,
         "icon": "📦",
         "contentFile": "/plugin/v2_item.html",
+        "hidden": true
+    },
+    {
+        "id": "v3_item",
+        "title": "物品",
+        "description": "从 TableCfg 查看物品详细数据",
+        "priority": 20,
+        "icon": "📦",
+        "contentFile": "/plugin/v3_item.html",
         "hidden": false
     },
     {
@@ -116,7 +161,17 @@
         "description": "查看蚀刻章数据",
         "priority": 22,
         "icon": "🏅",
-        "contentFile": "/plugin/achievement.html"
+        "contentFile": "/plugin/achievement.html",
+        "hidden": true,
+        "disabled": true
+    },
+    {
+        "id": "v3_achievement",
+        "title": "奖章",
+        "description": "从 TableCfg 查看蚀刻章数据",
+        "priority": 22,
+        "icon": "🏅",
+        "contentFile": "/plugin/v3_achievement.html"
     },
     {
         "id": "dungeon",
@@ -132,9 +187,18 @@
         "id": "v2_dungeon",
         "title": "副本",
         "description": "查看副本详细数据",
-        "priority": 21,
+        "priority": 221,
         "icon": "⚔️",
         "contentFile": "/plugin/v2_dungeon.html",
+        "hidden": true
+    },
+    {
+        "id": "v3_dungeon",
+        "title": "副本",
+        "description": "从 TableCfg 查看副本详细数据",
+        "priority": 21,
+        "icon": "⚔️",
+        "contentFile": "/plugin/v3_dungeon.html",
         "hidden": false
     },
     {
@@ -159,15 +223,34 @@
         "description": "查看活动信息",
         "priority": 11,
         "icon": "🎉",
-        "contentFile": "plugin/activity.html"
+        "contentFile": "plugin/activity.html",
+        "hidden": true,
+        "disabled": true
+    },
+    {
+        "id": "v3_activity",
+        "title": "活动",
+        "description": "从 TableCfg 查看活动信息",
+        "priority": 11,
+        "icon": "🎉",
+        "contentFile": "/plugin/v3_activity.html"
     },
     {
         "id": "v2_cc",
         "title": "危机合约",
         "description": "查看危机合约数据",
+        "priority": 201,
+        "icon": "⚔️",
+        "contentFile": "/plugin/v2_cc.html",
+        "hidden": true
+    },
+    {
+        "id": "v3_cc",
+        "title": "危机合约",
+        "description": "从 TableCfg 查看危机合约数据",
         "priority": 1,
         "icon": "⚔️",
-        "contentFile": "/plugin/v2_cc.html"
+        "contentFile": "/plugin/v3_cc.html"
     },
     {
         "id": "buff",

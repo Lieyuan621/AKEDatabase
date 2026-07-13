@@ -205,7 +205,6 @@
                 container.appendChild(item);
             });
 
-            const activeExists = filtered.some(a => a.activityId === activeActivityId);
             if (window.__deepLinkId) {
                 const deepItem = filtered.find(c => c.activityId === window.__deepLinkId);
                 if (deepItem) {
@@ -218,6 +217,7 @@
                 }
                 window.__deepLinkId = null;
             }
+            const activeExists = filtered.some(a => a.activityId === activeActivityId);
             if (!activeExists && filtered.length > 0) {
                 activeActivityId = filtered[0].activityId;
                 const firstItem = container.querySelector('.activity-item');
