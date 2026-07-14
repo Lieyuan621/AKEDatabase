@@ -296,12 +296,58 @@
     }
 
     async function itemDetail(id) {
-        const [items, types, jumps, composites, showing] = await Promise.all([
-            table('ItemTable'), table('ItemTypeTable'), table('SystemJumpTable'), table('ItemIconCompositeTable'), table('ItemShowingTypeTable')
+        const [items, types, jumps, composites, showing, useItems, equipItems, machineCrafts, machineCraftGroups,
+            manualCrafts, hubCrafts, buildings, equipFormulas, growFormulas, seedFormulas, spaceshipFormulas] = await Promise.all([
+            table('ItemTable'), table('ItemTypeTable'), table('SystemJumpTable'), table('ItemIconCompositeTable'), table('ItemShowingTypeTable'),
+            table('UseItemTable'), table('EquipItemTable'), table('FactoryMachineCraftTable'), table('FactoryMachineCraftGroupTable'),
+            table('FactoryManualCraftTable'), table('FactoryHubCraftTable'), table('FactoryBuildingTable'), table('EquipFormulaTable'),
+            table('SpaceshipGrowCabinFormulaTable'), table('SpaceshipGrowCabinSeedFormulaTable'), table('SpaceshipManufactureFormulaTable')
         ]);
         const item = items[id] || {};
+        const flattenGroups = rows => (rows || []).flatMap(row => row.group || []);
+        const recipeRows = [];
+        const addRecipe = (recipeId, kind, name, inputs, outputs, meta, durationMs) => {
+            const normalizedInputs = (inputs || []).filter(row => row?.id);
+            const normalizedOutputs = (outputs || []).filter(row => row?.id);
+            if (!normalizedInputs.some(row => row.id === id) && !normalizedOutputs.some(row => row.id === id)) return;
+            recipeRows.push({ recipeId, kind, name, inputs: normalizedInputs, outputs: normalizedOutputs,
+                meta: meta || '', durationMs: durationMs || 0 });
+        };
+        Object.entries(machineCrafts).forEach(([recipeId, row]) => {
+            const building = buildings[row.machineId] || {};
+            const msPerRound = machineCraftGroups[row.formulaGroupId]?.msPerRound || 0;
+            addRecipe(recipeId, '集成工业生产', text(row.formulaDesc, recipeId), flattenGroups(row.ingredients), flattenGroups(row.outcomes),
+                text(building.name, row.machineId), row.progressRound * msPerRound);
+        });
+        Object.entries(manualCrafts).forEach(([recipeId, row]) => {
+            addRecipe(recipeId, '简易制作', text(row.name, recipeId), row.ingredients, row.outcomes, '');
+        });
+        Object.entries(hubCrafts).forEach(([recipeId, row]) => {
+            addRecipe(recipeId, '枢纽制造', recipeId, row.ingredients, row.outcomes, row.usableLevel ? `可用等级 ${row.usableLevel}` : '');
+        });
+        Object.entries(equipFormulas).forEach(([recipeId, row]) => {
+            const inputs = (row.costItemId || []).map((itemId, index) => ({ id: itemId, count: row.costItemNum?.[index] || 0 }));
+            if (row.costGoldId && row.costGoldNum) inputs.unshift({ id: row.costGoldId, count: row.costGoldNum });
+            addRecipe(recipeId, '装备制造', recipeId, inputs, [{ id: row.outcomeEquipId, count: 1 }], '');
+        });
+        Object.entries(growFormulas).forEach(([recipeId, row]) => {
+            addRecipe(recipeId, '培养舱种植', recipeId, [{ id: row.seedItemId, count: row.seedItemCount }],
+                [{ id: row.outcomeItemId, count: row.outcomeItemCount }], row.level ? `设施等级 ${row.level}` : '', row.totalProgress);
+        });
+        Object.entries(seedFormulas).forEach(([recipeId, row]) => {
+            addRecipe(recipeId, '培养舱采种', recipeId, [{ id: row.materialItemId, count: row.materialItemCount }],
+                [{ id: row.outcomeseedItemId, count: row.outcomeseedItemCount }], row.level ? `设施等级 ${row.level}` : '');
+        });
+        Object.entries(spaceshipFormulas).forEach(([recipeId, row]) => {
+            addRecipe(recipeId, '飞船制造', recipeId, [], [{ id: row.outcomeItemId, count: 1 }],
+                row.level ? `设施等级 ${row.level}` : '', row.totalProgress);
+        });
+        recipeRows.sort((a, b) => a.kind.localeCompare(b.kind, 'zh-CN') || a.recipeId.localeCompare(b.recipeId, 'en'));
+        const recipeItemIds = new Set(recipeRows.flatMap(row => row.inputs.concat(row.outputs).map(entry => entry.id)));
         return { itemId: id, itemtable: item, itemtypetable: types[item.type] || {}, systemjumptable: pick(jumps, item.obtainWayIds || []),
-            itemiconcompositetable: composites[item.iconCompositeId], itemshowingtypetable: showing[item.showingType] };
+            itemiconcompositetable: composites[item.iconCompositeId], itemshowingtypetable: showing[item.showingType],
+            useitemtable: useItems[id], equipitemtable: equipItems[id], craftrecipes: recipeRows,
+            craftitemtable: pick(items, Array.from(recipeItemIds)) };
     }
 
     async function dungeonManifest() {

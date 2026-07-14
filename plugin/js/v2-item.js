@@ -272,6 +272,24 @@
             }
         }
 
+        function navigateToItem(itemId) {
+            const item = allItems.find(row => row.itemId === itemId) || rawAllItems.find(row => row.itemId === itemId);
+            const detailContainer = document.getElementById('v2itemDetail');
+            if (!item || !detailContainer) return false;
+
+            activeItemId = item.itemId;
+            document.querySelectorAll('.v2i-item').forEach(element => element.classList.remove('active'));
+            const sidebarItem = document.querySelector(`.v2i-item[data-item-id="${CSS.escape(item.itemId)}"]`);
+            if (sidebarItem) {
+                sidebarItem.classList.add('active');
+                sidebarItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            }
+            if (window.__akeRouter) window.__akeRouter.updateUrl('v2_item', item.itemId);
+            loadItemDetail(item, detailContainer);
+            detailContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            return true;
+        }
+
         function renderObtainWays(data) {
             const it = data.itemtable || {};
             const sj = data.systemjumptable || {};
@@ -319,6 +337,125 @@
                     </div>
                 </div>
             `;
+        }
+
+        function replaceEffectPlaceholders(desc, useItem, equipItem) {
+            const values = {};
+            const scopedValues = {};
+            (useItem?.useActions || []).forEach(action => {
+                [action.buffBBData, action.skillBBData].forEach(data => {
+                    (data?.blackboard || []).forEach(row => {
+                        const key = String(row.key).toLowerCase();
+                        const value = row.valueStr || row.value;
+                        values[key] = value;
+                        const scopeId = data.buffId || data.skillId;
+                        if (scopeId) scopedValues[`${String(scopeId).toLowerCase()}\\${key}`] = value;
+                    });
+                });
+            });
+            (equipItem?.condParams || []).forEach((value, index) => {
+                const numeric = Number(value);
+                if (Number.isFinite(numeric)) values[`param${index + 1}`] = numeric;
+            });
+            if (equipItem?.chargeCount !== undefined) values.count = equipItem.chargeCount;
+            return String(desc || '').replace(/\{([^}]+)\}/g, (match, expression) => {
+                const parts = expression.split(':');
+                let source = parts[0].replace(/\s+/g, '');
+                const format = parts[1] || '';
+                let missingScopedValue = false;
+                source = source.replace(/([a-zA-Z_][a-zA-Z0-9_]*)\\([a-zA-Z_][a-zA-Z0-9_]*)/g, (scopedMatch, scopeId, key) => {
+                    const scopedKey = `${scopeId.toLowerCase()}\\${key.toLowerCase()}`;
+                    if (!(scopedKey in scopedValues)) {
+                        missingScopedValue = true;
+                        return scopedMatch;
+                    }
+                    return `(${Number(scopedValues[scopedKey])})`;
+                });
+                if (missingScopedValue) return match;
+                const names = source.match(/[a-zA-Z_][a-zA-Z0-9_]*/g) || [];
+                if (names.some(name => !(name.toLowerCase() in values))) return match;
+                let resolved = source;
+                names.forEach(name => { resolved = resolved.replace(new RegExp(`\\b${name}\\b`, 'g'), `(${Number(values[name.toLowerCase()])})`); });
+                let result;
+                try {
+                    result = Function(`"use strict"; return (${resolved});`)();
+                } catch {
+                    return match;
+                }
+                if (!Number.isFinite(result)) return match;
+                if (format.includes('%')) {
+                    const precision = format.includes('.') ? format.split('.')[1].replace('%', '').length : 0;
+                    return `${(result * 100).toFixed(precision)}%`;
+                }
+                const precision = format.includes('.') ? format.split('.')[1].length : 0;
+                return precision ? result.toFixed(precision) : String(result);
+            });
+        }
+
+        function renderUseEffects(data) {
+            const useItem = data.useitemtable;
+            const equipItem = data.equipitemtable;
+            if (!useItem && !equipItem) return '';
+            let html = '<div class="v2i-section"><h3>使用效果</h3><div class="v2i-effect-list">';
+            if (useItem?.itemUseDesc?.text) {
+                const desc = replaceEffectPlaceholders(useItem.itemUseDesc.text, useItem, equipItem);
+                html += `<div class="v2i-effect-card"><div class="v2i-effect-title">使用后效果</div><div class="v2i-effect-desc">${parseText(desc)}</div>`;
+                if (useItem.duration > 0) html += `<div class="v2i-effect-meta">持续时间 ${valueTip(`${useItem.duration} 秒`, useItem.duration, 'duration')}</div>`;
+                html += '</div>';
+            }
+            if (equipItem) {
+                const descriptions = [equipItem.equipDesc?.text, equipItem.equipExtraDesc?.text].filter(Boolean);
+                html += `<div class="v2i-effect-card"><div class="v2i-effect-title">装备后效果</div>`;
+                descriptions.forEach(desc => {
+                    html += `<div class="v2i-effect-desc">${parseText(replaceEffectPlaceholders(desc, useItem, equipItem))}</div>`;
+                });
+                const meta = [];
+                if (equipItem.chargeCount !== undefined) meta.push(`使用次数 ${equipItem.chargeCount}`);
+                if (equipItem.cooldown > 0) meta.push(`冷却 ${equipItem.cooldown} 秒`);
+                if (equipItem.castTime > 0) meta.push(`施放 ${equipItem.castTime} 秒`);
+                if (equipItem.recoverUpperCount > 0) meta.push(`可恢复 ${equipItem.recoverUpperCount} 次`);
+                if (equipItem.recoverTime > 0) meta.push(`恢复间隔 ${equipItem.recoverTime} 秒`);
+                if (meta.length) html += `<div class="v2i-effect-meta">${meta.join(' · ')}</div>`;
+                html += '</div>';
+            }
+            return html + '</div></div>';
+        }
+
+        function renderCraftItem(entry, itemTable, currentId) {
+            const item = itemTable[entry.id] || {};
+            const name = item.name?.text || entry.id;
+            const iconId = item.iconId || entry.id;
+            const currentClass = entry.id === currentId ? ' is-current' : '';
+            return `<a class="v2i-craft-item${currentClass}" href="/?plugin=v3_item&id=${encodeURIComponent(entry.id)}" data-item-id="${entry.id}" title="${entry.id}">
+                <img src="/public/images/item/itemicon/${iconId}.png" onerror="this.onerror=null; this.src='';">
+                <span class="v2i-craft-item-name">${name}</span><strong>×${entry.count ?? 1}</strong>
+            </a>`;
+        }
+
+        function renderCraftRecipes(data) {
+            const recipes = data.craftrecipes || [];
+            if (!recipes.length) return '';
+            const itemTable = data.craftitemtable || {};
+            const incoming = recipes.filter(recipe => recipe.outputs.some(entry => entry.id === data.itemId));
+            const outgoing = recipes.filter(recipe => recipe.inputs.some(entry => entry.id === data.itemId));
+            const formatDuration = durationMs => {
+                if (!durationMs) return '';
+                let seconds = Math.round(durationMs / 1000);
+                const days = Math.floor(seconds / 86400);
+                seconds %= 86400;
+                const hours = Math.floor(seconds / 3600);
+                seconds %= 3600;
+                const minutes = Math.floor(seconds / 60);
+                seconds %= 60;
+                return [[days, '天'], [hours, '小时'], [minutes, '分'], [seconds, '秒']]
+                    .filter(([value]) => value).map(([value, unit]) => `${value}${unit}`).join('') || '不足 1 秒';
+            };
+            const renderGroup = (title, rows) => rows.length ? `<div class="v2i-craft-group"><h4>${title}</h4>${rows.map(recipe => `
+                <div class="v2i-craft-card">
+                    <div class="v2i-craft-head"><span class="v2i-craft-kind">${recipe.kind}</span><span>${recipe.name || recipe.recipeId}</span>${recipe.meta ? `<small>${recipe.meta}</small>` : ''}<small>制作时间 ${recipe.durationMs ? formatDuration(recipe.durationMs) : '未配置'}</small></div>
+                    <div class="v2i-craft-flow"><div class="v2i-craft-side">${recipe.inputs.length ? recipe.inputs.map(entry => renderCraftItem(entry, itemTable, data.itemId)).join('') : '<span class="v2i-craft-empty">无物品材料</span>'}</div><span class="v2i-craft-arrow">→</span><div class="v2i-craft-side">${recipe.outputs.map(entry => renderCraftItem(entry, itemTable, data.itemId)).join('')}</div></div>
+                </div>`).join('')}</div>` : '';
+            return `<div class="v2i-section"><h3>合成路径</h3><div class="v2i-craft-groups">${renderGroup('合成来源', incoming)}${renderGroup('可用于合成', outgoing)}</div></div>`;
         }
 
         function renderExtraTables(data) {
@@ -402,7 +539,9 @@
 
             if (desc) html += `<div class="v2i-desc">${parseText(desc)}</div>`;
             if (showDeco) html += `<div class="v2i-deco-desc">${parseText(decoDesc)}</div>`;
+            html += renderUseEffects(data);
             html += renderProperties(it, itt);
+            html += renderCraftRecipes(data);
             html += renderObtainWays(data);
             html += renderExtraTables(data);
             html += '</div>';
@@ -437,6 +576,11 @@
             });
             if (mobileOverlay) mobileOverlay.addEventListener('click', (e) => {
                 if (e.target === mobileOverlay) closeMobileList();
+            });
+            document.getElementById('v2itemDetail')?.addEventListener('click', event => {
+                const link = event.target.closest('.v2i-craft-item[data-item-id]');
+                if (!link) return;
+                if (navigateToItem(link.dataset.itemId)) event.preventDefault();
             });
 
             window.addEventListener('globalConfigChanged', () => {
