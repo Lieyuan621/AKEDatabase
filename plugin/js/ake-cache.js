@@ -151,7 +151,7 @@
             .then(registration => {
                 const notify = worker => worker?.postMessage({
                     type: 'AKE_VERSION',
-                    cacheVersion: getCacheVersion(version),
+                    publicCacheVersion: getPublicCacheVersion(version),
                     hotfixVersion: version.hotfixversion
                 });
                 notify(registration.active);
@@ -207,7 +207,7 @@
             typeof value.updatedAt === 'string';
     }
 
-    function getCacheVersion(version) {
+    function getPublicCacheVersion(version) {
         return version ? `${version.gameversion}|${version.hotfixversion}` : '';
     }
 
@@ -264,16 +264,22 @@
         });
     }
 
-    async function prepareDatabase(db, cacheVersion) {
-        if (!db || !cacheVersion) return null;
+    async function prepareDatabase(db, version) {
+        if (!db || !version) return null;
+        const publicCacheVersion = getPublicCacheVersion(version);
         try {
             const readTx = db.transaction(META_STORE, 'readonly');
-            const meta = await idbRequest(readTx.objectStore(META_STORE).get('activeCacheVersion'));
-            if (meta?.value === cacheVersion) return db;
+            const metaStore = readTx.objectStore(META_STORE);
+            const [storedAppVersion, storedPublicCacheVersion] = await Promise.all([
+                idbRequest(metaStore.get('activeAppVersion')),
+                idbRequest(metaStore.get('activePublicCacheVersion'))
+            ]);
+            if (storedAppVersion?.value === version.appversion && storedPublicCacheVersion?.value === publicCacheVersion) return db;
             await new Promise((resolve, reject) => {
                 const tx = db.transaction([RESPONSE_STORE, META_STORE], 'readwrite');
                 tx.objectStore(RESPONSE_STORE).clear();
-                tx.objectStore(META_STORE).put({ key: 'activeCacheVersion', value: cacheVersion });
+                tx.objectStore(META_STORE).put({ key: 'activeAppVersion', value: version.appversion });
+                tx.objectStore(META_STORE).put({ key: 'activePublicCacheVersion', value: publicCacheVersion });
                 tx.oncomplete = resolve;
                 tx.onerror = () => reject(tx.error);
                 tx.onabort = () => reject(tx.error);
@@ -372,7 +378,7 @@
     const databasePromise = Promise.all([versionPromise, openDatabase()]).then(async ([version, db]) => ({
         version,
         db: await Promise.race([
-            prepareDatabase(db, getCacheVersion(version)),
+            prepareDatabase(db, version),
             new Promise(resolve => setTimeout(() => resolve(null), 5000))
         ])
     }));
@@ -411,7 +417,7 @@
         }
 
         const canonicalUrl = url.pathname + url.search;
-        const cacheVersion = getCacheVersion(version);
+        const cacheVersion = getPublicCacheVersion(version);
         const key = `${cacheVersion}|${canonicalUrl}`;
 
         if (memoryResponses.has(key)) {
@@ -504,16 +510,18 @@
     };
 
     window.akeLoadMaps = function () {
-        if (!window.__akeMapsPromise) {
-            window.__akeMapsPromise = window.akeFetch('/public/CH/maps.json').then(response => {
+        const directory = window.akeI18n?.getLanguageInfo?.().directory || 'CH';
+        if (!window.__akeMapsPromises) window.__akeMapsPromises = {};
+        if (!window.__akeMapsPromises[directory]) {
+            window.__akeMapsPromises[directory] = window.akeFetch(`/public/${directory}/maps.json`).then(response => {
                 if (!response.ok) throw new Error(`无法加载 maps.json (HTTP ${response.status})`);
                 return response.json();
             }).catch(error => {
-                window.__akeMapsPromise = null;
+                window.__akeMapsPromises[directory] = null;
                 throw error;
             });
         }
-        return window.__akeMapsPromise;
+        return window.__akeMapsPromises[directory];
     };
 
     window.addEventListener('globalConfigChanged', () => {

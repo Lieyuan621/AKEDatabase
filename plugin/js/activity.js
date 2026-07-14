@@ -1,4 +1,6 @@
 (function () {
+        const t = window.akeI18n.scope('modules.activity');
+        const commonT = window.akeI18n.scope('common');
         let allActivities = [];
         let rawAllActivities = [];
         let activeActivityId = null;
@@ -9,32 +11,37 @@
 
         const IMAGE_BASE_PATH = '/public/images/';
 
-        const TYPE_MAP = {
-            1: '常规活动',
-            2: '签到',
-            3: '等级奖励',
-            4: '阶段性活动',
-            5: '理智减耗',
-            6: '新手卡池',
-            7: '秘境行者',
-            8: '高难副本',
-            9: '作战演练',
-            10: '角色指南',
-            11: '回归活动',
-            12: '物资供给',
-            13: '区域指南',
-            16: '每周事务',
-            17: '生存特训',
-            18: '净流涤尘',
-            19: '新手赠礼',
-            25: '角色养成',
-            26: '特殊活动',
-            27: '限时挑战',
-            28: '版本活动',
-            29: '联动活动',
-            30: '危机合约',
-            31: '周期活动'
+        const TYPE_KEY_MAP = {
+            1: 'regular',
+            2: 'signIn',
+            3: 'levelRewards',
+            4: 'staged',
+            5: 'staminaDiscount',
+            6: 'beginnerBanner',
+            7: 'mysteryWanderer',
+            8: 'highDifficulty',
+            9: 'combatTraining',
+            10: 'characterGuide',
+            11: 'returningPlayer',
+            12: 'supply',
+            13: 'areaGuide',
+            16: 'weeklyTasks',
+            17: 'survivalTraining',
+            18: 'purification',
+            19: 'beginnerGift',
+            25: 'characterDevelopment',
+            26: 'special',
+            27: 'limitedChallenge',
+            28: 'version',
+            29: 'collaboration',
+            30: 'contingencyContract',
+            31: 'recurring'
         };
+
+        function getTypeName(type) {
+            const key = TYPE_KEY_MAP[type];
+            return key ? t(`types.${key}`) : t('typeFallback', { type });
+        }
 
         function getCurrentShowHidden() {
             return window.akeData?.getConfig().showHidden ?? false;
@@ -48,14 +55,14 @@
             const now = new Date();
             const open = openTime ? new Date(openTime) : null;
             const close = closeTime ? new Date(closeTime) : null;
-            if (!close) return { text: '永久', class: 'status-permanent' };
-            if (close && now > close) return { text: '已结束', class: 'status-closed' };
-            if (open && now < open) return { text: '即将开始', class: 'status-upcoming' };
-            return { text: '进行中', class: 'status-active' };
+            if (!close) return { text: t('statuses.permanent'), class: 'status-permanent' };
+            if (close && now > close) return { text: t('statuses.closed'), class: 'status-closed' };
+            if (open && now < open) return { text: t('statuses.upcoming'), class: 'status-upcoming' };
+            return { text: t('statuses.active'), class: 'status-active' };
         }
 
         function formatTime(timeStr) {
-            if (!timeStr) return '永久';
+            if (!timeStr) return t('dates.permanent');
             return timeStr.replace(/\s/g, ' ');
         }
 
@@ -65,15 +72,16 @@
             const now = new Date();
             if (isNaN(target)) return '';
             const diff = target - now;
-            if (diff <= 0) return isEnd ? '已结束' : '已开始';
+            if (diff <= 0) return isEnd ? t('countdown.ended') : t('countdown.started');
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff % (86400000)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (3600000)) / (1000 * 60));
-            let text = '';
-            if (days > 0) text += `${days}天`;
-            if (hours > 0 || days > 0) text += `${hours}小时`;
-            text += `${minutes}分钟`;
-            return isEnd ? `距结束还有 ${text}` : `距开始还有 ${text}`;
+            const parts = [];
+            if (days > 0) parts.push(commonT('time.days', { count: days }));
+            if (hours > 0 || days > 0) parts.push(commonT('time.hours', { count: hours }));
+            parts.push(commonT('time.minutes', { count: minutes }));
+            const duration = parts.join(t('countdown.unitSeparator'));
+            return isEnd ? t('countdown.untilEnd', { duration }) : t('countdown.untilStart', { duration });
         }
 
         function filterActivities(activities) {
@@ -100,7 +108,7 @@
             const sortedTypes = Array.from(existingTypes).sort((a, b) => a - b);
             container.innerHTML = '';
             sortedTypes.forEach(type => {
-                const typeName = TYPE_MAP[type] || `类型${type}`;
+                const typeName = getTypeName(type);
                 const btn = document.createElement('span');
                 btn.className = `filter-btn ${selectedTypes.has(type) ? 'active' : ''}`;
                 btn.dataset.type = type;
@@ -123,11 +131,11 @@
             const container = document.getElementById('activityStatusFilter');
             if (!container) return;
             const statuses = [
-                { value: null, label: '全部' },
-                { value: 'status-active', label: '进行中' },
-                { value: 'status-upcoming', label: '即将开始' },
-                { value: 'status-closed', label: '已结束' },
-                { value: 'status-permanent', label: '永久' }
+                { value: null, label: commonT('all') },
+                { value: 'status-active', label: t('statuses.active') },
+                { value: 'status-upcoming', label: t('statuses.upcoming') },
+                { value: 'status-closed', label: t('statuses.closed') },
+                { value: 'status-permanent', label: t('statuses.permanent') }
             ];
             container.innerHTML = '';
             statuses.forEach(s => {
@@ -163,7 +171,7 @@
         function renderActivityOverview(items, container) {
             const statusOrder = { 'status-active': 0, 'status-upcoming': 1, 'status-closed': 2, 'status-permanent': 3 };
             window.AKEModuleOverview.render(container, {
-                title: '活动总览', description: '按当前状态分组，展示活动类型与开放时间',
+                title: t('overview.title'), description: t('overview.description'),
                 group: item => { const status = getActivityStatus(item.openTime, item.closeTime); return { id: status.class, name: status.text, order: statusOrder[status.class] }; },
                 onReset: () => { activeActivityId = null; },
                 onSelect: item => { activeActivityId = item.activityId; renderActivityList(); },
@@ -171,8 +179,8 @@
                 items: items.map(item => {
                     const status = getActivityStatus(item.openTime, item.closeTime);
                     const outlines = { 'status-active': 'status-active', 'status-upcoming': 'status-upcoming', 'status-closed': 'status-closed' };
-                    return { ...item, id: item.activityId, image: item.tabImg, fallback: 'EVENT', outline: outlines[status.class],
-                        tags: [TYPE_MAP[item.type] || `类型${item.type}`, item.openTime ? `开放 ${item.openTime.split(' ')[0]}` : '常驻内容'] };
+                    return { ...item, id: item.activityId, image: item.tabImg, fallback: t('overview.fallback'), outline: outlines[status.class],
+                        tags: [getTypeName(item.type), item.openTime ? t('dates.opensOn', { date: item.openTime.split(' ')[0] }) : t('dates.permanentContent')] };
                 })
             });
         }
@@ -185,8 +193,8 @@
             const filtered = filterActivities(allActivities);
             container.innerHTML = '';
             if (filtered.length === 0) {
-                container.innerHTML = '<div class="loader">无匹配活动</div>';
-                if (detailContainer) detailContainer.innerHTML = '<div class="loader">请选择活动</div>';
+                container.innerHTML = `<div class="loader">${t('noMatches')}</div>`;
+                if (detailContainer) detailContainer.innerHTML = `<div class="loader">${t('select')}</div>`;
                 activeActivityId = null;
                 return;
             }
@@ -267,17 +275,17 @@
         }
 
         async function loadActivityDetail(activity, container) {
-            container.innerHTML = '<div class="loader">加载活动数据...</div>';
+            container.innerHTML = `<div class="loader">${t('loading')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(activity.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data, activity);
             } catch (err) {
-                container.innerHTML = `<div class="error-message">加载失败: ${err.message}</div>`;
+                container.innerHTML = `<div class="error-message">${t('loadFailed', { message: err.message })}</div>`;
             }
         }
 
         function renderRewards(rewardList) {
-            if (!rewardList || rewardList.length === 0) return '<p>无奖励</p>';
+            if (!rewardList || rewardList.length === 0) return `<p>${t('rewards.none')}</p>`;
             let html = '<div class="reward-grid">';
             rewardList.forEach(reward => {
                 const iconSrc = reward.picpath || '';
@@ -285,7 +293,7 @@
                     <div class="reward-item">
                         <img class="reward-icon" src="${iconSrc}" onerror="this.onerror=null; this.src='';">
                         <span class="reward-name">${reward.name}</span>
-                        <span class="reward-count">x${reward.count}</span>
+                        <span class="reward-count">${t('rewards.count', { count: reward.count })}</span>
                     </div>
                 `;
             });
@@ -295,7 +303,7 @@
 
         function renderStages(stageList) {
             if (!stageList || Object.keys(stageList).length === 0) return '';
-            let html = '<div class="stage-section"><h3>关卡列表</h3><div class="stage-list">';
+            let html = `<div class="stage-section"><h3>${t('sections.stages')}</h3><div class="stage-list">`;
             const stages = Object.values(stageList);
             stages.sort((a, b) => (a.sortId || 0) - (b.sortId || 0));
             stages.forEach(function (stage) {
@@ -303,14 +311,17 @@
                 if (stage.opentime && stage.opentime.trim() !== '') {
                     const startTimeStr = formatTime(stage.opentime);
                     const countdown = getCountdownText(stage.opentime, false);
-                    stageTimeHtml = '<div class="stage-time">开放时间：' + startTimeStr + (countdown ? '（' + countdown + '）' : '') + '</div>';
+                    const stageTime = countdown
+                        ? t('dates.stageOpenTimeWithCountdown', { time: startTimeStr, countdown })
+                        : t('dates.stageOpenTime', { time: startTimeStr });
+                    stageTimeHtml = `<div class="stage-time">${stageTime}</div>`;
                 }
                 html += '<div class="stage-card">' +
                     '<div class="stage-name">' + stage.name + '</div>' +
                     '<div class="stage-desc">' + parseText(stage.desc || '') + '</div>' +
                     stageTimeHtml +
                     '<div class="stage-rewards">' +
-                    '<div class="stage-rewards-title">关卡奖励</div>' +
+                    `<div class="stage-rewards-title">${t('rewards.stage')}</div>` +
                     renderRewards(stage.rewarddetail || []) +
                     '</div>' +
                     '</div>';
@@ -333,12 +344,12 @@
 
             let conditionsHtml = '';
             if (data.conditions && data.conditions.length) {
-                conditionsHtml = `<div class="detail-section"><h3>参与条件</h3><ul class="conditions-list">${data.conditions.map(c => `<li>${parseText(c)}</li>`).join('')}</ul></div>`;
+                conditionsHtml = `<div class="detail-section"><h3>${t('sections.conditions')}</h3><ul class="conditions-list">${data.conditions.map(c => `<li>${parseText(c)}</li>`).join('')}</ul></div>`;
             }
 
             let rewardsHtml = '';
             if (data.rewarddetail && data.rewarddetail.length) {
-                rewardsHtml = `<div class="detail-section"><h3>活动奖励</h3>${renderRewards(data.rewarddetail)}</div>`;
+                rewardsHtml = `<div class="detail-section"><h3>${t('rewards.activity')}</h3>${renderRewards(data.rewarddetail)}</div>`;
             }
 
             let stagesHtml = renderStages(data.stageList);
@@ -352,7 +363,7 @@
                                 <span class="detail-status ${status.class}">${status.text}</span>
                             </div>
                             <div class="detail-time">
-                                <span>开放时间：${openTimeStr} 至 ${closeTimeStr}</span>
+                                <span>${t('dates.range', { start: openTimeStr, end: closeTimeStr })}</span>
                             </div>
                             ${countdownHtml}
                             <div class="detail-desc">${parseText(data.desc || '')}</div>

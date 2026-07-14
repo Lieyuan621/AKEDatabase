@@ -1,4 +1,5 @@
 (function() {
+        const t = window.akeI18n.scope('modules.achievement');
         let allCategories = [];
         let rawAllCategories = [];
         let activeCategoryId = null;
@@ -75,13 +76,13 @@
 
         function renderAchievementOverview(items, container) {
             window.AKEModuleOverview.render(container, {
-                title: '奖章总览', description: '按分类展示全部奖章数据与特殊奖章统计',
-                group: () => ({ id: 'categories', name: '奖章分类', order: 0 }),
+                title: t('overview.title'), description: t('overview.description'),
+                group: () => ({ id: 'categories', name: t('overview.group'), order: 0 }),
                 onReset: () => { activeCategoryId = null; },
                 onSelect: item => { activeCategoryId = item.categoryId; renderCategoryList(); },
                 sidebarSelector: item => `.category-item[data-cat-id="${CSS.escape(item.categoryId)}"]`,
-                items: items.map(item => ({ ...item, id: item.categoryId, image: item.icon, fallback: 'MEDAL',
-                    tags: [`${item.achievementCount || 0} 枚`, `${item.groupCount || 0} 个分组`, item.platedCount ? `${item.platedCount} 枚可镀层` : ''] }))
+                items: items.map(item => ({ ...item, id: item.categoryId, image: item.icon, fallback: t('overview.fallback'),
+                    tags: [t('overview.achievementCount', { count: item.achievementCount || 0 }), t('overview.groupCount', { count: item.groupCount || 0 }), item.platedCount ? t('overview.platedCount', { count: item.platedCount }) : ''] }))
             });
         }
 
@@ -94,8 +95,8 @@
 
             container.innerHTML = '';
             if (filtered.length === 0) {
-                container.innerHTML = '<div class="loader">无匹配分类</div>';
-                if (detailContainer) detailContainer.innerHTML = '<div class="loader">请选择分类</div>';
+                container.innerHTML = `<div class="loader">${t('noMatches')}</div>`;
+                if (detailContainer) detailContainer.innerHTML = `<div class="loader">${t('select')}</div>`;
                 activeCategoryId = null;
                 return;
             }
@@ -159,21 +160,21 @@
         }
 
         async function loadCategoryDetail(category, container) {
-            container.innerHTML = '<div class="loader">加载奖章数据...</div>';
+            container.innerHTML = `<div class="loader">${t('loading')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(category.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data);
             } catch (err) {
-                container.innerHTML = `<div class="error-message">加载失败: ${err.message}</div>`;
+                container.innerHTML = `<div class="error-message">${t('loadFailed', { message: err.message })}</div>`;
             }
         }
 
         function renderBadges(achv) {
             let badges = [];
-            if (achv.canBeUpgraded) badges.push('<span class="badge upgrade">可升级</span>');
-            if (achv.canBePlated) badges.push('<span class="badge plate">可镀层</span>');
-            if (achv.applyRareEffect) badges.push('<span class="badge rare">止境认证</span>');
-            if (achv.noObtainCanView === false) badges.push('<span class="badge hidden">隐藏成就</span>');
+            if (achv.canBeUpgraded) badges.push(`<span class="badge upgrade">${t('badges.upgradable')}</span>`);
+            if (achv.canBePlated) badges.push(`<span class="badge plate">${t('badges.platable')}</span>`);
+            if (achv.applyRareEffect) badges.push(`<span class="badge rare">${t('badges.rareEffect')}</span>`);
+            if (achv.noObtainCanView === false) badges.push(`<span class="badge hidden">${t('badges.hidden')}</span>`);
             return badges.length ? `<div class="badge-group">${badges.join('')}</div>` : '';
         }
 
@@ -235,7 +236,7 @@
 
             if (groupKeys.length === 1 && groupKeys[0] === 'default') {
                 return `
-                    <div class="category-title">${data.categoryName || ''}</div>
+                    <div class="category-title">${t('detail.title', { name: data.categoryName || '' })}</div>
                     <div class="achievement-group">
                         ${renderGroupAchievements(group.default)}
                     </div>
@@ -256,7 +257,7 @@
                     `;
                 });
                 return `
-                    <div class="category-title">${data.categoryName || ''}</div>
+                    <div class="category-title">${t('detail.title', { name: data.categoryName || '' })}</div>
                     ${groupsHtml}
                 `;
             }

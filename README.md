@@ -153,22 +153,50 @@ v3 当前采用兼容层设计，而不是重复实现九套 UI：
 
 - `public/TableCfg`：角色、物品、副本、活动、奖励、技能补丁等完整结构化表。
 - `public/Json`：TableCfg 无法完整表达的 Buff、SkillData、SpawnerConfig 和 LevelData。
-- `public/CH`：旧版/v2 的预聚合中文数据；v3 仍使用 `maps.json` 的枚举和属性映射。
+- `public/CH`：简体中文资源目录，包含旧版/v2 聚合数据、研究文档与界面 `i18n.json`。
+- `public/EN`：英文界面资源目录。
+- `public/TC`：繁体中文资源目录，已补齐独立 `i18n.json` 与 `maps.json`。
+- `public/JP`：日文资源目录，已补齐独立 `i18n.json` 与 `maps.json`。
+- `public/KR`：韩文资源目录，已补齐独立 `i18n.json` 与 `maps.json`。
+- `public/RU`、`MX`、`BR`、`DE`、`FR`、`VN`、`TH`、`ID`、`IT`：其余 TableCfg 语言目录，当前游戏文本已接入对应 `I18nTextTable_*`，但站点界面与枚举的独立本地化仍待完成。
 - `public/images`：模块按固定路径约定组装图片 URL。
 
 副本会通过 `DungeonTable.sceneId` 关联 `LevelData/<sceneId>` 和 `SpawnerConfig/<sceneId>`；SpawnerConfig 中的 `enemyLibrary` 再关联 EnemyTable，出生 Buff 则按 ID 加载 `BuffData/<buffId>.json`。
 
-### 中文与 Int64
+### i18n 与 Int64
 
-v3 默认使用：
+网站界面文案采用显式 key，由每种语言目录下的单一文件统一管理：
 
 ```text
-public/TableCfg/I18nTextTable_CN.json
+public/CH/i18n.json
+public/EN/i18n.json
+public/<其他语言>/i18n.json
 ```
 
-TableCfg 文本引用中的 `id` 可能超出 JavaScript 安全整数范围。`v3-table-data.js` 在 `JSON.parse` 前将长整数文本 ID 转为字符串，避免精度丢失，然后递归为 `{ id, text }` 对象填充中文。JSON 中的 `\uXXXX` 会由 `JSON.parse` 自动转换，无需二次解码。
+两份文件都使用同一套 key 树，并按 `messages.common`、`messages.modules.<module>` 等 scope 隔离。启用模块的 HTML 使用 `data-i18n`/`data-i18n-placeholder`，控制器脚本通过 `window.akeI18n.scope('<scope>')` 读取翻译，不再通过中文原文做运行时替换。
 
-目前尚未实现运行时语言切换，也未合并 `I18nHotFix.json`。
+游戏 TableCfg 文本与界面文案分离。当前运行时支持以下语言代码：
+
+```text
+CH TC EN JP KR RU MX BR DE FR VN TH ID IT
+```
+
+其中：
+
+- 对外语言 `CH` 使用 `public/TableCfg/I18nTextTable_CN.json`
+- 对外语言 `TC` 使用 `public/TableCfg/I18nTextTable_TC.json`
+- 对外语言 `EN` 使用 `public/TableCfg/I18nTextTable_EN.json`
+- 其余语言 `XX` 使用 `public/TableCfg/I18nTextTable_XX.json`
+
+其中中文目录名固定为 `CH`，但 TableCfg 后缀仍然是 `CN`。`v3-table-data.js` 会按当前语言选择对应文本表，并为非中文语言的缺失值回退到中文文本。表缓存按语言隔离，避免切换语言后继续复用首次水合的对象。
+
+### 多语言 TODO
+
+- 已完成独立站点翻译：`CH`、`TC`、`EN`、`JP`、`KR`
+- 待完成独立站点翻译：`RU`、`MX`、`BR`、`DE`、`FR`、`VN`、`TH`、`ID`、`IT`
+- 上述待办语言当前已可加载各自的 `public/TableCfg/I18nTextTable_*` 游戏文本，但 `public/<语言>/i18n.json` 与 `public/<语言>/maps.json` 仍需继续替换为对应语言的独立翻译版本。
+
+TableCfg 文本引用中的 `id` 可能超出 JavaScript 安全整数范围。`v3-table-data.js` 在 `JSON.parse` 前将长整数文本 ID 转为字符串，避免精度丢失，然后递归为 `{ id, text }` 对象填充本地化文本。JSON 中的 `\uXXXX` 会由 `JSON.parse` 自动转换，无需二次解码。
 
 ## 本地运行
 
@@ -224,13 +252,14 @@ http://localhost:5501/
 设置通过 localStorage 保存：
 
 - 主题
+- 语言（`CH`/`EN`）
 - 是否显示隐藏模块
 - 是否显示截图导出按钮
 - 角色、武器、敌人和技能默认等级
 - 是否保持 URL 同步
 - 已解锁的模块令牌
 
-保存设置后会广播 `globalConfigChanged`，模块据此刷新筛选和等级显示。
+保存设置后会广播 `globalConfigChanged`，模块据此刷新筛选和等级显示。语言切换会刷新页面，以重新加载当前语言的模块资源和 TableCfg hydration 缓存。
 
 ## 富文本
 
@@ -255,8 +284,8 @@ http://localhost:5501/
 ```json
 {
   "id": "your_module",
-  "title": "模块名称",
-  "description": "模块说明",
+  "title": "modules.your_module.title",
+  "description": "modules.your_module.description",
   "priority": 30,
   "icon": "图标",
   "contentFile": "/plugin/your_module.html",
@@ -267,6 +296,7 @@ http://localhost:5501/
 - `priority` 越小越靠前。
 - `hidden: true` 可通过全局设置恢复。
 - `disabled: true` 会在加载 manifest 时彻底移除。
+- `title` 和 `description` 应填写 i18n key，并在 `public/<语言>/i18n.json` 中统一维护。
 - `settings` 是保留 ID，不会作为普通模块显示。
 
 ### HTML、CSS 和控制器

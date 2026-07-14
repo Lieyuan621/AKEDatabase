@@ -1,4 +1,5 @@
 (function() {
+        const t = window.akeI18n.scope('modules.character');
         let allCharacters = [];
         let rawAllCharacters = [];
         let activeCharId = null;
@@ -35,11 +36,33 @@
         };
 
         const IMAGE_BASE_PATH = '/public/images/bufficon/';
-        const COLUMN_MAP = {
-            'coolDown': '冷却时间',
-            'costValue': '消耗能量',
+        const COLUMN_KEY_MAP = {
+            'coolDown': 'columns.coolDown',
+            'costValue': 'columns.costValue',
         };
         const ALWAYS_SHOW_COLS = ['coolDown', 'costValue'];
+        const GROWTH_ATTRIBUTES = [
+            { id: 'strength', key: 'attributes.strength' },
+            { id: 'agility', key: 'attributes.agility' },
+            { id: 'intellect', key: 'attributes.intellect' },
+            { id: 'will', key: 'attributes.will' },
+            { id: 'hp', key: 'attributes.hp' },
+            { id: 'attack', key: 'attributes.attack' },
+            { id: 'defense', key: 'attributes.defense' },
+            { id: 'artsInflictionDamageMultiplier', key: 'attributes.artsInflictionDamageMultiplier', precise: true },
+            { id: 'physicalInflictionDamageMultiplier', key: 'attributes.physicalInflictionDamageMultiplier', precise: true }
+        ];
+        const GROWTH_ATTR_TYPE_TO_ID = Object.freeze({
+            39: 'strength',
+            40: 'agility',
+            41: 'intellect',
+            42: 'will',
+            1: 'hp',
+            2: 'attack',
+            3: 'defense',
+            49: 'artsInflictionDamageMultiplier',
+            25: 'physicalInflictionDamageMultiplier'
+        });
         const SKILL_GROUP_ORDER = { 0: 0, 1: 1, 2: 3, 3: 2 };
         const HIDDEN_KEYWORDS = ['atb', 'scale', 'usp', 'duration', 'poise', '_', 'count', 'layer', 'prob'];
 
@@ -259,7 +282,7 @@
         }
 
         function getAttrName(attrType) {
-            return attrMap[attrType] || `属性${attrType}`;
+            return attrMap[attrType] || t('attributeFallback', { name: attrType });
         }
 
         function getCharTypeName(charType) {
@@ -311,7 +334,7 @@
                     const btn = document.createElement('span');
                     btn.className = `filter-btn ${selectedRarities.has(r) ? 'active' : ''}`;
                     btn.dataset.rarity = r;
-                    btn.textContent = r + '星';
+                    btn.textContent = t('rarityStars', { name: r });
                     btn.addEventListener('click', () => {
                         if (selectedRarities.has(r)) {
                             selectedRarities.delete(r);
@@ -440,13 +463,13 @@
 
         function renderCharacterOverview(items, container) {
             window.AKEModuleOverview.render(container, {
-                title: '角色总览', description: '按职业分组，汇总属性、武器类型与稀有度',
-                group: char => ({ id: char.profession || 'unknown', name: char.profession || '未知职业' }),
+                title: t('overview.title'), description: t('overview.description'),
+                group: char => ({ id: char.profession || 'unknown', name: char.profession || t('unknownProfession') }),
                 onReset: () => { activeCharId = null; },
                 onSelect: char => { activeCharId = char.charId; renderCharacterList(); },
                 sidebarSelector: char => `.character-item[data-char-id="${CSS.escape(char.charId)}"]`,
-                items: items.map(char => ({ ...char, id: char.charId, image: char.icon, fallback: 'CHAR',
-                    tags: [`${char.rarity || 1} 星`, char.charType, char.weapontype] }))
+                items: items.map(char => ({ ...char, id: char.charId, image: char.icon, fallback: t('overview.fallback'),
+                    tags: [t('rarityStars', { name: char.rarity || 1 }), char.charType, char.weapontype] }))
             });
         }
 
@@ -459,8 +482,8 @@
 
             container.innerHTML = '';
             if (filtered.length === 0) {
-                container.innerHTML = '<div class="loader">无匹配角色</div>';
-                if (detailContainer) detailContainer.innerHTML = '<div class="loader">请选择角色</div>';
+                container.innerHTML = `<div class="loader">${t('noMatches')}</div>`;
+                if (detailContainer) detailContainer.innerHTML = `<div class="loader">${t('select')}</div>`;
                 activeCharId = null;
                 return;
             }
@@ -473,7 +496,7 @@
 
                 const rarityBar = document.createElement('span');
                 rarityBar.className = `rarity-bar rarity-${char.rarity}`;
-                rarityBar.title = `稀有度 ${char.rarity}`;
+                rarityBar.title = t('rarityLabel', { name: char.rarity });
 
                 const icon = document.createElement('img');
                 icon.className = 'character-icon';
@@ -491,7 +514,7 @@
                 textContainer.appendChild(nameDiv);
                 textContainer.appendChild(idDiv);
 
-                const typeDisplayName = getCharTypeName(char.charType) || char.charType || '未知';
+                const typeDisplayName = getCharTypeName(char.charType) || char.charType || t('unknown');
                 const typeClass = TYPE_CLASS_MAP[typeDisplayName] || 'unknown';
                 const typeDot = document.createElement('span');
                 typeDot.className = `char-type-dot type-${typeClass}`;
@@ -550,7 +573,7 @@
         }
 
         async function loadCharacterDetail(character, container) {
-            container.innerHTML = '<div class="loader">加载干员数据...</div>';
+            container.innerHTML = `<div class="loader">${t('loading')}</div>`;
             try {
                 const fileName = (character.contentFile || '').split('/').pop() || `${character.charId}.json`;
                 const contentFile = `/public/CH/v2_character/${fileName}`;
@@ -603,7 +626,10 @@
                     });
                 });
             } catch (err) {
-                container.innerHTML = `<div class="error-message">加载失败: ${err.message}</div>`;
+                const error = document.createElement('div');
+                error.className = 'error-message';
+                error.textContent = t('loadFailed', { name: err.message });
+                container.replaceChildren(error);
             }
         }
 
@@ -644,13 +670,9 @@
                 profileVoice: []
             };
 
-            const preferredAttrs = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '防御力', '法术异常伤害系数', '物理异常伤害系数'];
-            const attrTypeToName = {};
-            Object.keys(attrMap || {}).forEach(k => {
-                attrTypeToName[parseInt(k, 10)] = attrMap[k];
-            });
-            preferredAttrs.forEach(name => {
-                legacy.growth[name] = [];
+            const preferredAttrs = GROWTH_ATTRIBUTES.map(attribute => attribute.id);
+            preferredAttrs.forEach(id => {
+                legacy.growth[id] = [];
             });
 
             const attributes = rawData.charactertable?.attributes || [];
@@ -662,25 +684,25 @@
                 const level = levelEntry ? levelEntry.attrValue : null;
                 if (level == null) return;
                 if (!levelMap[level] || breakStage >= levelMap[level].breakStage) {
-                    const nameValueMap = {};
+                    const idValueMap = {};
                     attrs.forEach(a => {
-                        const n = attrTypeToName[a.attrType];
-                        if (n) nameValueMap[n] = a.attrValue;
+                        const id = GROWTH_ATTR_TYPE_TO_ID[a.attrType];
+                        if (id) idValueMap[id] = a.attrValue;
                     });
-                    levelMap[level] = { breakStage, nameValueMap };
+                    levelMap[level] = { breakStage, idValueMap };
                 }
             });
             const sortedLevels = Object.keys(levelMap).map(Number).sort((a, b) => a - b);
             sortedLevels.forEach(level => {
-                const nameValueMap = levelMap[level].nameValueMap;
-                preferredAttrs.forEach(name => {
-                    const val = nameValueMap[name];
-                    legacy.growth[name].push(typeof val === 'number' ? val : 0);
+                const idValueMap = levelMap[level].idValueMap;
+                preferredAttrs.forEach(id => {
+                    const val = idValueMap[id];
+                    legacy.growth[id].push(typeof val === 'number' ? val : 0);
                 });
             });
 
             if (sortedLevels.length > 0) {
-                legacy.growth['生命值'] = sortedLevels.map(level => Math.round((500 + 5500 / 98 * (level - 1)) * 100) / 100);
+                legacy.growth.hp = sortedLevels.map(level => Math.round((500 + 5500 / 98 * (level - 1)) * 100) / 100);
             }
 
             const itemNameMap = {};
@@ -729,7 +751,7 @@
                     }
                 });
                 return {
-                    name: n.passiveSkillNodeInfo.name?.text || effect.name?.text || effect.name || '天赋',
+                    name: n.passiveSkillNodeInfo.name?.text || effect.name?.text || effect.name || t('sections.talents'),
                     description: descRaw,
                     values: values,
                     modifierTypes: modifierTypes,
@@ -778,7 +800,7 @@
                 });
                 const costItems = (p.itemIds || []).map((id, i) => ({ id, count: (p.itemCnts || [])[i] || 0 }));
                 return {
-                    name: p.name?.text || p.name || `潜能 ${p.level || ''}`,
+                    name: p.name?.text || p.name || t('potentialName', { name: p.level || '' }),
                     description: desc,
                     values: values,
                     modifierTypes: modifierTypes,
@@ -960,8 +982,8 @@
             const tbody = document.querySelector('.growth-table tbody');
             if (!tbody || !currentCharData) return;
             const growth = currentCharData.growth || {};
-            const attributes = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '防御力', '法术异常伤害系数', '物理异常伤害系数'];
-            const preciseAttrs = new Set(['法术异常伤害系数', '物理异常伤害系数']);
+            const attributes = GROWTH_ATTRIBUTES.map(attribute => attribute.id);
+            const preciseAttrs = new Set(GROWTH_ATTRIBUTES.filter(attribute => attribute.precise).map(attribute => attribute.id));
             const showHiddenGrowth = getCurrentShowHidden();
             const firstAttr = attributes.find(attr => growth[attr] && growth[attr].length);
             const levelCount = firstAttr ? growth[firstAttr].length : 0;
@@ -994,7 +1016,7 @@
             tbody.innerHTML = rowsToRender.join('');
 
             const btn = document.querySelector('.toggle-char-levels-btn');
-            if (btn) btn.textContent = showAllCharLevels ? '收起多余等级' : '展开所有等级';
+            if (btn) btn.textContent = showAllCharLevels ? t('collapseExtraLevels') : t('expandAllLevels');
         }
 
         function updateSkillTable(skillName) {
@@ -1042,7 +1064,7 @@
                     }
                     return `<td>${val}</td>`;
                 }).join('');
-                allSkillRows.push(`<tr data-level="${lv}"><td>Lv.${lv}</td>${cells}</tr>`);
+                allSkillRows.push(`<tr data-level="${lv}"><td>${t('levelAbbreviation', { name: lv })}</td>${cells}</tr>`);
             }
 
             const isExpanded = globalSkillExpand ? true : (skillExpandMap[skillName] || false);
@@ -1060,11 +1082,11 @@
                 if (found) rowsToRender = [found];
             }
 
-            const headerCells = allColumns.map(col => `<th>${COLUMN_MAP[col] || col}</th>`).join('');
-            const header = `<tr><th>等级</th>${headerCells}</tr>`;
+            const headerCells = allColumns.map(col => `<th>${COLUMN_KEY_MAP[col] ? t(COLUMN_KEY_MAP[col]) : col}</th>`).join('');
+            const header = `<tr><th>${t('level')}</th>${headerCells}</tr>`;
             const tableHtml = `
                 <div class="skill-toggle-container">
-                    <button class="skill-toggle-btn" data-skill-name="${skillName}">${isExpanded ? '收起多余等级' : '展开所有等级'}</button>
+                    <button class="skill-toggle-btn" data-skill-name="${skillName}">${isExpanded ? t('collapseExtraLevels') : t('expandAllLevels')}</button>
                 </div>
                 <table class="skill-table">
                     <thead>${header}</thead>
@@ -1104,7 +1126,7 @@
         function costBtnHtml(innerHtml, itemIds) {
             if (!innerHtml) return '';
             const icons = (itemIds || []).map(id => `<img src="/public/images/item/itemicon/${id}.png" onerror="this.style.display='none'">`).join('');
-            return `<span class="cost-wrap"><span class="cost-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.cost-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">养成消耗</span><span class="cost-btn-icons">${icons}</span><span class="cost-tip">${innerHtml}</span></span>`;
+            return `<span class="cost-wrap"><span class="cost-btn" onclick="event.stopPropagation();var tip=this.nextElementSibling;tip.classList.toggle('pinned');if(tip.classList.contains('pinned'))document.querySelectorAll('.cost-tip.pinned').forEach(x=>{if(x!==tip)x.classList.remove('pinned')})">${t('developmentCost')}</span><span class="cost-btn-icons">${icons}</span><span class="cost-tip">${innerHtml}</span></span>`;
         }
 
         function renderDetail(data) {
@@ -1119,17 +1141,17 @@
                         <div class="detail-text">
                             <div class="detail-title-row">
                                 <span class="detail-name">${data.name}</span>
-                                <span class="detail-rarity rarity-${data.rarity}" title="稀有度 ${data.rarity}"></span>
+                                <span class="detail-rarity rarity-${data.rarity}" title="${t('rarityLabel', { name: data.rarity })}"></span>
                             </div>
                             <div class="detail-tags">
                                 ${(data.charBattleTag || []).map(tag => `<span class="tag">${tag}</span>`).join('')}
                             </div>
                             <div class="detail-meta">
-                                <div><span class="meta-label">职业</span> ${data.profession || '-'}</div>
-                                <div><span class="meta-label">武器类型</span> ${data.weapontype || '-'}</div>
-                                <div><span class="meta-label">主属性</span> ${data.mainAttrType || '-'}</div>
-                                <div><span class="meta-label">副属性</span> ${data.subAttrType || '-'}</div>
-                                <div><span class="meta-label">CV</span> ${(data.cvName || []).join(' / ')}</div>
+                                <div><span class="meta-label">${t('meta.profession')}</span> ${data.profession || '-'}</div>
+                                <div><span class="meta-label">${t('meta.weaponType')}</span> ${data.weapontype || '-'}</div>
+                                <div><span class="meta-label">${t('meta.mainAttribute')}</span> ${data.mainAttrType || '-'}</div>
+                                <div><span class="meta-label">${t('meta.subAttribute')}</span> ${data.subAttrType || '-'}</div>
+                                <div><span class="meta-label">${t('meta.voiceActor')}</span> ${(data.cvName || []).join(' / ')}</div>
                             </div>
                             <div class="detail-profile">${parseText(data.profile || '')}</div>
                             <div class="detail-feature">${parseText(data.feature || '')}</div>
@@ -1142,8 +1164,8 @@
             `;
 
             const growth = data.growth || {};
-            const attributes = ['力量', '敏捷', '智识', '意志', '生命值', '攻击力', '防御力', '法术异常伤害系数', '物理异常伤害系数'];
-            const preciseAttrs = new Set(['法术异常伤害系数', '物理异常伤害系数']);
+            const attributes = GROWTH_ATTRIBUTES.map(attribute => attribute.id);
+            const preciseAttrs = new Set(GROWTH_ATTRIBUTES.filter(attribute => attribute.precise).map(attribute => attribute.id));
             const showHiddenGrowth = getCurrentShowHidden();
             const firstAttr = attributes.find(attr => growth[attr] && growth[attr].length);
             const levelCount = firstAttr ? growth[firstAttr].length : 0;
@@ -1177,15 +1199,15 @@
             const growthHtml = `
                 <div class="section">
                     <div class="section-header-row">
-                        <h3>属性成长</h3>
-                        ${charLevelsToShow ? `<button class="toggle-char-levels-btn">${showAllCharLevels ? '收起多余等级' : '展开所有等级'}</button>` : ''}
+                        <h3>${t('sections.attributeGrowth')}</h3>
+                        ${charLevelsToShow ? `<button class="toggle-char-levels-btn">${showAllCharLevels ? t('collapseExtraLevels') : t('expandAllLevels')}</button>` : ''}
                     </div>
                     <div class="growth-table-container">
                         <table class="growth-table">
                             <thead>
                                 <tr>
-                                    <th>等级</th>
-                                    ${attributes.map(attr => `<th>${attr}</th>`).join('')}
+                                    <th>${t('level')}</th>
+                                    ${GROWTH_ATTRIBUTES.map(attribute => `<th>${t(attribute.key)}</th>`).join('')}
                                 </tr>
                             </thead>
                             <tbody>${growthRowsToRender.join('')}</tbody>
@@ -1227,7 +1249,7 @@
             const attrNodes = data.attributeNodes || [];
             const attrNodesHtml = `
                 <div class="section">
-                    <h3>属性节点</h3>
+                    <h3>${t('sections.attributeNodes')}</h3>
                     <div class="attr-nodes-grid">
                         ${attrNodes.map(node => {
                             const costHtml = renderCostItemsHtml(node.requiredItem, 0, inm);
@@ -1246,7 +1268,7 @@
             `;
 
             const skillsGroups = data.skills || [];
-            const skillTypePrefix = ['普攻', '战技', '连携技', '终结技'];
+            const skillTypePrefix = [t('skillTypes.basicAttack'), t('skillTypes.combatSkill'), t('skillTypes.comboSkill'), t('skillTypes.ultimate')];
             const skillsHtml = skillsGroups.map((group, index) => {
                 const skillDetail = Object.values(data.skill || {}).find(s => s.name === group.name);
                 if (!skillDetail) return '';
@@ -1261,7 +1283,7 @@
                 }
 
                 const groupDesc = parseText(replacePlaceholders(group.description || '', level1Values));
-                const prefix = (index < skillTypePrefix.length) ? skillTypePrefix[index] : '技能';
+                const prefix = (index < skillTypePrefix.length) ? skillTypePrefix[index] : t('sections.skills');
                 const displayName = `${prefix}·${group.name}`;
 
                 const bbColumns = Object.keys(values).filter(k => Array.isArray(values[k]));
@@ -1295,7 +1317,7 @@
                             }
                             return `<td>${val}</td>`;
                         }).join('');
-                        allSkillRows.push(`<tr data-level="${lv}"><td>Lv.${lv}</td>${cells}</tr>`);
+                        allSkillRows.push(`<tr data-level="${lv}"><td>${t('levelAbbreviation', { name: lv })}</td>${cells}</tr>`);
                     }
 
                     const isExpanded = globalSkillExpand ? true : (skillExpandMap[group.name] || false);
@@ -1313,9 +1335,9 @@
                         if (found) skillRowsToRender = [found];
                     }
 
-                    const headerCells = allColumns.map(col => `<th>${COLUMN_MAP[col] || col}</th>`).join('');
-                    const header = `<tr><th>等级</th>${headerCells}</tr>`;
-                    const btnText = isExpanded ? '收起多余等级' : '展开所有等级';
+                    const headerCells = allColumns.map(col => `<th>${COLUMN_KEY_MAP[col] ? t(COLUMN_KEY_MAP[col]) : col}</th>`).join('');
+                    const header = `<tr><th>${t('level')}</th>${headerCells}</tr>`;
+                    const btnText = isExpanded ? t('collapseExtraLevels') : t('expandAllLevels');
 
                     skillTables = `
                         <div class="skill-detail">
@@ -1339,7 +1361,7 @@
                             const nm = it.name?.text || inm[it.id] || it.id;
                             return `<span class="ci-ri"><img src="/public/images/item/itemicon/${it.id}.png" onerror="this.style.display='none'">${nm} ×${it.count}</span>`;
                         }).join('');
-                        return `<div class="sk-cost-row"><span class="cost-section-title">Lv.${c.level - 1}→${c.level}</span>${itemsStr}</div>`;
+                        return `<div class="sk-cost-row"><span class="cost-section-title">${t('levelRange', { name: `${c.level - 1}→${c.level}` })}</span>${itemsStr}</div>`;
                     }).join('');
                     skCostHtml = rows;
                 }
@@ -1360,7 +1382,7 @@
             const potentialPicsHtml = potentialPics.length > 0 ? `
                 <div class="section collapsible-section">
                     <h3 class="section-header">
-                        <span class="collapse-indicator">▶</span> 潜能图片
+                        <span class="collapse-indicator">▶</span> ${t('sections.potentialImages')}
                     </h3>
                     <div class="collapse-content">
                         <div class="potential-pics">
@@ -1386,7 +1408,7 @@
                         </tr>
                     `).join('')}
                 </table>
-            ` : '<p>无</p>';
+            ` : `<p>${t('none')}</p>`;
 
             const spaceshipSkills = data.spaceshipSkills || [];
             const spaceshipHtml = spaceshipSkills.length ? spaceshipSkills.map(slot => `
@@ -1409,43 +1431,43 @@
                         `).join('')}
                     </div>
                 </div>
-            `).join('') : '<p>无</p>';
+            `).join('') : `<p>${t('none')}</p>`;
 
             return `
                 ${basicHtml}
                 ${growthHtml}
                 <div class="section">
-                    <h3>天赋</h3>
-                    ${talentsHtml || '<p>无</p>'}
+                    <h3>${t('sections.talents')}</h3>
+                    ${talentsHtml || `<p>${t('none')}</p>`}
                 </div>
                 <div class="section">
-                    <h3>潜能</h3>
-                    ${potentialsHtml || '<p>无</p>'}
+                    <h3>${t('sections.potentials')}</h3>
+                    ${potentialsHtml || `<p>${t('none')}</p>`}
                 </div>
                 ${attrNodesHtml}
                 <div class="section">
                     <div class="section-header-row">
-                        <h3>技能</h3>
-                        ${skillLevelsToShow ? `<button class="global-skill-toggle-btn">${globalSkillExpand ? '收起所有技能等级' : '展开所有技能等级'}</button>` : ''}
+                        <h3>${t('sections.skills')}</h3>
+                        ${skillLevelsToShow ? `<button class="global-skill-toggle-btn">${globalSkillExpand ? t('collapseAllSkillLevels') : t('expandAllSkillLevels')}</button>` : ''}
                     </div>
-                    ${skillsHtml || '<p>无</p>'}
+                    ${skillsHtml || `<p>${t('none')}</p>`}
                 </div>
                 <div class="section">
-                    <h3>后勤技能</h3>
+                    <h3>${t('sections.logisticsSkills')}</h3>
                     ${spaceshipHtml}
                 </div>
                 ${potentialPicsHtml}
                 <div class="section collapsible-section">
                     <h3 class="section-header">
-                        <span class="collapse-indicator">▶</span> 档案
+                        <span class="collapse-indicator">▶</span> ${t('sections.profile')}
                     </h3>
                     <div class="collapse-content">
-                        ${profileRecordsHtml || '<p>无</p>'}
+                        ${profileRecordsHtml || `<p>${t('none')}</p>`}
                     </div>
                 </div>
                 <div class="section collapsible-section">
                     <h3 class="section-header">
-                        <span class="collapse-indicator">▶</span> 语音记录
+                        <span class="collapse-indicator">▶</span> ${t('sections.voiceRecords')}
                     </h3>
                     <div class="collapse-content">
                         ${voiceHtml}

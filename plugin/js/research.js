@@ -1,4 +1,6 @@
 (function() {
+        const t = window.akeI18n.scope('modules.research');
+        const commonT = window.akeI18n.scope('common');
         let allDocs = [];
         let rawAllDocs = [];
         let activeDocId = null;
@@ -324,12 +326,12 @@
 
         function renderResearchOverview(items, container) {
             window.AKEModuleOverview.render(container, {
-                title: '研究总览', description: '数据机制、专题分析与参考资料',
-                group: function (item) { return { id: item.category || '专题研究', name: item.category || '专题研究', order: item.categoryOrder }; },
+                title: t('overview.title'), description: t('overview.description'),
+                group: function (item) { return { id: item.category || 'research-topic', name: item.category || t('topics.general'), order: item.categoryOrder }; },
                 onReset: function () { activeDocId = null; },
                 onSelect: function (item) { activeDocId = item.id; renderDocList(); },
                 sidebarSelector: function (item) { return '.research-item[data-doc-id="' + CSS.escape(item.id) + '"]'; },
-                items: items.map(function (item) { return { ...item, fallback: 'DOC', tags: [item.summary] }; })
+                items: items.map(function (item) { return { ...item, fallback: t('overview.fallback'), tags: [item.summary] }; })
             });
             var toc = document.getElementById('researchToc');
             if (toc) toc.innerHTML = '';
@@ -344,8 +346,8 @@
             container.innerHTML = '';
 
             if (filtered.length === 0) {
-                container.innerHTML = '<div class="loader">无匹配文档</div>';
-                if (detailContainer) detailContainer.innerHTML = '<div class="loader">请选择文档</div>';
+                container.innerHTML = '<div class="loader">' + escapeHtml(searchTerm ? t('empty.noMatches') : t('empty.noDocuments')) + '</div>';
+                if (detailContainer) detailContainer.innerHTML = '<div class="loader">' + escapeHtml(t('empty.selectDocument')) + '</div>';
                 activeDocId = null;
                 return;
             }
@@ -416,7 +418,7 @@
             var headings = content.querySelectorAll('h1, h2, h3');
             if (headings.length < 2) { tocEl.innerHTML = ''; return; }
 
-            var html = '<div class="toc-title">目录</div><nav class="toc-nav">';
+            var html = '<div class="toc-title">' + escapeHtml(t('toc.title')) + '</div><nav class="toc-nav">';
             for (var i = 0; i < headings.length; i++) {
                 var h = headings[i];
                 var level = parseInt(h.tagName.charAt(1), 10);
@@ -464,12 +466,12 @@
             if (!isItemUnlocked(doc)) {
                 container.innerHTML = '<div class="not-found-page">' +
                     '<div class="not-found-code">404</div>' +
-                    '<div class="not-found-title">页面未找到</div>' +
-                    '<div class="not-found-desc">您访问的文档不存在</div>' +
+                    '<div class="not-found-title">' + escapeHtml(t('notFound.title')) + '</div>' +
+                    '<div class="not-found-desc">' + escapeHtml(t('notFound.description')) + '</div>' +
                     '</div>';
                 return;
             }
-            container.innerHTML = '<div class="loader">加载文档内容...</div>';
+            container.innerHTML = '<div class="loader">' + escapeHtml(t('document.loading')) + '</div>';
             try {
                 const res = await (window.akeFetch || fetch)(doc.contentFile);
                 if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -497,7 +499,7 @@
                     });
                 });
             } catch (err) {
-                container.innerHTML = '<div class="error-message">加载失败: ' + escapeHtml(err.message) + '</div>';
+                container.innerHTML = '<div class="error-message">' + escapeHtml(t('document.loadFailed', { message: err.message })) + '</div>';
             }
         }
 
@@ -505,6 +507,10 @@
             if (!mobileContent) return;
             const filtered = filterDocs(allDocs);
             mobileContent.innerHTML = '';
+            if (filtered.length === 0) {
+                mobileContent.innerHTML = '<div class="loader">' + escapeHtml(searchTerm ? t('empty.noMatches') : t('empty.noDocuments')) + '</div>';
+                return;
+            }
             filtered.forEach(function(doc) {
                 const item = document.createElement('div');
                 item.className = 'mobile-list-item' + (doc.id === activeDocId ? ' active' : '');
@@ -535,6 +541,8 @@
             var list = document.getElementById('researchList');
             var detail = document.getElementById('researchDetail');
             if (!list || !detail) return;
+            list.innerHTML = '<div class="loader">' + escapeHtml(t('loading')) + '</div>';
+            if (!activeDocId) detail.innerHTML = '<div class="loader">' + escapeHtml(commonT('loadingData')) + '</div>';
             var showHidden = (window.akeData && window.akeData.getConfig) ? window.akeData.getConfig().showHidden : false;
             var docs = await loadResearchManifest(showHidden);
             allDocs = docs;

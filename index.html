@@ -1,34 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AKEData · Endfield Database</title>
+    <title data-i18n="app.title">AKEData · 终末地数据库</title>
     <link rel="icon" type="image/png" href="\public\images\character\charremoteicon\icon_chr_0013_aglina.png">
     <link rel="stylesheet" id="theme-style">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
-    <div id="dataLoadProgress" class="data-load-progress" role="progressbar" aria-label="数据加载进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden>
+    <div id="dataLoadProgress" class="data-load-progress" role="progressbar" aria-label="数据加载进度" data-i18n-aria-label="common.dataLoadProgress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden>
         <div class="data-load-progress-track">
             <div id="dataLoadProgressBar" class="data-load-progress-bar"></div>
         </div>
-        <div id="dataLoadProgressText" class="data-load-progress-text" aria-live="polite">正在加载数据...</div>
+        <div id="dataLoadProgressText" class="data-load-progress-text" aria-live="polite" data-i18n="common.loadingData">正在加载数据...</div>
         <div id="dataLoadProgressFile" class="data-load-progress-file"></div>
     </div>
     <div class="app">
         <div class="sidebar">
-            <div class="brand" id="brandHome" title="返回起始页">
+            <div class="brand" id="brandHome" title="返回起始页" data-i18n-title="nav.home">
                 AKEData
                 <span>Wiki</span>
             </div>
             <div class="module-list" id="moduleListContainer">
-                <div style="color:#7f8c9f; text-align:center; padding:20px;">加载模块清单...</div>
+                <div style="color:#7f8c9f; text-align:center; padding:20px;" data-i18n="nav.loadingModules">加载模块清单...</div>
             </div>
             <div class="sidebar-footer">
-                <div class="menu-button" id="mobileMenuButton" title="模块列表">☰</div>
-                <div class="settings-button" id="settingsButton" title="全局设置">⚙️</div>
-                <div class="export-button" id="exportButton" title="导出长图">📸</div>
+                <div class="menu-button" id="mobileMenuButton" title="模块列表" data-i18n-title="nav.moduleList">☰</div>
+                <div class="settings-button" id="settingsButton" title="全局设置" data-i18n-title="settings.title">⚙️</div>
+                <div class="export-button" id="exportButton" title="导出长图" data-i18n-title="nav.export">📸</div>
             </div>
         </div>
 
@@ -46,82 +46,86 @@
     <div class="settings-modal" id="settingsModal">
         <div class="modal-content">
             <span class="close-button" id="closeSettings">&times;</span>
-            <h3>⚙️ 全局设置</h3>
+            <h3 data-i18n="settings.heading">⚙️ 全局设置</h3>
             <div class="settings-item">
-                <label for="modalThemeSelect">页面样式：</label>
+                <label for="modalLanguageSelect" data-i18n="settings.language">settings.language</label>
+                <select id="modalLanguageSelect"></select>
+            </div>
+            <div class="settings-item">
+                <label for="modalThemeSelect" data-i18n="settings.theme">settings.theme</label>
                 <select id="modalThemeSelect">
-                    <option value="light">亮色模式</option>
-                    <option value="yellow">护眼模式</option>
-                    <option value="dark">暗色模式</option>
+                    <option value="light" data-i18n="settings.themes.light">settings.themes.light</option>
+                    <option value="yellow" data-i18n="settings.themes.yellow">settings.themes.yellow</option>
+                    <option value="dark" data-i18n="settings.themes.dark">settings.themes.dark</option>
                 </select>
             </div>
             <div class="settings-item">
-                <label for="modalShowHiddenCheck">显示隐藏模块：</label>
+                <label for="modalShowHiddenCheck" data-i18n="settings.showHidden">settings.showHidden</label>
                 <input type="checkbox" id="modalShowHiddenCheck">
             </div>
             <div class="settings-item">
-                <label for="modalShowExportCheck">显示导出按钮（测试功能）：</label>
+                <label for="modalShowExportCheck" data-i18n="settings.showExport">settings.showExport</label>
                 <input type="checkbox" id="modalShowExportCheck">
             </div>
             <div class="settings-item">
-                <label for="modalKeepUrlSync">保持URL完整（地址栏随导航更新）：</label>
+                <label for="modalKeepUrlSync" data-i18n="settings.keepUrlSync">settings.keepUrlSync</label>
                 <input type="checkbox" id="modalKeepUrlSync">
             </div>
 
             <!-- 等级设置区域 -->
             <div class="settings-section" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 16px;">
-                <h4>📊 默认显示等级设置</h4>
+                <h4 data-i18n="settings.levels.title">settings.levels.title</h4>
                 <div class="settings-item">
-                    <label style="width: auto;">激活设置：</label>
+                    <label style="width: auto;" data-i18n="settings.levels.enabled">settings.levels.enabled</label>
                     <input type="checkbox" id="modalLevelsEnabled">
                 </div>
                 <div class="settings-item">
-                    <label style="width: auto;">等级筛选：可以将需要显示的等级键入，使用英文逗号分隔</label>
+                    <label style="width: auto;" data-i18n="settings.levels.hint">settings.levels.hint</label>
                 </div>
                 <div class="settings-item">
-                    <label>角色等级：</label>
-                    <input type="text" id="modalCharacterLevels" placeholder="例: 80 或 10,20,30,80" style="flex:1;">
+                    <label data-i18n="settings.levels.character">settings.levels.character</label>
+                    <input type="text" id="modalCharacterLevels" data-i18n-placeholder="settings.levels.levelPlaceholder" style="flex:1;">
                 </div>
                 <div class="settings-item">
-                    <label>武器等级：</label>
-                    <input type="text" id="modalWeaponLevels" placeholder="例: 80 或 10,20,30,80" style="flex:1;">
+                    <label data-i18n="settings.levels.weapon">settings.levels.weapon</label>
+                    <input type="text" id="modalWeaponLevels" data-i18n-placeholder="settings.levels.levelPlaceholder" style="flex:1;">
                 </div>
                 <div class="settings-item">
-                    <label>敌人等级：</label>
-                    <input type="text" id="modalEnemyLevels" placeholder="例: 80 或 10,20,30,80" style="flex:1;">
+                    <label data-i18n="settings.levels.enemy">settings.levels.enemy</label>
+                    <input type="text" id="modalEnemyLevels" data-i18n-placeholder="settings.levels.levelPlaceholder" style="flex:1;">
                 </div>
                 <div class="settings-item">
-                    <label>角色技能等级：</label>
-                    <input type="text" id="modalSkillLevels" placeholder="例: 1,9,10,11,12" style="flex:1;">
+                    <label data-i18n="settings.levels.skill">settings.levels.skill</label>
+                    <input type="text" id="modalSkillLevels" data-i18n-placeholder="settings.levels.skillPlaceholder" style="flex:1;">
                 </div>
             </div>
 
             <!-- 恢复默认按钮 -->
             <div class="settings-buttons" style="display: flex; justify-content: flex-end; margin-top: 16px;">
-                <button id="resetSettingsBtn" style="background: var(--button-bg, #e0e8f0); border: 1px solid var(--border-color); border-radius: 30px; padding: 8px 20px; cursor: pointer;">恢复默认设置</button>
+                <button id="resetSettingsBtn" data-i18n="settings.reset" style="background: var(--button-bg, #e0e8f0); border: 1px solid var(--border-color); border-radius: 30px; padding: 8px 20px; cursor: pointer;">settings.reset</button>
             </div>
 
             <!-- 访问令牌区域 -->
             <div class="settings-section" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 16px;">
-                <h4>🔑 访问令牌</h4>
+                <h4 data-i18n="settings.tokens.title">settings.tokens.title</h4>
                 <div class="settings-item">
-                    <label style="width: auto;">输入令牌以解锁受保护的模块及内容，多个令牌使用英文逗号分隔</label>
+                    <label style="width: auto;" data-i18n="settings.tokens.hint">settings.tokens.hint</label>
                 </div>
                 <div class="settings-item" style="gap: 8px;">
-                    <label>令牌：</label>
-                    <input type="text" id="modalTokenInput" placeholder="请输入访问令牌" style="flex:1;">
+                    <label data-i18n="settings.tokens.label">settings.tokens.label</label>
+                    <input type="text" id="modalTokenInput" data-i18n-placeholder="settings.tokens.placeholder" style="flex:1;">
                     <button id="tokenSubmitBtn"
-                        style="background:var(--accent-color,#1e6f9f);color:#fff;border:none;border-radius:20px;padding:6px 18px;cursor:pointer;font-size:0.85rem;white-space:nowrap;">提交</button>
+                        data-i18n="settings.tokens.submit" style="background:var(--accent-color,#1e6f9f);color:#fff;border:none;border-radius:20px;padding:6px 18px;cursor:pointer;font-size:0.85rem;white-space:nowrap;">settings.tokens.submit</button>
                 </div>
                 <div class="settings-item" style="justify-content: flex-end;">
                     <button id="tokenClearAllBtn"
-                        style="background:var(--button-bg,#e0e8f0);border:1px solid var(--border-color,#ccc);border-radius:20px;padding:6px 16px;cursor:pointer;font-size:0.82rem;color:var(--desc-color,#5b6f86);">清除所有令牌</button>
+                        data-i18n="settings.tokens.clear" style="background:var(--button-bg,#e0e8f0);border:1px solid var(--border-color,#ccc);border-radius:20px;padding:6px 16px;cursor:pointer;font-size:0.82rem;color:var(--desc-color,#5b6f86);">settings.tokens.clear</button>
                 </div>
                 <div id="tokenStatus" style="font-size: 0.85rem; color: var(--desc-color, #5b6f86); padding: 4px 0 0 0;"></div>
             </div>
 
             <div class="about-box" id="appVersionInfo">
-                <p>正在读取版本信息...</p>
+                <p data-i18n="version.loading">version.loading</p>
             </div>
         </div>
     </div>
@@ -131,7 +135,7 @@
 
     <div id="mobileMenuOverlay" class="mobile-menu-overlay">
         <div class="mobile-menu-container">
-            <div class="mobile-menu-header">选择模块</div>
+            <div class="mobile-menu-header" data-i18n="nav.selectModule">选择模块</div>
             <div class="mobile-menu-list" id="mobileMenuList"></div>
         </div>
     </div>
@@ -197,12 +201,13 @@
             };
             try {
                 await loadScript('/plugin/js/index-parse-fallback.js');
+                await loadScript('/plugin/js/i18n.js');
                 await loadScript('/plugin/js/toast.js');
                 await loadScript('/plugin/js/ake-cache.js');
                 await loadScript('/plugin/js/index-app.js');
             } catch (error) {
                 const content = document.getElementById('contentArea');
-                if (content) content.innerHTML = `<div class="error-message">应用启动失败：${error.message}</div>`;
+                if (content) content.innerHTML = `<div class="error-message">${window.akeI18n?.t('errors.startup', { message: error.message }, `Startup failed: ${error.message}`) || error.message}</div>`;
             }
         })();
     </script>

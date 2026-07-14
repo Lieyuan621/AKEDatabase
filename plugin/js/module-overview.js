@@ -10,7 +10,7 @@
         const items = options.items || [];
         const groups = new Map();
         items.forEach((item) => {
-            const group = options.group(item) || { id: 'all', name: '全部' };
+            const group = options.group(item) || { id: 'all', name: window.akeData?.t('common.all', null, '全部') || '全部' };
             if (!groups.has(group.id)) groups.set(group.id, { ...group, items: [] });
             groups.get(group.id).items.push(item);
         });
@@ -24,17 +24,17 @@
         const heading = document.createElement('div');
         const eyebrow = document.createElement('div');
         eyebrow.className = 'ake-overview__eyebrow';
-        eyebrow.textContent = `${items.length} 条数据`;
+        eyebrow.textContent = window.akeData?.t('overview.count', { count: items.length }, `${items.length} 条数据`) || `${items.length} 条数据`;
         const title = document.createElement('h1');
         title.textContent = options.title;
         const description = document.createElement('p');
-        description.textContent = options.description || '选择卡片查看完整数据';
+        description.textContent = options.description || window.akeData?.t('overview.hint', null, '选择卡片查看完整数据') || '选择卡片查看完整数据';
         heading.append(eyebrow, title, description);
         header.appendChild(heading);
         root.appendChild(header);
 
         const groupList = Array.from(groups.values()).sort((a, b) =>
-            (a.order ?? 999) - (b.order ?? 999) || text(a.name).localeCompare(text(b.name), 'zh-CN'));
+            (a.order ?? 999) - (b.order ?? 999) || text(a.name).localeCompare(text(b.name), window.akeData?.getLanguage?.() === 'EN' ? 'en' : 'zh-CN'));
         groupList.forEach((group) => {
             const section = document.createElement('section');
             section.className = 'ake-overview__section';

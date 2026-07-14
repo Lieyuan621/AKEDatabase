@@ -1,6 +1,12 @@
 (function() {
+    const t = window.akeI18n.scope('modules.about');
     const sponsorGrid = document.getElementById('sponsorGrid');
     if (!sponsorGrid) return;
+
+    document.querySelectorAll('.about-module [data-i18n-alt]').forEach(image => {
+        const key = image.dataset.i18nAlt.replace(/^modules\.about\./, '');
+        image.alt = t(key, null, image.alt);
+    });
 
     async function loadSponsors() {
         try {
@@ -8,7 +14,7 @@
             if (!res.ok) throw new Error('无法加载赞助数据');
             let sponsors = await res.json();
             if (!Array.isArray(sponsors) || sponsors.length === 0) {
-                sponsorGrid.innerHTML = '<div class="sponsor-empty">暂无赞助记录，期待您的支持！</div>';
+                sponsorGrid.innerHTML = `<div class="sponsor-empty">${t('sponsor.empty')}</div>`;
                 return;
             }
             // 排序：priority 升序，priority 相同则按时间倒序（新在前）
@@ -22,7 +28,7 @@
             renderSponsors(sponsors);
         } catch (err) {
             console.error('加载赞助列表失败:', err);
-            sponsorGrid.innerHTML = '<div class="sponsor-empty">加载赞助列表失败，请稍后重试。</div>';
+            sponsorGrid.innerHTML = `<div class="sponsor-empty">${t('sponsor.loadFailed')}</div>`;
         }
     }
 
@@ -36,7 +42,7 @@
                 <div class="sponsor-name">${escapeHtml(s.name)}</div>
                 <div class="sponsor-money ${rarityClass}">${escapeHtml(s.money)}</div>
                 <div class="sponsor-time">${escapeHtml(s.time)}</div>
-                <div class="sponsor-content">${escapeHtml(s.content || '无备注')}</div>
+                <div class="sponsor-content">${escapeHtml(s.content || t('sponsor.noRemarks'))}</div>
             `;
             sponsorGrid.appendChild(card);
         });

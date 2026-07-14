@@ -62,7 +62,7 @@
         if (!attrTemplateData) return null;
         const opts = options || {};
         const displayOrder = opts.displayOrder || DEFAULT_ATTR_DISPLAY_ORDER;
-        const getAttrName = opts.getAttrName || (attrType => `属性${attrType}`);
+        const getAttrName = opts.getAttrName || (attrType => window.akeI18n.t('modules.character.attributeFallback', { name: attrType }));
         const baseAttrs = {};
 
         pickLevelAttributes(attrTemplateData.levelDependentAttributes || [], enemyLevel).forEach(attr => {

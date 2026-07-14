@@ -1,4 +1,6 @@
 (function () {
+        const t = window.akeI18n.scope('modules.spawn');
+        const commonT = window.akeI18n.scope('common');
         let groups = [];            // [{ id, name, manifestPath, spawners: null }]
         let rawGroups = [];
         let currentGroup = null;
@@ -23,6 +25,22 @@
             return window.parseText(text, IMAGE_BASE_PATH);
         }
 
+        function boolText(value) {
+            return commonT(value ? 'yes' : 'no');
+        }
+
+        function noneText() {
+            return commonT('none');
+        }
+
+        function unknownText() {
+            return commonT('unknown');
+        }
+
+        function jsonButton(titleKey, data) {
+            return `<button class="json-view-btn" title="${escapeHtml(t(titleKey))}" data-json='${escapeHtml(JSON.stringify(data))}'>🔍</button>`;
+        }
+
         // JSON 模态框（使用新样式）
         function showJsonModal(data, title) {
             const modal = document.getElementById('spawnerJsonModal');
@@ -32,10 +50,10 @@
             try {
                 jsonStr = JSON.stringify(data, null, 2);
             } catch (e) {
-                jsonStr = '无法序列化数据';
+                jsonStr = t('json.serializeFailed');
             }
             if (title) {
-                pre.textContent = `// ${title}\n${jsonStr}`;
+                pre.textContent = t('json.commentTitle', { title }) + `\n${jsonStr}`;
             } else {
                 pre.textContent = jsonStr;
             }
@@ -107,7 +125,7 @@
                 );
             }
             if (filteredGroups.length === 0) {
-                container.innerHTML = '<div class="list-empty">无匹配分组</div>';
+                container.innerHTML = `<div class="list-empty">${escapeHtml(t('empty.noMatchingGroups'))}</div>`;
                 return;
             }
             let html = '';
@@ -139,11 +157,11 @@
             if (window.__akeRouter) window.__akeRouter.updateUrl('spawn', group.id);
             renderGroupList();
             const rightContainer = document.getElementById('spawnerRight');
-            rightContainer.innerHTML = '<div class="loader">加载关卡数据中...</div>';
+            rightContainer.innerHTML = `<div class="loader">${escapeHtml(t('loadingStageData'))}</div>`;
 
             const spawners = await loadGroupSpawners(group);
             if (!spawners.length) {
-                rightContainer.innerHTML = '<div class="loader">该分组下暂无关卡数据</div>';
+                rightContainer.innerHTML = `<div class="loader">${escapeHtml(t('empty.noStageData'))}</div>`;
                 return;
             }
 
@@ -166,7 +184,7 @@
                 results = await Promise.all(fetchPromises);
             } catch (err) {
                 if (err.name === 'AbortError') return;
-                rightContainer.innerHTML = `<div class="error-message">加载失败：${err.message}</div>`;
+                rightContainer.innerHTML = `<div class="error-message">${escapeHtml(t('loadFailed', { message: err.message }))}</div>`;
                 return;
             }
 
@@ -176,27 +194,27 @@
         // 生成路线详细信息的 HTML（增强版）
         function renderRouteDetails(routeMap) {
             if (!routeMap || Object.keys(routeMap).length === 0) return '';
-            let routesHtml = '<div class="routes-section"><div class="routes-header">📌 路线数据</div><div class="routes-list">';
+            let routesHtml = `<div class="routes-section"><div class="routes-header">📌 ${escapeHtml(t('sections.routes'))}</div><div class="routes-list">`;
             for (const [routeId, route] of Object.entries(routeMap)) {
                 const patrol = route.patrolData || {};
                 const actionsCount = (patrol.actions || []).length;
                 routesHtml += `
                 <div class="route-item-card">
                     <div class="route-header">
-                        <strong>Route ${routeId}</strong>
-                        <button class="json-view-btn" data-json='${escapeHtml(JSON.stringify(route))}'>🔍</button>
+                        <strong>${escapeHtml(t('route.title', { id: routeId }))}</strong>
+                        ${jsonButton('buttons.viewRouteJson', route)}
                     </div>
                     <div class="route-details">
-                        <div><span class="label">循环模式:</span> ${patrol.loop || 'None'}</div>
-                        <div><span class="label">附着方式:</span> ${patrol.snap || '-'}</div>
-                        <div><span class="label">移动类型:</span> ${patrol.motionType || 'None'}</div>
-                        <div><span class="label">出生移动速度:</span> ${patrol.bornOverrideSpeed ?? '默认'} (${patrol.enableBornSpeedOverride ? '启用覆盖' : '未覆盖'})</div>
-                        <div><span class="label">出生等待时间:</span> ${patrol.bornPositionWaitDuration ?? 0}s</div>
-                        <div><span class="label">是否使用世界偏移:</span> ${patrol.useWorldOffset ? '是' : '否'}</div>
-                        <div><span class="label">是否本地空间:</span> ${patrol.inLocalSpace ? '是' : '否'}</div>
-                        <div><span class="label">路径点数量:</span> ${actionsCount}</div>
-                        <div><span class="label">停止行走原地:</span> ${patrol.stopWalkInplace ? '是' : '否'}</div>
-                        <div><span class="label">禁止NPC交互:</span> ${patrol.forbidNpcInteract ? '是' : '否'}</div>
+                        <div><span class="label">${escapeHtml(t('route.fields.loopMode'))}</span> ${escapeHtml(patrol.loop || noneText())}</div>
+                        <div><span class="label">${escapeHtml(t('route.fields.snapMode'))}</span> ${escapeHtml(patrol.snap || t('values.notApplicable'))}</div>
+                        <div><span class="label">${escapeHtml(t('route.fields.motionType'))}</span> ${escapeHtml(patrol.motionType || noneText())}</div>
+                        <div><span class="label">${escapeHtml(t('route.fields.bornOverrideSpeed'))}</span> ${escapeHtml(String(patrol.bornOverrideSpeed ?? t('values.default')))} (${escapeHtml(t(patrol.enableBornSpeedOverride ? 'route.values.overrideEnabled' : 'route.values.overrideDisabled'))})</div>
+                        <div><span class="label">${escapeHtml(t('route.fields.bornWaitDuration'))}</span> ${escapeHtml(t('units.seconds', { value: patrol.bornPositionWaitDuration ?? 0 }))}</div>
+                        <div><span class="label">${escapeHtml(t('route.fields.useWorldOffset'))}</span> ${escapeHtml(boolText(patrol.useWorldOffset))}</div>
+                        <div><span class="label">${escapeHtml(t('route.fields.localSpace'))}</span> ${escapeHtml(boolText(patrol.inLocalSpace))}</div>
+                        <div><span class="label">${escapeHtml(t('route.fields.pathPointCount'))}</span> ${escapeHtml(String(actionsCount))}</div>
+                        <div><span class="label">${escapeHtml(t('route.fields.stopWalkInplace'))}</span> ${escapeHtml(boolText(patrol.stopWalkInplace))}</div>
+                        <div><span class="label">${escapeHtml(t('route.fields.forbidNpcInteract'))}</span> ${escapeHtml(boolText(patrol.forbidNpcInteract))}</div>
                     </div>
                 </div>
             `;
@@ -233,11 +251,11 @@
                 wavesHtml += `
                 <div class="wave-card">
                     <div class="wave-header">
-                        <span class="wave-key">第 ${waveKey} 波</span>
-                        <span class="wave-mode">模式: ${wave.waveMode}</span>
-                        ${wave.waveModeKillCount ? `<span class="wave-kill">需击杀: ${wave.waveModeKillCount}</span>` : ''}
-                        ${wave.isHidden ? '<span class="wave-hidden">隐藏波次</span>' : ''}
-                        <button class="json-view-btn" data-json='${escapeHtml(JSON.stringify(wave))}'>🔍</button>
+                        <span class="wave-key">${escapeHtml(t('wave.title', { index: waveKey }))}</span>
+                        <span class="wave-mode">${escapeHtml(t('wave.mode', { mode: wave.waveMode || unknownText() }))}</span>
+                        ${wave.waveModeKillCount ? `<span class="wave-kill">${escapeHtml(t('wave.killCount', { count: wave.waveModeKillCount }))}</span>` : ''}
+                        ${wave.isHidden ? `<span class="wave-hidden">${escapeHtml(t('wave.hidden'))}</span>` : ''}
+                        ${jsonButton('buttons.viewWaveJson', wave)}
                     </div>
                     <div class="groups-container">
             `;
@@ -247,10 +265,10 @@
                     wavesHtml += `
                     <div class="group-card">
                         <div class="group-header">
-                            <span class="group-id">组 ${groupId}</span>
-                            <span class="group-mode">模式: ${group.groupMode}</span>
-                            ${group.groupModeKillCount ? `<span class="group-kill">需击杀: ${group.groupModeKillCount}</span>` : ''}
-                            <button class="json-view-btn" data-json='${escapeHtml(JSON.stringify(group))}'>🔍</button>
+                            <span class="group-id">${escapeHtml(t('group.title', { id: groupId }))}</span>
+                            <span class="group-mode">${escapeHtml(t('group.mode', { mode: group.groupMode || unknownText() }))}</span>
+                            ${group.groupModeKillCount ? `<span class="group-kill">${escapeHtml(t('group.killCount', { count: group.groupModeKillCount }))}</span>` : ''}
+                            ${jsonButton('buttons.viewGroupJson', group)}
                         </div>
                         <div class="actions-container">
                 `;
@@ -262,7 +280,7 @@
                         const buffsHtml = (enemyInfo.buffs || []).map(buff => {
                             let params = '';
                             if (buff.blackboard && buff.blackboard.length) {
-                                params = '<div class="buff-params">' + buff.blackboard.map(p => `${p.key}=${p.valueFloat ?? p.valueString ?? '?'}`).join(', ') + '</div>';
+                                params = '<div class="buff-params">' + buff.blackboard.map(p => t('enemy.buffParam', { key: p.key, value: p.valueFloat ?? p.valueString ?? '?' })).join(', ') + '</div>';
                             }
                             return `<div class="buff-item"><span class="buff-id">${escapeHtml(buff.buffId)}</span>${params}</div>`;
                         }).join('');
@@ -270,20 +288,20 @@
                         wavesHtml += `
                         <div class="action-card">
                             <div class="action-header">
-                                <span class="action-time">⏱️ ${action.timestamp}s</span>
-                                <span class="action-count">数量: ${action.spawnCount}</span>
-                                <button class="json-view-btn" data-json='${escapeHtml(JSON.stringify(action))}'>🔍</button>
+                                <span class="action-time">⏱️ ${escapeHtml(t('enemy.spawnTime', { seconds: action.timestamp }))}</span>
+                                <span class="action-count">${escapeHtml(t('enemy.spawnCount', { count: action.spawnCount }))}</span>
+                                ${jsonButton('buttons.viewActionJson', action)}
                             </div>
                             <div class="action-detail">
-                                <div><span class="label">敌人ID：</span>${escapeHtml(enemyInfo.enemyId || libraryKey)}</div>
-                                <div><span class="label">等级：</span>${enemyInfo.level ?? '?'}</div>
-                                <div><span class="label">位置：</span>(${action.position?.x ?? 0}, ${action.position?.y ?? 0}, ${action.position?.z ?? 0})</div>
-                                <div><span class="label">朝向：</span>${action.rotation?.y ?? 0}°</div>
-                                ${enemyInfo.overrideAIConfig ? `<div><span class="label">AI配置：</span>${enemyInfo.overrideAIConfig}</div>` : ''}
-                                ${enemyInfo.preWarnTime ? `<div><span class="label">预警告时间：</span>${enemyInfo.preWarnTime}s</div>` : ''}
-                                ${enemyInfo.patrolGait ? `<div><span class="label">移动方式：</span>${enemyInfo.patrolGait}</div>` : ''}
-                                ${buffsHtml ? `<div class="buffs-section"><span class="label">携带Buff：</span><div class="buffs-list">${buffsHtml}</div></div>` : ''}
-                                ${enemyInfo.raw ? `<button class="json-view-btn-small" data-json='${escapeHtml(JSON.stringify(enemyInfo.raw))}'>查看怪物原始数据</button>` : ''}
+                                <div><span class="label">${escapeHtml(t('enemy.fields.enemyId'))}</span>${escapeHtml(enemyInfo.enemyId || libraryKey)}</div>
+                                <div><span class="label">${escapeHtml(t('enemy.fields.level'))}</span>${escapeHtml(String(enemyInfo.level ?? '?'))}</div>
+                                <div><span class="label">${escapeHtml(t('enemy.fields.position'))}</span>${escapeHtml(t('enemy.position', { x: action.position?.x ?? 0, y: action.position?.y ?? 0, z: action.position?.z ?? 0 }))}</div>
+                                <div><span class="label">${escapeHtml(t('enemy.fields.rotation'))}</span>${escapeHtml(t('enemy.rotation', { degrees: action.rotation?.y ?? 0 }))}</div>
+                                ${enemyInfo.overrideAIConfig ? `<div><span class="label">${escapeHtml(t('enemy.fields.aiConfig'))}</span>${escapeHtml(enemyInfo.overrideAIConfig)}</div>` : ''}
+                                ${enemyInfo.preWarnTime ? `<div><span class="label">${escapeHtml(t('enemy.fields.preWarnTime'))}</span>${escapeHtml(t('units.seconds', { value: enemyInfo.preWarnTime }))}</div>` : ''}
+                                ${enemyInfo.patrolGait ? `<div><span class="label">${escapeHtml(t('enemy.fields.patrolGait'))}</span>${escapeHtml(enemyInfo.patrolGait)}</div>` : ''}
+                                ${buffsHtml ? `<div class="buffs-section"><span class="label">${escapeHtml(t('enemy.fields.buffs'))}</span><div class="buffs-list">${buffsHtml}</div></div>` : ''}
+                                ${enemyInfo.raw ? `<button class="json-view-btn-small" data-json='${escapeHtml(JSON.stringify(enemyInfo.raw))}'>${escapeHtml(t('buttons.viewEnemyRawJson'))}</button>` : ''}
                             </div>
                         </div>
                     `;
@@ -296,12 +314,12 @@
             // 全局设置卡片
             const settingsHtml = `
             <div class="settings-card">
-                <div class="section-header">⚙️ 全局设置 <button class="json-view-btn" data-json='${escapeHtml(JSON.stringify(settings))}'>🔍</button></div>
+                <div class="section-header">⚙️ ${escapeHtml(t('sections.globalSettings'))} ${jsonButton('buttons.viewSettingsJson', settings)}</div>
                 <div class="settings-grid">
-                    <div>自动完成: ${settings.autoComplete ? '是' : '否'}</div>
-                    <div>禁止掉落: ${settings.forbidDrop ? '是' : '否'}</div>
-                    <div>停止探索音乐: ${settings.stopExploreMusic ? '是' : '否'}</div>
-                    <div>等级受世界等级影响: ${settings.enemyLevelUseLevelGrade ? '是' : '否'}</div>
+                    <div>${escapeHtml(t('settings.autoComplete', { value: boolText(settings.autoComplete) }))}</div>
+                    <div>${escapeHtml(t('settings.forbidDrop', { value: boolText(settings.forbidDrop) }))}</div>
+                    <div>${escapeHtml(t('settings.stopExploreMusic', { value: boolText(settings.stopExploreMusic) }))}</div>
+                    <div>${escapeHtml(t('settings.enemyLevelUseLevelGrade', { value: boolText(settings.enemyLevelUseLevelGrade) }))}</div>
                 </div>
             </div>
         `;
@@ -316,14 +334,14 @@
                     <span class="toggle-icon">▼</span>
                     <span class="card-name">${escapeHtml(name)}</span>
                     <span class="card-id">${escapeHtml(id)}</span>
-                    <button class="json-view-btn" data-json='${escapeHtml(JSON.stringify(data))}'>🔍 完整数据</button>
+                    <button class="json-view-btn" title="${escapeHtml(t('buttons.viewFullJson'))}" data-json='${escapeHtml(JSON.stringify(data))}'>🔍 ${escapeHtml(t('buttons.viewFullJson'))}</button>
                 </div>
                 <div class="collapse-content">
-                    <div class="detail-id">ConfigId: ${escapeHtml(configId)}</div>
+                    <div class="detail-id">${escapeHtml(t('configId', { id: configId }))}</div>
                     ${settingsHtml}
                     <div class="waves-section">
-                        <div class="section-header">🌊 波次与生成逻辑</div>
-                        ${wavesHtml || '<div class="no-data">无波次数据</div>'}
+                        <div class="section-header">🌊 ${escapeHtml(t('sections.waves'))}</div>
+                        ${wavesHtml || `<div class="no-data">${escapeHtml(t('empty.noWaveData'))}</div>`}
                     </div>
                     ${routesHtml}
                 </div>
@@ -336,7 +354,7 @@
             const container = document.getElementById('spawnerRight');
             if (!container) return;
             if (results.length === 0) {
-                container.innerHTML = '<div class="loader">无有效数据</div>';
+                container.innerHTML = `<div class="loader">${escapeHtml(t('empty.noValidData'))}</div>`;
                 return;
             }
 
@@ -353,7 +371,7 @@
                                 <span class="card-name">${escapeHtml(spawner.name)}</span>
                                 <span class="card-id">${escapeHtml(spawner.id)}</span>
                             </div>
-                            <div class="card-error">加载失败: ${escapeHtml(error)}</div>
+                            <div class="card-error">${escapeHtml(t('loadFailed', { message: error }))}</div>
                         </div>`;
                     continue;
                 }
@@ -387,9 +405,9 @@
                     if (jsonStr) {
                         try {
                             const data = JSON.parse(jsonStr);
-                            showJsonModal(data, 'Auto generated via akedata.top');
+                            showJsonModal(data, t('json.autoGeneratedTitle'));
                         } catch (e) {
-                            showJsonModal({ raw: jsonStr }, '原始文本');
+                            showJsonModal({ raw: jsonStr }, t('json.rawTextTitle'));
                         }
                     }
                 });
@@ -406,7 +424,7 @@
                 filteredGroups = groups.filter(g => g.name.toLowerCase().includes(lower) || g.id.toLowerCase().includes(lower));
             }
             if (filteredGroups.length === 0) {
-                container.innerHTML = '<div class="mobile-list-empty">无分组</div>';
+                container.innerHTML = `<div class="mobile-list-empty">${escapeHtml(t('mobile.emptyGroups'))}</div>`;
                 return;
             }
             let html = '';
@@ -450,7 +468,7 @@
             currentGroup = null;
             renderGroupList();
             const rightContainer = document.getElementById('spawnerRight');
-            if (rightContainer) rightContainer.innerHTML = '<div class="loader">请从左侧选择一个分组</div>';
+            if (rightContainer) rightContainer.innerHTML = `<div class="loader">${escapeHtml(t('select'))}</div>`;
             if (window.__deepLinkId) {
                 const deepGroup = groups.find(g => g.id === window.__deepLinkId);
                 if (deepGroup) {

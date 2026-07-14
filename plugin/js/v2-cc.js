@@ -1,4 +1,6 @@
 (function() {
+    const t = window.akeI18n.scope('modules.cc');
+    const commonT = window.akeI18n.scope('common');
     let allGames = [];
     let activeGameId = null;
     let isInitialized = false;
@@ -19,11 +21,11 @@
     const IMAGE_BASE_PATH = '/public/images/';
 
     const TERM_TYPE_MAP = {
-        1: { label: '敌方增益', cls: 'enemy-buff' },
-        2: { label: '己方减益', cls: 'self-buff' },
-        3: { label: '减少时间', cls: 'time-reduce' },
-        0: { label: '无效果', cls: '' },
-        'None': { label: '无效果', cls: '' }
+        1: { labelKey: 'termTypes.enemyBuff', cls: 'enemy-buff' },
+        2: { labelKey: 'termTypes.selfDebuff', cls: 'self-buff' },
+        3: { labelKey: 'termTypes.timeReduction', cls: 'time-reduce' },
+        0: { labelKey: 'termTypes.none', cls: '' },
+        'None': { labelKey: 'termTypes.none', cls: '' }
     };
 
     function parseText(text) {
@@ -156,14 +158,14 @@
 
     function checkTagRequirements(tagId, selectedIds, allTags) {
         const tag = allTags[tagId];
-        if (!tag) return { ok: false, reason: 'tag不存在' };
+        if (!tag) return { ok: false, reason: t('conflicts.tagMissing') };
 
         if (tag.conflictId) {
             for (const sid of selectedIds) {
                 if (sid === String(tagId)) continue;
                 const st = allTags[sid];
                 if (st && st.conflictId === tag.conflictId) {
-                    return { ok: false, reason: `与 Tag ${sid} 冲突 (${tag.conflictId})` };
+                    return { ok: false, reason: t('conflicts.withTag', { tag: sid, conflict: tag.conflictId }) };
                 }
             }
         }
@@ -172,7 +174,7 @@
             const availableKeys = getAvailableKeys(selectedIds, allTags);
             const missing = tag.lockIds.filter(k => !availableKeys.has(k));
             if (missing.length > 0) {
-                return { ok: false, reason: `缺少钥匙: ${missing.join(', ')}` };
+                return { ok: false, reason: t('conflicts.missingKeys', { keys: missing.join(', ') }) };
             }
         }
 
@@ -223,15 +225,15 @@
     }
 
     function renderGameOverview(items, container) {
-        const statusNames = ['进行中', '即将开始', '已结束', '永久'];
+        const statusNames = ['statuses.active', 'statuses.upcoming', 'statuses.ended', 'statuses.permanent'];
         window.AKEModuleOverview.render(container, {
-            title: '危机合约总览', description: '按赛季状态分组，汇总合约词条、关卡与开放时间',
-            group: item => ({ id: String(item.statusOrder ?? 3), name: statusNames[item.statusOrder] || '永久', order: item.statusOrder ?? 3 }),
+            title: t('overview.title'), description: t('overview.description'),
+            group: item => ({ id: String(item.statusOrder ?? 3), name: t(statusNames[item.statusOrder] || 'statuses.permanent'), order: item.statusOrder ?? 3 }),
             onReset: () => { activeGameId = null; },
             onSelect: item => { activeGameId = item.gameId; renderGameList(); },
             sidebarSelector: item => `.v2cc-item[data-game-id="${CSS.escape(item.gameId)}"]`,
             items: items.map(item => ({ ...item, id: item.gameId, image: item.image, fallback: 'CC',
-                tags: [`${item.contractGroupCount || 0} 个指标组`, `${item.contractCount || 0} 个词条`, item.dungeonName] }))
+                tags: [t('counts.indicatorGroups', { count: item.contractGroupCount || 0 }), t('counts.terms', { count: item.contractCount || 0 }), item.dungeonName] }))
         });
     }
 
@@ -277,8 +279,8 @@
         container.innerHTML = '';
 
         if (filtered.length === 0) {
-            container.innerHTML = '<div class="v2cc-loader">无匹配合约</div>';
-            if (detailContainer) detailContainer.innerHTML = '<div class="v2cc-loader">请选择合约赛季</div>';
+            container.innerHTML = `<div class="v2cc-loader">${t('noMatches')}</div>`;
+            if (detailContainer) detailContainer.innerHTML = `<div class="v2cc-loader">${t('select')}</div>`;
             activeGameId = null;
             return;
         }
@@ -357,7 +359,7 @@
     }
 
     async function loadGameDetail(game, container) {
-        container.innerHTML = '<div class="v2cc-loader">加载合约数据...</div>';
+        container.innerHTML = `<div class="v2cc-loader">${t('loading')}</div>`;
         try {
             const data = await (window.akeFetch || fetch)(game.contentFile).then(r => r.json());
             currentData = data;
@@ -401,26 +403,26 @@
             bindTagEvents();
             updateSelectedSummary(data.cctagtable || {});
         } catch (err) {
-            container.innerHTML = `<div class="v2cc-error">加载失败: ${escapeHtml(err.message)}</div>`;
+            container.innerHTML = `<div class="v2cc-error">${t('loadFailed', { message: escapeHtml(err.message) })}</div>`;
         }
     }
 
     function renderActivityInfo(acc) {
         if (!acc) return '';
         const items = [
-            { l: '活动ID', v: acc.activityId },
-            { l: '玩法类型', v: acc.type },
-            { l: '关卡ID', v: acc.gameplayEndStageId },
-            { l: '标签最大列数', v: acc.tagMaxColumn },
-            { l: '兑换货币数量', v: acc.compareToMoneyCount },
-            { l: '商店组', v: acc.shopGroupId }
+            { l: t('activityInfo.activityId'), v: acc.activityId },
+            { l: t('activityInfo.gameplayType'), v: acc.type },
+            { l: t('activityInfo.stageId'), v: acc.gameplayEndStageId },
+            { l: t('activityInfo.maxTagColumns'), v: acc.tagMaxColumn },
+            { l: t('activityInfo.currencyAmount'), v: acc.compareToMoneyCount },
+            { l: t('activityInfo.shopGroup'), v: acc.shopGroupId }
         ].filter(i => i.v !== undefined && i.v !== '');
 
         if (!items.length) return '';
 
         return `
             <div class="v2cc-section">
-                <h3>活动配置</h3>
+                <h3>${t('sections.activityConfiguration')}</h3>
                 <div class="v2cc-info-grid">
                     ${items.map(i => `
                         <div class="v2cc-info-item">
@@ -442,7 +444,7 @@
 
         return `
             <div class="v2cc-tag-term">
-                <span class="v2cc-term-type ${typeInfo.cls}">${escapeHtml(typeInfo.label)}</span>
+                <span class="v2cc-term-type ${typeInfo.cls}">${escapeHtml(t(typeInfo.labelKey))}</span>
                 ${params ? `<span class="v2cc-term-param">${params}</span>` : ''}
             </div>
         `;
@@ -454,12 +456,12 @@
         return `
             <div class="v2cc-score-panel" id="v2ccScorePanel">
                 <div class="v2cc-score-panel-left">
-                    <span class="v2cc-score-panel-label">当前总分</span>
+                    <span class="v2cc-score-panel-label">${t('score.currentTotal')}</span>
                     <span class="v2cc-score-panel-value">${total}</span>
-                    <span class="v2cc-score-panel-count">${count} 个词条已选</span>
+                    <span class="v2cc-score-panel-count">${t('score.selectedTerms', { count })}</span>
                 </div>
                 <div class="v2cc-score-panel-right">
-                    <button class="v2cc-reset-btn" id="v2ccResetBtn">重置选择</button>
+                    <button class="v2cc-reset-btn" id="v2ccResetBtn">${t('score.reset')}</button>
                 </div>
             </div>
         `;
@@ -476,7 +478,7 @@
 
         return `
             <div class="v2cc-section">
-                <h3>合约词条</h3>
+                <h3>${t('sections.contractTerms')}</h3>
                 ${renderScorePanel(tagTable)}
                 <div class="v2cc-groups">
                     ${groupIds.map(gid => {
@@ -486,7 +488,7 @@
 
                         return `
                             <div class="v2cc-group">
-                                <div class="v2cc-group-title">分组 ${escapeHtml(gid)}</div>
+                                <div class="v2cc-group-title">${t('contract.group', { id: escapeHtml(gid) })}</div>
                                 ${entryKeys.map(ek => {
                                     const tag = contractMap[ek];
                                     const tid = String(tag.tagId);
@@ -506,12 +508,12 @@
                                     let badges = '';
                                     if (tag.keyId) {
                                         const keyHeld = getAvailableKeys(selectedTagIds, allTags).has(tag.keyId);
-                                        badges += `<span class="v2cc-tag-badge key${keyHeld ? ' held' : ''}"><span class="badge-dot"></span>钥匙: ${escapeHtml(tag.keyId)}</span>`;
+                                        badges += `<span class="v2cc-tag-badge key${keyHeld ? ' held' : ''}"><span class="badge-dot"></span>${t('contract.key', { key: escapeHtml(tag.keyId) })}</span>`;
                                     }
                                     if (tag.lockIds && tag.lockIds.length > 0) {
                                         tag.lockIds.forEach(lid => {
                                             const keyHeld = getAvailableKeys(selectedTagIds, allTags).has(lid);
-                                            badges += `<span class="v2cc-tag-badge lock${keyHeld ? ' held' : ''}"><span class="badge-dot"></span>需要: ${escapeHtml(lid)}</span>`;
+                                            badges += `<span class="v2cc-tag-badge lock${keyHeld ? ' held' : ''}"><span class="badge-dot"></span>${t('contract.requires', { key: escapeHtml(lid) })}</span>`;
                                         });
                                     }
                                     if (tag.conflictId) {
@@ -524,10 +526,13 @@
                                                 break;
                                             }
                                         }
-                                        badges += `<span class="v2cc-tag-badge conflict${conflictWith ? ' active-conflict' : ''}"><span class="badge-dot"></span>冲突: ${escapeHtml(tag.conflictId)}${conflictWith ? ` (与 Tag ${conflictWith})` : ''}</span>`;
+                                        const conflictText = conflictWith
+                                            ? t('contract.conflictWith', { conflict: escapeHtml(tag.conflictId), tag: escapeHtml(conflictWith) })
+                                            : t('contract.conflict', { conflict: escapeHtml(tag.conflictId) });
+                                        badges += `<span class="v2cc-tag-badge conflict${conflictWith ? ' active-conflict' : ''}"><span class="badge-dot"></span>${conflictText}</span>`;
                                     }
                                     if (!tag.canPreview) {
-                                        badges += `<span class="v2cc-tag-badge preview-off">🔒 不可预览</span>`;
+                                        badges += `<span class="v2cc-tag-badge preview-off">🔒 ${t('contract.previewUnavailable')}</span>`;
                                     }
 
                                     let lockReason = '';
@@ -586,18 +591,18 @@
         const descs = [];
         levels.forEach(([, lv], i) => {
             const items = resolveRewardItems(lv.firstReward, rewardTable, itemTable);
-            const rewardText = items.map(it => `${escapeHtml(it.name)}×${it.count}`).join('、');
+            const rewardText = items.map(it => `${escapeHtml(it.name)}×${it.count}`).join(t('rewards.separator'));
             const score = scoreBand[i];
             if (score !== undefined) {
-                descs.push(`<span class="v2cc-level-desc-line"><b>${score} 指标</b> → Lv.${lv.level}，获得 ${rewardText}</span>`);
+                descs.push(`<span class="v2cc-level-desc-line">${t('rewards.scoreLevel', { score, level: lv.level, rewards: rewardText })}</span>`);
             } else {
-                descs.push(`<span class="v2cc-level-desc-line"><b>全部达成</b> → Lv.${lv.level}，获得 ${rewardText}</span>`);
+                descs.push(`<span class="v2cc-level-desc-line">${t('rewards.allCompletedLevel', { level: lv.level, rewards: rewardText })}</span>`);
             }
         });
 
         return `
             <div class="v2cc-section">
-                <h3>等级奖励</h3>
+                <h3>${t('sections.levelRewards')}</h3>
                 <div class="v2cc-levels">
                     ${levels.map(([, lv]) => {
                         const items = resolveRewardItems(lv.firstReward, rewardTable, itemTable);
@@ -643,7 +648,7 @@
 
         return `
             <div class="v2cc-section">
-                <h3>商店 · ${parseText(groupName)}</h3>
+                <h3>${t('shop.title', { name: parseText(groupName) })}</h3>
                 ${shopIds.map(sid => {
                     const shop = shopTable[sid];
                     if (!shop) return '';
@@ -655,15 +660,15 @@
                         <div class="v2cc-shop-card">
                             <div class="v2cc-shop-header">
                                 <span class="v2cc-shop-name">${parseText(shopName)}</span>
-                                <span class="v2cc-shop-count">${goods.length} 件商品</span>
+                                <span class="v2cc-shop-count">${t('shop.goodsCount', { count: goods.length })}</span>
                             </div>
                             <table class="v2cc-shop-table">
                                 <thead>
                                     <tr>
                                         <th class="col-icon"></th>
-                                        <th class="col-name">物品</th>
-                                        <th class="col-price">价格</th>
-                                        <th class="col-limit">限购</th>
+                                        <th class="col-name">${t('shop.item')}</th>
+                                        <th class="col-price">${t('shop.price')}</th>
+                                        <th class="col-limit">${t('shop.limit')}</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -719,7 +724,7 @@
 
         return `
             <div class="v2cc-section">
-                <h3>任务</h3>
+                <h3>${t('sections.tasks')}</h3>
                 <div class="v2cc-task-groups">
                     ${groups.map(([, tg]) => {
                         const tgId = tg.taskGroupId;
@@ -732,15 +737,15 @@
                                 <div class="v2cc-task-group-header">
                                     ${tg.icon ? `<img class="v2cc-task-group-icon" src="/public/images/contingencycontract/${tg.icon}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
                                     <span class="v2cc-task-group-name">${tg.name?.text ? parseText(tg.name.text) : escapeHtml(tgId)}</span>
-                                    <span class="v2cc-task-group-badge">${tasks.length} 个任务</span>
-                                    ${tg.canUpdate ? '<span class="v2cc-task-group-badge update">可更新</span>' : ''}
+                                    <span class="v2cc-task-group-badge">${t('tasks.count', { count: tasks.length })}</span>
+                                    ${tg.canUpdate ? `<span class="v2cc-task-group-badge update">${t('tasks.updatable')}</span>` : ''}
                                 </div>
                                 ${tasks.length ? `
                                     <div class="v2cc-task-list">
                                         ${tasks.map(task => {
                                             const desc = task.desc?.text ? parseText(task.desc.text) : '';
                                             const rewards = resolveRewardItems(task.rewardId, rewardTable, itemTable);
-                                            const unlockHint = task.unlockTimeId ? `<div class="v2cc-task-unlock">解锁条件: ${escapeHtml(task.unlockTimeId)}</div>` : '';
+                                            const unlockHint = task.unlockTimeId ? `<div class="v2cc-task-unlock">${t('tasks.unlockCondition', { condition: escapeHtml(task.unlockTimeId) })}</div>` : '';
                                             return `
                                                 <div class="v2cc-task-item">
                                                     <div class="v2cc-task-item-header">
@@ -750,7 +755,7 @@
                                                     ${unlockHint}
                                                     ${rewards.length ? `
                                                         <div class="v2cc-task-item-rewards">
-                                                            <span class="v2cc-task-reward-label">奖励:</span>
+                                                            <span class="v2cc-task-reward-label">${t('tasks.rewards')}</span>
                                                             ${rewards.map(r => `
                                                                 <span class="v2cc-task-reward">
                                                                     ${r.iconId ? `<img class="v2cc-task-reward-icon" src="/public/images/item/itemicon/${r.iconId}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
@@ -764,7 +769,7 @@
                                             `;
                                         }).join('')}
                                     </div>
-                                ` : '<div class="v2cc-task-empty">暂无任务</div>'}
+                                ` : `<div class="v2cc-task-empty">${t('tasks.empty')}</div>`}
                             </div>
                         `;
                     }).join('')}
@@ -831,7 +836,7 @@
     function getEnemyStatsAtLevel(attrTemplateData, enemyLevel, modifiers) {
         return window.AKEStats.getEnemyStatsAtLevel(attrTemplateData, enemyLevel, modifiers, {
             displayOrder: ATTR_DISPLAY_ORDER,
-            getAttrName: attrType => ccAttrMap[attrType] || `属性${attrType}`,
+            getAttrName: attrType => ccAttrMap[attrType] || t('attributeFallback', { type: attrType }),
             includeModifierOnlyAttrs: false
         });
     }
@@ -921,9 +926,9 @@
         const allModifiers = [...inlineModifiers, ...buffModifiers];
 
         const flags = [];
-        if (enemyConfig.isDangerous) flags.push('<span class="v2d-enemy-flag danger">危险</span>');
-        if (enemyConfig.showBigEffect) flags.push('<span class="v2d-enemy-flag big-effect">全局特效</span>');
-        if (enemyConfig.showBigHeadbar) flags.push('<span class="v2d-enemy-flag big-headbar">置顶血条</span>');
+        if (enemyConfig.isDangerous) flags.push(`<span class="v2d-enemy-flag danger">${t('enemyFlags.dangerous')}</span>`);
+        if (enemyConfig.showBigEffect) flags.push(`<span class="v2d-enemy-flag big-effect">${t('enemyFlags.globalEffect')}</span>`);
+        if (enemyConfig.showBigHeadbar) flags.push(`<span class="v2d-enemy-flag big-headbar">${t('enemyFlags.pinnedHealthBar')}</span>`);
 
         const stats = getEnemyStatsAtLevel(attrData, enemyLevel, allModifiers);
         let statsHtml = '';
@@ -1059,14 +1064,15 @@
 
             const allSpawns = [];
             (w.groups || []).forEach((g, gi) => {
-                const modeLabel = { 'Parallel': '同时', 'Sequence': '顺序', 'PartKilled': '击杀后', 'AllKilled': '全灭后', 'Deadline': '计时后' }[g.groupMode] || g.groupMode;
+                const modeKey = { 'Parallel': 'parallel', 'Sequence': 'sequence', 'PartKilled': 'partKilled', 'AllKilled': 'allKilled', 'Deadline': 'deadline' }[g.groupMode];
+                const modeLabel = modeKey ? t(`spawnModes.${modeKey}`) : g.groupMode;
                 let conditionText = '';
                 let targetGroupKey = '';
                 if (g.groupMode === 'PartKilled' && g.groupModeTargetKey) {
-                    conditionText = `组${g.groupModeTargetKey}击杀${g.groupModeKillCount}只后`;
+                    conditionText = t('spawnConditions.partKilled', { group: g.groupModeTargetKey, count: g.groupModeKillCount });
                     targetGroupKey = g.groupModeTargetKey;
                 } else if (g.groupMode === 'AllKilled' && g.groupModeTargetKey) {
-                    conditionText = `组${g.groupModeTargetKey}全灭后`;
+                    conditionText = t('spawnConditions.allKilled', { group: g.groupModeTargetKey });
                     targetGroupKey = g.groupModeTargetKey;
                 }
                 g.spawns.forEach(spawn => {
@@ -1086,16 +1092,16 @@
                 const { spawn, group: g, modeLabel, conditionText, targetGroupKey, stackIdx } = item;
                 const pct = toPct(spawn.position.x, spawn.position.z);
                 const posStr = `(${spawn.position.x.toFixed(1)}, ${spawn.position.z.toFixed(1)})`;
-                const randomStr = spawn.randomizeRadius > 0 ? ` ±${spawn.randomizeRadius.toFixed(1)}` : '';
-                const delayStr = spawn.timestamp > 0 ? `延迟 ${spawn.timestamp.toFixed(1)}s` : '';
-                const intervalStr = spawn.spawnInterval > 0 ? `间隔 ${spawn.spawnInterval.toFixed(1)}s` : '';
-                const warnStr = spawn.preWarnTime > 0 ? `预告 ${spawn.preWarnTime.toFixed(1)}s` : '';
-                const faceStr = spawn.faceMainCharacter ? '面向主控' : '';
+                const randomStr = spawn.randomizeRadius > 0 ? t('spawn.randomRadius', { radius: spawn.randomizeRadius.toFixed(1) }) : '';
+                const delayStr = spawn.timestamp > 0 ? t('spawn.delay', { seconds: spawn.timestamp.toFixed(1) }) : '';
+                const intervalStr = spawn.spawnInterval > 0 ? t('spawn.interval', { seconds: spawn.spawnInterval.toFixed(1) }) : '';
+                const warnStr = spawn.preWarnTime > 0 ? t('spawn.preWarning', { seconds: spawn.preWarnTime.toFixed(1) }) : '';
+                const faceStr = spawn.faceMainCharacter ? t('spawn.faceMainCharacter') : '';
 
                 const tipLines = [
                     `<b>${escapeHtml(spawn.name)} ×${spawn.count} Lv.${spawn.level}</b>`,
-                    `生成坐标 ${posStr}${randomStr}`,
-                    `组${g.groupKey} · ${modeLabel}${conditionText ? ' · ' + conditionText : ''}`,
+                    t('spawn.coordinates', { position: posStr, radius: randomStr }),
+                    t('spawn.groupMode', { group: g.groupKey, mode: modeLabel, condition: conditionText ? ' · ' + conditionText : '' }),
                     [delayStr, intervalStr, warnStr, faceStr].filter(Boolean).join(' · ')
                 ].filter(Boolean);
 
@@ -1142,7 +1148,7 @@
             html += `<div class="v2cc-dungeon-card">
                 <div class="v2cc-dungeon-header">
                     <span class="v2cc-dungeon-name">${escapeHtml(name)}</span>
-                    <span class="v2cc-dungeon-lv">推荐等级 ${recommendLv}</span>
+                    <span class="v2cc-dungeon-lv">${t('dungeon.recommendedLevel', { label: commonT('level'), level: recommendLv })}</span>
                 </div>
                 ${desc ? `<div class="v2cc-dungeon-desc">${desc}</div>` : ''}
                 ${featureDesc ? `<div class="v2cc-dungeon-feature">${featureDesc}</div>` : ''}`;
@@ -1169,15 +1175,15 @@
 
                     let waveDetailHtml = '';
                     mergedWaves.forEach((wave, wIdx) => {
-                        const repeatTag = wave.repeatable ? ' <span class="v2d-wave-repeat">无限刷新</span>' : '';
-                        const aliveTag = wave.maxAlive > 0 ? ` <span class="v2d-wave-alive">上限${wave.maxAlive}只</span>` : '';
-                        const pauseTag = wave.hasPause ? ' <span class="v2d-wave-pause">该波次的生成受其他因素控制</span>' : '';
+                        const repeatTag = wave.repeatable ? ` <span class="v2d-wave-repeat">${t('waves.repeatable')}</span>` : '';
+                        const aliveTag = wave.maxAlive > 0 ? ` <span class="v2d-wave-alive">${t('waves.aliveLimit', { count: wave.maxAlive })}</span>` : '';
+                        const pauseTag = wave.hasPause ? ` <span class="v2d-wave-pause">${t('waves.externallyControlled')}</span>` : '';
                         const enemyParts = wave.enemies.map(e => {
                             const iconSrc = `/public/images/enemy/monstericonbig/${e.templateId}.png`;
                             return `<span class="v2d-wave-enemy" data-wave-idx="${wIdx}" data-enemy-id="${e.instanceId}"><img class="v2d-wave-icon" src="${iconSrc}" onerror="this.style.display='none'"><span class="v2d-wave-ename">${escapeHtml(e.name)}</span> ×${e.count} <span class="v2d-wave-lv">Lv.${e.level}</span></span>`;
                         }).join(' ');
                         const activeCls = wIdx === 0 ? ' active' : '';
-                        waveDetailHtml += `<div class="v2d-wave-line${activeCls}" data-wave-idx="${wIdx}"><span class="v2d-wave-num" data-wave-idx="${wIdx}">波次 ${wave.waveIdx}</span>${repeatTag}${aliveTag}${pauseTag}: ${enemyParts}</div>`;
+                        waveDetailHtml += `<div class="v2d-wave-line${activeCls}" data-wave-idx="${wIdx}"><span class="v2d-wave-num" data-wave-idx="${wIdx}">${t('waves.number', { number: wave.waveIdx })}</span>${repeatTag}${aliveTag}${pauseTag}: ${enemyParts}</div>`;
                     });
 
                     const mergedSpawner = { ...sp, waves: mergedWaves };
@@ -1218,14 +1224,14 @@
                     html += `<div class="v2cc-spawner-block${collapsed}">
                         <div class="v2cc-spawner-title" onclick="this.parentElement.classList.toggle('collapsed')">
                             <span class="v2cc-spawner-toggle">▼</span>
-                            配置 ${spIdx + 1}
+                            ${t('waves.configuration', { number: spIdx + 1 })}
                             <span class="v2cc-spawner-id">${escapeHtml(sp.configId)}</span>
-                            <span class="v2cc-spawner-brief">${totalWaves}波 · ${totalEnemies}只</span>
+                            <span class="v2cc-spawner-brief">${t('waves.brief', { waves: totalWaves, enemies: totalEnemies })}</span>
                         </div>
                         <div class="v2cc-spawner-body">
                             <div class="v2cc-wave-map-row">
                                 <div class="v2d-wave-section">
-                                    <div class="v2d-wave-summary"><span class="v2d-wave-label">波次统计</span> ${totalWaves}波 | 共${totalEnemies}只</div>
+                                    <div class="v2d-wave-summary"><span class="v2d-wave-label">${t('waves.summaryLabel')}</span> ${t('waves.summary', { waves: totalWaves, enemies: totalEnemies })}</div>
                                     <div class="v2d-wave-detail">${waveDetailHtml}</div>
                                 </div>
                                 ${spawnMapHtml}
@@ -1265,14 +1271,14 @@
                     <div class="v2cc-header-icon">⚔️</div>
                     <div class="v2cc-header-text">
                         <div class="v2cc-title">${escapeHtml(title)}</div>
-                        <div class="v2cc-subtitle">${escapeHtml(game.activityId)} · ${groupCount} 个分组 · ${tagCount} 个词条</div>
+                        <div class="v2cc-subtitle">${t('detail.subtitle', { activity: escapeHtml(game.activityId), groups: groupCount, terms: tagCount })}</div>
                     </div>
                 </div>
                 ${renderActivityInfo(acc)}
                 ${renderContractGroups(cct, tagTable)}
                 <div class="v2cc-section" id="v2ccSelectedSummary"></div>
-                ${currentDungeonData ? `<div class="v2cc-section"><h3>副本敌人</h3>${renderDungeonSection(currentDungeonData)}</div>` : ''}
-                ${currentDungeonError ? `<div class="v2cc-section"><h3>副本敌人</h3><div class="v2cc-error">副本数据加载失败: ${escapeHtml(currentDungeonError.message)}</div></div>` : ''}
+                ${currentDungeonData ? `<div class="v2cc-section"><h3>${t('sections.dungeonEnemies')}</h3>${renderDungeonSection(currentDungeonData)}</div>` : ''}
+                ${currentDungeonError ? `<div class="v2cc-section"><h3>${t('sections.dungeonEnemies')}</h3><div class="v2cc-error">${t('dungeon.loadFailed', { message: escapeHtml(currentDungeonError.message) })}</div></div>` : ''}
                 ${renderLevelRewards(data)}
                 ${renderShopSection(data)}
                 ${renderTaskGroups(data)}
@@ -1305,7 +1311,7 @@
             `;
         }).join('');
         container.innerHTML = `
-            <h3>已选词条详情</h3>
+            <h3>${t('sections.selectedTermDetails')}</h3>
             <div class="v2cc-selected-list">${items}</div>
         `;
     }
@@ -1335,7 +1341,7 @@
                         val = bb[mod.param.blackboardKey] ?? mod.param.value;
                     } else { val = mod.param.value; }
                     modifiers.push({ attrType, attrValue: val, modifierType: mt });
-                    const attrName = ccAttrMap[attrType] || `属性${attrType}`;
+                    const attrName = ccAttrMap[attrType] || t('attributeFallback', { type: attrType });
                     const formulaName = mod.formulaItem;
                     tagBuffs.push({ tagName, attrName, formulaName, value: val });
                 });
@@ -1449,7 +1455,7 @@
         const totalEl = document.querySelector('.v2cc-score-panel-value');
         const countEl = document.querySelector('.v2cc-score-panel-count');
         if (totalEl) totalEl.textContent = computeTotalScore(selectedTagIds, tagTable);
-        if (countEl) countEl.textContent = selectedTagIds.size + ' 个词条已选';
+        if (countEl) countEl.textContent = t('score.selectedTerms', { count: selectedTagIds.size });
 
         document.querySelectorAll('.v2cc-tag-card[data-tag-id]').forEach(card => {
             const tid = card.dataset.tagId;
@@ -1486,8 +1492,10 @@
                         if (st && st.conflictId === tag.conflictId) { conflictWith = sid; break; }
                     }
                     badge.classList.toggle('active-conflict', !!conflictWith);
-                    const base = '冲突: ' + escapeHtml(tag.conflictId);
-                    badge.innerHTML = '<span class="badge-dot"></span>' + base + (conflictWith ? ' (与 Tag ' + escapeHtml(conflictWith) + ')' : '');
+                    const conflictText = conflictWith
+                        ? t('contract.conflictWith', { conflict: escapeHtml(tag.conflictId), tag: escapeHtml(conflictWith) })
+                        : t('contract.conflict', { conflict: escapeHtml(tag.conflictId) });
+                    badge.innerHTML = '<span class="badge-dot"></span>' + conflictText;
                 }
             });
 

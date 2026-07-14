@@ -1,4 +1,6 @@
 (function() {
+        const t = window.akeI18n.scope('modules.dungeon');
+        const commonT = window.akeI18n.scope('common');
         let allSeries = [];
         let rawAllSeries = [];
         let activeSeriesId = null;
@@ -14,14 +16,28 @@
         const IMAGE_BASE_PATH = '/public/images/';
 
         const CATEGORY_MAP = {
-            'dungeon_bossrush': '危境再现',
-            'dungeon_resource': '协议空间',
-            'dungeon_highdifficulty': '高难度',
-            'dungeon_char': '角色支线',
-            'dungeon_puzzle': '密境',
-            'dungeon_roguelike': '像差',
-            'dungeon_train': '训练'
+            'dungeon_highdifficulty': 'highDifficulty',
+            'dungeon_bossrush': 'bossRush',
+            'dungeon_ss': 'protocolSpace',
+            'dungeon_actmonster': 'eventCombat',
+            'dungeon_challenge': 'challenge',
+            'dungeon_resource': 'resource',
+            'dungeon_weeklyraid': 'weeklyRaid',
+            'dungeon_char': 'characterMission',
+            'dungeon_chartutorial': 'characterTutorial',
+            'dungeon_contract': 'contingencyContract',
+            'dungeon_train': 'training',
+            'dungeon_worldlevel': 'worldLevel',
+            'dungeon_wuling_A': 'wulingA',
+            'dungeon_wuling_B': 'wulingB',
+            'dungeon_puzzle': 'mystery',
+            'dungeon_roguelike': 'protocolDivergence'
         };
+
+        function getCategoryLabel(category) {
+            const key = CATEGORY_MAP[category];
+            return key ? t(`categories.${key}`) : category;
+        }
 
         function getCurrentShowHidden() {
             return window.akeData?.getConfig().showHidden ?? false;
@@ -123,10 +139,11 @@
                 const vis = wi === 0 ? '' : 'display:none;';
                 const allSpawns = [];
                 (w.groups || []).forEach(g => {
-                    const modeLabel = { 'Parallel': '同时', 'Sequence': '顺序', 'PartKilled': '击杀后', 'AllKilled': '全灭后', 'Deadline': '计时后' }[g.groupMode] || g.groupMode;
+                    const modeKey = { 'Parallel': 'parallel', 'Sequence': 'sequence', 'PartKilled': 'partKilled', 'AllKilled': 'allKilled', 'Deadline': 'deadline' }[g.groupMode];
+                    const modeLabel = modeKey ? t(`spawnModes.${modeKey}`) : g.groupMode;
                     let conditionText = '', targetGroupKey = '';
-                    if (g.groupMode === 'PartKilled' && g.groupModeTargetKey) { conditionText = `组${g.groupModeTargetKey}击杀${g.groupModeKillCount}只后`; targetGroupKey = g.groupModeTargetKey; }
-                    else if (g.groupMode === 'AllKilled' && g.groupModeTargetKey) { conditionText = `组${g.groupModeTargetKey}全灭后`; targetGroupKey = g.groupModeTargetKey; }
+                    if (g.groupMode === 'PartKilled' && g.groupModeTargetKey) { conditionText = t('spawnConditions.partKilled', { group: g.groupModeTargetKey, count: g.groupModeKillCount }); targetGroupKey = g.groupModeTargetKey; }
+                    else if (g.groupMode === 'AllKilled' && g.groupModeTargetKey) { conditionText = t('spawnConditions.allKilled', { group: g.groupModeTargetKey }); targetGroupKey = g.groupModeTargetKey; }
                     g.spawns.forEach(spawn => { allSpawns.push({ spawn, group: g, modeLabel, conditionText, targetGroupKey }); });
                 });
                 const posCount = {};
@@ -140,15 +157,15 @@
                     const { spawn, group: g, modeLabel, conditionText, targetGroupKey, stackIdx } = item;
                     const pct = toPct(spawn.position.x, spawn.position.z);
                     const posStr = `(${spawn.position.x.toFixed(1)}, ${spawn.position.z.toFixed(1)})`;
-                    const randomStr = spawn.randomizeRadius > 0 ? ` ±${spawn.randomizeRadius.toFixed(1)}` : '';
-                    const delayStr = spawn.timestamp > 0 ? `延迟 ${spawn.timestamp.toFixed(1)}s` : '';
-                    const intervalStr = spawn.spawnInterval > 0 ? `间隔 ${spawn.spawnInterval.toFixed(1)}s` : '';
-                    const warnStr = spawn.preWarnTime > 0 ? `预告 ${spawn.preWarnTime.toFixed(1)}s` : '';
-                    const faceStr = spawn.faceMainCharacter ? '面向主控' : '';
+                    const randomStr = spawn.randomizeRadius > 0 ? t('spawn.randomRadius', { radius: spawn.randomizeRadius.toFixed(1) }) : '';
+                    const delayStr = spawn.timestamp > 0 ? t('spawn.delay', { seconds: spawn.timestamp.toFixed(1) }) : '';
+                    const intervalStr = spawn.spawnInterval > 0 ? t('spawn.interval', { seconds: spawn.spawnInterval.toFixed(1) }) : '';
+                    const warnStr = spawn.preWarnTime > 0 ? t('spawn.preWarning', { seconds: spawn.preWarnTime.toFixed(1) }) : '';
+                    const faceStr = spawn.faceMainCharacter ? t('spawn.faceMainCharacter') : '';
                     const tipLines = [
                         `<b>${escH(spawn.name)} ×${spawn.count} Lv.${spawn.level}</b>`,
-                        `坐标 ${posStr}${randomStr}`,
-                        `组${g.groupKey} · ${modeLabel}${conditionText ? ' · ' + conditionText : ''}`,
+                        t('spawn.coordinates', { position: posStr, radius: randomStr }),
+                        t('spawn.groupMode', { group: g.groupKey, mode: modeLabel, condition: conditionText ? ` · ${conditionText}` : '' }),
                         [delayStr, intervalStr, warnStr, faceStr].filter(Boolean).join(' · ')
                     ].filter(Boolean);
                     const offsetPct = (0.3 * 100 / (2 * halfX)).toFixed(2);
@@ -246,7 +263,7 @@
         }
 
         function getAttrName(attrType) {
-            return attrMap[attrType] || `属性${attrType}`;
+            return attrMap[attrType] || t('attributeFallback', { type: attrType });
         }
 
         function computeAttrWithModifiers(baseValue, modifiers, attrType) {
@@ -347,13 +364,13 @@
 
         function renderDungeonOverview(items, container) {
             window.AKEModuleOverview.render(container, {
-                title: '副本总览', description: '按副本类型分组，展示系列与所含关卡数量',
-                group: item => ({ id: item.gameCategory || 'other', name: item.gameCategoryName || '其他副本', order: item.categoryOrder }),
+                title: t('overview.title'), description: t('overview.description'),
+                group: item => ({ id: item.gameCategory || 'other', name: item.gameCategoryName || t('categories.other'), order: item.categoryOrder }),
                 onReset: () => { activeSeriesId = null; },
                 onSelect: item => { activeSeriesId = item.templateId; renderSeriesList(); },
                 sidebarSelector: item => `.v2d-item[data-series-id="${CSS.escape(item.templateId)}"]`,
-                items: items.map(item => ({ ...item, id: item.templateId, image: item.image, fallback: 'DUNGEON',
-                    tags: [`${item.dungeonCount || 0} 个关卡`, `等级 ${item.rarity || 1}`] }))
+                items: items.map(item => ({ ...item, id: item.templateId, image: item.image, fallback: t('overview.fallback'),
+                    tags: [t('overview.stageCount', { count: item.dungeonCount || 0 }), commonT('rarityLabel', { rarity: item.rarity || 1 })] }))
             });
         }
 
@@ -366,8 +383,8 @@
             container.innerHTML = '';
 
             if (filtered.length === 0) {
-                container.innerHTML = '<div class="v2d-loader">无匹配系列</div>';
-                if (detailContainer) detailContainer.innerHTML = '<div class="v2d-loader">请选择系列</div>';
+                container.innerHTML = `<div class="v2d-loader">${t('noMatches')}</div>`;
+                if (detailContainer) detailContainer.innerHTML = `<div class="v2d-loader">${t('select')}</div>`;
                 activeSeriesId = null;
                 return;
             }
@@ -379,7 +396,7 @@
 
                 const rarityBar = document.createElement('span');
                 rarityBar.className = `v2d-rarity-bar rarity-${item.rarity || 1}`;
-                rarityBar.title = `稀有度 ${item.rarity || 1}`;
+                rarityBar.title = commonT('rarityLabel', { rarity: item.rarity || 1 });
 
                 const infoDiv = document.createElement('div');
                 infoDiv.className = 'v2d-item-info';
@@ -445,14 +462,14 @@
         }
 
         async function loadSeriesDetail(seriesItem, container) {
-            container.innerHTML = '<div class="v2d-loader">加载副本数据...</div>';
+            container.innerHTML = `<div class="v2d-loader">${t('loading')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(seriesItem.contentFile).then(r => r.json());
                 const buffIds = collectBuffIds(data);
                 if (buffIds.length > 0) await loadAllBuffs(buffIds);
                 container.innerHTML = renderDetail(data, seriesItem);
             } catch (err) {
-                container.innerHTML = `<div class="v2d-error">加载失败: ${err.message}</div>`;
+                container.innerHTML = `<div class="v2d-error">${t('loadFailed', { message: err.message })}</div>`;
             }
         }
 
@@ -503,9 +520,9 @@
             const allModifiers = [...inlineModifiers, ...buffModifiers];
 
             const flags = [];
-            if (enemyConfig.isDangerous) flags.push('<span class="v2d-enemy-flag danger">危险</span>');
-            if (enemyConfig.showBigEffect) flags.push('<span class="v2d-enemy-flag big-effect">全局特效</span>');
-            if (enemyConfig.showBigHeadbar) flags.push('<span class="v2d-enemy-flag big-headbar">置顶血条</span>');
+            if (enemyConfig.isDangerous) flags.push(`<span class="v2d-enemy-flag danger">${t('flags.dangerous')}</span>`);
+            if (enemyConfig.showBigEffect) flags.push(`<span class="v2d-enemy-flag big-effect">${t('flags.globalEffect')}</span>`);
+            if (enemyConfig.showBigHeadbar) flags.push(`<span class="v2d-enemy-flag big-headbar">${t('flags.pinnedHealthBar')}</span>`);
             const flagsHtml = flags.length ? `<div class="v2d-enemy-flags">${flags.join('')}</div>` : '';
 
             const modifierStr = formatAttrModifiers(inlineModifiers);
@@ -589,15 +606,15 @@
             const costStamina = dungeon.costStamina !== undefined ? dungeon.costStamina : 0;
             const recommendLv = dungeon.recommendLv || '?';
             const dungeonCategory = dungeon.dungeonCategory || '';
-            const categoryLabel = CATEGORY_MAP[dungeonCategory] || dungeonCategory;
+            const categoryLabel = getCategoryLabel(dungeonCategory);
             const picPath = dungeon.dungeonPicPath || '';
             const dungeonImg = dungeon.dungeonImg || '';
 
             const mainGoal = dungeon.mainGoalDesc?.text || '';
             const extraGoal = dungeon.extraGoalDesc?.text || '';
             let goalsHtml = '';
-            if (mainGoal) goalsHtml += `<div><strong>主要目标：</strong>${parseText(mainGoal)}</div>`;
-            if (extraGoal) goalsHtml += `<div><strong>额外目标：</strong>${parseText(extraGoal)}</div>`;
+            if (mainGoal) goalsHtml += `<div><strong>${t('goals.main')}</strong>${parseText(mainGoal)}</div>`;
+            if (extraGoal) goalsHtml += `<div><strong>${t('goals.extra')}</strong>${parseText(extraGoal)}</div>`;
             if (goalsHtml) goalsHtml = `<div class="v2d-card-goal">${goalsHtml}</div>`;
 
             const rewardTable = dungeon.rewardTable || {};
@@ -608,8 +625,8 @@
             let rewardsHtml = '';
             if (fixedRewards || firstRewards) {
                 rewardsHtml = `<div class="v2d-rewards">
-                    ${fixedRewards ? `<div class="v2d-rewards-block"><span class="v2d-rewards-title">固定奖励</span><div class="v2d-rewards-content">${fixedRewards}</div></div>` : ''}
-                    ${firstRewards ? `<div class="v2d-rewards-block"><span class="v2d-rewards-title">首通奖励</span><div class="v2d-rewards-content">${firstRewards}</div></div>` : ''}
+                    ${fixedRewards ? `<div class="v2d-rewards-block"><span class="v2d-rewards-title">${t('rewards.fixed')}</span><div class="v2d-rewards-content">${fixedRewards}</div></div>` : ''}
+                    ${firstRewards ? `<div class="v2d-rewards-block"><span class="v2d-rewards-title">${t('rewards.firstClear')}</span><div class="v2d-rewards-content">${firstRewards}</div></div>` : ''}
                 </div>`;
             }
 
@@ -641,21 +658,21 @@
 
                 let waveDetailHtml = '';
                 allWaves.forEach((wave, wIdx) => {
-                    const repeatTag = wave.repeatable ? ' <span class="v2d-wave-repeat">无限刷新</span>' : '';
-                    const aliveTag = wave.maxAlive > 0 ? ` <span class="v2d-wave-alive">上限${wave.maxAlive}只</span>` : '';
-                    const pauseTag = wave.hasPause ? ' <span class="v2d-wave-pause">该波次的生成受其他因素控制</span>' : '';
+                    const repeatTag = wave.repeatable ? ` <span class="v2d-wave-repeat">${t('waves.repeatable')}</span>` : '';
+                    const aliveTag = wave.maxAlive > 0 ? ` <span class="v2d-wave-alive">${t('waves.aliveLimit', { count: wave.maxAlive })}</span>` : '';
+                    const pauseTag = wave.hasPause ? ` <span class="v2d-wave-pause">${t('waves.externallyControlled')}</span>` : '';
                     const enemyParts = wave.enemies.map(e => {
                         const iconSrc = `/public/images/enemy/monstericonbig/${e.templateId}.png`;
                         return `<span class="v2d-wave-enemy" data-wave-idx="${wIdx}" data-enemy-id="${e.instanceId}"><img class="v2d-wave-icon" src="${iconSrc}" onerror="this.style.display='none'"><span class="v2d-wave-ename">${e.name}</span> ×${e.count} <span class="v2d-wave-lv">Lv.${e.level}</span></span>`;
                     }).join(' ');
                     const activeCls = wIdx === 0 ? ' active' : '';
-                    waveDetailHtml += `<div class="v2d-wave-line${activeCls}" data-wave-idx="${wIdx}"><span class="v2d-wave-num" data-wave-idx="${wIdx}">波次 ${wave.waveIdx}</span>${repeatTag}${aliveTag}${pauseTag}: ${enemyParts}</div>`;
+                    waveDetailHtml += `<div class="v2d-wave-line${activeCls}" data-wave-idx="${wIdx}"><span class="v2d-wave-num" data-wave-idx="${wIdx}">${t('waves.number', { number: wave.waveIdx })}</span>${repeatTag}${aliveTag}${pauseTag}: ${enemyParts}</div>`;
                 });
 
                 const mergedSpawner = { configId: 'merged', waves: allWaves };
                 const spawnMapHtml = renderSpawnMap(mergedSpawner);
 
-                waveSummaryHtml = `<div class="v2d-wave-map-row"><div class="v2d-wave-section"><div class="v2d-wave-summary"><span class="v2d-wave-label">波次统计</span> ${totalWaves}波 | 共${totalEnemies}只</div><div class="v2d-wave-detail">${waveDetailHtml}</div></div>${spawnMapHtml}</div>`;
+                waveSummaryHtml = `<div class="v2d-wave-map-row"><div class="v2d-wave-section"><div class="v2d-wave-summary"><span class="v2d-wave-label">${t('waves.summaryLabel')}</span> ${t('waves.summary', { waves: totalWaves, enemies: totalEnemies })}</div><div class="v2d-wave-detail">${waveDetailHtml}</div></div>${spawnMapHtml}</div>`;
 
                 const enemyLibBuffs = {};
                 waveSpawners.forEach(sp => {
@@ -684,7 +701,7 @@
                 });
 
                 if (uniqueEnemies.length > 0) {
-                    enemiesHtml = `<h4 class="v2d-enemies-title">敌人详情</h4><div class="v2d-enemy-list">`;
+                    enemiesHtml = `<h4 class="v2d-enemies-title">${t('enemyDetails')}</h4><div class="v2d-enemy-list">`;
                     uniqueEnemies.forEach(e => {
                         enemiesHtml += renderEnemyCard(e.instanceId, e.level, dungeon, enemyLibBuffs[e.instanceId] || []);
                     });
@@ -694,7 +711,7 @@
                 const enemyIds = dungeon.enemyIds || [];
                 const enemyLevels = dungeon.enemyLevels || [];
                 if (enemyIds.length > 0) {
-                    enemiesHtml = `<h4 class="v2d-enemies-title">敌人详情</h4><div class="v2d-enemy-list">`;
+                    enemiesHtml = `<h4 class="v2d-enemies-title">${t('enemyDetails')}</h4><div class="v2d-enemy-list">`;
                     enemyIds.forEach((eid, idx) => {
                         const eLevel = enemyLevels[idx] || recommendLv;
                         enemiesHtml += renderEnemyCard(eid, eLevel, dungeon, []);
@@ -722,9 +739,9 @@
                     ${featureDesc ? `<div class="v2d-card-feature">${featureDesc}</div>` : ''}
                     ${goalsHtml}
                     <div class="v2d-card-meta">
-                        ${costStamina > 0 ? `<div><span class="v2d-meta-label">消耗理智</span> ${costStamina}</div>` : ''}
-                        ${recommendLv ? `<div><span class="v2d-meta-label">推荐等级</span> ${recommendLv}</div>` : ''}
-                        ${categoryLabel ? `<div><span class="v2d-meta-label">类型</span> ${categoryLabel}</div>` : ''}
+                        ${costStamina > 0 ? `<div><span class="v2d-meta-label">${t('meta.staminaCost')}</span> ${costStamina}</div>` : ''}
+                        ${recommendLv ? `<div><span class="v2d-meta-label">${t('meta.recommendedLevel')}</span> ${recommendLv}</div>` : ''}
+                        ${categoryLabel ? `<div><span class="v2d-meta-label">${t('meta.category')}</span> ${categoryLabel}</div>` : ''}
                     </div>
                     ${waveSummaryHtml}
                     ${rewardsHtml}
@@ -738,14 +755,14 @@
             const seriesDesc = data.dungeonseriestable?.desc?.text || '';
             const staminaText = data.dungeonseriestable?.staminaText?.text || '';
             const gameCategory = data.dungeonseriestable?.gameCategory || '';
-            const categoryLabel = CATEGORY_MAP[gameCategory] || gameCategory;
+            const categoryLabel = getCategoryLabel(gameCategory);
             const picPath = data.dungeonseriestable?.dungeonPicPath || '';
             const roleImg = data.dungeonseriestable?.dungeonRoleImg || '';
 
             const dungeons = data.dungeontable || {};
             const dungeonIds = Object.keys(dungeons);
             if (dungeonIds.length === 0) {
-                return `<div class="v2d-error">该系列下没有副本数据</div>`;
+                return `<div class="v2d-error">${t('noData')}</div>`;
             }
 
             const includeIds = data.dungeonseriestable?.includeDungeonIds || dungeonIds;
@@ -753,7 +770,7 @@
 
             let metaHtml = '';
             if (categoryLabel) metaHtml += `<span class="v2d-series-tag">${categoryLabel}</span>`;
-            if (staminaText) metaHtml += `<span class="v2d-series-tag">理智: ${staminaText}</span>`;
+            if (staminaText) metaHtml += `<span class="v2d-series-tag">${t('stamina', { value: staminaText })}</span>`;
             if (metaHtml) metaHtml = `<div class="v2d-series-meta">${metaHtml}</div>`;
 
             const bgSrc = picPath ? `/public/images/dungeon/${picPath}_bg.png` : '';

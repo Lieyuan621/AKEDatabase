@@ -1,4 +1,6 @@
 (function() {
+        const t = window.akeI18n.scope('modules.item');
+        const commonT = window.akeI18n.scope('common');
         let allItems = [];
         let rawAllItems = [];
         let activeItemId = null;
@@ -15,7 +17,7 @@
         }
 
         function getItemCategoryName(item) {
-            return item.categoryName || itemTypeMap[String(item.type)] || `类型 ${item.type}`;
+            return item.categoryName || itemTypeMap[String(item.type)] || t('typeFallback', { type: item.type });
         }
 
         function getCurrentShowHidden() {
@@ -32,7 +34,7 @@
 
         function getTypeName(typeId, itemtypetable) {
             if (itemtypetable?.name?.text) return itemtypetable.name.text;
-            return itemTypeMap[String(typeId)] || `类型 ${typeId}`;
+            return itemTypeMap[String(typeId)] || t('typeFallback', { type: typeId });
         }
 
         function filterItems(items) {
@@ -68,7 +70,7 @@
                 if (!existR.has(r)) continue;
                 const btn = document.createElement('span');
                 btn.className = `v2i-filter-btn ${selectedRarities.has(r) ? 'active' : ''}`;
-                btn.textContent = r + '星';
+                btn.textContent = commonT('rarityStars', { rarity: r });
                 btn.addEventListener('click', () => {
                     selectedRarities.has(r) ? selectedRarities.delete(r) : selectedRarities.add(r);
                     btn.classList.toggle('active');
@@ -110,7 +112,7 @@
             const summary = document.getElementById('v2itemFilterSummary');
             if (!summary) return;
             const count = selectedRarities.size + selectedCategories.size;
-            summary.textContent = count ? `筛选 (${count})` : '筛选';
+            summary.textContent = count ? commonT('filterCount', { count }) : commonT('filter');
         }
 
         const mobileBtn = document.getElementById('v2itemMobileListBtn');
@@ -163,12 +165,12 @@
 
         function renderItemOverview(items, container) {
             window.AKEModuleOverview.render(container, {
-                title: '物品总览', description: '按游戏内展示分类分组，汇总所有物品与稀有度',
-                group: item => ({ id: item.categoryId, name: item.categoryName || '其他物品', order: item.categoryOrder }),
+                title: t('overview.title'), description: t('overview.description'),
+                group: item => ({ id: item.categoryId, name: item.categoryName || t('otherItems'), order: item.categoryOrder }),
                 onReset: () => { activeItemId = null; },
                 onSelect: item => { activeItemId = item.itemId; renderItemList(); },
                 sidebarSelector: item => `.v2i-item[data-item-id="${CSS.escape(item.itemId)}"]`,
-                items: items.map(item => ({ ...item, id: item.itemId, image: item.icon, fallback: 'ITEM', tags: [`${item.rarity || 1} 星`] }))
+                items: items.map(item => ({ ...item, id: item.itemId, image: item.icon, fallback: t('overview.fallback'), tags: [commonT('rarityStars', { rarity: item.rarity || 1 })] }))
             });
         }
 
@@ -181,8 +183,8 @@
             container.innerHTML = '';
 
             if (filtered.length === 0) {
-                container.innerHTML = '<div class="v2i-loader">无匹配物品</div>';
-                if (detailContainer) detailContainer.innerHTML = '<div class="v2i-loader">请选择物品</div>';
+                container.innerHTML = `<div class="v2i-loader">${t('noMatches')}</div>`;
+                if (detailContainer) detailContainer.innerHTML = `<div class="v2i-loader">${t('select')}</div>`;
                 activeItemId = null;
                 return;
             }
@@ -194,7 +196,7 @@
 
                 const rb = document.createElement('span');
                 rb.className = `v2i-rarity-bar rarity-${item.rarity}`;
-                rb.title = `稀有度 ${item.rarity}`;
+                rb.title = commonT('rarityLabel', { rarity: item.rarity });
 
                 const icon = document.createElement('img');
                 icon.className = 'v2i-item-icon';
@@ -263,12 +265,12 @@
         }
 
         async function loadItemDetail(item, container) {
-            container.innerHTML = '<div class="v2i-loader">加载物品数据...</div>';
+            container.innerHTML = `<div class="v2i-loader">${t('loading')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(item.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data, item);
             } catch (err) {
-                container.innerHTML = `<div class="v2i-error">加载失败: ${err.message}</div>`;
+                container.innerHTML = `<div class="v2i-error">${t('loadFailed', { message: err.message })}</div>`;
             }
         }
 
@@ -301,7 +303,7 @@
 
             return `
                 <div class="v2i-section">
-                    <h3>获取方式</h3>
+                    <h3>${t('sections.obtainWays')}</h3>
                     <div class="v2i-obtain-list">
                         ${ways.map(w => `
                             <div class="v2i-obtain-item">
@@ -317,16 +319,16 @@
         function renderProperties(it, itt) {
             const props = [];
             if (it.maxStackCount !== undefined && it.maxStackCount !== -1)
-                props.push({ l: '最大堆叠', v: it.maxStackCount });
+                props.push({ l: t('properties.maxStack'), v: it.maxStackCount });
             if (it.maxBackpackStackCount !== undefined && it.maxBackpackStackCount !== -1)
-                props.push({ l: '背包堆叠上限', v: it.maxBackpackStackCount });
+                props.push({ l: t('properties.backpackStackLimit'), v: it.maxBackpackStackCount });
             if (itt.storageSpace !== undefined)
-                props.push({ l: '占用空间', v: itt.storageSpace });
+                props.push({ l: t('properties.storageSpace'), v: itt.storageSpace });
             if (!props.length) return '';
 
             return `
                 <div class="v2i-section">
-                    <h3>属性</h3>
+                    <h3>${t('sections.properties')}</h3>
                     <div class="v2i-props-grid">
                         ${props.map(p => `
                             <div class="v2i-prop-item">
@@ -396,25 +398,25 @@
             const useItem = data.useitemtable;
             const equipItem = data.equipitemtable;
             if (!useItem && !equipItem) return '';
-            let html = '<div class="v2i-section"><h3>使用效果</h3><div class="v2i-effect-list">';
+            let html = `<div class="v2i-section"><h3>${t('sections.useEffects')}</h3><div class="v2i-effect-list">`;
             if (useItem?.itemUseDesc?.text) {
                 const desc = replaceEffectPlaceholders(useItem.itemUseDesc.text, useItem, equipItem);
-                html += `<div class="v2i-effect-card"><div class="v2i-effect-title">使用后效果</div><div class="v2i-effect-desc">${parseText(desc)}</div>`;
-                if (useItem.duration > 0) html += `<div class="v2i-effect-meta">持续时间 ${valueTip(`${useItem.duration} 秒`, useItem.duration, 'duration')}</div>`;
+                html += `<div class="v2i-effect-card"><div class="v2i-effect-title">${t('effects.afterUse')}</div><div class="v2i-effect-desc">${parseText(desc)}</div>`;
+                if (useItem.duration > 0) html += `<div class="v2i-effect-meta">${t('effects.duration', { duration: valueTip(commonT('time.seconds', { count: useItem.duration }), useItem.duration, 'duration') })}</div>`;
                 html += '</div>';
             }
             if (equipItem) {
                 const descriptions = [equipItem.equipDesc?.text, equipItem.equipExtraDesc?.text].filter(Boolean);
-                html += `<div class="v2i-effect-card"><div class="v2i-effect-title">装备后效果</div>`;
+                html += `<div class="v2i-effect-card"><div class="v2i-effect-title">${t('effects.afterEquip')}</div>`;
                 descriptions.forEach(desc => {
                     html += `<div class="v2i-effect-desc">${parseText(replaceEffectPlaceholders(desc, useItem, equipItem))}</div>`;
                 });
                 const meta = [];
-                if (equipItem.chargeCount !== undefined) meta.push(`使用次数 ${equipItem.chargeCount}`);
-                if (equipItem.cooldown > 0) meta.push(`冷却 ${equipItem.cooldown} 秒`);
-                if (equipItem.castTime > 0) meta.push(`施放 ${equipItem.castTime} 秒`);
-                if (equipItem.recoverUpperCount > 0) meta.push(`可恢复 ${equipItem.recoverUpperCount} 次`);
-                if (equipItem.recoverTime > 0) meta.push(`恢复间隔 ${equipItem.recoverTime} 秒`);
+                if (equipItem.chargeCount !== undefined) meta.push(t('effects.useCount', { count: equipItem.chargeCount }));
+                if (equipItem.cooldown > 0) meta.push(t('effects.cooldown', { duration: commonT('time.seconds', { count: equipItem.cooldown }) }));
+                if (equipItem.castTime > 0) meta.push(t('effects.castTime', { duration: commonT('time.seconds', { count: equipItem.castTime }) }));
+                if (equipItem.recoverUpperCount > 0) meta.push(t('effects.recoverCount', { count: equipItem.recoverUpperCount }));
+                if (equipItem.recoverTime > 0) meta.push(t('effects.recoveryInterval', { duration: commonT('time.seconds', { count: equipItem.recoverTime }) }));
                 if (meta.length) html += `<div class="v2i-effect-meta">${meta.join(' · ')}</div>`;
                 html += '</div>';
             }
@@ -447,15 +449,15 @@
                 seconds %= 3600;
                 const minutes = Math.floor(seconds / 60);
                 seconds %= 60;
-                return [[days, '天'], [hours, '小时'], [minutes, '分'], [seconds, '秒']]
-                    .filter(([value]) => value).map(([value, unit]) => `${value}${unit}`).join('') || '不足 1 秒';
+                return [[days, 'days'], [hours, 'hours'], [minutes, 'minutes'], [seconds, 'seconds']]
+                    .filter(([value]) => value).map(([value, unit]) => commonT(`time.${unit}`, { count: value })).join('') || commonT('time.lessThanSecond');
             };
             const renderGroup = (title, rows) => rows.length ? `<div class="v2i-craft-group"><h4>${title}</h4>${rows.map(recipe => `
                 <div class="v2i-craft-card">
-                    <div class="v2i-craft-head"><span class="v2i-craft-kind">${recipe.kind}</span><span>${recipe.name || recipe.recipeId}</span>${recipe.meta ? `<small>${recipe.meta}</small>` : ''}<small>制作时间 ${recipe.durationMs ? formatDuration(recipe.durationMs) : '未配置'}</small></div>
-                    <div class="v2i-craft-flow"><div class="v2i-craft-side">${recipe.inputs.length ? recipe.inputs.map(entry => renderCraftItem(entry, itemTable, data.itemId)).join('') : '<span class="v2i-craft-empty">无物品材料</span>'}</div><span class="v2i-craft-arrow">→</span><div class="v2i-craft-side">${recipe.outputs.map(entry => renderCraftItem(entry, itemTable, data.itemId)).join('')}</div></div>
+                    <div class="v2i-craft-head"><span class="v2i-craft-kind">${recipe.kind}</span><span>${recipe.name || recipe.recipeId}</span>${recipe.meta ? `<small>${recipe.meta}</small>` : ''}<small>${t('craft.duration', { duration: recipe.durationMs ? formatDuration(recipe.durationMs) : t('craft.notConfigured') })}</small></div>
+                    <div class="v2i-craft-flow"><div class="v2i-craft-side">${recipe.inputs.length ? recipe.inputs.map(entry => renderCraftItem(entry, itemTable, data.itemId)).join('') : `<span class="v2i-craft-empty">${t('craft.noMaterials')}</span>`}</div><span class="v2i-craft-arrow">→</span><div class="v2i-craft-side">${recipe.outputs.map(entry => renderCraftItem(entry, itemTable, data.itemId)).join('')}</div></div>
                 </div>`).join('')}</div>` : '';
-            return `<div class="v2i-section"><h3>合成路径</h3><div class="v2i-craft-groups">${renderGroup('合成来源', incoming)}${renderGroup('可用于合成', outgoing)}</div></div>`;
+            return `<div class="v2i-section"><h3>${t('sections.craftingPaths')}</h3><div class="v2i-craft-groups">${renderGroup(t('craft.sources'), incoming)}${renderGroup(t('craft.uses'), outgoing)}</div></div>`;
         }
 
         function renderExtraTables(data) {
@@ -465,7 +467,7 @@
                 const wpns = data.weaponpotentialuptable.weaponIds || [];
                 if (wpns.length) {
                     h += `<div class="v2i-section">
-                        <h3>适用武器</h3>
+                        <h3>${t('sections.applicableWeapons')}</h3>
                         <div class="v2i-tags">${wpns.map(id => `<span class="v2i-tag">${id}</span>`).join('')}</div>
                     </div>`;
                 }
@@ -474,34 +476,34 @@
             if (data.usableitemchesttable) {
                 const ch = data.usableitemchesttable;
                 const rwd = ch.rewardIdList || [];
-                h += `<div class="v2i-section"><h3>自选箱内容</h3>`;
-                if (ch.selectedCount) h += `<div class="v2i-chest-meta">可选数量: ${valueTip(ch.selectedCount, ch.selectedCount, 'selectedCount')}</div>`;
+                h += `<div class="v2i-section"><h3>${t('sections.choiceBoxContents')}</h3>`;
+                if (ch.selectedCount) h += `<div class="v2i-chest-meta">${t('choiceBox.selectableCount', { count: valueTip(ch.selectedCount, ch.selectedCount, 'selectedCount') })}</div>`;
                 if (rwd.length) h += `<div class="v2i-tags">${rwd.map(id => `<span class="v2i-tag">${id}</span>`).join('')}</div>`;
                 h += `</div>`;
             }
 
             if (data.itemiconcompositetable) {
                 const c = data.itemiconcompositetable;
-                h += `<div class="v2i-section"><h3>图标合成</h3><div class="v2i-props-grid">`;
-                h += `<div class="v2i-prop-item"><span class="v2i-prop-label">合成类型</span><span class="v2i-prop-value">${valueTip(c.iconTransType, c.iconTransType, 'iconTransType')}</span></div>`;
-                if (c.showRarity !== undefined) h += `<div class="v2i-prop-item"><span class="v2i-prop-label">显示稀有度</span><span class="v2i-prop-value">${valueTip(c.showRarity ? '是' : '否', c.showRarity, 'showRarity')}</span></div>`;
-                if (c.markIcon) h += `<div class="v2i-prop-item"><span class="v2i-prop-label">标记图标</span><span class="v2i-prop-value">${c.markIcon}</span></div>`;
+                h += `<div class="v2i-section"><h3>${t('sections.iconComposite')}</h3><div class="v2i-props-grid">`;
+                h += `<div class="v2i-prop-item"><span class="v2i-prop-label">${t('iconComposite.type')}</span><span class="v2i-prop-value">${valueTip(c.iconTransType, c.iconTransType, 'iconTransType')}</span></div>`;
+                if (c.showRarity !== undefined) h += `<div class="v2i-prop-item"><span class="v2i-prop-label">${t('iconComposite.showRarity')}</span><span class="v2i-prop-value">${valueTip(c.showRarity ? commonT('yes') : commonT('no'), c.showRarity, 'showRarity')}</span></div>`;
+                if (c.markIcon) h += `<div class="v2i-prop-item"><span class="v2i-prop-label">${t('iconComposite.markIcon')}</span><span class="v2i-prop-value">${c.markIcon}</span></div>`;
                 h += `</div></div>`;
             }
 
             if (data.itemshowingtypetable) {
                 const s = data.itemshowingtypetable;
                 h += `<div class="v2i-section">
-                    <h3>显示类型</h3>
+                    <h3>${t('sections.displayType')}</h3>
                     <span class="v2i-tag">${s.name?.text || s.type}</span>
                 </div>`;
             }
 
             if (data.wikientrydatatable) {
                 const w = data.wikientrydatatable;
-                h += `<div class="v2i-section"><h3>百科条目</h3><div class="v2i-props-grid">`;
-                h += `<div class="v2i-prop-item"><span class="v2i-prop-label">条目ID</span><span class="v2i-prop-value">${w.id}</span></div>`;
-                if (w.groupId) h += `<div class="v2i-prop-item"><span class="v2i-prop-label">分组</span><span class="v2i-prop-value">${w.groupId}</span></div>`;
+                h += `<div class="v2i-section"><h3>${t('sections.encyclopediaEntry')}</h3><div class="v2i-props-grid">`;
+                h += `<div class="v2i-prop-item"><span class="v2i-prop-label">${t('encyclopedia.entryId')}</span><span class="v2i-prop-value">${w.id}</span></div>`;
+                if (w.groupId) h += `<div class="v2i-prop-item"><span class="v2i-prop-label">${t('encyclopedia.group')}</span><span class="v2i-prop-value">${w.groupId}</span></div>`;
                 h += `</div></div>`;
             }
 
@@ -529,7 +531,7 @@
                         <div class="v2i-header-text">
                             <div class="v2i-title-row">
                                 <span class="v2i-name">${name}</span>
-                                <span class="v2i-rarity-dot rarity-${rarity}" title="稀有度 ${rarity}"></span>
+                                <span class="v2i-rarity-dot rarity-${rarity}" title="${commonT('rarityLabel', { rarity })}"></span>
                                 <span class="v2i-id">${data.itemId || item.itemId}</span>
                             </div>
                             <span class="v2i-type-tag">${typeName}</span>

@@ -1,4 +1,6 @@
 (function() {
+        const t = window.akeI18n.scope('modules.equip');
+        const commonT = window.akeI18n.scope('common');
         let allSuits = [];
         let rawAllSuits = [];
         let activeSuitId = null;
@@ -11,7 +13,7 @@
 
         const IMAGE_BASE_PATH = '/public/images/';
 
-        const PART_TYPE_MAP = { 0: '护甲', 1: '护手', 2: '配件' };
+        const PART_TYPE_KEYS = { 0: 'parts.armor', 1: 'parts.gloves', 2: 'parts.accessory' };
         const PART_ICON_MAP = { 0: 'body', 1: 'hand', 2: 'edc' };
 
         const mobileBtn = document.getElementById('v2equipMobileListBtn');
@@ -40,7 +42,7 @@
             if (compositeAttr && compositeNameMap[compositeAttr]) {
                 return compositeNameMap[compositeAttr];
             }
-            return attrMap[String(attrType)] || `属性${attrType}`;
+            return attrMap[String(attrType)] || t('attributeFallback', { type: attrType });
         }
 
         function getDomainName(domainId) {
@@ -135,13 +137,13 @@
 
         function renderEquipOverview(items, container) {
             window.AKEModuleOverview.render(container, {
-                title: '装备总览', description: '按套装与独立装备分组，展示套组规模和最高稀有度',
-                group: item => ({ id: item.isIndependentGroup ? 'independent' : 'suit', name: item.isIndependentGroup ? '独立装备' : '装备套组', order: item.isIndependentGroup ? 1 : 0 }),
+                title: t('overview.title'), description: t('overview.description'),
+                group: item => ({ id: item.isIndependentGroup ? 'independent' : 'suit', name: item.isIndependentGroup ? t('independentEquipment') : t('equipmentSets'), order: item.isIndependentGroup ? 1 : 0 }),
                 onReset: () => { activeSuitId = null; },
                 onSelect: item => { activeSuitId = item.suitID; renderSuitList(); },
                 sidebarSelector: item => `.v2eq-item[data-suit-id="${CSS.escape(item.suitID)}"]`,
-                items: items.map(item => ({ ...item, id: item.suitID, image: item.icon, fallback: 'EQUIP',
-                    tags: [`最高 ${item.rarity || 1} 星`, `${item.equipCount || 0} 件装备`] }))
+                items: items.map(item => ({ ...item, id: item.suitID, image: item.icon, fallback: t('overview.fallback'),
+                    tags: [t('overview.highestRarity', { rarity: item.rarity || 1 }), t('overview.equipmentCount', { count: item.equipCount || 0 })] }))
             });
         }
 
@@ -154,8 +156,8 @@
             container.innerHTML = '';
 
             if (filtered.length === 0) {
-                container.innerHTML = '<div class="v2eq-loader">无匹配套组</div>';
-                if (detailContainer) detailContainer.innerHTML = '<div class="v2eq-loader">请选择套组</div>';
+                container.innerHTML = `<div class="v2eq-loader">${t('noMatches')}</div>`;
+                if (detailContainer) detailContainer.innerHTML = `<div class="v2eq-loader">${t('select')}</div>`;
                 activeSuitId = null;
                 return;
             }
@@ -167,7 +169,7 @@
 
                 const rb = document.createElement('span');
                 rb.className = `v2eq-rarity-bar rarity-${suit.rarity}`;
-                rb.title = `稀有度 ${suit.rarity}`;
+                rb.title = commonT('rarityLabel', { rarity: suit.rarity });
 
                 const icon = document.createElement('img');
                 icon.className = 'v2eq-item-icon';
@@ -243,11 +245,11 @@
 
             const hasEnhance = subStats.some(m => m.enhancedAttrValues && m.enhancedAttrValues.length > 0);
 
-            let headerCells = '<th>词条</th>';
+            let headerCells = `<th>${t('columns.stat')}</th>`;
             if (hasEnhance) {
-                headerCells += '<th>基础</th><th>+1</th><th>+2</th><th>+3</th>';
+                headerCells += `<th>${t('columns.base')}</th><th>+1</th><th>+2</th><th>+3</th>`;
             } else {
-                headerCells += '<th>数值</th>';
+                headerCells += `<th>${t('columns.value')}</th>`;
             }
 
             let bodyRows = '';
@@ -307,7 +309,7 @@
             costItems.forEach(id => allIconIds.push(id));
             const iconsHtml = allIconIds.map(id => `<img src="/public/images/item/itemicon/${id}.png" onerror="this.style.display='none'">`).join('');
 
-            return `<span class="v2eq-cost-wrap"><span class="v2eq-cost-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-cost-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">制造消耗</span><span class="v2eq-cost-icons">${iconsHtml}</span><span class="v2eq-cost-tip">${tipHtml}</span></span>`;
+            return `<span class="v2eq-cost-wrap"><span class="v2eq-cost-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-cost-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">${t('craftingCost')}</span><span class="v2eq-cost-icons">${iconsHtml}</span><span class="v2eq-cost-tip">${tipHtml}</span></span>`;
         }
 
         function renderGuaranteeBtn(itemId, displayAttrModifiers, guaranteeRules, enhanceConst) {
@@ -318,7 +320,7 @@
 
             let tipHtml = '';
             if (enhanceConst && enhanceConst.maxAttrEnhanceLevel !== undefined) {
-                tipHtml += `<div class="v2eq-enhance-tip">最大强化 +${enhanceConst.maxAttrEnhanceLevel}</div>`;
+                tipHtml += `<div class="v2eq-enhance-tip">${t('maxEnhancement', { level: enhanceConst.maxAttrEnhanceLevel })}</div>`;
             }
 
             let rows = '';
@@ -332,11 +334,11 @@
             if (!rows) return '';
 
             tipHtml += `<table class="v2eq-guarantee-table">
-                <thead><tr><th>词条</th><th>+1</th><th>+2</th><th>+3</th></tr></thead>
+                <thead><tr><th>${t('columns.stat')}</th><th>+1</th><th>+2</th><th>+3</th></tr></thead>
                 <tbody>${rows}</tbody>
             </table>`;
 
-            return `<span class="v2eq-guarantee-wrap"><span class="v2eq-guarantee-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-guarantee-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">精锻保底</span><span class="v2eq-guarantee-tip">${tipHtml}</span></span>`;
+            return `<span class="v2eq-guarantee-wrap"><span class="v2eq-guarantee-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-guarantee-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">${t('enhancementGuarantee')}</span><span class="v2eq-guarantee-tip">${tipHtml}</span></span>`;
         }
 
         function renderEquipCard(itemId, equipData, itemData, formulaData, guaranteeRules, enhanceConst, itemTable) {
@@ -345,7 +347,7 @@
             const iconId = itemData?.iconId || '';
             const iconSrc = getEquipIconSrc(itemId, iconId);
             const partType = equipData.partType;
-            const partName = PART_TYPE_MAP[partType] || `部位${partType}`;
+            const partName = PART_TYPE_KEYS[partType] ? t(PART_TYPE_KEYS[partType]) : t('partFallback', { type: partType });
             const minWearLv = equipData.minWearLv;
             const domainId = equipData.domainId || '';
             const domainName = getDomainName(domainId);
@@ -375,7 +377,7 @@
                         <div class="v2eq-card-title">
                             <div class="v2eq-card-name-row">
                                 <span class="v2eq-card-name">${escapeHtml(name)}</span>
-                                <span class="v2eq-rarity-dot rarity-${rarity}" title="稀有度 ${rarity}"></span>
+                                <span class="v2eq-rarity-dot rarity-${rarity}" title="${commonT('rarityLabel', { rarity })}"></span>
                             </div>
                             ${showHidden ? `<span class="v2eq-card-item-id">${escapeHtml(itemId)}</span>` : ''}
                         </div>
@@ -384,7 +386,7 @@
                     <div class="v2eq-card-body">
                         <div class="v2eq-card-meta">
                             <span class="v2eq-part-tag">${partName}</span>
-                            <span>Lv.${minWearLv}</span>
+                            <span>${t('levelAbbreviation', { level: minWearLv })}</span>
                             ${domainId ? `<span class="v2eq-domain-tag" title="${escapeHtml(domainId)}">${escapeHtml(domainName)}</span>` : ''}
                         </div>
                         <div class="v2eq-card-mainstat">
@@ -406,7 +408,7 @@
             if (!skillTable || Object.keys(skillTable).length === 0) return '';
 
             const showHidden = getCurrentShowHidden();
-            let html = '<div class="v2eq-section"><h3>套装技能</h3>';
+            let html = `<div class="v2eq-section"><h3>${t('sections.setSkills')}</h3>`;
             for (const [skillId, skillData] of Object.entries(skillTable)) {
                 const bundle = skillData.SkillPatchDataBundle;
                 if (!bundle) continue;
@@ -426,7 +428,7 @@
 
                     if (showHidden && blackboard.length > 0) {
                         html += `<div class="v2eq-blackboard-params">`;
-                        html += `<span class="v2eq-blackboard-label">参数：</span>`;
+                        html += `<span class="v2eq-blackboard-label">${t('parameters')}</span>`;
                         blackboard.forEach(b => {
                             const displayVal = (typeof b.value === 'number')
                                 ? (Math.abs(b.value) < 10 ? (b.value * 100).toFixed(1) + '%' : b.value)
@@ -522,7 +524,7 @@
 
             return `
                 <div class="v2eq-section">
-                    <h3>套装部件</h3>
+                    <h3>${t('sections.setPieces')}</h3>
                     <div class="v2eq-items-grid">${cardsHtml}</div>
                 </div>
             `;
@@ -532,17 +534,17 @@
             const techConst = data.equiptechconst;
             if (!techConst) return '';
 
-            let html = '<div class="v2eq-section"><h3>精锻信息</h3>';
+            let html = `<div class="v2eq-section"><h3>${t('sections.enhancementInfo')}</h3>`;
             html += `<div class="v2eq-enhance-info">`;
             if (techConst.equipProduceMaxCount !== undefined) {
                 html += `<div class="v2eq-enhance-item">
-                    <span class="v2eq-enhance-label">最大制造数量</span>
+                    <span class="v2eq-enhance-label">${t('maxCraftingCount')}</span>
                     <span class="v2eq-enhance-value">${window.renderRawValueTip ? window.renderRawValueTip(techConst.equipProduceMaxCount, techConst.equipProduceMaxCount, 'equipProduceMaxCount') : techConst.equipProduceMaxCount}</span>
                 </div>`;
             }
             if (techConst.equipRecycleRatio !== undefined) {
                 html += `<div class="v2eq-enhance-item">
-                    <span class="v2eq-enhance-label">回收返还比例</span>
+                    <span class="v2eq-enhance-label">${t('recyclingReturnRate')}</span>
                     <span class="v2eq-enhance-value">${window.renderRawValueTip ? window.renderRawValueTip((techConst.equipRecycleRatio * 100).toFixed(0) + '%', techConst.equipRecycleRatio) : (techConst.equipRecycleRatio * 100).toFixed(0) + '%'}</span>
                 </div>`;
             }
@@ -556,12 +558,12 @@
                     html += `<div class="v2eq-enhance-cost-card">`;
                     html += `<div class="v2eq-enhance-cost-domain">${escapeHtml(dName)}</div>`;
                     html += `<div class="v2eq-enhance-item">
-                        <span class="v2eq-enhance-label">消耗材料</span>
+                        <span class="v2eq-enhance-label">${t('materialsConsumed')}</span>
                         <span class="v2eq-enhance-value">${escapeHtml(cost.consumeItemId)} ×${cost.consumeItemCnt}</span>
                     </div>`;
                     if (cost.returnbackItemId) {
                         html += `<div class="v2eq-enhance-item">
-                            <span class="v2eq-enhance-label">返还材料</span>
+                            <span class="v2eq-enhance-label">${t('materialsReturned')}</span>
                             <span class="v2eq-enhance-value">${escapeHtml(cost.returnbackItemId)} ×${cost.returnbackItemCnt}</span>
                         </div>`;
                     }
@@ -574,12 +576,12 @@
         }
 
         async function loadSuitDetail(suit, container) {
-            container.innerHTML = '<div class="v2eq-loader">加载套组数据...</div>';
+            container.innerHTML = `<div class="v2eq-loader">${t('loadingSet')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(suit.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data, suit);
             } catch (err) {
-                container.innerHTML = `<div class="v2eq-error">加载失败: ${err.message}</div>`;
+                container.innerHTML = `<div class="v2eq-error">${t('loadFailed', { message: err.message })}</div>`;
             }
         }
 
@@ -597,7 +599,7 @@
                         <div class="v2eq-header-text">
                             <div class="v2eq-title-row">
                                 <span class="v2eq-name">${escapeHtml(suitName)}</span>
-                                <span class="v2eq-rarity-dot rarity-${suit.rarity}" title="稀有度 ${suit.rarity}"></span>
+                                <span class="v2eq-rarity-dot rarity-${suit.rarity}" title="${commonT('rarityLabel', { rarity: suit.rarity })}"></span>
                                 <span class="v2eq-id">${escapeHtml(suit.suitID)}</span>
                             </div>
                             ${packHtml}

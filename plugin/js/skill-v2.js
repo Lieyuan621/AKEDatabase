@@ -1,4 +1,6 @@
 (function () {
+    const t = window.akeI18n.scope('modules.skill');
+    const commonT = window.akeI18n.scope('common');
     let manifestList = [];
     let rawAllSkills = [];
     let activeSkillId = null;
@@ -8,80 +10,103 @@
     let timelineHideNodesMode = false;
 
     const KEY_LABEL_MAP = {
-        skillId: '技能ID',
-        level: '等级',
-        skillName: '技能名',
-        castType: '施放类型',
-        skillSpecification: '技能规格',
-        durationFrame: '持续帧',
-        exclusiveFrame: '独占帧',
-        timelineActions: '时间轴动作组',
-        passiveEventActions: '被动事件动作组',
-        actionGroupData: '动作组数据',
-        conditionAction: '条件动作',
-        succeedActions: '成功分支',
-        failActions: '失败分支',
-        actionData: '动作列表',
-        isEnable: '启用',
-        priorityLevel: '优先级',
-        priorityOffset: '优先级偏移',
-        serverActionIndex: '服务端动作索引',
-        duration: '持续时间',
-        startTime: '开始时间',
-        playbackSpeed: '播放速度',
-        blendDuration: '混合时长',
-        blendOut: '混出时长',
-        exitToIdle: '退出到待机',
-        contextKey: '上下文键',
-        targetSettings: '目标设置',
-        selectorData: '选择器',
-        finderData: '查找器',
-        validatorData: '校验器',
-        postProcessorData: '后处理器',
-        rotateType: '旋转类型',
-        compareType: '比较方式',
-        checkType: '检查类型',
-        targetSource: '目标来源',
-        selectorOwner: '选择器归属',
-        centerType: '中心类型',
-        _startFrame: '起始帧',
-        _endFrame: '结束帧',
-        targetGroupKey: '目标组键',
-        checkTarget: '检查目标',
-        compareType: '比较方式',
-        minNum: '最小数量',
-        abilityEvent: '触发事件',
-        animName: '动画名',
-        cooldownTime: '冷却时间',
-        castDistance: '施放距离',
-        costData: '消耗数据',
-        costType: '消耗类型',
-        costValue: '消耗值',
-        atbValueThreshold: '阈值',
-        canMove: '可移动施放',
-        canCastInAir: '可空中施放',
-        passiveSkillType: '被动技能类型'
+        skillId: 'skillId',
+        level: 'level',
+        skillName: 'skillName',
+        castType: 'castType',
+        skillSpecification: 'skillSpecification',
+        durationFrame: 'durationFrame',
+        exclusiveFrame: 'exclusiveFrame',
+        timelineActions: 'timelineActions',
+        passiveEventActions: 'passiveEventActions',
+        actionGroupData: 'actionGroupData',
+        conditionAction: 'conditionAction',
+        succeedActions: 'succeedActions',
+        failActions: 'failActions',
+        actionData: 'actionData',
+        isEnable: 'isEnable',
+        priorityLevel: 'priorityLevel',
+        priorityOffset: 'priorityOffset',
+        serverActionIndex: 'serverActionIndex',
+        duration: 'duration',
+        startTime: 'startTime',
+        playbackSpeed: 'playbackSpeed',
+        blendDuration: 'blendDuration',
+        blendOut: 'blendOut',
+        exitToIdle: 'exitToIdle',
+        contextKey: 'contextKey',
+        targetSettings: 'targetSettings',
+        selectorData: 'selectorData',
+        finderData: 'finderData',
+        validatorData: 'validatorData',
+        postProcessorData: 'postProcessorData',
+        rotateType: 'rotateType',
+        compareType: 'compareType',
+        checkType: 'checkType',
+        targetSource: 'targetSource',
+        selectorOwner: 'selectorOwner',
+        centerType: 'centerType',
+        _startFrame: 'startFrame',
+        _endFrame: 'endFrame',
+        targetGroupKey: 'targetGroupKey',
+        checkTarget: 'checkTarget',
+        minNum: 'minNum',
+        abilityEvent: 'abilityEvent',
+        animName: 'animName',
+        cooldownTime: 'cooldownTime',
+        castDistance: 'castDistance',
+        costData: 'costData',
+        costType: 'costType',
+        costValue: 'costValue',
+        atbValueThreshold: 'atbValueThreshold',
+        canMove: 'canMove',
+        canCastInAir: 'canCastInAir',
+        passiveSkillType: 'passiveSkillType'
     };
 
     const VALUE_LABEL_MAP = {
-        Active: '主动',
-        Passive: '被动',
-        CharacterNormalSkill: '角色普通技能',
-        Default: '默认',
-        UltimateSp: '终极能量',
-        RotateToTarget: '朝向目标',
-        RotateToMoveDirection: '朝向移动方向',
-        GE: '大于等于',
-        LE: '小于等于',
-        EQ: '等于',
-        HasAny: '满足任一标签',
-        Context: '上下文',
-        Source: '施法者',
-        Owner: '拥有者',
-        Target: '目标',
-        ActionSource: '动作源',
-        ContextTarget: '上下文目标'
+        Active: 'active',
+        Passive: 'passive',
+        CharacterNormalSkill: 'characterNormalSkill',
+        Default: 'default',
+        UltimateSp: 'ultimateSp',
+        RotateToTarget: 'rotateToTarget',
+        RotateToMoveDirection: 'rotateToMoveDirection',
+        GE: 'ge',
+        LE: 'le',
+        EQ: 'eq',
+        HasAny: 'hasAny',
+        Context: 'context',
+        Source: 'source',
+        Owner: 'owner',
+        Target: 'target',
+        ActionSource: 'actionSource',
+        ContextTarget: 'contextTarget'
     };
+
+    function htmlMessage(key, params) {
+        return escapeHtml(t(key, params));
+    }
+
+    function emptyHtml(key, params) {
+        return '<div class="skillv2-empty">' + htmlMessage(key, params) + '</div>';
+    }
+
+    function loaderHtml(key, params) {
+        return '<div class="loader">' + htmlMessage(key, params) + '</div>';
+    }
+
+    function labelKey(key) {
+        return 'labels.keys.' + key;
+    }
+
+    function valueKey(key) {
+        return 'labels.values.' + key;
+    }
+
+    function categoryLabel(key) {
+        return t('categories.' + key);
+    }
 
     function getCurrentShowHidden() {
         return window.akeData?.getConfig().showHidden ?? false;
@@ -153,12 +178,12 @@
         if (!listEl || !metaEl || !mainEl) return;
 
         const filtered = filterList(manifestList);
-        metaEl.textContent = '共 ' + filtered.length + ' 项';
+        metaEl.textContent = t('list.count', { count: filtered.length });
         listEl.innerHTML = '';
 
         if (filtered.length === 0) {
-            listEl.innerHTML = '<div class="loader">没有匹配项</div>';
-            mainEl.innerHTML = '<div class="loader">请选择技能</div>';
+            listEl.innerHTML = loaderHtml('noMatches');
+            mainEl.innerHTML = loaderHtml('select');
             activeSkillId = null;
             return;
         }
@@ -223,18 +248,18 @@
     }
 
     function translateKey(key) {
-        const cn = KEY_LABEL_MAP[key];
-        return cn ? (cn + ' (' + key + ')') : key;
+        const mapped = KEY_LABEL_MAP[key];
+        return mapped ? (t(labelKey(mapped)) + ' (' + key + ')') : key;
     }
 
     function translateValue(value) {
         if (typeof value === 'boolean') {
-            return value ? '是 (true)' : '否 (false)';
+            return (value ? commonT('yes') : commonT('no')) + ' (' + String(value) + ')';
         }
         if (typeof value !== 'string') return summarizePrimitive(value);
-        const cn = VALUE_LABEL_MAP[value];
-        if (!cn) return summarizePrimitive(value);
-        return cn + ' (' + value + ')';
+        const mapped = VALUE_LABEL_MAP[value];
+        if (!mapped) return summarizePrimitive(value);
+        return t(valueKey(mapped)) + ' (' + value + ')';
     }
 
     function isPlainObject(value) {
@@ -258,7 +283,7 @@
     function formatBlackboardEntry(entry) {
         if (!entry || typeof entry !== 'object') return '';
         const valueText = entry.valueStr ? entry.valueStr : formatNumber(entry.valueDouble ?? entry.value ?? 0);
-        return valueText + (entry.isDynamic ? ' / dynamic' : '');
+        return valueText + (entry.isDynamic ? t('summary.dynamicSuffix') : '');
     }
 
     function getBlackboardMap(data) {
@@ -294,12 +319,12 @@
         if (!isPlainObject(shape)) return '';
         const parts = [];
         if (shape.shapeType) parts.push(shape.shapeType);
-        if (shape.size) parts.push('size(' + (formatVectorValue(shape.size, blackboardMap) || summarizePrimitive(shape.size)) + ')');
-        if (shape.radius) parts.push('radius=' + (formatBlackboardValueRef(shape.radius, blackboardMap) || summarizePrimitive(shape.radius)));
-        if (shape.height) parts.push('height=' + (formatBlackboardValueRef(shape.height, blackboardMap) || summarizePrimitive(shape.height)));
-        if (shape.centerOffset) parts.push('offset(' + (formatVectorValue(shape.centerOffset, blackboardMap) || summarizePrimitive(shape.centerOffset)) + ')');
-        if (shape.positionRef) parts.push('pos=' + shape.positionRef);
-        if (shape.directionRef) parts.push('dir=' + shape.directionRef);
+        if (shape.size) parts.push(t('summary.size', { value: formatVectorValue(shape.size, blackboardMap) || summarizePrimitive(shape.size) }));
+        if (shape.radius) parts.push(t('summary.radius', { value: formatBlackboardValueRef(shape.radius, blackboardMap) || summarizePrimitive(shape.radius) }));
+        if (shape.height) parts.push(t('summary.height', { value: formatBlackboardValueRef(shape.height, blackboardMap) || summarizePrimitive(shape.height) }));
+        if (shape.centerOffset) parts.push(t('summary.offset', { value: formatVectorValue(shape.centerOffset, blackboardMap) || summarizePrimitive(shape.centerOffset) }));
+        if (shape.positionRef) parts.push(t('summary.position', { value: shape.positionRef }));
+        if (shape.directionRef) parts.push(t('summary.direction', { value: shape.directionRef }));
         return parts.filter(Boolean).join(' | ');
     }
 
@@ -308,17 +333,17 @@
         const finder = selectorData.finderData || {};
         const parts = [];
         const finderType = getObjectTypeName(finder);
-        if (finderType) parts.push('finder: ' + finderType);
+        if (finderType) parts.push(t('summary.finder', { value: finderType }));
         if (finder.factionTarget) parts.push('faction=' + finder.factionTarget);
         if (Array.isArray(finder.shapeList) && finder.shapeList.length) {
             const shapes = finder.shapeList.slice(0, 2).map(shape => summarizeShape(shape, blackboardMap)).filter(Boolean);
-            parts.push('shape: ' + shapes.join(' / ') + (finder.shapeList.length > 2 ? ' ...' : ''));
+            parts.push(t('summary.shape', { value: shapes.join(' / ') + (finder.shapeList.length > 2 ? ' ...' : '') }));
         }
         if (Array.isArray(selectorData.validatorData) && selectorData.validatorData.length) {
-            parts.push('validators: ' + selectorData.validatorData.map(getObjectTypeName).filter(Boolean).join(', '));
+            parts.push(t('summary.validators', { value: selectorData.validatorData.map(getObjectTypeName).filter(Boolean).join(', ') }));
         }
         if (Array.isArray(selectorData.postProcessorData) && selectorData.postProcessorData.length) {
-            parts.push('post: ' + selectorData.postProcessorData.map(getObjectTypeName).filter(Boolean).join(', '));
+            parts.push(t('summary.postProcessors', { value: selectorData.postProcessorData.map(getObjectTypeName).filter(Boolean).join(', ') }));
         }
         return parts.join(' | ');
     }
@@ -378,18 +403,18 @@
         const shortType = formatType(action?.$type || 'UnknownAction');
         if (action?.animName) return shortType + ': ' + action.animName;
         if (action?.abilityEvent) return shortType + ': ' + action.abilityEvent;
-        if (action?.targetGroupKey) return shortType + ': target=' + action.targetGroupKey;
-        if (action?.costType) return shortType + ': cost=' + action.costType;
+        if (action?.targetGroupKey) return shortType + ': ' + t('summary.target', { value: action.targetGroupKey });
+        if (action?.costType) return shortType + ': ' + t('summary.cost', { value: action.costType });
         const effect = findFirstDeep(action, ['effectName', 'effectKey', 'effectId', 'effectPath']);
-        if (effect) return shortType + ': effect=' + summarizePrimitive(effect);
+        if (effect) return shortType + ': ' + t('summary.effect', { value: summarizePrimitive(effect) });
         const sound = findFirstDeep(action, ['soundEvent', 'soundName', 'eventName', 'wwiseEvent']);
-        if (sound) return shortType + ': sound=' + summarizePrimitive(sound);
+        if (sound) return shortType + ': ' + t('summary.sound', { value: summarizePrimitive(sound) });
         const buff = findFirstDeep(action, ['buffId', 'buffID', 'buffIds', 'buffIdList']);
-        if (buff) return shortType + ': buff=' + summarizePrimitive(buff);
+        if (buff) return shortType + ': ' + t('summary.buff', { value: summarizePrimitive(buff) });
         const skill = findFirstDeep(action, ['skillId', 'castSkillId', 'abilityEntityId', 'entityId', 'projectileId']);
         if (skill) return shortType + ': ' + summarizePrimitive(skill);
         const atkScale = findFirstDeep(action, ['atkScale', 'damageScale', 'damageRate']);
-        if (atkScale) return shortType + ': scale=' + summarizePrimitive(atkScale);
+        if (atkScale) return shortType + ': ' + t('summary.scale', { value: summarizePrimitive(atkScale) });
         return shortType;
     }
 
@@ -403,7 +428,7 @@
         const fail = action.failActions?.actionData || [];
 
         const firstType = (arr) => {
-            if (!Array.isArray(arr) || !arr.length) return '无';
+            if (!Array.isArray(arr) || !arr.length) return commonT('none');
             return formatType(arr[0]?.$type || 'UnknownAction');
         };
 
@@ -418,17 +443,17 @@
     }
 
     const ACTION_CATEGORY_DEFS = [
-        { key: 'anim', label: '动画', patterns: ['animation', 'animator', 'hurtanim', 'weaponvisible', 'weaponanimation', 'animeventreceiver', 'playperfectdodgeanim'] },
-        { key: 'damage', label: '伤害/受击', patterns: ['damage', 'blowoff', 'pushback', 'pull', 'knockdown', 'launchupward', 'airborne', 'crushaction', 'fractureaction', 'igniteaction', 'recoverpoise'] },
-        { key: 'buff', label: 'Buff/状态', patterns: ['buff', 'superarmor', 'tagaction', 'addtag', 'auraaction', 'weakness', 'inherit', 'dynamicccs', 'finishangry', 'temporarilyunlock', 'temporaryunlock'] },
-        { key: 'target', label: '选目标/判定', patterns: ['findtarget', 'selector', 'finder', 'validator', 'targetpostprocessor', 'targetpriorityfilter', 'mergetarget', 'savetargetdistance', 'picktarget', 'distance', 'shapefinder', 'interactiveshapefinder', 'hittableobjectvalidator'] },
-        { key: 'move', label: '位移/旋转', patterns: ['move', 'jump', 'teleport', 'rootmotion', 'rotate', 'snaptotarget', 'lookataction', 'receivemoveinput', 'moveto', 'movetolocation', 'movetotarget', 'movetoslot', 'movetodirection'] },
-        { key: 'camera', label: '镜头/时间', patterns: ['camera', 'timedilation', 'hitstop', 'ultimatetime', 'lockcamera', 'overridecamera', 'addcameracontrolstate', 'setignoreglobaltimescale'] },
-        { key: 'av', label: '音效/特效', patterns: ['playsound', 'voice', 'effect', 'raycasteffect', 'showhideactor', 'facbuildingplayanimation'] },
-        { key: 'condition', label: '条件/分支', patterns: ['ifelse', 'condition', 'check', 'compare', 'randomaction', 'switchaction', 'doonce', 'togglable', 'foreachaction', 'eventlistener', 'notnextcheck', 'probablity'] },
-        { key: 'spawn', label: '投射物/召唤', patterns: ['projectile', 'spawn', 'castskill', 'commandtocharacters', 'abilityentity', 'createadditionalbattleshape'] },
-        { key: 'resource', label: '资源/数值', patterns: ['blackboard', 'calc', 'calculation', 'obtaincost', 'setskillcd', 'atkscale', 'storeattribute', 'modifydynamicblackboard', 'multiplyattribute', 'instantmodifyattribute', 'savevalue'] },
-        { key: 'misc', label: '其他', patterns: [] }
+        { key: 'anim', patterns: ['animation', 'animator', 'hurtanim', 'weaponvisible', 'weaponanimation', 'animeventreceiver', 'playperfectdodgeanim'] },
+        { key: 'damage', patterns: ['damage', 'blowoff', 'pushback', 'pull', 'knockdown', 'launchupward', 'airborne', 'crushaction', 'fractureaction', 'igniteaction', 'recoverpoise'] },
+        { key: 'buff', patterns: ['buff', 'superarmor', 'tagaction', 'addtag', 'auraaction', 'weakness', 'inherit', 'dynamicccs', 'finishangry', 'temporarilyunlock', 'temporaryunlock'] },
+        { key: 'target', patterns: ['findtarget', 'selector', 'finder', 'validator', 'targetpostprocessor', 'targetpriorityfilter', 'mergetarget', 'savetargetdistance', 'picktarget', 'distance', 'shapefinder', 'interactiveshapefinder', 'hittableobjectvalidator'] },
+        { key: 'move', patterns: ['move', 'jump', 'teleport', 'rootmotion', 'rotate', 'snaptotarget', 'lookataction', 'receivemoveinput', 'moveto', 'movetolocation', 'movetotarget', 'movetoslot', 'movetodirection'] },
+        { key: 'camera', patterns: ['camera', 'timedilation', 'hitstop', 'ultimatetime', 'lockcamera', 'overridecamera', 'addcameracontrolstate', 'setignoreglobaltimescale'] },
+        { key: 'av', patterns: ['playsound', 'voice', 'effect', 'raycasteffect', 'showhideactor', 'facbuildingplayanimation'] },
+        { key: 'condition', patterns: ['ifelse', 'condition', 'check', 'compare', 'randomaction', 'switchaction', 'doonce', 'togglable', 'foreachaction', 'eventlistener', 'notnextcheck', 'probablity'] },
+        { key: 'spawn', patterns: ['projectile', 'spawn', 'castskill', 'commandtocharacters', 'abilityentity', 'createadditionalbattleshape'] },
+        { key: 'resource', patterns: ['blackboard', 'calc', 'calculation', 'obtaincost', 'setskillcd', 'atkscale', 'storeattribute', 'modifydynamicblackboard', 'multiplyattribute', 'instantmodifyattribute', 'savevalue'] },
+        { key: 'misc', patterns: [] }
     ];
 
     function normalizeTypeForCategory(typeName) {
@@ -444,13 +469,13 @@
         ACTION_CATEGORY_DEFS.forEach(def => {
             if (def.key === 'misc') return;
             if (def.patterns.some(p => normalized.includes(p))) {
-                matched.push({ key: def.key, label: def.label });
+                matched.push({ key: def.key, label: categoryLabel(def.key) });
             }
         });
 
         if (!matched.length) {
             const misc = ACTION_CATEGORY_DEFS.find(def => def.key === 'misc');
-            return [{ key: misc.key, label: misc.label }];
+            return [{ key: misc.key, label: categoryLabel(misc.key) }];
         }
 
         return matched;
@@ -562,11 +587,11 @@
             `);
         });
         if (!rows.length) {
-            return '<div class="skillv2-empty">无可展示参数</div>';
+            return emptyHtml('empty.noDisplayParams');
         }
         return `
             <table class="skillv2-table">
-                <thead><tr><th>键</th><th>值摘要</th></tr></thead>
+                <thead><tr><th>${htmlMessage('table.key')}</th><th>${htmlMessage('table.valueSummary')}</th></tr></thead>
                 <tbody>${rows.join('')}</tbody>
             </table>
         `;
@@ -574,7 +599,7 @@
 
     function renderActionSequence(actions, depth, pathLabel, blackboardMap) {
         if (!Array.isArray(actions) || actions.length === 0) {
-            return '<div class="skillv2-empty">无动作节点</div>';
+            return emptyHtml('empty.noActionNodes');
         }
 
         return actions.map((action, index) => {
@@ -589,15 +614,15 @@
                 branchHtml = `
                     <div class="skillv2-branch-wrap">
                         <div class="skillv2-branch-block">
-                            <div class="skillv2-branch-title">条件节点 conditionAction</div>
+                            <div class="skillv2-branch-title">${htmlMessage('branches.conditionAction')}</div>
                             ${renderActionSequence(action.conditionAction?.actionData || [], depth + 1, nodePath + '.if', blackboardMap)}
                         </div>
                         <div class="skillv2-branch-block">
-                            <div class="skillv2-branch-title">成立分支 succeedActions</div>
+                            <div class="skillv2-branch-title">${htmlMessage('branches.succeedActions')}</div>
                             ${renderActionSequence(action.succeedActions?.actionData || [], depth + 1, nodePath + '.then', blackboardMap)}
                         </div>
                         <div class="skillv2-branch-block">
-                            <div class="skillv2-branch-title">失败分支 failActions</div>
+                            <div class="skillv2-branch-title">${htmlMessage('branches.failActions')}</div>
                             ${renderActionSequence(action.failActions?.actionData || [], depth + 1, nodePath + '.else', blackboardMap)}
                         </div>
                     </div>
@@ -607,13 +632,13 @@
             return `
                 <div class="skillv2-action-node cat-${category.key}" style="--depth:${depth};">
                     <div class="skillv2-action-head">
-                        <span class="skillv2-action-index">节点 ${escapeHtml(nodePath)}</span>
+                        <span class="skillv2-action-index">${htmlMessage('node.named', { id: nodePath })}</span>
                         <span class="skillv2-action-type">${escapeHtml(shortType)}</span>
                         <span class="skillv2-action-cat">${escapeHtml(category.label)}</span>
                         <span class="skillv2-action-full">${escapeHtml(typeText)}</span>
                     </div>
                     <div class="skillv2-action-body">
-                        <div class="skillv2-subtitle">参数摘要</div>
+                        <div class="skillv2-subtitle">${htmlMessage('titles.parameterSummary')}</div>
                         ${renderKeyValueRows(action || {}, ['$type', 'conditionAction', 'succeedActions', 'failActions'], blackboardMap)}
                         ${branchHtml}
                     </div>
@@ -642,7 +667,7 @@
 
     function renderFlowSequenceRecursive(actions, prefix) {
         if (!Array.isArray(actions) || actions.length === 0) {
-            return '<span class="skillv2-empty">无节点</span>';
+            return '<span class="skillv2-empty">' + htmlMessage('empty.noNodes') + '</span>';
         }
 
         let content = '';
@@ -666,7 +691,7 @@
         const failActions = action?.failActions?.actionData || [];
         const condSummary = condActions.length
             ? condActions.slice(0, 2).map(a => summarizeAction(a)).join(' / ') + (condActions.length > 2 ? ' ...' : '')
-            : '无条件';
+            : t('empty.noCondition');
         const ifTypeText = formatType(action?.$type || 'IfElseAction');
         const category = getActionCategory(ifTypeText);
 
@@ -676,7 +701,7 @@
                 <span>${escapeHtml(summarizeAction(action))}</span>
                 <span class="skillv2-flow-cat">${escapeHtml(category.label)}</span>
             </div>
-            <div class="skillv2-flow-if-cond">condition: ${escapeHtml(condSummary)}</div>
+            <div class="skillv2-flow-if-cond">${htmlMessage('summary.condition', { value: condSummary })}</div>
         </div>`;
 
         const thenSequence = renderFlowSequenceRecursive(succActions, (nestedPrefix || '') + 'T');
@@ -689,14 +714,14 @@
                 <div class="skillv2-flow-branch-lanes">
                     <div class="skillv2-flow-branch-lane true">
                         <div class="skillv2-flow-branch-entry true">
-                            <span class="skillv2-flow-branch-text true">是</span>
+                            <span class="skillv2-flow-branch-text true">${escapeHtml(commonT('yes'))}</span>
                             <span class="skillv2-flow-link" aria-hidden="true"></span>
                         </div>
                         <div class="skillv2-flow-branch-content">${thenSequence}</div>
                     </div>
                     <div class="skillv2-flow-branch-lane false">
                         <div class="skillv2-flow-branch-entry false">
-                            <span class="skillv2-flow-branch-text false">否</span>
+                            <span class="skillv2-flow-branch-text false">${escapeHtml(commonT('no'))}</span>
                             <span class="skillv2-flow-link" aria-hidden="true"></span>
                         </div>
                         <div class="skillv2-flow-branch-content">${elseSequence}</div>
@@ -709,15 +734,15 @@
     function renderTimelineGraph(actionGroupData) {
         const timeline = actionGroupData?.timelineActions || [];
         if (!timeline.length) {
-            return '<div class="skillv2-empty">timelineActions 为空，无法绘制时间轴</div>';
+            return emptyHtml('empty.timelineGraphUnavailable');
         }
 
         const summarizeTimelineNodes = (actions) => {
             const list = Array.isArray(actions) ? actions : [];
-            if (!list.length) return '节点: 无';
+            if (!list.length) return t('timeline.nodeSummaryEmpty');
             const head = list.slice(0, 4).map(a => summarizeAction(a)).join(' → ');
-            const more = list.length > 4 ? ' ... (共' + list.length + '个)' : '';
-            return '节点: ' + head + more;
+            const more = list.length > 4 ? t('timeline.nodeSummaryMore', { count: list.length }) : '';
+            return t('timeline.nodeSummary', { summary: head, more });
         };
 
         const typeInfo = extractTimelineActionTypes(timeline);
@@ -768,16 +793,16 @@
 
             return `
                 <div class="skillv2-timeline-line${isInvalidRange ? ' invalid-range' : ''}" data-group-index="${index}" data-start-frame="${s}" data-end-frame="${e}" data-action-types="${escapeHtml(groupTypeData)}" data-action-cats="${escapeHtml(groupCatData)}" data-node-summary="${escapeHtml(nodeSummary)}">
-                    <div class="skillv2-timeline-label">组 ${index + 1}${isInvalidRange ? '<br><span class="skillv2-warn-text">反向</span>' : ''}</div>
+                    <div class="skillv2-timeline-label">${htmlMessage('timeline.groupShort', { id: index + 1 })}${isInvalidRange ? '<br><span class="skillv2-warn-text">' + htmlMessage('timeline.reversed') + '</span>' : ''}</div>
                     <div class="skillv2-timeline-body">
                         <div class="skillv2-timeline-track">
                             ${isSingleFrame
-                                ? `<div class="skillv2-timeline-point" style="left:${left.toFixed(2)}%;" title="帧 ${s}"><span>F${s}</span></div>`
+                                ? `<div class="skillv2-timeline-point" style="left:${left.toFixed(2)}%;" title="${htmlMessage('timeline.frame', { id: s })}"><span>F${s}</span></div>`
                                 : `<div class="skillv2-timeline-seg${isInvalidRange ? ' invalid-range' : ''}" style="left:${left.toFixed(2)}%;width:${width.toFixed(2)}%;">${s} - ${e}</div>`
                             }
                         </div>
                         <div class="skillv2-flow-row">
-                            ${nodes || '<span class="skillv2-empty">无节点</span>'}
+                            ${nodes || '<span class="skillv2-empty">' + htmlMessage('empty.noNodes') + '</span>'}
                         </div>
                     </div>
                 </div>
@@ -792,23 +817,23 @@
         const filterHtml = `
             <div class="skillv2-action-filter" id="skillv2ActionFilter">
                 <div class="skillv2-action-filter-head">
-                    <div class="skillv2-action-filter-title">筛选动作组（按功能分类，可多选）</div>
-                    <button class="skillv2-node-visibility-toggle" id="skillv2NodeVisibilityToggle" data-hide="${timelineHideNodesMode ? 'true' : 'false'}">${timelineHideNodesMode ? '显示节点' : '隐藏节点'}</button>
+                    <div class="skillv2-action-filter-title">${htmlMessage('filter.title')}</div>
+                    <button class="skillv2-node-visibility-toggle" id="skillv2NodeVisibilityToggle" data-hide="${timelineHideNodesMode ? 'true' : 'false'}">${htmlMessage(timelineHideNodesMode ? 'buttons.showNodes' : 'buttons.hideNodes')}</button>
                 </div>
                 <div class="skillv2-action-filter-buttons">
-                    <button class="skillv2-action-filter-btn active" data-cat="__ALL__">全部</button>
+                    <button class="skillv2-action-filter-btn active" data-cat="__ALL__">${escapeHtml(commonT('all'))}</button>
                     ${filterButtons}
                 </div>
             </div>
         `;
 
         const toggleButton = timeline.length > 5
-            ? '<button id="skillv2TimelineExpandBtn" class="skillv2-timeline-expand-btn" data-expanded="false">展开全部</button>'
+            ? '<button id="skillv2TimelineExpandBtn" class="skillv2-timeline-expand-btn" data-expanded="false">' + htmlMessage('buttons.expandAll') + '</button>'
             : '';
 
         return `
             <div class="skillv2-timeline-graph" id="skillv2TimelineGraph" data-hide-nodes="${timelineHideNodesMode ? 'true' : 'false'}">
-                <div class="skillv2-timeline-axis">全局帧区间: ${minFrame} - ${maxFrame}（默认显示约5组高度，可滚轮查看全部）</div>
+                <div class="skillv2-timeline-axis">${htmlMessage('timeline.axis', { start: minFrame, end: maxFrame })}</div>
                 ${filterHtml}
                 <div class="skillv2-timeline-lines" id="skillv2TimelineLines">${lines}</div>
                 ${toggleButton}
@@ -821,9 +846,9 @@
         return `
             <div class="skillv2-time-group compact-open">
                 <div class="skillv2-time-head">
-                    <span>时间组 #${index + 1}</span>
-                    <span>帧 ${group?._startFrame ?? '?'} - ${group?._endFrame ?? '?'}</span>
-                    <span>节点数 ${actions.length}</span>
+                    <span>${htmlMessage('timeline.group', { id: index + 1 })}</span>
+                    <span>${htmlMessage('timeline.frameRange', { start: group?._startFrame ?? '?', end: group?._endFrame ?? '?' })}</span>
+                    <span>${htmlMessage('timeline.nodeCount', { count: actions.length })}</span>
                 </div>
                 <div class="skillv2-time-body">
                     ${renderActionSequence(actions, 0, 'T' + (index + 1), blackboardMap)}
@@ -838,14 +863,14 @@
 
         const selectedLine = document.querySelector('.skillv2-timeline-line.selected');
         if (!selectedLine || selectedLine.style.display === 'none') {
-            panel.innerHTML = '<div class="skillv2-empty">请点击一个动作组查看详情。</div>';
+            panel.innerHTML = emptyHtml('empty.selectTimelineGroup');
             return;
         }
 
         const groups = currentSkillData?.actionGroupData?.timelineActions || [];
         const index = Number(selectedLine.dataset.groupIndex);
         if (!Number.isFinite(index) || !groups[index]) {
-            panel.innerHTML = '<div class="skillv2-empty">该动作组数据不可用。</div>';
+            panel.innerHTML = emptyHtml('empty.timelineGroupUnavailable');
             return;
         }
 
@@ -910,7 +935,7 @@
         const apply = () => {
             graph.dataset.hideNodes = timelineHideNodesMode ? 'true' : 'false';
             btn.dataset.hide = timelineHideNodesMode ? 'true' : 'false';
-            btn.textContent = timelineHideNodesMode ? '显示节点' : '隐藏节点';
+            btn.textContent = t(timelineHideNodesMode ? 'buttons.showNodes' : 'buttons.hideNodes');
 
             const lines = Array.from(document.querySelectorAll('.skillv2-timeline-line'));
             const selected = document.querySelector('.skillv2-timeline-line.selected');
@@ -948,15 +973,15 @@
         const show = (line, event) => {
             const start = line.dataset.startFrame || '?';
             const end = line.dataset.endFrame || '?';
-            const nodeSummary = line.dataset.nodeSummary || '节点: 无';
+            const nodeSummary = line.dataset.nodeSummary || t('timeline.nodeSummaryEmpty');
             const startNum = Number(start);
             const endNum = Number(end);
             const rawDurationFrame = (Number.isFinite(startNum) && Number.isFinite(endNum)) ? endNum - startNum : 0;
             const durationFrame = Math.abs(rawDurationFrame);
             const durationText = formatFrameDuration(durationFrame);
-            const rangeNote = rawDurationFrame < 0 ? ' ｜ 异常: 结束帧早于起始帧' : '';
+            const rangeNote = rawDurationFrame < 0 ? t('tooltip.invalidRangeNote') : '';
             tooltip.innerHTML = `
-                <div class="skillv2-tooltip-line-main">起始帧: ${escapeHtml(start)} ｜ 结束帧: ${escapeHtml(end)} ｜ 持续帧: ${escapeHtml(durationFrame)} ｜ 持续时间: ${escapeHtml(durationText)}${rangeNote}</div>
+                <div class="skillv2-tooltip-line-main">${htmlMessage('tooltip.lineMain', { start, end, durationFrame, durationTime: durationText, note: rangeNote })}</div>
                 <div class="skillv2-tooltip-line-node">${escapeHtml(nodeSummary)}</div>
             `;
             tooltip.classList.add('show');
@@ -1026,11 +1051,11 @@
             if (expanded) {
                 linesWrap.classList.remove('expanded');
                 btn.dataset.expanded = 'false';
-                btn.textContent = '展开全部';
+                btn.textContent = t('buttons.expandAll');
             } else {
                 linesWrap.classList.add('expanded');
                 btn.dataset.expanded = 'true';
-                btn.textContent = '恢复滚动视图';
+                btn.textContent = t('buttons.restoreScrollView');
             }
         });
     }
@@ -1111,7 +1136,7 @@
     function renderTimelineSection(actionGroupData, blackboardMap) {
         const timeline = actionGroupData?.timelineActions || [];
         if (!timeline.length) {
-            return '<div class="skillv2-empty">timelineActions 为空</div>';
+            return emptyHtml('empty.timelineActions');
         }
 
         return timeline.map((group, index) => {
@@ -1119,9 +1144,9 @@
             return `
                 <div class="skillv2-time-group">
                     <div class="skillv2-time-head">
-                        <span>时间组 #${index + 1}</span>
-                        <span>帧 ${group?._startFrame ?? '?'} - ${group?._endFrame ?? '?'}</span>
-                        <span>节点数 ${actions.length}</span>
+                        <span>${htmlMessage('timeline.group', { id: index + 1 })}</span>
+                        <span>${htmlMessage('timeline.frameRange', { start: group?._startFrame ?? '?', end: group?._endFrame ?? '?' })}</span>
+                        <span>${htmlMessage('timeline.nodeCount', { count: actions.length })}</span>
                     </div>
                     <div class="skillv2-time-body">
                         ${renderActionSequence(actions, 0, 'T' + (index + 1), blackboardMap)}
@@ -1134,7 +1159,7 @@
     function renderPassiveEventsSection(actionGroupData, blackboardMap) {
         const events = actionGroupData?.passiveEventActions || [];
         if (!events.length) {
-            return '<div class="skillv2-empty">passiveEventActions 为空</div>';
+            return emptyHtml('empty.passiveEventActions');
         }
 
         return events.map((eventItem, eventIndex) => {
@@ -1143,7 +1168,7 @@
                 const actions = wrap?.actionData || [];
                 return `
                     <div class="skillv2-passive-block">
-                        <div class="skillv2-passive-title">触发序列 ${idx + 1}（节点 ${actions.length}）</div>
+                        <div class="skillv2-passive-title">${htmlMessage('passive.triggerSequence', { id: idx + 1, count: actions.length })}</div>
                         ${renderActionSequence(actions, 0, 'P' + (eventIndex + 1) + '.' + (idx + 1), blackboardMap)}
                     </div>
                 `;
@@ -1151,8 +1176,8 @@
 
             return `
                 <div class="skillv2-passive-event">
-                    <div class="skillv2-passive-head">事件 #${eventIndex + 1}: ${escapeHtml(eventItem?.abilityEvent || 'Unknown')}</div>
-                    ${blocks || '<div class="skillv2-empty">该事件没有动作</div>'}
+                    <div class="skillv2-passive-head">${htmlMessage('passive.event', { id: eventIndex + 1, name: eventItem?.abilityEvent || 'Unknown' })}</div>
+                    ${blocks || emptyHtml('empty.passiveEventNoActions')}
                 </div>
             `;
         }).join('');
@@ -1174,7 +1199,7 @@
     function renderBlackboardSection(data) {
         const blackboard = Array.isArray(data?.blackboard) ? data.blackboard : [];
         if (!blackboard.length) {
-            return '<div class="skillv2-empty">blackboard 为空</div>';
+            return emptyHtml('empty.blackboard');
         }
 
         const rows = blackboard.map((item, index) => `
@@ -1182,13 +1207,13 @@
                 <td>${index + 1}</td>
                 <td><code>${escapeHtml(item?.key || '')}</code></td>
                 <td>${escapeHtml(formatBlackboardEntry(item))}</td>
-                <td>${escapeHtml(item?.isDynamic ? '动态' : '固定')}</td>
+                <td>${htmlMessage(item?.isDynamic ? 'blackboard.dynamic' : 'blackboard.fixed')}</td>
             </tr>
         `).join('');
 
         return `
             <table class="skillv2-table skillv2-blackboard-table">
-                <thead><tr><th>#</th><th>Key</th><th>值</th><th>类型</th></tr></thead>
+                <thead><tr><th>#</th><th>${htmlMessage('table.key')}</th><th>${htmlMessage('table.value')}</th><th>${htmlMessage('table.type')}</th></tr></thead>
                 <tbody>${rows}</tbody>
             </table>
         `;
@@ -1201,22 +1226,22 @@
         return `
             <div class="skillv2-structured-grid">
                 <div class="skillv2-structured-panel">
-                    <div class="skillv2-structured-title">施放规则</div>
+                    <div class="skillv2-structured-title">${htmlMessage('titles.castRules')}</div>
                     ${renderMetricGrid([
-                        ['距离检查', castData.checkCastDistanceType ?? ''],
-                        ['自定义距离', castData.useCustomCastDistance ?? false],
-                        ['施放距离', distance],
-                        ['高度差检查', castData.checkHeightDiff ?? false],
-                        ['高度差限制', height],
-                        ['旋转', castData.rotateType ?? ''],
-                        ['角度', castData.castAngle ?? ''],
-                        ['冷却', castData.cooldownTime ?? 0],
-                        ['起始CD帧', castData.startCdFrame ?? 0],
-                        ['最大充能', castData.maxChargeTime ?? 0]
+                        [t('metrics.distanceCheck'), castData.checkCastDistanceType ?? ''],
+                        [t('metrics.customDistance'), castData.useCustomCastDistance ?? false],
+                        [t('metrics.castDistance'), distance],
+                        [t('metrics.heightDiffCheck'), castData.checkHeightDiff ?? false],
+                        [t('metrics.heightDiffLimit'), height],
+                        [t('metrics.rotation'), castData.rotateType ?? ''],
+                        [t('metrics.angle'), castData.castAngle ?? ''],
+                        [t('metrics.cooldown'), castData.cooldownTime ?? 0],
+                        [t('metrics.startCdFrame'), castData.startCdFrame ?? 0],
+                        [t('metrics.maxCharge'), castData.maxChargeTime ?? 0]
                     ])}
                 </div>
                 <div class="skillv2-structured-panel">
-                    <div class="skillv2-structured-title">消耗</div>
+                    <div class="skillv2-structured-title">${htmlMessage('titles.cost')}</div>
                     ${renderKeyValueRows(castData.costData || {}, [], blackboardMap)}
                 </div>
             </div>
@@ -1226,18 +1251,18 @@
     function renderTagsSection(data) {
         const renderTagList = (tags) => {
             const list = Array.isArray(tags) ? tags : [];
-            if (!list.length) return '<span class="skillv2-muted">无</span>';
+            if (!list.length) return '<span class="skillv2-muted">' + escapeHtml(commonT('none')) + '</span>';
             return list.map(tag => `<span class="skillv2-tag">${escapeHtml(tag)}</span>`).join('');
         };
 
         return `
             <div class="skillv2-structured-grid">
                 <div class="skillv2-structured-panel">
-                    <div class="skillv2-structured-title">skillTags</div>
+                    <div class="skillv2-structured-title">${htmlMessage('titles.skillTags')}</div>
                     <div class="skillv2-tag-list">${renderTagList(data?.skillTags?.predefinedTag)}</div>
                 </div>
                 <div class="skillv2-structured-panel">
-                    <div class="skillv2-structured-title">tagDuringAttach</div>
+                    <div class="skillv2-structured-title">${htmlMessage('titles.tagDuringAttach')}</div>
                     <div class="skillv2-tag-list">${renderTagList(data?.tagDuringAttach?.predefinedTag)}</div>
                 </div>
             </div>
@@ -1254,45 +1279,45 @@
         const timelineHealth = analyzeTimeline(timeline);
 
         const basicFields = [
-            ['图标背景', data?.iconBgType],
-            ['攻击范围', data?.attackRangeType],
-            ['选择策略', data?.selectStrategy],
-            ['智能选目标', data?.smartTargetSelectStrategy],
-            ['可空放', data?.canDummyCast],
-            ['可移动', data?.canMove],
-            ['可空中施放', data?.canCastInAir],
-            ['RootMotion悬崖检查', data?.rootMotionCliffCheck],
-            ['返回待机', data?.characterReturnToIdle],
-            ['黑板项', (data?.blackboard || []).length],
-            ['buffs', (data?.buffs || []).length],
-            ['toggleBuffs', (data?.toggleBuffs || []).length]
+            [t('metrics.iconBackground'), data?.iconBgType],
+            [t('metrics.attackRange'), data?.attackRangeType],
+            [t('metrics.selectStrategy'), data?.selectStrategy],
+            [t('metrics.smartTargetSelect'), data?.smartTargetSelectStrategy],
+            [t('metrics.canDummyCast'), data?.canDummyCast],
+            [t('metrics.canMove'), data?.canMove],
+            [t('metrics.canCastInAir'), data?.canCastInAir],
+            [t('metrics.rootMotionCliffCheck'), data?.rootMotionCliffCheck],
+            [t('metrics.returnToIdle'), data?.characterReturnToIdle],
+            [t('metrics.blackboardItems'), (data?.blackboard || []).length],
+            [t('metrics.buffs'), (data?.buffs || []).length],
+            [t('metrics.toggleBuffs'), (data?.toggleBuffs || []).length]
         ];
 
-        const catTags = Array.from(categories.values()).map(label => `<span class="skillv2-tag">${escapeHtml(label)}</span>`).join('') || '<span class="skillv2-muted">无动作节点</span>';
+        const catTags = Array.from(categories.values()).map(label => `<span class="skillv2-tag">${escapeHtml(label)}</span>`).join('') || '<span class="skillv2-muted">' + htmlMessage('empty.noActionNodes') + '</span>';
 
         return `
             <div class="skillv2-card">
-                <div class="skillv2-card-title">SkillData 数据地图</div>
+                <div class="skillv2-card-title">${htmlMessage('titles.dataMap')}</div>
                 ${renderMetricGrid(basicFields)}
-                <div class="skillv2-block-title">动作类型概览</div>
+                <div class="skillv2-block-title">${htmlMessage('titles.actionTypeOverview')}</div>
                 <div class="skillv2-tag-list">${catTags}</div>
-                <div class="skillv2-block-title">时间轴健康</div>
+                <div class="skillv2-block-title">${htmlMessage('titles.timelineHealth')}</div>
                 ${renderMetricGrid([
-                    ['时间组', timeline.length],
-                    ['反向帧组', timelineHealth.negativeRanges],
-                    ['空动作组', timelineHealth.emptyGroups],
-                    ['乱序相邻组', timelineHealth.unsortedPairs]
+                    [t('metrics.timelineGroups'), timeline.length],
+                    [t('metrics.reversedFrameGroups'), timelineHealth.negativeRanges],
+                    [t('metrics.emptyActionGroups'), timelineHealth.emptyGroups],
+                    [t('metrics.unsortedNeighborGroups'), timelineHealth.unsortedPairs]
                 ])}
-                <div class="skillv2-block-title">施放数据 castData</div>
+                <div class="skillv2-block-title">${htmlMessage('titles.castData')}</div>
                 ${renderCastSection(data, blackboardMap)}
-                <div class="skillv2-block-title">黑板 blackboard</div>
+                <div class="skillv2-block-title">${htmlMessage('titles.blackboard')}</div>
                 ${renderBlackboardSection(data)}
-                <div class="skillv2-block-title">标签</div>
+                <div class="skillv2-block-title">${htmlMessage('titles.tags')}</div>
                 ${renderTagsSection(data)}
-                <div class="skillv2-block-title">被动事件摘要</div>
+                <div class="skillv2-block-title">${htmlMessage('titles.passiveEventSummary')}</div>
                 ${passiveEvents.length
                     ? `<div class="skillv2-tag-list">${passiveEvents.map((eventItem, index) => `<span class="skillv2-tag">#${index + 1} ${escapeHtml(eventItem?.abilityEvent || 'Unknown')} (${(eventItem?.actions || []).length})</span>`).join('')}</div>`
-                    : '<div class="skillv2-empty">无被动事件</div>'}
+                    : emptyHtml('empty.noPassiveEvents')}
             </div>
         `;
     }
@@ -1301,7 +1326,7 @@
         const omitted = new Set(['skillId', 'level', 'skillName', 'castType', 'skillSpecification', 'durationFrame', 'exclusiveFrame', 'castData', 'actionGroupData', 'blackboard', 'skillTags', 'tagDuringAttach']);
         return `
             <div class="skillv2-card">
-                <div class="skillv2-card-title">其他顶层字段</div>
+                <div class="skillv2-card-title">${htmlMessage('titles.otherTopLevelFields')}</div>
                 ${renderKeyValueRows(data || {}, Array.from(omitted), blackboardMap)}
             </div>
         `;
@@ -1310,10 +1335,10 @@
     function renderRawDataSection(data) {
         return `
             <div class="skillv2-card">
-                <div class="skillv2-card-title">完整原始数据</div>
-                <div class="skillv2-raw-note">用于审计遗漏字段。默认折叠，展开后可查看完整 SkillData JSON。</div>
+                <div class="skillv2-card-title">${htmlMessage('titles.rawData')}</div>
+                <div class="skillv2-raw-note">${htmlMessage('raw.note')}</div>
                 <details class="skillv2-raw-details">
-                    <summary>展开完整 JSON</summary>
+                    <summary>${htmlMessage('buttons.expandRawJson')}</summary>
                     <pre class="skillv2-raw-json">${escapeHtml(safeJson(data))}</pre>
                 </details>
             </div>
@@ -1345,7 +1370,7 @@
             `).join('');
             return `
                 <details class="skillv2-json-node"${openByDefault}>
-                    <summary>Array(${value.length})</summary>
+                    <summary>${htmlMessage('json.array', { count: value.length })}</summary>
                     <div class="skillv2-json-children">${items}</div>
                 </details>
             `;
@@ -1366,7 +1391,7 @@
 
         return `
             <details class="skillv2-json-node"${openByDefault}>
-                <summary>Object(${entries.length})</summary>
+                <summary>${htmlMessage('json.object', { count: entries.length })}</summary>
                 <div class="skillv2-json-children">${content}</div>
             </details>
         `;
@@ -1391,10 +1416,10 @@
 
         return `
             <div class="skillv2-card">
-                <div class="skillv2-card-title">概览</div>
-                <div class="skillv2-overview-id">${escapeHtml(manifestItem?.id || data?.skillId || 'unknown')}</div>
+                <div class="skillv2-card-title">${htmlMessage('titles.overview')}</div>
+                <div class="skillv2-overview-id">${escapeHtml(manifestItem?.id || data?.skillId || commonT('unknown'))}</div>
                 <table class="skillv2-table">
-                    <thead><tr><th>字段</th><th>值</th></tr></thead>
+                    <thead><tr><th>${htmlMessage('table.field')}</th><th>${htmlMessage('table.value')}</th></tr></thead>
                     <tbody>${rows}</tbody>
                 </table>
             </div>
@@ -1410,14 +1435,14 @@
                 ${renderDataMap(data, blackboardMap)}
 
                 <div class="skillv2-card">
-                    <div class="skillv2-card-title">ActionGroupData 节点执行视图</div>
-                    <div class="skillv2-block-title">时间轴图 / 节点流图（直观模式）</div>
+                    <div class="skillv2-card-title">${htmlMessage('titles.actionGroupView')}</div>
+                    <div class="skillv2-block-title">${htmlMessage('titles.timelineFlowGraph')}</div>
                     ${renderTimelineGraph(actionGroupData)}
-                    <div class="skillv2-block-title">timelineActions（点击时间轴动作组后显示详情）</div>
+                    <div class="skillv2-block-title">${htmlMessage('titles.timelineActionsDetail')}</div>
                     <div id="skillv2TimelineDetailPanel" class="skillv2-timeline-detail-panel">
-                        <div class="skillv2-empty">默认隐藏全部 timelineActions 详情。请点击上方时间轴中的动作组查看。</div>
+                        ${emptyHtml('empty.timelineDetailInitial')}
                     </div>
-                    <div class="skillv2-block-title">passiveEventActions（被动事件触发）</div>
+                    <div class="skillv2-block-title">${htmlMessage('titles.passiveEventActions')}</div>
                     ${renderPassiveEventsSection(actionGroupData, blackboardMap)}
                 </div>
                 ${renderAdditionalDataSection(data, blackboardMap)}
@@ -1429,7 +1454,7 @@
     async function loadSkillDetail(item) {
         const main = document.getElementById('skillv2Main');
         if (!main) return;
-        main.innerHTML = '<div class="loader">加载技能详情中...</div>';
+        main.innerHTML = loaderHtml('loadingDetail');
 
         try {
             const data = await fetchSkillData(item.contentFile);
@@ -1443,7 +1468,7 @@
             bindFlowDragScroll();
         } catch (err) {
             currentSkillData = null;
-            main.innerHTML = '<div class="error-message">加载失败: ' + escapeHtml(err.message) + '</div>';
+            main.innerHTML = '<div class="error-message">' + htmlMessage('loadFailed', { message: err.message }) + '</div>';
         }
     }
 

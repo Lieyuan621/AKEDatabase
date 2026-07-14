@@ -1,4 +1,6 @@
 (function() {
+    const t = window.akeI18n.scope('modules.weapon');
+    const commonT = window.akeI18n.scope('common');
     let allWeapons = [];
     let rawAllWeapons = [];
     let activeWeaponId = null;
@@ -12,7 +14,7 @@
     let selectedTypes = new Set();
 
     const IMAGE_BASE_PATH = '/public/images/';
-    const WEAPON_TYPE_MAP = { 1: '单手剑', 2: '施术单元', 3: '双手剑', 5: '长柄武器', 6: '手铳' };
+    const WEAPON_TYPE_KEY_MAP = { 1: 'oneHandedSword', 2: 'artsUnit', 3: 'twoHandedSword', 5: 'polearm', 6: 'handcannon' };
 
     function getCurrentShowHidden() {
         return window.akeData?.getConfig().showHidden ?? false;
@@ -29,16 +31,17 @@
         return input.split(',').map(s => parseInt(s.trim(), 10)).filter(n => !isNaN(n) && n >= 1 && n <= maxLevel);
     }
 
-    function getWeaponIconSrc(iconId) {
-        return `/public/images/weapon/icon/${iconId}.png`;
+    function getWeaponTypeName(weaponType, unknownKey = 'unknown') {
+        const key = WEAPON_TYPE_KEY_MAP[weaponType];
+        return key ? t(`weaponTypes.${key}`) : t(unknownKey);
     }
 
     function filterWeapons(weapons) {
         return weapons.filter(w => {
             if (searchTerm) {
-                const t = searchTerm.toLowerCase();
-                if (!(w.name && w.name.toLowerCase().includes(t)) &&
-                    !(w.weaponId && w.weaponId.toLowerCase().includes(t))) return false;
+                const term = searchTerm.toLowerCase();
+                if (!(w.name && w.name.toLowerCase().includes(term)) &&
+                    !(w.weaponId && w.weaponId.toLowerCase().includes(term))) return false;
             }
             if (selectedRarities.size > 0 && !selectedRarities.has(w.rarity)) return false;
             if (selectedTypes.size > 0 && !selectedTypes.has(w.weaponType)) return false;
@@ -57,7 +60,7 @@
             if (!existR.has(r)) continue;
             const btn = document.createElement('span');
             btn.className = `filter-btn ${selectedRarities.has(r) ? 'active' : ''}`;
-            btn.textContent = r + '星';
+            btn.textContent = commonT('rarityStars', { rarity: r });
             btn.addEventListener('click', () => {
                 selectedRarities.has(r) ? selectedRarities.delete(r) : selectedRarities.add(r);
                 btn.classList.toggle('active');
@@ -68,12 +71,12 @@
 
         const existT = new Set(allWeapons.map(w => w.weaponType));
         tc.innerHTML = '';
-        for (const [tid, tname] of Object.entries(WEAPON_TYPE_MAP)) {
+        for (const [tid] of Object.entries(WEAPON_TYPE_KEY_MAP)) {
             const id = parseInt(tid, 10);
             if (!existT.has(id)) continue;
             const btn = document.createElement('span');
             btn.className = `filter-btn ${selectedTypes.has(id) ? 'active' : ''}`;
-            btn.textContent = tname;
+            btn.textContent = getWeaponTypeName(id);
             btn.addEventListener('click', () => {
                 selectedTypes.has(id) ? selectedTypes.delete(id) : selectedTypes.add(id);
                 btn.classList.toggle('active');
@@ -125,12 +128,12 @@
 
     function renderWeaponOverview(items, container) {
         window.AKEModuleOverview.render(container, {
-            title: '武器总览', description: '按武器类型分组，展示全部武器与稀有度',
-            group: item => ({ id: String(item.weaponType), name: WEAPON_TYPE_MAP[item.weaponType] || '未知类型', order: Number(item.weaponType) }),
+            title: t('overview.title'), description: t('overview.description'),
+            group: item => ({ id: String(item.weaponType), name: getWeaponTypeName(item.weaponType, 'unknownType'), order: Number(item.weaponType) }),
             onReset: () => { activeWeaponId = null; },
             onSelect: item => { activeWeaponId = item.weaponId; renderWeaponList(); },
             sidebarSelector: item => `.weapon-item[data-weapon-id="${CSS.escape(item.weaponId)}"]`,
-            items: items.map(item => ({ ...item, id: item.weaponId, image: item.icon, fallback: 'WPN', tags: [`${item.rarity || 1} 星`] }))
+            items: items.map(item => ({ ...item, id: item.weaponId, image: item.icon, fallback: t('overview.fallback'), tags: [commonT('rarityStars', { rarity: item.rarity || 1 })] }))
         });
     }
 
@@ -142,8 +145,8 @@
         const filtered = filterWeapons(allWeapons);
         container.innerHTML = '';
         if (filtered.length === 0) {
-            container.innerHTML = '<div class="loader">无匹配武器</div>';
-            if (detailContainer) detailContainer.innerHTML = '<div class="loader">请选择武器</div>';
+            container.innerHTML = `<div class="loader">${t('noMatches')}</div>`;
+            if (detailContainer) detailContainer.innerHTML = `<div class="loader">${t('select')}</div>`;
             activeWeaponId = null;
             return;
         }
@@ -155,7 +158,7 @@
 
             const rb = document.createElement('span');
             rb.className = `rarity-bar rarity-${w.rarity}`;
-            rb.title = `稀有度 ${w.rarity}`;
+            rb.title = commonT('rarityLabel', { rarity: w.rarity });
 
             const icon = document.createElement('img');
             icon.className = 'weapon-icon';
@@ -175,7 +178,7 @@
 
             const typeTag = document.createElement('span');
             typeTag.className = 'weapon-type-tag';
-            typeTag.textContent = WEAPON_TYPE_MAP[w.weaponType] || '未知';
+            typeTag.textContent = getWeaponTypeName(w.weaponType);
 
             item.appendChild(rb);
             item.appendChild(icon);
@@ -266,7 +269,7 @@
         const skillPatch = data.skillpatchtable || {};
         if (skillIds.length === 0) return '';
 
-        let html = '<h3>技能数据</h3><div class="skill-list">';
+        let html = `<h3>${t('sections.skillData')}</h3><div class="skill-list">`;
         skillIds.forEach(skillId => {
             const skillData = skillPatch[skillId];
             if (!skillData || !skillData.SkillPatchDataBundle) return;
@@ -283,7 +286,7 @@
                 processed = parseText(processed);
                 levelRows.push(`
                     <div class="skill-level-row">
-                        <span class="skill-level">Lv.${skill.level}</span>
+                        <span class="skill-level">${t('levelAbbreviation', { level: skill.level })}</span>
                         <span class="skill-desc">${processed}</span>
                     </div>
                 `);
@@ -308,7 +311,7 @@
         const btData = btTable[templateId];
         if (!btData || !btData.list) return '';
 
-        let html = '<h3>突破材料</h3><div class="break-grid">';
+        let html = `<h3>${t('sections.breakthroughMaterials')}</h3><div class="break-grid">`;
         btData.list.forEach(bt => {
             const lv = bt.breakthroughShowLv;
             const gold = bt.breakthroughGold || 0;
@@ -317,7 +320,7 @@
 
             let costsHtml = '';
             if (gold > 0) {
-                costsHtml += `<div class="break-cost-row"><span class="bc-name">金币</span><span class="bc-cnt">${gold.toLocaleString()}</span></div>`;
+                costsHtml += `<div class="break-cost-row"><span class="bc-name">${t('gold')}</span><span class="bc-cnt">${gold.toLocaleString()}</span></div>`;
             }
             items.forEach(it => {
                 if (it.count <= 0) return;
@@ -331,14 +334,14 @@
             if (bounds.length > 0) {
                 boundsHtml = '<div class="break-skill-bounds">';
                 bounds.forEach((b, i) => {
-                    boundsHtml += `<span>技能${i + 1}: ${b.lowerBound}-${b.upperBound}</span>`;
+                    boundsHtml += `<span>${t('skillLevelBounds', { skill: i + 1, lower: b.lowerBound, upper: b.upperBound })}</span>`;
                 });
                 boundsHtml += '</div>';
             }
 
             html += `
                 <div class="break-card">
-                    <div class="break-card-title">突破 ${lv === 0 ? '初始' : lv}</div>
+                    <div class="break-card-title">${t('breakthroughLevel', { level: lv === 0 ? t('initial') : lv })}</div>
                     ${costsHtml}
                     ${boundsHtml}
                 </div>
@@ -356,23 +359,20 @@
         const ttData = ttTable[templateId];
         if (!ttData || !ttData.list) return '';
 
-        const skillIds = data.weaponbasictable?.weaponSkillList || [];
-
-        let html = '<h3>潜能</h3><div class="talent-grid">';
-        ttData.list.forEach(t => {
-            const lv = t.talentLv;
-            const bounds = t.skillLevelExtraBounds || [];
+        let html = `<h3>${t('sections.potentials')}</h3><div class="talent-grid">`;
+        ttData.list.forEach(talent => {
+            const lv = talent.talentLv;
+            const bounds = talent.skillLevelExtraBounds || [];
             let infoHtml = '';
             bounds.forEach((b, i) => {
                 if (b.upperBound > 0) {
-                    const sName = skillIds[i] ? '' : `技能${i + 1}`;
-                    infoHtml += `<div>技能${i + 1} 上限 +${b.upperBound}</div>`;
+                    infoHtml += `<div>${t('skillUpperBound', { skill: i + 1, upper: b.upperBound })}</div>`;
                 }
             });
             html += `
                 <div class="talent-card">
-                    <div class="talent-lv">潜能 ${lv}</div>
-                    <div class="talent-info">${infoHtml || '无额外效果'}</div>
+                    <div class="talent-lv">${t('potentialLevel', { level: lv })}</div>
+                    <div class="talent-info">${infoHtml || t('noExtraEffect')}</div>
                 </div>
             `;
         });
@@ -409,16 +409,16 @@
 
         const toggleHtml = weaponLevelsToShow ? `
             <div class="toggle-weapon-levels-container">
-                <button class="toggle-weapon-levels-btn">${showAllWeaponLevels ? '收起多余等级' : '展开所有等级'}</button>
+                <button class="toggle-weapon-levels-btn">${showAllWeaponLevels ? commonT('collapseExtraLevels') : commonT('expandAllLevels')}</button>
             </div>
         ` : '';
 
         return `
             <div class="detail-atk">
-                <h3>基础攻击力 (1-${upgradeData.list.length}级)</h3>
+                <h3>${t('baseAttackRange', { max: upgradeData.list.length })}</h3>
                 <div class="atk-table-container">
                     <table class="atk-table">
-                        <thead><tr><th>等级</th><th>攻击力</th></tr></thead>
+                        <thead><tr><th>${commonT('level')}</th><th>${commonT('attack')}</th></tr></thead>
                         <tbody>${rowsToRender.join('')}</tbody>
                     </table>
                 </div>
@@ -439,8 +439,6 @@
         const weaponType = basicTable.weaponType || weapon.weaponType;
         const weaponDesc = basicTable.weaponDesc?.text || '';
         const iconId = weaponItem.iconId || weapon.weaponId;
-        const iconSrc = getWeaponIconSrc(iconId);
-
         const atkHtml = renderAtkTable(data);
         const skillHtml = renderSkills(data, itemTable);
         const breakHtml = renderBreakthrough(data, itemTable);
@@ -456,7 +454,7 @@
                         <div class="detail-text">
                             <div class="detail-title-row">
                                 <span class="detail-title">${escapeHtml(name)}</span>
-                                <span class="detail-rarity rarity-${rarity}" title="稀有度 ${rarity}"></span>
+                                <span class="detail-rarity rarity-${rarity}" title="${commonT('rarityLabel', { rarity })}"></span>
                                 <span class="detail-id">${escapeHtml(weapon.weaponId)}</span>
                             </div>
                             <div class="detail-desc">${escapeHtml(desc)}</div>
@@ -474,12 +472,12 @@
             ${skillHtml}
             ${breakHtml}
             ${talentHtml}
-            ${weaponDesc ? `<h3>武器故事</h3><div class="weapon-desc">${parseText(weaponDesc)}</div>` : ''}
+            ${weaponDesc ? `<h3>${t('sections.story')}</h3><div class="weapon-desc">${parseText(weaponDesc)}</div>` : ''}
         `;
     }
 
     async function loadWeaponDetail(weapon, container) {
-        container.innerHTML = '<div class="loader">加载武器数据...</div>';
+        container.innerHTML = `<div class="loader">${t('loading')}</div>`;
         try {
             const data = await (window.akeFetch || fetch)(weapon.contentFile).then(r => r.json());
             currentWeaponData = data;
@@ -504,7 +502,10 @@
                 });
             }
         } catch (err) {
-            container.innerHTML = `<div class="error-message">加载失败: ${err.message}</div>`;
+            const error = document.createElement('div');
+            error.className = 'error-message';
+            error.textContent = t('loadFailed', { message: err.message });
+            container.replaceChildren(error);
         }
     }
 

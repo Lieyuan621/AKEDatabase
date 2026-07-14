@@ -1,16 +1,16 @@
 [
     {
         "id": "hidden-example",
-        "title": "隐藏模块",
-        "description": "隐藏开关功能测试",
+        "title": "modules.hidden.title",
+        "description": "modules.hidden.description",
         "priority": 9998,
         "hidden": true,
         "contentFile": "plugin/hidden.html"
     },
     {
         "id": "settings",
-        "title": "设置",
-        "description": "主题、隐藏开关等",
+        "title": "modules.settings.title",
+        "description": "modules.settings.description",
         "priority": 9999,
         "icon": "⚙️",
         "contentFile": "plugin/settings.html"
@@ -27,17 +27,18 @@
     },
     {
         "id": "v2_weapon",
-        "title": "武器",
-        "description": "查看武器详细数据",
+        "title": "modules.weapon.title",
+        "description": "modules.weapon.description",
         "priority": 208,
         "icon": "🔫",
         "contentFile": "/plugin/v2_weapon.html",
-        "hidden": true
+        "hidden": true,
+        "disabled": true
     },
     {
         "id": "v3_weapon",
-        "title": "武器",
-        "description": "查看武器详细数据",
+        "title": "modules.weapon.title",
+        "description": "modules.weapon.description",
         "priority": 8,
         "icon": "🔫",
         "contentFile": "/plugin/v3_weapon.html",
@@ -55,17 +56,18 @@
     },
     {
         "id": "v2_character",
-        "title": "角色",
-        "description": "查看干员详细数据",
+        "title": "modules.character.title",
+        "description": "modules.character.description",
         "priority": 207,
         "icon": "👤",
         "contentFile": "/plugin/v2_character.html",
-        "hidden": true
+        "hidden": true,
+        "disabled": true
     },
     {
         "id": "v3_character",
-        "title": "角色",
-        "description": "查看干员详细数据",
+        "title": "modules.character.title",
+        "description": "modules.character.description",
         "priority": 7,
         "icon": "👤",
         "contentFile": "/plugin/v3_character.html",
@@ -83,17 +85,18 @@
     },
     {
         "id": "v2_enemy",
-        "title": "敌人",
-        "description": "查看敌人详细数据",
+        "title": "modules.enemy.title",
+        "description": "modules.enemy.description",
         "priority": 209,
         "icon": "👾",
         "contentFile": "/plugin/v2_enemy.html",
-        "hidden": true
+        "hidden": true,
+        "disabled": true
     },
     {
         "id": "v3_enemy",
-        "title": "敌人",
-        "description": "查看敌人详细数据",
+        "title": "modules.enemy.title",
+        "description": "modules.enemy.description",
         "priority": 9,
         "icon": "👾",
         "contentFile": "/plugin/v3_enemy.html",
@@ -111,17 +114,18 @@
     },
     {
         "id": "v2_equip",
-        "title": "装备",
-        "description": "查看装备详细数据",
+        "title": "modules.equip.title",
+        "description": "modules.equip.description",
         "priority": 210,
         "icon": "🛡️",
         "contentFile": "/plugin/v2_equip.html",
-        "hidden": true
+        "hidden": true,
+        "disabled": true
     },
     {
         "id": "v3_equip",
-        "title": "装备",
-        "description": "查看装备详细数据",
+        "title": "modules.equip.title",
+        "description": "modules.equip.description",
         "priority": 10,
         "icon": "🛡️",
         "contentFile": "/plugin/v3_equip.html",
@@ -139,17 +143,18 @@
     },
     {
         "id": "v2_item",
-        "title": "物品",
-        "description": "查看物品详细数据",
+        "title": "modules.item.title",
+        "description": "modules.item.description",
         "priority": 220,
         "icon": "📦",
         "contentFile": "/plugin/v2_item.html",
-        "hidden": true
+        "hidden": true,
+        "disabled": true
     },
     {
         "id": "v3_item",
-        "title": "物品",
-        "description": "查看物品详细数据",
+        "title": "modules.item.title",
+        "description": "modules.item.description",
         "priority": 20,
         "icon": "📦",
         "contentFile": "/plugin/v3_item.html",
@@ -157,8 +162,8 @@
     },
     {
         "id": "achievement",
-        "title": "奖章",
-        "description": "查看蚀刻章数据",
+        "title": "modules.achievement.title",
+        "description": "modules.achievement.description",
         "priority": 22,
         "icon": "🏅",
         "contentFile": "/plugin/achievement.html",
@@ -185,17 +190,18 @@
     },
     {
         "id": "v2_dungeon",
-        "title": "副本",
-        "description": "查看副本详细数据",
+        "title": "modules.dungeon.title",
+        "description": "modules.dungeon.description",
         "priority": 221,
         "icon": "⚔️",
         "contentFile": "/plugin/v2_dungeon.html",
-        "hidden": true
+        "hidden": true,
+        "disabled": true
     },
     {
         "id": "v3_dungeon",
-        "title": "副本",
-        "description": "查看副本详细数据",
+        "title": "modules.dungeon.title",
+        "description": "modules.dungeon.description",
         "priority": 21,
         "icon": "⚔️",
         "contentFile": "/plugin/v3_dungeon.html",
@@ -203,24 +209,24 @@
     },
     {
         "id": "research",
-        "title": "研究",
-        "description": "查看数据研究与分析文档",
-        "priority": 6,
+        "title": "modules.research.title",
+        "description": "modules.research.description",
+        "priority": 24,
         "icon": "📚",
         "contentFile": "/plugin/research.html"
     },
     {
         "id": "about",
-        "title": "关于",
-        "description": "查看项目介绍与帮助",
+        "title": "modules.about.title",
+        "description": "modules.about.description",
         "priority": 100,
         "icon": "ℹ️",
         "contentFile": "/plugin/about.html"
     },
     {
         "id": "activity",
-        "title": "活动",
-        "description": "查看活动信息",
+        "title": "modules.activity.title",
+        "description": "modules.activity.description",
         "priority": 11,
         "icon": "🎉",
         "contentFile": "plugin/activity.html",
@@ -237,25 +243,26 @@
     },
     {
         "id": "v2_cc",
-        "title": "危机合约",
-        "description": "查看危机合约数据",
+        "title": "modules.cc.title",
+        "description": "modules.cc.description",
         "priority": 201,
         "icon": "⚔️",
         "contentFile": "/plugin/v2_cc.html",
-        "hidden": true
+        "hidden": true,
+        "disabled": true
     },
     {
         "id": "v3_cc",
-        "title": "危机合约",
-        "description": "查看危机合约数据",
-        "priority": 1,
+        "title": "modules.cc.title",
+        "description": "modules.cc.description",
+        "priority": 23,
         "icon": "⚔️",
         "contentFile": "/plugin/v3_cc.html"
     },
     {
         "id": "buff",
-        "title": "Buff",
-        "description": "查看BuffData",
+        "title": "modules.buff.title",
+        "description": "modules.buff.description",
         "priority": 50,
         "icon": "✨",
         "hidden": true,
@@ -273,8 +280,8 @@
     },
     {
         "id": "skill_v2",
-        "title": "Skill (V2)",
-        "description": "SkillData 全量条目与动作节点调试视图（开发中）",
+        "title": "modules.skill.title",
+        "description": "modules.skill.description",
         "priority": 48,
         "icon": "🧭",
         "hidden": true,
@@ -282,8 +289,8 @@
     },
     {
         "id": "spawn",
-        "title": "生成",
-        "description": "SpawnerConfig",
+        "title": "modules.spawn.title",
+        "description": "modules.spawn.description",
         "priority": 51,
         "icon": "⚡",
         "hidden": true,

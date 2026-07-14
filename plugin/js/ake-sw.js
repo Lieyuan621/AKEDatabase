@@ -11,9 +11,9 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('message', event => {
-    if (event.data?.type === 'AKE_VERSION' && typeof event.data.cacheVersion === 'string') {
+    if (event.data?.type === 'AKE_VERSION' && typeof event.data.publicCacheVersion === 'string') {
         hotfixVersion = typeof event.data.hotfixVersion === 'string' ? event.data.hotfixVersion : '';
-        if (event.source) event.source.postMessage({ type: 'AKE_VERSION_READY', cacheVersion: event.data.cacheVersion });
+        if (event.source) event.source.postMessage({ type: 'AKE_VERSION_READY', publicCacheVersion: event.data.publicCacheVersion });
     }
 });
 
@@ -57,7 +57,7 @@ async function readActiveVersion() {
     if (!db) return '';
     try {
         const tx = db.transaction(META_STORE, 'readonly');
-        const record = await requestResult(tx.objectStore(META_STORE).get('activeCacheVersion'));
+        const record = await requestResult(tx.objectStore(META_STORE).get('activePublicCacheVersion'));
         return record?.value || '';
     } catch {
         return '';

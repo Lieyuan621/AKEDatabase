@@ -19,17 +19,18 @@
 
             const HOME_CONTENT = `
                 <div class="welcome-home">
-                    <img src="/public/images/index/main.jpg" 
-                         alt="起始页图片" 
-                         class="home-image" 
+                    <img src="/public/images/index/main.jpg"
+                         alt="home.heroImageAlt"
+                         data-i18n-alt="home.heroImageAlt"
+                         class="home-image"
                          onerror="this.onerror=null; this.src='';"
                          style="max-width: 80%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                    <p style="margin-top: 20px; color: var(--text-color, #1e2b3c); font-size: 1.2rem;">AKEData · 《明日方舟：终末地》数据库</p>
-                    <div id="homeVersionInfo" style="margin-top:8px;color:#7f8c9f;font-size:.9rem;">正在读取版本信息...</div>
+                    <p style="margin-top: 20px; color: var(--text-color, #1e2b3c); font-size: 1.2rem;" data-i18n="home.title">home.title</p>
+                    <div id="homeVersionInfo" style="margin-top:8px;color:#7f8c9f;font-size:.9rem;" data-i18n="version.loading">version.loading</div>
                     <div style="margin-top: 30px; color:#a3b6cc; font-size:1rem;">
-                        游戏中所有数值通常情况下都不是整数，但是在游戏中只显示整数部分，本数据库中所有数据均比游戏内更精确一位以方便查阅计算。<br>
-                        免责声明：本网站为同好爱好者项目，与鹰角网络和Gryphline官方无关。所有商标权利均归属其各自所有者。<br>
-                        左下角 ⚙️ 按钮可打开全局设置
+                        <span data-i18n="home.precisionNote">home.precisionNote</span><br>
+                        <span data-i18n="home.disclaimer">home.disclaimer</span><br>
+                        <span data-i18n="home.settingsHint">home.settingsHint</span>
                     </div>
                 </div>
             `;
@@ -51,19 +52,20 @@
                 activateModuleStyles(null);
                 const hiddenHint = isHidden ? `
                     <div class="not-found-hint">
-                        <p>🔒 该内容可能为隐藏内容。</p>
-                        <p>您可以通过点击左下角 <strong>⚙️ 全局设置</strong> 按钮，开启「<strong>显示隐藏模块</strong>」来访问隐藏内容。</p>
+                        <p data-i18n="errors.hiddenContentHint">errors.hiddenContentHint</p>
+                        <p data-i18n="errors.hiddenContentHelp">errors.hiddenContentHelp</p>
                     </div>
                 ` : '';
                 contentArea.innerHTML = `
                     <div class="not-found-page">
                         <div class="not-found-code">404</div>
-                        <div class="not-found-title">页面未找到</div>
-                        <div class="not-found-desc">您访问的模块或条目不存在</div>
+                        <div class="not-found-title" data-i18n="errors.notFoundTitle">errors.notFoundTitle</div>
+                        <div class="not-found-desc" data-i18n="errors.notFoundDesc">errors.notFoundDesc</div>
                         ${hiddenHint}
-                        <button class="not-found-home-btn" id="notFoundHomeBtn">返回首页</button>
+                        <button class="not-found-home-btn" id="notFoundHomeBtn" data-i18n="errors.returnHome">errors.returnHome</button>
                     </div>
                 `;
+                window.akeI18n?.translateDOM(contentArea);
                 document.querySelectorAll('.module-item').forEach(item => item.classList.remove('active'));
                 activeModuleId = null;
                 const btn = document.getElementById('notFoundHomeBtn');
@@ -72,6 +74,7 @@
             }
 
             let config = {
+                language: window.akeI18n?.getLanguage?.() || 'CH',
                 theme: 'light',
                 showHidden: false,
                 showExportButton: false,
@@ -97,6 +100,7 @@
             const settingsModal = document.getElementById('settingsModal');
             const closeSettings = document.getElementById('closeSettings');
             const modalThemeSelect = document.getElementById('modalThemeSelect');
+            const modalLanguageSelect = document.getElementById('modalLanguageSelect');
             const modalShowHiddenCheck = document.getElementById('modalShowHiddenCheck');
             const modalLevelsEnabled = document.getElementById('modalLevelsEnabled');
             const modalCharacterLevels = document.getElementById('modalCharacterLevels');
@@ -118,8 +122,8 @@
                     const item = document.createElement('div');
                     item.className = 'mobile-menu-item';
                     item.innerHTML = `
-                        <div class="title">${mod.icon || '📦'} ${mod.title}</div>
-                        <div class="desc">${mod.description || ''}</div>
+                        <div class="title">${mod.icon || '📦'} ${translateModuleField(mod, 'title')}</div>
+                        <div class="desc">${translateModuleField(mod, 'description')}</div>
                     `;
                     item.addEventListener('click', async () => {
                         closeMobileMenu();
@@ -175,6 +179,29 @@
             // ---------- 工具函数 ----------
             function setContent(html) {
                 contentArea.innerHTML = html;
+                window.akeI18n?.translateDOM(contentArea);
+            }
+
+            function tr(key, params, fallback) {
+                return window.akeI18n?.t(key, params, fallback) ?? fallback ?? key;
+            }
+
+            function translateModuleField(module, field) {
+                const key = module?.[field];
+                return key ? tr(key, null, key) : '';
+            }
+
+            function renderLanguageOptions() {
+                if (!modalLanguageSelect || !window.akeI18n) return;
+                const current = config.language || window.akeI18n.getLanguage();
+                modalLanguageSelect.replaceChildren();
+                window.akeI18n.getSupportedLanguages().forEach(code => {
+                    const option = document.createElement('option');
+                    option.value = code;
+                    option.textContent = window.akeI18n.getLanguageLabel(code);
+                    if (code === current) option.selected = true;
+                    modalLanguageSelect.appendChild(option);
+                });
             }
 
             function stashMountedModule() {
@@ -190,7 +217,8 @@
 
             function formatUpdatedAt(value) {
                 const date = new Date(value);
-                return Number.isNaN(date.getTime()) ? value : date.toLocaleString('zh-CN', { hour12: false });
+                const locale = config.language === 'EN' ? 'en' : 'zh-CN';
+                return Number.isNaN(date.getTime()) ? value : date.toLocaleString(locale, { hour12: false });
             }
 
             function renderVersionInfo() {
@@ -198,24 +226,24 @@
                 const box = document.getElementById('appVersionInfo');
                 const home = document.getElementById('homeVersionInfo');
                 if (!version) {
-                    if (box) box.textContent = '版本信息暂不可用';
-                    if (home) home.textContent = '版本信息暂不可用';
+                    if (box) box.textContent = tr('version.unavailable');
+                    if (home) home.textContent = tr('version.unavailable');
                     return;
                 }
                 if (box) {
                     box.replaceChildren();
                     [
-                        `AKEData · 版本 ${version.appversion}`,
-                        `游戏版本 ${version.gameversion}`,
-                        `Hotfix 版本 ${version.hotfixversion}`,
-                        `最后更新于：${formatUpdatedAt(version.updatedAt)}${version.updatedBy ? ` (${version.updatedBy})` : ''}`
+                        tr('version.appLine', { version: version.appversion }),
+                        tr('version.gameLine', { version: version.gameversion }),
+                        tr('version.hotfixLine', { version: version.hotfixversion }),
+                        tr('version.updatedLine', { updatedAt: formatUpdatedAt(version.updatedAt), updatedBy: version.updatedBy ? ` (${version.updatedBy})` : '' })
                     ].forEach(line => {
                         const p = document.createElement('p');
                         p.textContent = line;
                         box.appendChild(p);
                     });
                 }
-                if (home) home.textContent = `AKEData ${version.appversion} · ${version.gameversion}`;
+                if (home) home.textContent = tr('version.homeLine', { app: version.appversion, game: version.gameversion });
             }
 
             function canonicalResourceUrl(resource) {
@@ -296,7 +324,7 @@
                     return false;
                 }
                 if (!module || !module.contentFile) {
-                    setContent(`<div class="error-message">模块内容文件未指定</div>`);
+                    setContent(`<div class="error-message">${tr('errors.moduleContentMissing')}</div>`);
                     return false;
                 }
                 if (module.token && !isModuleUnlocked(module)) {
@@ -305,7 +333,7 @@
                 }
                 if (mountedModuleId === module.id) return true;
                 if (mountedModuleId !== module.id) stashMountedModule();
-                setContent(`<div class="loader">⏳ 加载模块内容...</div>`);
+                setContent(`<div class="loader">${tr('common.loadingModule')}</div>`);
                 try {
                     if (!moduleHtmlCache.has(module.contentFile)) {
                         moduleHtmlCache.set(module.contentFile, (window.akeFetch || fetch)(module.contentFile).then(response => {
@@ -338,7 +366,7 @@
                     return true;
                 } catch (err) {
                     if (generation !== moduleLoadGeneration) return false;
-                    setContent(`<div class="error-message">❌ 无法加载模块内容：${err.message}</div>`);
+                    setContent(`<div class="error-message">${tr('errors.moduleLoad', { message: err.message })}</div>`);
                     return false;
                 }
             }
@@ -376,19 +404,20 @@
 
             function renderModuleList(modulesArray) {
                 if (!modulesArray || modulesArray.length === 0) {
-                    moduleListEl.innerHTML = `<div style="padding:20px; color:#999; text-align:center;">📭 暂无可见模块</div>`;
+                    moduleListEl.innerHTML = `<div style="padding:20px; color:#999; text-align:center;">${tr('nav.noVisibleModules')}</div>`;
                     return;
                 }
                 const sorted = sortModulesByPriority(modulesArray);
                 let html = '';
                 sorted.forEach(mod => {
                     const icon = mod.icon || '📦';
-                    const desc = mod.description || '无描述';
+                    const title = translateModuleField(mod, 'title');
+                    const desc = translateModuleField(mod, 'description') || tr('common.noDescription');
                     const hiddenMarker = mod.hidden ? '🔒' : '';
                     html += `
                         <div class="module-item" data-id="${mod.id}">
                             <div class="module-title">
-                                <span>${icon}</span> ${mod.title} ${hiddenMarker}
+                                 <span>${icon}</span> ${title} ${hiddenMarker}
                             </div>
                             <div class="module-desc">${desc}</div>
                         </div>
@@ -445,13 +474,15 @@
                 if (!statusEl) return;
                 const tokenCount = config.unlockedTokens.length;
                 if (tokenCount === 0) {
-                    statusEl.textContent = '尚未输入任何令牌';
+                    statusEl.textContent = tr('settings.tokens.empty');
                 } else {
-                    statusEl.textContent = '已输入 ' + tokenCount + ' 个令牌';
+                    statusEl.textContent = tr('settings.tokens.count', { count: tokenCount });
                 }
             }
 
             function openSettings() {
+                renderLanguageOptions();
+                if (modalLanguageSelect) modalLanguageSelect.value = config.language;
                 modalThemeSelect.value = config.theme;
                 modalShowHiddenCheck.checked = config.showHidden;
                 const modalShowExportCheck = document.getElementById('modalShowExportCheck');
@@ -559,7 +590,7 @@
                         }))
                         .filter(m => !m.disabled);
                 } catch (err) {
-                    moduleListEl.innerHTML = `<div style="color:#b0003a; padding:20px; text-align:center;">❌ 无法读取模块清单。<br>请通过本地服务器访问。</div>`;
+                    moduleListEl.innerHTML = `<div style="color:#b0003a; padding:20px; text-align:center;">${tr('errors.moduleManifestRead')}</div>`;
                     return [];
                 }
             }
@@ -600,7 +631,7 @@
                 if (!showHidden || rawValue === undefined || rawValue === null || rawValue === '') return String(displayValue);
                 const escape = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
                 const rawText = typeof rawValue === 'number' ? String(rawValue) : String(rawValue);
-                const title = variableName ? `${variableName}: ${rawText}` : `原始值: ${rawText}`;
+                const title = variableName ? tr('common.rawValueWithName', { name: variableName, value: rawText }) : tr('common.rawValue', { value: rawText });
                 return `<span class="raw-value-tip" title="${escape(title)}">${displayValue}</span>`;
             };
 
@@ -827,6 +858,9 @@
                 const deepPlugin = urlParams.get('plugin');
                 const deepId = urlParams.get('id');
 
+                await window.akeI18n?.ready;
+                config.language = window.akeI18n?.getLanguage?.() || 'CH';
+                renderLanguageOptions();
                 showHomePage();
                 await window.akeVersionReady;
                 renderVersionInfo();
@@ -927,7 +961,7 @@
                         if (!input) return;
                         const raw = input.value.trim();
                         if (!raw) {
-                            showToast('请输入令牌', 'warning');
+                            showToast(tr('settings.tokens.enterPrompt'), 'warning');
                             return;
                         }
                         const newTokens = raw.split(',').map(s => s.trim()).filter(s => s.length > 0);
@@ -945,9 +979,9 @@
                             storage.set('akedata-unlockedTokens', JSON.stringify(config.unlockedTokens));
                             applyFilterAndRender();
                             window.dispatchEvent(new CustomEvent('globalConfigChanged', { detail: { config } }));
-                            showToast('已添加 ' + addedCount + ' 个令牌', 'info');
+                            showToast(tr('settings.tokens.added', { count: addedCount }), 'info');
                         } else {
-                            showToast('这些令牌已存在', 'warning');
+                            showToast(tr('settings.tokens.duplicate'), 'warning');
                         }
                         input.value = '';
                         updateTokenStatus();
@@ -959,7 +993,7 @@
                 if (tokenClearAllBtn) {
                     tokenClearAllBtn.addEventListener('click', () => {
                         if (config.unlockedTokens.length === 0) {
-                            showToast('当前没有已保存的令牌', 'warning');
+                            showToast(tr('settings.tokens.noneSaved'), 'warning');
                             return;
                         }
                         const count = config.unlockedTokens.length;
@@ -967,15 +1001,18 @@
                         storage.remove('akedata-unlockedTokens');
                         applyFilterAndRender();
                         window.dispatchEvent(new CustomEvent('globalConfigChanged', { detail: { config } }));
-                        showToast('已清除 ' + count + ' 个令牌', 'info');
+                        showToast(tr('settings.tokens.cleared', { count }), 'info');
                         updateTokenStatus();
                     });
                 }
 
                 modalThemeSelect.addEventListener('change', (e) => setTheme(e.target.value));
+                modalLanguageSelect?.addEventListener('change', (e) => {
+                    window.akeI18n?.setLanguage(e.target.value);
+                });
                 modalShowHiddenCheck.addEventListener('change', (e) => {
                     if (e.target.checked) {
-                        const confirmed = confirm('是否确认开启隐藏内容？隐藏内容中包含开发中内容，可能存在bug（我们建议您不要在直播或其他公开场合开启/阅读隐藏内容）');
+                        const confirmed = confirm(tr('settings.showHiddenConfirm'));
                         if (!confirmed) {
                             e.target.checked = false;
                             return;
@@ -992,7 +1029,7 @@
                     if (!contentArea) return;
 
                     // 获取文件名（优先使用详情标题）
-                    let title = '起始页';
+                    let title = tr('home.exportFallback');
                     const possibleSelectors = [
                         '.detail-title', '.detail-name', '.suit-name',
                         '.category-title', '.series-title', '.dungeon-name',
@@ -1008,9 +1045,9 @@
                             break;
                         }
                     }
-                    if (title === '起始页' && activeModuleId) {
+                    if (title === tr('home.exportFallback') && activeModuleId) {
                         const mod = allModules.find(m => m.id === activeModuleId);
-                        if (mod?.title) title = mod.title;
+                         if (mod?.title) title = translateModuleField(mod, 'title');
                     }
                     title = title.replace(/[/?<>\\:*|"]/g, '_');
                 
@@ -1092,7 +1129,7 @@
                         link.href = canvas.toDataURL('image/png');
                         link.click();
                     } catch (err) {
-                        alert('截图失败：' + err.message);
+                        alert(tr('errors.exportFailed', { message: err.message }));
                     }
                 });
 
@@ -1113,11 +1150,12 @@
                 }
             }
 
-            brandHome.addEventListener('click', showHomePage);
-            initApp();
-
             window.akeData = {
                 setTheme,
+                getLanguage: () => config.language,
+                setLanguage: language => window.akeI18n?.setLanguage(language) || false,
+                t: (key, params, fallback) => window.akeI18n?.t(key, params, fallback) ?? fallback ?? key,
+                translateDOM: root => window.akeI18n?.translateDOM(root),
                 toggleShowHidden: (val) => {
                     config.showHidden = val;
                     applyFilterAndRender();
@@ -1133,6 +1171,8 @@
                 },
                 getUnlockedTokens: () => [...config.unlockedTokens]
             };
+            brandHome.addEventListener('click', showHomePage);
+            initApp();
         })();
 
         var _hmt = _hmt || [];

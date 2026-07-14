@@ -4,19 +4,19 @@
 <div class="buff-module">
     <div class="left-column">
         <div class="list-search">
-            <input type="text" id="buffSearchInput" placeholder="搜索效果 (ID/名称)" class="search-input">
+            <input type="text" id="buffSearchInput" data-i18n-placeholder="modules.buff.search" class="search-input">
         </div>
         <div class="buff-list" id="buffList"></div>
     </div>
     <div class="buff-detail" id="buffDetail">
-        <div class="loader">加载效果数据...</div>
+        <div class="loader" data-i18n="modules.buff.loading">modules.buff.loading</div>
     </div>
 </div>
 
-<div class="mobile-list-btn" id="buffMobileListBtn">📋 列表</div>
+<div class="mobile-list-btn" id="buffMobileListBtn" data-i18n="common.mobileList">common.mobileList</div>
 <div id="buffMobileListOverlay" class="mobile-list-overlay">
     <div class="mobile-list-container">
-        <div class="mobile-list-header">选择效果</div>
+        <div class="mobile-list-header" data-i18n="modules.buff.select">modules.buff.select</div>
         <div class="mobile-list-content" id="buffMobileListContent"></div>
     </div>
 </div>
@@ -25,7 +25,7 @@
 <div id="actionDetailModal" class="action-modal">
     <div class="action-modal-content">
         <div class="action-modal-header">
-            <span class="action-modal-title">动作详细信息</span>
+            <span class="action-modal-title" data-i18n="modules.buff.actionDetailTitle">modules.buff.actionDetailTitle</span>
             <span class="action-modal-close">&times;</span>
         </div>
         <div class="action-modal-body">

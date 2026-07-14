@@ -3,7 +3,9 @@
 
     const TABLE_ROOT = '/public/TableCfg/';
     const tableCache = new Map();
-    let i18nPromise = null;
+    const i18nPromises = new Map();
+    const itemT = window.akeI18n.scope('modules.item');
+    const dungeonT = window.akeI18n.scope('modules.dungeon');
     let originalAkeFetch = window.akeFetch || window.fetch.bind(window);
 
     const MODULE_ALIASES = {
@@ -24,21 +26,31 @@
         return response.text();
     }
 
+    function languageInfo() {
+        return window.akeI18n?.getLanguageInfo?.() || { directory: 'CH', table: 'CN', htmlLang: 'zh-CN' };
+    }
+
     async function loadI18n() {
-        if (!i18nPromise) {
-            i18nPromise = fetchText(`${TABLE_ROOT}I18nTextTable_CN.json`).then(JSON.parse);
+        const suffix = languageInfo().table;
+        if (!i18nPromises.has(suffix)) {
+            const localized = fetchText(`${TABLE_ROOT}I18nTextTable_${suffix}.json`).then(JSON.parse);
+            i18nPromises.set(suffix, suffix === 'CN' ? localized : Promise.all([
+                localized,
+                fetchText(`${TABLE_ROOT}I18nTextTable_CN.json`).then(JSON.parse)
+            ]).then(([current, chinese]) => ({ ...chinese, ...Object.fromEntries(Object.entries(current).filter(([, value]) => value !== '')) })));
         }
-        return i18nPromise;
+        return i18nPromises.get(suffix);
     }
 
     async function table(name) {
-        if (!tableCache.has(name)) {
-            tableCache.set(name, Promise.all([
+        const cacheKey = `${languageInfo().table}:${name}`;
+        if (!tableCache.has(cacheKey)) {
+            tableCache.set(cacheKey, Promise.all([
                 fetchText(`${TABLE_ROOT}${name}.json`).then(losslessParse),
                 loadI18n()
             ]).then(([data, i18n]) => hydrate(data, i18n)));
         }
-        return tableCache.get(name);
+        return tableCache.get(cacheKey);
     }
 
     function hydrate(value, i18n, seen) {
@@ -235,7 +247,7 @@
                 return (items[itemId]?.rarity || 0) > (items[bestId]?.rarity || 0) ? itemId : bestId;
             }, '');
             const highest = items[highestId] || {};
-            return { suitID, name: text(row.list?.[0]?.suitName, suitID === 'suit_none' ? '独立装备' : suitID), rarity: highest.rarity || 1,
+            return { suitID, name: text(row.list?.[0]?.suitName, suitID === 'suit_none' ? window.akeI18n?.t('modules.equip.independentEquipment') : suitID), rarity: highest.rarity || 1,
                 icon: icon('equip', highestId, highest.iconId), equipCount: (row.equipList || []).length, isIndependentGroup: suitID === 'suit_none',
                 contentFile: `/__v3/equip/${suitID}.json`, sourceOrder: index, hidden: false };
         });
@@ -288,7 +300,7 @@
             const itemType = itemTypes[type];
             const categoryId = showing && showingType !== '0' ? `showing:${showingType}` : `type:${type}`;
             return { itemId, name: text(row.name, itemId), rarity: row.rarity, type: row.type, categoryId,
-                categoryName: text(showing?.name, text(itemType?.name, `类型 ${type}`)),
+                categoryName: text(showing?.name, text(itemType?.name, itemT('typeFallback', { type }))),
                 categoryOrder: showing ? showing.sortId : 1000 + Number(type),
                 icon: icon('item', itemId, row.iconId), contentFile: `/__v3/item/${itemId}.json`, sourceOrder: index, hidden: false };
         });
@@ -316,33 +328,33 @@
         Object.entries(machineCrafts).forEach(([recipeId, row]) => {
             const building = buildings[row.machineId] || {};
             const msPerRound = machineCraftGroups[row.formulaGroupId]?.msPerRound || 0;
-            addRecipe(recipeId, '集成工业生产', text(row.formulaDesc, recipeId), flattenGroups(row.ingredients), flattenGroups(row.outcomes),
+            addRecipe(recipeId, itemT('recipeKinds.integratedIndustry'), text(row.formulaDesc, recipeId), flattenGroups(row.ingredients), flattenGroups(row.outcomes),
                 text(building.name, row.machineId), row.progressRound * msPerRound);
         });
         Object.entries(manualCrafts).forEach(([recipeId, row]) => {
-            addRecipe(recipeId, '简易制作', text(row.name, recipeId), row.ingredients, row.outcomes, '');
+            addRecipe(recipeId, itemT('recipeKinds.manualCrafting'), text(row.name, recipeId), row.ingredients, row.outcomes, '');
         });
         Object.entries(hubCrafts).forEach(([recipeId, row]) => {
-            addRecipe(recipeId, '枢纽制造', recipeId, row.ingredients, row.outcomes, row.usableLevel ? `可用等级 ${row.usableLevel}` : '');
+            addRecipe(recipeId, itemT('recipeKinds.hubManufacturing'), recipeId, row.ingredients, row.outcomes, row.usableLevel ? itemT('craft.usableLevel', { level: row.usableLevel }) : '');
         });
         Object.entries(equipFormulas).forEach(([recipeId, row]) => {
             const inputs = (row.costItemId || []).map((itemId, index) => ({ id: itemId, count: row.costItemNum?.[index] || 0 }));
             if (row.costGoldId && row.costGoldNum) inputs.unshift({ id: row.costGoldId, count: row.costGoldNum });
-            addRecipe(recipeId, '装备制造', recipeId, inputs, [{ id: row.outcomeEquipId, count: 1 }], '');
+            addRecipe(recipeId, itemT('recipeKinds.equipmentManufacturing'), recipeId, inputs, [{ id: row.outcomeEquipId, count: 1 }], '');
         });
         Object.entries(growFormulas).forEach(([recipeId, row]) => {
-            addRecipe(recipeId, '培养舱种植', recipeId, [{ id: row.seedItemId, count: row.seedItemCount }],
-                [{ id: row.outcomeItemId, count: row.outcomeItemCount }], row.level ? `设施等级 ${row.level}` : '', row.totalProgress);
+            addRecipe(recipeId, itemT('recipeKinds.growCabinPlanting'), recipeId, [{ id: row.seedItemId, count: row.seedItemCount }],
+                [{ id: row.outcomeItemId, count: row.outcomeItemCount }], row.level ? itemT('craft.facilityLevel', { level: row.level }) : '', row.totalProgress);
         });
         Object.entries(seedFormulas).forEach(([recipeId, row]) => {
-            addRecipe(recipeId, '培养舱采种', recipeId, [{ id: row.materialItemId, count: row.materialItemCount }],
-                [{ id: row.outcomeseedItemId, count: row.outcomeseedItemCount }], row.level ? `设施等级 ${row.level}` : '');
+            addRecipe(recipeId, itemT('recipeKinds.growCabinSeedCollection'), recipeId, [{ id: row.materialItemId, count: row.materialItemCount }],
+                [{ id: row.outcomeseedItemId, count: row.outcomeseedItemCount }], row.level ? itemT('craft.facilityLevel', { level: row.level }) : '');
         });
         Object.entries(spaceshipFormulas).forEach(([recipeId, row]) => {
-            addRecipe(recipeId, '飞船制造', recipeId, [], [{ id: row.outcomeItemId, count: 1 }],
-                row.level ? `设施等级 ${row.level}` : '', row.totalProgress);
+            addRecipe(recipeId, itemT('recipeKinds.spaceshipManufacturing'), recipeId, [], [{ id: row.outcomeItemId, count: 1 }],
+                row.level ? itemT('craft.facilityLevel', { level: row.level }) : '', row.totalProgress);
         });
-        recipeRows.sort((a, b) => a.kind.localeCompare(b.kind, 'zh-CN') || a.recipeId.localeCompare(b.recipeId, 'en'));
+        recipeRows.sort((a, b) => a.kind.localeCompare(b.kind, languageInfo().htmlLang) || a.recipeId.localeCompare(b.recipeId, 'en'));
         const recipeItemIds = new Set(recipeRows.flatMap(row => row.inputs.concat(row.outputs).map(entry => entry.id)));
         return { itemId: id, itemtable: item, itemtypetable: types[item.type] || {}, systemjumptable: pick(jumps, item.obtainWayIds || []),
             itemiconcompositetable: composites[item.iconCompositeId], itemshowingtypetable: showing[item.showingType],
@@ -353,15 +365,15 @@
     async function dungeonManifest() {
         const series = await table('DungeonSeriesTable');
         const categoryNames = {
-            dungeon_highdifficulty: '高难挑战', dungeon_bossrush: '首领挑战', dungeon_ss: '协议空间',
-            dungeon_actmonster: '活动作战', dungeon_challenge: '挑战副本', dungeon_resource: '资源副本',
-            dungeon_weeklyraid: '每周讨伐', dungeon_char: '角色任务', dungeon_chartutorial: '角色教学',
-            dungeon_contract: '危机合约', dungeon_train: '训练副本', dungeon_worldlevel: '世界等级',
-            dungeon_wuling_A: '武陵区域 A', dungeon_wuling_B: '武陵区域 B'
+            dungeon_highdifficulty: 'highDifficulty', dungeon_bossrush: 'bossRush', dungeon_ss: 'protocolSpace',
+            dungeon_actmonster: 'eventCombat', dungeon_challenge: 'challenge', dungeon_resource: 'resource',
+            dungeon_weeklyraid: 'weeklyRaid', dungeon_char: 'characterMission', dungeon_chartutorial: 'characterTutorial',
+            dungeon_contract: 'contingencyContract', dungeon_train: 'training', dungeon_worldlevel: 'worldLevel',
+            dungeon_wuling_A: 'wulingA', dungeon_wuling_B: 'wulingB'
         };
         const rows = Object.entries(series).filter(([, row]) => row.gameCategory).map(([templateId, row], index) => ({
             templateId, name: text(row.name, templateId), rarity: dungeonRarity(row),
-            gameCategory: row.gameCategory, gameCategoryName: categoryNames[row.gameCategory] || row.gameCategory,
+            gameCategory: row.gameCategory, gameCategoryName: categoryNames[row.gameCategory] ? dungeonT(`categories.${categoryNames[row.gameCategory]}`) : row.gameCategory,
             categoryOrder: dungeonRarity(row) * -1, dungeonCount: (row.includeDungeonIds || []).length,
             image: row.dungeonPicPath ? `/public/images/dungeon/${row.dungeonPicPath}_bg.png` : '',
             contentFile: `/__v3/dungeon/${templateId}.json`, sourceOrder: index, hidden: false
@@ -554,13 +566,13 @@
     async function v3Fetch(input, init) {
         const url = typeof input === 'string' ? input : input.url;
         const mountedModule = document.querySelector('#contentArea script[data-ake-v3-module]')?.dataset.akeV3Module || '';
-        const manifestMatch = url.match(/^\/public\/CH\/(?:v2_)?(character|weapon|enemy|equip|item|dungeon|cc|activity|achievement)\/manifest\.json(?:\?|$)/);
+        const manifestMatch = url.match(/^\/public\/(?:CH|EN)\/(?:v2_)?(character|weapon|enemy|equip|item|dungeon|cc|activity|achievement)\/manifest\.json(?:\?|$)/);
         if (manifestMatch && manifestMatch[1] === mountedModule) return virtualResponse(await adapters[mountedModule][0]());
         const detailMatch = url.match(/^\/__v3\/(character|weapon|enemy|equip|item|dungeon|cc|activity|achievement)\/([^/?]+)\.json/);
         if (detailMatch && (detailMatch[1] === mountedModule || (mountedModule === 'cc' && detailMatch[1] === 'dungeon'))) {
             return virtualResponse(await adapters[detailMatch[1]][1](decodeURIComponent(detailMatch[2])));
         }
-        const charDetailMatch = mountedModule === 'character' && url.match(/^\/public\/CH\/v2_character\/([^/?]+)\.json/);
+        const charDetailMatch = mountedModule === 'character' && url.match(/^\/public\/(?:CH|EN)\/v2_character\/([^/?]+)\.json/);
         if (charDetailMatch) return virtualResponse(await characterDetail(decodeURIComponent(charDetailMatch[1])));
         return originalAkeFetch(input, init);
     }

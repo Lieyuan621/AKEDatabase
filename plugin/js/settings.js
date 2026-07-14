@@ -13,6 +13,8 @@ console.log('🔴 settings.html 脚本开始执行');
         function init() {
             console.log('🔄 初始化设置模块...');
 
+            window.akeData.translateDOM?.(document);
+
             const config = window.akeData.getConfig();
             console.log('📋 当前配置:', config);
 

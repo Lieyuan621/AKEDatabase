@@ -1,4 +1,6 @@
 (function() {
+        const t = window.akeI18n.scope('modules.enemy');
+        const commonT = window.akeI18n.scope('common');
         let allEnemies = [];
         let rawAllEnemies = [];
         let activeEnemyId = null;
@@ -42,7 +44,7 @@
         }
 
         function getAttrName(attrType) {
-            return attrMap[attrType] || `属性${attrType}`;
+            return attrMap[attrType] || t('attributeFallback', { type: attrType });
         }
 
         function formatAttrModifiers(modifiers) {
@@ -234,47 +236,23 @@
         }
 
         const META_FIELDS = [
-            { key: 'initialSuperArmor', label: '初始抗打断' },
-            { key: 'zeroPoiseSuperArmor', label: '失衡时抗打断' },
-            { key: 'superArmorWhenResilienceZero', label: '韧性归零时抗打断' },
-            { key: 'executionDamageScalar', label: '处决承伤系数' },
-            { key: 'breakingAttackedAtbObtain', label: '处决技力回复' },
-            { key: 'physicalDamageTakenScalar', label: '物理承伤系数' },
-            { key: 'naturalDamageTakenScalar', label: '自然承伤系数' },
-            { key: 'coldDamageTakenScalar', label: '寒冷承伤系数' },
-            { key: 'electroDamageTakenScalar', label: '电磁承伤系数' },
-            { key: 'fireDamageTakenScalar', label: '灼热承伤系数' },
-            { key: 'etherDamageTakenScalar', label: '超域承伤系数' },
-            { key: 'physicalResistScalar', label: '物理抗性系数' },
-            { key: 'naturalResistScalar', label: '自然抗性系数' },
-            { key: 'coldResistScalar', label: '寒冷抗性系数' },
-            { key: 'electroResistScalar', label: '电磁抗性系数' },
-            { key: 'fireResistScalar', label: '灼热抗性系数' },
-            { key: 'etherResistScalar', label: '超域抗性系数' },
-            { key: 'normalAttackRange', label: '普通攻击范围' },
-            { key: 'maxPoise', label: '失衡值上限' },
-            { key: 'poiseRecTime', label: '失衡恢复时间' },
-            { key: 'poiseKnotPct', label: '失衡节点' },
-            { key: 'weight', label: '重量' },
-            { key: 'attackValueAgainstTower', label: '对塔攻击值' },
-            { key: 'maxResilience', label: '最大韧性' },
-            { key: 'pushedBackCoefficient', label: '回弹系数' },
-            { key: 'resilienceDecreaseWhenHurt', label: '受伤韧性降低' },
-            { key: 'resilienceFullRecoverTime', label: '韧性完全回复时长' },
-            { key: 'resilienceRecover', label: '韧性回复值' },
-            { key: 'resilienceRecoverInterval', label: '韧性回复间隔' },
-            { key: 'criticalRate', label: '暴击率' },
-            { key: 'criticalDamage', label: '暴击伤害' },
-            { key: 'hatred', label: '仇恨值' },
-            { key: 'attackSpeed', label: '攻击速度' }
+            'initialSuperArmor', 'zeroPoiseSuperArmor', 'superArmorWhenResilienceZero',
+            'executionDamageScalar', 'breakingAttackedAtbObtain', 'physicalDamageTakenScalar',
+            'naturalDamageTakenScalar', 'coldDamageTakenScalar', 'electroDamageTakenScalar',
+            'fireDamageTakenScalar', 'etherDamageTakenScalar', 'physicalResistScalar',
+            'naturalResistScalar', 'coldResistScalar', 'electroResistScalar', 'fireResistScalar',
+            'etherResistScalar', 'normalAttackRange', 'maxPoise', 'poiseRecTime', 'poiseKnotPct',
+            'weight', 'attackValueAgainstTower', 'maxResilience', 'pushedBackCoefficient',
+            'resilienceDecreaseWhenHurt', 'resilienceFullRecoverTime', 'resilienceRecover',
+            'resilienceRecoverInterval', 'criticalRate', 'criticalDamage', 'hatred', 'attackSpeed'
         ];
 
         function renderMeta(data) {
             let html = '<div class="v2e-meta-grid">';
-            META_FIELDS.forEach(f => {
-                const val = data[f.key];
+            META_FIELDS.forEach(key => {
+                const val = data[key];
                 if (val !== undefined && val !== null && val !== '') {
-                    html += `<div class="v2e-meta-item"><span class="v2e-meta-label">${f.label}</span><span class="v2e-meta-value">${val}</span></div>`;
+                    html += `<div class="v2e-meta-item"><span class="v2e-meta-label">${t(`meta.${key}`)}</span><span class="v2e-meta-value">${val}</span></div>`;
                 }
             });
             html += '</div>';
@@ -297,9 +275,9 @@
             if (!fa) return '';
 
             const items = [];
-            META_FIELDS.forEach(f => {
-                const bv = baseSnapshot[f.key];
-                const nv = fa[f.key];
+            META_FIELDS.forEach(key => {
+                const bv = baseSnapshot[key];
+                const nv = fa[key];
                 if (bv === undefined && nv === undefined) return;
                 if (bv === nv) return;
                 if (typeof bv === 'number' && typeof nv === 'number' && Math.abs(bv - nv) < 0.0001) return;
@@ -309,36 +287,36 @@
                 const bvHtml = window.renderRawValueTip ? window.renderRawValueTip(bv ?? '-', bv) : (bv ?? '-');
                 const nvHtml = window.renderRawValueTip ? window.renderRawValueTip(nv ?? '-', nv) : (nv ?? '-');
                 const diffHtml = window.renderRawValueTip ? window.renderRawValueTip(sign + fmt, d) : sign + fmt;
-                items.push(`<div class="v2e-diff-item"><span class="v2e-diff-label">${f.label}:</span><span class="v2e-diff-val ${d < 0 ? 'neg' : ''}">${bvHtml} → ${nvHtml} (${diffHtml})</span></div>`);
+                items.push(`<div class="v2e-diff-item"><span class="v2e-diff-label">${t(`meta.${key}`)}:</span><span class="v2e-diff-val ${d < 0 ? 'neg' : ''}">${bvHtml} → ${nvHtml} (${diffHtml})</span></div>`);
             });
 
             if (!items.length) return '';
-            return `<div class="v2e-diff"><strong>与初始变种差异:</strong>${items.join('')}</div>`;
+            return `<div class="v2e-diff"><strong>${t('variantDifference')}</strong>${items.join('')}</div>`;
         }
 
         function renderVariantTooltip(variant) {
             const fa = variant.fullAttrs;
             if (!fa) return '';
-            const fields = META_FIELDS.filter(f => fa[f.key] !== undefined && fa[f.key] !== null);
+            const fields = META_FIELDS.filter(key => fa[key] !== undefined && fa[key] !== null);
             if (!fields.length) return '';
-            const items = fields.map(f => {
-                const val = fa[f.key];
+            const items = fields.map(key => {
+                const val = fa[key];
                 const valueHtml = window.renderRawValueTip ? window.renderRawValueTip(val, val) : val;
-                return `<div class="v2e-tooltip-item"><span class="v2e-tooltip-label">${f.label}</span><span class="v2e-tooltip-value">${valueHtml}</span></div>`;
+                return `<div class="v2e-tooltip-item"><span class="v2e-tooltip-label">${t(`meta.${key}`)}</span><span class="v2e-tooltip-value">${valueHtml}</span></div>`;
             }).join('');
             return `<span class="v2e-variant-template"><span class="v2e-tag-id">${variant.attrTemplateId}</span><span class="v2e-tooltip"><div class="v2e-tooltip-grid">${items}</div></span></span>`;
         }
 
         function renderEnemyOverview(items, container) {
-            const typeNames = { 0: '普通敌人', 1: '精英敌人', 2: '首领敌人', 3: '特殊敌人', 4: '高危敌人' };
+            const typeNames = { 0: t('enemyTypes.normal'), 1: t('enemyTypes.elite'), 2: t('enemyTypes.boss'), 3: t('enemyTypes.special'), 4: t('enemyTypes.dangerous') };
             window.AKEModuleOverview.render(container, {
-                title: '敌人总览', description: '按敌人类型分组，展示模板、危险度与变种数量',
-                group: item => ({ id: String(item.displayType ?? 'unknown'), name: item.displayTypeName || typeNames[item.displayType] || '其他敌人', order: -(item.rarity || 1) }),
+                title: t('overview.title'), description: t('overview.description'),
+                group: item => ({ id: String(item.displayType ?? 'unknown'), name: item.displayTypeName || typeNames[item.displayType] || t('enemyTypes.other'), order: -(item.rarity || 1) }),
                 onReset: () => { activeEnemyId = null; },
                 onSelect: item => { activeEnemyId = item.templateId; renderEnemyList(); },
                 sidebarSelector: item => `.v2e-item[data-enemy-id="${CSS.escape(item.templateId)}"]`,
-                items: items.slice().sort((a, b) => (b.rarity || 1) - (a.rarity || 1) || (a.priority || 999) - (b.priority || 999)).map(item => ({ ...item, id: item.templateId, image: item.icon, fallback: 'ENEMY',
-                    tags: [`危险度 ${item.rarity || 1}`, item.variantCount ? `${item.variantCount} 个变种` : ''] }))
+                items: items.slice().sort((a, b) => (b.rarity || 1) - (a.rarity || 1) || (a.priority || 999) - (b.priority || 999)).map(item => ({ ...item, id: item.templateId, image: item.icon, fallback: t('overview.fallback'),
+                    tags: [t('overview.dangerLevel', { level: item.rarity || 1 }), item.variantCount ? t('overview.variantCount', { count: item.variantCount }) : ''] }))
             });
         }
 
@@ -351,8 +329,8 @@
             container.innerHTML = '';
 
             if (!filtered.length) {
-                container.innerHTML = '<div class="v2e-loader">无匹配敌人</div>';
-                if (detailContainer) detailContainer.innerHTML = '<div class="v2e-loader">请选择敌人</div>';
+                container.innerHTML = `<div class="v2e-loader">${t('noMatches')}</div>`;
+                if (detailContainer) detailContainer.innerHTML = `<div class="v2e-loader">${t('select')}</div>`;
                 activeEnemyId = null;
                 return;
             }
@@ -364,7 +342,7 @@
 
                 const rarityBar = document.createElement('span');
                 rarityBar.className = `v2e-rarity-bar rarity-${enemy.rarity}`;
-                rarityBar.title = `稀有度 ${enemy.rarity}`;
+                rarityBar.title = commonT('rarityLabel', { rarity: enemy.rarity });
 
                 const icon = document.createElement('img');
                 icon.className = 'v2e-item-icon';
@@ -434,7 +412,7 @@
         }
 
         async function loadEnemyDetail(enemy, container) {
-            container.innerHTML = '<div class="v2e-loader">加载敌人数据...</div>';
+            container.innerHTML = `<div class="v2e-loader">${t('loading')}</div>`;
             try {
                 const rawData = await (window.akeFetch || fetch)(enemy.contentFile).then(r => r.json());
                 const data = normalizeV2ToLegacy(enemy, rawData);
@@ -453,7 +431,7 @@
                         if (isNaN(vi)) return;
                         variantExpandStates[vi] = !variantExpandStates[vi];
                         updateVariantTable(data.variants[vi], vi);
-                        btn.textContent = variantExpandStates[vi] ? '收起多余等级' : '展开所有等级';
+                        btn.textContent = variantExpandStates[vi] ? commonT('collapseExtraLevels') : commonT('expandAllLevels');
                     });
                 });
 
@@ -468,7 +446,11 @@
                     });
                 });
             } catch (err) {
-                container.innerHTML = `<div class="v2e-error">加载失败: ${err.message}</div>`;
+                container.textContent = '';
+                const error = document.createElement('div');
+                error.className = 'v2e-error';
+                error.textContent = t('loadFailed', { message: err.message });
+                container.appendChild(error);
             }
         }
 
@@ -521,14 +503,14 @@
 
             container.innerHTML = `
                 <table class="v2e-table">
-                    <thead><tr><th>等级</th><th>最大生命值</th><th>攻击力</th><th>防御力</th></tr></thead>
+                    <thead><tr><th>${commonT('level')}</th><th>${t('columns.maxHp')}</th><th>${commonT('attack')}</th><th>${t('columns.defense')}</th></tr></thead>
                     <tbody>${rowsToRender}</tbody>
                 </table>
             `;
         }
 
         function renderVariants(variants, baseSnapshot) {
-            if (!variants.length) return '<p>无变种数据</p>';
+            if (!variants.length) return `<p>${t('noVariants')}</p>`;
             return variants.map((variant, idx) => {
                 if (!variant.levels.length) return '';
 
@@ -538,9 +520,9 @@
                 const buffHtml = variant.bornBuffs.length > 0 ? `<div class="v2e-buffs">${variant.bornBuffs.map(b => `<span class="v2e-buff-tag">${b}</span>`).join('')}</div>` : '';
 
                 const flags = [];
-                if (variant.isDangerous) flags.push('<span class="v2e-flag danger">危险</span>');
-                if (variant.showBigEffect) flags.push('<span class="v2e-flag big-effect">全局特效</span>');
-                if (variant.showBigHeadbar) flags.push('<span class="v2e-flag big-headbar">置顶血条</span>');
+                if (variant.isDangerous) flags.push(`<span class="v2e-flag danger">${t('flags.dangerous')}</span>`);
+                if (variant.showBigEffect) flags.push(`<span class="v2e-flag big-effect">${t('flags.globalEffect')}</span>`);
+                if (variant.showBigHeadbar) flags.push(`<span class="v2e-flag big-headbar">${t('flags.pinnedHealthBar')}</span>`);
                 const flagsHtml = flags.length ? `<div class="v2e-flags">${flags.join('')}</div>` : '';
 
                 const diffHtml = !variant.isBase ? renderVariantDiff(variant, baseSnapshot) : '';
@@ -549,10 +531,10 @@
                 const showAll = variantExpandStates[idx] || false;
                 const rowsToRender = showAll ? allRows : filterRows(allRows);
 
-                const variantId = variant.enemyId || `变种 ${idx + 1}`;
+                const variantId = variant.enemyId || t('variantFallback', { number: idx + 1 });
                 const toggleButton = enemyLevelsToShow ? `
                     <div style="text-align:right; margin-top:4px;">
-                        <button class="v2e-toggle-btn" data-variant="${idx}">${showAll ? '收起多余等级' : '展开所有等级'}</button>
+                        <button class="v2e-toggle-btn" data-variant="${idx}">${showAll ? commonT('collapseExtraLevels') : commonT('expandAllLevels')}</button>
                     </div>
                 ` : '';
 
@@ -565,7 +547,7 @@
                         ${diffHtml}
                         <div class="v2e-table-wrap">
                             <table class="v2e-table">
-                                <thead><tr><th>等级</th><th>最大生命值</th><th>攻击力</th><th>防御力</th></tr></thead>
+                                <thead><tr><th>${commonT('level')}</th><th>${t('columns.maxHp')}</th><th>${commonT('attack')}</th><th>${t('columns.defense')}</th></tr></thead>
                                 <tbody>${rowsToRender}</tbody>
                             </table>
                         </div>
@@ -586,7 +568,7 @@
                         <div class="v2e-header-text">
                             <div class="v2e-title-row">
                                 <span class="v2e-name">${data.name}</span>
-                                <span class="v2e-rarity-dot rarity-${rarity}" title="稀有度 ${rarity}"></span>
+                                <span class="v2e-rarity-dot rarity-${rarity}" title="${commonT('rarityLabel', { rarity })}"></span>
                                 <span class="v2e-id">${enemy.templateId}</span>
                             </div>
                             <div class="v2e-tags">
@@ -606,7 +588,7 @@
 
             const poiseBuffHtml = data.poiseKnotBuffList.length > 0 ? `
                 <div class="v2e-section">
-                    <h3>失衡打断Buff</h3>
+                    <h3>${t('sections.poiseBreakBuffs')}</h3>
                     <div class="v2e-buffs">${data.poiseKnotBuffList.map(b => `<span class="v2e-buff-tag">${b}</span>`).join('')}</div>
                 </div>
             ` : '';
@@ -617,7 +599,7 @@
                 ${headerHtml}
                 ${poiseBuffHtml}
                 <div class="v2e-section">
-                    <h3>变种属性</h3>
+                    <h3>${t('sections.variantAttributes')}</h3>
                     ${variantsHtml}
                 </div>
             `;

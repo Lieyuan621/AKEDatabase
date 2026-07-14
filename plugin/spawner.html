@@ -4,21 +4,21 @@
     <!-- 左侧分组列表（仅一级） -->
     <div class="left-column">
         <div class="list-search">
-            <input type="text" id="spawnerGroupSearch" placeholder="搜索分组..." class="search-input">
+            <input type="text" id="spawnerGroupSearch" placeholder="modules.spawn.search" data-i18n-placeholder="modules.spawn.search" class="search-input">
         </div>
         <div class="group-list" id="groupList"></div>
     </div>
 
     <!-- 右侧内容区：直接展示所有关卡波次 -->
     <div class="spawner-right" id="spawnerRight">
-        <div class="loader">请从左侧选择一个分组</div>
+        <div class="loader" data-i18n="modules.spawn.select">modules.spawn.select</div>
     </div>
 
     <!-- 移动端浮层：分组列表 -->
-    <div class="mobile-list-btn" id="spawnerMobileListBtn">📋 分组</div>
+    <div class="mobile-list-btn" id="spawnerMobileListBtn" data-i18n="common.mobileList">common.mobileList</div>
     <div id="spawnerMobileListOverlay" class="mobile-list-overlay">
         <div class="mobile-list-container">
-            <div class="mobile-list-header">选择分组</div>
+            <div class="mobile-list-header" data-i18n="modules.spawn.mobile.selectGroup">modules.spawn.mobile.selectGroup</div>
             <div class="mobile-list-content" id="mobileGroupList"></div>
         </div>
     </div>
@@ -28,7 +28,7 @@
 <div id="spawnerJsonModal" class="action-modal">
     <div class="action-modal-content">
         <div class="action-modal-header">
-            <span class="action-modal-title">JSON数据详情</span>
+            <span class="action-modal-title" data-i18n="modules.spawn.modal.jsonTitle">modules.spawn.modal.jsonTitle</span>
             <span class="action-modal-close">&times;</span>
         </div>
         <div class="action-modal-body">
