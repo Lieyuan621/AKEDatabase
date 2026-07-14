@@ -222,6 +222,19 @@
         }
     }
 
+    function renderGameOverview(items, container) {
+        const statusNames = ['进行中', '即将开始', '已结束', '永久'];
+        window.AKEModuleOverview.render(container, {
+            title: '危机合约总览', description: '按赛季状态分组，汇总合约词条、关卡与开放时间',
+            group: item => ({ id: String(item.statusOrder ?? 3), name: statusNames[item.statusOrder] || '永久', order: item.statusOrder ?? 3 }),
+            onReset: () => { activeGameId = null; },
+            onSelect: item => { activeGameId = item.gameId; renderGameList(); },
+            sidebarSelector: item => `.v2cc-item[data-game-id="${CSS.escape(item.gameId)}"]`,
+            items: items.map(item => ({ ...item, id: item.gameId, image: item.image, fallback: 'CC',
+                tags: [`${item.contractGroupCount || 0} 个指标组`, `${item.contractCount || 0} 个词条`, item.dungeonName] }))
+        });
+    }
+
     const mobileBtn = document.getElementById('v2ccMobileListBtn');
     const mobileOverlay = document.getElementById('v2ccMobileListOverlay');
     const mobileContent = document.getElementById('v2ccMobileListContent');
@@ -272,7 +285,7 @@
 
         filtered.forEach((game, index) => {
             const div = document.createElement('div');
-            div.className = `v2cc-item ${game.gameId === activeGameId ? 'active' : (!activeGameId && index === 0 ? 'active' : '')}`;
+            div.className = `v2cc-item ${game.gameId === activeGameId ? 'active' : (!activeGameId && index === 0 && !window.AKEModuleOverview?.isActive('cc') ? 'active' : '')}`;
             div.dataset.gameId = game.gameId;
 
             const icon = document.createElement('div');
@@ -322,6 +335,11 @@
         }
         const activeExists = filtered.some(g => g.gameId === activeGameId);
         if (!activeExists && filtered.length > 0) {
+            if (window.AKEModuleOverview?.isActive('cc')) {
+                activeGameId = null;
+                renderGameOverview(filtered, detailContainer);
+                return;
+            }
             activeGameId = filtered[0].gameId;
             if (window.__akeRouter) window.__akeRouter.updateUrl('v2_cc', activeGameId);
             const f = container.querySelector('.v2cc-item');

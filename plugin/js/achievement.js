@@ -73,6 +73,18 @@
             }
         }
 
+        function renderAchievementOverview(items, container) {
+            window.AKEModuleOverview.render(container, {
+                title: '奖章总览', description: '按分类展示全部奖章数据与特殊奖章统计',
+                group: () => ({ id: 'categories', name: '奖章分类', order: 0 }),
+                onReset: () => { activeCategoryId = null; },
+                onSelect: item => { activeCategoryId = item.categoryId; renderCategoryList(); },
+                sidebarSelector: item => `.category-item[data-cat-id="${CSS.escape(item.categoryId)}"]`,
+                items: items.map(item => ({ ...item, id: item.categoryId, image: item.icon, fallback: 'MEDAL',
+                    tags: [`${item.achievementCount || 0} 枚`, `${item.groupCount || 0} 个分组`, item.platedCount ? `${item.platedCount} 枚可镀层` : ''] }))
+            });
+        }
+
         function renderCategoryList() {
             const container = document.getElementById('categoryList');
             const detailContainer = document.getElementById('achievementDetail');
@@ -90,7 +102,7 @@
 
             filtered.forEach((cat, index) => {
                 const item = document.createElement('div');
-                item.className = `category-item ${cat.categoryId === activeCategoryId ? 'active' : (index === 0 && !activeCategoryId ? 'active' : '')}`;
+                item.className = `category-item ${cat.categoryId === activeCategoryId ? 'active' : (index === 0 && !activeCategoryId && !window.AKEModuleOverview?.isActive('achievement') ? 'active' : '')}`;
                 item.dataset.catId = cat.categoryId;
                 item.dataset.contentFile = cat.contentFile;
 
@@ -125,6 +137,11 @@
             }
             const activeExists = filtered.some(c => c.categoryId === activeCategoryId);
             if (!activeExists && filtered.length > 0) {
+                if (window.AKEModuleOverview?.isActive('achievement')) {
+                    activeCategoryId = null;
+                    renderAchievementOverview(filtered, detailContainer);
+                    return;
+                }
                 activeCategoryId = filtered[0].categoryId;
                 const firstItem = container.querySelector('.category-item');
                 if (firstItem) firstItem.classList.add('active');

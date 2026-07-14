@@ -132,6 +132,7 @@
                             const sidebarItem = document.querySelector(`.module-item[data-id="${mod.id}"]`);
                             if (sidebarItem) sidebarItem.classList.add('active');
                             if (window.__akeRouter) window.__akeRouter.updateUrl(mod.id);
+                            window.AKEModuleOverview?.showRoot(mod.id);
                         }
                     });
                     mobileMenuList.appendChild(item);
@@ -405,6 +406,7 @@
                         item.classList.add('active');
                         activeModuleId = id;
                         if (window.__akeRouter) window.__akeRouter.updateUrl(id);
+                        window.AKEModuleOverview?.showRoot(id);
                     });
                 });
                 if (activeModuleId) {

@@ -123,6 +123,17 @@
         }
     }
 
+    function renderWeaponOverview(items, container) {
+        window.AKEModuleOverview.render(container, {
+            title: '武器总览', description: '按武器类型分组，展示全部武器与稀有度',
+            group: item => ({ id: String(item.weaponType), name: WEAPON_TYPE_MAP[item.weaponType] || '未知类型', order: Number(item.weaponType) }),
+            onReset: () => { activeWeaponId = null; },
+            onSelect: item => { activeWeaponId = item.weaponId; renderWeaponList(); },
+            sidebarSelector: item => `.weapon-item[data-weapon-id="${CSS.escape(item.weaponId)}"]`,
+            items: items.map(item => ({ ...item, id: item.weaponId, image: item.icon, fallback: 'WPN', tags: [`${item.rarity || 1} 星`] }))
+        });
+    }
+
     function renderWeaponList() {
         const container = document.getElementById('v2wpnListItems');
         const detailContainer = document.getElementById('v2wpnDetail');
@@ -139,7 +150,7 @@
 
         filtered.forEach((w, index) => {
             const item = document.createElement('div');
-            item.className = `weapon-item ${w.weaponId === activeWeaponId ? 'active' : (!activeWeaponId && index === 0 ? 'active' : '')}`;
+            item.className = `weapon-item ${w.weaponId === activeWeaponId ? 'active' : (!activeWeaponId && index === 0 && !window.AKEModuleOverview?.isActive('weapon') ? 'active' : '')}`;
             item.dataset.weaponId = w.weaponId;
 
             const rb = document.createElement('span');
@@ -196,6 +207,11 @@
 
         const activeExists = filtered.some(w => w.weaponId === activeWeaponId);
         if (!activeExists && filtered.length > 0) {
+            if (window.AKEModuleOverview?.isActive('weapon')) {
+                activeWeaponId = null;
+                renderWeaponOverview(filtered, detailContainer);
+                return;
+            }
             activeWeaponId = filtered[0].weaponId;
             const f = container.querySelector('.weapon-item');
             if (f) f.classList.add('active');

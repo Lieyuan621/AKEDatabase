@@ -26,7 +26,14 @@
             16: '每周事务',
             17: '生存特训',
             18: '净流涤尘',
-            19: '新手赠礼'
+            19: '新手赠礼',
+            25: '角色养成',
+            26: '特殊活动',
+            27: '限时挑战',
+            28: '版本活动',
+            29: '联动活动',
+            30: '危机合约',
+            31: '周期活动'
         };
 
         function getCurrentShowHidden() {
@@ -41,6 +48,7 @@
             const now = new Date();
             const open = openTime ? new Date(openTime) : null;
             const close = closeTime ? new Date(closeTime) : null;
+            if (!close) return { text: '永久', class: 'status-permanent' };
             if (close && now > close) return { text: '已结束', class: 'status-closed' };
             if (open && now < open) return { text: '即将开始', class: 'status-upcoming' };
             return { text: '进行中', class: 'status-active' };
@@ -118,7 +126,8 @@
                 { value: null, label: '全部' },
                 { value: 'status-active', label: '进行中' },
                 { value: 'status-upcoming', label: '即将开始' },
-                { value: 'status-closed', label: '已结束' }
+                { value: 'status-closed', label: '已结束' },
+                { value: 'status-permanent', label: '永久' }
             ];
             container.innerHTML = '';
             statuses.forEach(s => {
@@ -151,6 +160,23 @@
             }
         }
 
+        function renderActivityOverview(items, container) {
+            const statusOrder = { 'status-active': 0, 'status-upcoming': 1, 'status-closed': 2, 'status-permanent': 3 };
+            window.AKEModuleOverview.render(container, {
+                title: '活动总览', description: '按当前状态分组，展示活动类型与开放时间',
+                group: item => { const status = getActivityStatus(item.openTime, item.closeTime); return { id: status.class, name: status.text, order: statusOrder[status.class] }; },
+                onReset: () => { activeActivityId = null; },
+                onSelect: item => { activeActivityId = item.activityId; renderActivityList(); },
+                sidebarSelector: item => `.activity-item[data-activity-id="${CSS.escape(item.activityId)}"]`,
+                items: items.map(item => {
+                    const status = getActivityStatus(item.openTime, item.closeTime);
+                    const outlines = { 'status-active': 'status-active', 'status-upcoming': 'status-upcoming', 'status-closed': 'status-closed' };
+                    return { ...item, id: item.activityId, image: item.tabImg, fallback: 'EVENT', outline: outlines[status.class],
+                        tags: [TYPE_MAP[item.type] || `类型${item.type}`, item.openTime ? `开放 ${item.openTime.split(' ')[0]}` : '常驻内容'] };
+                })
+            });
+        }
+
         function renderActivityList() {
             const container = document.getElementById('activityList');
             const detailContainer = document.getElementById('activityDetail');
@@ -167,7 +193,7 @@
 
             filtered.forEach((act, index) => {
                 const item = document.createElement('div');
-                item.className = `activity-item ${act.activityId === activeActivityId ? 'active' : (index === 0 && !activeActivityId ? 'active' : '')}`;
+                item.className = `activity-item ${act.activityId === activeActivityId ? 'active' : (index === 0 && !activeActivityId && !window.AKEModuleOverview?.isActive('activity') ? 'active' : '')}`;
                 item.dataset.activityId = act.activityId;
                 item.dataset.contentFile = act.contentFile;
 
@@ -219,6 +245,11 @@
             }
             const activeExists = filtered.some(a => a.activityId === activeActivityId);
             if (!activeExists && filtered.length > 0) {
+                if (window.AKEModuleOverview?.isActive('activity')) {
+                    activeActivityId = null;
+                    renderActivityOverview(filtered, detailContainer);
+                    return;
+                }
                 activeActivityId = filtered[0].activityId;
                 const firstItem = container.querySelector('.activity-item');
                 if (firstItem) firstItem.classList.add('active');

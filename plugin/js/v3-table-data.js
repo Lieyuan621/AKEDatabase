@@ -198,9 +198,14 @@
     }
 
     async function enemyManifest() {
-        const display = await table('EnemyTemplateDisplayInfoTable');
+        const [display, enemies, types] = await Promise.all([
+            table('EnemyTemplateDisplayInfoTable'), table('EnemyTable'), table('DisplayEnemyTypeTable')
+        ]);
+        const variantCounts = {};
+        Object.values(enemies).forEach(row => { variantCounts[row.templateId] = (variantCounts[row.templateId] || 0) + 1; });
         const rows = Object.entries(display).map(([templateId, row], index) => ({ templateId, name: text(row.name, templateId),
             rarity: ENEMY_RARITY_BY_DISPLAY_TYPE[row.displayType] || 1, icon: icon('enemy', templateId),
+            displayType: row.displayType, displayTypeName: text(types[row.displayType]?.name), variantCount: variantCounts[templateId] || 0,
             contentFile: `/__v3/enemy/${templateId}.json`, sourceOrder: index, hidden: false }));
         return assignPriority(rows.sort(byRarityThenId));
     }
@@ -231,7 +236,8 @@
             }, '');
             const highest = items[highestId] || {};
             return { suitID, name: text(row.list?.[0]?.suitName, suitID === 'suit_none' ? '独立装备' : suitID), rarity: highest.rarity || 1,
-                icon: icon('equip', highestId, highest.iconId), contentFile: `/__v3/equip/${suitID}.json`, sourceOrder: index, hidden: false };
+                icon: icon('equip', highestId, highest.iconId), equipCount: (row.equipList || []).length, isIndependentGroup: suitID === 'suit_none',
+                contentFile: `/__v3/equip/${suitID}.json`, sourceOrder: index, hidden: false };
         });
         return assignPriority(manifestRows.sort(byRarityThenId));
     }
@@ -300,8 +306,18 @@
 
     async function dungeonManifest() {
         const series = await table('DungeonSeriesTable');
+        const categoryNames = {
+            dungeon_highdifficulty: '高难挑战', dungeon_bossrush: '首领挑战', dungeon_ss: '协议空间',
+            dungeon_actmonster: '活动作战', dungeon_challenge: '挑战副本', dungeon_resource: '资源副本',
+            dungeon_weeklyraid: '每周讨伐', dungeon_char: '角色任务', dungeon_chartutorial: '角色教学',
+            dungeon_contract: '危机合约', dungeon_train: '训练副本', dungeon_worldlevel: '世界等级',
+            dungeon_wuling_A: '武陵区域 A', dungeon_wuling_B: '武陵区域 B'
+        };
         const rows = Object.entries(series).filter(([, row]) => row.gameCategory).map(([templateId, row], index) => ({
             templateId, name: text(row.name, templateId), rarity: dungeonRarity(row),
+            gameCategory: row.gameCategory, gameCategoryName: categoryNames[row.gameCategory] || row.gameCategory,
+            categoryOrder: dungeonRarity(row) * -1, dungeonCount: (row.includeDungeonIds || []).length,
+            image: row.dungeonPicPath ? `/public/images/dungeon/${row.dungeonPicPath}_bg.png` : '',
             contentFile: `/__v3/dungeon/${templateId}.json`, sourceOrder: index, hidden: false
         }));
         return assignPriority(rows.sort(byRarityThenId));
@@ -356,9 +372,17 @@
     }
 
     async function achievementManifest() {
-        const types = await table('AchievementTypeTable');
-        const rows = Object.entries(types).map(([categoryId, row]) => ({ categoryId, name: text(row.categoryName, categoryId),
-            contentFile: `/__v3/achievement/${categoryId}.json`, categoryPriority: row.categoryPriority, hidden: false }));
+        const [types, achievements] = await Promise.all([table('AchievementTypeTable'), table('AchievementTable')]);
+        const rows = Object.entries(types).map(([categoryId, row]) => {
+            const groupIds = new Set((row.achievementGroupData || []).map(group => group.groupId));
+            const entries = Object.entries(achievements).filter(([, achievement]) => groupIds.has(achievement.groupId));
+            const first = entries[0];
+            const firstLevel = first ? Object.values(first[1].levelInfos || {})[0] : null;
+            return { categoryId, name: text(row.categoryName, categoryId), achievementCount: entries.length,
+                groupCount: groupIds.size, platedCount: entries.filter(([, achievement]) => achievement.canBePlated).length,
+                icon: first && firstLevel ? `/public/images/achievement/medaliconbig/${first[0]}_lv${String(firstLevel.achieveLevel).padStart(2, '0')}.png` : '',
+                contentFile: `/__v3/achievement/${categoryId}.json`, categoryPriority: row.categoryPriority, hidden: false };
+        });
         rows.sort((a, b) => (a.categoryPriority || 999) - (b.categoryPriority || 999) || compareId(a, b));
         return assignPriority(rows);
     }
@@ -401,7 +425,7 @@
                 tabImg: row.tabImg ? `/public/images/activity/${row.tabImg}.png` : '', contentFile: `/__v3/activity/${activityId}.json`,
                 statusOrder, sourceOrder: row.sortId ?? index, hidden: false };
         });
-        rows.sort((a, b) => a.statusOrder - b.statusOrder || compareId(a, b));
+        rows.sort((a, b) => a.statusOrder - b.statusOrder || a.sourceOrder - b.sourceOrder || compareId(a, b));
         return assignPriority(rows);
     }
 
@@ -431,13 +455,28 @@
     }
 
     async function ccManifest() {
-        const [activityCc, activities, dungeons] = await Promise.all([
-            table('ActivityContingencyContractTable'), table('ActivityTable'), table('DungeonTable')
+        const [activityCc, activities, dungeons, contracts, times] = await Promise.all([
+            table('ActivityContingencyContractTable'), table('ActivityTable'), table('DungeonTable'),
+            table('ContingencyContractTable'), table('TimeRangeTable')
         ]);
-        const rows = Object.values(activityCc).map((row, index) => ({ gameId: row.gameId, activityId: row.activityId,
-            name: text(activities[row.activityId]?.name, row.gameId), contentFile: `/__v3/cc/${row.gameId}.json`,
-            dungeonFile: dungeons[row.gameId]?.dungeonSeriesId ? `/__v3/dungeon/${dungeons[row.gameId].dungeonSeriesId}.json` : '',
-            sourceOrder: index, hidden: false }));
+        const now = Date.now();
+        const rows = Object.values(activityCc).map((row, index) => {
+            const activity = activities[row.activityId] || {};
+            const dungeon = dungeons[row.gameId] || {};
+            const range = times[activity.timeId]?.timeRangeList?.[0] || {};
+            const open = range.openTime ? new Date(range.openTime).getTime() : 0;
+            const close = range.closeTime ? new Date(range.closeTime).getTime() : 0;
+            const statusOrder = !close ? 3 : (open > now ? 1 : (close < now ? 2 : 0));
+            const groups = Object.values(contracts[row.gameId]?.contractGroupMap || {});
+            const contractCount = groups.reduce((sum, group) => sum + Object.keys(group.contractMap || {}).length, 0);
+            return { gameId: row.gameId, activityId: row.activityId, name: text(activity.name, row.gameId),
+                image: activity.tabImg ? `/public/images/activity/${activity.tabImg}.png` : '',
+                openTime: range.openTime || '', closeTime: range.closeTime || '', statusOrder,
+                dungeonName: text(dungeon.dungeonName), contractGroupCount: groups.length, contractCount,
+                contentFile: `/__v3/cc/${row.gameId}.json`,
+                dungeonFile: dungeon.dungeonSeriesId ? `/__v3/dungeon/${dungeon.dungeonSeriesId}.json` : '',
+                sourceOrder: index, hidden: false };
+        });
         rows.sort((a, b) => a.sourceOrder - b.sourceOrder || compareId(a, b));
         return assignPriority(rows);
     }

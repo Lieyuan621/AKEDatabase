@@ -329,6 +329,19 @@
             return `<span class="v2e-variant-template"><span class="v2e-tag-id">${variant.attrTemplateId}</span><span class="v2e-tooltip"><div class="v2e-tooltip-grid">${items}</div></span></span>`;
         }
 
+        function renderEnemyOverview(items, container) {
+            const typeNames = { 0: '普通敌人', 1: '精英敌人', 2: '首领敌人', 3: '特殊敌人', 4: '高危敌人' };
+            window.AKEModuleOverview.render(container, {
+                title: '敌人总览', description: '按敌人类型分组，展示模板、危险度与变种数量',
+                group: item => ({ id: String(item.displayType ?? 'unknown'), name: item.displayTypeName || typeNames[item.displayType] || '其他敌人', order: -(item.rarity || 1) }),
+                onReset: () => { activeEnemyId = null; },
+                onSelect: item => { activeEnemyId = item.templateId; renderEnemyList(); },
+                sidebarSelector: item => `.v2e-item[data-enemy-id="${CSS.escape(item.templateId)}"]`,
+                items: items.slice().sort((a, b) => (b.rarity || 1) - (a.rarity || 1) || (a.priority || 999) - (b.priority || 999)).map(item => ({ ...item, id: item.templateId, image: item.icon, fallback: 'ENEMY',
+                    tags: [`危险度 ${item.rarity || 1}`, item.variantCount ? `${item.variantCount} 个变种` : ''] }))
+            });
+        }
+
         function renderEnemyList() {
             const container = document.getElementById('v2enemyList');
             const detailContainer = document.getElementById('v2enemyDetail');
@@ -346,7 +359,7 @@
 
             filtered.forEach((enemy, index) => {
                 const item = document.createElement('div');
-                item.className = `v2e-item ${enemy.templateId === activeEnemyId ? 'active' : (index === 0 && !activeEnemyId ? 'active' : '')}`;
+                item.className = `v2e-item ${enemy.templateId === activeEnemyId ? 'active' : (index === 0 && !activeEnemyId && !window.AKEModuleOverview?.isActive('enemy') ? 'active' : '')}`;
                 item.dataset.enemyId = enemy.templateId;
 
                 const rarityBar = document.createElement('span');
@@ -399,6 +412,11 @@
 
             const activeExists = filtered.some(e => e.templateId === activeEnemyId);
             if (!activeExists && filtered.length > 0) {
+                if (window.AKEModuleOverview?.isActive('enemy')) {
+                    activeEnemyId = null;
+                    renderEnemyOverview(filtered, detailContainer);
+                    return;
+                }
                 activeEnemyId = filtered[0].templateId;
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_enemy', activeEnemyId);
                 const firstItem = container.querySelector('.v2e-item');

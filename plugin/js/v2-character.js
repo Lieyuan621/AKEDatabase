@@ -438,6 +438,18 @@
             }
         }
 
+        function renderCharacterOverview(items, container) {
+            window.AKEModuleOverview.render(container, {
+                title: '角色总览', description: '按职业分组，汇总属性、武器类型与稀有度',
+                group: char => ({ id: char.profession || 'unknown', name: char.profession || '未知职业' }),
+                onReset: () => { activeCharId = null; },
+                onSelect: char => { activeCharId = char.charId; renderCharacterList(); },
+                sidebarSelector: char => `.character-item[data-char-id="${CSS.escape(char.charId)}"]`,
+                items: items.map(char => ({ ...char, id: char.charId, image: char.icon, fallback: 'CHAR',
+                    tags: [`${char.rarity || 1} 星`, char.charType, char.weapontype] }))
+            });
+        }
+
         function renderCharacterList() {
             const container = document.getElementById('v2characterList');
             const detailContainer = document.getElementById('v2characterDetail');
@@ -455,7 +467,7 @@
 
             filtered.forEach((char, index) => {
                 const item = document.createElement('div');
-                item.className = `character-item ${char.charId === activeCharId ? 'active' : (index === 0 && !activeCharId ? 'active' : '')}`;
+                item.className = `character-item ${char.charId === activeCharId ? 'active' : (index === 0 && !activeCharId && !window.AKEModuleOverview?.isActive('character') ? 'active' : '')}`;
                 item.dataset.charId = char.charId;
                 item.dataset.contentFile = char.contentFile;
 
@@ -516,6 +528,11 @@
 
             const activeExists = filtered.some(c => c.charId === activeCharId);
             if (!activeExists && filtered.length > 0) {
+                if (window.AKEModuleOverview?.isActive('character')) {
+                    activeCharId = null;
+                    renderCharacterOverview(filtered, detailContainer);
+                    return;
+                }
                 activeCharId = filtered[0].charId;
                 const firstItem = container.querySelector('.character-item');
                 if (firstItem) firstItem.classList.add('active');

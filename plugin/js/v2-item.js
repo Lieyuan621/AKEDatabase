@@ -161,6 +161,17 @@
             }
         }
 
+        function renderItemOverview(items, container) {
+            window.AKEModuleOverview.render(container, {
+                title: '物品总览', description: '按游戏内展示分类分组，汇总所有物品与稀有度',
+                group: item => ({ id: item.categoryId, name: item.categoryName || '其他物品', order: item.categoryOrder }),
+                onReset: () => { activeItemId = null; },
+                onSelect: item => { activeItemId = item.itemId; renderItemList(); },
+                sidebarSelector: item => `.v2i-item[data-item-id="${CSS.escape(item.itemId)}"]`,
+                items: items.map(item => ({ ...item, id: item.itemId, image: item.icon, fallback: 'ITEM', tags: [`${item.rarity || 1} 星`] }))
+            });
+        }
+
         function renderItemList() {
             const container = document.getElementById('v2itemList');
             const detailContainer = document.getElementById('v2itemDetail');
@@ -178,7 +189,7 @@
 
             filtered.forEach((item, index) => {
                 const div = document.createElement('div');
-                div.className = `v2i-item ${item.itemId === activeItemId ? 'active' : (!activeItemId && index === 0 ? 'active' : '')}`;
+                div.className = `v2i-item ${item.itemId === activeItemId ? 'active' : (!activeItemId && index === 0 && !window.AKEModuleOverview?.isActive('item') ? 'active' : '')}`;
                 div.dataset.itemId = item.itemId;
 
                 const rb = document.createElement('span');
@@ -230,6 +241,11 @@
             }
             const activeExists = filtered.some(i => i.itemId === activeItemId);
             if (!activeExists && filtered.length > 0) {
+                if (window.AKEModuleOverview?.isActive('item')) {
+                    activeItemId = null;
+                    renderItemOverview(filtered, detailContainer);
+                    return;
+                }
                 activeItemId = filtered[0].itemId;
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_item', activeItemId);
                 const f = container.querySelector('.v2i-item');

@@ -345,6 +345,18 @@
             }
         }
 
+        function renderDungeonOverview(items, container) {
+            window.AKEModuleOverview.render(container, {
+                title: '副本总览', description: '按副本类型分组，展示系列与所含关卡数量',
+                group: item => ({ id: item.gameCategory || 'other', name: item.gameCategoryName || '其他副本', order: item.categoryOrder }),
+                onReset: () => { activeSeriesId = null; },
+                onSelect: item => { activeSeriesId = item.templateId; renderSeriesList(); },
+                sidebarSelector: item => `.v2d-item[data-series-id="${CSS.escape(item.templateId)}"]`,
+                items: items.map(item => ({ ...item, id: item.templateId, image: item.image, fallback: 'DUNGEON',
+                    tags: [`${item.dungeonCount || 0} 个关卡`, `等级 ${item.rarity || 1}`] }))
+            });
+        }
+
         function renderSeriesList() {
             const container = document.getElementById('v2dungeonList');
             const detailContainer = document.getElementById('v2dungeonDetail');
@@ -362,7 +374,7 @@
 
             filtered.forEach((item, index) => {
                 const div = document.createElement('div');
-                div.className = `v2d-item ${item.templateId === activeSeriesId ? 'active' : (index === 0 && !activeSeriesId ? 'active' : '')}`;
+                div.className = `v2d-item ${item.templateId === activeSeriesId ? 'active' : (index === 0 && !activeSeriesId && !window.AKEModuleOverview?.isActive('dungeon') ? 'active' : '')}`;
                 div.dataset.seriesId = item.templateId;
 
                 const rarityBar = document.createElement('span');
@@ -411,6 +423,11 @@
 
             const activeExists = filtered.some(s => s.templateId === activeSeriesId);
             if (!activeExists && filtered.length > 0) {
+                if (window.AKEModuleOverview?.isActive('dungeon')) {
+                    activeSeriesId = null;
+                    renderDungeonOverview(filtered, detailContainer);
+                    return;
+                }
                 activeSeriesId = filtered[0].templateId;
                 const firstItem = container.querySelector('.v2d-item');
                 if (firstItem) firstItem.classList.add('active');

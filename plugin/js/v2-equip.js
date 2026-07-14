@@ -133,6 +133,18 @@
             }
         }
 
+        function renderEquipOverview(items, container) {
+            window.AKEModuleOverview.render(container, {
+                title: '装备总览', description: '按套装与独立装备分组，展示套组规模和最高稀有度',
+                group: item => ({ id: item.isIndependentGroup ? 'independent' : 'suit', name: item.isIndependentGroup ? '独立装备' : '装备套组', order: item.isIndependentGroup ? 1 : 0 }),
+                onReset: () => { activeSuitId = null; },
+                onSelect: item => { activeSuitId = item.suitID; renderSuitList(); },
+                sidebarSelector: item => `.v2eq-item[data-suit-id="${CSS.escape(item.suitID)}"]`,
+                items: items.map(item => ({ ...item, id: item.suitID, image: item.icon, fallback: 'EQUIP',
+                    tags: [`最高 ${item.rarity || 1} 星`, `${item.equipCount || 0} 件装备`] }))
+            });
+        }
+
         function renderSuitList() {
             const container = document.getElementById('v2equipList');
             const detailContainer = document.getElementById('v2equipDetail');
@@ -150,7 +162,7 @@
 
             filtered.forEach((suit, index) => {
                 const div = document.createElement('div');
-                div.className = `v2eq-item ${suit.suitID === activeSuitId ? 'active' : (!activeSuitId && index === 0 ? 'active' : '')}`;
+                div.className = `v2eq-item ${suit.suitID === activeSuitId ? 'active' : (!activeSuitId && index === 0 && !window.AKEModuleOverview?.isActive('equip') ? 'active' : '')}`;
                 div.dataset.suitId = suit.suitID;
 
                 const rb = document.createElement('span');
@@ -203,6 +215,11 @@
 
             const activeExists = filtered.some(s => s.suitID === activeSuitId);
             if (!activeExists && filtered.length > 0) {
+                if (window.AKEModuleOverview?.isActive('equip')) {
+                    activeSuitId = null;
+                    renderEquipOverview(filtered, detailContainer);
+                    return;
+                }
                 activeSuitId = filtered[0].suitID;
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_equip', activeSuitId);
                 const f = container.querySelector('.v2eq-item');

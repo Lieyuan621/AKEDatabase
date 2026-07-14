@@ -322,6 +322,19 @@
             }
         }
 
+        function renderResearchOverview(items, container) {
+            window.AKEModuleOverview.render(container, {
+                title: '研究总览', description: '数据机制、专题分析与参考资料',
+                group: function (item) { return { id: item.category || '专题研究', name: item.category || '专题研究', order: item.categoryOrder }; },
+                onReset: function () { activeDocId = null; },
+                onSelect: function (item) { activeDocId = item.id; renderDocList(); },
+                sidebarSelector: function (item) { return '.research-item[data-doc-id="' + CSS.escape(item.id) + '"]'; },
+                items: items.map(function (item) { return { ...item, fallback: 'DOC', tags: [item.summary] }; })
+            });
+            var toc = document.getElementById('researchToc');
+            if (toc) toc.innerHTML = '';
+        }
+
         function renderDocList() {
             const container = document.getElementById('researchList');
             const detailContainer = document.getElementById('researchDetail');
@@ -339,7 +352,7 @@
 
             filtered.forEach(function(doc, index) {
                 const item = document.createElement('div');
-                item.className = 'research-item' + (doc.id === activeDocId ? ' active' : (index === 0 && !activeDocId ? ' active' : ''));
+                item.className = 'research-item' + (doc.id === activeDocId ? ' active' : '');
                 item.dataset.docId = doc.id;
 
                 const nameDiv = document.createElement('div');
@@ -374,11 +387,8 @@
 
             const activeExists = filtered.some(function(d) { return d.id === activeDocId; });
             if (!activeExists && filtered.length > 0) {
-                activeDocId = filtered[0].id;
-                const firstItem = container.querySelector('.research-item');
-                if (firstItem) firstItem.classList.add('active');
-                if (window.__akeRouter) window.__akeRouter.updateUrl('research', activeDocId);
-                loadDocDetail(filtered[0], detailContainer);
+                activeDocId = null;
+                renderResearchOverview(filtered, detailContainer);
             } else if (activeExists) {
                 const activeDoc = filtered.find(function(d) { return d.id === activeDocId; });
                 if (activeDoc) {
