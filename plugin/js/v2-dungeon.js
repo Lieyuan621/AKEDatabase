@@ -33,9 +33,7 @@
 
         async function loadMaps() {
             try {
-                const res = await (window.akeFetch || fetch)('/public/CH/maps.json');
-                if (!res.ok) throw new Error('无法加载映射数据');
-                const data = await res.json();
+                const data = await window.akeLoadMaps();
                 attrMap = data.ATTR_MAP || {};
                 const attrEn = data.ATTR_MAP_EN || {};
                 Object.entries(attrEn).forEach(([id, name]) => { attrNameToId[name] = parseInt(id, 10); });

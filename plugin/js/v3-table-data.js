@@ -73,8 +73,14 @@
         return ref?.text || fallback || '';
     }
 
-    function byRarityThenOrder(a, b) {
-        return (b.rarity || 0) - (a.rarity || 0) || (a.sourceOrder || 0) - (b.sourceOrder || 0);
+    function compareId(a, b) {
+        const aId = a.charId || a.weaponId || a.templateId || a.suitID || a.itemId || a.activityId || a.categoryId || a.gameId || a.id || '';
+        const bId = b.charId || b.weaponId || b.templateId || b.suitID || b.itemId || b.activityId || b.categoryId || b.gameId || b.id || '';
+        return String(aId).localeCompare(String(bId), 'en');
+    }
+
+    function byRarityThenId(a, b) {
+        return (b.rarity || 0) - (a.rarity || 0) || compareId(a, b);
     }
 
     function assignPriority(rows) {
@@ -127,7 +133,7 @@
                 sourceOrder: index, hidden: false
             };
         });
-        return assignPriority(rows.sort(byRarityThenOrder));
+        return assignPriority(rows.sort(byRarityThenId));
     }
 
     async function characterDetail(id) {
@@ -174,7 +180,7 @@
             return { weaponId, name: text(item.name, weaponId), rarity: row.rarity, weaponType: row.weaponType,
                 icon: icon('weapon', weaponId, item.iconId), contentFile: `/__v3/weapon/${weaponId}.json`, sourceOrder: index, hidden: false };
         });
-        return assignPriority(rows.sort(byRarityThenOrder));
+        return assignPriority(rows.sort(byRarityThenId));
     }
 
     async function weaponDetail(id) {
@@ -196,7 +202,7 @@
         const rows = Object.entries(display).map(([templateId, row], index) => ({ templateId, name: text(row.name, templateId),
             rarity: ENEMY_RARITY_BY_DISPLAY_TYPE[row.displayType] || 1, icon: icon('enemy', templateId),
             contentFile: `/__v3/enemy/${templateId}.json`, sourceOrder: index, hidden: false }));
-        return assignPriority(rows.sort(byRarityThenOrder));
+        return assignPriority(rows.sort(byRarityThenId));
     }
 
     async function enemyDetail(id) {
@@ -227,7 +233,7 @@
             return { suitID, name: text(row.list?.[0]?.suitName, suitID === 'suit_none' ? '独立装备' : suitID), rarity: highest.rarity || 1,
                 icon: icon('equip', highestId, highest.iconId), contentFile: `/__v3/equip/${suitID}.json`, sourceOrder: index, hidden: false };
         });
-        return assignPriority(manifestRows.sort(byRarityThenOrder));
+        return assignPriority(manifestRows.sort(byRarityThenId));
     }
 
     async function equipDetail(id) {
@@ -257,10 +263,30 @@
     }
 
     async function itemManifest() {
-        const items = await table('ItemTable');
-        const rows = Object.entries(items).map(([itemId, row], index) => ({ itemId, name: text(row.name, itemId), rarity: row.rarity, type: row.type,
-            icon: icon('item', itemId, row.iconId), contentFile: `/__v3/item/${itemId}.json`, sourceOrder: index, hidden: false }));
-        return assignPriority(rows.sort(byRarityThenOrder));
+        const [items, itemTypes, showingTypes, itemsByType, itemsByShowingType] = await Promise.all([
+            table('ItemTable'), table('ItemTypeTable'), table('ItemShowingTypeTable'),
+            table('ItemListByTypeTable'), table('ItemListByShowingTypeTable')
+        ]);
+        const showingTypeByItem = {};
+        Object.entries(itemsByShowingType).forEach(([showingType, row]) => {
+            (row.list || []).forEach(itemId => { showingTypeByItem[itemId] = showingType; });
+        });
+        const typeByItem = {};
+        Object.entries(itemsByType).forEach(([type, row]) => {
+            (row.list || []).forEach(itemId => { typeByItem[itemId] = type; });
+        });
+        const rows = Object.entries(items).map(([itemId, row], index) => {
+            const showingType = String(showingTypeByItem[itemId] ?? row.showingType ?? 0);
+            const showing = showingTypes[showingType];
+            const type = String(typeByItem[itemId] ?? row.type);
+            const itemType = itemTypes[type];
+            const categoryId = showing && showingType !== '0' ? `showing:${showingType}` : `type:${type}`;
+            return { itemId, name: text(row.name, itemId), rarity: row.rarity, type: row.type, categoryId,
+                categoryName: text(showing?.name, text(itemType?.name, `类型 ${type}`)),
+                categoryOrder: showing ? showing.sortId : 1000 + Number(type),
+                icon: icon('item', itemId, row.iconId), contentFile: `/__v3/item/${itemId}.json`, sourceOrder: index, hidden: false };
+        });
+        return assignPriority(rows.sort(byRarityThenId));
     }
 
     async function itemDetail(id) {
@@ -278,7 +304,7 @@
             templateId, name: text(row.name, templateId), rarity: dungeonRarity(row),
             contentFile: `/__v3/dungeon/${templateId}.json`, sourceOrder: index, hidden: false
         }));
-        return assignPriority(rows.sort(byRarityThenOrder));
+        return assignPriority(rows.sort(byRarityThenId));
     }
 
     async function dungeonDetail(id) {
@@ -303,7 +329,8 @@
             const base = `/public/Json/SpawnerConfig/${row.sceneId}`;
             const manifest = await optionalJson(`${base}/manifest.json`);
             if (!Array.isArray(manifest)) return;
-            const entries = manifest.filter(entry => !entry.hidden).sort((a, b) => (a.priority || 999) - (b.priority || 999));
+            const entries = manifest.filter(entry => !entry.hidden).sort((a, b) =>
+                (a.priority || 999) - (b.priority || 999) || String(a.id || '').localeCompare(String(b.id || ''), 'en'));
             const configs = await Promise.all(entries.map(entry => optionalJson(entry.contentFile || `${base}/${entry.id}.json`)));
             const spawners = {};
             configs.filter(Boolean).forEach(config => {
@@ -330,8 +357,10 @@
 
     async function achievementManifest() {
         const types = await table('AchievementTypeTable');
-        return Object.entries(types).map(([categoryId, row]) => ({ categoryId, name: text(row.categoryName, categoryId),
-            contentFile: `/__v3/achievement/${categoryId}.json`, priority: row.categoryPriority, hidden: false }));
+        const rows = Object.entries(types).map(([categoryId, row]) => ({ categoryId, name: text(row.categoryName, categoryId),
+            contentFile: `/__v3/achievement/${categoryId}.json`, categoryPriority: row.categoryPriority, hidden: false }));
+        rows.sort((a, b) => (a.categoryPriority || 999) - (b.categoryPriority || 999) || compareId(a, b));
+        return assignPriority(rows);
     }
 
     async function achievementDetail(id) {
@@ -372,7 +401,7 @@
                 tabImg: row.tabImg ? `/public/images/activity/${row.tabImg}.png` : '', contentFile: `/__v3/activity/${activityId}.json`,
                 statusOrder, sourceOrder: row.sortId ?? index, hidden: false };
         });
-        rows.sort((a, b) => a.statusOrder - b.statusOrder || a.sourceOrder - b.sourceOrder);
+        rows.sort((a, b) => a.statusOrder - b.statusOrder || compareId(a, b));
         return assignPriority(rows);
     }
 
@@ -405,10 +434,12 @@
         const [activityCc, activities, dungeons] = await Promise.all([
             table('ActivityContingencyContractTable'), table('ActivityTable'), table('DungeonTable')
         ]);
-        return Object.values(activityCc).map((row, index) => ({ gameId: row.gameId, activityId: row.activityId,
+        const rows = Object.values(activityCc).map((row, index) => ({ gameId: row.gameId, activityId: row.activityId,
             name: text(activities[row.activityId]?.name, row.gameId), contentFile: `/__v3/cc/${row.gameId}.json`,
             dungeonFile: dungeons[row.gameId]?.dungeonSeriesId ? `/__v3/dungeon/${dungeons[row.gameId].dungeonSeriesId}.json` : '',
-            priority: index + 1, hidden: false }));
+            sourceOrder: index, hidden: false }));
+        rows.sort((a, b) => a.sourceOrder - b.sourceOrder || compareId(a, b));
+        return assignPriority(rows);
     }
 
     async function ccDetail(id) {
@@ -431,10 +462,8 @@
         achievement: [achievementManifest, achievementDetail], activity: [activityManifest, activityDetail], cc: [ccManifest, ccDetail]
     };
 
-    let mapsPromise;
     function loadMaps() {
-        if (!mapsPromise) mapsPromise = originalAkeFetch('/public/CH/maps.json').then(response => response.json());
-        return mapsPromise;
+        return window.akeLoadMaps();
     }
 
     async function v3Fetch(input, init) {
@@ -443,7 +472,9 @@
         const manifestMatch = url.match(/^\/public\/CH\/(?:v2_)?(character|weapon|enemy|equip|item|dungeon|cc|activity|achievement)\/manifest\.json(?:\?|$)/);
         if (manifestMatch && manifestMatch[1] === mountedModule) return virtualResponse(await adapters[mountedModule][0]());
         const detailMatch = url.match(/^\/__v3\/(character|weapon|enemy|equip|item|dungeon|cc|activity|achievement)\/([^/?]+)\.json/);
-        if (detailMatch && detailMatch[1] === mountedModule) return virtualResponse(await adapters[detailMatch[1]][1](decodeURIComponent(detailMatch[2])));
+        if (detailMatch && (detailMatch[1] === mountedModule || (mountedModule === 'cc' && detailMatch[1] === 'dungeon'))) {
+            return virtualResponse(await adapters[detailMatch[1]][1](decodeURIComponent(detailMatch[2])));
+        }
         const charDetailMatch = mountedModule === 'character' && url.match(/^\/public\/CH\/v2_character\/([^/?]+)\.json/);
         if (charDetailMatch) return virtualResponse(await characterDetail(decodeURIComponent(charDetailMatch[1])));
         return originalAkeFetch(input, init);

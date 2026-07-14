@@ -110,14 +110,11 @@
 
         async function loadMaps() {
             try {
-                const res = await (window.akeFetch || fetch)('/public/CH/maps.json');
-                if (res.ok) {
-                    const data = await res.json();
-                    attrMap = data.ATTR_MAP || {};
-                    compositeNameMap = data.COMPOSITE_NAME_MAP || {};
-                    modifierTypeMap = data.MODIFIER_TYPE_MAP || {};
-                    domainMap = data.DOMAIN_MAP || {};
-                }
+                const data = await window.akeLoadMaps();
+                attrMap = data.ATTR_MAP || {};
+                compositeNameMap = data.COMPOSITE_NAME_MAP || {};
+                modifierTypeMap = data.MODIFIER_TYPE_MAP || {};
+                domainMap = data.DOMAIN_MAP || {};
             } catch { /* ignore */ }
         }
 

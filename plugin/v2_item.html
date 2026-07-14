@@ -7,13 +7,19 @@
             <input type="text" id="v2itemSearchInput" placeholder="搜索物品 (名称/ID)">
         </div>
         <div class="v2i-filter-bar" id="v2itemFilterBar">
-            <div class="v2i-filter-section">
-                <span class="v2i-filter-label">稀有度:</span>
-                <div class="v2i-filter-buttons" id="v2itemRarityFilter"></div>
-            </div>
-            <div class="v2i-filter-section">
-                <span class="v2i-filter-label">分类:</span>
-                <div class="v2i-filter-buttons" id="v2itemCategoryFilter"></div>
+            <button class="v2i-filter-toggle" id="v2itemFilterToggle" type="button" aria-expanded="false" aria-controls="v2itemFilterContent">
+                <span id="v2itemFilterSummary">筛选</span>
+                <span class="v2i-filter-chevron" aria-hidden="true"></span>
+            </button>
+            <div class="v2i-filter-content" id="v2itemFilterContent" hidden>
+                <div class="v2i-filter-section">
+                    <span class="v2i-filter-label">稀有度:</span>
+                    <div class="v2i-filter-buttons" id="v2itemRarityFilter"></div>
+                </div>
+                <div class="v2i-filter-section">
+                    <span class="v2i-filter-label">分类:</span>
+                    <div class="v2i-filter-buttons" id="v2itemCategoryFilter"></div>
+                </div>
             </div>
         </div>
         <div class="v2i-list" id="v2itemList"></div>

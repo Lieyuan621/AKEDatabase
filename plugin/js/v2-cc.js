@@ -757,9 +757,7 @@
 
     async function loadCcMaps() {
         try {
-            const res = await (window.akeFetch || fetch)('/public/CH/maps.json');
-            if (!res.ok) return;
-            const data = await res.json();
+            const data = await window.akeLoadMaps();
             ccAttrMap = data.ATTR_MAP || {};
             const attrEn = data.ATTR_MAP_EN || {};
             Object.entries(attrEn).forEach(([id, name]) => { ccAttrNameToId[name] = parseInt(id, 10); });

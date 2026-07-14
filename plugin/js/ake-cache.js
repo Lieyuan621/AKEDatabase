@@ -6,6 +6,134 @@
     const VERSION_URL = '/version.json';
     const pendingRequests = new Map();
     const memoryResponses = new Map();
+    const progressRequests = new Map();
+    let progressSequence = 0;
+    let progressHideTimer = null;
+
+    function formatBytes(bytes) {
+        if (!Number.isFinite(bytes) || bytes <= 0) return '0 B';
+        const units = ['B', 'KB', 'MB', 'GB'];
+        const unit = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+        const value = bytes / Math.pow(1024, unit);
+        return `${value >= 100 || unit === 0 ? value.toFixed(0) : value.toFixed(1)} ${units[unit]}`;
+    }
+
+    function renderProgress() {
+        const root = document.getElementById('dataLoadProgress');
+        const bar = document.getElementById('dataLoadProgressBar');
+        const text = document.getElementById('dataLoadProgressText');
+        const file = document.getElementById('dataLoadProgressFile');
+        if (!root || !bar || !text || !file) return;
+        const requests = Array.from(progressRequests.values());
+        const showDetails = window.akeData?.getConfig?.().showHidden === true;
+        const active = requests.filter(request => !request.done);
+        const completed = requests.length - active.length;
+        const failed = requests.filter(request => request.error).length;
+        const hasUnknown = active.some(request => !request.total);
+        const totalBytes = requests.reduce((sum, request) => sum + (request.total || 0), 0);
+        const loadedBytes = requests.reduce((sum, request) => sum + Math.min(request.loaded || 0, request.total || request.loaded || 0), 0);
+        const percent = active.length === 0
+            ? 100
+            : (totalBytes > 0 && !hasUnknown ? Math.min(99, Math.round(loadedBytes / totalBytes * 100)) : 0);
+        const current = active[active.length - 1] || requests[requests.length - 1];
+        const sourceNames = { memory: '内存缓存', indexeddb: 'IndexedDB', network: '网络', cache: '缓存查询' };
+
+        root.hidden = false;
+        root.classList.add('visible');
+        root.classList.toggle('compact', !showDetails);
+        root.classList.toggle('indeterminate', active.length > 0 && (hasUnknown || totalBytes === 0));
+        if (active.length > 0 && (hasUnknown || totalBytes === 0)) root.removeAttribute('aria-valuenow');
+        else root.setAttribute('aria-valuenow', String(percent));
+        bar.style.width = `${percent}%`;
+        if (active.length === 0 && failed) {
+            text.textContent = `${failed} 个数据文件加载失败`;
+        } else if (active.length === 0) {
+            text.textContent = `数据加载完成 · ${requests.length} 个文件`;
+        } else if (!hasUnknown && totalBytes > 0) {
+            text.textContent = `正在加载数据 · ${percent}% · ${formatBytes(loadedBytes)} / ${formatBytes(totalBytes)}`;
+        } else {
+            text.textContent = `正在加载数据 · ${completed}/${requests.length} 个文件`;
+        }
+        if (current) {
+            const size = current.loaded ? ` · ${formatBytes(current.loaded)}${current.total ? ` / ${formatBytes(current.total)}` : ''}` : '';
+            file.textContent = `${sourceNames[current.source] || current.source} · ${current.url}${size}`;
+            file.title = current.url;
+        } else {
+            file.textContent = '';
+        }
+        root.setAttribute('aria-valuetext', `${text.textContent}${file.textContent ? `，${file.textContent}` : ''}`);
+    }
+
+    function beginProgress(url, source) {
+        if (progressHideTimer) {
+            clearTimeout(progressHideTimer);
+            progressHideTimer = null;
+        }
+        if (!Array.from(progressRequests.values()).some(request => !request.done)) progressRequests.clear();
+        const id = ++progressSequence;
+        progressRequests.set(id, { url, source, loaded: 0, total: 0, done: false });
+        renderProgress();
+        return id;
+    }
+
+    function updateProgress(id, loaded, total) {
+        const request = progressRequests.get(id);
+        if (!request || request.done) return;
+        request.loaded = loaded;
+        request.total = total || 0;
+        request.source = 'network';
+        renderProgress();
+    }
+
+    function setProgressSource(id, source) {
+        const request = progressRequests.get(id);
+        if (!request || request.done) return;
+        request.source = source;
+        renderProgress();
+    }
+
+    function finishProgress(id, error) {
+        const request = progressRequests.get(id);
+        if (!request || request.done) return;
+        request.done = true;
+        request.error = Boolean(error);
+        if (request.total) request.loaded = request.total;
+        renderProgress();
+        if (Array.from(progressRequests.values()).every(item => item.done)) {
+            progressHideTimer = setTimeout(() => {
+                const root = document.getElementById('dataLoadProgress');
+                if (root) {
+                    root.classList.remove('visible', 'indeterminate');
+                    setTimeout(() => { if (!root.classList.contains('visible')) root.hidden = true; }, 200);
+                }
+                progressRequests.clear();
+                progressHideTimer = null;
+            }, error || Array.from(progressRequests.values()).some(item => item.error) ? 1400 : 450);
+        }
+    }
+
+    async function readResponseWithProgress(response, progressId) {
+        const contentType = response.headers.get('Content-Type') || 'application/octet-stream';
+        const total = Number(response.headers.get('Content-Length')) || 0;
+        if (!response.body?.getReader) {
+            const body = await response.blob();
+            updateProgress(progressId, body.size, total || body.size);
+            return body;
+        }
+        const reader = response.body.getReader();
+        const chunks = [];
+        let loaded = 0;
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(value);
+            loaded += value.byteLength;
+            updateProgress(progressId, loaded, total);
+        }
+        const body = new Blob(chunks, { type: contentType });
+        updateProgress(progressId, loaded, total || loaded);
+        return body;
+    }
 
     function registerServiceWorker(version) {
         if (!('serviceWorker' in navigator) || !version) return;
@@ -79,7 +207,7 @@
     }
 
     function getCacheVersion(version) {
-        return version ? `${version.gameversion}|${version.hotfixversion}` : '';
+        return version ? `${version.appversion}|${version.hotfixversion}` : '';
     }
 
     async function loadVersion() {
@@ -168,13 +296,42 @@
     function shouldPersist(resource, init) {
         const method = String(init?.method || (typeof resource !== 'string' ? resource?.method : '') || 'GET').toUpperCase();
         const url = normalizeUrl(resource);
-        return method === 'GET' && url?.origin === window.location.origin && url.pathname.startsWith('/public/');
+        const headers = new Headers(init?.headers || (typeof resource !== 'string' ? resource?.headers : undefined));
+        return method === 'GET' && url?.origin === window.location.origin && url.pathname.startsWith('/public/') &&
+            !headers.has('Range') && !headers.has('Authorization');
+    }
+
+    function isApplicationResource(request) {
+        if (request.method !== 'GET') return false;
+        const url = normalizeUrl(request);
+        return url?.origin === window.location.origin &&
+            (url.pathname.startsWith('/plugin/') || url.pathname.startsWith('/theme/'));
     }
 
     function responseFromRecord(record) {
         return new Response(record.body, {
-            status: 200,
-            headers: { 'Content-Type': record.contentType || 'application/octet-stream' }
+            status: record.status || 200,
+            statusText: record.statusText || '',
+            headers: record.headers || { 'Content-Type': record.contentType || 'application/octet-stream' }
+        });
+    }
+
+    function safeResponseHeaders(response) {
+        const headers = [];
+        const contentType = response.headers.get('Content-Type');
+        const cacheControl = response.headers.get('Cache-Control');
+        if (contentType) headers.push(['Content-Type', contentType]);
+        if (cacheControl) headers.push(['Cache-Control', cacheControl]);
+        return headers;
+    }
+
+    function waitForShared(promise, signal) {
+        if (!signal) return promise;
+        if (signal.aborted) return Promise.reject(new DOMException('The operation was aborted.', 'AbortError'));
+        return new Promise((resolve, reject) => {
+            const abort = () => reject(new DOMException('The operation was aborted.', 'AbortError'));
+            signal.addEventListener('abort', abort, { once: true });
+            promise.then(resolve, reject).finally(() => signal.removeEventListener('abort', abort));
         });
     }
 
@@ -218,52 +375,138 @@
 
     window.akeFetch = async function (resource, init) {
         const version = await versionPromise;
-        const requestInit = init ? { ...init } : {};
-        const url = normalizeUrl(resource);
-        const cacheable = Boolean(version && shouldPersist(resource, requestInit));
-        const canonicalUrl = url ? url.pathname + url.search : String(resource);
-        const cacheVersion = getCacheVersion(version);
-        const key = cacheable ? `${cacheVersion}|${canonicalUrl}` : '';
-
-        if (cacheable) {
-            if (memoryResponses.has(key)) return responseFromRecord(memoryResponses.get(key));
-            if (pendingRequests.has(key)) return responseFromRecord(await pendingRequests.get(key));
-            const { db } = await databasePromise;
-            const cached = await readRecord(db, key);
-            if (cached) return responseFromRecord(cached);
+        const request = new Request(resource, init);
+        const url = normalizeUrl(request);
+        const cacheable = Boolean(version && shouldPersist(request));
+        if (!cacheable) {
+            if (version && isApplicationResource(request)) {
+                const appUrl = new URL(request.url);
+                appUrl.searchParams.set('v', version.appversion);
+                return fetch(appUrl.href, {
+                    method: request.method,
+                    headers: request.headers,
+                    credentials: request.credentials,
+                    mode: request.mode,
+                    redirect: request.redirect,
+                    referrer: request.referrer,
+                    referrerPolicy: request.referrerPolicy,
+                    integrity: request.integrity,
+                    signal: request.signal,
+                    cache: 'force-cache'
+                });
+            }
+            return fetch(request);
         }
 
-        const requestUrl = typeof resource === 'string' && version
-            ? (() => {
-                const versioned = new URL(resource, window.location.href);
-                if (versioned.origin === window.location.origin) versioned.searchParams.set('v', version.appversion);
-                return versioned.origin === window.location.origin ? versioned.pathname + versioned.search + versioned.hash : versioned.href;
-            })()
-            : resource;
-        const headers = new Headers(requestInit.headers || {});
-        if (cacheable) headers.set('X-AKE-Page-Cache', '1');
-        const response = await fetch(requestUrl, { ...requestInit, headers, cache: requestInit.cache || 'no-cache' });
+        const canonicalUrl = url.pathname + url.search;
+        const cacheVersion = getCacheVersion(version);
+        const key = `${cacheVersion}|${canonicalUrl}`;
 
-        if (cacheable && response.ok) {
-            const recordPromise = response.clone().blob().then(async body => {
+        if (memoryResponses.has(key)) {
+            const progressId = beginProgress(canonicalUrl, 'memory');
+            const record = memoryResponses.get(key);
+            setProgressSource(progressId, 'memory');
+            updateProgress(progressId, record.body.size, record.body.size);
+            setProgressSource(progressId, 'memory');
+            finishProgress(progressId, false);
+            return responseFromRecord(record);
+        }
+
+        if (pendingRequests.has(key)) {
+            const result = await waitForShared(pendingRequests.get(key), request.signal);
+            return responseFromRecord(result.record);
+        }
+
+        const progressId = beginProgress(canonicalUrl, 'cache');
+        if (!pendingRequests.has(key)) {
+            const loadPromise = (async () => {
+                const { db } = await databasePromise;
+                const cached = await readRecord(db, key);
+                if (cached) {
+                    memoryResponses.set(key, cached);
+                    updateProgress(progressId, cached.body.size, cached.body.size);
+                    setProgressSource(progressId, 'indexeddb');
+                    return { record: cached, source: 'indexeddb' };
+                }
+
+                setProgressSource(progressId, 'network');
+                const requestUrl = new URL(request.url);
+                requestUrl.searchParams.set('v', version.appversion);
+                const headers = new Headers(request.headers);
+                headers.set('X-AKE-Page-Cache', '1');
+                const response = await fetch(requestUrl.href, {
+                    method: request.method,
+                    headers,
+                    credentials: request.credentials,
+                    mode: request.mode,
+                    redirect: request.redirect,
+                    referrer: request.referrer,
+                    referrerPolicy: request.referrerPolicy,
+                    integrity: request.integrity,
+                    cache: request.cache === 'default' ? 'no-cache' : request.cache
+                });
+                if (!response.ok || response.status !== 200) {
+                    const body = await response.blob();
+                    return {
+                        record: {
+                            body,
+                            status: response.status,
+                            statusText: response.statusText,
+                            headers: safeResponseHeaders(response),
+                            contentType: response.headers.get('Content-Type') || body.type || 'application/octet-stream'
+                        },
+                        source: 'network',
+                        cacheable: false
+                    };
+                }
+
+                const body = await readResponseWithProgress(response, progressId);
                 const record = {
                     key,
                     cacheVersion,
                     url: canonicalUrl,
                     body,
+                    status: response.status,
+                    statusText: response.statusText,
+                    headers: safeResponseHeaders(response),
                     contentType: response.headers.get('Content-Type') || body.type || 'application/octet-stream',
                     storedAt: Date.now()
                 };
                 memoryResponses.set(key, record);
-                const { db } = await databasePromise;
                 void writeRecord(db, record);
-                return record;
-            });
-            pendingRequests.set(key, recordPromise);
-            recordPromise.finally(() => pendingRequests.delete(key));
+                return { record, source: 'network' };
+            })();
+            pendingRequests.set(key, loadPromise);
+            loadPromise.finally(() => pendingRequests.delete(key)).catch(() => {});
         }
-        return response;
+
+        try {
+            const result = await waitForShared(pendingRequests.get(key), request.signal);
+            setProgressSource(progressId, result.source);
+            finishProgress(progressId, result.record.status >= 400);
+            return responseFromRecord(result.record);
+        } catch (error) {
+            finishProgress(progressId, true);
+            throw error;
+        }
     };
+
+    window.akeLoadMaps = function () {
+        if (!window.__akeMapsPromise) {
+            window.__akeMapsPromise = window.akeFetch('/public/CH/maps.json').then(response => {
+                if (!response.ok) throw new Error(`无法加载 maps.json (HTTP ${response.status})`);
+                return response.json();
+            }).catch(error => {
+                window.__akeMapsPromise = null;
+                throw error;
+            });
+        }
+        return window.__akeMapsPromise;
+    };
+
+    window.addEventListener('globalConfigChanged', () => {
+        if (progressRequests.size > 0) renderProgress();
+    });
 
     window.akeDataCache = {
         ready: databasePromise,

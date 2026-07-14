@@ -10,34 +10,12 @@
 
         const IMAGE_BASE_PATH = '/public/images/';
 
-        const TYPE_MAP_REL = {
-            '贵重道具': [1, 2, 21, 85, 86, 79, 49, 89, 90, 29, 37, 84, 53, 65, 78, 55, 61, 62, 63, 97, 98, 51, 44, 38],
-            '抽卡道具': [43, 42, 83, 81, 82, 14],
-            '角色相关': [4, 42, 96, 27, 95, 7, 76],
-            '武器相关': [87, 5, 25, 26],
-            '消耗品': [22, 48, 52, 39, 40],
-            '个性化': [66, 67, 68, 69, 70, 76, 58],
-            '基质': [19, 60, 78],
-            '基建': [10, 12, 54, 92, 9, 11, 64, 41, 28],
-            '装备': [6, 88, 47],
-            '材料': [8, 34],
-            '物资调度': [33, 56],
-            '阅读物': [99],
-            '谷地像差': [71, 72, 73, 74, 77, 75],
-            '任务道具': [13],
-            '蚀刻章': [100],
-            '杂项': [32, 59, 80, 57, 45, 50, 91]
-        };
-
-        const typeIdToCategory = {};
-        for (const [cat, ids] of Object.entries(TYPE_MAP_REL)) {
-            for (const id of ids) {
-                if (!typeIdToCategory.hasOwnProperty(id)) typeIdToCategory[id] = cat;
-            }
+        function getItemCategory(item) {
+            return item.categoryId || `type:${item.type}`;
         }
 
-        function getItemCategory(typeId) {
-            return typeIdToCategory[typeId] || '未分类';
+        function getItemCategoryName(item) {
+            return item.categoryName || itemTypeMap[String(item.type)] || `类型 ${item.type}`;
         }
 
         function getCurrentShowHidden() {
@@ -66,7 +44,7 @@
                 }
                 if (selectedRarities.size > 0 && !selectedRarities.has(item.rarity)) return false;
                 if (selectedCategories.size > 0) {
-                    if (!selectedCategories.has(getItemCategory(item.type))) return false;
+                    if (!selectedCategories.has(getItemCategory(item))) return false;
                 }
                 return true;
             });
@@ -74,11 +52,8 @@
 
         async function loadMaps() {
             try {
-                const res = await (window.akeFetch || fetch)('/public/CH/maps.json');
-                if (res.ok) {
-                    const data = await res.json();
-                    itemTypeMap = data.item_type_map || {};
-                }
+                const data = await window.akeLoadMaps();
+                itemTypeMap = data.item_type_map || {};
             } catch { itemTypeMap = {}; }
         }
 
@@ -97,27 +72,45 @@
                 btn.addEventListener('click', () => {
                     selectedRarities.has(r) ? selectedRarities.delete(r) : selectedRarities.add(r);
                     btn.classList.toggle('active');
+                    updateFilterSummary();
                     renderItemList();
                 });
                 rc.appendChild(btn);
             }
 
-            const existC = new Set(allItems.map(i => getItemCategory(i.type)));
-            const ordered = Object.keys(TYPE_MAP_REL).filter(c => existC.has(c));
-            if (existC.has('未分类')) ordered.push('未分类');
+            const categories = new Map();
+            allItems.forEach((item, index) => {
+                const id = getItemCategory(item);
+                const current = categories.get(id);
+                const order = item.categoryOrder ?? (1000 + Number(item.type || 0));
+                if (!current || order < current.order) {
+                    categories.set(id, { id, name: getItemCategoryName(item), order, sourceOrder: index });
+                }
+            });
+            const ordered = Array.from(categories.values()).sort((a, b) =>
+                a.order - b.order || a.sourceOrder - b.sourceOrder || a.id.localeCompare(b.id, 'zh-CN'));
 
             cc.innerHTML = '';
             ordered.forEach(cat => {
                 const btn = document.createElement('span');
-                btn.className = `v2i-filter-btn ${selectedCategories.has(cat) ? 'active' : ''}`;
-                btn.textContent = cat;
+                btn.className = `v2i-filter-btn ${selectedCategories.has(cat.id) ? 'active' : ''}`;
+                btn.textContent = cat.name;
                 btn.addEventListener('click', () => {
-                    selectedCategories.has(cat) ? selectedCategories.delete(cat) : selectedCategories.add(cat);
+                    selectedCategories.has(cat.id) ? selectedCategories.delete(cat.id) : selectedCategories.add(cat.id);
                     btn.classList.toggle('active');
+                    updateFilterSummary();
                     renderItemList();
                 });
                 cc.appendChild(btn);
             });
+            updateFilterSummary();
+        }
+
+        function updateFilterSummary() {
+            const summary = document.getElementById('v2itemFilterSummary');
+            if (!summary) return;
+            const count = selectedRarities.size + selectedCategories.size;
+            summary.textContent = count ? `筛选 (${count})` : '筛选';
         }
 
         const mobileBtn = document.getElementById('v2itemMobileListBtn');
@@ -418,6 +411,14 @@
             await loadMaps();
 
             if (mobileBtn) mobileBtn.addEventListener('click', openMobileList);
+            document.getElementById('v2itemFilterToggle')?.addEventListener('click', (event) => {
+                const button = event.currentTarget;
+                const content = document.getElementById('v2itemFilterContent');
+                if (!content) return;
+                const expanded = button.getAttribute('aria-expanded') === 'true';
+                button.setAttribute('aria-expanded', String(!expanded));
+                content.hidden = expanded;
+            });
             if (mobileOverlay) mobileOverlay.addEventListener('click', (e) => {
                 if (e.target === mobileOverlay) closeMobileList();
             });

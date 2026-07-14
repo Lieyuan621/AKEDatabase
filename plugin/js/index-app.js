@@ -237,6 +237,9 @@
                         existing.disabled = false;
                         return existing;
                     }
+                    const response = await (window.akeFetch || fetch)(url.href);
+                    if (!response.ok) throw new Error(`无法加载样式：${href} (HTTP ${response.status})`);
+                    await response.text();
                     return new Promise((resolve, reject) => {
                         const link = document.createElement('link');
                         link.rel = 'stylesheet';
