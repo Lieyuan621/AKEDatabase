@@ -2,6 +2,7 @@ const DB_NAME = 'akedata-data-cache';
 const DB_VERSION = 1;
 const RESPONSE_STORE = 'responses';
 const META_STORE = 'meta';
+let hotfixVersion = '';
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', event => {
     event.waitUntil((async () => {
@@ -11,6 +12,7 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('message', event => {
     if (event.data?.type === 'AKE_VERSION' && typeof event.data.cacheVersion === 'string') {
+        hotfixVersion = typeof event.data.hotfixVersion === 'string' ? event.data.hotfixVersion : '';
         if (event.source) event.source.postMessage({ type: 'AKE_VERSION_READY', cacheVersion: event.data.cacheVersion });
     }
 });
@@ -114,7 +116,10 @@ async function cachePublicResource(request, url) {
             db.close();
             return responseFromRecord(cached);
         }
-        const response = await fetch(request);
+        const requestUrl = new URL(request.url);
+        const activeHotfixVersion = hotfixVersion || activeCacheVersion.slice(activeCacheVersion.lastIndexOf('|') + 1);
+        if (activeHotfixVersion) requestUrl.searchParams.set('v', activeHotfixVersion);
+        const response = await fetch(new Request(requestUrl.href, request));
         if (response.ok) {
             const body = await response.clone().blob();
             await putRecord(db, {

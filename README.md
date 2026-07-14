@@ -111,17 +111,17 @@ AKEDatabase/
 
 同一标签页内，模块 HTML、脚本源码和 CSS 按规范化 URL 缓存。再次进入模块时不重复网络获取 JS/CSS，但会从内存源码重新执行控制器以挂载新 DOM。模块 CSS 每个 URL 只创建一次，并按当前模块启用或禁用。
 
-应用资源（模块 HTML、JavaScript、CSS）仅使用 `appversion` 生成版本 URL，并采用浏览器 `force-cache`。`appversion` 不变时复用相同 URL 的浏览器缓存；发生变化时 URL 随之变化并重新请求。`/public/**` 数据使用 `appversion|hotfixversion` 作为 IndexedDB 缓存版本。
+应用资源（模块 HTML、JavaScript、CSS）仅使用 `appversion` 生成版本 URL，并采用浏览器 `force-cache`。`appversion` 不变时复用相同 URL 的浏览器缓存；发生变化时 URL 随之变化并重新请求。`/public/**` 数据请求使用 `hotfixversion` 生成版本 URL，IndexedDB 缓存版本由 `gameversion|hotfixversion` 共同派生。
 
 ### 缓存分层
 
 - localStorage：只保存主题、隐藏开关、默认等级、URL 设置和令牌等小型偏好；所有访问都有异常保护。
 - 页面内存：缓存模块 HTML、脚本源码、CSS Promise、模块 DOM，以及 v3 已解析的 TableCfg/I18n/maps。
-- IndexedDB：数据库 `akedata-data-cache` 按 `appversion + hotfixversion` 保存所有同源 `/public/**` GET 响应，记录内容为原始 Blob。
+- IndexedDB：数据库 `akedata-data-cache` 按 `gameversion + hotfixversion` 保存所有同源 `/public/**` GET 响应，记录内容为原始 Blob。
 - Service Worker：`plugin/js/ake-sw.js` 拦截 `<img>`、CSS 背景图等绕过 `akeFetch` 的 `/public/**` 请求，并写入同一个 IndexedDB。
 - HTTP Cache：继续负责版本化的 HTML、JS、CSS 和网络响应。
 
-`appversion` 或 `hotfixversion` 变化时会原子清空旧 public 响应并写入新版本。IndexedDB、Service Worker 或 localStorage 不可用时，页面自动降级到内存缓存和普通网络请求，不阻止应用启动。`version.json` 每次启动均使用 `no-store` 请求。
+`gameversion` 或 `hotfixversion` 变化时会原子清空旧 public 响应并写入新版本。单独更新 `appversion` 不会使 public 数据缓存失效。IndexedDB、Service Worker 或 localStorage 不可用时，页面自动降级到内存缓存和普通网络请求，不阻止应用启动。`version.json` 每次启动均使用 `no-store` 请求。
 
 Service Worker 首次安装或应用版本更新并取得页面控制权时，会按 `appversion` 在当前会话中执行一次刷新，使 favicon、首页图片等早于缓存脚本发起的 `/public/` 请求也经过 Service Worker。
 

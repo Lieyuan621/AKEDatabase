@@ -151,7 +151,8 @@
             .then(registration => {
                 const notify = worker => worker?.postMessage({
                     type: 'AKE_VERSION',
-                    cacheVersion: getCacheVersion(version)
+                    cacheVersion: getCacheVersion(version),
+                    hotfixVersion: version.hotfixversion
                 });
                 notify(registration.active);
                 notify(registration.waiting);
@@ -207,7 +208,7 @@
     }
 
     function getCacheVersion(version) {
-        return version ? `${version.appversion}|${version.hotfixversion}` : '';
+        return version ? `${version.gameversion}|${version.hotfixversion}` : '';
     }
 
     async function loadVersion() {
@@ -308,6 +309,12 @@
             (url.pathname.startsWith('/plugin/') || url.pathname.startsWith('/theme/'));
     }
 
+    function isPublicResource(request) {
+        if (request.method !== 'GET') return false;
+        const url = normalizeUrl(request);
+        return url?.origin === window.location.origin && url.pathname.startsWith('/public/');
+    }
+
     function responseFromRecord(record) {
         return new Response(record.body, {
             status: record.status || 200,
@@ -395,6 +402,11 @@
                     cache: 'force-cache'
                 });
             }
+            if (version && isPublicResource(request)) {
+                const publicUrl = new URL(request.url);
+                publicUrl.searchParams.set('v', version.hotfixversion);
+                return fetch(new Request(publicUrl.href, request));
+            }
             return fetch(request);
         }
 
@@ -431,7 +443,7 @@
 
                 setProgressSource(progressId, 'network');
                 const requestUrl = new URL(request.url);
-                requestUrl.searchParams.set('v', version.appversion);
+                requestUrl.searchParams.set('v', version.hotfixversion);
                 const headers = new Headers(request.headers);
                 headers.set('X-AKE-Page-Cache', '1');
                 const response = await fetch(requestUrl.href, {
