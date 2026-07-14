@@ -19,7 +19,7 @@
 
             const HOME_CONTENT = `
                 <div class="welcome-home">
-                    <img src="/public/images/index/main.png" 
+                    <img src="/public/images/index/main.jpg" 
                          alt="起始页图片" 
                          class="home-image" 
                          onerror="this.onerror=null; this.src='';"
