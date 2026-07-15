@@ -805,9 +805,11 @@
     border-radius: 8px;
     padding: 10px;
     border: 1px solid var(--border-color, #e2e7f0);
+    overflow-x: auto;
 }
 .skill-table {
     width: 100%;
+    min-width: max-content;
     border-collapse: collapse;
     font-size: 0.85rem;
 }
