@@ -836,106 +836,119 @@
 
             const skillGroupMap = rawData.chargrowthtable?.skillGroupMap || {};
             const skillGroups = Object.values(skillGroupMap).sort((a, b) => (SKILL_GROUP_ORDER[a.skillGroupType] ?? a.skillGroupType) - (SKILL_GROUP_ORDER[b.skillGroupType] ?? b.skillGroupType));
-            legacy.skills = skillGroups.flatMap(s => {
+            legacy.skills = skillGroups.map(s => {
                 const iconPath = s.icon ? `/public/images/character/skillicon/${s.icon}.png` : '';
                 const groupName = s.name?.text || s.name || '';
                 const groupDescription = s.desc?.text || s.desc || '';
                 const skillIdList = Array.isArray(s.skillIdList) ? s.skillIdList : [];
-                const patchEntries = skillIdList.map(skillId => ({
-                    skillId,
-                    patches: rawData.skillpatchtable?.[skillId]?.SkillPatchDataBundle || []
-                }));
-                const patchText = (patches, field) => {
-                    for (const patch of patches) {
-                        const ref = patch?.[field];
-                        const value = typeof ref === 'string' ? ref : ref?.text;
-                        if (typeof value === 'string' && value.trim()) return value;
-                    }
-                    return '';
-                };
-                const hasSubSkillNames = patchEntries.some(entry => patchText(entry.patches, 'skillName'));
-                let displayEntries = patchEntries;
-                if (!hasSubSkillNames) {
-                    let patches = patchEntries.flatMap(entry => entry.patches.length ? [entry.patches] : []);
-                    if (patches.length === 0 && s.skillGroupId) {
-                        const groupPatches = rawData.skillpatchtable?.[s.skillGroupId]?.SkillPatchDataBundle || [];
-                        if (groupPatches.length > 0) patches = [groupPatches];
-                    }
-                    displayEntries = [{ skillId: s.skillGroupId || skillIdList[0] || groupName, patches, aggregate: true }];
+                let patchLists = skillIdList
+                    .map(skillId => rawData.skillpatchtable?.[skillId]?.SkillPatchDataBundle || [])
+                    .filter(patches => patches.length > 0);
+                if (patchLists.length === 0 && s.skillGroupId) {
+                    const groupPatches = rawData.skillpatchtable?.[s.skillGroupId]?.SkillPatchDataBundle || [];
+                    if (groupPatches.length > 0) patchLists = [groupPatches];
                 }
 
-                return displayEntries.map((entry, entryIndex) => {
-                    const patchLists = entry.aggregate ? entry.patches : (entry.patches.length ? [entry.patches] : []);
-                    const values = { coolDown: [], costValue: [] };
-                    const subDescNames = [];
-                    const subDescValues = {};
-                    if (patchLists.length > 0) {
-                        patchLists[0].forEach(patch => {
-                            values.coolDown.push(patch.coolDown ?? 0);
-                            values.costValue.push(patch.costValue ?? 0);
+                const conditions = [1, 2].map(index => {
+                    const conditionId = s[`conditionId${index}`] || '';
+                    if (!conditionId) return null;
+                    return {
+                        id: conditionId,
+                        name: s[`conditionName${index}`]?.text || '',
+                        icon: s[`conditionIcon${index}`] ? `/public/images/character/skillicon/${s[`conditionIcon${index}`]}.png` : iconPath,
+                        conditionDesc: s[`conditionDesc${index}`]?.text || '',
+                        description: s[`conditionPostDesc${index}`]?.text || ''
+                    };
+                }).filter(Boolean);
+                const conditionNames = Object.fromEntries(conditions.map(condition => [condition.id, condition.name]));
+                const values = { coolDown: [], costValue: [] };
+                const subDescNames = [];
+                const subDescLabels = {};
+                const subDescValues = {};
+                if (patchLists.length > 0) {
+                    patchLists[0].forEach(patch => {
+                        values.coolDown.push(patch.coolDown ?? 0);
+                        values.costValue.push(patch.costValue ?? 0);
+                    });
+                    const seenKeys = new Set();
+                    patchLists.forEach((patchList, patchListIndex) => {
+                        const localKeyMap = {};
+                        (patchList[0]?.blackboard || []).forEach(bb => {
+                            if (!bb || !bb.key) return;
+                            if (!seenKeys.has(bb.key)) {
+                                localKeyMap[bb.key] = bb.key;
+                                seenKeys.add(bb.key);
+                            } else {
+                                let seq = 2;
+                                let newKey = bb.key + '_' + seq;
+                                while (seenKeys.has(newKey)) { seq++; newKey = bb.key + '_' + seq; }
+                                localKeyMap[bb.key] = newKey;
+                                seenKeys.add(newKey);
+                            }
                         });
-                        const seenKeys = new Set();
-                        patchLists.forEach(patchList => {
-                            const localKeyMap = {};
-                            (patchList[0]?.blackboard || []).forEach(bb => {
+                        const localSubDescKeys = [];
+                        patchList.forEach((patch, levelIndex) => {
+                            (patch.blackboard || []).forEach(bb => {
                                 if (!bb || !bb.key) return;
-                                if (!seenKeys.has(bb.key)) {
-                                    localKeyMap[bb.key] = bb.key;
-                                    seenKeys.add(bb.key);
-                                } else {
-                                    let seq = 2;
-                                    let newKey = bb.key + '_' + seq;
-                                    while (seenKeys.has(newKey)) { seq++; newKey = bb.key + '_' + seq; }
-                                    localKeyMap[bb.key] = newKey;
-                                    seenKeys.add(newKey);
+                                const finalKey = localKeyMap[bb.key] || bb.key;
+                                if (!values[finalKey]) values[finalKey] = [];
+                                values[finalKey].push(bb.value ?? 0);
+                            });
+                            const occurrenceMap = {};
+                            (patch.subDescDataList || []).forEach(subDesc => {
+                                const name = subDesc.name?.text || '';
+                                if (!name) return;
+                                const conditionId = subDesc.conditionId || '';
+                                const signature = `${conditionId}\u0000${name}`;
+                                const occurrence = occurrenceMap[signature] || 0;
+                                occurrenceMap[signature] = occurrence + 1;
+                                const localId = `${signature}\u0000${occurrence}`;
+                                let column = localSubDescKeys.find(item => item.localId === localId);
+                                if (!column) {
+                                    const key = `subDesc:${patchListIndex}:${localSubDescKeys.length}`;
+                                    column = { localId, key };
+                                    localSubDescKeys.push(column);
+                                    subDescNames.push(key);
+                                    subDescLabels[key] = conditionNames[conditionId]
+                                        ? `${conditionNames[conditionId]} · ${name}`
+                                        : name;
+                                    subDescValues[key] = Array(levelIndex).fill('');
                                 }
+                                subDescValues[column.key][levelIndex] = subDesc.desc ?? '';
                             });
-                            patchList.forEach(patch => {
-                                (patch.blackboard || []).forEach(bb => {
-                                    if (!bb || !bb.key) return;
-                                    const finalKey = localKeyMap[bb.key] || bb.key;
-                                    if (!values[finalKey]) values[finalKey] = [];
-                                    values[finalKey].push(bb.value ?? 0);
-                                });
-                                const names = patch.subDescNameList || [];
-                                const vals = patch.subDescList || [];
-                                names.forEach((n, i) => {
-                                    const name = n?.text || '';
-                                    if (!name) return;
-                                    if (!subDescValues[name]) {
-                                        subDescNames.push(name);
-                                        subDescValues[name] = [];
-                                    }
-                                    if (subDescValues[name].length < (values.coolDown || []).length) {
-                                        subDescValues[name].push(vals[i] ?? '');
-                                    }
-                                });
+                            localSubDescKeys.forEach(column => {
+                                if (subDescValues[column.key].length <= levelIndex) subDescValues[column.key].push('');
                             });
-                        });
-                    }
-
-                    const descriptionValues = {};
-                    patchLists.forEach(patches => {
-                        const lastPatch = patches[patches.length - 1];
-                        (lastPatch.blackboard || []).forEach(bb => {
-                            if (bb && bb.key !== undefined) descriptionValues[bb.key] = bb.value;
                         });
                     });
-                    const skillKey = `${s.skillGroupId || 'skill-group'}:${entry.skillId || entryIndex}`;
-                    const skillName = entry.aggregate ? groupName : (patchText(entry.patches, 'skillName') || groupName);
-                    const skillDescription = entry.aggregate ? groupDescription : (patchText(entry.patches, 'description') || groupDescription);
-                    legacy.skill[skillKey] = { skillKey, name: skillName, values, subDescNames, subDescValues };
-                    return {
-                        skillKey,
-                        name: skillName,
-                        icon: iconPath,
-                        description: replacePlaceholders(skillDescription, descriptionValues),
-                        groupType: s.skillGroupType || 0,
-                        skillIds: entry.aggregate ? skillIdList : [entry.skillId],
-                        skillGroupId: s.skillGroupId || '',
-                        showGroupCosts: entryIndex === 0
-                    };
+                }
+
+                const descriptionValues = {};
+                patchLists.forEach(patches => {
+                    const lastPatch = patches[patches.length - 1];
+                    (lastPatch.blackboard || []).forEach(bb => {
+                        if (bb && bb.key !== undefined) descriptionValues[bb.key] = bb.value;
+                    });
                 });
+                const skillGroupId = s.skillGroupId || skillIdList[0] || groupName;
+                const skillKey = `${skillGroupId}:${skillGroupId}`;
+                const conditionVariants = conditions.map(condition => ({
+                    ...condition,
+                    conditionDesc: replacePlaceholders(condition.conditionDesc, descriptionValues).replace(/^\/\*|\*\/$/g, '').trim(),
+                    description: replacePlaceholders(condition.description, descriptionValues)
+                }));
+                legacy.skill[skillKey] = { skillKey, name: groupName, values, subDescNames, subDescLabels, subDescValues };
+                return {
+                    skillKey,
+                    name: groupName,
+                    icon: iconPath,
+                    description: replacePlaceholders(groupDescription, descriptionValues),
+                    conditionVariants,
+                    groupType: s.skillGroupType || 0,
+                    skillIds: skillIdList,
+                    skillGroupId: s.skillGroupId || '',
+                    showGroupCosts: true
+                };
             });
 
             const skillLevelUp = rawData.chargrowthtable?.skillLevelUp || [];
@@ -1043,6 +1056,7 @@
 
             const values = skillDetail.values || {};
             const subDescNames = skillDetail.subDescNames || [];
+            const subDescLabels = skillDetail.subDescLabels || {};
             const subDescValues = skillDetail.subDescValues || {};
             const bbColumns = Object.keys(values).filter(k => Array.isArray(values[k]));
             const hasSubDesc = subDescNames.length > 0;
@@ -1062,7 +1076,7 @@
                 return;
             }
 
-            const levelCount = hasSubDesc ? (subDescValues[subDescNames[0]] || []).length : (values[bbColumns[0]] || []).length;
+            const levelCount = Math.max(0, ...allColumns.map(col => (subDescValues[col] || values[col] || []).length));
             const allSkillRows = [];
             for (let lv = 1; lv <= levelCount; lv++) {
                 const cells = allColumns.map(col => {
@@ -1095,7 +1109,7 @@
                 if (found) rowsToRender = [found];
             }
 
-            const headerCells = allColumns.map(col => `<th>${COLUMN_KEY_MAP[col] ? t(COLUMN_KEY_MAP[col]) : col}</th>`).join('');
+            const headerCells = allColumns.map(col => `<th>${COLUMN_KEY_MAP[col] ? t(COLUMN_KEY_MAP[col]) : (subDescLabels[col] || col)}</th>`).join('');
             const header = `<tr><th>${t('level')}</th>${headerCells}</tr>`;
             const tableHtml = `
                 <div class="skill-toggle-container">
@@ -1288,6 +1302,7 @@
 
                 const values = skillDetail.values || {};
                 const subDescNames = skillDetail.subDescNames || [];
+                const subDescLabels = skillDetail.subDescLabels || {};
                 const subDescValues = skillDetail.subDescValues || {};
                 const level1Values = {};
                 for (const [key, val] of Object.entries(values)) {
@@ -1316,7 +1331,7 @@
 
                 let skillTables = '';
                 if (allColumns.length > 0) {
-                    const levelCount = hasSubDesc ? (subDescValues[subDescNames[0]] || []).length : (values[bbColumns[0]] || []).length;
+                    const levelCount = Math.max(0, ...allColumns.map(col => (subDescValues[col] || values[col] || []).length));
                     const allSkillRows = [];
                     for (let lv = 1; lv <= levelCount; lv++) {
                         const cells = allColumns.map(col => {
@@ -1349,7 +1364,7 @@
                         if (found) skillRowsToRender = [found];
                     }
 
-                    const headerCells = allColumns.map(col => `<th>${COLUMN_KEY_MAP[col] ? t(COLUMN_KEY_MAP[col]) : col}</th>`).join('');
+                    const headerCells = allColumns.map(col => `<th>${COLUMN_KEY_MAP[col] ? t(COLUMN_KEY_MAP[col]) : (subDescLabels[col] || col)}</th>`).join('');
                     const header = `<tr><th>${t('level')}</th>${headerCells}</tr>`;
                     const btnText = isExpanded ? t('collapseExtraLevels') : t('expandAllLevels');
 
@@ -1380,6 +1395,17 @@
                     skCostHtml = rows;
                 }
 
+                const conditionHtml = (group.conditionVariants || []).map(condition => `
+                    <div class="skill-condition">
+                        <div class="skill-condition-name">
+                            <img class="skill-condition-icon" src="${condition.icon}" alt="" onerror="this.onerror=null; this.src='';">
+                            ${condition.name}
+                        </div>
+                        ${condition.conditionDesc ? `<div class="skill-condition-trigger">${parseText(condition.conditionDesc)}</div>` : ''}
+                        ${condition.description ? `<div class="skill-condition-desc">${parseText(condition.description)}</div>` : ''}
+                    </div>
+                `).join('');
+
                 return `
                     <div class="skill-item" data-skill-key="${group.skillKey}">
                         <div class="skill-name">
@@ -1387,6 +1413,7 @@
                             ${displayName} ${costBtnHtml(skCostHtml, ['item_gold', ...new Set(skCosts.flatMap(c => c.items.map(it => it.id)))])}
                         </div>
                         <div class="skill-desc">${groupDesc}</div>
+                        ${conditionHtml ? `<div class="skill-conditions">${conditionHtml}</div>` : ''}
                         ${skillTables}
                     </div>
                 `;
