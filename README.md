@@ -125,7 +125,7 @@ AKEDatabase/
 
 Service Worker 首次安装或应用版本更新并取得页面控制权时，会按 `appversion` 在当前会话中执行一次刷新，使 favicon、首页图片等早于缓存脚本发起的 `/public/` 请求也经过 Service Worker。
 
-加载 `/public/**` 数据时，页面顶部显示进度条。默认只显示进度轨道；开启“显示隐藏模块”后，额外显示总体进度、已完成文件数、当前文件路径、来源（网络、内存或 IndexedDB）以及可用时的已加载/总字节数。响应缺少 `Content-Length` 时使用不确定进度动画。
+加载 `/public/**` 数据时，页面顶部按“已加载字节数 / 数据总字节数”显示进度。默认显示进度和总体字节量；开启“显示隐藏模块”后，额外显示当前文件路径、来源（网络、内存或 IndexedDB）以及当前文件字节数。未开启隐藏模块但连续加载超过 3 秒时，也会自动展开这些文件详情。响应尚未提供 `Content-Length` 时显示已加载字节量与不确定进度动画，不再按文件数量估算进度。
 
 由于 Service Worker 文件位于 `/plugin/js/ake-sw.js`，但注册 scope 为 `/`，服务器必须为该文件返回响应头 `Service-Worker-Allowed: /`，否则浏览器只允许它控制 `/plugin/js/`，无法拦截 `/public/`。本地或生产服务器需要显式配置该响应头。
 
@@ -188,7 +188,7 @@ CH TC EN JP KR RU MX BR DE FR VN TH ID IT
 - 对外语言 `EN` 使用 `public/TableCfg/I18nTextTable_EN.json`
 - 其余语言 `XX` 使用 `public/TableCfg/I18nTextTable_XX.json`
 
-其中中文目录名固定为 `CH`，但 TableCfg 后缀仍然是 `CN`。`v3-table-data.js` 会按当前语言选择对应文本表，并为非中文语言的缺失值回退到中文文本。表缓存按语言隔离，避免切换语言后继续复用首次水合的对象。
+其中中文目录名固定为 `CH`，但 TableCfg 后缀仍然是 `CN`。网页完成首次加载后会立即预加载当前语言的 TextTable；`v3-table-data.js` 会复用该 Promise，并为非中文语言的缺失值回退到中文文本。表缓存按语言隔离，避免切换语言后继续复用首次水合的对象。
 
 ### 多语言 TODO
 

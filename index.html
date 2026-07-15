@@ -150,7 +150,7 @@
         .data-load-progress-text{margin-top:5px;color:var(--desc-color,#5b6f86);font-size:12px;line-height:1.2;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .data-load-progress-file{margin-top:3px;color:var(--text-color,#1e2b3c);font-family:Consolas,"Cascadia Mono",monospace;font-size:11px;line-height:1.2;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .data-load-progress.compact{padding:8px 10px}
-        .data-load-progress.compact .data-load-progress-text,.data-load-progress.compact .data-load-progress-file{display:none}
+        .data-load-progress.compact .data-load-progress-file{display:none}
         @keyframes dataProgressIndeterminate{0%{transform:translateX(-120%)}50%{transform:translateX(85%)}100%{transform:translateX(265%)}}
         .toast{padding:12px 20px;border-radius:8px;color:#fff;font-size:0.9rem;box-shadow:0 4px 12px rgba(0,0,0,0.15);opacity:0;transform:translateX(40px);animation:toastIn .3s forwards;pointer-events:auto;max-width:360px;word-break:break-all}
         .toast.toast-out{animation:toastOut .4s forwards}
@@ -204,6 +204,7 @@
                 await loadScript('/plugin/js/i18n.js');
                 await loadScript('/plugin/js/toast.js');
                 await loadScript('/plugin/js/ake-cache.js');
+                await loadScript('/plugin/js/v3-table-data.js');
                 await loadScript('/plugin/js/index-app.js');
             } catch (error) {
                 const content = document.getElementById('contentArea');

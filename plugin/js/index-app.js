@@ -186,6 +186,10 @@
                 return window.akeI18n?.t(key, params, fallback) ?? fallback ?? key;
             }
 
+            function firstLoadTextTableHint() {
+                return tr('common.firstLoadTextTableHint', null, '首次加载需要加载文本映射表，可能速度较慢');
+            }
+
             function translateModuleField(module, field) {
                 const key = module?.[field];
                 return key ? tr(key, null, key) : '';
@@ -333,7 +337,7 @@
                 }
                 if (mountedModuleId === module.id) return true;
                 if (mountedModuleId !== module.id) stashMountedModule();
-                setContent(`<div class="loader">${tr('common.loadingModule')}</div>`);
+                setContent(`<div class="loader">${tr('common.loadingModule')}<br><small>${firstLoadTextTableHint()}</small></div>`);
                 try {
                     if (!moduleHtmlCache.has(module.contentFile)) {
                         moduleHtmlCache.set(module.contentFile, (window.akeFetch || fetch)(module.contentFile).then(response => {
@@ -862,6 +866,11 @@
                 config.language = window.akeI18n?.getLanguage?.() || 'CH';
                 renderLanguageOptions();
                 showHomePage();
+                const preloadTextTable = () => window.AKEV3?.preloadTextTable?.().catch(error => {
+                    console.warn('无法预加载当前语言文本映射表，进入模块时将重试。', error);
+                });
+                if (document.readyState === 'complete') setTimeout(preloadTextTable, 0);
+                else window.addEventListener('load', preloadTextTable, { once: true });
                 await window.akeVersionReady;
                 renderVersionInfo();
                 initTheme();

@@ -33,11 +33,22 @@
     async function loadI18n() {
         const suffix = languageInfo().table;
         if (!i18nPromises.has(suffix)) {
+            window.akeDataCache?.setProgressNotice?.(window.akeI18n?.t(
+                'common.firstLoadTextTableHint',
+                null,
+                '首次加载需要加载文本映射表，可能速度较慢'
+            ));
             const localized = fetchText(`${TABLE_ROOT}I18nTextTable_${suffix}.json`).then(JSON.parse);
-            i18nPromises.set(suffix, suffix === 'CN' ? localized : Promise.all([
+            const promise = (suffix === 'CN' ? localized : Promise.all([
                 localized,
                 fetchText(`${TABLE_ROOT}I18nTextTable_CN.json`).then(JSON.parse)
-            ]).then(([current, chinese]) => ({ ...chinese, ...Object.fromEntries(Object.entries(current).filter(([, value]) => value !== '')) })));
+            ]).then(([current, chinese]) => ({ ...chinese, ...Object.fromEntries(Object.entries(current).filter(([, value]) => value !== '')) })))
+                .catch(error => {
+                    i18nPromises.delete(suffix);
+                    throw error;
+                })
+                .finally(() => window.akeDataCache?.setProgressNotice?.(''));
+            i18nPromises.set(suffix, promise);
         }
         return i18nPromises.get(suffix);
     }
@@ -596,6 +607,7 @@
             window.akeFetch = v3Fetch;
             patchRouter();
         },
+        preloadTextTable: loadI18n,
         table,
         text
     };

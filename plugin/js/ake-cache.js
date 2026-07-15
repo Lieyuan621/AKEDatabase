@@ -7,8 +7,12 @@
     const pendingRequests = new Map();
     const memoryResponses = new Map();
     const progressRequests = new Map();
+    const PROGRESS_DETAILS_DELAY = 3000;
     let progressSequence = 0;
     let progressHideTimer = null;
+    let progressDetailsTimer = null;
+    let forceProgressDetails = false;
+    let progressNotice = '';
 
     function formatBytes(bytes) {
         if (!Number.isFinite(bytes) || bytes <= 0) return '0 B';
@@ -25,9 +29,8 @@
         const file = document.getElementById('dataLoadProgressFile');
         if (!root || !bar || !text || !file) return;
         const requests = Array.from(progressRequests.values());
-        const showDetails = window.akeData?.getConfig?.().showHidden === true;
+        const showDetails = window.akeData?.getConfig?.().showHidden === true || forceProgressDetails;
         const active = requests.filter(request => !request.done);
-        const completed = requests.length - active.length;
         const failed = requests.filter(request => request.error).length;
         const hasUnknown = active.some(request => !request.total);
         const totalBytes = requests.reduce((sum, request) => sum + (request.total || 0), 0);
@@ -48,11 +51,11 @@
         if (active.length === 0 && failed) {
             text.textContent = `${failed} 个数据文件加载失败`;
         } else if (active.length === 0) {
-            text.textContent = `数据加载完成 · ${requests.length} 个文件`;
+            text.textContent = `数据加载完成 · ${formatBytes(loadedBytes)}`;
         } else if (!hasUnknown && totalBytes > 0) {
-            text.textContent = `正在加载数据 · ${percent}% · ${formatBytes(loadedBytes)} / ${formatBytes(totalBytes)}`;
+            text.textContent = `${progressNotice || '正在加载数据'} · ${percent}% · ${formatBytes(loadedBytes)} / ${formatBytes(totalBytes)}`;
         } else {
-            text.textContent = `正在加载数据 · ${completed}/${requests.length} 个文件`;
+            text.textContent = `${progressNotice || '正在加载数据'} · 已加载 ${formatBytes(loadedBytes)} · 总大小计算中`;
         }
         if (current) {
             const size = current.loaded ? ` · ${formatBytes(current.loaded)}${current.total ? ` / ${formatBytes(current.total)}` : ''}` : '';
@@ -69,7 +72,18 @@
             clearTimeout(progressHideTimer);
             progressHideTimer = null;
         }
-        if (!Array.from(progressRequests.values()).some(request => !request.done)) progressRequests.clear();
+        const hasActiveRequest = Array.from(progressRequests.values()).some(request => !request.done);
+        if (!hasActiveRequest) {
+            progressRequests.clear();
+            forceProgressDetails = false;
+            if (progressDetailsTimer) clearTimeout(progressDetailsTimer);
+            progressDetailsTimer = setTimeout(() => {
+                progressDetailsTimer = null;
+                if (!Array.from(progressRequests.values()).some(request => !request.done)) return;
+                forceProgressDetails = true;
+                renderProgress();
+            }, PROGRESS_DETAILS_DELAY);
+        }
         const id = ++progressSequence;
         progressRequests.set(id, { url, source, loaded: 0, total: 0, done: false });
         renderProgress();
@@ -100,6 +114,10 @@
         if (request.total) request.loaded = request.total;
         renderProgress();
         if (Array.from(progressRequests.values()).every(item => item.done)) {
+            if (progressDetailsTimer) {
+                clearTimeout(progressDetailsTimer);
+                progressDetailsTimer = null;
+            }
             progressHideTimer = setTimeout(() => {
                 const root = document.getElementById('dataLoadProgress');
                 if (root) {
@@ -107,6 +125,7 @@
                     setTimeout(() => { if (!root.classList.contains('visible')) root.hidden = true; }, 200);
                 }
                 progressRequests.clear();
+                forceProgressDetails = false;
                 progressHideTimer = null;
             }, error || Array.from(progressRequests.values()).some(item => item.error) ? 1400 : 450);
         }
@@ -530,6 +549,10 @@
 
     window.akeDataCache = {
         ready: databasePromise,
+        setProgressNotice(message) {
+            progressNotice = String(message || '');
+            if (progressRequests.size > 0) renderProgress();
+        },
         async clear() {
             memoryResponses.clear();
             const { db } = await databasePromise;
