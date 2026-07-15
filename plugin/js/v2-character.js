@@ -597,11 +597,11 @@
                 skillToggleBtns.forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         e.preventDefault();
-                        const skillName = btn.dataset.skillName;
-                        if (!skillName) return;
+                        const skillKey = btn.dataset.skillKey;
+                        if (!skillKey) return;
                         if (globalSkillExpand) globalSkillExpand = false;
-                        skillExpandMap[skillName] = !skillExpandMap[skillName];
-                        updateSkillTable(skillName);
+                        skillExpandMap[skillKey] = !skillExpandMap[skillKey];
+                        updateSkillTable(skillKey);
                     });
                 });
 
@@ -836,94 +836,106 @@
 
             const skillGroupMap = rawData.chargrowthtable?.skillGroupMap || {};
             const skillGroups = Object.values(skillGroupMap).sort((a, b) => (SKILL_GROUP_ORDER[a.skillGroupType] ?? a.skillGroupType) - (SKILL_GROUP_ORDER[b.skillGroupType] ?? b.skillGroupType));
-            legacy.skills = skillGroups.map(s => {
+            legacy.skills = skillGroups.flatMap(s => {
                 const iconPath = s.icon ? `/public/images/character/skillicon/${s.icon}.png` : '';
-                const group = {
-                    name: s.name?.text || s.name || '',
-                    icon: iconPath,
-                    description: s.desc?.text || s.desc || '',
-                    groupType: s.skillGroupType || 0,
-                    skillIds: s.skillIdList || [],
-                    skillGroupId: s.skillGroupId || ''
-                };
-
+                const groupName = s.name?.text || s.name || '';
+                const groupDescription = s.desc?.text || s.desc || '';
                 const skillIdList = Array.isArray(s.skillIdList) ? s.skillIdList : [];
-                const allPatchLists = [];
-                for (const sid of skillIdList) {
-                    const pl = rawData.skillpatchtable?.[sid]?.SkillPatchDataBundle;
-                    if (pl && pl.length > 0) allPatchLists.push(pl);
-                }
-                if (allPatchLists.length === 0 && s.skillGroupId) {
-                    const pl = rawData.skillpatchtable?.[s.skillGroupId]?.SkillPatchDataBundle;
-                    if (pl && pl.length > 0) allPatchLists.push(pl);
-                }
-                const values = { coolDown: [], costValue: [] };
-                const subDescNames = [];
-                const subDescValues = {};
-                if (allPatchLists.length > 0) {
-                    allPatchLists[0].forEach(patch => {
-                        values.coolDown.push(patch.coolDown ?? 0);
-                        values.costValue.push(patch.costValue ?? 0);
-                    });
-                    const seenKeys = new Set();
-                    allPatchLists.forEach(patchList => {
-                        const localKeyMap = {};
-                        (patchList[0]?.blackboard || []).forEach(bb => {
-                            if (!bb || !bb.key) return;
-                            if (!seenKeys.has(bb.key)) {
-                                localKeyMap[bb.key] = bb.key;
-                                seenKeys.add(bb.key);
-                            } else {
-                                let seq = 2;
-                                let newKey = bb.key + '_' + seq;
-                                while (seenKeys.has(newKey)) { seq++; newKey = bb.key + '_' + seq; }
-                                localKeyMap[bb.key] = newKey;
-                                seenKeys.add(newKey);
-                            }
-                        });
-                        patchList.forEach(patch => {
-                            (patch.blackboard || []).forEach(bb => {
-                                if (!bb || !bb.key) return;
-                                const finalKey = localKeyMap[bb.key] || bb.key;
-                                if (!values[finalKey]) values[finalKey] = [];
-                                values[finalKey].push(bb.value ?? 0);
-                            });
-                            const names = patch.subDescNameList || [];
-                            const vals = patch.subDescList || [];
-                            names.forEach((n, i) => {
-                                const name = n?.text || '';
-                                if (!name) return;
-                                if (!subDescValues[name]) {
-                                    subDescNames.push(name);
-                                    subDescValues[name] = [];
-                                }
-                                if (subDescValues[name].length < (values.coolDown || []).length) {
-                                    subDescValues[name].push(vals[i] ?? '');
-                                }
-                            });
-                        });
-                    });
-                }
-                legacy.skill[group.name] = {
-                    name: group.name,
-                    values,
-                    subDescNames,
-                    subDescValues
+                const patchEntries = skillIdList.map(skillId => ({
+                    skillId,
+                    patches: rawData.skillpatchtable?.[skillId]?.SkillPatchDataBundle || []
+                }));
+                const patchText = (patches, field) => {
+                    for (const patch of patches) {
+                        const ref = patch?.[field];
+                        const value = typeof ref === 'string' ? ref : ref?.text;
+                        if (typeof value === 'string' && value.trim()) return value;
+                    }
+                    return '';
                 };
+                const hasSubSkillNames = patchEntries.some(entry => patchText(entry.patches, 'skillName'));
+                let displayEntries = patchEntries;
+                if (!hasSubSkillNames) {
+                    let patches = patchEntries.flatMap(entry => entry.patches.length ? [entry.patches] : []);
+                    if (patches.length === 0 && s.skillGroupId) {
+                        const groupPatches = rawData.skillpatchtable?.[s.skillGroupId]?.SkillPatchDataBundle || [];
+                        if (groupPatches.length > 0) patches = [groupPatches];
+                    }
+                    displayEntries = [{ skillId: s.skillGroupId || skillIdList[0] || groupName, patches, aggregate: true }];
+                }
 
-                const descValueMap = {};
-                for (const sid of skillIdList) {
-                    const pl = rawData.skillpatchtable?.[sid]?.SkillPatchDataBundle;
-                    if (pl && pl.length > 0) {
-                        const lastPatch = pl[pl.length - 1];
-                        (lastPatch.blackboard || []).forEach(bb => {
-                            if (bb && bb.key !== undefined) descValueMap[bb.key] = bb.value;
+                return displayEntries.map((entry, entryIndex) => {
+                    const patchLists = entry.aggregate ? entry.patches : (entry.patches.length ? [entry.patches] : []);
+                    const values = { coolDown: [], costValue: [] };
+                    const subDescNames = [];
+                    const subDescValues = {};
+                    if (patchLists.length > 0) {
+                        patchLists[0].forEach(patch => {
+                            values.coolDown.push(patch.coolDown ?? 0);
+                            values.costValue.push(patch.costValue ?? 0);
+                        });
+                        const seenKeys = new Set();
+                        patchLists.forEach(patchList => {
+                            const localKeyMap = {};
+                            (patchList[0]?.blackboard || []).forEach(bb => {
+                                if (!bb || !bb.key) return;
+                                if (!seenKeys.has(bb.key)) {
+                                    localKeyMap[bb.key] = bb.key;
+                                    seenKeys.add(bb.key);
+                                } else {
+                                    let seq = 2;
+                                    let newKey = bb.key + '_' + seq;
+                                    while (seenKeys.has(newKey)) { seq++; newKey = bb.key + '_' + seq; }
+                                    localKeyMap[bb.key] = newKey;
+                                    seenKeys.add(newKey);
+                                }
+                            });
+                            patchList.forEach(patch => {
+                                (patch.blackboard || []).forEach(bb => {
+                                    if (!bb || !bb.key) return;
+                                    const finalKey = localKeyMap[bb.key] || bb.key;
+                                    if (!values[finalKey]) values[finalKey] = [];
+                                    values[finalKey].push(bb.value ?? 0);
+                                });
+                                const names = patch.subDescNameList || [];
+                                const vals = patch.subDescList || [];
+                                names.forEach((n, i) => {
+                                    const name = n?.text || '';
+                                    if (!name) return;
+                                    if (!subDescValues[name]) {
+                                        subDescNames.push(name);
+                                        subDescValues[name] = [];
+                                    }
+                                    if (subDescValues[name].length < (values.coolDown || []).length) {
+                                        subDescValues[name].push(vals[i] ?? '');
+                                    }
+                                });
+                            });
                         });
                     }
-                }
-                group.description = replacePlaceholders(group.description, descValueMap);
 
-                return group;
+                    const descriptionValues = {};
+                    patchLists.forEach(patches => {
+                        const lastPatch = patches[patches.length - 1];
+                        (lastPatch.blackboard || []).forEach(bb => {
+                            if (bb && bb.key !== undefined) descriptionValues[bb.key] = bb.value;
+                        });
+                    });
+                    const skillKey = `${s.skillGroupId || 'skill-group'}:${entry.skillId || entryIndex}`;
+                    const skillName = entry.aggregate ? groupName : (patchText(entry.patches, 'skillName') || groupName);
+                    const skillDescription = entry.aggregate ? groupDescription : (patchText(entry.patches, 'description') || groupDescription);
+                    legacy.skill[skillKey] = { skillKey, name: skillName, values, subDescNames, subDescValues };
+                    return {
+                        skillKey,
+                        name: skillName,
+                        icon: iconPath,
+                        description: replacePlaceholders(skillDescription, descriptionValues),
+                        groupType: s.skillGroupType || 0,
+                        skillIds: entry.aggregate ? skillIdList : [entry.skillId],
+                        skillGroupId: s.skillGroupId || '',
+                        showGroupCosts: entryIndex === 0
+                    };
+                });
             });
 
             const skillLevelUp = rawData.chargrowthtable?.skillLevelUp || [];
@@ -1019,13 +1031,14 @@
             if (btn) btn.textContent = showAllCharLevels ? t('collapseExtraLevels') : t('expandAllLevels');
         }
 
-        function updateSkillTable(skillName) {
-            const skillContainer = document.querySelector(`.skill-item[data-skill-name="${skillName}"] .skill-detail`);
+        function updateSkillTable(skillKey) {
+            const skillItem = Array.from(document.querySelectorAll('.skill-item')).find(item => item.dataset.skillKey === skillKey);
+            const skillContainer = skillItem?.querySelector('.skill-detail');
             if (!skillContainer || !currentCharData) return;
 
             const showHidden = getCurrentShowHidden();
-            const group = currentCharData.skills?.find(g => g.name === skillName);
-            const skillDetail = Object.values(currentCharData.skill || {}).find(s => s.name === skillName);
+            const group = currentCharData.skills?.find(g => g.skillKey === skillKey);
+            const skillDetail = currentCharData.skill?.[skillKey];
             if (!group || !skillDetail) return;
 
             const values = skillDetail.values || {};
@@ -1067,7 +1080,7 @@
                 allSkillRows.push(`<tr data-level="${lv}"><td>${t('levelAbbreviation', { name: lv })}</td>${cells}</tr>`);
             }
 
-            const isExpanded = globalSkillExpand ? true : (skillExpandMap[skillName] || false);
+            const isExpanded = globalSkillExpand ? true : (skillExpandMap[skillKey] || false);
             let rowsToRender = allSkillRows;
             if (!isExpanded && skillLevelsToShow) {
                 const levelSet = new Set(skillLevelsToShow);
@@ -1086,7 +1099,7 @@
             const header = `<tr><th>${t('level')}</th>${headerCells}</tr>`;
             const tableHtml = `
                 <div class="skill-toggle-container">
-                    <button class="skill-toggle-btn" data-skill-name="${skillName}">${isExpanded ? t('collapseExtraLevels') : t('expandAllLevels')}</button>
+                    <button class="skill-toggle-btn" data-skill-key="${skillKey}">${isExpanded ? t('collapseExtraLevels') : t('expandAllLevels')}</button>
                 </div>
                 <table class="skill-table">
                     <thead>${header}</thead>
@@ -1100,15 +1113,15 @@
                 newBtn.addEventListener('click', (e) => {
                     e.preventDefault();
                     if (globalSkillExpand) globalSkillExpand = false;
-                    skillExpandMap[skillName] = !skillExpandMap[skillName];
-                    updateSkillTable(skillName);
+                    skillExpandMap[skillKey] = !skillExpandMap[skillKey];
+                    updateSkillTable(skillKey);
                 });
             }
         }
 
         function updateAllSkillTables() {
-            const skillNames = currentCharData.skills?.map(g => g.name) || [];
-            skillNames.forEach(name => updateSkillTable(name));
+            const skillKeys = currentCharData.skills?.map(g => g.skillKey) || [];
+            skillKeys.forEach(skillKey => updateSkillTable(skillKey));
         }
 
         function renderCostItemsHtml(items, goldCost, itemNameMap) {
@@ -1270,7 +1283,7 @@
             const skillsGroups = data.skills || [];
             const skillTypePrefix = [t('skillTypes.basicAttack'), t('skillTypes.combatSkill'), t('skillTypes.comboSkill'), t('skillTypes.ultimate')];
             const skillsHtml = skillsGroups.map((group, index) => {
-                const skillDetail = Object.values(data.skill || {}).find(s => s.name === group.name);
+                const skillDetail = data.skill?.[group.skillKey];
                 if (!skillDetail) return '';
 
                 const values = skillDetail.values || {};
@@ -1283,7 +1296,8 @@
                 }
 
                 const groupDesc = parseText(replacePlaceholders(group.description || '', level1Values));
-                const prefix = (index < skillTypePrefix.length) ? skillTypePrefix[index] : t('sections.skills');
+                const prefixIndex = SKILL_GROUP_ORDER[group.groupType] ?? group.groupType;
+                const prefix = skillTypePrefix[prefixIndex] || t('sections.skills');
                 const displayName = `${prefix}·${group.name}`;
 
                 const bbColumns = Object.keys(values).filter(k => Array.isArray(values[k]));
@@ -1320,7 +1334,7 @@
                         allSkillRows.push(`<tr data-level="${lv}"><td>${t('levelAbbreviation', { name: lv })}</td>${cells}</tr>`);
                     }
 
-                    const isExpanded = globalSkillExpand ? true : (skillExpandMap[group.name] || false);
+                    const isExpanded = globalSkillExpand ? true : (skillExpandMap[group.skillKey] || false);
                     let skillRowsToRender = allSkillRows;
                     if (!isExpanded && skillLevelsToShow) {
                         const levelSet = new Set(skillLevelsToShow);
@@ -1342,7 +1356,7 @@
                     skillTables = `
                         <div class="skill-detail">
                             <div class="skill-toggle-container">
-                                <button class="skill-toggle-btn" data-skill-name="${group.name}">${btnText}</button>
+                                <button class="skill-toggle-btn" data-skill-key="${group.skillKey}">${btnText}</button>
                             </div>
                             <table class="skill-table">
                                 <thead>${header}</thead>
@@ -1352,7 +1366,7 @@
                     `;
                 }
 
-                const skCosts = (data.skillCosts || {})[group.skillGroupId] || [];
+                const skCosts = group.showGroupCosts ? ((data.skillCosts || {})[group.skillGroupId] || []) : [];
                 let skCostHtml = '';
                 if (skCosts.length > 0) {
                     const rows = skCosts.map(c => {
@@ -1367,7 +1381,7 @@
                 }
 
                 return `
-                    <div class="skill-item" data-skill-name="${group.name}">
+                    <div class="skill-item" data-skill-key="${group.skillKey}">
                         <div class="skill-name">
                             <img class="skill-icon" src="${group.icon}" alt="" onerror="this.onerror=null; this.src='';">
                             ${displayName} ${costBtnHtml(skCostHtml, ['item_gold', ...new Set(skCosts.flatMap(c => c.items.map(it => it.id)))])}
