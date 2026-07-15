@@ -16,9 +16,12 @@
             const moduleStyleKeys = new Map();
             let mountedModuleId = null;
             let moduleLoadGeneration = 0;
+            let tipCheckStarted = false;
+            let countdownTimer = null;
 
             const HOME_CONTENT = `
                 <div class="welcome-home">
+                    <button class="home-tip-button" id="homeTipButton" type="button" data-i18n="home.announcement">Announcement</button>
                     <img src="/public/images/index/main.jpg"
                          alt="home.heroImageAlt"
                          data-i18n-alt="home.heroImageAlt"
@@ -26,24 +29,29 @@
                          onerror="this.onerror=null; this.src='';"
                          style="max-width: 80%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
                     <p style="margin-top: 20px; color: var(--text-color, #1e2b3c); font-size: 1.2rem;" data-i18n="home.title">home.title</p>
-                    <div id="homeVersionInfo" style="margin-top:8px;color:#7f8c9f;font-size:.9rem;" data-i18n="version.loading">version.loading</div>
+                    <div id="homeUpdateCountdown" style="margin-top:8px;color:#7f8c9f;font-size:.9rem;" data-i18n="version.loading">version.loading</div>
                     <div style="margin-top: 30px; color:#a3b6cc; font-size:1rem;">
                         <span data-i18n="home.precisionNote">home.precisionNote</span><br>
                         <span data-i18n="home.disclaimer">home.disclaimer</span><br>
                         <span data-i18n="home.settingsHint">home.settingsHint</span>
                     </div>
+                    <div style="margin-top: 20px; font-size:.85rem;">
+                        <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank" rel="noopener noreferrer" style="color:#7f8c9f;">浙ICP备2026014728号-1</a>
+                    </div>
                 </div>
             `;
 
-            function showHomePage() {
+            function showHomePage(checkTip = true) {
                 stashMountedModule();
                 moduleLoadGeneration++;
                 activateModuleStyles(null);
                 setContent(HOME_CONTENT);
                 renderVersionInfo();
+                document.getElementById('homeTipButton')?.addEventListener('click', showTip);
                 document.querySelectorAll('.module-item').forEach(item => item.classList.remove('active'));
                 activeModuleId = null;
                 if (window.__akeRouter) window.__akeRouter.clearUrl();
+                if (checkTip !== false) showUpdatedTip();
             }
 
             function show404Page(isHidden) {
@@ -108,6 +116,9 @@
             const modalEnemyLevels = document.getElementById('modalEnemyLevels');
             const tooltip1 = document.getElementById('hyperlink-tooltip-1');
             const tooltip2 = document.getElementById('hyperlink-tooltip-2');
+            const tipModal = document.getElementById('tipModal');
+            const tipModalBody = document.getElementById('tipModalBody');
+            const closeTipModal = document.getElementById('closeTipModal');
 
             // 移动端模块菜单
             const mobileMenuButton = document.getElementById('mobileMenuButton');
@@ -186,6 +197,85 @@
                 return window.akeI18n?.t(key, params, fallback) ?? fallback ?? key;
             }
 
+            function renderTipMarkdown(markdown) {
+                const fragment = document.createDocumentFragment();
+                let list = null;
+                String(markdown || '').replace(/\r\n?/g, '\n').split('\n').forEach(line => {
+                    const heading = line.match(/^(#{1,3})\s+(.+)$/);
+                    const item = line.match(/^[-*]\s+(.+)$/);
+                    if (heading) {
+                        list = null;
+                        const element = document.createElement(`h${heading[1].length}`);
+                        element.textContent = heading[2];
+                        fragment.appendChild(element);
+                    } else if (item) {
+                        if (!list) {
+                            list = document.createElement('ul');
+                            fragment.appendChild(list);
+                        }
+                        const element = document.createElement('li');
+                        element.textContent = item[1];
+                        list.appendChild(element);
+                    } else if (line.trim()) {
+                        list = null;
+                        const element = document.createElement('p');
+                        element.textContent = line.trim();
+                        fragment.appendChild(element);
+                    } else {
+                        list = null;
+                    }
+                });
+                return fragment;
+            }
+
+            function hideTip() {
+                if (tipModal) tipModal.hidden = true;
+            }
+
+            async function showTip() {
+                if (!tipModal || !tipModalBody) return;
+                const version = await window.akeVersionReady;
+                const tipVersion = String(version?.tipversion || '').trim();
+                const directory = window.akeI18n?.getLanguageInfo?.().directory || 'CH';
+                const url = new URL(`/public/${directory}/tip.md`, window.location.href);
+                if (tipVersion) url.searchParams.set('v', tipVersion);
+                try {
+                    const response = await fetch(url.href, {
+                        cache: 'force-cache',
+                        headers: { 'X-AKE-Page-Cache': '1' }
+                    });
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const markdown = await response.text();
+                    tipModalBody.replaceChildren(renderTipMarkdown(markdown));
+                    tipModal.hidden = false;
+                    closeTipModal?.focus();
+                    if (tipVersion) storage.set('akedata-tipversion', tipVersion);
+                } catch (error) {
+                    console.warn(`无法加载网站公告：${url.pathname}`, error);
+                }
+            }
+
+            async function showUpdatedTip() {
+                if (tipCheckStarted) return;
+                const version = await window.akeVersionReady;
+                const tipVersion = String(version?.tipversion || '').trim();
+                if (!tipVersion || storage.get('akedata-tipversion') === tipVersion) return;
+                tipCheckStarted = true;
+                try {
+                    await showTip();
+                } finally {
+                    if (storage.get('akedata-tipversion') !== tipVersion) tipCheckStarted = false;
+                }
+            }
+
+            closeTipModal?.addEventListener('click', hideTip);
+            tipModal?.addEventListener('click', (event) => {
+                if (event.target === tipModal) hideTip();
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && !tipModal?.hidden) hideTip();
+            });
+
             function firstLoadTextTableHint() {
                 return tr('common.firstLoadTextTableHint', null, '首次加载需要加载文本映射表，可能速度较慢');
             }
@@ -225,13 +315,66 @@
                 return Number.isNaN(date.getTime()) ? value : date.toLocaleString(locale, { hour12: false });
             }
 
+            function parseUpdateTime(value) {
+                const raw = String(value || '').trim();
+                if (!raw) return null;
+                const normalized = raw.replace(' ', 'T');
+                const hasTimezone = /(?:Z|[+-]\d{2}:?\d{2})$/i.test(normalized);
+                const date = new Date(hasTimezone ? normalized : `${normalized}+08:00`);
+                return Number.isNaN(date.getTime()) ? null : date;
+            }
+
+            function formatCountdown(milliseconds) {
+                let seconds = Math.max(0, Math.floor(milliseconds / 1000));
+                const days = Math.floor(seconds / 86400);
+                seconds %= 86400;
+                const hours = Math.floor(seconds / 3600);
+                seconds %= 3600;
+                const minutes = Math.floor(seconds / 60);
+                seconds %= 60;
+                return [
+                    tr('common.time.days', { count: days }, `${days}d`),
+                    tr('common.time.hours', { count: hours }, `${hours}h`),
+                    tr('common.time.minutes', { count: minutes }, `${minutes}m`),
+                    tr('common.time.seconds', { count: seconds }, `${seconds}s`)
+                ].join(' ');
+            }
+
+            function renderHomeCountdown() {
+                const home = document.getElementById('homeUpdateCountdown');
+                if (!home) return;
+                const version = window.akeVersion;
+                const target = parseUpdateTime(version?.totime);
+                if (!target) {
+                    home.textContent = tr('version.unavailable');
+                    return;
+                }
+                home.replaceChildren();
+                const countdown = document.createElement('div');
+                const remaining = formatCountdown(target.getTime() - Date.now());
+                countdown.textContent = tr('version.countdown', {
+                    time: remaining
+                }, `Time until the next data update: ${remaining}`);
+                home.appendChild(countdown);
+                const description = String(version?.desc || '').trim();
+                if (description) {
+                    const reason = document.createElement('div');
+                    reason.textContent = tr('version.updateReason', { desc: description }, `Update reason: ${description}`);
+                    home.appendChild(reason);
+                }
+            }
+
+            function startHomeCountdown() {
+                renderHomeCountdown();
+                if (!countdownTimer) countdownTimer = setInterval(renderHomeCountdown, 1000);
+            }
+
             function renderVersionInfo() {
                 const version = window.akeVersion;
                 const box = document.getElementById('appVersionInfo');
-                const home = document.getElementById('homeVersionInfo');
                 if (!version) {
                     if (box) box.textContent = tr('version.unavailable');
-                    if (home) home.textContent = tr('version.unavailable');
+                    renderHomeCountdown();
                     return;
                 }
                 if (box) {
@@ -247,7 +390,7 @@
                         box.appendChild(p);
                     });
                 }
-                if (home) home.textContent = tr('version.homeLine', { app: version.appversion, game: version.gameversion });
+                startHomeCountdown();
             }
 
             function canonicalResourceUrl(resource) {
@@ -865,7 +1008,7 @@
                 await window.akeI18n?.ready;
                 config.language = window.akeI18n?.getLanguage?.() || 'CH';
                 renderLanguageOptions();
-                showHomePage();
+                showHomePage(false);
                 const preloadTextTable = () => window.AKEV3?.preloadTextTable?.().catch(error => {
                     console.warn('无法预加载当前语言文本映射表，进入模块时将重试。', error);
                 });
@@ -873,6 +1016,7 @@
                 else window.addEventListener('load', preloadTextTable, { once: true });
                 await window.akeVersionReady;
                 renderVersionInfo();
+                if (!deepPlugin) showUpdatedTip();
                 initTheme();
 
                 const savedLevelSettings = storage.get('akedata-levelSettings');

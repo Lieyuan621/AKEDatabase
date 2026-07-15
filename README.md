@@ -8,7 +8,7 @@
 
 AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模块以 v3 为主。v3 从完整 `TableCfg` 和 `public/Json` 动态建立实体关系，同时复用经过验证的 v2 页面控制器和样式。
 
-在线站点：[https://akedata.top](https://akedata.top)
+在线站点：[https://www.akedata.wiki](https://www.akedata.wiki)（原 `akedata.top` 已重定向至此）
 
 ## 功能
 
@@ -21,6 +21,8 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 - 隐藏模块、默认等级、URL 同步和截图导出设置
 - 模块和实体深链接
 - 桌面与移动端响应式布局
+- 首页数据更新时间倒计时、可重复查看的多语言网站公告和公告版本更新自动提醒
+- 首页底部展示工信部备案号并链接至备案管理系统
 
 ## 当前模块
 
@@ -57,7 +59,7 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 ```text
 AKEDatabase/
 ├─ index.html                     # 应用外壳、设置弹窗和全局脚本入口
-├─ version.json                   # 应用、游戏、Hotfix 与更新时间的唯一来源
+├─ version.json                   # 应用、数据、公告版本和下次更新时间配置
 ├─ plugin/
 │  ├─ manifest.json               # 顶层模块注册表
 │  ├─ v3_*.html                   # v3 模块 DOM 壳
@@ -83,8 +85,9 @@ AKEDatabase/
 │  │  ├─ SkillData/               # 技能动作、时间线和黑板参数
 │  │  ├─ SpawnerConfig/           # 场景生成器、敌人库和波次
 │  │  └─ LevelData/               # 场景与关卡详细数据
-│  ├─ CH/                         # 旧版/v2 中文聚合数据、研究文档和 maps.json
-│  ├─ EN/                         # 有限的英文资源，尚非完整语言镜像
+│  ├─ CH/                         # 中文聚合数据、研究文档、i18n、maps 和 tip.md
+│  ├─ EN/                         # 英文 i18n、maps 和 tip.md 等语言资源
+│  ├─ <语言>/                     # 各语言 i18n.json、maps.json 和网站公告 tip.md
 │  └─ images/                     # 游戏图片素材
 ├─ .kilo/skills/akedatabase/      # Agent 项目知识 skill
 ├─ .vscode/settings.json          # Live Server 端口配置
@@ -105,7 +108,7 @@ AKEDatabase/
 
 `index-app.js` 读取 `plugin/manifest.json`，过滤禁用模块，按 `priority` 排序，然后生成桌面侧栏和移动端菜单。
 
-首页和设置弹窗中的应用版本、游戏版本、Hotfix 和最后更新时间都来自 `version.json`，不再硬编码在 HTML 中。代码、CSS 或模块结构变化时递增 `appversion`；IndexedDB 缓存版本由 `gameversion` 和 `hotfixversion` 共同派生。
+设置弹窗中的应用版本、游戏版本、Hotfix 和最后更新时间来自 `version.json`。首页不显示版本号，而是读取 `totime` 和 `desc` 显示下次数据更新倒计时及可选更新原因。代码、CSS、模块结构或界面语言文件变化时递增 `appversion`；IndexedDB 缓存版本由 `gameversion` 和 `hotfixversion` 共同派生。
 
 点击模块后，框架通过 `window.akeFetch` 获取模块 HTML并插入 `#contentArea`。因为动态插入的 `<script>` 不会自动执行，加载器会按 DOM 顺序重新创建脚本节点并等待外部脚本完成。
 
@@ -124,6 +127,42 @@ AKEDatabase/
 `gameversion` 或 `hotfixversion` 变化时会原子清空旧 public 响应并写入新版本。单独更新 `appversion` 不会使 public 数据缓存失效。IndexedDB、Service Worker 或 localStorage 不可用时，页面自动降级到内存缓存和普通网络请求，不阻止应用启动。`version.json` 每次启动均使用 `no-store` 请求。
 
 Service Worker 首次安装或应用版本更新并取得页面控制权时，会按 `appversion` 在当前会话中执行一次刷新，使 favicon、首页图片等早于缓存脚本发起的 `/public/` 请求也经过 Service Worker。
+
+### 首页公告与倒计时
+
+首页公告和更新倒计时由 `plugin/js/index-app.js` 渲染，配置来自根目录 `version.json`：
+
+| 字段 | 用途 |
+|---|---|
+| `tipversion` | 公告版本，通常填写公告最后更新时间；值变化后首页自动弹出新公告 |
+| `totime` | 下次数据更新时间；未携带时区时按东八区 `UTC+08:00` 解析 |
+| `desc` | 数据更新原因；空字符串、纯空格或字段缺失时不显示 |
+
+示例：
+
+```json
+{
+  "tipversion": "2026-07-16 01:43:08",
+  "totime": "2026-07-16 06:30:00",
+  "desc": "同步最新游戏数据"
+}
+```
+
+倒计时每秒以浏览器本地系统时间重新计算。`totime` 可写为不带时区的 `YYYY-MM-DD HH:mm:ss`，此时默认东八区；也可提供 `2026-07-16T06:30:00+08:00` 或带 `Z` 的 ISO 时间。到期后倒计时归零，不显示负数。
+
+每种界面语言从自己的公告文件读取内容：
+
+```text
+public/CH/tip.md
+public/EN/tip.md
+public/<其他语言>/tip.md
+```
+
+首页右上角“网站公告”按钮可随时手动打开当前语言公告。浏览器使用 localStorage 键 `akedata-tipversion` 记录已读公告版本；当 `tipversion` 与已读值不同时，进入主页会自动弹出公告，成功加载并显示后才标记为已读。直接通过深链接进入模块时不会立即弹出，返回主页后再检测。
+
+`tip.md` 请求以 `tipversion` 作为 URL 版本参数，并通过 `X-AKE-Page-Cache: 1` 绕过 `/public/**` 的长期 IndexedDB/Service Worker 数据缓存。更新公告时必须同步更新所有语言的 `tip.md` 并手动修改 `tipversion`；修改倒计时字段不需要改变公告已读状态。
+
+首页底部固定展示备案号 `浙ICP备2026014728号-1`，链接至 `https://beian.miit.gov.cn/#/Integrated/index`。
 
 加载 `/public/**` 数据时，页面顶部按“已加载字节数 / 数据总字节数”显示进度。默认显示进度和总体字节量；开启“显示隐藏模块”后，额外显示当前文件路径、来源（网络、内存或 IndexedDB）以及当前文件字节数。未开启隐藏模块但连续加载超过 3 秒时，也会自动展开这些文件详情。响应尚未提供 `Content-Length` 时显示已加载字节量与不确定进度动画，不再按文件数量估算进度。
 
@@ -159,6 +198,7 @@ v3 当前采用兼容层设计，而不是重复实现九套 UI：
 - `public/JP`：日文资源目录，已补齐独立 `i18n.json` 与 `maps.json`。
 - `public/KR`：韩文资源目录，已补齐独立 `i18n.json` 与 `maps.json`。
 - `public/RU`、`MX`、`BR`、`DE`、`FR`、`VN`、`TH`、`ID`、`IT`：其余 TableCfg 语言目录，当前游戏文本已接入对应 `I18nTextTable_*`，但站点界面与枚举的独立本地化仍待完成。
+- 每个语言目录的 `tip.md`：首页网站公告正文；公告按钮、倒计时和更新原因标签位于同目录 `i18n.json`。
 - `public/images`：模块按固定路径约定组装图片 URL。
 
 副本会通过 `DungeonTable.sceneId` 关联 `LevelData/<sceneId>` 和 `SpawnerConfig/<sceneId>`；SpawnerConfig 中的 `enemyLibrary` 再关联 EnemyTable，出生 Buff 则按 ID 加载 `BuffData/<buffId>.json`。
@@ -173,7 +213,7 @@ public/EN/i18n.json
 public/<其他语言>/i18n.json
 ```
 
-两份文件都使用同一套 key 树，并按 `messages.common`、`messages.modules.<module>` 等 scope 隔离。启用模块的 HTML 使用 `data-i18n`/`data-i18n-placeholder`，控制器脚本通过 `window.akeI18n.scope('<scope>')` 读取翻译，不再通过中文原文做运行时替换。
+这些文件都使用同一套 key 树，并按 `messages.common`、`messages.home`、`messages.version`、`messages.modules.<module>` 等 scope 隔离。启用模块的 HTML 使用 `data-i18n`/`data-i18n-placeholder`，控制器脚本通过 `window.akeI18n.scope('<scope>')` 读取翻译，不再通过中文原文做运行时替换。首页公告按钮使用 `home.announcement`，倒计时和更新原因分别使用 `version.countdown` 与 `version.updateReason`。
 
 游戏 TableCfg 文本与界面文案分离。当前运行时支持以下语言代码：
 
@@ -252,12 +292,13 @@ http://localhost:5501/
 设置通过 localStorage 保存：
 
 - 主题
-- 语言（`CH`/`EN`）
+- 语言（`CH TC EN JP KR RU MX BR DE FR VN TH ID IT`）
 - 是否显示隐藏模块
 - 是否显示截图导出按钮
 - 角色、武器、敌人和技能默认等级
 - 是否保持 URL 同步
 - 已解锁的模块令牌
+- 已读网站公告版本（`akedata-tipversion`）
 
 保存设置后会广播 `globalConfigChanged`，模块据此刷新筛选和等级显示。语言切换会刷新页面，以重新加载当前语言的模块资源和 TableCfg hydration 缓存。
 
@@ -354,12 +395,14 @@ git status --short
 8. 副本 SpawnerConfig、波次和 BuffData。
 9. 富文本与两层 tooltip。
 10. 截图、缓存刷新和 localStorage 设置恢复。
+11. 首页倒计时的东八区转换、空 `desc` 隐藏、到期归零。
+12. 公告按钮重复查看、`tipversion` 变化自动弹出、各语言 `tip.md` 和移动端右上角布局。
 
 ## 已知限制
 
 - v3 是 TableCfg/Json 到 v2 UI 的兼容适配层，数据契约尚无类型或 schema。
 - 大型 TableCfg 会整表下载、解析、递归本地化并缓存，首次打开部分模块可能较慢。
-- 当前中文固定为 CN，没有完整多语言切换。
+- 各语言的 TableCfg 文本已接入，但部分站点界面和枚举仍沿用英文占位翻译。
 - 路由使用 `replaceState`，没有完整的浏览器历史导航生命周期。
 - 动态模块没有统一卸载钩子，长期运行时需注意全局监听器和动态样式。
 - `optionalJson` 对缺少的 LevelData/SpawnerConfig 静默降级为基础 TableCfg 展示。

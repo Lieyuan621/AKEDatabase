@@ -1,0 +1,1 @@
+AKEDataはwww.akedata.wikiへ移行しました。旧ドメインのakedata.topは現在こちらへリダイレクトされます。

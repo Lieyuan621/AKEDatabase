@@ -4,7 +4,7 @@
     "messages": {
         "app": { "title": "AKEData · 终末地数据库" },
         "common": { "dataLoadProgress": "数据加载进度", "loadingData": "正在加载数据...", "loadingModule": "⏳ 加载模块内容...", "firstLoadTextTableHint": "首次加载需要加载文本映射表，可能速度较慢", "all": "全部", "none": "无", "unknown": "未知", "noDescription": "无描述", "list": "列表", "mobileList": "📋 列表", "filter": "筛选", "filterCount": "筛选 ({count})", "rarity": "稀有度：", "type": "类型：", "category": "分类：", "status": "状态：", "rarityStars": "{rarity}星", "rarityLabel": "稀有度 {rarity}", "level": "等级", "attack": "攻击力", "yes": "是", "no": "否", "rawValue": "原始值：{value}", "rawValueWithName": "{name}: {value}", "time": { "days": "{count}天", "hours": "{count}小时", "minutes": "{count}分", "seconds": "{count}秒", "lessThanSecond": "不足 1 秒" }, "expandAllLevels": "展开所有等级", "collapseExtraLevels": "收起多余等级" },
-        "home": { "heroImageAlt": "起始页图片", "title": "AKEData · 《明日方舟：终末地》数据库", "precisionNote": "游戏中所有数值通常情况下都不是整数，但是在游戏中只显示整数部分，本数据库中所有数据均比游戏内更精确一位以方便查阅计算。", "disclaimer": "免责声明：本网站为同好爱好者项目，与鹰角网络和 Gryphline 官方无关。所有商标权利均归属其各自所有者。", "settingsHint": "左下角 ⚙️ 按钮可打开全局设置", "exportFallback": "起始页" },
+        "home": { "heroImageAlt": "起始页图片", "title": "AKEData · 《明日方舟：终末地》数据库", "precisionNote": "游戏中所有数值通常情况下都不是整数，但是在游戏中只显示整数部分，本数据库中所有数据均比游戏内更精确一位以方便查阅计算。", "disclaimer": "免责声明：本网站为同好爱好者项目，与鹰角网络和 Gryphline 官方无关。所有商标权利均归属其各自所有者。", "settingsHint": "左下角 ⚙️ 按钮可打开全局设置", "exportFallback": "起始页", "announcement": "网站公告" },
         "nav": { "home": "返回起始页", "moduleList": "模块列表", "loadingModules": "加载模块清单...", "selectModule": "选择模块", "export": "导出长图", "noVisibleModules": "📭 暂无可见模块" },
         "settings": {
             "title": "全局设置", "heading": "⚙️ 全局设置", "language": "语言/Language：", "theme": "页面样式：",
@@ -14,7 +14,7 @@
             "tokens": { "title": "🔑 访问令牌", "hint": "输入令牌以解锁受保护的模块及内容，多个令牌使用英文逗号分隔", "label": "令牌：", "placeholder": "请输入访问令牌", "submit": "提交", "clear": "清除所有令牌", "empty": "尚未输入任何令牌", "count": "已输入 {count} 个令牌", "enterPrompt": "请输入令牌", "added": "已添加 {count} 个令牌", "duplicate": "这些令牌已存在", "noneSaved": "当前没有已保存的令牌", "cleared": "已清除 {count} 个令牌" },
             "showHiddenConfirm": "是否确认开启隐藏内容？隐藏内容中包含开发中内容，可能存在 bug（我们建议您不要在直播或其他公开场合开启或阅读隐藏内容）。"
         },
-        "version": { "loading": "正在读取版本信息...", "unavailable": "版本信息暂不可用", "appLine": "AKEData · 版本 {version}", "gameLine": "游戏版本 {version}", "hotfixLine": "Hotfix 版本 {version}", "updatedLine": "最后更新于：{updatedAt}{updatedBy}", "homeLine": "AKEData {app} · {game}" },
+        "version": { "loading": "正在读取更新信息...", "unavailable": "更新信息暂不可用", "appLine": "AKEData · 版本 {version}", "gameLine": "游戏版本 {version}", "hotfixLine": "Hotfix 版本 {version}", "updatedLine": "最后更新于：{updatedAt}{updatedBy}", "homeLine": "AKEData {app} · {game}", "countdown": "距离下次可能的数据更新还有 {time}", "updateReason": "更新原因：{desc}" },
         "overview": { "count": "{count} 条数据", "hint": "选择卡片查看完整数据" },
         "errors": { "load": "加载失败：{message}", "startup": "应用启动失败：{message}", "notFoundTitle": "页面未找到", "notFoundDesc": "您访问的模块或条目不存在", "returnHome": "返回首页", "hiddenContentHint": "🔒 该内容可能为隐藏内容。", "hiddenContentHelp": "您可以通过点击左下角 ⚙️ 全局设置按钮，开启“显示隐藏模块”来访问隐藏内容。", "moduleContentMissing": "模块内容文件未指定", "moduleLoad": "❌ 无法加载模块内容：{message}", "moduleManifestRead": "❌ 无法读取模块清单。<br>请通过本地服务器访问。", "exportFailed": "截图失败：{message}" },
         "data": { "independentEquipment": "独立装备" },
