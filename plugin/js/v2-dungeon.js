@@ -483,7 +483,7 @@
                 const name = item?.name?.text || bundle.id;
                 const rarity = item?.rarity || 0;
                 const iconId = item?.iconId || '';
-                const iconSrc = iconId ? `/public/images/item/itemicon/${iconId}.png` : '';
+                const iconSrc = iconId ? `/public/images/item/itemiconbig/${iconId}.png` : '';
                 const iconHtml = iconSrc ? `<img class="v2d-reward-icon" src="${iconSrc}" onerror="this.style.display='none'">` : '';
                 const rarityDot = rarity > 0 ? `<span class="v2d-reward-rarity r-${rarity}"></span>` : '';
                 return `<span class="v2d-reward-item">${iconHtml}${rarityDot}${name} ×${bundle.count}</span>`;
@@ -723,7 +723,7 @@
             const cardBgSrc = picPath ? `/public/images/dungeon/${picPath}.png` : '';
             const cardBgHtml = cardBgSrc ? `<img class="v2d-card-bg" src="${cardBgSrc}" onerror="this.style.display='none'">` : '';
 
-            const dungeonIconSrc = dungeonImg ? `/public/images/item/itemicon/${dungeonImg}.png` : '';
+            const dungeonIconSrc = dungeonImg ? `/public/images/item/itemiconbig/${dungeonImg}.png` : '';
             const dungeonIconHtml = dungeonIconSrc ? `<img class="v2d-card-icon" src="${dungeonIconSrc}" onerror="this.style.display='none'">` : '';
 
             return `

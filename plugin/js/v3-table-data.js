@@ -134,9 +134,9 @@
     function icon(kind, id, iconId) {
         const paths = {
             character: `/public/images/character/charremoteicon/icon_${id}.png`,
-            weapon: `/public/images/weapon/icon/${iconId || id}.png`,
-            enemy: `/public/images/enemy/monstericon/${id}.png`,
-            item: `/public/images/item/itemicon/${iconId || id}.png`,
+            weapon: `/public/images/weapon/iconbig/${iconId || id}.png`,
+            enemy: `/public/images/enemy/monstericonbig/${id}.png`,
+            item: `/public/images/item/itemiconbig/${iconId || id}.png`,
             equip: `/public/images/equip/icon/${iconId || id}.png`
         };
         return paths[kind] || '';

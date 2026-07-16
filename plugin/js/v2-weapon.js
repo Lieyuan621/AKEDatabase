@@ -327,7 +327,7 @@
                 const iData = itemTable[it.id];
                 const iName = iData?.name?.text || it.id;
                 const iIcon = iData?.iconId || it.id;
-                costsHtml += `<div class="break-cost-row"><img src="/public/images/item/itemicon/${iIcon}.png" onerror="this.style.display='none'"><span class="bc-name">${escapeHtml(iName)}</span><span class="bc-cnt">×${it.count}</span></div>`;
+                costsHtml += `<div class="break-cost-row"><img src="/public/images/item/itemiconbig/${iIcon}.png" onerror="this.style.display='none'"><span class="bc-name">${escapeHtml(iName)}</span><span class="bc-cnt">×${it.count}</span></div>`;
             });
 
             let boundsHtml = '';

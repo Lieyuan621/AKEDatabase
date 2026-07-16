@@ -429,7 +429,7 @@
             const iconId = item.iconId || entry.id;
             const currentClass = entry.id === currentId ? ' is-current' : '';
             return `<a class="v2i-craft-item${currentClass}" href="/?plugin=v3_item&id=${encodeURIComponent(entry.id)}" data-item-id="${entry.id}" title="${entry.id}">
-                <img src="/public/images/item/itemicon/${iconId}.png" onerror="this.onerror=null; this.src='';">
+                <img src="/public/images/item/itemiconbig/${iconId}.png" onerror="this.onerror=null; this.src='';">
                 <span class="v2i-craft-item-name">${name}</span><strong>×${entry.count ?? 1}</strong>
             </a>`;
         }

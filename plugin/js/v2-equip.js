@@ -296,18 +296,18 @@
             let tipHtml = '';
             if (goldCost > 0) {
                 const goldName = itemTable[formulaData.costGoldId]?.name?.text || formulaData.costGoldId;
-                tipHtml += `<div class="v2eq-cost-item"><img src="/public/images/item/itemicon/${formulaData.costGoldId}.png" onerror="this.style.display='none'"><span class="v2eq-ci-name">${escapeHtml(goldName)}</span><span class="v2eq-ci-cnt">${goldCost.toLocaleString()}</span></div>`;
+                tipHtml += `<div class="v2eq-cost-item"><img src="/public/images/item/itemiconbig/${formulaData.costGoldId}.png" onerror="this.style.display='none'"><span class="v2eq-ci-name">${escapeHtml(goldName)}</span><span class="v2eq-ci-cnt">${goldCost.toLocaleString()}</span></div>`;
             }
             costItems.forEach((cid, i) => {
                 const num = costNums[i] || 0;
                 const cName = itemTable[cid]?.name?.text || cid;
-                tipHtml += `<div class="v2eq-cost-item"><img src="/public/images/item/itemicon/${cid}.png" onerror="this.style.display='none'"><span class="v2eq-ci-name">${escapeHtml(cName)}</span><span class="v2eq-ci-cnt">×${num}</span></div>`;
+                tipHtml += `<div class="v2eq-cost-item"><img src="/public/images/item/itemiconbig/${cid}.png" onerror="this.style.display='none'"><span class="v2eq-ci-name">${escapeHtml(cName)}</span><span class="v2eq-ci-cnt">×${num}</span></div>`;
             });
 
             const allIconIds = [];
             if (formulaData.costGoldId) allIconIds.push(formulaData.costGoldId);
             costItems.forEach(id => allIconIds.push(id));
-            const iconsHtml = allIconIds.map(id => `<img src="/public/images/item/itemicon/${id}.png" onerror="this.style.display='none'">`).join('');
+            const iconsHtml = allIconIds.map(id => `<img src="/public/images/item/itemiconbig/${id}.png" onerror="this.style.display='none'">`).join('');
 
             return `<span class="v2eq-cost-wrap"><span class="v2eq-cost-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-cost-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">${t('craftingCost')}</span><span class="v2eq-cost-icons">${iconsHtml}</span><span class="v2eq-cost-tip">${tipHtml}</span></span>`;
         }

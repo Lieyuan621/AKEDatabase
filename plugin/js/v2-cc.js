@@ -612,7 +612,7 @@
                                 <div class="v2cc-level-reward-list">
                                     ${items.length ? items.map(it => `
                                         <div class="v2cc-reward-item">
-                                            <img class="v2cc-reward-icon" src="/public/images/item/itemicon/${it.iconId}.png" onerror="this.onerror=null; this.style.display='none';">
+                                            <img class="v2cc-reward-icon" src="/public/images/item/itemiconbig/${it.iconId}.png" onerror="this.onerror=null; this.style.display='none';">
                                             <span class="v2cc-reward-name">${escapeHtml(it.name)}</span>
                                             <span class="v2cc-reward-count">×${it.count}</span>
                                         </div>
@@ -687,7 +687,7 @@
                                     return `
                                         <div class="v2cc-shop-goods-row">
                                             <span class="col-icon">
-                                                ${itemIcon ? `<img class="v2cc-goods-icon" src="/public/images/item/itemicon/${itemIcon}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
+                                                ${itemIcon ? `<img class="v2cc-goods-icon" src="/public/images/item/itemiconbig/${itemIcon}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
                                             </span>
                                             <span class="col-name">${itemName}</span>
                                             <span class="col-price">${hasDiscount ? `<span class="v2cc-price-original">${g.price}</span> ` : ''}${actualPrice} ${currencyName}${hasDiscount ? ` <span class="v2cc-goods-discount">-${Math.round((1 - g.cnDiscount) * 100)}%</span>` : ''}</span>
@@ -758,7 +758,7 @@
                                                             <span class="v2cc-task-reward-label">${t('tasks.rewards')}</span>
                                                             ${rewards.map(r => `
                                                                 <span class="v2cc-task-reward">
-                                                                    ${r.iconId ? `<img class="v2cc-task-reward-icon" src="/public/images/item/itemicon/${r.iconId}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
+                                                                    ${r.iconId ? `<img class="v2cc-task-reward-icon" src="/public/images/item/itemiconbig/${r.iconId}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
                                                                     <span class="v2cc-task-reward-name">${escapeHtml(r.name)}</span>
                                                                     <span class="v2cc-task-reward-count">×${r.count}</span>
                                                                 </span>

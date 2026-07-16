@@ -41,6 +41,9 @@
             'costValue': 'columns.costValue',
         };
         const ALWAYS_SHOW_COLS = ['coolDown', 'costValue'];
+        function isAlwaysShowColumn(column) {
+            return ALWAYS_SHOW_COLS.includes(column) || column.startsWith('coolDown:');
+        }
         const GROWTH_ATTRIBUTES = [
             { id: 'strength', key: 'attributes.strength' },
             { id: 'agility', key: 'attributes.agility' },
@@ -79,10 +82,28 @@
             return window.parseText(text, IMAGE_BASE_PATH);
         }
 
+        function getText(value) {
+            if (typeof value === 'string') return value;
+            return typeof value?.text === 'string' ? value.text : '';
+        }
+
         function parseLevelInput(input, maxLevel = 90) {
             if (!input || input.trim() === '') return [];
             const parts = input.split(',').map(s => parseInt(s.trim(), 10)).filter(n => !isNaN(n) && n >= 1 && n <= maxLevel);
             return parts.length ? parts : [maxLevel];
+        }
+
+        function formatPlaceholderValue(value, format) {
+            const formatMatch = String(format || '').match(/^0(?:\.(0+))?(%)?$/);
+            if (!formatMatch) return String(value);
+
+            const precision = formatMatch[1]?.length || 0;
+            const formattedValue = formatMatch[2] ? value * 100 : value;
+            return formattedValue.toFixed(precision) + (formatMatch[2] || '');
+        }
+
+        function removeDynamicFloorSegments(text) {
+            return String(text || '').replace(/[（(][^（）()]*\{floor:[^{}]+\}[^（）()]*[）)]/gi, '');
         }
 
         function replacePlaceholders(desc, valueMap, modifierTypes, showModTag) {
@@ -96,7 +117,7 @@
                     lowerModTypes[String(key).toLowerCase()] = val;
                 }
             }
-            return String(desc || '').replace(/\{([^}]+)\}/g, (match, p1) => {
+            return removeDynamicFloorSegments(desc).replace(/\{([^}]+)\}/g, (match, p1) => {
                 const parts = p1.split(':');
                 const expr = parts[0].replace(/\s+/g, '');
                 const format = parts[1] ? parts[1].trim() : '';
@@ -115,14 +136,7 @@
                 } catch (e) {
                     return match;
                 }
-                let formatted;
-                if (format.includes('%')) formatted = (result * 100).toFixed(1) + '%';
-                else if (format.includes('.')) {
-                    const precision = format.split('.')[1]?.length || 1;
-                    formatted = result.toFixed(precision);
-                }
-                else if (format.includes('0')) formatted = Math.round(result).toString();
-                else formatted = result.toString();
+                let formatted = formatPlaceholderValue(result, format);
                 if (showModTag && lowerModTypes) {
                     const matchedModType = varNames.map(name => lowerModTypes[name.toLowerCase()]).find(v => v != null);
                     if (matchedModType != null) {
@@ -203,17 +217,12 @@
                 }
 
                 if (typeof finalValue === 'number') {
-                    let formatted;
-                    if (format === '0%') formatted = Math.round(finalValue * 100) + '%';
-                    else if (format === '0.0%') formatted = (finalValue * 100).toFixed(1) + '%';
-                    else if (format === '0') formatted = Math.round(finalValue).toString();
-                    else if (format === '0.0') formatted = finalValue.toFixed(1);
-                    else formatted = finalValue.toString();
+                    const formatted = formatPlaceholderValue(finalValue, format);
                     return window.renderRawValueTip ? window.renderRawValueTip(formatted, finalValue, expr) : formatted;
                 } else if (typeof finalValue === 'string') {
-                    if (format === '0%' && !finalValue.includes('%')) {
+                    if (/^0(?:\.(0+))?%$/.test(format) && !finalValue.includes('%')) {
                         let num = parseFloat(finalValue);
-                        if (!isNaN(num)) return Math.round(num * 100) + '%';
+                        if (!isNaN(num)) return formatPlaceholderValue(num, format);
                     }
                 }
 
@@ -246,12 +255,7 @@
                 if (finalValue === undefined) finalValue = 0;
 
                 if (typeof finalValue === 'number') {
-                    let formatted;
-                    if (format === '0%') formatted = Math.round(finalValue * 100) + '%';
-                    else if (format === '0.0%') formatted = (finalValue * 100).toFixed(1) + '%';
-                    else if (format === '0') formatted = Math.round(finalValue).toString();
-                    else if (format === '0.0') formatted = finalValue.toFixed(1);
-                    else formatted = finalValue.toString();
+                    const formatted = formatPlaceholderValue(finalValue, format);
                     return window.renderRawValueTip ? window.renderRawValueTip(formatted, finalValue, `${dataIdx},${valIdx}`) : formatted;
                 }
                 return String(finalValue);
@@ -723,7 +727,7 @@
             legacy.talents = talentNodes.map(n => {
                 const effect = rawData.potentialtalenteffecttable?.[n.passiveSkillNodeInfo.talentEffectId];
                 if (!effect) return null;
-                const descRaw = effect.desc?.text || effect.desc || '';
+                const descRaw = getText(effect.desc);
                 const values = {};
                 const modifierTypes = {};
                 (effect.dataList || []).forEach(item => {
@@ -763,7 +767,7 @@
             legacy.potentials = potentials.map(p => {
                 const effId = p.potentialEffectId;
                 let effect = rawData.potentialtalenteffecttable?.[effId];
-                let desc = effect?.desc?.text || effect?.desc || '';
+                let desc = getText(effect?.desc);
                 let dataList = effect?.dataList || [];
                 if (!desc) {
                     const patch = rawData.skillpatchtable?.[effId]?.SkillPatchDataBundle?.[0];
@@ -836,10 +840,24 @@
 
             const skillGroupMap = rawData.chargrowthtable?.skillGroupMap || {};
             const skillGroups = Object.values(skillGroupMap).sort((a, b) => (SKILL_GROUP_ORDER[a.skillGroupType] ?? a.skillGroupType) - (SKILL_GROUP_ORDER[b.skillGroupType] ?? b.skillGroupType));
+            const highestTalentNodes = new Map();
+            Object.values(rawData.chargrowthtable?.talentNodeMap || {}).forEach(node => {
+                const info = node.passiveSkillNodeInfo;
+                if (node.nodeType !== 4 || !info?.talentEffectId) return;
+                const previous = highestTalentNodes.get(info.index);
+                const previousInfo = previous?.passiveSkillNodeInfo;
+                if (!previous || (info.level ?? 0) > (previousInfo.level ?? 0) ||
+                    ((info.level ?? 0) === (previousInfo.level ?? 0) && (info.breakStage ?? 0) > (previousInfo.breakStage ?? 0))) {
+                    highestTalentNodes.set(info.index, node);
+                }
+            });
+            const highestTalentEffects = Array.from(highestTalentNodes.values())
+                .map(node => rawData.potentialtalenteffecttable?.[node.passiveSkillNodeInfo.talentEffectId])
+                .filter(Boolean);
             legacy.skills = skillGroups.map(s => {
                 const iconPath = s.icon ? `/public/images/character/skillicon/${s.icon}.png` : '';
-                const groupName = s.name?.text || s.name || '';
-                const groupDescription = s.desc?.text || s.desc || '';
+                const groupName = getText(s.name);
+                const groupDescription = getText(s.desc);
                 const skillIdList = Array.isArray(s.skillIdList) ? s.skillIdList : [];
                 let patchLists = skillIdList
                     .map(skillId => rawData.skillpatchtable?.[skillId]?.SkillPatchDataBundle || [])
@@ -923,6 +941,28 @@
                     });
                 }
 
+                if (s.skillGroupType === 3 && conditions.length > 1 && values.coolDown.length > 0) {
+                    conditions.forEach(condition => {
+                        const adjustments = { 2: 0, 4: 0 };
+                        const found = { 2: false, 4: false };
+                        highestTalentEffects.forEach(effect => {
+                            (effect.dataList || []).forEach(item => {
+                                const modifier = item.skillParamModifier;
+                                if (!modifier || ![2, 4].includes(modifier.paramType) || modifier.modifyType !== 1) return;
+                                if (!skillIdList.includes(modifier.skillId) || !(item.activeCondition || []).includes(condition.id)) return;
+                                if (typeof modifier.paramValue !== 'number') return;
+                                adjustments[modifier.paramType] += modifier.paramValue;
+                                found[modifier.paramType] = true;
+                            });
+                        });
+                        const adjustment = found[4] ? adjustments[4] : (found[2] ? adjustments[2] : 0);
+                        const key = `coolDown:${condition.id}`;
+                        values[key] = values.coolDown.map(coolDown => coolDown + adjustment);
+                        subDescLabels[key] = `${condition.name || condition.id} · ${t('columns.coolDown')}`;
+                    });
+                    delete values.coolDown;
+                }
+
                 const descriptionValues = {};
                 patchLists.forEach(patches => {
                     const lastPatch = patches[patches.length - 1];
@@ -956,7 +996,7 @@
             const skillGroupIdToName = {};
             legacy.skills.forEach(g => { skillGroupIdToName[g.skillIds?.[0]?.split('_').slice(0, -1).join('_') || ''] = g.name; });
             Object.values(rawData.chargrowthtable?.skillGroupMap || {}).forEach(sg => {
-                skillGroupIdToName[sg.skillGroupId] = sg.name?.text || sg.name || '';
+                skillGroupIdToName[sg.skillGroupId] = getText(sg.name);
             });
             skillLevelUp.forEach(entry => {
                 const gid = entry.skillGroupId;
@@ -973,7 +1013,7 @@
             spaceshipChars.forEach(s => {
                 const skill = spaceshipSkills[s.skillId];
                 if (!skill) return;
-                const tName = skill.talentName?.text || skill.talentName || '';
+                const tName = getText(skill.talentName);
                 if (!groupedSkills[tName]) {
                     groupedSkills[tName] = {
                         icon: skill.icon ? `/public/images/character/spaceshipskillicon/${skill.icon}.png` : '',
@@ -984,9 +1024,9 @@
                 }
                 groupedSkills[tName].levels.push({
                     postfix: skill.skillNamePostfix || '',
-                    skillName: skill.name?.text || skill.name || '',
-                    skillDesc: parseText(skill.desc?.text || skill.desc || ''),
-                    unlockHint: s.unlockHint?.text || s.unlockHint || ''
+                    skillName: getText(skill.name),
+                    skillDesc: parseText(getText(skill.desc)),
+                    unlockHint: getText(s.unlockHint)
                 });
             });
             legacy.spaceshipSkills = Object.values(groupedSkills);
@@ -996,8 +1036,8 @@
                 desc: rec.recordDesc?.text || ''
             }));
             legacy.profileVoice = (rawData.charactertable?.profileVoice || []).map(v => ({
-                title: v.voiceTitle?.text || v.voiceTitle || v.voId || '',
-                desc: v.voiceDesc?.text || v.voiceDesc || ''
+                title: getText(v.voiceTitle) || v.voId || '',
+                desc: getText(v.voiceDesc)
             }));
 
             return legacy;
@@ -1065,7 +1105,7 @@
                 if (showHidden) {
                     allColumns = [...subDescNames, ...bbColumns];
                 } else {
-                    const extraCols = ALWAYS_SHOW_COLS.filter(c => bbColumns.includes(c));
+                    const extraCols = bbColumns.filter(isAlwaysShowColumn);
                     allColumns = [...extraCols, ...subDescNames];
                 }
             } else {
@@ -1146,13 +1186,13 @@
             if (parts.length === 0) return '';
             return parts.map(it => {
                 const nm = (it.id === 'item_gold' ? '折金票' : (itemNameMap || {})[it.id]) || it.id;
-                return `<div class="cost-item"><img src="/public/images/item/itemicon/${it.id}.png" onerror="this.style.display='none'"><span class="ci-name">${nm}</span><span class="ci-cnt">×${it.count}</span></div>`;
+                return `<div class="cost-item"><img src="/public/images/item/itemiconbig/${it.id}.png" onerror="this.style.display='none'"><span class="ci-name">${nm}</span><span class="ci-cnt">×${it.count}</span></div>`;
             }).join('');
         }
 
         function costBtnHtml(innerHtml, itemIds) {
             if (!innerHtml) return '';
-            const icons = (itemIds || []).map(id => `<img src="/public/images/item/itemicon/${id}.png" onerror="this.style.display='none'">`).join('');
+            const icons = (itemIds || []).map(id => `<img src="/public/images/item/itemiconbig/${id}.png" onerror="this.style.display='none'">`).join('');
             return `<span class="cost-wrap"><span class="cost-btn" onclick="event.stopPropagation();var tip=this.nextElementSibling;tip.classList.toggle('pinned');if(tip.classList.contains('pinned'))document.querySelectorAll('.cost-tip.pinned').forEach(x=>{if(x!==tip)x.classList.remove('pinned')})">${t('developmentCost')}</span><span class="cost-btn-icons">${icons}</span><span class="cost-tip">${innerHtml}</span></span>`;
         }
 
@@ -1322,7 +1362,7 @@
                     if (showHidden) {
                         allColumns = [...subDescNames, ...bbColumns];
                     } else {
-                        const extraCols = ALWAYS_SHOW_COLS.filter(c => bbColumns.includes(c));
+                        const extraCols = bbColumns.filter(isAlwaysShowColumn);
                         allColumns = [...extraCols, ...subDescNames];
                     }
                 } else {
@@ -1388,7 +1428,7 @@
                         const itemParts = [{ id: 'item_gold', count: c.goldCost, name: { text: '折金票' } }, ...c.items.filter(it => it.id !== 'item_gold')];
                         const itemsStr = itemParts.map(it => {
                             const nm = it.name?.text || inm[it.id] || it.id;
-                            return `<span class="ci-ri"><img src="/public/images/item/itemicon/${it.id}.png" onerror="this.style.display='none'">${nm} ×${it.count}</span>`;
+                            return `<span class="ci-ri"><img src="/public/images/item/itemiconbig/${it.id}.png" onerror="this.style.display='none'">${nm} ×${it.count}</span>`;
                         }).join('');
                         return `<div class="sk-cost-row"><span class="cost-section-title">${t('levelRange', { name: `${c.level - 1}→${c.level}` })}</span>${itemsStr}</div>`;
                     }).join('');
