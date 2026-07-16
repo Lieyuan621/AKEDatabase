@@ -137,7 +137,7 @@
             weapon: `/public/images/weapon/iconbig/${iconId || id}.png`,
             enemy: `/public/images/enemy/monstericonbig/${id}.png`,
             item: `/public/images/item/itemiconbig/${iconId || id}.png`,
-            equip: `/public/images/equip/icon/${iconId || id}.png`
+            equip: `/public/images/equip/iconbig/${iconId || id}.png`
         };
         return paths[kind] || '';
     }
