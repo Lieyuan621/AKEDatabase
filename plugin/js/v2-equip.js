@@ -287,29 +287,30 @@
             </table>`;
         }
 
-        function renderFormulaBtn(itemId, formulaData, itemTable) {
-            if (!formulaData) return '';
-            const goldCost = formulaData.costGoldNum || 0;
-            const costItems = formulaData.costItemId || [];
-            const costNums = formulaData.costItemNum || [];
+        function renderFormulaBtn(itemId, formulaData, formulaChainData, itemTable) {
+            const chains = formulaChainData?.chainList || [];
+            if (!formulaData || chains.length === 0) return '';
 
-            let tipHtml = '';
-            if (goldCost > 0) {
-                const goldName = itemTable[formulaData.costGoldId]?.name?.text || formulaData.costGoldId;
-                tipHtml += `<div class="v2eq-cost-item"><img src="/public/images/item/itemiconbig/${formulaData.costGoldId}.png" onerror="this.style.display='none'"><span class="v2eq-ci-name">${escapeHtml(goldName)}</span><span class="v2eq-ci-cnt">${goldCost.toLocaleString()}</span></div>`;
+            function renderCostItem(costItemId, count, prefix) {
+                if (!costItemId) return '';
+                const item = itemTable[costItemId] || {};
+                const name = item.name?.text || costItemId;
+                const iconId = item.iconId || costItemId;
+                return `<div class="v2eq-cost-item"><img src="/public/images/item/itemiconbig/${iconId}.png" onerror="this.style.display='none'"><span class="v2eq-ci-name">${escapeHtml(name)}</span><span class="v2eq-ci-cnt">${prefix}${Number(count || 0).toLocaleString()}</span></div>`;
             }
-            costItems.forEach((cid, i) => {
-                const num = costNums[i] || 0;
-                const cName = itemTable[cid]?.name?.text || cid;
-                tipHtml += `<div class="v2eq-cost-item"><img src="/public/images/item/itemiconbig/${cid}.png" onerror="this.style.display='none'"><span class="v2eq-ci-name">${escapeHtml(cName)}</span><span class="v2eq-ci-cnt">×${num}</span></div>`;
-            });
 
-            const allIconIds = [];
-            if (formulaData.costGoldId) allIconIds.push(formulaData.costGoldId);
-            costItems.forEach(id => allIconIds.push(id));
-            const iconsHtml = allIconIds.map(id => `<img src="/public/images/item/itemiconbig/${id}.png" onerror="this.style.display='none'">`).join('');
+            const tipHtml = chains.map(chain => {
+                const costItems = chain.costItemId || [];
+                const costNums = chain.costItemNum || [];
+                let costsHtml = renderCostItem(chain.costGoldId, chain.costGoldNum, '');
+                costItems.forEach((costItemId, index) => {
+                    costsHtml += renderCostItem(costItemId, costNums[index], '×');
+                });
+                const chainClass = chain.isDefault ? ' v2eq-cost-chain-default' : '';
+                return `<div class="v2eq-cost-chain${chainClass}"><div class="v2eq-cost-chain-title" title="isDefault: ${chain.isDefault === true}">${escapeHtml(formulaData.level || '')} · #${escapeHtml(String(chain.chainId ?? ''))}</div>${costsHtml}</div>`;
+            }).join('');
 
-            return `<span class="v2eq-cost-wrap"><span class="v2eq-cost-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-cost-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">${t('craftingCost')}</span><span class="v2eq-cost-icons">${iconsHtml}</span><span class="v2eq-cost-tip">${tipHtml}</span></span>`;
+            return `<span class="v2eq-cost-wrap"><span class="v2eq-cost-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-cost-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">${t('craftingCost')}</span><span class="v2eq-cost-tip">${tipHtml}</span></span>`;
         }
 
         function renderGuaranteeBtn(itemId, displayAttrModifiers, guaranteeRules, enhanceConst) {
@@ -341,7 +342,7 @@
             return `<span class="v2eq-guarantee-wrap"><span class="v2eq-guarantee-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-guarantee-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">${t('enhancementGuarantee')}</span><span class="v2eq-guarantee-tip">${tipHtml}</span></span>`;
         }
 
-        function renderEquipCard(itemId, equipData, itemData, formulaData, guaranteeRules, enhanceConst, itemTable) {
+        function renderEquipCard(itemId, equipData, itemData, formulaData, formulaChainData, guaranteeRules, enhanceConst, itemTable) {
             const name = itemData?.name?.text || itemId;
             const rarity = itemData?.rarity ?? 0;
             const iconId = itemData?.iconId || '';
@@ -366,7 +367,7 @@
                 decoHtml = `<div class="v2eq-deco-desc">${parseText(decoDesc)}</div>`;
             }
 
-            const formulaBtnHtml = renderFormulaBtn(itemId, formulaData, itemTable);
+            const formulaBtnHtml = renderFormulaBtn(itemId, formulaData, formulaChainData, itemTable);
             const guaranteeBtnHtml = renderGuaranteeBtn(itemId, equipData.displayAttrModifiers, guaranteeRules, enhanceConst);
             const hasActions = formulaBtnHtml || guaranteeBtnHtml;
 
@@ -498,6 +499,7 @@
             const itemTable = data.itemtable || {};
             const formulaTable = data.equipformulatable || {};
             const reverseFormulaTable = data.equipformulareversetable || {};
+            const formulaChainTable = data.equipformulachaintable || {};
             const guaranteeRules = data.equipenhanceguaranteetimesruletable || {};
             const enhanceConst = data.equipconst || null;
 
@@ -519,7 +521,8 @@
                 const iData = itemTable[itemId] || null;
                 const formulaId = reverseFormulaTable[itemId] || '';
                 const fData = formulaId ? formulaTable[formulaId] : null;
-                cardsHtml += renderEquipCard(itemId, equipData, iData, fData, guaranteeRules, enhanceConst, itemTable);
+                const chainData = fData?.level ? formulaChainTable[fData.level] : null;
+                cardsHtml += renderEquipCard(itemId, equipData, iData, fData, chainData, guaranteeRules, enhanceConst, itemTable);
             });
 
             return `

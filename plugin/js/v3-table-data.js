@@ -266,9 +266,9 @@
     }
 
     async function equipDetail(id) {
-        const [suits, equips, items, skills, formulas, reverse, packs, packFormulas, costs, guarantees, constants, tech] = await Promise.all([
+        const [suits, equips, items, skills, formulas, reverse, formulaChains, packs, packFormulas, costs, guarantees, constants, tech] = await Promise.all([
             table('EquipSuitTable'), table('EquipTable'), table('ItemTable'), table('SkillPatchTable'), table('EquipFormulaTable'),
-            table('EquipFormulaReverseTable'), table('EquipPackTable'), table('EquipPackFormulaTable'), table('EquipEnhanceCostTable'),
+            table('EquipFormulaReverseTable'), table('EquipFormulaChainTable'), table('EquipPackTable'), table('EquipPackFormulaTable'), table('EquipEnhanceCostTable'),
             table('EquipEnhanceGuaranteeTimesRuleTable'), table('EquipConst'), table('EquipTechConst')
         ]);
         let suit = suits[id];
@@ -279,15 +279,15 @@
         suit = suit || { equipList: [], list: [] };
         const equipRows = pick(equips, suit.equipList || []);
         const formulaIds = (suit.equipList || []).map(itemId => reverse[itemId]).filter(Boolean);
-        const materialIds = formulaIds.flatMap(formulaId => {
-            const row = formulas[formulaId] || {};
-            return [row.costGoldId].concat(row.costItemId || []).filter(Boolean);
-        });
+        const formulaLevels = formulaIds.map(formulaId => formulas[formulaId]?.level).filter(Boolean);
+        const formulaChainRows = pick(formulaChains, formulaLevels);
+        const materialIds = Object.values(formulaChainRows).flatMap(row => (row.chainList || []).flatMap(chain =>
+            [chain.costGoldId].concat(chain.costItemId || []).filter(Boolean)));
         const skillIds = (suit.list || []).map(row => row.skillID).filter(Boolean);
-        const packRows = Object.fromEntries(Object.entries(packs).filter(([, row]) => (row.equipList || []).some(itemId => suit.equipList.includes(itemId))));
+        const packIds = formulaIds.map(formulaId => formulas[formulaId]?.packId).filter(Boolean);
         return { suitId: id, equipsuittable: suit, equiptable: equipRows, itemtable: pick(items, (suit.equipList || []).concat(materialIds)),
             skillpatchtable: pick(skills, skillIds), equipformulatable: pick(formulas, formulaIds), equipformulareversetable: pick(reverse, suit.equipList || []),
-            equippacktable: packRows, equippackformulatable: packFormulas, equipenhancecosttable: costs,
+            equipformulachaintable: formulaChainRows, equippacktable: pick(packs, packIds), equippackformulatable: pick(packFormulas, packIds), equipenhancecosttable: costs,
             equipenhanceguaranteetimesruletable: guarantees, equipconst: constants, equiptechconst: tech };
     }
 

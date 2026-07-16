@@ -584,18 +584,19 @@
     font-weight: bold;
     flex-shrink: 0;
 }
-.v2eq-cost-icons {
-    display: inline-flex;
-    align-items: center;
-    gap: 2px;
-    margin-left: 2px;
-    vertical-align: middle;
+.v2eq-cost-chain + .v2eq-cost-chain {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-color, #e2e7f0);
 }
-.v2eq-cost-icons img {
-    width: 18px;
-    height: 18px;
-    object-fit: contain;
-    border-radius: 3px;
+.v2eq-cost-chain-title {
+    margin-bottom: 3px;
+    color: var(--text-secondary, #667085);
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+.v2eq-cost-chain-default .v2eq-cost-chain-title {
+    color: var(--accent-color, #2878c8);
 }
 .v2eq-guarantee-wrap {
     position: relative;
