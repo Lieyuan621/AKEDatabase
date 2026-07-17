@@ -2,6 +2,14 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.2.0-pre1
+
+Separated game data from the website code. TableCfg, Json, and image assets are now stored in Cloudflare R2 and delivered through data.akedata.wiki and the EdgeOne CDN. Added a data manifest and version selector for switching between Latest and multiple game/Hotfix versions while preserving the selection. Only TableCfg is versioned; Json and images remain shared data.
+
+Added a configurable data request origin and an R2 synchronization script. The script can read default versions from version.json, publish TableCfg/Json/images together, update shared data only, control whether a release becomes Latest, and run a dry-run before uploading. In debug mode, Latest uses local Live Server data while pinned versions continue to use production history.
+
+Also isolated caches by data origin and version, and moved the image-proxy Service Worker to the site root to prevent stale data after version changes, reloads, or source switches. This is the first prerelease of AKEData 1.2.0.
+
 ### v1.1.9
 
 Added the permanent challenge feature page “Echoes of War,” with season and rotation views for stages, difficulties, rating titles, merit rewards, and official instructions. It also displays enemy waves, spawn-position maps, spawn buffs, and level-adjusted attributes, with wave switching and linked map highlighting.

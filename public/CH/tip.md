@@ -6,6 +6,14 @@ AKEData已迁移至域名：www.akedata.wiki，原先的akedata.top现已重定�
 
 # AKEData版本更新日志
 
+### v1.2.0-pre1
+
+游戏数据与网站代码现已分离：TableCfg、Json 和图片迁移至 Cloudflare R2，并通过 data.akedata.wiki 与 EdgeOne CDN 提供访问。新增数据版本清单与版本选择，支持在 Latest 和多个游戏版本/Hotfix 之间切换并保留选择；只有 TableCfg 按版本保存，Json 与图片作为共享数据维护。
+
+新增可配置的数据请求域名和 R2 同步脚本，支持从 version.json 读取默认版本、同时发布 TableCfg/Json/图片、仅同步共享数据、选择是否更新 Latest，以及在正式上传前执行 dry-run。调试模式下，Latest 使用 Live Server 的本地数据，固定版本仍读取线上历史数据。
+
+同时调整了按数据域和版本隔离的缓存，并将图片代理 Service Worker 移至站点根目录，避免版本切换、刷新或跨数据源访问时使用错误缓存。本版本为 1.2.0 的首个预发布版本。
+
 ### v1.1.9
 
 新增常驻挑战玩法“战争回响”专题模块，支持按赛季与轮换周期查看关卡、难度、评级称号、荣勋奖励和官方玩法说明；同时展示怪物波次、生成位置图、出生Buff及修正后的等级属性，并支持波次切换与地图联动高亮。

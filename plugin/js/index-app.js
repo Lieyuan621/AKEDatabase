@@ -110,6 +110,9 @@
             const modalThemeSelect = document.getElementById('modalThemeSelect');
             const modalLanguageSelect = document.getElementById('modalLanguageSelect');
             const modalShowHiddenCheck = document.getElementById('modalShowHiddenCheck');
+            const modalDataVersionSelect = document.getElementById('modalDataVersionSelect');
+            const modalDataBaseUrl = document.getElementById('modalDataBaseUrl');
+            const dataSourceStatus = document.getElementById('dataSourceStatus');
             const modalLevelsEnabled = document.getElementById('modalLevelsEnabled');
             const modalCharacterLevels = document.getElementById('modalCharacterLevels');
             const modalWeaponLevels = document.getElementById('modalWeaponLevels');
@@ -298,6 +301,40 @@
                 });
             }
 
+            function renderDataSourceSettings() {
+                const dataState = window.akeDataSource?.getState?.();
+                if (!dataState || !modalDataVersionSelect || !modalDataBaseUrl) return;
+                modalDataBaseUrl.value = dataState.debugMode ? dataState.defaultBaseUrl : dataState.baseUrl;
+                modalDataBaseUrl.disabled = Boolean(dataState.debugMode);
+                modalDataVersionSelect.disabled = false;
+                modalDataVersionSelect.replaceChildren();
+                const latestVersion = dataState.manifest.versions.find(item => item.id === dataState.manifest.latest);
+                const latestOption = document.createElement('option');
+                latestOption.value = 'latest';
+                latestOption.textContent = `Latest — ${latestVersion.gameVersion} / ${latestVersion.hotfixVersion}`;
+                modalDataVersionSelect.appendChild(latestOption);
+                const group = document.createElement('optgroup');
+                group.label = tr('settings.dataSource.fixedVersions', null, '固定版本');
+                dataState.manifest.versions.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = `${item.gameVersion} / ${item.hotfixVersion}`;
+                    group.appendChild(option);
+                });
+                modalDataVersionSelect.appendChild(group);
+                modalDataVersionSelect.value = dataState.selection;
+                if (dataSourceStatus) {
+                    const sourceText = dataState.debugLocal
+                        ? tr('settings.dataSource.debugLocal', null, '调试模式已启用，强制使用当前本地服务器数据')
+                        : dataState.debugMode
+                        ? tr('settings.dataSource.debugFixed', null, '调试模式下正在使用数据服务中的固定版本')
+                        : dataState.manifestSource === 'network'
+                        ? tr('settings.dataSource.online', null, '版本清单已从数据服务加载')
+                        : tr('settings.dataSource.fallback', null, '当前正在使用兼容版本配置');
+                    dataSourceStatus.textContent = `${sourceText} · ${dataState.baseUrl}`;
+                }
+            }
+
             function stashMountedModule() {
                 mountedModuleId = null;
             }
@@ -371,6 +408,7 @@
 
             function renderVersionInfo() {
                 const version = window.akeVersion;
+                const selectedDataVersion = window.akeDataSource?.getState?.()?.selected;
                 const box = document.getElementById('appVersionInfo');
                 if (!version) {
                     if (box) box.textContent = tr('version.unavailable');
@@ -381,8 +419,8 @@
                     box.replaceChildren();
                     [
                         tr('version.appLine', { version: version.appversion }),
-                        tr('version.gameLine', { version: version.gameversion }),
-                        tr('version.hotfixLine', { version: version.hotfixversion }),
+                        tr('version.gameLine', { version: selectedDataVersion?.gameVersion || version.gameversion }),
+                        tr('version.hotfixLine', { version: selectedDataVersion?.hotfixVersion || version.hotfixversion }),
                         tr('version.updatedLine', { updatedAt: formatUpdatedAt(version.updatedAt), updatedBy: version.updatedBy ? ` (${version.updatedBy})` : '' })
                     ].forEach(line => {
                         const p = document.createElement('p');
@@ -631,6 +669,7 @@
 
             function openSettings() {
                 renderLanguageOptions();
+                renderDataSourceSettings();
                 if (modalLanguageSelect) modalLanguageSelect.value = config.language;
                 modalThemeSelect.value = config.theme;
                 modalShowHiddenCheck.checked = config.showHidden;
@@ -700,6 +739,22 @@
                     if (wasSync !== config.keepUrlSync) {
                         settingsModal.style.display = 'none';
                         location.reload();
+                        return;
+                    }
+                }
+
+                if (modalDataVersionSelect && modalDataBaseUrl && window.akeDataSource) {
+                    try {
+                        const current = window.akeDataSource.getState();
+                        const normalizedBase = new URL(modalDataBaseUrl.value.trim() || current.defaultBaseUrl, window.location.href).href.replace(/\/$/, '');
+                        const selection = modalDataVersionSelect.value || 'latest';
+                        if (normalizedBase !== current.baseUrl || selection !== current.selection) {
+                            window.akeDataSource.configure({ baseUrl: normalizedBase, selection }).then(() => location.reload());
+                            settingsModal.style.display = 'none';
+                            return;
+                        }
+                    } catch (error) {
+                        showToast(error.message, 'warning');
                         return;
                     }
                 }
@@ -1046,8 +1101,10 @@
                 }
 
                 await window.akeI18n?.ready;
+                await window.akeDataSource?.ready;
                 config.language = window.akeI18n?.getLanguage?.() || 'CH';
                 renderLanguageOptions();
+                renderDataSourceSettings();
                 showHomePage(false);
                 const preloadTextTable = () => window.AKEV3?.preloadTextTable?.().catch(error => {
                     console.warn('无法预加载当前语言文本映射表，进入模块时将重试。', error);
@@ -1137,6 +1194,9 @@
                         document.getElementById('modalThemeSelect').value = 'light';
                         document.getElementById('modalShowHiddenCheck').checked = false;
                         document.getElementById('modalKeepUrlSync').checked = true;
+                        const currentDataSource = window.akeDataSource?.getState?.();
+                        if (modalDataBaseUrl && currentDataSource) modalDataBaseUrl.value = currentDataSource.defaultBaseUrl;
+                        if (modalDataVersionSelect) modalDataVersionSelect.value = 'latest';
                         const resetTokenInput = document.getElementById('modalTokenInput');
                         if (resetTokenInput) resetTokenInput.value = '';
                         config.unlockedTokens = [];
@@ -1152,6 +1212,15 @@
                         forceRefreshCacheBtn.disabled = true;
                         forceRefreshCacheBtn.textContent = tr('settings.cache.refreshing', null, '正在清理缓存...');
                         await window.akeDataCache?.forceRefresh?.();
+                    });
+                }
+
+                const resetDataSourceBtn = document.getElementById('resetDataSourceBtn');
+                if (resetDataSourceBtn) {
+                    resetDataSourceBtn.addEventListener('click', () => {
+                        const current = window.akeDataSource?.getState?.();
+                        if (modalDataBaseUrl && current) modalDataBaseUrl.value = current.defaultBaseUrl;
+                        if (modalDataVersionSelect) modalDataVersionSelect.value = 'latest';
                     });
                 }
 

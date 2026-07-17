@@ -72,6 +72,20 @@
                 <input type="checkbox" id="modalKeepUrlSync">
             </div>
 
+            <div class="settings-section" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+                <h4 data-i18n="settings.dataSource.title">Game data</h4>
+                <div class="settings-item">
+                    <label for="modalDataVersionSelect" data-i18n="settings.dataSource.version">Data version:</label>
+                    <select id="modalDataVersionSelect"></select>
+                </div>
+                <div class="settings-item">
+                    <label for="modalDataBaseUrl" data-i18n="settings.dataSource.baseUrl">Request origin:</label>
+                    <input type="url" id="modalDataBaseUrl" placeholder="https://data.akedata.wiki" style="flex:1;min-width:0;">
+                    <button id="resetDataSourceBtn" type="button" title="Restore production data source" data-i18n-title="settings.dataSource.reset" style="width:34px;height:34px;border:1px solid var(--border-color,#ccc);background:var(--button-bg,#e0e8f0);color:inherit;cursor:pointer;font-size:18px;">↺</button>
+                </div>
+                <p id="dataSourceStatus" style="margin:8px 0 0;color:var(--desc-color,#5b6f86);font-size:0.82rem;line-height:1.5;"></p>
+            </div>
+
             <!-- 等级设置区域 -->
             <div class="settings-section" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 16px;">
                 <h4 data-i18n="settings.levels.title">settings.levels.title</h4>
@@ -243,6 +257,7 @@
                 await loadScript('/plugin/js/index-parse-fallback.js');
                 await loadScript('/plugin/js/i18n.js');
                 await loadScript('/plugin/js/toast.js');
+                await loadScript('/plugin/js/ake-data-source.js');
                 await loadScript('/plugin/js/ake-cache.js');
                 await loadScript('/plugin/js/v3-table-data.js');
                 await loadScript('/plugin/js/index-app.js');

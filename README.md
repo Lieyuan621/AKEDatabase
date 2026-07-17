@@ -4,7 +4,7 @@
 ![Static](https://img.shields.io/badge/Static-HTML%2FCSS%2FJS-blue)
 ![Last Commit](https://img.shields.io/github/last-commit/nagiyume/akedatabase)
 
-> 《明日方舟：终末地》非官方数据查询与研究站。项目是无后端、无构建步骤的静态 HTML/CSS/JavaScript 应用，浏览器直接读取仓库中的游戏配置、运行数据和图片资源。
+> 《明日方舟：终末地》非官方数据查询与研究站。项目是无后端、无构建步骤的静态 HTML/CSS/JavaScript 应用；网站代码与游戏数据分离，游戏数据由 Cloudflare R2 提供。
 
 AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模块以 v3 为主。v3 从完整 `TableCfg` 和 `public/Json` 动态建立实体关系，同时复用经过验证的 v2 页面控制器和样式。
 
@@ -60,15 +60,16 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 ```text
 AKEDatabase/
 ├─ index.html                     # 应用外壳、设置弹窗和全局脚本入口
-├─ version.json                   # 应用、数据、公告版本和下次更新时间配置
+├─ ake-sw.js                      # 图片逻辑路径到 R2 的根作用域网络代理
+├─ version.json                   # 应用、公告版本、数据域和下次更新时间配置
 ├─ plugin/
 │  ├─ manifest.json               # 顶层模块注册表
 │  ├─ v3_*.html                   # v3 模块 DOM 壳
 │  ├─ v2_*.html                   # v2 模块 DOM 壳
 │  └─ js/
 │     ├─ index-app.js             # 模块加载、路由、设置和富文本运行时
-│     ├─ ake-cache.js             # 基于版本标记的 fetch 缓存策略
-│     ├─ ake-sw.js                # 原生 public 资源的 IndexedDB 缓存代理
+│     ├─ ake-data-source.js       # R2 清单、版本选择和逻辑 URL 解析
+│     ├─ ake-cache.js             # 按数据域和版本隔离的 fetch 缓存策略
 │     ├─ ake-stats.js             # 属性和 modifier 计算
 │     ├─ v3-table-data.js         # TableCfg/Json 到 v2 UI 数据契约的适配层
 │     └─ <module>.js              # 各模块控制器
@@ -78,21 +79,85 @@ AKEDatabase/
 │  ├─ yellow.css                  # 护眼主题
 │  └─ <module>.css                # 模块样式
 ├─ public/
-│  ├─ TableCfg/                   # 全量游戏配置表，v3 主事实源
-│  ├─ Json/
-│  │  ├─ BuffData/                # Buff 运行数据
-│  │  ├─ SkillData/               # 技能动作、时间线和黑板参数
-│  │  ├─ SpawnerConfig/           # 场景生成器、敌人库和波次
-│  │  └─ LevelData/               # 场景与关卡详细数据
 │  ├─ CH/                         # 中文聚合数据、研究文档、i18n、maps 和 tip.md
 │  ├─ EN/                         # 英文 i18n、maps 和 tip.md 等语言资源
 │  ├─ <语言>/                     # 各语言 i18n.json、maps.json 和网站公告 tip.md
-│  └─ images/                     # 游戏图片素材
+│  └─ TableCfg、Json、images      # 本地开发可保留，但由 .gitignore 排除
+├─ tools/
+│  ├─ sync-r2.ps1                # 交互式/参数式 R2 发布脚本
+│  └─ r2-cors.json               # R2 CORS 配置模板
 ├─ .kilo/skills/akedatabase/      # Agent 项目知识 skill
 ├─ .vscode/settings.json          # Live Server 端口配置
 ├─ LICENSE
 └─ README.md
 ```
+
+## Cloudflare R2 数据发布
+
+生产数据域为 `https://data.akedata.wiki`，Bucket 名称为 `akedatabase`。R2 对象布局如下：
+
+```text
+manifest.json
+public/
+├─ <gameVersion>/<hotfixVersion>/TableCfg/*.json
+├─ Json/**
+└─ images/**
+```
+
+只有 `TableCfg` 按游戏版本和 Hotfix 建立不可变目录；`Json` 与 `images` 始终维护一份当前数据。`manifest.json` 包含所有可选版本、`latest` 指针和共享数据修订号，并在每次发布的最后一步上传。
+
+### 首次配置
+
+1. 在 Cloudflare R2 创建 `akedatabase`，创建仅限该 Bucket 的 Object Read & Write 凭据。
+2. 使用 `rclone config` 创建名为 `r2` 的 Cloudflare S3 Remote，并设置 `no_check_bucket = true`。
+3. 将 Bucket 自定义源站域绑定到 `r2-origin.akedata.wiki`。
+4. 在 Bucket 设置中应用 `tools/r2-cors.json` 对应的 CORS 规则。
+5. 在 EdgeOne 添加加速域名 `data.akedata.wiki`，源站设置为 `r2-origin.akedata.wiki`。
+6. 在 EdgeOne 为版本化 TableCfg 配置一年节点缓存，为共享 Json/images 配置一天节点缓存，并为 `/manifest.json` 配置不缓存。
+
+凭据只保存在本机 rclone 配置中，不得写入仓库。对象级令牌没有创建 Bucket 的权限，因此脚本始终向 rclone 传递 `--s3-no-check-bucket`。
+
+### 交互式发布
+
+Windows PowerShell 执行策略阻止本地脚本时，使用：
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1
+```
+
+脚本会提示输入游戏版本、Hotfix、本地数据目录、Remote、Bucket、共享数据同步和 latest 发布选项。正式上传前会显示文件数量、体积和目标路径；默认选择否时只执行 dry-run。
+
+### 参数式发布
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1 `
+  -GameVersion 1.4.4 `
+  -HotfixVersion 8532974-3-3 `
+  -DataRoot .\public `
+  -Remote r2 `
+  -Bucket akedatabase `
+  -SyncShared `
+  -PublishLatest `
+  -Apply
+```
+
+版本目录存在时脚本默认拒绝覆盖。共享目录默认使用增量 `copy`，只有显式传入 `-PruneShared` 才会删除远端多余对象。回滚不需要移动数据，只需重新发布清单并让 `latest` 指向已存在版本。
+
+只修改 `Json` 或 `images` 时使用共享数据模式。该模式不会读取或上传 TableCfg，也不会改变 `latest`；脚本会更新 `sharedRevision`，使网页立即使用新的缓存命名空间：
+
+```powershell
+# 先运行并在最后选择“否”，确认 dry-run 计划
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1 -SharedOnly
+
+# 确认无误后正式上传
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1 -SharedOnly -Apply
+```
+
+### 本地数据
+
+`version.json` 的 `debugmode` 为 `true` 且版本选择为 `latest` 时，网站使用当前页面同源数据；因此 VS Code Live Server 会读取本地 `/public/TableCfg`、`/public/Json` 和 `/public/images`。本地没有 `manifest.json` 时自动兼容未版本化目录 `/public/TableCfg`。显式选择固定版本时会改用生产数据域中的对应历史版本，并在刷新后保留选择。发布网站前必须将 `debugmode` 恢复为 `false`。
+
+`debugmode` 为 `false` 时，设置弹窗的“请求域名”仍可手动切换数据服务。版本选择默认保存为 `latest`，也可以固定到清单中的某个版本。
 
 ## 运行架构
 
@@ -101,29 +166,32 @@ AKEDatabase/
 `index.html` 先以 `no-store` 读取根目录 `version.json`，再以 `appversion` 查询参数依次加载：
 
 1. `plugin/js/index-parse-fallback.js`
-2. `plugin/js/toast.js`
-3. `plugin/js/ake-cache.js`
-4. `plugin/js/index-app.js`
+2. `plugin/js/i18n.js`
+3. `plugin/js/toast.js`
+4. `plugin/js/ake-data-source.js`
+5. `plugin/js/ake-cache.js`
+6. `plugin/js/v3-table-data.js`
+7. `plugin/js/index-app.js`
 
 `index-app.js` 读取 `plugin/manifest.json`，过滤禁用模块，按 `priority` 排序，然后生成桌面侧栏和移动端菜单。
 
-设置弹窗中的应用版本、游戏版本、Hotfix 和最后更新时间来自 `version.json`。首页不显示版本号，而是读取 `totime` 和 `desc` 显示下次数据更新倒计时及可选更新原因。代码、CSS、模块结构或界面语言文件变化时递增 `appversion`；IndexedDB 缓存版本由 `gameversion` 和 `hotfixversion` 共同派生。`debugmode` 为 `true` 时，每次刷新都会清空持久响应缓存，并以本次刷新时间戳绕过应用资源和 public 数据的浏览器缓存。
+设置弹窗中的应用版本和更新时间来自 `version.json`；游戏版本与 Hotfix 来自 R2 `manifest.json` 当前选择的版本。首页不显示版本号，而是读取 `totime` 和 `desc` 显示下次数据更新倒计时及可选更新原因。代码、CSS、模块结构或界面语言文件变化时递增 `appversion`。`debugmode` 为 `true` 时强制使用当前同源本地数据，并在每次刷新时清空持久响应缓存、绕过浏览器缓存。
 
 点击模块后，框架通过 `window.akeFetch` 获取模块 HTML并插入 `#contentArea`。因为动态插入的 `<script>` 不会自动执行，加载器会按 DOM 顺序重新创建脚本节点并等待外部脚本完成。
 
 同一标签页内，模块 HTML、脚本源码和 CSS 按规范化 URL 缓存。再次进入模块时不重复网络获取 JS/CSS，但会从内存源码重新执行控制器以挂载新 DOM。模块 CSS 每个 URL 只创建一次，并按当前模块启用或禁用。
 
-应用资源（模块 HTML、JavaScript、CSS）仅使用 `appversion` 生成版本 URL，并采用浏览器 `force-cache`。`appversion` 不变时复用相同 URL 的浏览器缓存；发生变化时 URL 随之变化并重新请求。`/public/**` 数据请求使用 `hotfixversion` 生成版本 URL，IndexedDB 缓存版本由 `gameversion|hotfixversion` 共同派生。
+应用资源（模块 HTML、JavaScript、CSS）使用 `appversion` 生成版本 URL，并采用浏览器 `force-cache`。TableCfg 请求解析为当前清单版本的不可变 R2 路径；Json/images 使用 `sharedRevision` 查询参数。网站自身的语言、公告和研究资料继续使用同源 `/public/**` 路径。
 
 ### 缓存分层
 
-- localStorage：只保存主题、隐藏开关、默认等级、URL 设置和令牌等小型偏好；所有访问都有异常保护。
+- localStorage：保存主题、隐藏开关、默认等级、URL 设置、数据域、版本选择和令牌等小型偏好；所有访问都有异常保护。
 - 页面内存：缓存模块 HTML、脚本源码、CSS Promise、模块 DOM，以及 v3 已解析的 TableCfg/I18n/maps。
-- IndexedDB：数据库 `akedata-data-cache` 按 `gameversion + hotfixversion` 保存所有同源 `/public/**` GET 响应，记录内容为原始 Blob。
-- Service Worker：`plugin/js/ake-sw.js` 拦截 `<img>`、CSS 背景图等绕过 `akeFetch` 的 `/public/**` 请求，并写入同一个 IndexedDB。
+- IndexedDB：数据库 `akedata-data-cache` 使用“数据域 + TableCfg 版本”或“数据域 + sharedRevision”命名空间保存 `akeFetch` 响应；多个版本可以共存。
+- Service Worker：根目录 `ake-sw.js` 将绕过 `akeFetch` 的 `/public/images/**` 逻辑请求代理到当前数据域，图片缓存交给浏览器和 EdgeOne。
 - HTTP Cache：继续负责版本化的 HTML、JS、CSS 和网络响应。
 
-`gameversion` 或 `hotfixversion` 变化时会原子清空旧 public 响应并写入新版本。单独更新 `appversion` 不会使 public 数据缓存失效。IndexedDB、Service Worker 或 localStorage 不可用时，页面自动降级到内存缓存和普通网络请求，不阻止应用启动。`version.json` 每次启动均使用 `no-store` 请求。
+切换游戏版本不会清空其他版本的 IndexedDB 数据；数据域也属于缓存键，生产数据与本地数据不会混用。IndexedDB、Service Worker 或 localStorage 不可用时，页面自动降级到内存缓存和普通网络请求，不阻止应用启动。`version.json` 与 R2 `manifest.json` 每次启动均使用 `no-store` 请求。
 
 全局设置中的“强制刷新网页缓存”会清空页面内存与 IndexedDB 响应缓存，并以一次性时间戳重新加载当前页面。该操作保留语言、主题、令牌等 localStorage 设置；浏览器 HTTP 缓存通过时间戳 URL 绕过，而不是尝试删除用户的全局浏览器缓存。
 
@@ -161,13 +229,13 @@ public/<其他语言>/tip.md
 
 首页右上角“网站公告”按钮可随时手动打开当前语言公告。浏览器使用 localStorage 键 `akedata-tipversion` 记录已读公告版本；当 `tipversion` 与已读值不同时，进入主页会自动弹出公告，成功加载并显示后才标记为已读。直接通过深链接进入模块时不会立即弹出，返回主页后再检测。
 
-`tip.md` 请求以 `tipversion` 作为 URL 版本参数，并通过 `X-AKE-Page-Cache: 1` 绕过 `/public/**` 的长期 IndexedDB/Service Worker 数据缓存。更新公告时必须同步更新所有语言的 `tip.md` 并手动修改 `tipversion`；修改倒计时字段不需要改变公告已读状态。
+`tip.md` 请求以 `tipversion` 作为 URL 版本参数并保持在网站同源，不进入 R2 游戏数据缓存。更新公告时必须同步更新所有语言的 `tip.md` 并手动修改 `tipversion`；修改倒计时字段不需要改变公告已读状态。
 
 首页底部固定展示备案号 `浙ICP备2026014728号-1`，链接至 `https://beian.miit.gov.cn/#/Integrated/index`。
 
 加载 `/public/**` 数据时，页面顶部按“已加载字节数 / 数据总字节数”显示进度。默认显示进度和总体字节量；开启“显示隐藏模块”后，额外显示当前文件路径、来源（网络、内存或 IndexedDB）以及当前文件字节数。未开启隐藏模块但连续加载超过 3 秒时，也会自动展开这些文件详情。响应尚未提供 `Content-Length` 时显示已加载字节量与不确定进度动画，不再按文件数量估算进度。
 
-由于 Service Worker 文件位于 `/plugin/js/ake-sw.js`，但注册 scope 为 `/`，服务器必须为该文件返回响应头 `Service-Worker-Allowed: /`，否则浏览器只允许它控制 `/plugin/js/`，无法拦截 `/public/`。本地或生产服务器需要显式配置该响应头。
+Service Worker 位于站点根目录 `/ake-sw.js`，可直接注册根作用域 `/`，Live Server 和生产服务器均无需额外配置 `Service-Worker-Allowed` 响应头。
 
 ### v3 数据适配
 

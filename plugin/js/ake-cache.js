@@ -1,6 +1,6 @@
 (function () {
     const DB_NAME = 'akedata-data-cache';
-    const DB_VERSION = 1;
+    const DB_VERSION = 2;
     const RESPONSE_STORE = 'responses';
     const META_STORE = 'meta';
     const VERSION_URL = '/version.json';
@@ -154,8 +154,9 @@
         return body;
     }
 
-    function registerServiceWorker(version) {
+    async function registerServiceWorker(version) {
         if (!('serviceWorker' in navigator) || !version) return;
+        const dataSource = await window.akeDataSource?.ready;
         let reloadingForControl = false;
         navigator.serviceWorker.addEventListener('controllerchange', () => {
             if (reloadingForControl || navigator.serviceWorker.controller) {
@@ -166,15 +167,15 @@
                 location.reload();
             }
         });
-        const workerUrl = new URL('/plugin/js/ake-sw.js', window.location.href);
+        const workerUrl = new URL('/ake-sw.js', window.location.href);
         workerUrl.searchParams.set('v', version.appversion);
         if (window.__akeForceRefreshTimestamp) workerUrl.searchParams.set('t', window.__akeForceRefreshTimestamp);
         navigator.serviceWorker.register(workerUrl.href, { scope: '/' })
             .then(registration => {
                 const notify = worker => worker?.postMessage({
                     type: 'AKE_VERSION',
-                    publicCacheVersion: getPublicCacheVersion(version),
-                    hotfixVersion: version.hotfixversion,
+                    dataBaseUrl: dataSource?.baseUrl || '',
+                    sharedRevision: dataSource?.manifest?.sharedRevision || '',
                     forceRefreshTimestamp: window.__akeForceRefreshTimestamp || ''
                 });
                 notify(registration.active);
@@ -230,10 +231,6 @@
             typeof value.updatedAt === 'string';
     }
 
-    function getPublicCacheVersion(version) {
-        return version ? `${version.gameversion}|${version.hotfixversion}` : '';
-    }
-
     async function loadVersion() {
         try {
             let version = window.__akeBootstrapVersion;
@@ -273,6 +270,9 @@
                 if (!db.objectStoreNames.contains(META_STORE)) {
                     db.createObjectStore(META_STORE, { keyPath: 'key' });
                 }
+                if (request.oldVersion < 2 && db.objectStoreNames.contains(RESPONSE_STORE)) {
+                    request.transaction.objectStore(RESPONSE_STORE).clear();
+                }
             };
             request.onsuccess = () => { clearTimeout(timeout); resolve(request.result); };
             request.onerror = () => { clearTimeout(timeout); resolve(null); };
@@ -289,20 +289,12 @@
 
     async function prepareDatabase(db, version) {
         if (!db || !version) return null;
-        const publicCacheVersion = getPublicCacheVersion(version);
         try {
-            const readTx = db.transaction(META_STORE, 'readonly');
-            const metaStore = readTx.objectStore(META_STORE);
-            const [storedAppVersion, storedPublicCacheVersion] = await Promise.all([
-                idbRequest(metaStore.get('activeAppVersion')),
-                idbRequest(metaStore.get('activePublicCacheVersion'))
-            ]);
-            if (version.debugmode !== true && storedAppVersion?.value === version.appversion && storedPublicCacheVersion?.value === publicCacheVersion) return db;
             await new Promise((resolve, reject) => {
                 const tx = db.transaction([RESPONSE_STORE, META_STORE], 'readwrite');
-                tx.objectStore(RESPONSE_STORE).clear();
+                if (version.debugmode === true) tx.objectStore(RESPONSE_STORE).clear();
                 tx.objectStore(META_STORE).put({ key: 'activeAppVersion', value: version.appversion });
-                tx.objectStore(META_STORE).put({ key: 'activePublicCacheVersion', value: publicCacheVersion });
+                tx.objectStore(META_STORE).put({ key: 'lastPreparedAt', value: Date.now() });
                 tx.oncomplete = resolve;
                 tx.onerror = () => reject(tx.error);
                 tx.onabort = () => reject(tx.error);
@@ -327,7 +319,8 @@
         const method = String(init?.method || (typeof resource !== 'string' ? resource?.method : '') || 'GET').toUpperCase();
         const url = normalizeUrl(resource);
         const headers = new Headers(init?.headers || (typeof resource !== 'string' ? resource?.headers : undefined));
-        return method === 'GET' && url?.origin === window.location.origin && url.pathname.startsWith('/public/') &&
+        const type = window.akeDataSource?.classify(resource)?.type;
+        return method === 'GET' && ['table', 'shared', 'site-public'].includes(type) &&
             !headers.has('Range') && !headers.has('Authorization');
     }
 
@@ -340,8 +333,7 @@
 
     function isPublicResource(request) {
         if (request.method !== 'GET') return false;
-        const url = normalizeUrl(request);
-        return url?.origin === window.location.origin && url.pathname.startsWith('/public/');
+        return ['table', 'shared', 'site-public'].includes(window.akeDataSource?.classify(request)?.type);
     }
 
     function responseFromRecord(record) {
@@ -411,8 +403,11 @@
 
     window.akeFetch = async function (resource, init) {
         const version = await versionPromise;
+        await window.akeDataSource?.ready;
         const request = new Request(resource, init);
         const url = normalizeUrl(request);
+        const resourceType = window.akeDataSource?.classify(request)?.type || 'other';
+        const resolvedUrl = window.akeDataSource?.resolveUrl(request.url) || request.url;
         const forceRefreshTimestamp = window.__akeForceRefreshTimestamp || (version?.debugmode === true ? String(Date.now()) : '');
         const forceRefresh = Boolean(forceRefreshTimestamp);
         const cacheable = Boolean(version && shouldPersist(request));
@@ -435,16 +430,17 @@
                 });
             }
             if (version && isPublicResource(request)) {
-                const publicUrl = new URL(request.url);
-                publicUrl.searchParams.set('v', version.hotfixversion);
+                const publicUrl = new URL(resolvedUrl);
+                if (resourceType === 'site-public') publicUrl.searchParams.set('v', version.appversion);
                 if (forceRefresh) publicUrl.searchParams.set('t', forceRefreshTimestamp);
                 return fetch(new Request(publicUrl.href, request), forceRefresh ? { cache: 'no-store' } : undefined);
             }
             return fetch(request);
         }
 
-        const canonicalUrl = url.pathname + url.search;
-        const cacheVersion = getPublicCacheVersion(version);
+        const canonicalResolvedUrl = normalizeUrl(resolvedUrl);
+        const canonicalUrl = canonicalResolvedUrl.origin + canonicalResolvedUrl.pathname + canonicalResolvedUrl.search;
+        const cacheVersion = window.akeDataSource?.cacheNamespace(request, version.appversion) || `site|${version.appversion}`;
         const key = `${cacheVersion}|${canonicalUrl}`;
 
         if (!forceRefresh && memoryResponses.has(key)) {
@@ -475,11 +471,10 @@
                 }
 
                 setProgressSource(progressId, 'network');
-                const requestUrl = new URL(request.url);
-                requestUrl.searchParams.set('v', version.hotfixversion);
+                const requestUrl = new URL(resolvedUrl);
+                if (resourceType === 'site-public') requestUrl.searchParams.set('v', version.appversion);
                 if (forceRefresh) requestUrl.searchParams.set('t', forceRefreshTimestamp);
                 const headers = new Headers(request.headers);
-                headers.set('X-AKE-Page-Cache', '1');
                 const response = await fetch(requestUrl.href, {
                     method: request.method,
                     headers,
