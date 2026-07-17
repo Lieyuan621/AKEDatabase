@@ -166,12 +166,16 @@
                 location.reload();
             }
         });
-        navigator.serviceWorker.register(`/plugin/js/ake-sw.js?v=${encodeURIComponent(version.appversion)}`, { scope: '/' })
+        const workerUrl = new URL('/plugin/js/ake-sw.js', window.location.href);
+        workerUrl.searchParams.set('v', version.appversion);
+        if (window.__akeForceRefreshTimestamp) workerUrl.searchParams.set('t', window.__akeForceRefreshTimestamp);
+        navigator.serviceWorker.register(workerUrl.href, { scope: '/' })
             .then(registration => {
                 const notify = worker => worker?.postMessage({
                     type: 'AKE_VERSION',
                     publicCacheVersion: getPublicCacheVersion(version),
-                    hotfixVersion: version.hotfixversion
+                    hotfixVersion: version.hotfixversion,
+                    forceRefreshTimestamp: window.__akeForceRefreshTimestamp || ''
                 });
                 notify(registration.active);
                 notify(registration.waiting);
@@ -293,7 +297,7 @@
                 idbRequest(metaStore.get('activeAppVersion')),
                 idbRequest(metaStore.get('activePublicCacheVersion'))
             ]);
-            if (storedAppVersion?.value === version.appversion && storedPublicCacheVersion?.value === publicCacheVersion) return db;
+            if (version.debugmode !== true && storedAppVersion?.value === version.appversion && storedPublicCacheVersion?.value === publicCacheVersion) return db;
             await new Promise((resolve, reject) => {
                 const tx = db.transaction([RESPONSE_STORE, META_STORE], 'readwrite');
                 tx.objectStore(RESPONSE_STORE).clear();
@@ -409,11 +413,14 @@
         const version = await versionPromise;
         const request = new Request(resource, init);
         const url = normalizeUrl(request);
+        const forceRefreshTimestamp = window.__akeForceRefreshTimestamp || (version?.debugmode === true ? String(Date.now()) : '');
+        const forceRefresh = Boolean(forceRefreshTimestamp);
         const cacheable = Boolean(version && shouldPersist(request));
         if (!cacheable) {
             if (version && isApplicationResource(request)) {
                 const appUrl = new URL(request.url);
                 appUrl.searchParams.set('v', version.appversion);
+                if (forceRefresh) appUrl.searchParams.set('t', forceRefreshTimestamp);
                 return fetch(appUrl.href, {
                     method: request.method,
                     headers: request.headers,
@@ -424,13 +431,14 @@
                     referrerPolicy: request.referrerPolicy,
                     integrity: request.integrity,
                     signal: request.signal,
-                    cache: 'force-cache'
+                    cache: forceRefresh ? 'no-store' : 'force-cache'
                 });
             }
             if (version && isPublicResource(request)) {
                 const publicUrl = new URL(request.url);
                 publicUrl.searchParams.set('v', version.hotfixversion);
-                return fetch(new Request(publicUrl.href, request));
+                if (forceRefresh) publicUrl.searchParams.set('t', forceRefreshTimestamp);
+                return fetch(new Request(publicUrl.href, request), forceRefresh ? { cache: 'no-store' } : undefined);
             }
             return fetch(request);
         }
@@ -439,7 +447,7 @@
         const cacheVersion = getPublicCacheVersion(version);
         const key = `${cacheVersion}|${canonicalUrl}`;
 
-        if (memoryResponses.has(key)) {
+        if (!forceRefresh && memoryResponses.has(key)) {
             const progressId = beginProgress(canonicalUrl, 'memory');
             const record = memoryResponses.get(key);
             setProgressSource(progressId, 'memory');
@@ -449,7 +457,7 @@
             return responseFromRecord(record);
         }
 
-        if (pendingRequests.has(key)) {
+        if (!forceRefresh && pendingRequests.has(key)) {
             const result = await waitForShared(pendingRequests.get(key), request.signal);
             return responseFromRecord(result.record);
         }
@@ -458,7 +466,7 @@
         if (!pendingRequests.has(key)) {
             const loadPromise = (async () => {
                 const { db } = await databasePromise;
-                const cached = await readRecord(db, key);
+                const cached = forceRefresh ? null : await readRecord(db, key);
                 if (cached) {
                     memoryResponses.set(key, cached);
                     updateProgress(progressId, cached.body.size, cached.body.size);
@@ -469,6 +477,7 @@
                 setProgressSource(progressId, 'network');
                 const requestUrl = new URL(request.url);
                 requestUrl.searchParams.set('v', version.hotfixversion);
+                if (forceRefresh) requestUrl.searchParams.set('t', forceRefreshTimestamp);
                 const headers = new Headers(request.headers);
                 headers.set('X-AKE-Page-Cache', '1');
                 const response = await fetch(requestUrl.href, {
@@ -480,7 +489,7 @@
                     referrer: request.referrer,
                     referrerPolicy: request.referrerPolicy,
                     integrity: request.integrity,
-                    cache: request.cache === 'default' ? 'no-cache' : request.cache
+                    cache: forceRefresh ? 'no-store' : (request.cache === 'default' ? 'no-cache' : request.cache)
                 });
                 if (!response.ok || response.status !== 200) {
                     const body = await response.blob();
@@ -568,6 +577,14 @@
             } catch {
                 return false;
             }
+        },
+        async forceRefresh() {
+            const timestamp = String(Date.now());
+            window.__akeForceRefreshTimestamp = timestamp;
+            await this.clear();
+            const url = new URL(window.location.href);
+            url.searchParams.set('t', timestamp);
+            window.location.replace(url.href);
         },
         estimate() {
             return navigator.storage?.estimate ? navigator.storage.estimate() : Promise.resolve({ usage: 0, quota: 0 });

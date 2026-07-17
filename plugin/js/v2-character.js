@@ -709,13 +709,11 @@
                 legacy.growth.hp = sortedLevels.map(level => Math.round((500 + 5500 / 98 * (level - 1)) * 100) / 100);
             }
 
-            const itemNameMap = {};
-            Object.values(rawData.chargrowthtable?.talentNodeMap || {}).forEach(n => {
-                (n.requiredItem || []).forEach(item => {
-                    if (item.id && item.name?.text) itemNameMap[item.id] = item.name.text;
-                });
-            });
-            legacy.itemNameMap = itemNameMap;
+            legacy.itemInfoMap = Object.fromEntries(Object.entries(rawData.costitemtable || {}).map(([id, item]) => [id, {
+                name: getText(item.name) || id,
+                description: getText(item.desc),
+                iconId: item.iconId || id
+            }]));
 
             const talentNodes = Object.values(rawData.chargrowthtable?.talentNodeMap || {}).filter(n => n.nodeType === 4 && n.passiveSkillNodeInfo?.talentEffectId);
             talentNodes.sort((a, b) => {
@@ -825,15 +823,15 @@
             attrNodes.sort((a, b) => (a.attributeNodeInfo?.breakStage ?? 0) - (b.attributeNodeInfo?.breakStage ?? 0));
             legacy.attributeNodes = attrNodes.map(n => {
                 const info = n.attributeNodeInfo || {};
-                const mod = info.attributeModifier;
-                if (!mod || (mod.attrType === 0 && mod.attrValue === 0)) return null;
-                const modName = mod ? (getAttrName(mod.attrType) || mod.attrType) : '';
-                const modText = mod ? `${modName}+${mod.attrValue}` : '';
+                const modifiers = (info.attributeModifiers || []).filter(mod => mod && !(mod.attrType === 0 && mod.attrValue === 0));
+                if (modifiers.length === 0) return null;
                 return {
                     title: info.title?.text || '',
                     description: info.desc?.text || '',
-                    modifier: modText,
-                    modifierType: mod?.modifierType,
+                    modifiers: modifiers.map(mod => ({
+                        text: `${getAttrName(mod.attrType) || mod.attrType}+${mod.attrValue}`,
+                        modifierType: mod.modifierType
+                    })),
                     requiredItem: n.requiredItem || []
                 };
             }).filter(Boolean);
@@ -1178,21 +1176,25 @@
             skillKeys.forEach(skillKey => updateSkillTable(skillKey));
         }
 
-        function renderCostItemsHtml(items, goldCost, itemNameMap) {
+        function escapeAttribute(value) {
+            return String(value || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function renderCostItemsHtml(items, goldCost, itemInfoMap) {
             const parts = [...(items || [])];
             if (goldCost && goldCost > 0 && !parts.some(it => it.id === 'item_gold')) {
                 parts.push({ id: 'item_gold', count: goldCost });
             }
             if (parts.length === 0) return '';
             return parts.map(it => {
-                const nm = (it.id === 'item_gold' ? '折金票' : (itemNameMap || {})[it.id]) || it.id;
-                return `<div class="cost-item"><img src="/public/images/item/itemiconbig/${it.id}.png" onerror="this.style.display='none'"><span class="ci-name">${nm}</span><span class="ci-cnt">×${it.count}</span></div>`;
+                const info = itemInfoMap?.[it.id] || {};
+                return `<div class="cost-item" title="${escapeAttribute(info.description)}"><img src="/public/images/item/itemiconbig/${info.iconId || it.id}.png" onerror="this.style.display='none'"><span class="ci-name">${info.name || it.id}</span><span class="ci-cnt">×${it.count}</span></div>`;
             }).join('');
         }
 
-        function costBtnHtml(innerHtml, itemIds) {
+        function costBtnHtml(innerHtml, itemIds, itemInfoMap) {
             if (!innerHtml) return '';
-            const icons = (itemIds || []).map(id => `<img src="/public/images/item/itemiconbig/${id}.png" onerror="this.style.display='none'">`).join('');
+            const icons = (itemIds || []).map(id => `<img src="/public/images/item/itemiconbig/${itemInfoMap?.[id]?.iconId || id}.png" onerror="this.style.display='none'">`).join('');
             return `<span class="cost-wrap"><span class="cost-btn" onclick="event.stopPropagation();var tip=this.nextElementSibling;tip.classList.toggle('pinned');if(tip.classList.contains('pinned'))document.querySelectorAll('.cost-tip.pinned').forEach(x=>{if(x!==tip)x.classList.remove('pinned')})">${t('developmentCost')}</span><span class="cost-btn-icons">${icons}</span><span class="cost-tip">${innerHtml}</span></span>`;
         }
 
@@ -1283,17 +1285,17 @@
                 </div>
             `;
 
-            const inm = data.itemNameMap || {};
+            const itemInfoMap = data.itemInfoMap || {};
             const showHiddenAttr = getCurrentShowHidden();
             const talentsHtml = (data.talents || []).map(talent => {
                 const valueMap = talent.values || {};
                 let desc = replacePlaceholders(talent.description, valueMap, talent.modifierTypes, showHiddenAttr);
                 desc = parseText(desc);
-                const costHtml = renderCostItemsHtml(talent.requiredItem, 0, inm);
+                const costHtml = renderCostItemsHtml(talent.requiredItem, 0, itemInfoMap);
                 const costIconIds = (talent.requiredItem || []).map(it => it.id);
                 return `
                     <div class="talent-item">
-                        <div class="talent-name">${talent.name} ${costBtnHtml(costHtml, costIconIds)}</div>
+                        <div class="talent-name">${talent.name} ${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
                         <div class="talent-desc">${desc}</div>
                     </div>
                 `;
@@ -1303,11 +1305,11 @@
                 const valueMap = pot.values || {};
                 let desc = replacePlaceholders(pot.description, valueMap, pot.modifierTypes, showHiddenAttr);
                 desc = parseText(desc);
-                const costHtml = renderCostItemsHtml(pot.costItems, 0, inm);
+                const costHtml = renderCostItemsHtml(pot.costItems, 0, itemInfoMap);
                 const costIconIds = (pot.costItems || []).map(it => it.id);
                 return `
                     <div class="potential-item">
-                        <div class="potential-name">${pot.name} ${costBtnHtml(costHtml, costIconIds)}</div>
+                        <div class="potential-name">${pot.name} ${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
                         <div class="potential-desc">${desc}</div>
                     </div>
                 `;
@@ -1319,15 +1321,18 @@
                     <h3>${t('sections.attributeNodes')}</h3>
                     <div class="attr-nodes-grid">
                         ${attrNodes.map(node => {
-                            const costHtml = renderCostItemsHtml(node.requiredItem, 0, inm);
+                            const costHtml = renderCostItemsHtml(node.requiredItem, 0, itemInfoMap);
                             const costIconIds = (node.requiredItem || []).map(it => it.id);
-                            const modTypeTag = (showHiddenAttr && node.modifierType != null)
-                                ? ` <span class="attr-node-modifier-tag">${modifierTypeMap[String(node.modifierType)] || ''}</span>`
-                                : '';
+                            const modifierHtml = (node.modifiers || []).map(mod => {
+                                const modTypeTag = (showHiddenAttr && mod.modifierType != null)
+                                    ? ` <span class="attr-node-modifier-tag">${modifierTypeMap[String(mod.modifierType)] || ''}</span>`
+                                    : '';
+                                return `<div class="attr-node-modifier">${mod.text}${modTypeTag}</div>`;
+                            }).join('');
                             return `<div class="attr-node-item">
-                                <div class="attr-node-title">${node.title} ${costBtnHtml(costHtml, costIconIds)}</div>
+                                <div class="attr-node-title">${node.title} ${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
                                 <div class="attr-node-desc">${node.description}</div>
-                                <div class="attr-node-modifier">${node.modifier}${modTypeTag}</div>
+                                ${modifierHtml}
                             </div>`;
                         }).join('')}
                     </div>
@@ -1425,10 +1430,10 @@
                 let skCostHtml = '';
                 if (skCosts.length > 0) {
                     const rows = skCosts.map(c => {
-                        const itemParts = [{ id: 'item_gold', count: c.goldCost, name: { text: '折金票' } }, ...c.items.filter(it => it.id !== 'item_gold')];
+                        const itemParts = [...(c.goldCost > 0 ? [{ id: 'item_gold', count: c.goldCost }] : []), ...c.items.filter(it => it.id !== 'item_gold')];
                         const itemsStr = itemParts.map(it => {
-                            const nm = it.name?.text || inm[it.id] || it.id;
-                            return `<span class="ci-ri"><img src="/public/images/item/itemiconbig/${it.id}.png" onerror="this.style.display='none'">${nm} ×${it.count}</span>`;
+                            const info = itemInfoMap[it.id] || {};
+                            return `<span class="ci-ri" title="${escapeAttribute(info.description)}"><img src="/public/images/item/itemiconbig/${info.iconId || it.id}.png" onerror="this.style.display='none'">${info.name || it.id} ×${it.count}</span>`;
                         }).join('');
                         return `<div class="sk-cost-row"><span class="cost-section-title">${t('levelRange', { name: `${c.level - 1}→${c.level}` })}</span>${itemsStr}</div>`;
                     }).join('');
@@ -1450,7 +1455,7 @@
                     <div class="skill-item" data-skill-key="${group.skillKey}">
                         <div class="skill-name">
                             <img class="skill-icon" src="${group.icon}" alt="" onerror="this.onerror=null; this.src='';">
-                            ${displayName} ${costBtnHtml(skCostHtml, ['item_gold', ...new Set(skCosts.flatMap(c => c.items.map(it => it.id)))])}
+                            ${displayName} ${costBtnHtml(skCostHtml, ['item_gold', ...new Set(skCosts.flatMap(c => c.items.map(it => it.id)))], itemInfoMap)}
                         </div>
                         <div class="skill-desc">${groupDesc}</div>
                         ${conditionHtml ? `<div class="skill-conditions">${conditionHtml}</div>` : ''}

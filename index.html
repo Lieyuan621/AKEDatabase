@@ -124,6 +124,12 @@
                 <div id="tokenStatus" style="font-size: 0.85rem; color: var(--desc-color, #5b6f86); padding: 4px 0 0 0;"></div>
             </div>
 
+            <div class="settings-section" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+                <button id="forceRefreshCacheBtn" type="button" data-i18n="settings.cache.forceRefresh"
+                    style="background:var(--accent-color,#1e6f9f);color:#fff;border:none;border-radius:20px;padding:8px 18px;cursor:pointer;font-size:0.9rem;">强制刷新网页缓存</button>
+                <p data-i18n="settings.cache.description" style="margin:10px 0 0;color:var(--desc-color,#5b6f86);font-size:0.85rem;line-height:1.6;">由于服务器数据存在延迟，若您显示的页面中没有最新的数据，可以点击此按钮获取最新数据</p>
+            </div>
+
             <div class="about-box" id="appVersionInfo">
                 <p data-i18n="version.loading">version.loading</p>
             </div>
@@ -204,12 +210,21 @@
                 console.warn('无法读取 version.json，将使用无版本启动资源。', error);
             }
             window.__akeBootstrapVersion = version;
-            const suffix = version?.appversion ? `?v=${encodeURIComponent(version.appversion)}` : '';
+            const requestedRefresh = new URLSearchParams(location.search).get('t');
+            const refreshTimestamp = version?.debugmode === true ? String(Date.now()) : requestedRefresh;
+            window.__akeForceRefreshTimestamp = refreshTimestamp || '';
+            const resourceUrl = src => {
+                const url = new URL(src, location.href);
+                if (version?.appversion) url.searchParams.set('v', version.appversion);
+                if (refreshTimestamp) url.searchParams.set('t', refreshTimestamp);
+                return url.href;
+            };
+            const resourceCache = refreshTimestamp ? 'no-store' : 'force-cache';
             const themeLink = document.getElementById('theme-style');
             if (themeLink) {
-                const themeUrl = `/theme/light.css${suffix}`;
+                const themeUrl = resourceUrl('/theme/light.css');
                 try {
-                    const themeResponse = await fetch(themeUrl, { cache: 'force-cache' });
+                    const themeResponse = await fetch(themeUrl, { cache: resourceCache });
                     if (!themeResponse.ok) throw new Error(`HTTP ${themeResponse.status}`);
                     await themeResponse.text();
                 } catch (error) {
@@ -218,7 +233,7 @@
                 themeLink.href = themeUrl;
             }
             const loadScript = async src => {
-                const response = await fetch(src + suffix, { cache: 'force-cache' });
+                const response = await fetch(resourceUrl(src), { cache: resourceCache });
                 if (!response.ok) throw new Error(`无法加载 ${src} (HTTP ${response.status})`);
                 const script = document.createElement('script');
                 script.textContent = `${await response.text()}\n//# sourceURL=${new URL(src, location.href).href}`;

@@ -81,6 +81,7 @@
         const url = new URL(`/public/${directory}/i18n.json`, window.location.href);
         const appVersion = window.__akeBootstrapVersion?.appversion;
         if (appVersion) url.searchParams.set('v', appVersion);
+        if (window.__akeForceRefreshTimestamp) url.searchParams.set('t', window.__akeForceRefreshTimestamp);
         return url.href;
     }
 
@@ -88,7 +89,11 @@
         const info = LANGUAGES[language];
         document.documentElement.lang = info.htmlLang;
         try {
-            const response = await fetch(buildI18nUrl(info.directory), { cache: 'force-cache' });
+            const forceRefresh = Boolean(window.__akeForceRefreshTimestamp);
+            const response = await fetch(buildI18nUrl(info.directory), {
+                cache: forceRefresh ? 'no-store' : 'force-cache',
+                headers: forceRefresh ? { 'X-AKE-Page-Cache': '1' } : undefined
+            });
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const data = await response.json();
             messages = data.messages || {};

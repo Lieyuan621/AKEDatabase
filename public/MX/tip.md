@@ -2,6 +2,10 @@ AKEData se ha trasladado al dominio www.akedata.wiki. El dominio anterior, akeda
 
 # Registro de actualizaciones de AKEData
 
+### v1.1.8
+
+Se añadieron el modo de depuración y la actualización forzada del caché web; se corrigieron los nodos de atributos de personajes y el análisis de costes de desarrollo según las descripciones de objetos; los tipos de actividad ahora proceden de ActivityTagTable; los estilos y términos de texto enriquecido se leen directamente de TableCfg; y los módulos con página inicial recibieron un botón de inicio en la barra lateral.
+
 ### v1.1.6
 
 Se agregaron avisos dentro del sitio y una cuenta regresiva para actualizaciones, se adaptaron los grupos de habilidades de dos formas de Jue, se optimizaron los mensajes de carga y se eliminaron numerosos módulos v2 obsoletos.

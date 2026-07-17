@@ -3,6 +3,7 @@ const DB_VERSION = 1;
 const RESPONSE_STORE = 'responses';
 const META_STORE = 'meta';
 let hotfixVersion = '';
+let forceRefreshTimestamp = '';
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', event => {
     event.waitUntil((async () => {
@@ -13,6 +14,7 @@ self.addEventListener('activate', event => {
 self.addEventListener('message', event => {
     if (event.data?.type === 'AKE_VERSION' && typeof event.data.publicCacheVersion === 'string') {
         hotfixVersion = typeof event.data.hotfixVersion === 'string' ? event.data.hotfixVersion : '';
+        forceRefreshTimestamp = typeof event.data.forceRefreshTimestamp === 'string' ? event.data.forceRefreshTimestamp : '';
         if (event.source) event.source.postMessage({ type: 'AKE_VERSION_READY', publicCacheVersion: event.data.publicCacheVersion });
     }
 });
@@ -111,7 +113,7 @@ async function cachePublicResource(request, url) {
     const db = await openDatabase();
     if (!db) return fetch(request);
     try {
-        const cached = await getRecord(db, key);
+        const cached = forceRefreshTimestamp ? null : await getRecord(db, key);
         if (cached) {
             db.close();
             return responseFromRecord(cached);
@@ -119,7 +121,8 @@ async function cachePublicResource(request, url) {
         const requestUrl = new URL(request.url);
         const activeHotfixVersion = hotfixVersion || activeCacheVersion.slice(activeCacheVersion.lastIndexOf('|') + 1);
         if (activeHotfixVersion) requestUrl.searchParams.set('v', activeHotfixVersion);
-        const response = await fetch(new Request(requestUrl.href, request));
+        if (forceRefreshTimestamp) requestUrl.searchParams.set('t', forceRefreshTimestamp);
+        const response = await fetch(new Request(requestUrl.href, request), forceRefreshTimestamp ? { cache: 'no-store' } : undefined);
         if (response.ok) {
             const body = await response.clone().blob();
             await putRecord(db, {

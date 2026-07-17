@@ -2,6 +2,10 @@ AKEData telah pindah ke domain www.akedata.wiki. Domain lama, akedata.top, kini 
 
 # Catatan Pembaruan Versi AKEData
 
+### v1.1.8
+
+Menambahkan mode debug dan penyegaran paksa cache web; memperbaiki node atribut karakter dan parsing biaya pengembangan berdasarkan deskripsi item; mengalihkan tipe aktivitas ke ActivityTagTable; membaca style dan istilah rich text langsung dari TableCfg; serta menambahkan tombol beranda di sidebar untuk modul yang memiliki halaman awal.
+
 ### v1.1.6
 
 Menambahkan pengumuman dalam situs dan hitung mundur pembaruan, mengadaptasi kelompok skill dua wujud Jue, mengoptimalkan petunjuk pemuatan, serta menghapus banyak modul v2 yang telah dihentikan.

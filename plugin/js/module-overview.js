@@ -1,5 +1,18 @@
 (function () {
     const roots = new Map();
+    const searchSelectors = {
+        v3_cc: '.v2cc-search',
+        research: '.research-module .list-search',
+        v3_character: '.character-module .list-search',
+        v3_weapon: '.weapon-module .list-search-fixed',
+        v3_enemy: '.v2e-search',
+        v3_equip: '.v2eq-search',
+        v3_activity: '.activity-module .list-search',
+        v3_item: '.v2i-search',
+        v3_dungeon: '.v2d-search',
+        v3_achievement: '.achievement-module .list-search',
+        spawn: '.spawner-module .list-search'
+    };
     function text(value, fallback) {
         return value === undefined || value === null || value === '' ? (fallback || '') : String(value);
     }
@@ -116,8 +129,34 @@
         if (entry?.container.isConnected) {
             entry.options.onReset?.();
             render(entry.container, entry.options);
+            return true;
         }
+        return false;
+    }
+
+    function installHomeButton() {
+        const match = Object.entries(searchSelectors).find(([, selector]) => document.querySelector(selector));
+        const module = match?.[0];
+        const container = match ? document.querySelector(match[1]) : null;
+        if (!container || container.querySelector('.ake-module-home')) return;
+        container.classList.add('ake-module-search-row');
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'ake-module-home';
+        button.title = window.akeData?.t('nav.home', null, '返回起始页') || '返回起始页';
+        button.setAttribute('aria-label', button.title);
+        button.innerHTML = '<span aria-hidden="true">⌂</span>';
+        button.addEventListener('click', () => {
+            window.__akeRouter?.updateUrl(module);
+            if (showRoot(module)) return;
+            const url = new URL(window.location.href);
+            url.search = '';
+            url.searchParams.set('plugin', module);
+            window.location.assign(url.href);
+        });
+        container.prepend(button);
     }
 
     window.AKEModuleOverview = { render, isActive, showRoot };
+    installHomeButton();
 })();

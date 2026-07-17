@@ -6,42 +6,10 @@
         let activeActivityId = null;
         let isInitialized = false;
         let searchTerm = '';
-        let selectedTypes = new Set();
+        let selectedTagIds = new Set();
         let selectedStatus = null;
 
         const IMAGE_BASE_PATH = '/public/images/';
-
-        const TYPE_KEY_MAP = {
-            1: 'regular',
-            2: 'signIn',
-            3: 'levelRewards',
-            4: 'staged',
-            5: 'staminaDiscount',
-            6: 'beginnerBanner',
-            7: 'mysteryWanderer',
-            8: 'highDifficulty',
-            9: 'combatTraining',
-            10: 'characterGuide',
-            11: 'returningPlayer',
-            12: 'supply',
-            13: 'areaGuide',
-            16: 'weeklyTasks',
-            17: 'survivalTraining',
-            18: 'purification',
-            19: 'beginnerGift',
-            25: 'characterDevelopment',
-            26: 'special',
-            27: 'limitedChallenge',
-            28: 'version',
-            29: 'collaboration',
-            30: 'contingencyContract',
-            31: 'recurring'
-        };
-
-        function getTypeName(type) {
-            const key = TYPE_KEY_MAP[type];
-            return key ? t(`types.${key}`) : t('typeFallback', { type });
-        }
 
         function getCurrentShowHidden() {
             return window.akeData?.getConfig().showHidden ?? false;
@@ -92,7 +60,7 @@
                     const idMatch = act.activityId && act.activityId.toLowerCase().includes(term);
                     if (!nameMatch && !idMatch) return false;
                 }
-                if (selectedTypes.size > 0 && !selectedTypes.has(act.type)) return false;
+                if (selectedTagIds.size > 0 && !(act.tags || []).some(tag => selectedTagIds.has(tag.tagId))) return false;
                 if (selectedStatus) {
                     const status = getActivityStatus(act.openTime, act.closeTime);
                     if (status.class !== selectedStatus) return false;
@@ -104,20 +72,21 @@
         function generateTypeButtons() {
             const container = document.getElementById('activityTypeFilter');
             if (!container) return;
-            const existingTypes = new Set(allActivities.map(a => a.type));
-            const sortedTypes = Array.from(existingTypes).sort((a, b) => a - b);
+            const tags = new Map();
+            allActivities.forEach(activity => (activity.tags || []).forEach(tag => {
+                if (!tags.has(tag.tagId)) tags.set(tag.tagId, tag);
+            }));
             container.innerHTML = '';
-            sortedTypes.forEach(type => {
-                const typeName = getTypeName(type);
+            tags.forEach(tag => {
                 const btn = document.createElement('span');
-                btn.className = `filter-btn ${selectedTypes.has(type) ? 'active' : ''}`;
-                btn.dataset.type = type;
-                btn.textContent = typeName;
+                btn.className = `filter-btn ${selectedTagIds.has(tag.tagId) ? 'active' : ''}`;
+                btn.dataset.tagId = tag.tagId;
+                btn.textContent = tag.name || tag.tagId;
                 btn.addEventListener('click', () => {
-                    if (selectedTypes.has(type)) {
-                        selectedTypes.delete(type);
+                    if (selectedTagIds.has(tag.tagId)) {
+                        selectedTagIds.delete(tag.tagId);
                     } else {
-                        selectedTypes.add(type);
+                        selectedTagIds.add(tag.tagId);
                     }
                     btn.classList.toggle('active');
                     renderActivityList();
@@ -180,7 +149,7 @@
                     const status = getActivityStatus(item.openTime, item.closeTime);
                     const outlines = { 'status-active': 'status-active', 'status-upcoming': 'status-upcoming', 'status-closed': 'status-closed' };
                     return { ...item, id: item.activityId, image: item.tabImg, fallback: t('overview.fallback'), outline: outlines[status.class],
-                        tags: [getTypeName(item.type), item.openTime ? t('dates.opensOn', { date: item.openTime.split(' ')[0] }) : t('dates.permanentContent')] };
+                        tags: [...(item.tags || []).map(tag => tag.name || tag.tagId), item.openTime ? t('dates.opensOn', { date: item.openTime.split(' ')[0] }) : t('dates.permanentContent')] };
                 })
             });
         }
@@ -353,6 +322,9 @@
             }
 
             let stagesHtml = renderStages(data.stageList);
+            const tagsHtml = (data.tags || []).length
+                ? `<div class="activity-tags">${data.tags.map(tag => `<span class="activity-tag">${tag.name || tag.tagId}</span>`).join('')}</div>`
+                : '';
 
             return `
                 <div class="activity-detail-container">
@@ -365,6 +337,7 @@
                             <div class="detail-time">
                                 <span>${t('dates.range', { start: openTimeStr, end: closeTimeStr })}</span>
                             </div>
+                            ${tagsHtml}
                             ${countdownHtml}
                             <div class="detail-desc">${parseText(data.desc || '')}</div>
                         </div>
@@ -437,7 +410,7 @@
                 searchTerm = '';
                 const searchInput = document.getElementById('activitySearchInput');
                 if (searchInput) searchInput.value = '';
-                selectedTypes.clear();
+                selectedTagIds.clear();
                 selectedStatus = null;
                 refreshModule();
             });

@@ -178,20 +178,15 @@
         potentialIds.forEach(skillId => skillIds.add(skillId));
         const shipRow = shipChars[id] || {};
         const shipIds = (shipRow.skillList || []).map(s => s.skillId);
-        const itemIds = new Set([id]);
+        const itemIds = new Set([id, 'item_gold']);
         Object.values(grow.talentNodeMap || {}).forEach(n => (n.requiredItem || []).forEach(item => itemIds.add(item.id)));
         (potential.potentialUnlockBundle || []).forEach(p => (p.itemIds || []).forEach(itemId => itemIds.add(itemId)));
         (grow.skillLevelUp || []).forEach(level => (level.itemBundle || []).forEach(item => itemIds.add(item.id)));
-        Object.values(grow.talentNodeMap || {}).forEach(node => {
-            (node.requiredItem || []).forEach(required => {
-                if (!required.name && items[required.id]?.name) required.name = items[required.id].name;
-            });
-        });
         return {
             charId: id, charactertable: char, chargrowthtable: grow, characterpotentialtable: potential,
             potentialtalenteffecttable: pick(talentEffects, talentIds.concat(potentialIds)),
             skillpatchtable: pick(skills, Array.from(skillIds)), spaceshipcharskilltable: shipRow,
-            spaceshipskilltable: pick(shipSkills, shipIds), itemtable: items[id] || {},
+            spaceshipskilltable: pick(shipSkills, shipIds), itemtable: items[id] || {}, costitemtable: pick(items, Array.from(itemIds)),
             charprofessiontable: professions[char.profession] || {}
         };
     }
@@ -483,14 +478,16 @@
     }
 
     async function activityManifest() {
-        const [activities, times] = await Promise.all([table('ActivityTable'), table('TimeRangeTable')]);
+        const [activities, tags, times] = await Promise.all([table('ActivityTable'), table('ActivityTagTable'), table('TimeRangeTable')]);
         const now = Date.now();
         const rows = Object.entries(activities).map(([activityId, row], index) => {
             const range = times[row.timeId]?.timeRangeList?.[0] || {};
             const open = range.openTime ? new Date(range.openTime).getTime() : 0;
             const close = range.closeTime ? new Date(range.closeTime).getTime() : 0;
             const statusOrder = !close ? 3 : (open > now ? 1 : (close < now ? 2 : 0));
-            return { activityId, name: text(row.name, activityId), type: row.type, openTime: range.openTime || '', closeTime: range.closeTime || '',
+            return { activityId, name: text(row.name, activityId), rawType: row.type,
+                tags: (row.tagIds || []).map(tagId => ({ tagId, name: text(tags[tagId]?.name, tagId) })),
+                openTime: range.openTime || '', closeTime: range.closeTime || '',
                 tabImg: row.tabImg ? `/public/images/activity/${row.tabImg}.png` : '', contentFile: `/__v3/activity/${activityId}.json`,
                 statusOrder, sourceOrder: row.sortId ?? index, hidden: false };
         });
@@ -520,7 +517,7 @@
         }
         return { id, name: text(row.name, id), desc: text(row.desc), conditions: (row.conditions || []).map(condition => text(condition.desc)),
             rewarddetail: rewardsToView(row.rewardId, rewards, items), sortId: row.sortId, tabImg: row.tabImg, tabImgColor: row.tabImgColor,
-            tags: (row.tagIds || []).map(tagId => text(tags[tagId]?.name, tagId)), type: row.type, stageList };
+            tags: (row.tagIds || []).map(tagId => ({ tagId, name: text(tags[tagId]?.name, tagId) })), rawType: row.type, stageList };
     }
 
     async function ccManifest() {

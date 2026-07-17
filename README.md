@@ -75,8 +75,6 @@ AKEDatabase/
 │  ├─ light.css                   # 亮色主题
 │  ├─ dark.css                    # 暗色主题
 │  ├─ yellow.css                  # 护眼主题
-│  ├─ hyperlink.json              # `<#tag>` 术语说明
-│  ├─ textstyle.json              # `<@style>` 文本样式
 │  └─ <module>.css                # 模块样式
 ├─ public/
 │  ├─ TableCfg/                   # 全量游戏配置表，v3 主事实源
@@ -108,7 +106,7 @@ AKEDatabase/
 
 `index-app.js` 读取 `plugin/manifest.json`，过滤禁用模块，按 `priority` 排序，然后生成桌面侧栏和移动端菜单。
 
-设置弹窗中的应用版本、游戏版本、Hotfix 和最后更新时间来自 `version.json`。首页不显示版本号，而是读取 `totime` 和 `desc` 显示下次数据更新倒计时及可选更新原因。代码、CSS、模块结构或界面语言文件变化时递增 `appversion`；IndexedDB 缓存版本由 `gameversion` 和 `hotfixversion` 共同派生。
+设置弹窗中的应用版本、游戏版本、Hotfix 和最后更新时间来自 `version.json`。首页不显示版本号，而是读取 `totime` 和 `desc` 显示下次数据更新倒计时及可选更新原因。代码、CSS、模块结构或界面语言文件变化时递增 `appversion`；IndexedDB 缓存版本由 `gameversion` 和 `hotfixversion` 共同派生。`debugmode` 为 `true` 时，每次刷新都会清空持久响应缓存，并以本次刷新时间戳绕过应用资源和 public 数据的浏览器缓存。
 
 点击模块后，框架通过 `window.akeFetch` 获取模块 HTML并插入 `#contentArea`。因为动态插入的 `<script>` 不会自动执行，加载器会按 DOM 顺序重新创建脚本节点并等待外部脚本完成。
 
@@ -125,6 +123,8 @@ AKEDatabase/
 - HTTP Cache：继续负责版本化的 HTML、JS、CSS 和网络响应。
 
 `gameversion` 或 `hotfixversion` 变化时会原子清空旧 public 响应并写入新版本。单独更新 `appversion` 不会使 public 数据缓存失效。IndexedDB、Service Worker 或 localStorage 不可用时，页面自动降级到内存缓存和普通网络请求，不阻止应用启动。`version.json` 每次启动均使用 `no-store` 请求。
+
+全局设置中的“强制刷新网页缓存”会清空页面内存与 IndexedDB 响应缓存，并以一次性时间戳重新加载当前页面。该操作保留语言、主题、令牌等 localStorage 设置；浏览器 HTTP 缓存通过时间戳 URL 绕过，而不是尝试删除用户的全局浏览器缓存。
 
 Service Worker 首次安装或应用版本更新并取得页面控制权时，会按 `appversion` 在当前会话中执行一次刷新，使 favicon、首页图片等早于缓存脚本发起的 `/public/` 请求也经过 Service Worker。
 
@@ -314,7 +314,7 @@ http://localhost:5501/
 <image="path" scale=1.0>
 ```
 
-样式和术语分别来自 `theme/textstyle.json` 与 `theme/hyperlink.json`。当前解析器假定数据可信，不应直接用于用户提交的未过滤 HTML。
+样式和术语分别来自 `public/TableCfg/RichTextStyleTable.json` 与 `public/TableCfg/HyperlinkTextTable.json`。术语文本通过当前语言的 `I18nTextTable` 水合，样式表的 `preDef` 会转换为网页解析器兼容的颜色与图标配置。当前解析器假定数据可信，不应直接用于用户提交的未过滤 HTML。
 
 ## 开发新模块
 

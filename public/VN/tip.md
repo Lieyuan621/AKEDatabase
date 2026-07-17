@@ -2,6 +2,10 @@ AKEData đã chuyển sang tên miền www.akedata.wiki. Tên miền cũ akedata
 
 # Nhật ký cập nhật phiên bản AKEData
 
+### v1.1.8
+
+Thêm chế độ debug và chức năng buộc làm mới cache web; sửa node thuộc tính nhân vật và cách phân tích chi phí phát triển dựa trên mô tả vật phẩm; chuyển loại hoạt động sang ActivityTagTable; đọc trực tiếp style và thuật ngữ rich text từ TableCfg; đồng thời thêm nút trang chủ ở thanh bên cho các module có trang khởi đầu.
+
 ### v1.1.6
 
 Thêm thông báo trong trang và đếm ngược cập nhật, hỗ trợ nhóm skill hai hình thái của Jue, tối ưu thông báo tải và loại bỏ nhiều module v2 đã ngừng sử dụng.

@@ -2,6 +2,10 @@ AKEData ist auf die Domain www.akedata.wiki umgezogen. Die bisherige Domain aked
 
 # AKEData-Versionsprotokoll
 
+### v1.1.8
+
+Debugmodus und erzwungene Aktualisierung des Webcaches wurden ergänzt; Charakter-Attributknoten und die Auswertung von Entwicklungskosten anhand der Gegenstandsbeschreibungen wurden korrigiert; Aktivitätstypen stammen nun aus ActivityTagTable; Rich-Text-Stile und Begriffe werden direkt aus TableCfg gelesen; und Module mit Startseite erhielten eine Home-Schaltfläche in der Seitenleiste.
+
 ### v1.1.6
 
 Interne Ankündigungen und ein Update-Countdown wurden ergänzt, Jues zweiförmige Fertigkeitsgruppen angepasst, Ladehinweise verbessert und zahlreiche veraltete v2-Module entfernt.

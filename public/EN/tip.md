@@ -2,6 +2,10 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.1.8
+
+Added debug mode and forced web-cache refresh; fixed character attribute nodes and development-cost parsing based on item descriptions; switched activity types to ActivityTagTable; moved rich-text styles and terms directly to TableCfg; and added sidebar home buttons to modules with landing pages.
+
 ### v1.1.6
 
 Added site announcements and an update countdown, adapted Arcane's dual-form skill sets, improved loading messages, and removed many deprecated v2 modules.

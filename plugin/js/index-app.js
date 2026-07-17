@@ -407,6 +407,7 @@
                     const version = await window.akeVersionReady;
                     const url = new URL(href, window.location.href);
                     if (version && url.origin === window.location.origin) url.searchParams.set('v', version.appversion);
+                    if (window.__akeForceRefreshTimestamp) url.searchParams.set('t', window.__akeForceRefreshTimestamp);
                     const existing = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
                         .find(link => canonicalResourceUrl(link.href) === key);
                     if (existing) {
@@ -597,6 +598,7 @@
                 config.theme = lowerTheme;
                 const themeUrl = new URL(`theme/${lowerTheme}.css`, window.location.href);
                 if (window.akeVersion) themeUrl.searchParams.set('v', window.akeVersion.appversion);
+                if (window.__akeForceRefreshTimestamp) themeUrl.searchParams.set('t', window.__akeForceRefreshTimestamp);
                 themeLink.href = themeUrl.href;
                 storage.set('akedata-theme', lowerTheme);
                 if (modalThemeSelect) modalThemeSelect.value = lowerTheme;
@@ -750,6 +752,39 @@
             window.hyperlinkConfig = {};
             window.textstyleConfig = {};
 
+            function normalizeTableImagePath(path) {
+                if (!path) return '';
+                const value = String(path).replace(/^\/?public\/images\//, '');
+                return `public/images/${value}${value.includes('.') ? '' : '.png'}`;
+            }
+
+            function normalizeHyperlinkTable(table) {
+                return Object.fromEntries(Object.entries(table || {}).map(([id, row]) => [id, {
+                    name: row.name?.text || '',
+                    desc: row.desc?.text || '',
+                    iconPath: normalizeTableImagePath(row.iconPath),
+                    styleid: row.richTextId || ''
+                }]));
+            }
+
+            function normalizeRichTextStyleTable(table) {
+                const result = {};
+                Object.entries(table || {}).forEach(([id, row]) => {
+                    const style = { color: [], image: [], scale: [] };
+                    (row.preDef || []).slice(0, 2).forEach((definition, index) => {
+                        const color = String(definition).match(/<color=([^>]+)>/);
+                        const image = String(definition).match(/<image="([^"]+)"\s+scale=([0-9.]+)>/);
+                        if (color) style.color[index] = color[1];
+                        if (image) {
+                            style.image[index] = normalizeTableImagePath(image[1]);
+                            style.scale[index] = Number(image[2]);
+                        }
+                    });
+                    if (style.color.length || style.image.length || style.scale.length) result[id] = style;
+                });
+                return result;
+            }
+
             window.__akeRouter = {
                 updateUrl(plugin, id) {
                     if (!config.keepUrlSync) return;
@@ -769,8 +804,8 @@
                 }
             };
             window.configLoaded = Promise.all([
-                (window.akeFetch || fetch)('/theme/hyperlink.json').then(r => r.json()).then(cfg => window.hyperlinkConfig = cfg).catch(() => {}),
-                (window.akeFetch || fetch)('/theme/textstyle.json').then(r => r.json()).then(cfg => window.textstyleConfig = cfg).catch(() => {})
+                window.AKEV3.table('HyperlinkTextTable').then(normalizeHyperlinkTable).then(cfg => window.hyperlinkConfig = cfg).catch(() => {}),
+                window.AKEV3.table('RichTextStyleTable').then(normalizeRichTextStyleTable).then(cfg => window.textstyleConfig = cfg).catch(() => {})
             ]);
 
             window.renderRawValueTip = function(displayValue, rawValue, variableName) {
@@ -1004,6 +1039,11 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 const deepPlugin = urlParams.get('plugin');
                 const deepId = urlParams.get('id');
+                if (urlParams.has('t')) {
+                    urlParams.delete('t');
+                    const query = urlParams.toString();
+                    history.replaceState(null, '', window.location.pathname + (query ? `?${query}` : ''));
+                }
 
                 await window.akeI18n?.ready;
                 config.language = window.akeI18n?.getLanguage?.() || 'CH';
@@ -1103,6 +1143,15 @@
                         storage.remove('akedata-unlockedTokens');
                         updateTokenStatus();
                         closeSettingsModal(); // 立即应用
+                    });
+                }
+
+                const forceRefreshCacheBtn = document.getElementById('forceRefreshCacheBtn');
+                if (forceRefreshCacheBtn) {
+                    forceRefreshCacheBtn.addEventListener('click', async () => {
+                        forceRefreshCacheBtn.disabled = true;
+                        forceRefreshCacheBtn.textContent = tr('settings.cache.refreshing', null, '正在清理缓存...');
+                        await window.akeDataCache?.forceRefresh?.();
                     });
                 }
 
