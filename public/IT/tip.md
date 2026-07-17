@@ -2,6 +2,10 @@ AKEData è stato trasferito al dominio www.akedata.wiki. Il precedente dominio a
 
 # Registro degli aggiornamenti di AKEData
 
+### v1.1.9
+
+Aggiunto il modulo dedicato alla sfida permanente “Echi di guerra”, con visualizzazione per stagione e rotazione di livelli, difficoltà, titoli di valutazione, ricompense al merito e istruzioni ufficiali. Il modulo mostra anche ondate di nemici, mappe dei punti di comparsa, Buff iniziali e attributi adattati al livello, con cambio dell'ondata ed evidenziazione collegata sulla mappa.
+
 ### v1.1.8
 
 Aggiunti la modalità di debug e l'aggiornamento forzato della cache web; corretti i nodi degli attributi dei personaggi e l'analisi dei costi di sviluppo basata sulle descrizioni degli oggetti; i tipi di attività ora provengono da ActivityTagTable; stili e termini rich text vengono letti direttamente da TableCfg; e i moduli con pagina iniziale hanno ricevuto un pulsante Home nella barra laterale.

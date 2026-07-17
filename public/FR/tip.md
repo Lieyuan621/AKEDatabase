@@ -2,6 +2,10 @@ AKEData a été transféré vers le domaine www.akedata.wiki. L'ancien domaine a
 
 # Journal des mises à jour d'AKEData
 
+### v1.1.9
+
+Ajout du module consacré au défi permanent « Échos de guerre », avec une consultation par saison et rotation des niveaux, difficultés, titres de classement, récompenses de mérite et instructions officielles. Le module affiche aussi les vagues d'ennemis, les cartes d'apparition, les Buff initiaux et les attributs ajustés au niveau, avec changement de vague et surbrillance liée sur la carte.
+
 ### v1.1.8
 
 Ajout du mode de débogage et de l'actualisation forcée du cache web ; correction des nœuds d'attributs des personnages et de l'analyse des coûts de développement d'après les descriptions des objets ; utilisation d'ActivityTagTable pour les types d'activités ; lecture directe des styles et termes de texte enrichi depuis TableCfg ; et ajout d'un bouton d'accueil latéral aux modules disposant d'une page initiale.

@@ -2,6 +2,10 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.1.9
+
+Added the permanent challenge feature page “Echoes of War,” with season and rotation views for stages, difficulties, rating titles, merit rewards, and official instructions. It also displays enemy waves, spawn-position maps, spawn buffs, and level-adjusted attributes, with wave switching and linked map highlighting.
+
 ### v1.1.8
 
 Added debug mode and forced web-cache refresh; fixed character attribute nodes and development-cost parsing based on item descriptions; switched activity types to ActivityTagTable; moved rich-text styles and terms directly to TableCfg; and added sidebar home buttons to modules with landing pages.

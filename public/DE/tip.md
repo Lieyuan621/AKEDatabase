@@ -2,6 +2,10 @@ AKEData ist auf die Domain www.akedata.wiki umgezogen. Die bisherige Domain aked
 
 # AKEData-Versionsprotokoll
 
+### v1.1.9
+
+Das Themenmodul für die permanente Herausforderung „Echo des Krieges“ wurde ergänzt. Es zeigt nach Saison und Rotation Stufen, Schwierigkeitsgrade, Bewertungstitel, Verdienstbelohnungen und offizielle Anleitungen. Außerdem werden Gegnerwellen, Spawnkarten, Start-Buffs und stufenbereinigte Attribute mit Wellenwechsel und verknüpfter Kartenhervorhebung dargestellt.
+
 ### v1.1.8
 
 Debugmodus und erzwungene Aktualisierung des Webcaches wurden ergänzt; Charakter-Attributknoten und die Auswertung von Entwicklungskosten anhand der Gegenstandsbeschreibungen wurden korrigiert; Aktivitätstypen stammen nun aus ActivityTagTable; Rich-Text-Stile und Begriffe werden direkt aus TableCfg gelesen; und Module mit Startseite erhielten eine Home-Schaltfläche in der Seitenleiste.

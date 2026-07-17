@@ -2,6 +2,10 @@ O AKEData foi transferido para o domínio www.akedata.wiki. O domínio anterior,
 
 # Registro de atualizações do AKEData
 
+### v1.1.9
+
+Foi adicionado o módulo do desafio permanente “Ecos da Guerra”, com visualização por temporada e rotação de fases, dificuldades, títulos de classificação, recompensas de mérito e instruções oficiais. O módulo também exibe ondas de inimigos, mapas de surgimento, Buff de nascimento e atributos ajustados por nível, com troca de ondas e destaque vinculado no mapa.
+
 ### v1.1.8
 
 Foram adicionados o modo de depuração e a atualização forçada do cache da web; corrigidos os nós de atributos dos personagens e a análise dos custos de desenvolvimento com base nas descrições dos itens; os tipos de atividade passaram a usar ActivityTagTable; estilos e termos de texto rico agora são lidos diretamente de TableCfg; e módulos com página inicial receberam um botão de início na barra lateral.

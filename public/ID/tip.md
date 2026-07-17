@@ -2,6 +2,10 @@ AKEData telah pindah ke domain www.akedata.wiki. Domain lama, akedata.top, kini 
 
 # Catatan Pembaruan Versi AKEData
 
+### v1.1.9
+
+Menambahkan modul khusus tantangan permanen “Gema Perang”, dengan tampilan per musim dan rotasi untuk stage, tingkat kesulitan, gelar peringkat, hadiah merit, dan petunjuk resmi. Modul ini juga menampilkan gelombang musuh, peta posisi spawn, Buff saat spawn, serta atribut yang disesuaikan dengan level, lengkap dengan pergantian gelombang dan sorotan peta yang saling terhubung.
+
 ### v1.1.8
 
 Menambahkan mode debug dan penyegaran paksa cache web; memperbaiki node atribut karakter dan parsing biaya pengembangan berdasarkan deskripsi item; mengalihkan tipe aktivitas ke ActivityTagTable; membaca style dan istilah rich text langsung dari TableCfg; serta menambahkan tombol beranda di sidebar untuk modul yang memiliki halaman awal.

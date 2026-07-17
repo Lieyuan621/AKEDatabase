@@ -33,6 +33,7 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 | ID | 模块 | 主要数据源 |
 |---|---|---|
 | `v3_cc` | 危机合约 | TableCfg、SpawnerConfig、BuffData |
+| `season_tower` | 战争回响 | SeasonTower、Dungeon、GameMechanic、Reward、Enemy 等 TableCfg，SpawnerConfig、BuffData |
 | `research` | 研究 | `public/CH/research` Markdown |
 | `v3_character` | 角色 | TableCfg、`public/CH/maps.json` |
 | `v3_weapon` | 武器 | TableCfg |
@@ -386,7 +387,7 @@ git status --short
 浏览器回归至少覆盖：
 
 1. 公开模块列表顺序。
-2. 九个 v3 模块的列表和详情。
+2. 九个 v3 模块和战争回响专题的列表与详情。
 3. 搜索、筛选和默认等级。
 4. 合法与非法深链接。
 5. 显示隐藏模块后访问 v2 和开发工具模块。
