@@ -226,8 +226,6 @@
     function validVersion(value) {
         return value &&
             typeof value.appversion === 'string' &&
-            typeof value.gameversion === 'string' &&
-            typeof value.hotfixversion === 'string' &&
             typeof value.updatedAt === 'string';
     }
 

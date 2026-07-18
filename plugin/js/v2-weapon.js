@@ -96,6 +96,7 @@
         filtered.forEach(w => {
             const div = document.createElement('div');
             div.className = `mobile-list-item ${w.weaponId === activeWeaponId ? 'active' : ''}`;
+            window.AKEModuleOverview?.markVersionChange(div, w);
             div.innerHTML = `<div class="item-name">${escapeHtml(w.name)}</div><div class="item-id">${escapeHtml(w.weaponId)}</div>`;
             div.addEventListener('click', () => {
                 activeWeaponId = w.weaponId;
@@ -154,6 +155,7 @@
         filtered.forEach((w, index) => {
             const item = document.createElement('div');
             item.className = `weapon-item ${w.weaponId === activeWeaponId ? 'active' : (!activeWeaponId && index === 0 && !window.AKEModuleOverview?.isActive('weapon') ? 'active' : '')}`;
+            window.AKEModuleOverview?.markVersionChange(item, w);
             item.dataset.weaponId = w.weaponId;
 
             const rb = document.createElement('span');
@@ -483,6 +485,7 @@
             currentWeaponData = data;
             currentWeapon = weapon;
             container.innerHTML = renderDetail(data, weapon);
+            window.AKEModuleOverview?.renderVersionDiff(container, data, data.__versionDiff?.baseline ? renderDetail(data.__versionDiff.baseline, weapon) : '');
 
             const toggleBtn = container.querySelector('.toggle-weapon-levels-btn');
             if (toggleBtn) {
@@ -492,6 +495,7 @@
                     const tbody = container.querySelector('.atk-table tbody');
                     if (tbody && currentWeaponData) {
                         container.innerHTML = renderDetail(currentWeaponData, currentWeapon);
+                        window.AKEModuleOverview?.renderVersionDiff(container, currentWeaponData, currentWeaponData.__versionDiff?.baseline ? renderDetail(currentWeaponData.__versionDiff.baseline, currentWeapon) : '');
                         const newBtn = container.querySelector('.toggle-weapon-levels-btn');
                         if (newBtn) newBtn.addEventListener('click', ev => {
                             ev.preventDefault();

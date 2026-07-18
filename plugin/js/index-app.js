@@ -86,6 +86,7 @@
                 theme: 'light',
                 showHidden: false,
                 showExportButton: false,
+                showVersionChanges: storage.get('akedata-showVersionChanges', 'false') === 'true',
                 levelSettings: {
                     enabled: true,
                     characterLevels: '1,20,40,60,80,90',
@@ -110,6 +111,7 @@
             const modalThemeSelect = document.getElementById('modalThemeSelect');
             const modalLanguageSelect = document.getElementById('modalLanguageSelect');
             const modalShowHiddenCheck = document.getElementById('modalShowHiddenCheck');
+            const modalShowVersionChanges = document.getElementById('modalShowVersionChanges');
             const modalDataVersionSelect = document.getElementById('modalDataVersionSelect');
             const modalDataBaseUrl = document.getElementById('modalDataBaseUrl');
             const dataSourceStatus = document.getElementById('dataSourceStatus');
@@ -419,8 +421,8 @@
                     box.replaceChildren();
                     [
                         tr('version.appLine', { version: version.appversion }),
-                        tr('version.gameLine', { version: selectedDataVersion?.gameVersion || version.gameversion }),
-                        tr('version.hotfixLine', { version: selectedDataVersion?.hotfixVersion || version.hotfixversion }),
+                        tr('version.gameLine', { version: selectedDataVersion?.gameVersion || '-' }),
+                        tr('version.hotfixLine', { version: selectedDataVersion?.hotfixVersion || '-' }),
                         tr('version.updatedLine', { updatedAt: formatUpdatedAt(version.updatedAt), updatedBy: version.updatedBy ? ` (${version.updatedBy})` : '' })
                     ].forEach(line => {
                         const p = document.createElement('p');
@@ -675,6 +677,7 @@
                 modalShowHiddenCheck.checked = config.showHidden;
                 const modalShowExportCheck = document.getElementById('modalShowExportCheck');
                 if (modalShowExportCheck) modalShowExportCheck.checked = config.showExportButton;
+                if (modalShowVersionChanges) modalShowVersionChanges.checked = config.showVersionChanges;
                 const modalKeepUrlSync = document.getElementById('modalKeepUrlSync');
                 if (modalKeepUrlSync) modalKeepUrlSync.checked = config.keepUrlSync;
                 modalLevelsEnabled.checked = config.levelSettings.enabled;
@@ -731,16 +734,20 @@
                     storage.set('akedata-showExportButton', config.showExportButton);
                 }
 
+                let requiresReload = false;
+                if (modalShowVersionChanges) {
+                    const wasShowingVersionChanges = config.showVersionChanges;
+                    config.showVersionChanges = modalShowVersionChanges.checked;
+                    storage.set('akedata-showVersionChanges', config.showVersionChanges);
+                    requiresReload = wasShowingVersionChanges !== config.showVersionChanges;
+                }
+
                 const modalKeepUrlSync = document.getElementById('modalKeepUrlSync');
                 if (modalKeepUrlSync) {
                     const wasSync = config.keepUrlSync;
                     config.keepUrlSync = modalKeepUrlSync.checked;
                     storage.set('akedata-keepUrlSync', config.keepUrlSync);
-                    if (wasSync !== config.keepUrlSync) {
-                        settingsModal.style.display = 'none';
-                        location.reload();
-                        return;
-                    }
+                    requiresReload = requiresReload || wasSync !== config.keepUrlSync;
                 }
 
                 if (modalDataVersionSelect && modalDataBaseUrl && window.akeDataSource) {
@@ -775,6 +782,7 @@
 
                 window.dispatchEvent(new CustomEvent('globalConfigChanged', { detail: { config } }));
                 settingsModal.style.display = 'none';
+                if (requiresReload) location.reload();
             }
 
             async function loadModulesFromManifest() {
@@ -1193,6 +1201,7 @@
                         document.getElementById('modalSkillLevels').value = '1,9,10,11,12';
                         document.getElementById('modalThemeSelect').value = 'light';
                         document.getElementById('modalShowHiddenCheck').checked = false;
+                        document.getElementById('modalShowVersionChanges').checked = false;
                         document.getElementById('modalKeepUrlSync').checked = true;
                         const currentDataSource = window.akeDataSource?.getState?.();
                         if (modalDataBaseUrl && currentDataSource) modalDataBaseUrl.value = currentDataSource.defaultBaseUrl;

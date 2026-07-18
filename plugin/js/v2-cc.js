@@ -247,6 +247,7 @@
         filtered.forEach(game => {
             const div = document.createElement('div');
             div.className = `v2cc-mobile-item ${game.gameId === activeGameId ? 'active' : ''}`;
+            window.AKEModuleOverview?.markVersionChange(div, game);
             div.innerHTML = `
                 <div class="v2cc-mobile-name">${escapeHtml(game.name || game.gameId)}</div>
                 <div class="v2cc-mobile-id">${escapeHtml(game.activityId)}</div>
@@ -288,6 +289,7 @@
         filtered.forEach((game, index) => {
             const div = document.createElement('div');
             div.className = `v2cc-item ${game.gameId === activeGameId ? 'active' : (!activeGameId && index === 0 && !window.AKEModuleOverview?.isActive('cc') ? 'active' : '')}`;
+            window.AKEModuleOverview?.markVersionChange(div, game);
             div.dataset.gameId = game.gameId;
 
             const icon = document.createElement('div');
@@ -400,6 +402,7 @@
             }
 
             container.innerHTML = renderDetail(data, game);
+            window.AKEModuleOverview?.renderVersionDiff(container, data, data.__versionDiff?.baseline ? renderDetail(data.__versionDiff.baseline, game) : '');
             bindTagEvents();
             updateSelectedSummary(data.cctagtable || {});
         } catch (err) {

@@ -18,6 +18,8 @@
 .ake-overview__card--status-active { --ake-overview-outline: #21a65b; }
 .ake-overview__card--status-upcoming { --ake-overview-outline: #e2b21b; }
 .ake-overview__card--status-closed { --ake-overview-outline: #858b94; }
+.ake-overview__card--modified { --ake-overview-outline: #d68a00; }
+.ake-overview__card--changed { background: linear-gradient(135deg, color-mix(in srgb, var(--ake-overview-outline) 10%, var(--card-bg)), var(--card-bg) 58%); }
 .ake-overview__card:hover { transform: translateY(-2px); box-shadow: 0 0 0 2px color-mix(in srgb, var(--ake-overview-outline) 25%, transparent), 0 8px 22px rgba(0, 0, 0, .12); }
 .ake-overview__visual { min-height: 88px; display: grid; place-items: center; overflow: hidden; border-radius: 11px 0 0 11px; background: color-mix(in srgb, var(--accent-color) 8%, var(--hover-bg)); color: var(--text-secondary); font-size: .65rem; font-weight: 800; letter-spacing: .12em; }
 .ake-overview__visual img { width: 100%; height: 100%; object-fit: contain; }
@@ -27,6 +29,26 @@
 .ake-overview__id { overflow: hidden; color: var(--text-secondary); font-family: Consolas, monospace; font-size: .68rem; text-overflow: ellipsis; white-space: nowrap; }
 .ake-overview__tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 9px; }
 .ake-overview__tags span { max-width: 100%; padding: 3px 7px; overflow: hidden; border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-secondary); font-size: .68rem; text-overflow: ellipsis; white-space: nowrap; }
+.ake-overview__tags .ake-overview__change-tag { border-color: currentColor; color: #fff; font-weight: 800; }
+.ake-overview__tags .ake-overview__change-tag--added { background: #168a54; }
+.ake-overview__tags .ake-overview__change-tag--modified { background: #b87500; }
+[data-ake-change] { position: relative; }
+[data-ake-change]::after { content: attr(data-ake-change-label); position: absolute; z-index: 3; top: 4px; right: 5px; padding: 2px 5px; border-radius: 5px; color: #fff; font-size: 10px; font-weight: 800; line-height: 1.25; pointer-events: none; box-shadow: 0 1px 4px rgba(0, 0, 0, .2); }
+[data-ake-change="added"]::after { background: #168a54; }
+[data-ake-change="modified"]::after { background: #b87500; }
+.ake-version-diff { margin: 0 0 18px; overflow: hidden; border: 1px solid color-mix(in srgb, #b87500 55%, var(--border-color)); border-radius: 12px; background: var(--card-bg); color: var(--text-color); }
+.ake-version-diff > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 15px; cursor: pointer; background: color-mix(in srgb, #b87500 10%, var(--card-bg)); }
+.ake-version-diff > summary strong { font-size: .92rem; }
+.ake-version-diff > summary span { padding: 3px 8px; border-radius: 99px; background: color-mix(in srgb, #b87500 16%, var(--card-bg)); color: var(--text-secondary); font-size: .72rem; white-space: nowrap; }
+.ake-version-diff__body { max-height: 520px; overflow: auto; padding: 10px; background: color-mix(in srgb, var(--hover-bg) 42%, var(--card-bg)); }
+.ake-version-diff__line { display: grid; grid-template-columns: 24px minmax(0, 1fr); align-items: start; padding: 7px 10px 7px 4px; border: 1px solid var(--border-color); border-bottom: 0; background: var(--card-bg); }
+.ake-version-diff__line:first-child { border-radius: 8px 8px 0 0; }
+.ake-version-diff__line:last-of-type { border-bottom: 1px solid var(--border-color); border-radius: 0 0 8px 8px; }
+.ake-version-diff__line b { text-align: center; }
+.ake-version-diff__line span { overflow-wrap: anywhere; white-space: pre-wrap; }
+.ake-version-diff__line--removed { background: color-mix(in srgb, #e5484d 13%, var(--card-bg)); color: color-mix(in srgb, #e5484d 82%, var(--text-color)); }
+.ake-version-diff__line--added { background: color-mix(in srgb, #18a058 13%, var(--card-bg)); color: color-mix(in srgb, #18a058 82%, var(--text-color)); }
+.ake-version-diff__truncated { margin: 10px 2px 2px; color: var(--text-secondary); font-size: .78rem; }
 .ake-module-search-row { display: flex !important; align-items: center; gap: 8px; }
 .ake-module-search-row > input { min-width: 0; flex: 1; }
 .ake-module-home { width: 36px; height: 36px; flex: 0 0 36px; display: grid; place-items: center; padding: 0; border: 1px solid var(--border-color); border-radius: 10px; background: var(--card-bg); color: var(--accent-color); font: 700 1.2rem/1 sans-serif; cursor: pointer; transition: background .18s, transform .18s; }

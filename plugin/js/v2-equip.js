@@ -84,6 +84,7 @@
             filtered.forEach(suit => {
                 const div = document.createElement('div');
                 div.className = `v2eq-mobile-item ${suit.suitID === activeSuitId ? 'active' : ''}`;
+                window.AKEModuleOverview?.markVersionChange(div, suit);
                 div.innerHTML = `
                     <div class="v2eq-mobile-name">${escapeHtml(suit.name)}</div>
                     <div class="v2eq-mobile-id">${escapeHtml(suit.suitID)}</div>
@@ -165,6 +166,7 @@
             filtered.forEach((suit, index) => {
                 const div = document.createElement('div');
                 div.className = `v2eq-item ${suit.suitID === activeSuitId ? 'active' : (!activeSuitId && index === 0 && !window.AKEModuleOverview?.isActive('equip') ? 'active' : '')}`;
+                window.AKEModuleOverview?.markVersionChange(div, suit);
                 div.dataset.suitId = suit.suitID;
 
                 const rb = document.createElement('span');
@@ -342,7 +344,7 @@
             return `<span class="v2eq-guarantee-wrap"><span class="v2eq-guarantee-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-guarantee-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">${t('enhancementGuarantee')}</span><span class="v2eq-guarantee-tip">${tipHtml}</span></span>`;
         }
 
-        function renderEquipCard(itemId, equipData, itemData, formulaData, formulaChainData, guaranteeRules, enhanceConst, itemTable) {
+        function renderEquipCard(itemId, equipData, itemData, formulaData, formulaChainData, guaranteeRules, enhanceConst, itemTable, isVersionAdded) {
             const name = itemData?.name?.text || itemId;
             const rarity = itemData?.rarity ?? 0;
             const iconId = itemData?.iconId || '';
@@ -370,14 +372,16 @@
             const formulaBtnHtml = renderFormulaBtn(itemId, formulaData, formulaChainData, itemTable);
             const guaranteeBtnHtml = renderGuaranteeBtn(itemId, equipData.displayAttrModifiers, guaranteeRules, enhanceConst);
             const hasActions = formulaBtnHtml || guaranteeBtnHtml;
+            const addedLabel = window.akeData?.t('versionDiff.added', null, '新增') || '新增';
 
             return `
-                <div class="v2eq-card">
+                <div class="v2eq-card${isVersionAdded ? ' v2eq-card--version-added' : ''}"${isVersionAdded ? ' data-ake-change="added"' : ''}>
                     <div class="v2eq-card-header">
                         <img class="v2eq-card-icon" src="${iconSrc}" onerror="this.onerror=null; this.src='';">
                         <div class="v2eq-card-title">
                             <div class="v2eq-card-name-row">
                                 <span class="v2eq-card-name">${escapeHtml(name)}</span>
+                                ${isVersionAdded ? `<span class="v2eq-version-change-tag">${escapeHtml(addedLabel)}</span>` : ''}
                                 <span class="v2eq-rarity-dot rarity-${rarity}" title="${commonT('rarityLabel', { rarity })}"></span>
                             </div>
                             ${showHidden ? `<span class="v2eq-card-item-id">${escapeHtml(itemId)}</span>` : ''}
@@ -502,11 +506,14 @@
             const formulaChainTable = data.equipformulachaintable || {};
             const guaranteeRules = data.equipenhanceguaranteetimesruletable || {};
             const enhanceConst = data.equipconst || null;
+            const addedEquipIds = new Set(data.__versionAddedEquipIds || []);
 
             if (!equipTable) return '';
 
             const partOrder = { 0: 0, 1: 1, 2: 2 };
             const sortedItems = Object.entries(equipTable).sort((a, b) => {
+                const addedOrder = Number(addedEquipIds.has(b[0])) - Number(addedEquipIds.has(a[0]));
+                if (addedOrder) return addedOrder;
                 const ra = itemTable[a[0]]?.rarity ?? 0;
                 const rb = itemTable[b[0]]?.rarity ?? 0;
                 if (ra !== rb) return rb - ra;
@@ -522,7 +529,7 @@
                 const formulaId = reverseFormulaTable[itemId] || '';
                 const fData = formulaId ? formulaTable[formulaId] : null;
                 const chainData = fData?.level ? formulaChainTable[fData.level] : null;
-                cardsHtml += renderEquipCard(itemId, equipData, iData, fData, chainData, guaranteeRules, enhanceConst, itemTable);
+                cardsHtml += renderEquipCard(itemId, equipData, iData, fData, chainData, guaranteeRules, enhanceConst, itemTable, addedEquipIds.has(itemId));
             });
 
             return `
@@ -583,6 +590,7 @@
             try {
                 const data = await (window.akeFetch || fetch)(suit.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data, suit);
+                window.AKEModuleOverview?.renderVersionDiff(container, data, data.__versionDiff?.baseline ? renderDetail(data.__versionDiff.baseline, suit) : '');
             } catch (err) {
                 container.innerHTML = `<div class="v2eq-error">${t('loadFailed', { message: err.message })}</div>`;
             }

@@ -354,6 +354,7 @@
             filtered.forEach((enemy, index) => {
                 const item = document.createElement('div');
                 item.className = `v2e-item ${enemy.templateId === activeEnemyId ? 'active' : (index === 0 && !activeEnemyId && !window.AKEModuleOverview?.isActive('enemy') ? 'active' : '')}`;
+                window.AKEModuleOverview?.markVersionChange(item, enemy);
                 item.dataset.enemyId = enemy.templateId;
 
                 const rarityBar = document.createElement('span');
@@ -439,6 +440,10 @@
                 data.variants.forEach((_, idx) => { variantExpandStates[idx] = false; });
 
                 container.innerHTML = renderDetail(data, enemy);
+                const baselineData = rawData.__versionDiff?.baseline
+                    ? normalizeV2ToLegacy(enemy, rawData.__versionDiff.baseline)
+                    : null;
+                window.AKEModuleOverview?.renderVersionDiff(container, rawData, baselineData ? renderDetail(baselineData, enemy) : '');
 
                 container.querySelectorAll('.v2e-toggle-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
@@ -631,6 +636,7 @@
             filtered.forEach(enemy => {
                 const item = document.createElement('div');
                 item.className = 'v2e-mobile-item';
+                window.AKEModuleOverview?.markVersionChange(item, enemy);
                 if (enemy.templateId === activeEnemyId) item.classList.add('active');
                 item.innerHTML = `<div class="v2e-mobile-name">${enemy.name}</div><div class="v2e-mobile-id">${enemy.templateId}</div>`;
                 item.addEventListener('click', () => {

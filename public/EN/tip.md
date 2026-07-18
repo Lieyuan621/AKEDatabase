@@ -2,6 +2,12 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.2.0
+
+Added cross-version data comparison. When `Latest` is selected, the site automatically compares it with the final Hotfix of the previous game version. New entries are always prioritized and tagged; modified-entry tags and detail Diff can be enabled with the experimental global setting, which is off by default.
+
+Detail Diff compares only information actually rendered on the page, showing removed content in red and added content in green while ignoring hidden fields. Activities are excluded from new-entry detection. Equipment and medals are compared by their individual IDs, with containing sets or categories tagged as well. New status is shown only by tags, so card outlines continue to follow rarity colors.
+
 ### v1.2.0-pre2
 
 Updated the complete Attribute mapping, added IDs 93–100, and synchronized `maps.json` across all 14 languages.

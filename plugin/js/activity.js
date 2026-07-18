@@ -171,6 +171,7 @@
             filtered.forEach((act, index) => {
                 const item = document.createElement('div');
                 item.className = `activity-item ${act.activityId === activeActivityId ? 'active' : (index === 0 && !activeActivityId && !window.AKEModuleOverview?.isActive('activity') ? 'active' : '')}`;
+                window.AKEModuleOverview?.markVersionChange(item, act);
                 item.dataset.activityId = act.activityId;
                 item.dataset.contentFile = act.contentFile;
 
@@ -248,6 +249,7 @@
             try {
                 const data = await (window.akeFetch || fetch)(activity.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data, activity);
+                window.AKEModuleOverview?.renderVersionDiff(container, data, data.__versionDiff?.baseline ? renderDetail(data.__versionDiff.baseline, activity) : '');
             } catch (err) {
                 container.innerHTML = `<div class="error-message">${t('loadFailed', { message: err.message })}</div>`;
             }
@@ -374,6 +376,7 @@
             filtered.forEach(act => {
                 const item = document.createElement('div');
                 item.className = 'mobile-list-item';
+                window.AKEModuleOverview?.markVersionChange(item, act);
                 if (act.activityId === activeActivityId) item.classList.add('active');
                 item.innerHTML = `
                     <div class="item-name">${act.name}</div>

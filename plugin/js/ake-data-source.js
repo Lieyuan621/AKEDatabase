@@ -39,11 +39,6 @@
         return path;
     }
 
-    function simplifyGameVersion(value) {
-        const match = String(value || '').match(/\d+\.\d+\.\d+/);
-        return match ? match[0] : String(value || 'unknown');
-    }
-
     function validateManifest(value) {
         if (!value || value.schemaVersion !== 1 || !Array.isArray(value.versions) || value.versions.length === 0) {
             throw new Error('版本清单格式无效');
@@ -75,30 +70,52 @@
     }
 
     function fallbackManifest(baseUrl) {
-        const gameVersion = simplifyGameVersion(bootstrapVersion.gameversion);
-        const hotfixVersion = String(bootstrapVersion.hotfixversion || 'local');
-        const id = `${gameVersion}@${hotfixVersion}`;
-        const base = new URL(baseUrl);
-        const isLocal = ['localhost', '127.0.0.1', '::1'].includes(base.hostname);
-        const isUnversionedLocal = base.origin === window.location.origin || isLocal;
+        const id = 'local@local';
         return validateManifest({
             schemaVersion: 1,
             latest: id,
-            sharedRevision: hotfixVersion,
+            sharedRevision: `local-${bootstrapVersion.appversion || bootstrapVersion.updatedAt || '1'}`,
             updatedAt: bootstrapVersion.updatedAt || '',
             versions: [{
                 id,
-                gameVersion,
-                hotfixVersion,
-                tableCfgPath: isUnversionedLocal
-                    ? 'public/TableCfg'
-                    : `public/${gameVersion}/${hotfixVersion}/TableCfg`,
+                gameVersion: 'local',
+                hotfixVersion: 'local',
+                tableCfgPath: 'public/TableCfg',
                 publishedAt: bootstrapVersion.updatedAt || ''
             }]
         });
     }
 
-    async function loadManifest(baseUrl) {
+    function isLocalDataSource(baseUrl) {
+        const url = new URL(baseUrl);
+        return url.origin === window.location.origin || ['localhost', '127.0.0.1', '::1'].includes(url.hostname);
+    }
+
+    function compareGameVersions(a, b) {
+        const aParts = String(a || '').split('.').map(part => Number(part));
+        const bParts = String(b || '').split('.').map(part => Number(part));
+        const length = Math.max(aParts.length, bParts.length);
+        for (let index = 0; index < length; index += 1) {
+            const difference = (aParts[index] || 0) - (bParts[index] || 0);
+            if (difference) return difference;
+        }
+        return String(a || '').localeCompare(String(b || ''), 'en');
+    }
+
+    function findLatestComparison(manifest) {
+        const current = manifest.versions.find(item => item.id === manifest.latest);
+        if (!current || current.gameVersion === 'local') return null;
+        const previousGameVersion = Array.from(new Set(manifest.versions.map(item => item.gameVersion)))
+            .filter(gameVersion => compareGameVersions(gameVersion, current.gameVersion) < 0)
+            .sort((a, b) => compareGameVersions(b, a))[0];
+        if (!previousGameVersion) return null;
+        const baseline = manifest.versions
+            .filter(item => item.gameVersion === previousGameVersion)
+            .sort((a, b) => String(b.publishedAt).localeCompare(String(a.publishedAt), 'en'))[0];
+        return baseline ? Object.freeze({ current, baseline }) : null;
+    }
+
+    async function loadManifest(baseUrl, localFallbackBaseUrl = null) {
         const cacheKey = `${MANIFEST_CACHE_PREFIX}${baseUrl}`;
         const url = new URL(manifestPath, `${baseUrl}/`);
         url.searchParams.set('t', Date.now());
@@ -115,8 +132,11 @@
                     return { manifest: validateManifest(JSON.parse(cached)), source: 'cache', error };
                 } catch {}
             }
-            console.warn(`无法读取 ${url.origin} 的版本清单，使用 version.json 兼容配置。`, error);
-            return { manifest: fallbackManifest(baseUrl), source: 'fallback', error };
+            if (localFallbackBaseUrl && isLocalDataSource(localFallbackBaseUrl)) {
+                console.warn(`无法读取 ${url.origin} 的版本清单，使用本地未版本化数据。`, error);
+                return { manifest: fallbackManifest(localFallbackBaseUrl), source: 'fallback', error };
+            }
+            throw new Error(`无法读取 ${url.origin} 的版本清单，且没有可用的缓存清单`);
         }
     }
 
@@ -167,7 +187,10 @@
             }
         }
         const manifestBaseUrl = debugLocalMode ? defaultBaseUrl : baseUrl;
-        const loaded = await loadManifest(manifestBaseUrl);
+        const localFallbackBaseUrl = debugLocalMode && selection === 'latest'
+            ? localBaseUrl
+            : (isLocalDataSource(baseUrl) ? baseUrl : null);
+        const loaded = await loadManifest(manifestBaseUrl, localFallbackBaseUrl);
         let selectedId = selection === 'latest' ? loaded.manifest.latest : selection;
         let selected = loaded.manifest.versions.find(item => item.id === selectedId);
         if (!selected) {
@@ -187,6 +210,7 @@
             manifestSource: loaded.source,
             selection,
             selected,
+            comparison: selection === 'latest' ? findLatestComparison(loaded.manifest) : null,
             debugMode: debugLocalMode,
             debugLocal
         });

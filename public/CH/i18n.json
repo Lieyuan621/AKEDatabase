@@ -9,7 +9,7 @@
         "settings": {
             "title": "全局设置", "heading": "⚙️ 全局设置", "language": "语言/Language：", "theme": "页面样式：",
             "themes": { "light": "亮色模式", "yellow": "护眼模式", "dark": "暗色模式" },
-            "showHidden": "显示隐藏模块：", "showExport": "显示导出按钮（测试功能）：", "keepUrlSync": "保持 URL 完整（地址栏随导航更新）：", "reset": "恢复默认设置",
+            "showHidden": "显示隐藏模块：", "showExport": "显示导出按钮（测试功能）：", "showVersionChanges": "显示版本间数据改动（测试功能）：", "keepUrlSync": "保持 URL 完整（地址栏随导航更新）：", "reset": "恢复默认设置",
             "dataSource": { "title": "游戏数据", "version": "数据版本：", "baseUrl": "请求域名：", "reset": "恢复生产数据源", "fixedVersions": "固定版本", "online": "版本清单已从数据服务加载", "fallback": "当前正在使用兼容版本配置", "debugLocal": "调试模式已启用，latest 使用当前本地服务器数据", "debugFixed": "调试模式下正在使用数据服务中的固定版本" },
             "cache": { "forceRefresh": "强制刷新网页缓存", "description": "由于服务器数据存在延迟，若您显示的页面中没有最新的数据，可以点击此按钮获取最新数据", "refreshing": "正在清理缓存..." },
             "levels": { "title": "📊 默认显示等级设置", "enabled": "激活设置：", "hint": "等级筛选：可以将需要显示的等级键入，使用英文逗号分隔", "character": "角色等级：", "weapon": "武器等级：", "enemy": "敌人等级：", "skill": "角色技能等级：", "levelPlaceholder": "例：80 或 10,20,30,80", "skillPlaceholder": "例：1,9,10,11,12" },
@@ -18,6 +18,7 @@
         },
         "version": { "loading": "正在读取更新信息...", "unavailable": "更新信息暂不可用", "appLine": "AKEData · 版本 {version}", "gameLine": "游戏版本 {version}", "hotfixLine": "Hotfix 版本 {version}", "updatedLine": "最后更新于：{updatedAt}{updatedBy}", "homeLine": "AKEData {app} · {game}", "countdown": "距离下次可能的数据更新还有 {time}", "updateReason": "更新原因：{desc}" },
         "overview": { "count": "{count} 条数据", "hint": "选择卡片查看完整数据" },
+        "versionDiff": { "group": "版本差异 · 相比 {version}", "added": "新增", "modified": "修改", "detailTitle": "显示内容差异 · 相比 {version}", "changeCount": "{count} 处变更", "truncated": "差异过多，仅显示前 500 行。" },
         "errors": { "load": "加载失败：{message}", "startup": "应用启动失败：{message}", "notFoundTitle": "页面未找到", "notFoundDesc": "您访问的模块或条目不存在", "returnHome": "返回首页", "hiddenContentHint": "🔒 该内容可能为隐藏内容。", "hiddenContentHelp": "您可以通过点击左下角 ⚙️ 全局设置按钮，开启“显示隐藏模块”来访问隐藏内容。", "moduleContentMissing": "模块内容文件未指定", "moduleLoad": "❌ 无法加载模块内容：{message}", "moduleManifestRead": "❌ 无法读取模块清单。<br>请通过本地服务器访问。", "exportFailed": "截图失败：{message}" },
         "data": { "independentEquipment": "独立装备" },
         "modules": {

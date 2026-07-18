@@ -324,6 +324,7 @@
             filtered.forEach(series => {
                 const item = document.createElement('div');
                 item.className = 'v2d-mobile-item';
+                window.AKEModuleOverview?.markVersionChange(item, series);
                 if (series.templateId === activeSeriesId) item.classList.add('active');
                 item.innerHTML = `
                     <div class="v2d-mobile-name">${series.name}</div>
@@ -393,6 +394,7 @@
             filtered.forEach((item, index) => {
                 const div = document.createElement('div');
                 div.className = `v2d-item ${item.templateId === activeSeriesId ? 'active' : (index === 0 && !activeSeriesId && !window.AKEModuleOverview?.isActive('dungeon') ? 'active' : '')}`;
+                window.AKEModuleOverview?.markVersionChange(div, item);
                 div.dataset.seriesId = item.templateId;
 
                 const rarityBar = document.createElement('span');
@@ -469,6 +471,7 @@
                 const buffIds = collectBuffIds(data);
                 if (buffIds.length > 0) await loadAllBuffs(buffIds);
                 container.innerHTML = renderDetail(data, seriesItem);
+                window.AKEModuleOverview?.renderVersionDiff(container, data, data.__versionDiff?.baseline ? renderDetail(data.__versionDiff.baseline, seriesItem) : '');
             } catch (err) {
                 container.innerHTML = `<div class="v2d-error">${t('loadFailed', { message: err.message })}</div>`;
             }

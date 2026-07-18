@@ -125,6 +125,7 @@
             filtered.forEach(item => {
                 const div = document.createElement('div');
                 div.className = `v2i-mobile-item ${item.itemId === activeItemId ? 'active' : ''}`;
+                window.AKEModuleOverview?.markVersionChange(div, item);
                 div.innerHTML = `
                     <div class="v2i-mobile-name">${item.name}</div>
                     <div class="v2i-mobile-id">${item.itemId}</div>
@@ -192,6 +193,7 @@
             filtered.forEach((item, index) => {
                 const div = document.createElement('div');
                 div.className = `v2i-item ${item.itemId === activeItemId ? 'active' : (!activeItemId && index === 0 && !window.AKEModuleOverview?.isActive('item') ? 'active' : '')}`;
+                window.AKEModuleOverview?.markVersionChange(div, item);
                 div.dataset.itemId = item.itemId;
 
                 const rb = document.createElement('span');
@@ -269,6 +271,7 @@
             try {
                 const data = await (window.akeFetch || fetch)(item.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data, item);
+                window.AKEModuleOverview?.renderVersionDiff(container, data, data.__versionDiff?.baseline ? renderDetail(data.__versionDiff.baseline, item) : '');
             } catch (err) {
                 container.innerHTML = `<div class="v2i-error">${t('loadFailed', { message: err.message })}</div>`;
             }

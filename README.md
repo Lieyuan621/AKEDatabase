@@ -12,7 +12,7 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 
 ## 当前版本
 
-`1.2.0-pre2` 更新了完整 Attribute 映射，并将 ID 93–100 同步至全部 14 种语言资源。怪物与副本模块现在读取新的元素抗性参数（ID 94–99），相关属性卡片、修正摘要与 Buff 提示不再显示旧的抗性系数 ID 80–85。
+`1.2.0` 新增跨游戏版本的数据差异查询：使用 `Latest` 时自动与上一个游戏版本的最后一个 Hotfix 比较，新增数据始终置顶并显示标签；修改数据及可见内容 Diff 可在全局设置中按需开启。详情差异只比较页面实际展示的信息，删除内容标红、新增内容标绿，隐藏字段不参与比较。活动不进行新增判定；装备和奖章按具体条目 ID 判断新增，并同步标记所属套组或分类。
 
 ## 功能
 
@@ -26,6 +26,7 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 - 模块和实体深链接
 - 桌面与移动端响应式布局
 - 首页数据更新时间倒计时、可重复查看的多语言网站公告和公告版本更新自动提醒
+- Latest 与上一个游戏版本最终 Hotfix 的数据差异、可见内容 Diff 及新增/修改标签
 - 首页底部展示工信部备案号并链接至备案管理系统
 
 ## 当前模块
@@ -129,14 +130,13 @@ Windows PowerShell 执行策略阻止本地脚本时，使用：
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1
 ```
 
-脚本会提示输入游戏版本、Hotfix、本地数据目录、Remote、Bucket、共享数据同步和 latest 发布选项。正式上传前会显示文件数量、体积和目标路径；默认选择否时只执行 dry-run。
+脚本会要求输入热更新链接，并自动以链接的 `version` 参数作为游戏版本、以接口响应的 `main.version` 作为 Hotfix 版本。热更新链接留空时改为手动输入两个版本号。远端 `manifest.latest` 只用于维护版本清单，不再作为本次上传的版本号来源。正式上传前会显示版本来源、文件数量、体积和目标路径，默认选择否时只执行 dry-run。
 
 ### 参数式发布
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1 `
-  -GameVersion 1.4.4 `
-  -HotfixVersion 8532974-3-3 `
+  -HotfixUrl 'https://launcher.hypergryph.com/api/game/get_latest_resources?...' `
   -DataRoot .\public `
   -Remote r2 `
   -Bucket akedatabase `
@@ -144,6 +144,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1 `
   -PublishLatest `
   -Apply
 ```
+
+无法使用热更新链接时，可显式传入 `-GameVersion 1.4.4 -HotfixVersion 8618533-5` 进入手动模式。`-HotfixUrl` 与手动版本参数不能同时使用。
 
 版本目录存在时脚本默认拒绝覆盖。共享目录默认使用增量 `copy`，只有显式传入 `-PruneShared` 才会删除远端多余对象。回滚不需要移动数据，只需重新发布清单并让 `latest` 指向已存在版本。
 
@@ -160,6 +162,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1 -Sha
 ### 本地数据
 
 `version.json` 的 `debugmode` 为 `true` 且版本选择为 `latest` 时，网站使用当前页面同源数据；因此 VS Code Live Server 会读取本地 `/public/TableCfg`、`/public/Json` 和 `/public/images`。本地没有 `manifest.json` 时自动兼容未版本化目录 `/public/TableCfg`。显式选择固定版本时会改用生产数据域中的对应历史版本，并在刷新后保留选择。发布网站前必须将 `debugmode` 恢复为 `false`。
+
+使用 `Latest` 时，v3 数据模块会自动将当前数据与上一个游戏版本中 `publishedAt` 最新的 Hotfix 对比。新增条目始终排在列表最前并显示“新增”标签；活动模块不参与新增判定。装备模块按单件装备 ID 判定新增，只要套组（包括独立装备组）包含新增装备，就会给套组打“新增”标签，并在详情内将具体新增装备置顶、单独标记。奖章模块同样按具体奖章 ID 判定新增，同时标记所属分类与详情中的新增奖章。新增状态只通过标签表达，卡片外圈仍沿用稀有度样式。全局设置中的“显示版本间数据改动（测试功能）”默认关闭；开启后，修改条目也会置顶并显示“修改”标签。打开“修改”条目后，当前版本和基准版本会分别经过同一个详情渲染器，只对页面实际显示的文本执行序列 Diff；删除的旧内容使用红色、增加的新内容使用绿色，隐藏字段和未渲染配置不会参与比较。单个条目最多展示 500 行可见差异。选择固定历史版本时不显示差异标签或详情差异。
 
 `debugmode` 为 `false` 时，设置弹窗的“请求域名”仍可手动切换数据服务。版本选择默认保存为 `latest`，也可以固定到清单中的某个版本。
 
@@ -179,7 +183,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1 -Sha
 
 `index-app.js` 读取 `plugin/manifest.json`，过滤禁用模块，按 `priority` 排序，然后生成桌面侧栏和移动端菜单。
 
-设置弹窗中的应用版本和更新时间来自 `version.json`；游戏版本与 Hotfix 来自 R2 `manifest.json` 当前选择的版本。首页不显示版本号，而是读取 `totime` 和 `desc` 显示下次数据更新倒计时及可选更新原因。代码、CSS、模块结构或界面语言文件变化时递增 `appversion`。`debugmode` 为 `true` 时强制使用当前同源本地数据，并在每次刷新时清空持久响应缓存、绕过浏览器缓存。
+设置弹窗中的应用版本和更新时间来自 `version.json`；游戏版本与 Hotfix 只来自 R2 `manifest.json` 当前选择的版本。`version.json` 不保存 `gameversion` 或 `hotfixversion`，也不参与线上游戏数据版本决策。首页不显示版本号，而是读取 `totime` 和 `desc` 显示下次数据更新倒计时及可选更新原因。代码、CSS、模块结构或界面语言文件变化时递增 `appversion`。`debugmode` 为 `true` 时强制使用当前同源本地数据，并在每次刷新时清空持久响应缓存、绕过浏览器缓存。
 
 点击模块后，框架通过 `window.akeFetch` 获取模块 HTML并插入 `#contentArea`。因为动态插入的 `<script>` 不会自动执行，加载器会按 DOM 顺序重新创建脚本节点并等待外部脚本完成。
 
@@ -207,9 +211,13 @@ Service Worker 首次安装或应用版本更新并取得页面控制权时，�
 
 | 字段 | 用途 |
 |---|---|
+| `appversion` | 网站 HTML、JavaScript、CSS 与 Service Worker 的缓存版本 |
+| `dataBaseUrl` | 游戏数据请求域名 |
+| `dataManifestPath` | 数据域中的版本清单路径 |
 | `tipversion` | 公告版本，通常填写公告最后更新时间；值变化后首页自动弹出新公告 |
 | `totime` | 下次数据更新时间；未携带时区时按东八区 `UTC+08:00` 解析 |
 | `desc` | 数据更新原因；空字符串、纯空格或字段缺失时不显示 |
+| `debugmode` | Latest 使用本地数据并绕过缓存；固定版本仍使用线上清单 |
 
 示例：
 

@@ -2,6 +2,12 @@ AKEData ist auf die Domain www.akedata.wiki umgezogen. Die bisherige Domain aked
 
 # AKEData-Versionsprotokoll
 
+### v1.2.0
+
+Der Datenvergleich zwischen Spielversionen wurde hinzugefügt. Bei Auswahl von `Latest` vergleicht die Website automatisch mit dem letzten Hotfix der vorherigen Spielversion. Neue Einträge werden stets zuerst angezeigt und markiert; Markierungen für Änderungen und der Detail-Diff lassen sich über die standardmäßig deaktivierte experimentelle globale Einstellung aktivieren.
+
+Der Detail-Diff vergleicht nur tatsächlich sichtbare Seiteninhalte, zeigt Entferntes rot und Hinzugefügtes grün an und ignoriert ausgeblendete Felder. Aktivitäten sind von der Erkennung neuer Einträge ausgenommen. Ausrüstung und Medaillen werden anhand ihrer einzelnen IDs verglichen; zugehörige Sets und Kategorien werden ebenfalls markiert. Kartenrahmen behalten ihre Seltenheitsfarben.
+
 ### v1.2.0-pre2
 
 Die vollständige Attributzuordnung wurde um die IDs 93–100 aktualisiert und mit den `maps.json`-Dateien aller 14 Sprachen synchronisiert.

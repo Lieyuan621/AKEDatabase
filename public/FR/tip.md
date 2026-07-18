@@ -2,6 +2,12 @@ AKEData a été transféré vers le domaine www.akedata.wiki. L'ancien domaine a
 
 # Journal des mises à jour d'AKEData
 
+### v1.2.0
+
+Ajout de la comparaison des données entre versions du jeu. Lorsque `Latest` est sélectionné, le site compare automatiquement avec le dernier Hotfix de la version précédente. Les nouvelles entrées sont toujours placées en tête et étiquetées ; les étiquettes de modification et le Diff détaillé peuvent être activés via le réglage global expérimental, désactivé par défaut.
+
+Le Diff détaillé compare uniquement les informations réellement visibles sur la page : les suppressions sont en rouge, les ajouts en vert et les champs masqués sont ignorés. Les activités sont exclues de la détection des nouveautés. Les équipements et médailles sont comparés par ID individuel, et leurs ensembles ou catégories sont également étiquetés. Les bordures conservent les couleurs de rareté.
+
 ### v1.2.0-pre2
 
 La correspondance complète des attributs a été mise à jour avec les ID 93–100, puis synchronisée dans les fichiers `maps.json` des 14 langues.

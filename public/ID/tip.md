@@ -2,6 +2,12 @@ AKEData telah pindah ke domain www.akedata.wiki. Domain lama, akedata.top, kini 
 
 # Catatan Pembaruan Versi AKEData
 
+### v1.2.0
+
+Menambahkan perbandingan data antarversi game. Saat `Latest` dipilih, situs otomatis membandingkannya dengan Hotfix terakhir dari versi game sebelumnya. Entri baru selalu ditempatkan di depan dan diberi tag; tag perubahan serta Diff detail dapat diaktifkan melalui opsi eksperimental di pengaturan global yang secara default nonaktif.
+
+Diff detail hanya membandingkan informasi yang benar-benar ditampilkan di halaman, menandai penghapusan dengan merah dan penambahan dengan hijau, serta mengabaikan field tersembunyi. Aktivitas tidak termasuk dalam deteksi entri baru. Perlengkapan dan medali dibandingkan berdasarkan ID individual, dan set atau kategorinya juga diberi tag. Bingkai kartu tetap mengikuti warna rarity.
+
 ### v1.2.0-pre2
 
 Pemetaan Attribute lengkap telah diperbarui dengan ID 93–100 dan disinkronkan ke `maps.json` untuk seluruh 14 bahasa.

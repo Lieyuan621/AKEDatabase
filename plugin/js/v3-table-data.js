@@ -26,6 +26,14 @@
         return response.text();
     }
 
+    function versionTableUrl(name, version) {
+        if (!version) return `${TABLE_ROOT}${name}.json`;
+        const state = window.akeDataSource?.getState?.();
+        const baseUrl = state?.debugLocal ? state.defaultBaseUrl : state?.baseUrl;
+        if (!baseUrl) throw new Error('数据源尚未准备完成');
+        return new URL(`/${version.tableCfgPath}/${name}.json`, `${baseUrl}/`).href;
+    }
+
     function languageInfo() {
         return window.akeI18n?.getLanguageInfo?.() || { directory: 'CH', table: 'CN', htmlLang: 'zh-CN' };
     }
@@ -53,13 +61,11 @@
         return i18nPromises.get(suffix);
     }
 
-    async function table(name) {
-        const cacheKey = `${languageInfo().table}:${name}`;
+    async function table(name, version) {
+        const cacheKey = `${version?.id || 'current'}:${languageInfo().table}:${name}`;
         if (!tableCache.has(cacheKey)) {
-            tableCache.set(cacheKey, Promise.all([
-                fetchText(`${TABLE_ROOT}${name}.json`).then(losslessParse),
-                loadI18n()
-            ]).then(([data, i18n]) => hydrate(data, i18n)));
+            const raw = fetchText(versionTableUrl(name, version)).then(losslessParse);
+            tableCache.set(cacheKey, Promise.all([raw, loadI18n()]).then(([data, i18n]) => hydrate(data, i18n)));
         }
         return tableCache.get(cacheKey);
     }
@@ -110,6 +116,133 @@
         return rows.map((row, index) => ({ ...row, priority: index + 1 }));
     }
 
+    function diffSignature(value) {
+        return JSON.stringify(value, function (key, child) {
+            // Entity detection follows TableCfg references; localized display text
+            // is compared later from the rendered detail output.
+            if (key === 'text' && this && Object.prototype.hasOwnProperty.call(this, 'id')) return undefined;
+            return child;
+        });
+    }
+
+    function manifestId(module, row) {
+        const fields = {
+            character: 'charId', weapon: 'weaponId', enemy: 'templateId', equip: 'suitID', item: 'itemId',
+            dungeon: 'templateId', achievement: 'categoryId', activity: 'activityId', cc: 'gameId'
+        };
+        return String(row?.[fields[module]] || '');
+    }
+
+    const versionDiffEntries = new Map();
+
+    function showModifiedVersionChanges() {
+        return window.akeData?.getConfig?.()?.showVersionChanges === true;
+    }
+
+    function publicManifestRow(row) {
+        const { __diffSignature, __diffGroupSignature, __diffEntitySignatures, ...publicRow } = row;
+        return publicRow;
+    }
+
+    async function manifestWithVersionDiff(module) {
+        const buildManifest = adapters[module][0];
+        const currentRows = await buildManifest();
+        const comparison = window.akeDataSource?.getState?.()?.comparison;
+        if (!comparison?.baseline) {
+            versionDiffEntries.delete(module);
+            return currentRows.map(publicManifestRow);
+        }
+        try {
+            const baselineRows = await buildManifest(comparison.baseline);
+            const baselineById = new Map(baselineRows.map(row => [manifestId(module, row), row]));
+            const usesGroupedEntityDiff = module === 'equip' || module === 'achievement';
+            const baselineGroupedEntities = usesGroupedEntityDiff
+                ? new Map(baselineRows.flatMap(row => Object.entries(row.__diffEntitySignatures || {})))
+                : null;
+            const moduleEntries = new Map();
+            const includeModified = showModifiedVersionChanges();
+            const ranked = currentRows.map(row => {
+                const baseline = baselineById.get(manifestId(module, row));
+                const groupedEntitySignatures = row.__diffEntitySignatures || {};
+                const addedEntityIds = usesGroupedEntityDiff
+                    ? Object.keys(groupedEntitySignatures).filter(entityId => !baselineGroupedEntities.has(entityId))
+                    : [];
+                let isModified = Boolean(baseline && row.__diffSignature !== baseline.__diffSignature);
+                if (usesGroupedEntityDiff && baseline) {
+                    const baselineGroupEntities = baseline.__diffEntitySignatures || {};
+                    const comparableCurrentIds = Object.keys(groupedEntitySignatures).filter(entityId => baselineGroupedEntities.has(entityId));
+                    const baselineGroupIds = Object.keys(baselineGroupEntities);
+                    const membershipChanged = comparableCurrentIds.length !== baselineGroupIds.length ||
+                        comparableCurrentIds.some(entityId => !Object.prototype.hasOwnProperty.call(baselineGroupEntities, entityId));
+                    const existingEntityChanged = comparableCurrentIds.some(entityId =>
+                        baselineGroupedEntities.get(entityId) !== groupedEntitySignatures[entityId]);
+                    isModified = row.__diffGroupSignature !== baseline.__diffGroupSignature || membershipChanged || existingEntityChanged;
+                }
+                const hasGroupedAddition = usesGroupedEntityDiff && addedEntityIds.length > 0;
+                const canMarkWholeRowAdded = module !== 'activity' && !usesGroupedEntityDiff;
+                const changeType = hasGroupedAddition
+                    ? 'added'
+                    : !baseline
+                    ? (canMarkWholeRowAdded ? 'added' : '')
+                    : (includeModified && isModified ? 'modified' : '');
+                const publicRow = publicManifestRow(row);
+                if (module === 'equip' && addedEntityIds.length) {
+                    publicRow.addedEquipIds = addedEntityIds;
+                    publicRow.changeBaseVersion = comparison.baseline.id;
+                    moduleEntries.set(manifestId(module, row), publicRow);
+                }
+                if (module === 'achievement' && addedEntityIds.length) {
+                    publicRow.addedAchievementIds = addedEntityIds;
+                    publicRow.changeBaseVersion = comparison.baseline.id;
+                    moduleEntries.set(manifestId(module, row), publicRow);
+                }
+                if (!changeType) return publicRow;
+                const changedRow = { ...publicRow, changeType, changeBaseVersion: comparison.baseline.id };
+                moduleEntries.set(manifestId(module, row), changedRow);
+                return changedRow;
+            }).sort((a, b) => {
+                const rank = { added: 0, modified: 1 };
+                const aRank = a.addedEquipIds?.length || a.addedAchievementIds?.length ? 0 : (rank[a.changeType] ?? 2);
+                const bRank = b.addedEquipIds?.length || b.addedAchievementIds?.length ? 0 : (rank[b.changeType] ?? 2);
+                return aRank - bRank || (a.priority || 999) - (b.priority || 999);
+            });
+            versionDiffEntries.set(module, moduleEntries);
+            return assignPriority(ranked);
+        } catch (error) {
+            console.warn(`无法计算 ${module} 的版本差异`, error);
+            versionDiffEntries.delete(module);
+            return currentRows.map(publicManifestRow);
+        }
+    }
+
+    async function detailWithVersionDiff(module, id) {
+        const buildDetail = adapters[module][1];
+        const comparison = window.akeDataSource?.getState?.()?.comparison;
+        if (!comparison?.baseline) return buildDetail(id);
+        if (!versionDiffEntries.has(module)) await manifestWithVersionDiff(module);
+        const entry = versionDiffEntries.get(module)?.get(String(id));
+        const attachAddedEntityIds = current => {
+            if (module === 'equip' && entry?.addedEquipIds?.length) {
+                current.__versionAddedEquipIds = [...entry.addedEquipIds];
+            }
+            if (module === 'achievement' && entry?.addedAchievementIds?.length) {
+                current.__versionAddedAchievementIds = [...entry.addedAchievementIds];
+            }
+            return current;
+        };
+        if (!showModifiedVersionChanges() || entry?.changeType !== 'modified') {
+            return attachAddedEntityIds(await buildDetail(id));
+        }
+        try {
+            const [current, baseline] = await Promise.all([buildDetail(id), buildDetail(id, comparison.baseline)]);
+            current.__versionDiff = { baseVersion: comparison.baseline.id, baseline };
+            return attachAddedEntityIds(current);
+        } catch (error) {
+            console.warn(`无法计算 ${module}/${id} 的字段差异`, error);
+            return attachAddedEntityIds(await buildDetail(id));
+        }
+    }
+
     async function optionalJson(url) {
         try {
             const response = await originalAkeFetch(url);
@@ -142,8 +275,8 @@
         return paths[kind] || '';
     }
 
-    async function characterManifest() {
-        const [chars, growth, maps] = await Promise.all([table('CharacterTable'), table('CharGrowthTable'), loadMaps()]);
+    async function characterManifest(version) {
+        const [chars, growth, maps] = await Promise.all([table('CharacterTable', version), table('CharGrowthTable', version), loadMaps()]);
         const rows = Object.entries(chars).map(([charId, row], index) => {
             const grow = growth[charId] || {};
             return {
@@ -153,17 +286,17 @@
                 weapontype: maps.weapon_id_map?.[String(grow.weaponType)] || grow.weaponType,
                 mainAttrType: row.mainAttrType, charBattleTag: grow.charBattleTag || [],
                 icon: icon('character', charId), contentFile: `/__v3/character/${charId}.json`,
-                sourceOrder: index, hidden: false
+                sourceOrder: index, hidden: false, __diffSignature: diffSignature([row, grow])
             };
         });
         return assignPriority(rows.sort(byRarityThenId));
     }
 
-    async function characterDetail(id) {
+    async function characterDetail(id, version) {
         const [chars, growth, potentials, talentEffects, skills, shipChars, shipSkills, items, professions] = await Promise.all([
-            table('CharacterTable'), table('CharGrowthTable'), table('CharacterPotentialTable'),
-            table('PotentialTalentEffectTable'), table('SkillPatchTable'), table('SpaceshipCharSkillTable'),
-            table('SpaceshipSkillTable'), table('ItemTable'), table('CharProfessionTable')
+            table('CharacterTable', version), table('CharGrowthTable', version), table('CharacterPotentialTable', version),
+            table('PotentialTalentEffectTable', version), table('SkillPatchTable', version), table('SpaceshipCharSkillTable', version),
+            table('SpaceshipSkillTable', version), table('ItemTable', version), table('CharProfessionTable', version)
         ]);
         const char = chars[id] || {};
         const grow = growth[id] || {};
@@ -191,20 +324,21 @@
         };
     }
 
-    async function weaponManifest() {
-        const [weapons, items] = await Promise.all([table('WeaponBasicTable'), table('ItemTable')]);
+    async function weaponManifest(version) {
+        const [weapons, items] = await Promise.all([table('WeaponBasicTable', version), table('ItemTable', version)]);
         const rows = Object.entries(weapons).map(([weaponId, row], index) => {
             const item = items[weaponId] || {};
             return { weaponId, name: text(item.name, weaponId), rarity: row.rarity, weaponType: row.weaponType,
-                icon: icon('weapon', weaponId, item.iconId), contentFile: `/__v3/weapon/${weaponId}.json`, sourceOrder: index, hidden: false };
+                icon: icon('weapon', weaponId, item.iconId), contentFile: `/__v3/weapon/${weaponId}.json`, sourceOrder: index, hidden: false,
+                __diffSignature: diffSignature([row, item]) };
         });
         return assignPriority(rows.sort(byRarityThenId));
     }
 
-    async function weaponDetail(id) {
+    async function weaponDetail(id, version) {
         const [weapons, items, skills, breakthrough, upgrade, upgradeSum, talents] = await Promise.all([
-            table('WeaponBasicTable'), table('ItemTable'), table('SkillPatchTable'), table('WeaponBreakThroughTemplateTable'),
-            table('WeaponUpgradeTemplateTable'), table('WeaponUpgradeTemplateSumTable'), table('WeaponTalentTemplateTable')
+            table('WeaponBasicTable', version), table('ItemTable', version), table('SkillPatchTable', version), table('WeaponBreakThroughTemplateTable', version),
+            table('WeaponUpgradeTemplateTable', version), table('WeaponUpgradeTemplateSumTable', version), table('WeaponTalentTemplateTable', version)
         ]);
         const weapon = weapons[id] || {};
         const bt = breakthrough[weapon.breakthroughTemplateId];
@@ -215,23 +349,24 @@
             weapontalenttemplatetable: pick(talents, [weapon.talentTemplateId]) };
     }
 
-    async function enemyManifest() {
+    async function enemyManifest(version) {
         const [display, enemies, types] = await Promise.all([
-            table('EnemyTemplateDisplayInfoTable'), table('EnemyTable'), table('DisplayEnemyTypeTable')
+            table('EnemyTemplateDisplayInfoTable', version), table('EnemyTable', version), table('DisplayEnemyTypeTable', version)
         ]);
         const variantCounts = {};
         Object.values(enemies).forEach(row => { variantCounts[row.templateId] = (variantCounts[row.templateId] || 0) + 1; });
         const rows = Object.entries(display).map(([templateId, row], index) => ({ templateId, name: text(row.name, templateId),
             rarity: ENEMY_RARITY_BY_DISPLAY_TYPE[row.displayType] || 1, icon: icon('enemy', templateId),
             displayType: row.displayType, displayTypeName: text(types[row.displayType]?.name), variantCount: variantCounts[templateId] || 0,
-            contentFile: `/__v3/enemy/${templateId}.json`, sourceOrder: index, hidden: false }));
+            contentFile: `/__v3/enemy/${templateId}.json`, sourceOrder: index, hidden: false,
+            __diffSignature: diffSignature([row, valuesBy(enemies, 'templateId', templateId), types[row.displayType]]) }));
         return assignPriority(rows.sort(byRarityThenId));
     }
 
-    async function enemyDetail(id) {
+    async function enemyDetail(id, version) {
         const [display, enemies, attrs, abilities, types, distributions] = await Promise.all([
-            table('EnemyTemplateDisplayInfoTable'), table('EnemyTable'), table('EnemyAttributeTemplateTable'),
-            table('EnemyAbilityDescTable'), table('DisplayEnemyTypeTable'), table('DistributionInfoTable')
+            table('EnemyTemplateDisplayInfoTable', version), table('EnemyTable', version), table('EnemyAttributeTemplateTable', version),
+            table('EnemyAbilityDescTable', version), table('DisplayEnemyTypeTable', version), table('DistributionInfoTable', version)
         ]);
         const info = display[id] || {};
         const variants = valuesBy(enemies, 'templateId', id);
@@ -242,12 +377,13 @@
             displayenemytypetable: types[info.displayType] || {}, distributioninfotable: pick(distributions, info.distributionIds || []) };
     }
 
-    async function equipManifest() {
-        const [suits, equips, items] = await Promise.all([table('EquipSuitTable'), table('EquipTable'), table('ItemTable')]);
+    async function equipManifest(version) {
+        const [suits, equips, items] = await Promise.all([table('EquipSuitTable', version), table('EquipTable', version), table('ItemTable', version)]);
         const rows = Object.entries(suits);
         const unsuited = Object.keys(equips).filter(id => !rows.some(([, suit]) => (suit.equipList || []).includes(id)));
         if (unsuited.length) rows.unshift(['suit_none', { equipList: unsuited, list: [] }]);
         const manifestRows = rows.map(([suitID, row], index) => {
+            const equipIds = row.equipList || [];
             const highestId = (row.equipList || []).reduce((bestId, itemId) => {
                 if (!bestId) return itemId;
                 return (items[itemId]?.rarity || 0) > (items[bestId]?.rarity || 0) ? itemId : bestId;
@@ -255,16 +391,22 @@
             const highest = items[highestId] || {};
             return { suitID, name: text(row.list?.[0]?.suitName, suitID === 'suit_none' ? window.akeI18n?.t('modules.equip.independentEquipment') : suitID), rarity: highest.rarity || 1,
                 icon: icon('equip', highestId, highest.iconId), equipCount: (row.equipList || []).length, isIndependentGroup: suitID === 'suit_none',
-                contentFile: `/__v3/equip/${suitID}.json`, sourceOrder: index, hidden: false };
+                contentFile: `/__v3/equip/${suitID}.json`, sourceOrder: index, hidden: false,
+                __diffGroupSignature: diffSignature((row.list || []).map(entry => pick(entry, ['suitName', 'skillID']))),
+                __diffEntitySignatures: Object.fromEntries(equipIds.map(itemId => [itemId, diffSignature([
+                    pick(equips[itemId], ['partType', 'minWearLv', 'domainId', 'displayBaseAttrModifier', 'displayAttrModifiers']),
+                    pick(items[itemId], ['name', 'rarity', 'iconId', 'decoDesc'])
+                ])])),
+                __diffSignature: diffSignature([row, pick(equips, row.equipList || []), pick(items, row.equipList || [])]) };
         });
         return assignPriority(manifestRows.sort(byRarityThenId));
     }
 
-    async function equipDetail(id) {
+    async function equipDetail(id, version) {
         const [suits, equips, items, skills, formulas, reverse, formulaChains, packs, packFormulas, costs, guarantees, constants, tech] = await Promise.all([
-            table('EquipSuitTable'), table('EquipTable'), table('ItemTable'), table('SkillPatchTable'), table('EquipFormulaTable'),
-            table('EquipFormulaReverseTable'), table('EquipFormulaChainTable'), table('EquipPackTable'), table('EquipPackFormulaTable'), table('EquipEnhanceCostTable'),
-            table('EquipEnhanceGuaranteeTimesRuleTable'), table('EquipConst'), table('EquipTechConst')
+            table('EquipSuitTable', version), table('EquipTable', version), table('ItemTable', version), table('SkillPatchTable', version), table('EquipFormulaTable', version),
+            table('EquipFormulaReverseTable', version), table('EquipFormulaChainTable', version), table('EquipPackTable', version), table('EquipPackFormulaTable', version), table('EquipEnhanceCostTable', version),
+            table('EquipEnhanceGuaranteeTimesRuleTable', version), table('EquipConst', version), table('EquipTechConst', version)
         ]);
         let suit = suits[id];
         if (!suit && id === 'suit_none') {
@@ -286,10 +428,10 @@
             equipenhanceguaranteetimesruletable: guarantees, equipconst: constants, equiptechconst: tech };
     }
 
-    async function itemManifest() {
+    async function itemManifest(version) {
         const [items, itemTypes, showingTypes, itemsByType, itemsByShowingType] = await Promise.all([
-            table('ItemTable'), table('ItemTypeTable'), table('ItemShowingTypeTable'),
-            table('ItemListByTypeTable'), table('ItemListByShowingTypeTable')
+            table('ItemTable', version), table('ItemTypeTable', version), table('ItemShowingTypeTable', version),
+            table('ItemListByTypeTable', version), table('ItemListByShowingTypeTable', version)
         ]);
         const showingTypeByItem = {};
         Object.entries(itemsByShowingType).forEach(([showingType, row]) => {
@@ -308,18 +450,19 @@
             return { itemId, name: text(row.name, itemId), rarity: row.rarity, type: row.type, categoryId,
                 categoryName: text(showing?.name, text(itemType?.name, itemT('typeFallback', { type }))),
                 categoryOrder: showing ? showing.sortId : 1000 + Number(type),
-                icon: icon('item', itemId, row.iconId), contentFile: `/__v3/item/${itemId}.json`, sourceOrder: index, hidden: false };
+                icon: icon('item', itemId, row.iconId), contentFile: `/__v3/item/${itemId}.json`, sourceOrder: index, hidden: false,
+                __diffSignature: diffSignature([row, itemType, showing, type, showingType]) };
         });
         return assignPriority(rows.sort(byRarityThenId));
     }
 
-    async function itemDetail(id) {
+    async function itemDetail(id, version) {
         const [items, types, jumps, composites, showing, useItems, equipItems, machineCrafts, machineCraftGroups,
             manualCrafts, hubCrafts, buildings, equipFormulas, growFormulas, seedFormulas, spaceshipFormulas] = await Promise.all([
-            table('ItemTable'), table('ItemTypeTable'), table('SystemJumpTable'), table('ItemIconCompositeTable'), table('ItemShowingTypeTable'),
-            table('UseItemTable'), table('EquipItemTable'), table('FactoryMachineCraftTable'), table('FactoryMachineCraftGroupTable'),
-            table('FactoryManualCraftTable'), table('FactoryHubCraftTable'), table('FactoryBuildingTable'), table('EquipFormulaTable'),
-            table('SpaceshipGrowCabinFormulaTable'), table('SpaceshipGrowCabinSeedFormulaTable'), table('SpaceshipManufactureFormulaTable')
+            table('ItemTable', version), table('ItemTypeTable', version), table('SystemJumpTable', version), table('ItemIconCompositeTable', version), table('ItemShowingTypeTable', version),
+            table('UseItemTable', version), table('EquipItemTable', version), table('FactoryMachineCraftTable', version), table('FactoryMachineCraftGroupTable', version),
+            table('FactoryManualCraftTable', version), table('FactoryHubCraftTable', version), table('FactoryBuildingTable', version), table('EquipFormulaTable', version),
+            table('SpaceshipGrowCabinFormulaTable', version), table('SpaceshipGrowCabinSeedFormulaTable', version), table('SpaceshipManufactureFormulaTable', version)
         ]);
         const item = items[id] || {};
         const flattenGroups = rows => (rows || []).flatMap(row => row.group || []);
@@ -368,8 +511,8 @@
             craftitemtable: pick(items, Array.from(recipeItemIds)) };
     }
 
-    async function dungeonManifest() {
-        const series = await table('DungeonSeriesTable');
+    async function dungeonManifest(version) {
+        const [series, dungeons] = await Promise.all([table('DungeonSeriesTable', version), table('DungeonTable', version)]);
         const categoryNames = {
             dungeon_highdifficulty: 'highDifficulty', dungeon_bossrush: 'bossRush', dungeon_ss: 'protocolSpace',
             dungeon_actmonster: 'eventCombat', dungeon_challenge: 'challenge', dungeon_resource: 'resource',
@@ -382,15 +525,16 @@
             gameCategory: row.gameCategory, gameCategoryName: categoryNames[row.gameCategory] ? dungeonT(`categories.${categoryNames[row.gameCategory]}`) : row.gameCategory,
             categoryOrder: dungeonRarity(row) * -1, dungeonCount: (row.includeDungeonIds || []).length,
             image: row.dungeonPicPath ? `/public/images/dungeon/${row.dungeonPicPath}_bg.png` : '',
-            contentFile: `/__v3/dungeon/${templateId}.json`, sourceOrder: index, hidden: false
+            contentFile: `/__v3/dungeon/${templateId}.json`, sourceOrder: index, hidden: false,
+            __diffSignature: diffSignature([row, pick(dungeons, row.includeDungeonIds || [])])
         }));
         return assignPriority(rows.sort(byRarityThenId));
     }
 
-    async function dungeonDetail(id) {
+    async function dungeonDetail(id, version) {
         const [series, dungeons, rewards, items, enemies, display, attrs] = await Promise.all([
-            table('DungeonSeriesTable'), table('DungeonTable'), table('RewardTable'), table('ItemTable'),
-            table('EnemyTable'), table('EnemyTemplateDisplayInfoTable'), table('EnemyAttributeTemplateTable')
+            table('DungeonSeriesTable', version), table('DungeonTable', version), table('RewardTable', version), table('ItemTable', version),
+            table('EnemyTable', version), table('EnemyTemplateDisplayInfoTable', version), table('EnemyAttributeTemplateTable', version)
         ]);
         const seriesRow = series[id] || {};
         const dungeonRows = pick(dungeons, seriesRow.includeDungeonIds || []);
@@ -435,24 +579,43 @@
         return { dungeonSeriesId: id, dungeonseriestable: seriesRow, dungeontable: dungeonRows };
     }
 
-    async function achievementManifest() {
-        const [types, achievements] = await Promise.all([table('AchievementTypeTable'), table('AchievementTable')]);
+    async function achievementManifest(version) {
+        const [types, achievements] = await Promise.all([table('AchievementTypeTable', version), table('AchievementTable', version)]);
         const rows = Object.entries(types).map(([categoryId, row]) => {
             const groupIds = new Set((row.achievementGroupData || []).map(group => group.groupId));
             const entries = Object.entries(achievements).filter(([, achievement]) => groupIds.has(achievement.groupId));
             const first = entries[0];
             const firstLevel = first ? Object.values(first[1].levelInfos || {})[0] : null;
+            const entitySignatures = Object.fromEntries(entries.map(([achievementId, achievement]) => [achievementId, diffSignature({
+                name: achievement.name,
+                order: achievement.order,
+                canBeUpgraded: achievement.canBeUpgraded,
+                canBePlated: achievement.canBePlated,
+                applyRareEffect: achievement.applyRareEffect,
+                levels: Object.values(achievement.levelInfos || {}).map(level => ({
+                    achieveLevel: level.achieveLevel,
+                    completeDesc: level.completeDesc,
+                    conditions: (level.conditions || []).map(condition => pick(condition, ['desc', 'progressToCompare']))
+                }))
+            })]));
             return { categoryId, name: text(row.categoryName, categoryId), achievementCount: entries.length,
                 groupCount: groupIds.size, platedCount: entries.filter(([, achievement]) => achievement.canBePlated).length,
                 icon: first && firstLevel ? `/public/images/achievement/medaliconbig/${first[0]}_lv${String(firstLevel.achieveLevel).padStart(2, '0')}.png` : '',
-                contentFile: `/__v3/achievement/${categoryId}.json`, categoryPriority: row.categoryPriority, hidden: false };
+                contentFile: `/__v3/achievement/${categoryId}.json`, categoryPriority: row.categoryPriority, hidden: false,
+                __diffGroupSignature: diffSignature({
+                    categoryName: row.categoryName,
+                    noObtainCanView: row.noObtainCanView,
+                    groups: (row.achievementGroupData || []).map(group => pick(group, ['groupId', 'groupName']))
+                }),
+                __diffEntitySignatures: entitySignatures,
+                __diffSignature: diffSignature([row, entries]) };
         });
         rows.sort((a, b) => (a.categoryPriority || 999) - (b.categoryPriority || 999) || compareId(a, b));
         return assignPriority(rows);
     }
 
-    async function achievementDetail(id) {
-        const [types, achievements] = await Promise.all([table('AchievementTypeTable'), table('AchievementTable')]);
+    async function achievementDetail(id, version) {
+        const [types, achievements] = await Promise.all([table('AchievementTypeTable', version), table('AchievementTable', version)]);
         const category = types[id] || {};
         const groupNames = Object.fromEntries((category.achievementGroupData || []).map(group => [group.groupId, text(group.groupName, 'default')]));
         const group = {};
@@ -477,8 +640,8 @@
         });
     }
 
-    async function activityManifest() {
-        const [activities, tags, times] = await Promise.all([table('ActivityTable'), table('ActivityTagTable'), table('TimeRangeTable')]);
+    async function activityManifest(version) {
+        const [activities, tags, times] = await Promise.all([table('ActivityTable', version), table('ActivityTagTable', version), table('TimeRangeTable', version)]);
         const now = Date.now();
         const rows = Object.entries(activities).map(([activityId, row], index) => {
             const range = times[row.timeId]?.timeRangeList?.[0] || {};
@@ -489,17 +652,18 @@
                 tags: (row.tagIds || []).map(tagId => ({ tagId, name: text(tags[tagId]?.name, tagId) })),
                 openTime: range.openTime || '', closeTime: range.closeTime || '',
                 tabImg: row.tabImg ? `/public/images/activity/${row.tabImg}.png` : '', contentFile: `/__v3/activity/${activityId}.json`,
-                statusOrder, sourceOrder: row.sortId ?? index, hidden: false };
+                statusOrder, sourceOrder: row.sortId ?? index, hidden: false,
+                __diffSignature: diffSignature([row, times[row.timeId], pick(tags, row.tagIds || [])]) };
         });
         rows.sort((a, b) => a.statusOrder - b.statusOrder || a.sourceOrder - b.sourceOrder || compareId(a, b));
         return assignPriority(rows);
     }
 
-    async function activityDetail(id) {
+    async function activityDetail(id, version) {
         const [activities, tags, rewards, items, conditionalStages, fightingStages, dungeons, times] = await Promise.all([
-            table('ActivityTable'), table('ActivityTagTable'), table('RewardTable'), table('ItemTable'),
-            table('ActivityConditionalMultiStageTable'), table('ActivityDungeonFightingStageTable'),
-            table('DungeonTable'), table('TimeRangeTable')
+            table('ActivityTable', version), table('ActivityTagTable', version), table('RewardTable', version), table('ItemTable', version),
+            table('ActivityConditionalMultiStageTable', version), table('ActivityDungeonFightingStageTable', version),
+            table('DungeonTable', version), table('TimeRangeTable', version)
         ]);
         const row = activities[id] || {};
         const stageList = {};
@@ -520,10 +684,10 @@
             tags: (row.tagIds || []).map(tagId => ({ tagId, name: text(tags[tagId]?.name, tagId) })), rawType: row.type, stageList };
     }
 
-    async function ccManifest() {
+    async function ccManifest(version) {
         const [activityCc, activities, dungeons, contracts, times] = await Promise.all([
-            table('ActivityContingencyContractTable'), table('ActivityTable'), table('DungeonTable'),
-            table('ContingencyContractTable'), table('TimeRangeTable')
+            table('ActivityContingencyContractTable', version), table('ActivityTable', version), table('DungeonTable', version),
+            table('ContingencyContractTable', version), table('TimeRangeTable', version)
         ]);
         const now = Date.now();
         const rows = Object.values(activityCc).map((row, index) => {
@@ -541,18 +705,19 @@
                 dungeonName: text(dungeon.dungeonName), contractGroupCount: groups.length, contractCount,
                 contentFile: `/__v3/cc/${row.gameId}.json`,
                 dungeonFile: dungeon.dungeonSeriesId ? `/__v3/dungeon/${dungeon.dungeonSeriesId}.json` : '',
-                sourceOrder: index, hidden: false };
+                sourceOrder: index, hidden: false,
+                __diffSignature: diffSignature([row, activity, dungeon, contracts[row.gameId], times[activity.timeId]]) };
         });
         rows.sort((a, b) => a.sourceOrder - b.sourceOrder || compareId(a, b));
         return assignPriority(rows);
     }
 
-    async function ccDetail(id) {
+    async function ccDetail(id, version) {
         const [activityCc, contracts, tags, tips, locks, levels, rewards, items, taskGroups, tasks, shopGroups, shops, goods] = await Promise.all([
-            table('ActivityContingencyContractTable'), table('ContingencyContractTable'), table('CcTagTable'), table('CcTagTipTable'),
-            table('ContingencyContractKeyLockTable'), table('ContingencyContractLevelTable'), table('RewardTable'), table('ItemTable'),
-            table('ActivityContingencyContractTaskGroupTable'), table('ActivityConditionalMultiStageTaskConfigTable'),
-            table('ShopGroupTable'), table('ShopTable'), table('ShopGoodsTable')
+            table('ActivityContingencyContractTable', version), table('ContingencyContractTable', version), table('CcTagTable', version), table('CcTagTipTable', version),
+            table('ContingencyContractKeyLockTable', version), table('ContingencyContractLevelTable', version), table('RewardTable', version), table('ItemTable', version),
+            table('ActivityContingencyContractTaskGroupTable', version), table('ActivityConditionalMultiStageTaskConfigTable', version),
+            table('ShopGroupTable', version), table('ShopTable', version), table('ShopGoodsTable', version)
         ]);
         const activity = Object.values(activityCc).find(row => row.gameId === id) || {};
         return { gameId: id, activitycontingencycontracttable: activity, contingencycontracttable: contracts[id] || {}, cctagtable: tags,
@@ -575,13 +740,17 @@
         const url = typeof input === 'string' ? input : input.url;
         const mountedModule = document.querySelector('#contentArea script[data-ake-v3-module]')?.dataset.akeV3Module || '';
         const manifestMatch = url.match(/^\/public\/(?:CH|EN)\/(?:v2_)?(character|weapon|enemy|equip|item|dungeon|cc|activity|achievement)\/manifest\.json(?:\?|$)/);
-        if (manifestMatch && manifestMatch[1] === mountedModule) return virtualResponse(await adapters[mountedModule][0]());
+        if (manifestMatch && manifestMatch[1] === mountedModule) return virtualResponse(await manifestWithVersionDiff(mountedModule));
         const detailMatch = url.match(/^\/__v3\/(character|weapon|enemy|equip|item|dungeon|cc|activity|achievement)\/([^/?]+)\.json/);
         if (detailMatch && (detailMatch[1] === mountedModule || (mountedModule === 'cc' && detailMatch[1] === 'dungeon'))) {
-            return virtualResponse(await adapters[detailMatch[1]][1](decodeURIComponent(detailMatch[2])));
+            const id = decodeURIComponent(detailMatch[2]);
+            const data = detailMatch[1] === mountedModule
+                ? await detailWithVersionDiff(detailMatch[1], id)
+                : await adapters[detailMatch[1]][1](id);
+            return virtualResponse(data);
         }
         const charDetailMatch = mountedModule === 'character' && url.match(/^\/public\/(?:CH|EN)\/v2_character\/([^/?]+)\.json/);
-        if (charDetailMatch) return virtualResponse(await characterDetail(decodeURIComponent(charDetailMatch[1])));
+        if (charDetailMatch) return virtualResponse(await detailWithVersionDiff('character', decodeURIComponent(charDetailMatch[1])));
         return originalAkeFetch(input, init);
     }
 

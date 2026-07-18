@@ -426,6 +426,7 @@
             filtered.forEach(char => {
                 const item = document.createElement('div');
                 item.className = 'mobile-list-item';
+                window.AKEModuleOverview?.markVersionChange(item, char);
                 if (char.charId === activeCharId) item.classList.add('active');
                 item.innerHTML = `
                     <div class="item-name">${char.name}</div>
@@ -495,6 +496,7 @@
             filtered.forEach((char, index) => {
                 const item = document.createElement('div');
                 item.className = `character-item ${char.charId === activeCharId ? 'active' : (index === 0 && !activeCharId && !window.AKEModuleOverview?.isActive('character') ? 'active' : '')}`;
+                window.AKEModuleOverview?.markVersionChange(item, char);
                 item.dataset.charId = char.charId;
                 item.dataset.contentFile = char.contentFile;
 
@@ -586,6 +588,10 @@
                 currentCharData = data;
                 currentCharacter = character;
                 container.innerHTML = renderDetail(data);
+                const baselineData = rawData.__versionDiff?.baseline
+                    ? normalizeV2ToLegacy(character, rawData.__versionDiff.baseline)
+                    : null;
+                window.AKEModuleOverview?.renderVersionDiff(container, rawData, baselineData ? renderDetail(baselineData) : '');
 
                 const globalSkillBtn = container.querySelector('.global-skill-toggle-btn');
                 if (globalSkillBtn) {

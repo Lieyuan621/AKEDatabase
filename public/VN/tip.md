@@ -2,6 +2,12 @@ AKEData đã chuyển sang tên miền www.akedata.wiki. Tên miền cũ akedata
 
 # Nhật ký cập nhật phiên bản AKEData
 
+### v1.2.0
+
+Đã bổ sung tính năng so sánh dữ liệu giữa các phiên bản trò chơi. Khi chọn `Latest`, trang web tự động so sánh với Hotfix cuối cùng của phiên bản trước. Dữ liệu mới luôn được đưa lên đầu và gắn nhãn; nhãn dữ liệu sửa đổi cùng Diff chi tiết có thể bật bằng tùy chọn thử nghiệm trong cài đặt toàn cục, mặc định tắt.
+
+Diff chi tiết chỉ so sánh thông tin thực sự hiển thị trên trang, tô đỏ nội dung bị xóa, tô xanh nội dung được thêm và bỏ qua trường ẩn. Hoạt động không tham gia phát hiện dữ liệu mới. Trang bị và huy chương được so sánh theo từng ID, đồng thời gắn nhãn cho bộ hoặc danh mục tương ứng. Viền thẻ vẫn dùng màu độ hiếm.
+
 ### v1.2.0-pre2
 
 Đã cập nhật toàn bộ ánh xạ Attribute, bổ sung ID 93–100 và đồng bộ `maps.json` cho cả 14 ngôn ngữ.

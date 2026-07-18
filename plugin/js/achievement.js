@@ -18,6 +18,7 @@
             filtered.forEach(cat => {
                 const item = document.createElement('div');
                 item.className = 'mobile-list-item';
+                window.AKEModuleOverview?.markVersionChange(item, cat);
                 if (cat.categoryId === activeCategoryId) item.classList.add('active');
                 item.innerHTML = `
                     <div class="item-name">${cat.name}</div>
@@ -104,6 +105,7 @@
             filtered.forEach((cat, index) => {
                 const item = document.createElement('div');
                 item.className = `category-item ${cat.categoryId === activeCategoryId ? 'active' : (index === 0 && !activeCategoryId && !window.AKEModuleOverview?.isActive('achievement') ? 'active' : '')}`;
+                window.AKEModuleOverview?.markVersionChange(item, cat);
                 item.dataset.catId = cat.categoryId;
                 item.dataset.contentFile = cat.contentFile;
 
@@ -164,13 +166,18 @@
             try {
                 const data = await (window.akeFetch || fetch)(category.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data);
+                window.AKEModuleOverview?.renderVersionDiff(container, data, data.__versionDiff?.baseline ? renderDetail(data.__versionDiff.baseline) : '');
             } catch (err) {
                 container.innerHTML = `<div class="error-message">${t('loadFailed', { message: err.message })}</div>`;
             }
         }
 
-        function renderBadges(achv) {
+        function renderBadges(achv, isVersionAdded) {
             let badges = [];
+            if (isVersionAdded) {
+                const addedLabel = window.akeData?.t('versionDiff.added', null, '新增') || '新增';
+                badges.push(`<span class="badge version-added">${addedLabel}</span>`);
+            }
             if (achv.canBeUpgraded) badges.push(`<span class="badge upgrade">${t('badges.upgradable')}</span>`);
             if (achv.canBePlated) badges.push(`<span class="badge plate">${t('badges.platable')}</span>`);
             if (achv.applyRareEffect) badges.push(`<span class="badge rare">${t('badges.rareEffect')}</span>`);
@@ -207,13 +214,16 @@
             return levelsHtml;
         }
 
-        function renderGroupAchievements(achvMap) {
+        function renderGroupAchievements(achvMap, addedAchievementIds) {
             const achvList = Object.entries(achvMap).map(([id, achv]) => ({ id, ...achv }));
-            achvList.sort((a, b) => (a.order || 999) - (b.order || 999));
+            achvList.sort((a, b) => {
+                const addedOrder = Number(addedAchievementIds.has(b.id)) - Number(addedAchievementIds.has(a.id));
+                return addedOrder || (a.order || 999) - (b.order || 999);
+            });
 
             let html = '';
             achvList.forEach(achv => {
-                const badgesHtml = renderBadges(achv);
+                const badgesHtml = renderBadges(achv, addedAchievementIds.has(achv.id));
                 const levelsHtml = renderAchievementLevels(achv);
                 html += `
                     <div class="achievement-card">
@@ -233,12 +243,13 @@
         function renderDetail(data) {
             const group = data.group || {};
             const groupKeys = Object.keys(group);
+            const addedAchievementIds = new Set(data.__versionAddedAchievementIds || []);
 
             if (groupKeys.length === 1 && groupKeys[0] === 'default') {
                 return `
                     <div class="category-title">${t('detail.title', { name: data.categoryName || '' })}</div>
                     <div class="achievement-group">
-                        ${renderGroupAchievements(group.default)}
+                        ${renderGroupAchievements(group.default, addedAchievementIds)}
                     </div>
                 `;
             } else {
@@ -251,7 +262,7 @@
                         <div class="group-section">
                             <h3 class="group-title">${groupName}</h3>
                             <div class="achievement-group">
-                                ${renderGroupAchievements(achvMap)}
+                                ${renderGroupAchievements(achvMap, addedAchievementIds)}
                             </div>
                         </div>
                     `;
