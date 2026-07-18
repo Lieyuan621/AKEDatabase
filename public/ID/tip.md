@@ -2,6 +2,12 @@ AKEData telah pindah ke domain www.akedata.wiki. Domain lama, akedata.top, kini 
 
 # Catatan Pembaruan Versi AKEData
 
+### v1.2.0-pre2
+
+Pemetaan Attribute lengkap telah diperbarui dengan ID 93–100 dan disinkronkan ke `maps.json` untuk seluruh 14 bahasa.
+
+Modul musuh dan dungeon kini menggunakan parameter resistansi elemen baru (ID 94–99). ID koefisien resistansi lama 80–85 tidak lagi ditampilkan pada kartu atribut, ringkasan modifier, maupun tooltip Buff terkait.
+
 ### v1.1.9
 
 Menambahkan modul khusus tantangan permanen “Gema Perang”, dengan tampilan per musim dan rotasi untuk stage, tingkat kesulitan, gelar peringkat, hadiah merit, dan petunjuk resmi. Modul ini juga menampilkan gelombang musuh, peta posisi spawn, Buff saat spawn, serta atribut yang disesuaikan dengan level, lengkap dengan pergantian gelombang dan sorotan peta yang saling terhubung.

@@ -2,6 +2,12 @@ AKEData ist auf die Domain www.akedata.wiki umgezogen. Die bisherige Domain aked
 
 # AKEData-Versionsprotokoll
 
+### v1.2.0-pre2
+
+Die vollständige Attributzuordnung wurde um die IDs 93–100 aktualisiert und mit den `maps.json`-Dateien aller 14 Sprachen synchronisiert.
+
+Die Gegner- und Dungeonmodule verwenden nun die neuen Elementarresistenz-Parameter (IDs 94–99). Die alten Resistenzkoeffizienten mit den IDs 80–85 werden nicht mehr in Attributkarten, Modifikatorübersichten oder zugehörigen Buff-Hinweisen angezeigt.
+
 ### v1.1.9
 
 Das Themenmodul für die permanente Herausforderung „Echo des Krieges“ wurde ergänzt. Es zeigt nach Saison und Rotation Stufen, Schwierigkeitsgrade, Bewertungstitel, Verdienstbelohnungen und offizielle Anleitungen. Außerdem werden Gegnerwellen, Spawnkarten, Start-Buffs und stufenbereinigte Attribute mit Wellenwechsel und verknüpfter Kartenhervorhebung dargestellt.

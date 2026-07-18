@@ -2,6 +2,12 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.2.0-pre2
+
+Updated the complete Attribute mapping, added IDs 93–100, and synchronized `maps.json` across all 14 languages.
+
+Enemy and dungeon modules now use the new elemental resistance parameters (IDs 94–99). Legacy resistance scalar IDs 80–85 are no longer shown in related stat cards, modifier summaries, or Buff tooltips, preventing duplicate entries and incorrect values.
+
 ### v1.2.0-pre1
 
 Separated game data from the website code. TableCfg, Json, and image assets are now stored in Cloudflare R2 and delivered through data.akedata.wiki and the EdgeOne CDN. Added a data manifest and version selector for switching between Latest and multiple game/Hotfix versions while preserving the selection. Only TableCfg is versioned; Json and images remain shared data.

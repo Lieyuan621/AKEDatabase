@@ -2,6 +2,12 @@ AKEData se ha trasladado al dominio www.akedata.wiki. El dominio anterior, akeda
 
 # Registro de actualizaciones de AKEData
 
+### v1.2.0-pre2
+
+Se actualizó el mapeo completo de Attribute, se añadieron los ID 93–100 y se sincronizó `maps.json` en los 14 idiomas.
+
+Los módulos de enemigos y mazmorras ahora usan los nuevos parámetros de resistencia elemental (ID 94–99). Los antiguos multiplicadores de resistencia, ID 80–85, ya no aparecen en las tarjetas de atributos, los resúmenes de modificadores ni las descripciones emergentes de Buff relacionadas.
+
 ### v1.1.9
 
 Se añadió el módulo del desafío permanente «Ecos de guerra», con vistas por temporada y rotación para consultar niveles, dificultades, títulos de clasificación, recompensas de mérito e instrucciones oficiales. También muestra oleadas de enemigos, mapas de aparición, Buff iniciales y atributos ajustados por nivel, con cambio de oleada y resaltado vinculado en el mapa.

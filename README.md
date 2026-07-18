@@ -10,6 +10,10 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 
 在线站点：[https://www.akedata.wiki](https://www.akedata.wiki)（原 `akedata.top` 已重定向至此）
 
+## 当前版本
+
+`1.2.0-pre2` 更新了完整 Attribute 映射，并将 ID 93–100 同步至全部 14 种语言资源。怪物与副本模块现在读取新的元素抗性参数（ID 94–99），相关属性卡片、修正摘要与 Buff 提示不再显示旧的抗性系数 ID 80–85。
+
 ## 功能
 
 - 角色、武器、敌人、装备、物品、副本、活动、奖章和危机合约查询
@@ -271,6 +275,12 @@ v3 当前采用兼容层设计，而不是重复实现九套 UI：
 - `public/images`：模块按固定路径约定组装图片 URL。
 
 副本会通过 `DungeonTable.sceneId` 关联 `LevelData/<sceneId>` 和 `SpawnerConfig/<sceneId>`；SpawnerConfig 中的 `enemyLibrary` 再关联 EnemyTable，出生 Buff 则按 ID 加载 `BuffData/<buffId>.json`。
+
+### 属性映射与敌人抗性
+
+每个语言目录的 `maps.json` 都包含本地化显示名 `ATTR_MAP` 和枚举名 `ATTR_MAP_EN`。两张表必须使用相同且连续的数字 ID；新增或调整 Attribute 时，应同步更新全部 14 个语言目录，避免切换语言后出现未知属性或 Buff 无法关联属性 ID。
+
+当前映射包含 ID 0–100。ID 94–99 依次为 `PhysicalResistance`、`NaturalResistance`、`CrystResistance`、`PulseResistance`、`FireResistance` 和 `EtherResistance`。怪物与副本页面以这些元素抗性参数为准；旧 ID 80–85 的 `*DmgResistScalar` 仍保留在完整映射中供原始数据查阅，但不会在这两个模块的属性卡片、修正摘要或 Buff 提示中重复显示。
 
 ### i18n 与 Int64
 

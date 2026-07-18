@@ -2,6 +2,12 @@ AKEData đã chuyển sang tên miền www.akedata.wiki. Tên miền cũ akedata
 
 # Nhật ký cập nhật phiên bản AKEData
 
+### v1.2.0-pre2
+
+Đã cập nhật toàn bộ ánh xạ Attribute, bổ sung ID 93–100 và đồng bộ `maps.json` cho cả 14 ngôn ngữ.
+
+Module quái và phụ bản giờ sử dụng các tham số kháng nguyên tố mới (ID 94–99). Các ID hệ số kháng cũ 80–85 không còn xuất hiện trong thẻ thuộc tính, phần tóm tắt modifier hay tooltip Buff liên quan.
+
 ### v1.1.9
 
 Thêm module chuyên đề cho thử thách thường trực “Tiếng vọng chiến tranh”, cho phép xem màn chơi, độ khó, danh hiệu xếp hạng, phần thưởng công trạng và hướng dẫn chính thức theo mùa và chu kỳ luân phiên. Module cũng hiển thị đợt quái, bản đồ vị trí xuất hiện, Buff khi sinh và thuộc tính đã điều chỉnh theo cấp, kèm chuyển đợt và tô sáng liên kết trên bản đồ.

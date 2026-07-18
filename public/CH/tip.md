@@ -6,6 +6,12 @@ AKEData已迁移至域名：www.akedata.wiki，原先的akedata.top现已重定�
 
 # AKEData版本更新日志
 
+### v1.2.0-pre2
+
+更新完整 Attribute 映射，补充 ID 93–100，并同步全部 14 种语言的 `maps.json`。
+
+怪物与副本模块现已改用新的元素抗性参数（ID 94–99）。旧抗性系数 ID 80–85 不再出现在相关属性卡片、修正摘要和 Buff 提示中，避免新旧参数重复显示或读取错误数值。
+
 ### v1.2.0-pre1
 
 游戏数据与网站代码现已分离：TableCfg、Json 和图片迁移至 Cloudflare R2，并通过 data.akedata.wiki 与 EdgeOne CDN 提供访问。新增数据版本清单与版本选择，支持在 Latest 和多个游戏版本/Hotfix 之间切换并保留选择；只有 TableCfg 按版本保存，Json 与图片作为共享数据维护。

@@ -62,6 +62,7 @@
         if (!attrTemplateData) return null;
         const opts = options || {};
         const displayOrder = opts.displayOrder || DEFAULT_ATTR_DISPLAY_ORDER;
+        const excludedAttrTypes = new Set(opts.excludeAttrTypes || []);
         const getAttrName = opts.getAttrName || (attrType => window.akeI18n.t('modules.character.attributeFallback', { name: attrType }));
         const baseAttrs = {};
 
@@ -91,11 +92,14 @@
 
         const result = {};
         displayOrder.forEach(attrType => {
+            if (excludedAttrTypes.has(attrType)) return;
             if (baseAttrs[attrType] !== undefined) result[getAttrName(attrType)] = baseAttrs[attrType];
         });
         Object.keys(baseAttrs).forEach(key => {
             const attrType = parseInt(key, 10);
-            if (!displayOrder.includes(attrType) && attrType >= 4) result[getAttrName(attrType)] = baseAttrs[attrType];
+            if (!excludedAttrTypes.has(attrType) && !displayOrder.includes(attrType) && attrType >= 4) {
+                result[getAttrName(attrType)] = baseAttrs[attrType];
+            }
         });
         return result;
     }

@@ -2,6 +2,12 @@ AKEData a été transféré vers le domaine www.akedata.wiki. L'ancien domaine a
 
 # Journal des mises à jour d'AKEData
 
+### v1.2.0-pre2
+
+La correspondance complète des attributs a été mise à jour avec les ID 93–100, puis synchronisée dans les fichiers `maps.json` des 14 langues.
+
+Les modules des ennemis et des donjons utilisent désormais les nouveaux paramètres de résistance élémentaire (ID 94–99). Les anciens coefficients de résistance, ID 80–85, ne sont plus affichés dans les fiches d'attributs, les résumés de modificateurs ni les infobulles de Buff associées.
+
 ### v1.1.9
 
 Ajout du module consacré au défi permanent « Échos de guerre », avec une consultation par saison et rotation des niveaux, difficultés, titres de classement, récompenses de mérite et instructions officielles. Le module affiche aussi les vagues d'ennemis, les cartes d'apparition, les Buff initiaux et les attributs ajustés au niveau, avec changement de vague et surbrillance liée sur la carte.

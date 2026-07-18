@@ -15,6 +15,15 @@
         let modifierTypeMap = {};
 
         const IMAGE_BASE_PATH = '/public/images/';
+        const LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES = Object.freeze([80, 81, 82, 83, 84, 85]);
+        const ELEMENT_RESISTANCE_ATTR_TYPES = Object.freeze({
+            physicalResistance: 94,
+            naturalResistance: 95,
+            crystResistance: 96,
+            pulseResistance: 97,
+            fireResistance: 98,
+            etherResistance: 99
+        });
 
         function getCurrentShowHidden() {
             return window.akeData?.getConfig().showHidden ?? false;
@@ -50,7 +59,7 @@
         function formatAttrModifiers(modifiers) {
             if (!Array.isArray(modifiers) || modifiers.length === 0) return '';
             const showHidden = getCurrentShowHidden();
-            return modifiers.map(m => {
+            return modifiers.filter(m => !LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES.includes(m.attrType)).map(m => {
                 const name = getAttrName(m.attrType);
                 const val = m.attrValue;
                 const isMult = (m.modifierType === 1 || m.modifierType === 4 ||
@@ -112,12 +121,12 @@
                 coldDamageTakenScalar: m[7],
                 naturalDamageTakenScalar: m[48],
                 etherDamageTakenScalar: m[60],
-                physicalResistScalar: attrData.physicalDmgResistScalar,
-                naturalResistScalar: attrData.naturalDmgResistScalar,
-                coldResistScalar: attrData.crystDmgResistScalar,
-                electroResistScalar: attrData.pulseDmgResistScalar,
-                fireResistScalar: attrData.fireDmgResistScalar,
-                etherResistScalar: m[85],
+                physicalResistance: m[ELEMENT_RESISTANCE_ATTR_TYPES.physicalResistance],
+                naturalResistance: m[ELEMENT_RESISTANCE_ATTR_TYPES.naturalResistance],
+                crystResistance: m[ELEMENT_RESISTANCE_ATTR_TYPES.crystResistance],
+                pulseResistance: m[ELEMENT_RESISTANCE_ATTR_TYPES.pulseResistance],
+                fireResistance: m[ELEMENT_RESISTANCE_ATTR_TYPES.fireResistance],
+                etherResistance: m[ELEMENT_RESISTANCE_ATTR_TYPES.etherResistance],
                 normalAttackRange: m[12],
                 maxPoise: m[20],
                 poiseRecTime: m[21],
@@ -175,7 +184,9 @@
 
             const enemyTable = rawData.enemytable || {};
             const attrTypeReverse = {};
-            Object.keys(attrMap).forEach(k => { attrTypeReverse[attrMap[k]] = parseInt(k, 10); });
+            Object.entries(ELEMENT_RESISTANCE_ATTR_TYPES).forEach(([key, attrType]) => {
+                attrTypeReverse[key] = attrType;
+            });
 
             Object.keys(enemyTable).forEach(enemyId => {
                 const entry = enemyTable[enemyId];
@@ -239,20 +250,25 @@
             'initialSuperArmor', 'zeroPoiseSuperArmor', 'superArmorWhenResilienceZero',
             'executionDamageScalar', 'breakingAttackedAtbObtain', 'physicalDamageTakenScalar',
             'naturalDamageTakenScalar', 'coldDamageTakenScalar', 'electroDamageTakenScalar',
-            'fireDamageTakenScalar', 'etherDamageTakenScalar', 'physicalResistScalar',
-            'naturalResistScalar', 'coldResistScalar', 'electroResistScalar', 'fireResistScalar',
-            'etherResistScalar', 'normalAttackRange', 'maxPoise', 'poiseRecTime', 'poiseKnotPct',
+            'fireDamageTakenScalar', 'etherDamageTakenScalar', 'physicalResistance',
+            'naturalResistance', 'crystResistance', 'pulseResistance', 'fireResistance',
+            'etherResistance', 'normalAttackRange', 'maxPoise', 'poiseRecTime', 'poiseKnotPct',
             'weight', 'attackValueAgainstTower', 'maxResilience', 'pushedBackCoefficient',
             'resilienceDecreaseWhenHurt', 'resilienceFullRecoverTime', 'resilienceRecover',
             'resilienceRecoverInterval', 'criticalRate', 'criticalDamage', 'hatred', 'attackSpeed'
         ];
+
+        function getMetaLabel(key) {
+            const attrType = ELEMENT_RESISTANCE_ATTR_TYPES[key];
+            return attrType === undefined ? t(`meta.${key}`) : getAttrName(attrType);
+        }
 
         function renderMeta(data) {
             let html = '<div class="v2e-meta-grid">';
             META_FIELDS.forEach(key => {
                 const val = data[key];
                 if (val !== undefined && val !== null && val !== '') {
-                    html += `<div class="v2e-meta-item"><span class="v2e-meta-label">${t(`meta.${key}`)}</span><span class="v2e-meta-value">${val}</span></div>`;
+                    html += `<div class="v2e-meta-item"><span class="v2e-meta-label">${getMetaLabel(key)}</span><span class="v2e-meta-value">${val}</span></div>`;
                 }
             });
             html += '</div>';
@@ -287,7 +303,7 @@
                 const bvHtml = window.renderRawValueTip ? window.renderRawValueTip(bv ?? '-', bv) : (bv ?? '-');
                 const nvHtml = window.renderRawValueTip ? window.renderRawValueTip(nv ?? '-', nv) : (nv ?? '-');
                 const diffHtml = window.renderRawValueTip ? window.renderRawValueTip(sign + fmt, d) : sign + fmt;
-                items.push(`<div class="v2e-diff-item"><span class="v2e-diff-label">${t(`meta.${key}`)}:</span><span class="v2e-diff-val ${d < 0 ? 'neg' : ''}">${bvHtml} → ${nvHtml} (${diffHtml})</span></div>`);
+                items.push(`<div class="v2e-diff-item"><span class="v2e-diff-label">${getMetaLabel(key)}:</span><span class="v2e-diff-val ${d < 0 ? 'neg' : ''}">${bvHtml} → ${nvHtml} (${diffHtml})</span></div>`);
             });
 
             if (!items.length) return '';
@@ -302,7 +318,7 @@
             const items = fields.map(key => {
                 const val = fa[key];
                 const valueHtml = window.renderRawValueTip ? window.renderRawValueTip(val, val) : val;
-                return `<div class="v2e-tooltip-item"><span class="v2e-tooltip-label">${t(`meta.${key}`)}</span><span class="v2e-tooltip-value">${valueHtml}</span></div>`;
+                return `<div class="v2e-tooltip-item"><span class="v2e-tooltip-label">${getMetaLabel(key)}</span><span class="v2e-tooltip-value">${valueHtml}</span></div>`;
             }).join('');
             return `<span class="v2e-variant-template"><span class="v2e-tag-id">${variant.attrTemplateId}</span><span class="v2e-tooltip"><div class="v2e-tooltip-grid">${items}</div></span></span>`;
         }

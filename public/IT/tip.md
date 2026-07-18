@@ -2,6 +2,12 @@ AKEData è stato trasferito al dominio www.akedata.wiki. Il precedente dominio a
 
 # Registro degli aggiornamenti di AKEData
 
+### v1.2.0-pre2
+
+Aggiornata la mappatura completa degli Attribute con gli ID 93–100 e sincronizzati i file `maps.json` di tutte le 14 lingue.
+
+I moduli di nemici e dungeon ora utilizzano i nuovi parametri di resistenza elementale (ID 94–99). I precedenti coefficienti di resistenza, ID 80–85, non vengono più mostrati nelle schede degli attributi, nei riepiloghi dei modificatori o nei tooltip dei Buff correlati.
+
 ### v1.1.9
 
 Aggiunto il modulo dedicato alla sfida permanente “Echi di guerra”, con visualizzazione per stagione e rotazione di livelli, difficoltà, titoli di valutazione, ricompense al merito e istruzioni ufficiali. Il modulo mostra anche ondate di nemici, mappe dei punti di comparsa, Buff iniziali e attributi adattati al livello, con cambio dell'ondata ed evidenziazione collegata sulla mappa.

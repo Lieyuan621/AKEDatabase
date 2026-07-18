@@ -12,6 +12,7 @@
         let modifierTypeMap = {};
 
         const FORMULA_TO_MODTYPE = window.AKEStats.FORMULA_TO_MODTYPE;
+        const LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES = Object.freeze([80, 81, 82, 83, 84, 85]);
 
         const IMAGE_BASE_PATH = '/public/images/';
 
@@ -273,7 +274,7 @@
         function formatAttrModifiers(modifiers) {
             if (!Array.isArray(modifiers) || modifiers.length === 0) return '';
             const showHidden = getCurrentShowHidden();
-            return modifiers.map(m => {
+            return modifiers.filter(m => !LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES.includes(m.attrType)).map(m => {
                 const name = getAttrName(m.attrType);
                 const val = m.attrValue;
                 const isMult = (m.modifierType === 1 || m.modifierType === 4 ||
@@ -493,7 +494,8 @@
         function getEnemyStatsAtLevel(attrTemplateData, enemyLevel, modifiers) {
             return window.AKEStats.getEnemyStatsAtLevel(attrTemplateData, enemyLevel, modifiers, {
                 getAttrName,
-                includeModifierOnlyAttrs: true
+                includeModifierOnlyAttrs: true,
+                excludeAttrTypes: LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES
             });
         }
 
@@ -543,7 +545,9 @@
                     const attrMods = buff?.attributeModifier?.attributeModifiers || [];
                     const rows = [];
                     attrMods.forEach(mod => {
-                        const label = mod.attributeType;
+                        const attrType = attrNameToId[mod.attributeType];
+                        if (LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES.includes(attrType)) return;
+                        const label = attrType === undefined ? mod.attributeType : getAttrName(attrType);
                         const formula = mod.formulaItem;
                         let val;
                         if (mod.param.useBlackboardKey && mod.param.blackboardKey) {
