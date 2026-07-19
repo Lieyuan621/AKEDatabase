@@ -2,6 +2,16 @@ AKEData è stato trasferito al dominio www.akedata.wiki. Il precedente dominio a
 
 # Registro degli aggiornamenti di AKEData
 
+### v1.2.1
+
+Risolto un problema per cui alcune immagini di gioco potevano essere richieste erroneamente da `www.akedata.wiki` dopo il cambio di modulo o il riavvio del Service Worker. I percorsi delle immagini vengono ora riscritti in modo sincrono verso `data.akedata.wiki` quando sono inseriti nella pagina.
+
+Il Service Worker ora ripristina l'origine dati e la revisione dei dati condivisi dal proprio URL di registrazione. Il routing delle immagini resta quindi corretto anche dopo la sospensione e il riavvio del Worker da parte del browser. Anche l'icona del sito viene caricata direttamente dall'origine dati.
+
+L'analisi dei nemici da `LevelScriptData` è stata aggiunta ai calcoli degli attributi di Dungeon, Contingency Contract ed Echoes of War. Ora vengono letti nemici, livelli e Buff di comparsa definiti direttamente negli script, oltre ai Buff condizionali applicati dagli spawner. Anche le fasi senza SpawnerConfig vengono quindi calcolate correttamente. Sono stati inoltre corretti il precaricamento dei Buff delle condizioni e il ricalcolo dopo il cambio delle condizioni.
+
+Migliorati i suggerimenti dei valori originali. I valori senza modifiche di calcolo continuano a mostrare il valore originale; quelli modificati da attributi, Buff, condizioni del contratto o espressioni mostrano ora valore originale, parametri sostituiti, formula completa e risultato finale. Il tracciamento delle formule copre Dungeon, Contingency Contract, Echoes of War, nemici ed espressioni di personaggi, armi, equipaggiamento e oggetti.
+
 ### v1.2.0
 
 Aggiunto il confronto dei dati tra versioni del gioco. Selezionando `Latest`, il sito confronta automaticamente con l'ultimo Hotfix della versione precedente. Le nuove voci vengono sempre mostrate per prime e contrassegnate; le etichette delle modifiche e il Diff dettagliato possono essere attivati tramite l'opzione sperimentale globale, disattivata per impostazione predefinita.

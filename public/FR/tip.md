@@ -2,6 +2,16 @@ AKEData a été transféré vers le domaine www.akedata.wiki. L'ancien domaine a
 
 # Journal des mises à jour d'AKEData
 
+### v1.2.1
+
+Correction d'un problème pouvant entraîner le chargement de certaines images du jeu depuis `www.akedata.wiki` après un changement de module ou un redémarrage du Service Worker. Les chemins d'image sont désormais réécrits de façon synchrone vers `data.akedata.wiki` lors de leur insertion dans la page.
+
+Le Service Worker restaure maintenant l'origine des données et la révision des données partagées depuis son URL d'enregistrement. Le routage des images reste ainsi correct même après sa suspension et son redémarrage par le navigateur. L'icône du site est également chargée directement depuis l'origine des données.
+
+L'analyse des ennemis de `LevelScriptData` a été ajoutée aux calculs de statistiques des Donjons, de Contingency Contract et d'Echoes of War. Les ennemis, niveaux et Buffs d'apparition définis directement dans les scripts, ainsi que les Buffs conditionnels appliqués par les générateurs, sont maintenant pris en compte. Les stages sans SpawnerConfig sont donc calculés correctement. Le préchargement des Buffs de conditions et le recalcul après changement de condition ont également été corrigés.
+
+Les infobulles de valeurs brutes ont été améliorées. Les valeurs sans modification de calcul continuent d'afficher leur valeur d'origine ; celles modifiées par des statistiques, Buffs, conditions de contrat ou expressions affichent désormais la valeur d'origine, les paramètres substitués, la formule complète et le résultat final. Le suivi couvre les Donjons, Contingency Contract, Echoes of War, les ennemis et les expressions des personnages, armes, équipements et objets.
+
 ### v1.2.0
 
 Ajout de la comparaison des données entre versions du jeu. Lorsque `Latest` est sélectionné, le site compare automatiquement avec le dernier Hotfix de la version précédente. Les nouvelles entrées sont toujours placées en tête et étiquetées ; les étiquettes de modification et le Diff détaillé peuvent être activés via le réglage global expérimental, désactivé par défaut.

@@ -2,6 +2,16 @@ O AKEData foi transferido para o domínio www.akedata.wiki. O domínio anterior,
 
 # Registro de atualizações do AKEData
 
+### v1.2.1
+
+Corrigido um problema que podia fazer algumas imagens do jogo serem solicitadas incorretamente de `www.akedata.wiki` após trocar de módulo ou reiniciar o Service Worker. Os caminhos de imagem agora são reescritos de forma síncrona para `data.akedata.wiki` ao serem inseridos na página.
+
+O Service Worker agora restaura a origem dos dados e a revisão dos dados compartilhados a partir de sua URL de registro. Assim, o roteamento de imagens continua correto mesmo depois que o navegador suspende e reinicia o Worker. O ícone do site também é carregado diretamente da origem de dados.
+
+Foi adicionada a análise de inimigos de `LevelScriptData` aos cálculos de atributos de Masmorras, Contingency Contract e Echoes of War. Agora são lidos inimigos, níveis e Buffs de surgimento definidos diretamente nos scripts, além de Buffs condicionais aplicados por geradores. Isso permite calcular corretamente fases sem SpawnerConfig. Também foram corrigidos o pré-carregamento dos Buffs de condições de Contingency Contract e o recálculo após alterar condições.
+
+As dicas de valores originais foram aprimoradas. Valores sem alteração de cálculo continuam exibindo o valor original; valores modificados por atributos, Buffs, condições de contrato ou expressões agora exibem o valor original, os parâmetros substituídos, a fórmula completa e o resultado final. O rastreamento de fórmulas cobre Masmorras, Contingency Contract, Echoes of War, inimigos e expressões calculadas de personagens, armas, equipamentos e itens.
+
 ### v1.2.0
 
 Foi adicionada a comparação de dados entre versões do jogo. Ao selecionar `Latest`, o site compara automaticamente com o último Hotfix da versão anterior. Novas entradas ficam sempre no topo e recebem uma etiqueta; etiquetas de modificações e o Diff detalhado podem ser ativados pela opção experimental global, desativada por padrão.

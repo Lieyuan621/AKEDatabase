@@ -144,8 +144,14 @@
                         if (modName) formatted += ` <span class="attr-node-modifier-tag">${modName}</span>`;
                     }
                 }
-                const tipKey = varNames.length === 1 ? varNames[0] : expr;
-                return window.renderRawValueTip ? window.renderRawValueTip(formatted, result, tipKey) : formatted;
+                const bindings = Object.fromEntries(varNames.map(name => [name, lowerValueMap[name.toLowerCase()]]));
+                const changed = !(varNames.length === 1 && expr.toLowerCase() === varNames[0].toLowerCase());
+                const rawValue = varNames.length === 1 ? bindings[varNames[0]] : Object.entries(bindings).map(([key, value]) => `${key}=${value}`).join(', ');
+                return window.renderRawValueTip ? window.renderRawValueTip(formatted, {
+                    rawValue, value: result, changed, expression: expr,
+                    formula: changed ? `${evalExpr} = ${result}` : undefined,
+                    bindings
+                }) : formatted;
             });
         }
 
@@ -218,7 +224,16 @@
 
                 if (typeof finalValue === 'number') {
                     const formatted = formatPlaceholderValue(finalValue, format);
-                    return window.renderRawValueTip ? window.renderRawValueTip(formatted, finalValue, expr) : formatted;
+                    const varNames = expr.match(/[a-zA-Z_][a-zA-Z0-9_]*/g) || [];
+                    const bindings = Object.fromEntries(varNames.filter(name => lookup[name.toLowerCase()] !== undefined).map(name => [name, lookup[name.toLowerCase()]]));
+                    const changed = !(varNames.length === 1 && expr.toLowerCase() === varNames[0].toLowerCase());
+                    const rawValue = varNames.length === 1 ? bindings[varNames[0]] : Object.entries(bindings).map(([key, value]) => `${key}=${value}`).join(', ');
+                    const substituted = expr.replace(/[a-zA-Z_][a-zA-Z0-9_]*/g, name => `(${bindings[name] ?? name})`);
+                    return window.renderRawValueTip ? window.renderRawValueTip(formatted, {
+                        rawValue: rawValue || finalValue, value: finalValue, changed, expression: expr,
+                        formula: changed ? `${substituted} = ${finalValue}` : undefined,
+                        bindings
+                    }) : formatted;
                 } else if (typeof finalValue === 'string') {
                     if (/^0(?:\.(0+))?%$/.test(format) && !finalValue.includes('%')) {
                         let num = parseFloat(finalValue);
@@ -670,6 +685,7 @@
                     return names.length ? names : (baseInfo.cvName || []);
                 })(),
                 growth: {},
+                growthDetails: {},
                 talents: [],
                 potentials: [],
                 attributeNodes: [],
@@ -713,6 +729,18 @@
 
             if (sortedLevels.length > 0) {
                 legacy.growth.hp = sortedLevels.map(level => Math.round((500 + 5500 / 98 * (level - 1)) * 100) / 100);
+                legacy.growthDetails.hp = sortedLevels.map((level, index) => {
+                    const rawValue = levelMap[level].idValueMap.hp ?? legacy.growth.hp[index];
+                    const value = legacy.growth.hp[index];
+                    return {
+                        name: 'hp',
+                        rawValue,
+                        value,
+                        changed: value !== rawValue,
+                        formula: `(500 + 5500 / 98 × (${level} - 1)) = ${value}`,
+                        bindings: { level }
+                    };
+                });
             }
 
             legacy.itemInfoMap = Object.fromEntries(Object.entries(rawData.costitemtable || {}).map(([id, item]) => [id, {
@@ -1063,7 +1091,8 @@
                     const precision = preciseAttrs.has(attr) ? (showHiddenGrowth ? 5 : 3) : 2;
                     if (val === undefined) return '<td>-</td>';
                     const display = Number(val).toFixed(precision);
-                    const html = window.renderRawValueTip ? window.renderRawValueTip(display, val) : display;
+                    const detail = currentCharData.growthDetails?.[attr]?.[lv - 1];
+                    const html = window.renderRawValueTip ? window.renderRawValueTip(display, detail || val) : display;
                     return `<td>${html}</td>`;
                 }).join('');
                 allGrowthRows.push(`<tr data-level="${lv}"><td>${lv}</td>${cells}</tr>`);
@@ -1251,7 +1280,8 @@
                     const precision = preciseAttrs.has(attr) ? (showHiddenGrowth ? 5 : 3) : 2;
                     if (val === undefined) return '<td>-</td>';
                     const display = Number(val).toFixed(precision);
-                    const html = window.renderRawValueTip ? window.renderRawValueTip(display, val) : display;
+                    const detail = data.growthDetails?.[attr]?.[lv - 1];
+                    const html = window.renderRawValueTip ? window.renderRawValueTip(display, detail || val) : display;
                     return `<td>${html}</td>`;
                 }).join('');
                 allGrowthRows.push(`<tr data-level="${lv}"><td>${lv}</td>${cells}</tr>`);

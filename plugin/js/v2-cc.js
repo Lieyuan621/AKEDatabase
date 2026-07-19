@@ -100,7 +100,14 @@
         }
         else if (format.includes('0')) formatted = Math.round(result).toString();
         else formatted = result.toString();
-        return window.renderRawValueTip ? window.renderRawValueTip(formatted, result, expr) : formatted;
+        const bindings = Object.fromEntries(varNames.map(name => [name, lowerValueMap[name.toLowerCase()]]));
+        const changed = !(varNames.length === 1 && expr.toLowerCase() === varNames[0].toLowerCase());
+        const rawValue = varNames.length === 1 ? bindings[varNames[0]] : Object.entries(bindings).map(([key, value]) => `${key}=${value}`).join(', ');
+        return window.renderRawValueTip ? window.renderRawValueTip(formatted, {
+            rawValue, value: result, changed, expression: expr,
+            formula: changed ? `${evalExpr} = ${result}` : undefined,
+            bindings
+        }) : formatted;
     }
 
     function replacePlaceholders(desc, valueMap, allValueMaps) {
@@ -382,6 +389,7 @@
                     const response = await (window.akeFetch || fetch)(game.dungeonFile);
                     if (!response.ok) throw new Error(`HTTP ${response.status}`);
                     const dgData = await response.json();
+                    await window.AKECombatData?.enrichDungeonScripts(dgData);
                     const embeddedBuffData = {};
                     Object.values(dgData.dungeontable || {}).forEach(dg => {
                         if (dg.BuffData) Object.assign(embeddedBuffData, dg.BuffData);
@@ -392,7 +400,11 @@
                         Object.values(dg.SpawnerConfig || {}).forEach(sc => {
                             (sc.enemyLibrary || []).forEach(lib => (lib.bornBuffList || []).forEach(b => buffIds.add(b.buffId)));
                         });
+                        (window.AKECombatData?.collectScriptBuffIds(dg) || []).forEach(id => buffIds.add(id));
                     });
+                    Object.values(data.cctagtable || {}).forEach(tag => (tag.tagTerms || []).forEach(term => {
+                        if (term.termType === 1 && term.buffId) buffIds.add(term.buffId);
+                    }));
                     await Promise.all(Array.from(buffIds).map(id => loadCcBuff(id, embeddedBuffData)));
                     currentDungeonData = dgData;
                 } catch (dgErr) {
@@ -844,11 +856,29 @@
         });
     }
 
-    function formatAttrVal(val) {
+    function getEnemyStatDetailsAtLevel(attrTemplateData, enemyLevel, modifiers) {
+        return window.AKEStats.getEnemyStatDetailsAtLevel(attrTemplateData, enemyLevel, modifiers, {
+            displayOrder: ATTR_DISPLAY_ORDER,
+            getAttrName: attrType => ccAttrMap[attrType] || t('attributeFallback', { type: attrType }),
+            includeModifierOnlyAttrs: false
+        });
+    }
+
+    function formatStatValue(value, detail) {
+        const display = formatPlainAttrVal(value);
+        return detail && window.renderRawValueTip ? window.renderRawValueTip(display, detail) : display;
+    }
+
+    function formatPlainAttrVal(val) {
         if (typeof val !== 'number') return val;
         let display;
         if (Math.abs(val) < 1 && val !== 0) display = (val * 100).toFixed(1) + '%';
         else display = Number.isInteger(val) ? val.toString() : val.toFixed(2);
+        return display;
+    }
+
+    function formatAttrVal(val) {
+        const display = formatPlainAttrVal(val);
         return window.renderRawValueTip ? window.renderRawValueTip(display, val) : display;
     }
 
@@ -872,7 +902,7 @@
         function bbVal(bbEntry) {
             return bbEntry.valueFloat ?? bbEntry.valueDouble ?? bbEntry.value ?? 0;
         }
-        return `<div class="v2d-enemy-buffs">${allBuffIds.map(id => {
+        return `<div class="v2d-enemy-buffs v2cc-current-buffs">${allBuffIds.map(id => {
             const bb = buffBbMap[id] || [];
             const buff = ccBuffCache[id];
             const attrMods = buff?.attributeModifier?.attributeModifiers || [];
@@ -889,7 +919,14 @@
                 const directMultiplierTypes = ['FinalMultiplier', 'BaseFinalMultiplier'];
                 const displayVal = directMultiplierTypes.includes(formula) ? val - 1 : val;
                 const display = pctTypes.includes(formula) ? `${(displayVal * 100).toFixed(0)}%` : val;
-                const valueHtml = window.renderRawValueTip ? window.renderRawValueTip(display, val, mod.param.blackboardKey || label) : display;
+                const converted = directMultiplierTypes.includes(formula);
+                const valueHtml = window.renderRawValueTip ? window.renderRawValueTip(display, converted ? {
+                    name: mod.param.blackboardKey || label,
+                    rawValue: val,
+                    value: displayVal,
+                    changed: true,
+                    formula: `${val} - 1 = ${displayVal}`
+                } : val, converted ? undefined : (mod.param.blackboardKey || label)) : display;
                 rows.push(`${escapeHtml(label)} ${escapeHtml(formula)} ${valueHtml}`);
             });
             bb.forEach(b => {
@@ -907,7 +944,7 @@
         }).join('')}</div>`;
     }
 
-    function renderCcEnemyCard(enemyId, enemyLevel, dungeonData, libraryBuffs) {
+    function renderCcEnemyCard(enemyId, enemyLevel, dungeonId, dungeonData, libraryBuffs, scriptedBuffs) {
         const enemyConfig = dungeonData.enemyTable?.[enemyId] || {};
         const displayTable = dungeonData.enemyTemplateDisplayInfoTable || {};
         const attrTable = dungeonData.enemyAttributeTemplateTable || {};
@@ -922,31 +959,37 @@
         const iconSrc = `/public/images/enemy/monstericonbig/${templateId}.png`;
 
         const ownBuffs = enemyConfig.bornBuffs || [];
-        const libBuffs = libraryBuffs || [];
+        const libBuffs = [...(libraryBuffs || []), ...(window.AKECombatData?.staticEnemyBuffs(dungeonData, enemyId, enemyLevel) || [])];
         const buffModifiers = [];
         ownBuffs.forEach(id => buffModifiers.push(...getBuffModifiers(id, [])));
         libBuffs.forEach(b => buffModifiers.push(...getBuffModifiers(b.buffId, b.blackboard)));
         const allModifiers = [...inlineModifiers, ...buffModifiers];
+        const scriptModifiers = (scriptedBuffs || []).flatMap(b => getBuffModifiers(b.buffId, b.blackboard));
 
         const flags = [];
         if (enemyConfig.isDangerous) flags.push(`<span class="v2d-enemy-flag danger">${t('enemyFlags.dangerous')}</span>`);
         if (enemyConfig.showBigEffect) flags.push(`<span class="v2d-enemy-flag big-effect">${t('enemyFlags.globalEffect')}</span>`);
         if (enemyConfig.showBigHeadbar) flags.push(`<span class="v2d-enemy-flag big-headbar">${t('enemyFlags.pinnedHealthBar')}</span>`);
 
-        const stats = getEnemyStatsAtLevel(attrData, enemyLevel, allModifiers);
+        const statResult = getEnemyStatDetailsAtLevel(attrData, enemyLevel, allModifiers);
+        const stats = statResult?.values || {};
+        const scriptResult = scriptModifiers.length ? getEnemyStatDetailsAtLevel(attrData, enemyLevel, [...allModifiers, ...scriptModifiers]) : null;
+        const scriptStats = scriptResult?.values || null;
+        const changedScriptStats = scriptStats ? Object.fromEntries(Object.entries(scriptStats).filter(([key, val]) => val !== stats?.[key])) : {};
         let statsHtml = '';
         if (stats && Object.keys(stats).length > 0) {
             statsHtml = '<div class="v2d-attr-grid">';
             Object.entries(stats).forEach(([key, val]) => {
-                statsHtml += `<div class="v2d-attr-item"><span class="v2d-attr-key">${key}</span><span class="v2d-attr-val">${formatAttrVal(val)}</span></div>`;
+                statsHtml += `<div class="v2d-attr-item"><span class="v2d-attr-key">${key}</span><span class="v2d-attr-val">${formatStatValue(val, statResult.details[key])}</span></div>`;
             });
             statsHtml += '</div>';
         }
 
         const buffTagsHtml = buildEnemyBuffTagsHtml(ownBuffs, libBuffs, []);
+        const scriptBuffTagsHtml = (scriptedBuffs || []).length ? `<div class="v2d-enemy-buffs">${scriptedBuffs.map(row => `<span class="v2d-buff-tag v2d-script-buff v2d-has-tip">${escapeHtml(row.buffId)}<small>脚本</small><span class="v2d-buff-tip"><div>条件性脚本 Buff · LevelScript ${escapeHtml(row.scriptId)}</div></span></span>`).join('')}</div>` : '';
 
         return `
-            <div class="v2d-enemy-card" data-enemy-id="${enemyId}" data-enemy-level="${enemyLevel}" data-lib-buffs='${JSON.stringify(libraryBuffs || [])}'>
+            <div class="v2d-enemy-card" data-dungeon-id="${escapeHtml(dungeonId)}" data-enemy-id="${enemyId}" data-enemy-level="${enemyLevel}" data-lib-buffs='${JSON.stringify(libBuffs)}' data-script-buffs='${JSON.stringify(scriptedBuffs || [])}'>
                 <div class="v2d-enemy-header">
                     <img class="v2d-enemy-icon" src="${iconSrc}" onerror="this.onerror=null; this.src='';">
                     <div class="v2d-enemy-title">
@@ -957,8 +1000,10 @@
                 </div>
                 ${desc ? `<div class="v2d-enemy-desc">${parseText(desc)}</div>` : ''}
                 ${buffTagsHtml}
+                ${scriptBuffTagsHtml}
                 ${flags.length ? `<div class="v2d-enemy-flags">${flags.join('')}</div>` : ''}
                 ${statsHtml}
+                ${Object.keys(changedScriptStats).length ? `<div class="v2d-script-stats"><b>脚本 Buff 生效时</b>${Object.entries(changedScriptStats).map(([key, val]) => `<span>${escapeHtml(key)} ${formatAttrVal(stats[key])} → ${formatStatValue(val, scriptResult.details[key])}</span>`).join('')}</div>` : ''}
             </div>
         `;
     }
@@ -1193,6 +1238,7 @@
                     const spawnMapHtml = renderSpawnMap(mergedSpawner);
 
                     const enemyLibBuffs = {};
+                    const scriptedBuffs = dg.ScriptBuffsBySpawner?.[sp.configId] || [];
                     sp.waves.forEach(wave => {
                         wave.enemies.forEach(e => {
                             if (!enemyLibBuffs[e.instanceId]) enemyLibBuffs[e.instanceId] = [];
@@ -1218,7 +1264,7 @@
                     if (uniqueEnemies.length > 0) {
                         enemiesHtml = '<div class="v2d-enemy-list">';
                         uniqueEnemies.forEach(e => {
-                            enemiesHtml += renderCcEnemyCard(e.instanceId, e.level, dg, enemyLibBuffs[e.instanceId] || []);
+                            enemiesHtml += renderCcEnemyCard(e.instanceId, e.level, dgId, dg, enemyLibBuffs[e.instanceId] || [], scriptedBuffs);
                         });
                         enemiesHtml += '</div>';
                     }
@@ -1359,10 +1405,6 @@
         if (!enemyLists.length) return;
 
         const dungeons = currentDungeonData.dungeontable || {};
-        const dgId = Object.keys(dungeons)[0];
-        const dg = dungeons[dgId];
-        if (!dg) return;
-
         const { modifiers: tagModifiers } = getSelectedTagEnemyModifiers();
 
         const ccTagBuffs = [];
@@ -1377,6 +1419,8 @@
 
         enemyLists.forEach(list => {
             list.querySelectorAll('.v2d-enemy-card').forEach(card => {
+                const dg = dungeons[card.dataset.dungeonId] || dungeons[Object.keys(dungeons)[0]];
+                if (!dg) return;
                 const enemyId = card.dataset.enemyId;
                 const enemyLevel = parseInt(card.dataset.enemyLevel, 10) || 60;
                 if (!enemyId) return;
@@ -1393,19 +1437,29 @@
                 ownBuffs.forEach(id => buffModifiers.push(...getBuffModifiers(id, [])));
                 libBuffs.forEach(b => buffModifiers.push(...getBuffModifiers(b.buffId, b.blackboard)));
                 const allModifiers = [...inlineModifiers, ...buffModifiers, ...tagModifiers];
+                const scriptBuffs = JSON.parse(card.dataset.scriptBuffs || '[]');
+                const scriptModifiers = scriptBuffs.flatMap(b => getBuffModifiers(b.buffId, b.blackboard));
 
-                const stats = getEnemyStatsAtLevel(attrData, enemyLevel, allModifiers);
+                const statResult = getEnemyStatDetailsAtLevel(attrData, enemyLevel, allModifiers);
+                const stats = statResult?.values || {};
                 const attrGrid = card.querySelector('.v2d-attr-grid');
                 if (attrGrid && stats) {
                     let statsHtml = '';
                     Object.entries(stats).forEach(([key, val]) => {
-                        statsHtml += `<div class="v2d-attr-item"><span class="v2d-attr-key">${key}</span><span class="v2d-attr-val">${formatAttrVal(val)}</span></div>`;
+                        statsHtml += `<div class="v2d-attr-item"><span class="v2d-attr-key">${key}</span><span class="v2d-attr-val">${formatStatValue(val, statResult.details[key])}</span></div>`;
                     });
                     attrGrid.innerHTML = statsHtml;
                 }
+                const scriptResult = scriptModifiers.length ? getEnemyStatDetailsAtLevel(attrData, enemyLevel, [...allModifiers, ...scriptModifiers]) : null;
+                const scriptStats = scriptResult?.values || null;
+                const changedScriptStats = scriptStats ? Object.fromEntries(Object.entries(scriptStats).filter(([key, val]) => val !== stats?.[key])) : {};
+                const scriptStatsEl = card.querySelector('.v2d-script-stats');
+                const scriptStatsHtml = Object.keys(changedScriptStats).length ? `<div class="v2d-script-stats"><b>脚本 Buff 生效时</b>${Object.entries(changedScriptStats).map(([key, val]) => `<span>${escapeHtml(key)} ${formatAttrVal(stats[key])} → ${formatStatValue(val, scriptResult.details[key])}</span>`).join('')}</div>` : '';
+                if (scriptStatsEl) scriptStatsEl.outerHTML = scriptStatsHtml;
+                else if (scriptStatsHtml) card.insertAdjacentHTML('beforeend', scriptStatsHtml);
 
                 const newBuffTagsHtml = buildEnemyBuffTagsHtml(ownBuffs, libBuffs, ccTagBuffs);
-                const oldBuffTags = card.querySelector('.v2d-enemy-buffs');
+                const oldBuffTags = card.querySelector('.v2cc-current-buffs');
                 if (newBuffTagsHtml) {
                     if (oldBuffTags) {
                         oldBuffTags.outerHTML = newBuffTagsHtml;

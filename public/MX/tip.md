@@ -2,6 +2,16 @@ AKEData se ha trasladado al dominio www.akedata.wiki. El dominio anterior, akeda
 
 # Registro de actualizaciones de AKEData
 
+### v1.2.1
+
+Se corrigió un problema por el que algunas imágenes del juego podían solicitarse por error desde `www.akedata.wiki` después de cambiar de módulo o reiniciar el Service Worker. Las rutas de imagen ahora se reescriben de forma síncrona a `data.akedata.wiki` al insertarse en la página.
+
+El Service Worker ahora restaura el origen de datos y la revisión de los datos compartidos desde su URL de registro. Así, el enrutamiento de imágenes se conserva incluso cuando el navegador detiene y reinicia el Worker. El icono del sitio también se carga directamente desde el origen de datos.
+
+Se añadió el análisis de enemigos de `LevelScriptData` al cálculo de atributos de Mazmorras, Contingency Contract y Echoes of War. Ahora se leen enemigos, niveles y Buffs iniciales definidos directamente en los scripts, además de Buffs condicionales aplicados mediante generadores. Esto permite calcular correctamente etapas sin SpawnerConfig. También se corrigieron la precarga de Buffs de condiciones de Contingency Contract y el recálculo al cambiar condiciones.
+
+Se mejoraron las ayudas de valores originales. Los valores sin cambios de cálculo siguen mostrando el valor original; los modificados por atributos, Buffs, condiciones de contrato o expresiones muestran ahora el valor original, los parámetros sustituidos, la fórmula completa y el resultado final. El seguimiento de fórmulas cubre Mazmorras, Contingency Contract, Echoes of War, enemigos y las expresiones calculadas de personajes, armas, equipo y objetos.
+
 ### v1.2.0
 
 Se añadió la comparación de datos entre versiones del juego. Al seleccionar `Latest`, el sitio compara automáticamente con el último Hotfix de la versión anterior. Las entradas nuevas siempre aparecen primero y reciben una etiqueta; las etiquetas de modificaciones y el Diff detallado se activan mediante la opción experimental global, desactivada de forma predeterminada.

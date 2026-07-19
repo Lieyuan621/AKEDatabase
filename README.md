@@ -12,7 +12,13 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 
 ## 当前版本
 
-`1.2.0` 新增跨游戏版本的数据差异查询：使用 `Latest` 时自动与上一个游戏版本的最后一个 Hotfix 比较，新增数据始终置顶并显示标签；修改数据及可见内容 Diff 可在全局设置中按需开启。详情差异只比较页面实际展示的信息，删除内容标红、新增内容标绿，隐藏字段不参与比较。活动不进行新增判定；装备和奖章按具体条目 ID 判断新增，并同步标记所属套组或分类。
+`1.2.1` 修复模块切换和 Service Worker 休眠重启后，部分图片可能回退到网站域名请求的问题。模块 HTML、动态图片属性、`srcset`、海报和内联背景图现在会在写入 DOM 时同步解析到当前数据域；Service Worker 同时从注册 URL 恢复数据域与共享数据修订号，为未经过页面路由的图片请求提供后备代理。
+
+在原有修复基础上，`1.2.1` 新增 `LevelScriptData` 怪物数据解析，并将其接入普通副本、危机合约和战争回响的属性计算。系统现在能够读取脚本内直接定义的敌人、等级、出生 Buff 和按生成器施加的条件 Buff；没有 SpawnerConfig 的关卡也能按敌人 ID 与等级匹配脚本 Buff。危机合约词条 Buff 的预加载、词条切换后的属性重算及多关卡数据归属也已同步修复。
+
+“显示原始值”功能现会区分单纯格式化与实际业务计算：未发生数值改动时继续显示默认原始值；属性修正、Buff、危机词条或表达式改变结果时，则显示原始值、代入参数、完整计算公式和最终结果。公式追踪覆盖副本、危机合约、战争回响、敌人变体，以及角色、武器、装备和物品说明中的计算表达式。
+
+本版本继续包含 `1.2.0` 的跨游戏版本数据差异查询：使用 `Latest` 时自动与上一个游戏版本的最后一个 Hotfix 比较，新增数据始终置顶并显示标签；修改数据及可见内容 Diff 可在全局设置中按需开启。
 
 ## 功能
 
@@ -20,6 +26,7 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 - 名称、ID、稀有度、类型、职业、元素等多维搜索和筛选
 - 角色、武器和敌人的等级属性展示
 - 副本波次、生成器、出生位置和 Buff 属性计算
+- LevelScriptData 静态敌人、出生 Buff、条件 Buff 与怪物属性公式追踪
 - 游戏富文本、术语链接和双层说明浮窗
 - 亮色、暗色、护眼三种主题
 - 隐藏模块、默认等级、URL 同步和截图导出设置
@@ -37,8 +44,8 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 
 | ID | 模块 | 主要数据源 |
 |---|---|---|
-| `v3_cc` | 危机合约 | TableCfg、SpawnerConfig、BuffData |
-| `season_tower` | 战争回响 | SeasonTower、Dungeon、GameMechanic、Reward、Enemy 等 TableCfg，SpawnerConfig、BuffData |
+| `v3_cc` | 危机合约 | TableCfg、SpawnerConfig、LevelScriptData、BuffData |
+| `season_tower` | 战争回响 | SeasonTower、Dungeon、GameMechanic、Reward、Enemy 等 TableCfg，SpawnerConfig、LevelScriptData、BuffData |
 | `research` | 研究 | `public/CH/research` Markdown |
 | `v3_character` | 角色 | TableCfg、`public/CH/maps.json` |
 | `v3_weapon` | 武器 | TableCfg |
@@ -46,7 +53,7 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 | `v3_equip` | 装备 | TableCfg、`public/CH/maps.json` |
 | `v3_activity` | 活动 | TableCfg |
 | `v3_item` | 物品 | TableCfg、`public/CH/maps.json` |
-| `v3_dungeon` | 副本 | TableCfg、LevelData、SpawnerConfig、BuffData |
+| `v3_dungeon` | 副本 | TableCfg、LevelData、SpawnerConfig、LevelScriptData、BuffData |
 | `v3_achievement` | 奖章 | TableCfg |
 | `about` | 关于 | 静态内容、赞助信息 |
 
@@ -66,7 +73,7 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 AKEDatabase/
 ├─ index.html                     # 应用外壳、设置弹窗和全局脚本入口
 ├─ ake-sw.js                      # 图片逻辑路径到 R2 的根作用域网络代理
-├─ version.json                   # 应用、公告版本、数据域和下次更新时间配置
+├─ version.json                   # 应用、公告版本、数据域、最后修改时间和下次更新时间配置
 ├─ plugin/
 │  ├─ manifest.json               # 顶层模块注册表
 │  ├─ v3_*.html                   # v3 模块 DOM 壳
@@ -174,7 +181,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1 -Sha
 
 `index-app.js` 读取 `plugin/manifest.json`，过滤禁用模块，按 `priority` 排序，然后生成桌面侧栏和移动端菜单。
 
-设置弹窗中的应用版本和更新时间来自 `version.json`；游戏版本与 Hotfix 只来自 R2 `manifest.json` 当前选择的版本。`version.json` 不保存 `gameversion` 或 `hotfixversion`，也不参与线上游戏数据版本决策。首页不显示版本号，而是读取 `totime` 和 `desc` 显示下次数据更新倒计时及可选更新原因。代码、CSS、模块结构或界面语言文件变化时递增 `appversion`。`debugmode` 为 `true` 时强制使用当前同源本地数据，并在每次刷新时清空持久响应缓存、绕过浏览器缓存。
+设置弹窗中的应用版本和网站最后修改时间来自 `version.json`；游戏版本与 Hotfix 只来自 R2 `manifest.json` 当前选择的版本。`version.json` 不保存 `gameversion` 或 `hotfixversion`，也不参与线上游戏数据版本决策。`updatedAt` 在游戏数据版本或 `appversion` 任一更新时刷新。首页不显示版本号，而是读取 `totime` 和 `desc` 显示下次数据更新倒计时及可选更新原因。发布新的代码、CSS、模块结构或界面语言版本时，由维护者明确设置 `appversion`。`debugmode` 为 `true` 时强制使用当前同源本地数据，并在每次刷新时清空持久响应缓存、绕过浏览器缓存。
 
 点击模块后，框架通过 `window.akeFetch` 获取模块 HTML并插入 `#contentArea`。因为动态插入的 `<script>` 不会自动执行，加载器会按 DOM 顺序重新创建脚本节点并等待外部脚本完成。
 
@@ -187,7 +194,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1 -Sha
 - localStorage：保存主题、隐藏开关、默认等级、URL 设置、数据域、版本选择和令牌等小型偏好；所有访问都有异常保护。
 - 页面内存：缓存模块 HTML、脚本源码、CSS Promise、模块 DOM，以及 v3 已解析的 TableCfg/I18n/maps。
 - IndexedDB：数据库 `akedata-data-cache` 使用“数据域 + TableCfg 版本”或“数据域 + sharedRevision”命名空间保存 `akeFetch` 响应；多个版本可以共存。
-- Service Worker：根目录 `ake-sw.js` 将绕过 `akeFetch` 的 `/public/images/**` 逻辑请求代理到当前数据域，图片缓存交给浏览器和 EdgeOne。
+- 图片路由：模块 HTML 和图片属性写入 DOM 时会同步将 `/public/images/**` 改写为当前数据域的绝对 URL；运行时新增或修改的图片、`srcset`、海报及内联背景图另由 DOM 观察器复查，避免浏览器先向网站域名发出请求。
+- Service Worker：根目录 `ake-sw.js` 为尚未改写或绕过 `akeFetch` 的 `/public/images/**` 请求提供后备代理。数据域与 `sharedRevision` 同时编码在 Worker 注册 URL 中，确保 Worker 休眠后重新启动仍会直接请求数据域，而不会回退到网站域名。
 - HTTP Cache：继续负责版本化的 HTML、JS、CSS 和网络响应。
 
 切换游戏版本不会清空其他版本的 IndexedDB 数据；数据域也属于缓存键，生产数据与本地数据不会混用。IndexedDB、Service Worker 或 localStorage 不可用时，页面自动降级到内存缓存和普通网络请求，不阻止应用启动。`version.json` 与 R2 `manifest.json` 每次启动均使用 `no-store` 请求。
@@ -206,6 +214,8 @@ Service Worker 首次安装或应用版本更新并取得页面控制权时，�
 | `dataBaseUrl` | 游戏数据请求域名 |
 | `dataManifestPath` | 数据域中的版本清单路径 |
 | `tipversion` | 公告版本，通常填写公告最后更新时间；值变化后首页自动弹出新公告 |
+| `updatedAt` | 网站最后一次修改时间；游戏数据版本或 `appversion` 更新时都必须刷新 |
+| `updatedBy` | 最后修改者 |
 | `totime` | 下次数据更新时间；未携带时区时按东八区 `UTC+08:00` 解析 |
 | `desc` | 数据更新原因；空字符串、纯空格或字段缺失时不显示 |
 | `debugmode` | Latest 使用本地数据并绕过缓存；固定版本仍使用线上清单 |
@@ -263,7 +273,7 @@ v3 当前采用兼容层设计，而不是重复实现九套 UI：
 ### 数据职责
 
 - `public/TableCfg`：角色、物品、副本、活动、奖励、技能补丁等完整结构化表。
-- `public/Json`：TableCfg 无法完整表达的 Buff、SkillData、SpawnerConfig 和 LevelData。
+- `public/Json`：TableCfg 无法完整表达的 Buff、SkillData、SpawnerConfig、LevelScriptData 和 LevelData。
 - `public/CH`：简体中文资源目录，包含旧版/v2 聚合数据、研究文档与界面 `i18n.json`。
 - `public/EN`：英文界面资源目录。
 - `public/TC`：繁体中文资源目录，已补齐独立 `i18n.json` 与 `maps.json`。
@@ -273,9 +283,11 @@ v3 当前采用兼容层设计，而不是重复实现九套 UI：
 - 每个语言目录的 `tip.md`：首页网站公告正文；公告按钮、倒计时和更新原因标签位于同目录 `i18n.json`。
 - `public/images`：模块按固定路径约定组装图片 URL。
 
-副本会通过 `DungeonTable.sceneId` 关联 `LevelData/<sceneId>` 和 `SpawnerConfig/<sceneId>`；SpawnerConfig 中的 `enemyLibrary` 再关联 EnemyTable，出生 Buff 则按 ID 加载 `BuffData/<buffId>.json`。
+副本型模块会通过 `DungeonTable.sceneId` 关联 `LevelData/<sceneId>`、`SpawnerConfig/<sceneId>` 和 `LevelScriptData/<sceneId>`；SpawnerConfig 中的 `enemyLibrary` 再关联 EnemyTable，出生 Buff 则按 ID 加载 `BuffData/<buffId>.json`。没有 SpawnerConfig 的关卡还可能直接在 `LevelScriptData.enemies` 定义敌人、等级和 `buffs`，这些 Buff 按 `enemyId + level` 匹配后直接并入出生面板。`ake-combat-data.js` 另将 LevelScript 的 `AddBuffToTarget*` / `AddBuffsToTargets*` 解析为条件性敌人 Buff，并优先沿动作数据引用定位 `SpawnerGetSpawnedEntityList` 或 `OnSpawnerEntitySpawn` 的具体 Spawner；这类动态 Buff 单独展示运行时属性变化，不会默认并入出生面板。该共享链路由普通副本、危机合约和战争回响共同使用。
 
 ### 属性映射与敌人抗性
+
+开启“显示隐藏模块”后，数值提示统一由 `renderRawValueTip` 生成。仅做百分比、单位或精度格式化的字段继续显示数据源原始值；属性修正、Buff、词条、占位符表达式和代码合成值若改变了结果，则显示原始值、代入参数、完整计算公式和最终结果。怪物属性公式由 `AKEStats.getEnemyStatDetailsAtLevel()` 统一追踪，避免各模块只把计算后的最终值误标为“原始值”。
 
 每个语言目录的 `maps.json` 都包含本地化显示名 `ATTR_MAP` 和枚举名 `ATTR_MAP_EN`。两张表必须使用相同且连续的数字 ID；新增或调整 Attribute 时，应同步更新全部 14 个语言目录，避免切换语言后出现未知属性或 Buff 无法关联属性 ID。
 

@@ -388,12 +388,23 @@
                     return match;
                 }
                 if (!Number.isFinite(result)) return match;
+                let formatted;
                 if (format.includes('%')) {
                     const precision = format.includes('.') ? format.split('.')[1].replace('%', '').length : 0;
-                    return `${(result * 100).toFixed(precision)}%`;
+                    formatted = `${(result * 100).toFixed(precision)}%`;
+                } else {
+                    const precision = format.includes('.') ? format.split('.')[1].length : 0;
+                    formatted = precision ? result.toFixed(precision) : String(result);
                 }
-                const precision = format.includes('.') ? format.split('.')[1].length : 0;
-                return precision ? result.toFixed(precision) : String(result);
+                const originalExpr = parts[0].replace(/\s+/g, '');
+                const changed = resolved !== originalExpr && /[+\-*/()]/.test(originalExpr);
+                return valueTip(formatted, {
+                    rawValue: changed ? originalExpr : result,
+                    value: result,
+                    changed,
+                    expression: originalExpr,
+                    formula: changed ? `${resolved} = ${result}` : undefined
+                });
             });
         }
 

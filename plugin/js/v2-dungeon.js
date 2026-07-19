@@ -83,6 +83,7 @@
                 Object.values(dg.SpawnerConfig || {}).forEach(sc => {
                     (sc.enemyLibrary || []).forEach(lib => (lib.bornBuffList || []).forEach(b => ids.add(b.buffId)));
                 });
+                (window.AKECombatData?.collectScriptBuffIds(dg) || []).forEach(id => ids.add(id));
             });
             return Array.from(ids);
         }
@@ -280,9 +281,15 @@
                 const isMult = (m.modifierType === 1 || m.modifierType === 4 ||
                     m.modifierType === 6 || m.modifierType === 8);
                 const displayVal = (m.modifierType === 4 || m.modifierType === 8) ? val - 1 : val;
-                const displayRaw = (m.modifierType === 4 || m.modifierType === 8) ? displayVal : val;
                 const displayText = `${displayVal > 0 ? '+' : ''}${(displayVal * 100).toFixed(1)}%`;
-                const displayHtml = window.renderRawValueTip ? window.renderRawValueTip(displayText, displayRaw) : displayText;
+                const converted = m.modifierType === 4 || m.modifierType === 8;
+                const displayHtml = window.renderRawValueTip ? window.renderRawValueTip(displayText, converted ? {
+                    name,
+                    rawValue: val,
+                    value: displayVal,
+                    changed: true,
+                    formula: `${val} - 1 = ${displayVal}`
+                } : val) : displayText;
                 let text = isMult
                     ? `${name} ${displayHtml}`
                     : `${name} ${val > 0 ? '+' : ''}${val}`;
@@ -294,14 +301,16 @@
             }).join(', ');
         }
 
-        function formatValue(val) {
+        function formatPlainValue(val) {
             if (typeof val !== 'number') return val;
-            let display;
             if (Math.abs(val) < 1 && val !== 0) {
-                display = (val * 100).toFixed(1) + '%';
-                return window.renderRawValueTip ? window.renderRawValueTip(display, val) : display;
+                return (val * 100).toFixed(1) + '%';
             }
-            display = Number.isInteger(val) ? val.toString() : val.toFixed(2);
+            return Number.isInteger(val) ? val.toString() : val.toFixed(2);
+        }
+
+        function formatValue(val) {
+            const display = formatPlainValue(val);
             return window.renderRawValueTip ? window.renderRawValueTip(display, val) : display;
         }
 
@@ -468,6 +477,7 @@
             container.innerHTML = `<div class="v2d-loader">${t('loading')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(seriesItem.contentFile).then(r => r.json());
+                await window.AKECombatData?.enrichDungeonScripts(data);
                 const buffIds = collectBuffIds(data);
                 if (buffIds.length > 0) await loadAllBuffs(buffIds);
                 container.innerHTML = renderDetail(data, seriesItem);
@@ -502,7 +512,21 @@
             });
         }
 
-        function renderEnemyCard(enemyId, enemyLevel, dungeonData, libraryBuffs) {
+        function getEnemyStatDetailsAtLevel(attrTemplateData, enemyLevel, modifiers) {
+            return window.AKEStats.getEnemyStatDetailsAtLevel(attrTemplateData, enemyLevel, modifiers, {
+                getAttrName,
+                includeModifierOnlyAttrs: true,
+                excludeAttrTypes: LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES
+            });
+        }
+
+        function formatStatValue(value, detail) {
+            const display = formatPlainValue(value);
+            if (!detail || !window.renderRawValueTip) return display;
+            return window.renderRawValueTip(display, detail);
+        }
+
+        function renderEnemyCard(enemyId, enemyLevel, dungeonData, libraryBuffs, scriptedBuffs) {
             const enemyConfig = dungeonData.enemyTable?.[enemyId] || {};
             const displayTable = dungeonData.enemyTemplateDisplayInfoTable || {};
             const attrTable = dungeonData.enemyAttributeTemplateTable || {};
@@ -518,11 +542,12 @@
             const iconSrc = `/public/images/enemy/monstericonbig/${templateId}.png`;
 
             const ownBuffs = enemyConfig.bornBuffs || [];
-            const libBuffs = libraryBuffs || [];
+            const libBuffs = [...(libraryBuffs || []), ...(window.AKECombatData?.staticEnemyBuffs(dungeonData, enemyId, enemyLevel) || [])];
             const buffModifiers = [];
             ownBuffs.forEach(id => buffModifiers.push(...getBuffModifiers(id, [])));
             libBuffs.forEach(b => buffModifiers.push(...getBuffModifiers(b.buffId, b.blackboard)));
             const allModifiers = [...inlineModifiers, ...buffModifiers];
+            const scriptModifiers = (scriptedBuffs || []).flatMap(b => getBuffModifiers(b.buffId, b.blackboard));
 
             const flags = [];
             if (enemyConfig.isDangerous) flags.push(`<span class="v2d-enemy-flag danger">${t('flags.dangerous')}</span>`);
@@ -561,7 +586,14 @@
                         const directMultiplierTypes = ['FinalMultiplier', 'BaseFinalMultiplier'];
                         const displayVal = directMultiplierTypes.includes(formula) ? val - 1 : val;
                         const display = pctTypes.includes(formula) ? `${(displayVal * 100).toFixed(0)}%` : val;
-                        const valueHtml = window.renderRawValueTip ? window.renderRawValueTip(display, val, mod.param.blackboardKey || label) : display;
+                        const converted = directMultiplierTypes.includes(formula);
+                        const valueHtml = window.renderRawValueTip ? window.renderRawValueTip(display, converted ? {
+                            name: mod.param.blackboardKey || label,
+                            rawValue: val,
+                            value: displayVal,
+                            changed: true,
+                            formula: `${val} - 1 = ${displayVal}`
+                        } : val, converted ? undefined : (mod.param.blackboardKey || label)) : display;
                         rows.push(`${escH(label)} ${escH(formula)} ${valueHtml}`);
                     });
                     bb.forEach(b => {
@@ -576,12 +608,17 @@
                     return `<span class="v2d-buff-tag v2d-has-tip">${id}<span class="v2d-buff-tip">${tipHtml}</span></span>`;
                 }).join('')}</div>` : '';
 
-            const stats = getEnemyStatsAtLevel(attrData, enemyLevel, allModifiers);
+            const statResult = getEnemyStatDetailsAtLevel(attrData, enemyLevel, allModifiers);
+            const stats = statResult?.values || {};
+            const scriptResult = scriptModifiers.length ? getEnemyStatDetailsAtLevel(attrData, enemyLevel, [...allModifiers, ...scriptModifiers]) : null;
+            const scriptStats = scriptResult?.values || null;
+            const changedScriptStats = scriptStats ? Object.fromEntries(Object.entries(scriptStats).filter(([key, val]) => val !== stats?.[key])) : {};
+            const scriptBuffTagsHtml = (scriptedBuffs || []).length ? `<div class="v2d-enemy-buffs">${scriptedBuffs.map(row => `<span class="v2d-buff-tag v2d-script-buff v2d-has-tip">${escH(row.buffId)}<small>脚本</small><span class="v2d-buff-tip"><div>条件性脚本 Buff · LevelScript ${escH(row.scriptId)}</div></span></span>`).join('')}</div>` : '';
             let statsHtml = '';
             if (stats && Object.keys(stats).length > 0) {
                 statsHtml = '<div class="v2d-attr-grid">';
                 Object.entries(stats).forEach(([key, val]) => {
-                    statsHtml += `<div class="v2d-attr-item"><span class="v2d-attr-key">${key}</span><span class="v2d-attr-val">${formatValue(val)}</span></div>`;
+                    statsHtml += `<div class="v2d-attr-item"><span class="v2d-attr-key">${key}</span><span class="v2d-attr-val">${formatStatValue(val, statResult.details[key])}</span></div>`;
                 });
                 statsHtml += '</div>';
             }
@@ -599,8 +636,10 @@
                     ${desc ? `<div class="v2d-enemy-desc">${parseText(desc)}</div>` : ''}
                     ${modifierHtml}
                     ${buffTagsHtml}
+                    ${scriptBuffTagsHtml}
                     ${flagsHtml}
                     ${statsHtml}
+                    ${Object.keys(changedScriptStats).length ? `<div class="v2d-script-stats"><b>脚本 Buff 生效时</b>${Object.entries(changedScriptStats).map(([key, val]) => `<span>${escH(key)} ${formatValue(stats[key])} → ${formatStatValue(val, scriptResult.details[key])}</span>`).join('')}</div>` : ''}
                 </div>
             `;
         }
@@ -682,13 +721,19 @@
                 waveSummaryHtml = `<div class="v2d-wave-map-row"><div class="v2d-wave-section"><div class="v2d-wave-summary"><span class="v2d-wave-label">${t('waves.summaryLabel')}</span> ${t('waves.summary', { waves: totalWaves, enemies: totalEnemies })}</div><div class="v2d-wave-detail">${waveDetailHtml}</div></div>${spawnMapHtml}</div>`;
 
                 const enemyLibBuffs = {};
+                const enemyScriptBuffs = {};
                 waveSpawners.forEach(sp => {
+                    const scriptedBuffs = dungeon.ScriptBuffsBySpawner?.[sp.configId] || [];
                     sp.waves.forEach(wave => {
                         wave.enemies.forEach(e => {
                             if (!enemyLibBuffs[e.instanceId]) enemyLibBuffs[e.instanceId] = [];
                             e.bornBuffList.forEach(b => {
                                 if (!enemyLibBuffs[e.instanceId].find(x => x.buffId === b.buffId))
                                     enemyLibBuffs[e.instanceId].push(b);
+                            });
+                            if (!enemyScriptBuffs[e.instanceId]) enemyScriptBuffs[e.instanceId] = [];
+                            scriptedBuffs.forEach(b => {
+                                if (!enemyScriptBuffs[e.instanceId].find(x => x.buffId === b.buffId && x.scriptId === b.scriptId)) enemyScriptBuffs[e.instanceId].push(b);
                             });
                         });
                     });
@@ -710,7 +755,7 @@
                 if (uniqueEnemies.length > 0) {
                     enemiesHtml = `<h4 class="v2d-enemies-title">${t('enemyDetails')}</h4><div class="v2d-enemy-list">`;
                     uniqueEnemies.forEach(e => {
-                        enemiesHtml += renderEnemyCard(e.instanceId, e.level, dungeon, enemyLibBuffs[e.instanceId] || []);
+                        enemiesHtml += renderEnemyCard(e.instanceId, e.level, dungeon, enemyLibBuffs[e.instanceId] || [], enemyScriptBuffs[e.instanceId] || []);
                     });
                     enemiesHtml += '</div>';
                 }
@@ -721,7 +766,7 @@
                     enemiesHtml = `<h4 class="v2d-enemies-title">${t('enemyDetails')}</h4><div class="v2d-enemy-list">`;
                     enemyIds.forEach((eid, idx) => {
                         const eLevel = enemyLevels[idx] || recommendLv;
-                        enemiesHtml += renderEnemyCard(eid, eLevel, dungeon, []);
+                        enemiesHtml += renderEnemyCard(eid, eLevel, dungeon, [], []);
                     });
                     enemiesHtml += '</div>';
                 }

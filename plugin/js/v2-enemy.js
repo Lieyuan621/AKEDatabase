@@ -65,9 +65,15 @@
                 const isMult = (m.modifierType === 1 || m.modifierType === 4 ||
                     m.modifierType === 6 || m.modifierType === 8);
                 const displayVal = (m.modifierType === 4 || m.modifierType === 8) ? val - 1 : val;
-                const displayRaw = (m.modifierType === 4 || m.modifierType === 8) ? displayVal : val;
                 const displayText = `${displayVal > 0 ? '+' : ''}${(displayVal * 100).toFixed(1)}%`;
-                const displayHtml = window.renderRawValueTip ? window.renderRawValueTip(displayText, displayRaw) : displayText;
+                const converted = m.modifierType === 4 || m.modifierType === 8;
+                const displayHtml = window.renderRawValueTip ? window.renderRawValueTip(displayText, converted ? {
+                    name,
+                    rawValue: val,
+                    value: displayVal,
+                    changed: true,
+                    formula: `${val} - 1 = ${displayVal}`
+                } : val) : displayText;
                 let text = isMult
                     ? `${name} ${displayHtml}`
                     : `${name} ${val > 0 ? '+' : ''}${val}`;
@@ -195,6 +201,7 @@
                 const levelDepAttrs = variantAttrData.levelDependentAttributes || [];
 
                 const levels = [], hpArr = [], atkArr = [], defArr = [];
+                const hpDetails = [], atkDetails = [], defDetails = [];
                 const mods = entry.attrModifiers || [];
                 levelDepAttrs.forEach(ld => {
                     const attrs = ld.attrs || [];
@@ -207,20 +214,27 @@
                     });
                     if (lv > 0) {
                         levels.push(lv);
-                        hpArr.push(computeVariantAttr(hp, mods, 1));
-                        atkArr.push(computeVariantAttr(atk, mods, 2));
-                        defArr.push(computeVariantAttr(def, mods, 3));
+                        const hpDetail = window.AKEStats.analyzeAttrWithModifiers(hp, mods, 1);
+                        const atkDetail = window.AKEStats.analyzeAttrWithModifiers(atk, mods, 2);
+                        const defDetail = window.AKEStats.analyzeAttrWithModifiers(def, mods, 3);
+                        hpArr.push(hpDetail.value); atkArr.push(atkDetail.value); defArr.push(defDetail.value);
+                        hpDetails.push({ ...hpDetail, name: getAttrName(1) });
+                        atkDetails.push({ ...atkDetail, name: getAttrName(2) });
+                        defDetails.push({ ...defDetail, name: getAttrName(3) });
                     }
                 });
 
                 const isBase = enemyId === attrTemplateId;
 
                 const variantFullAttrs = buildBaseAttrSnapshot(rawData, variantAttrTemplateId);
+                const variantFullAttrDetails = {};
                 if (!isBase && mods.length > 0) {
                     Object.keys(variantFullAttrs).forEach(key => {
                         const at = attrTypeReverse[key];
                         if (at !== undefined && mods.some(m => m.attrType === at)) {
-                            variantFullAttrs[key] = computeVariantAttr(variantFullAttrs[key], mods, at);
+                            const detail = window.AKEStats.analyzeAttrWithModifiers(variantFullAttrs[key], mods, at);
+                            variantFullAttrs[key] = detail.value;
+                            variantFullAttrDetails[key] = { ...detail, name: getMetaLabel(key) };
                         }
                     });
                 }
@@ -238,7 +252,9 @@
                     showBigHeadbar: entry.showBigHeadbar || false,
                     isBase,
                     levels, hp: hpArr, atk: atkArr, def: defArr,
-                    fullAttrs: variantFullAttrs
+                    hpDetails, atkDetails, defDetails,
+                    fullAttrs: variantFullAttrs,
+                    fullAttrDetails: variantFullAttrDetails
                 });
             });
 
@@ -301,8 +317,14 @@
                 const sign = d > 0 ? '+' : '';
                 const fmt = Number.isInteger(d) ? d : d.toFixed(2);
                 const bvHtml = window.renderRawValueTip ? window.renderRawValueTip(bv ?? '-', bv) : (bv ?? '-');
-                const nvHtml = window.renderRawValueTip ? window.renderRawValueTip(nv ?? '-', nv) : (nv ?? '-');
-                const diffHtml = window.renderRawValueTip ? window.renderRawValueTip(sign + fmt, d) : sign + fmt;
+                const nvHtml = window.renderRawValueTip ? window.renderRawValueTip(nv ?? '-', variant.fullAttrDetails?.[key] || nv) : (nv ?? '-');
+                const diffHtml = window.renderRawValueTip ? window.renderRawValueTip(sign + fmt, {
+                    name: getMetaLabel(key),
+                    rawValue: bv ?? 0,
+                    value: d,
+                    changed: true,
+                    formula: `${nv ?? 0} - ${bv ?? 0} = ${d}`
+                }) : sign + fmt;
                 items.push(`<div class="v2e-diff-item"><span class="v2e-diff-label">${getMetaLabel(key)}:</span><span class="v2e-diff-val ${d < 0 ? 'neg' : ''}">${bvHtml} → ${nvHtml} (${diffHtml})</span></div>`);
             });
 
@@ -317,7 +339,7 @@
             if (!fields.length) return '';
             const items = fields.map(key => {
                 const val = fa[key];
-                const valueHtml = window.renderRawValueTip ? window.renderRawValueTip(val, val) : val;
+                const valueHtml = window.renderRawValueTip ? window.renderRawValueTip(val, variant.fullAttrDetails?.[key] || val) : val;
                 return `<div class="v2e-tooltip-item"><span class="v2e-tooltip-label">${getMetaLabel(key)}</span><span class="v2e-tooltip-value">${valueHtml}</span></div>`;
             }).join('');
             return `<span class="v2e-variant-template"><span class="v2e-tag-id">${variant.attrTemplateId}</span><span class="v2e-tooltip"><div class="v2e-tooltip-grid">${items}</div></span></span>`;
@@ -486,9 +508,9 @@
                 const atk = typeof atkRaw === 'number' ? (Number.isInteger(atkRaw) ? atkRaw : atkRaw.toFixed(2)) : atkRaw;
                 const def = typeof defRaw === 'number' ? (Number.isInteger(defRaw) ? defRaw : defRaw.toFixed(2)) : defRaw;
                 const lvHtml = window.renderRawValueTip ? window.renderRawValueTip(variant.levels[i], variant.levels[i]) : variant.levels[i];
-                const hpHtml = window.renderRawValueTip ? window.renderRawValueTip(hp, hpRaw) : hp;
-                const atkHtml = window.renderRawValueTip ? window.renderRawValueTip(atk, atkRaw) : atk;
-                const defHtml = window.renderRawValueTip ? window.renderRawValueTip(def, defRaw) : def;
+                const hpHtml = window.renderRawValueTip ? window.renderRawValueTip(hp, variant.hpDetails?.[i] || hpRaw) : hp;
+                const atkHtml = window.renderRawValueTip ? window.renderRawValueTip(atk, variant.atkDetails?.[i] || atkRaw) : atk;
+                const defHtml = window.renderRawValueTip ? window.renderRawValueTip(def, variant.defDetails?.[i] || defRaw) : def;
                 allRows += `<tr data-level="${variant.levels[i]}"><td>${lvHtml}</td><td>${hpHtml}</td><td>${atkHtml}</td><td>${defHtml}</td></tr>`;
             }
             return allRows;

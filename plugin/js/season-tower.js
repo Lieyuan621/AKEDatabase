@@ -77,6 +77,10 @@
         return Object.fromEntries(configs.map(config => [config.configId, config]));
     }
 
+    async function loadLevelScripts() {
+        return window.AKECombatData.loadSceneScriptBuffs(SCENE_ID);
+    }
+
     function spawnersForDungeon(dungeon, allSpawners) {
         const expectedIds = new Set(dungeon.enemyIds || []);
         const level = Number(dungeon.recommendLv || 0);
@@ -91,6 +95,7 @@
         Object.values(data.enemies).forEach(enemy => (enemy.bornBuffs || []).forEach(id => ids.add(id)));
         Object.values(data.spawners).forEach(config => (config.enemyLibrary || []).forEach(enemy =>
             (enemy.bornBuffList || []).forEach(buff => ids.add(buff.buffId))));
+        Object.values(data.scriptBuffs).forEach(buffs => buffs.forEach(buff => ids.add(buff.buffId)));
         await Promise.all(Array.from(ids).map(async id => {
             try { buffCache[id] = await fetchJson(`/public/Json/BuffData/${id}.json`); }
             catch { buffCache[id] = null; }
@@ -114,25 +119,37 @@
         }).filter(Boolean);
     }
 
-    function formatAttr(value) {
+    function formatPlainAttr(value) {
         if (typeof value !== 'number') return escapeHtml(value);
-        const display = Math.abs(value) < 1 && value !== 0 ? `${(value * 100).toFixed(1)}%` : (Number.isInteger(value) ? String(value) : value.toFixed(2));
+        return Math.abs(value) < 1 && value !== 0 ? `${(value * 100).toFixed(1)}%` : (Number.isInteger(value) ? String(value) : value.toFixed(2));
+    }
+
+    function formatAttr(value) {
+        const display = formatPlainAttr(value);
         return window.renderRawValueTip ? window.renderRawValueTip(display, value) : display;
     }
 
-    function renderBuffs(ownBuffs, libraryBuffs) {
-        const ids = [...new Set([...(ownBuffs || []), ...(libraryBuffs || []).map(buff => buff.buffId)])];
-        if (!ids.length) return '';
-        return `<div class="v2d-enemy-buffs">${ids.map(id => {
-            const row = (libraryBuffs || []).find(buff => buff.buffId === id);
-            const values = (row?.blackboard || []).map(value => `${escapeHtml(value.key)}: ${escapeHtml(value.valueFloat ?? value.valueDouble ?? value.value ?? 0)}`);
-            return values.length
-                ? `<span class="v2d-buff-tag v2d-has-tip">${escapeHtml(id)}<span class="v2d-buff-tip">${values.map(value => `<div>${value}</div>`).join('')}</span></span>`
-                : `<span class="v2d-buff-tag">${escapeHtml(id)}</span>`;
+    function formatStat(value, detail) {
+        const display = formatPlainAttr(value);
+        return detail && window.renderRawValueTip ? window.renderRawValueTip(display, detail) : display;
+    }
+
+    function renderBuffs(ownBuffs, libraryBuffs, scriptedBuffs) {
+        const rows = [...(ownBuffs || []).map(buffId => ({ buffId })), ...(libraryBuffs || []), ...(scriptedBuffs || [])];
+        const unique = [...new Map(rows.map(row => [`${row.buffId}:${row.conditional ? 'script' : 'base'}`, row])).values()];
+        if (!unique.length) return '';
+        return `<div class="v2d-enemy-buffs">${unique.map(row => {
+            const values = (row.blackboard || []).map(value => `${escapeHtml(value.key)}: ${escapeHtml(value.valueFloat ?? value.valueDouble ?? value.value ?? 0)}`);
+            const source = row.conditional ? `条件性脚本 Buff · LevelScript ${row.scriptId}` : '';
+            const tips = [source, ...values];
+            const label = `${escapeHtml(row.buffId)}${row.conditional ? '<small>脚本</small>' : ''}`;
+            return tips.length
+                ? `<span class="v2d-buff-tag${row.conditional ? ' v2d-script-buff' : ''} v2d-has-tip">${label}<span class="v2d-buff-tip">${tips.map(value => `<div>${value}</div>`).join('')}</span></span>`
+                : `<span class="v2d-buff-tag">${label}</span>`;
         }).join('')}</div>`;
     }
 
-    function renderEnemy(enemyId, level, libraryBuffs, data) {
+    function renderEnemy(enemyId, level, libraryBuffs, scriptedBuffs, data) {
         const enemy = data.enemies[enemyId] || {};
         const display = data.enemyDisplay[enemy.templateId] || {};
         const attrTemplate = data.enemyAttrs[enemy.attrTemplateId] || {};
@@ -140,11 +157,20 @@
         const modifiers = [...(enemy.attrModifiers || [])];
         ownBuffs.forEach(id => modifiers.push(...buffModifiers(id, [])));
         (libraryBuffs || []).forEach(buff => modifiers.push(...buffModifiers(buff.buffId, buff.blackboard)));
-        const stats = window.AKEStats.getEnemyStatsAtLevel(attrTemplate, level, modifiers, {
+        const statResult = window.AKEStats.getEnemyStatDetailsAtLevel(attrTemplate, level, modifiers, {
             displayOrder: ATTR_ORDER,
             getAttrName: type => attrMap[type] || `属性 ${type}`,
             includeModifierOnlyAttrs: false
-        }) || {};
+        });
+        const stats = statResult?.values || {};
+        const scriptedModifiers = (scriptedBuffs || []).flatMap(buff => buffModifiers(buff.buffId, buff.blackboard));
+        const scriptedResult = scriptedModifiers.length ? window.AKEStats.getEnemyStatDetailsAtLevel(attrTemplate, level, [...modifiers, ...scriptedModifiers], {
+            displayOrder: ATTR_ORDER,
+            getAttrName: type => attrMap[type] || `属性 ${type}`,
+            includeModifierOnlyAttrs: false
+        }) : null;
+        const scriptedStats = scriptedResult?.values || null;
+        const changedStats = scriptedStats ? Object.fromEntries(Object.entries(scriptedStats).filter(([name, value]) => value !== stats[name])) : {};
         const flags = [];
         if (enemy.isDangerous) flags.push('<span class="v2d-enemy-flag danger">危险敌人</span>');
         if (enemy.showBigEffect) flags.push('<span class="v2d-enemy-flag big-effect">全局效果</span>');
@@ -156,9 +182,10 @@
                 <span class="v2d-enemy-level">Lv.${level}</span>
             </div>
             ${text(display.description) ? `<div class="v2d-enemy-desc">${parseGameText(text(display.description))}</div>` : ''}
-            ${renderBuffs(ownBuffs, libraryBuffs)}
+            ${renderBuffs(ownBuffs, libraryBuffs, scriptedBuffs)}
             ${flags.length ? `<div class="v2d-enemy-flags">${flags.join('')}</div>` : ''}
-            <div class="v2d-attr-grid">${Object.entries(stats).map(([name, value]) => `<div class="v2d-attr-item"><span class="v2d-attr-key">${escapeHtml(name)}</span><span class="v2d-attr-val">${formatAttr(value)}</span></div>`).join('')}</div>
+            <div class="v2d-attr-grid">${Object.entries(stats).map(([name, value]) => `<div class="v2d-attr-item"><span class="v2d-attr-key">${escapeHtml(name)}</span><span class="v2d-attr-val">${formatStat(value, statResult.details[name])}</span></div>`).join('')}</div>
+            ${Object.keys(changedStats).length ? `<div class="v2d-script-stats"><b>脚本 Buff 生效时</b>${Object.entries(changedStats).map(([name, value]) => `<span>${escapeHtml(name)} ${formatAttr(stats[name])} → ${formatStat(value, scriptedResult.details[name])}</span>`).join('')}</div>` : ''}
         </div>`;
     }
 
@@ -257,15 +284,16 @@
             const total = waves.reduce((sum, wave) => sum + wave.enemies.reduce((count, enemy) => count + enemy.count, 0), 0);
             const libraryBuffs = {};
             (config.enemyLibrary || []).forEach(enemy => { libraryBuffs[enemy.enemyId] = enemy.bornBuffList || []; });
+            const scriptedBuffs = data.scriptBuffs[config.configId] || [];
             const unique = [...new Map(waves.flatMap(wave => wave.enemies).map(enemy => [enemy.id, enemy])).values()];
             const mapHtml = renderSpawnMap(waves, data);
             return `<div class="st-config">
                 <div class="st-config-title"><code>${escapeHtml(config.configId)}</code><span>${waves.length} 波 · ${total} 个敌人</span></div>
                 <div class="v2d-wave-map-row"><div class="v2d-wave-section"><div class="v2d-wave-detail">${waves.map((wave, waveIndex) => `<div class="v2d-wave-line${waveIndex === 0 ? ' active' : ''}" data-wave-idx="${waveIndex}"><span class="v2d-wave-num">第 ${escapeHtml(wave.waveId)} 波</span>${wave.repeatable ? '<span class="v2d-wave-repeat">可重复</span>' : ''}${wave.maxAlive ? `<span class="v2d-wave-alive">同时在场 ${wave.maxAlive}</span>` : ''}${wave.externallyControlled ? '<span class="v2d-wave-pause">外部控制</span>' : ''}: ${wave.enemies.map(enemy => `<span class="v2d-wave-enemy" data-wave-idx="${waveIndex}" data-enemy-id="${escapeHtml(enemy.id)}"><img class="v2d-wave-icon" src="/public/images/enemy/monstericonbig/${escapeHtml(enemy.templateId)}.png" alt="" onerror="this.style.display='none'"><span class="v2d-wave-ename">${escapeHtml(text(data.enemyDisplay[data.enemies[enemy.id]?.templateId]?.name, enemy.id))}</span> ×${enemy.count} <span class="v2d-wave-lv">Lv.${enemy.level}</span></span>`).join(' ')}</div>`).join('')}</div></div>${mapHtml}</div>
-                <div class="v2d-enemy-list">${unique.map(enemy => renderEnemy(enemy.id, enemy.level, libraryBuffs[enemy.id] || [], data)).join('')}</div>
+                <div class="v2d-enemy-list">${unique.map(enemy => renderEnemy(enemy.id, enemy.level, libraryBuffs[enemy.id] || [], scriptedBuffs, data)).join('')}</div>
             </div>`;
         }).join('');
-        const fallbackHtml = configs.length ? '' : `<div class="v2d-enemy-list">${fallbackEnemies.map(enemy => renderEnemy(enemy.id, enemy.level, [], data)).join('')}</div>`;
+        const fallbackHtml = configs.length ? '' : `<div class="v2d-enemy-list">${fallbackEnemies.map(enemy => renderEnemy(enemy.id, enemy.level, [], [], data)).join('')}</div>`;
         return configHtml || fallbackHtml;
     }
 
@@ -380,8 +408,8 @@
     async function load() {
         try {
             const names = ['SeasonTowerTable', 'SeasonTowerGameGroupTable', 'GameMechanicGroupTable', 'DungeonTable', 'GameMechanicTable', 'SeasonTowerDungeonTable', 'RewardTable', 'ItemTable', 'TimeRangeTable', 'SeasonTowerConst', 'SeasonTowerRankTable', 'DungeonSeriesTable', 'EnemyTable', 'EnemyTemplateDisplayInfoTable', 'EnemyAttributeTemplateTable', 'IntroTable', 'ActivityTable'];
-            const [seasonTable, gameGroups, mechanicGroups, dungeons, mechanics, towerDungeons, rewards, items, times, constants, ranks, series, enemies, enemyDisplay, enemyAttrs, intros, activities, spawners, maps] = await Promise.all([
-                ...names.map(name => window.AKEV3.table(name)), loadSpawners(), window.akeLoadMaps()
+            const [seasonTable, gameGroups, mechanicGroups, dungeons, mechanics, towerDungeons, rewards, items, times, constants, ranks, series, enemies, enemyDisplay, enemyAttrs, intros, activities, spawners, scriptBuffs, maps] = await Promise.all([
+                ...names.map(name => window.AKEV3.table(name)), loadSpawners(), loadLevelScripts(), window.akeLoadMaps()
             ]);
             if (!series[SERIES_ID]) throw new Error(`未找到副本系列 ${SERIES_ID}`);
             attrMap = maps.ATTR_MAP || {};
@@ -390,7 +418,7 @@
                 dungeon.spawnerConfigs = spawnersForDungeon(dungeon, spawners);
             });
             const activity = activities.activity_seasontower_0 || {};
-            const shared = { gameGroups, mechanicGroups, dungeons, mechanics, towerDungeons, rewards, items, constants, ranks, enemies, enemyDisplay, enemyAttrs, spawners, activity,
+            const shared = { gameGroups, mechanicGroups, dungeons, mechanics, towerDungeons, rewards, items, constants, ranks, enemies, enemyDisplay, enemyAttrs, spawners, scriptBuffs, activity,
                 introPages: [...(intros.season_tower?.dataArray || [])].sort((a, b) => Number(a.pageIndex) - Number(b.pageIndex)) };
             await loadBuffs(shared);
             seasons = Object.entries(seasonTable).map(([id, row]) => {

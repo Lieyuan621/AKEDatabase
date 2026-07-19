@@ -2,6 +2,16 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.2.1
+
+Fixed an issue where some game images could incorrectly be requested from `www.akedata.wiki` after switching modules or after the Service Worker was suspended and restarted. Image paths are now synchronously rewritten to `data.akedata.wiki` when inserted into the page, covering dynamic HTML, image attributes, `srcset`, posters, and inline backgrounds.
+
+The Service Worker now restores the data origin and shared-data revision from its registration URL and completes configuration during application startup. Its image-routing state therefore survives browser termination and restart of the worker. The site icon is also loaded directly from the data origin.
+
+Added `LevelScriptData` enemy parsing to stat calculations in Dungeons, Contingency Contract, and Echoes of War. The site now reads enemies, levels, and spawn Buffs defined directly in scripts, as well as conditional Buffs applied through spawners. Enemy stats are therefore calculated correctly even for stages without SpawnerConfig. Contingency Contract tag-Buff preloading and stat recalculation after tag changes were also fixed.
+
+Improved raw-value tooltips. Values without a gameplay calculation change continue to show their original value, while values modified by stat modifiers, Buffs, contract tags, or expressions now show the source value, substituted parameters, complete calculation formula, and final result. Formula tracing covers Dungeon, Contingency Contract, Echoes of War, and Enemy stats, as well as calculated descriptions for characters, weapons, equipment, and items.
+
 ### v1.2.0
 
 Added cross-version data comparison. When `Latest` is selected, the site automatically compares it with the final Hotfix of the previous game version. New entries are always prioritized and tagged; modified-entry tags and detail Diff can be enabled with the experimental global setting, which is off by default.
@@ -18,7 +28,7 @@ Enemy and dungeon modules now use the new elemental resistance parameters (IDs 9
 
 Separated game data from the website code. TableCfg, Json, and image assets are now stored in Cloudflare R2 and delivered through data.akedata.wiki and the EdgeOne CDN. Added a data manifest and version selector for switching between Latest and multiple game/Hotfix versions while preserving the selection. Only TableCfg is versioned; Json and images remain shared data.
 
-Added a configurable data request origin and an R2 synchronization script. The script can read default versions from version.json, publish TableCfg/Json/images together, update shared data only, control whether a release becomes Latest, and run a dry-run before uploading. In debug mode, Latest uses local Live Server data while pinned versions continue to use production history.
+Added a configurable data request origin and an R2 synchronization script. The script can derive the game and Hotfix versions from an official Hotfix URL or accept manual input, publish TableCfg/Json/images together, update shared data only, control whether a release becomes Latest, and run a dry-run before uploading. In debug mode, Latest uses local Live Server data while pinned versions continue to use production history.
 
 Also isolated caches by data origin and version, and moved the image-proxy Service Worker to the site root to prevent stale data after version changes, reloads, or source switches. This is the first prerelease of AKEData 1.2.0.
 

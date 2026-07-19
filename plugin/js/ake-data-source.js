@@ -10,6 +10,8 @@
     const localBaseUrl = normalizeBaseUrl(window.location.origin);
     const manifestPath = String(bootstrapVersion.dataManifestPath || '/manifest.json');
     let state = null;
+    let assetObserver = null;
+    let assetHooksInstalled = false;
 
     const storage = {
         get(key, fallback = null) {
@@ -165,6 +167,141 @@
         return target.href;
     }
 
+    function resolveImageUrl(value) {
+        const raw = String(value || '').trim();
+        if (!raw) return raw;
+        const result = classify(raw);
+        return result.type === 'shared' && result.url.pathname.startsWith('/public/images/')
+            ? resolveUrl(raw)
+            : raw;
+    }
+
+    function rewriteSrcset(value) {
+        return String(value || '').split(',').map(candidate => {
+            const match = candidate.trim().match(/^(\S+)(\s+.+)?$/);
+            if (!match) return candidate.trim();
+            return `${resolveImageUrl(match[1])}${match[2] || ''}`;
+        }).join(', ');
+    }
+
+    function rewriteStyle(value) {
+        return String(value || '').replace(/url\(\s*(['"]?)([^'"\)]+)\1\s*\)/gi, (match, quote, url) => {
+            const resolved = resolveImageUrl(url);
+            return resolved === url ? match : `url("${resolved}")`;
+        });
+    }
+
+    function rewriteHtml(value) {
+        return String(value ?? '')
+            .replace(/(\s(?:src|poster)\s*=\s*)(['"])(.*?)\2/gi, (match, prefix, quote, url) => (
+                `${prefix}${quote}${resolveImageUrl(url)}${quote}`
+            ))
+            .replace(/(\ssrcset\s*=\s*)(['"])(.*?)\2/gi, (match, prefix, quote, srcset) => (
+                `${prefix}${quote}${rewriteSrcset(srcset)}${quote}`
+            ))
+            .replace(/(\sstyle\s*=\s*)(['"])(.*?)\2/gi, (match, prefix, quote, style) => (
+                `${prefix}${quote}${rewriteStyle(style)}${quote}`
+            ));
+    }
+
+    function installDomAssetHooks() {
+        if (assetHooksInstalled || typeof Element === 'undefined') return;
+        assetHooksInstalled = true;
+
+        const nativeSetAttribute = Element.prototype.setAttribute;
+        Element.prototype.setAttribute = function (name, value) {
+            const attribute = String(name || '').toLowerCase();
+            let routedValue = value;
+            if (attribute === 'src' || attribute === 'poster') routedValue = resolveImageUrl(value);
+            else if (attribute === 'srcset') routedValue = rewriteSrcset(value);
+            else if (attribute === 'style') routedValue = rewriteStyle(value);
+            return nativeSetAttribute.call(this, name, routedValue);
+        };
+
+        const innerHtmlDescriptor = Object.getOwnPropertyDescriptor(Element.prototype, 'innerHTML');
+        if (innerHtmlDescriptor?.get && innerHtmlDescriptor?.set) {
+            Object.defineProperty(Element.prototype, 'innerHTML', {
+                ...innerHtmlDescriptor,
+                set(value) { innerHtmlDescriptor.set.call(this, rewriteHtml(value)); }
+            });
+        }
+
+        const nativeInsertAdjacentHtml = Element.prototype.insertAdjacentHTML;
+        if (nativeInsertAdjacentHtml) {
+            Element.prototype.insertAdjacentHTML = function (position, value) {
+                return nativeInsertAdjacentHtml.call(this, position, rewriteHtml(value));
+            };
+        }
+
+        const routeProperty = (prototype, property, transform) => {
+            if (!prototype) return;
+            const descriptor = Object.getOwnPropertyDescriptor(prototype, property);
+            if (!descriptor?.get || !descriptor?.set) return;
+            Object.defineProperty(prototype, property, {
+                ...descriptor,
+                set(value) { descriptor.set.call(this, transform(value)); }
+            });
+        };
+        routeProperty(globalThis.HTMLImageElement?.prototype, 'src', resolveImageUrl);
+        routeProperty(globalThis.HTMLImageElement?.prototype, 'srcset', rewriteSrcset);
+        routeProperty(globalThis.HTMLSourceElement?.prototype, 'src', resolveImageUrl);
+        routeProperty(globalThis.HTMLSourceElement?.prototype, 'srcset', rewriteSrcset);
+        routeProperty(globalThis.HTMLVideoElement?.prototype, 'poster', resolveImageUrl);
+
+        const nativeSetProperty = globalThis.CSSStyleDeclaration?.prototype?.setProperty;
+        if (nativeSetProperty) {
+            globalThis.CSSStyleDeclaration.prototype.setProperty = function (property, value, priority) {
+                return nativeSetProperty.call(this, property, rewriteStyle(value), priority);
+            };
+        }
+    }
+
+    function rewriteElementAssets(element) {
+        if (!(element instanceof Element)) return;
+        for (const attribute of ['src', 'poster']) {
+            if (!element.hasAttribute(attribute)) continue;
+            const current = element.getAttribute(attribute);
+            const resolved = resolveImageUrl(current);
+            if (resolved !== current) element.setAttribute(attribute, resolved);
+        }
+        if (element.hasAttribute('srcset')) {
+            const current = element.getAttribute('srcset');
+            const resolved = rewriteSrcset(current);
+            if (resolved !== current) element.setAttribute('srcset', resolved);
+        }
+        if (element.hasAttribute('style')) {
+            const current = element.getAttribute('style');
+            const resolved = rewriteStyle(current);
+            if (resolved !== current) element.setAttribute('style', resolved);
+        }
+    }
+
+    function rewriteDomAssets(root) {
+        if (!root) return root;
+        rewriteElementAssets(root);
+        root.querySelectorAll?.('[src], [srcset], [poster], [style]').forEach(rewriteElementAssets);
+        return root;
+    }
+
+    function observeDomAssets() {
+        if (assetObserver || !document.documentElement || typeof MutationObserver === 'undefined') return;
+        assetObserver = new MutationObserver(records => {
+            records.forEach(record => {
+                if (record.type === 'attributes') rewriteElementAssets(record.target);
+                record.addedNodes.forEach(node => {
+                    if (node.nodeType === Node.ELEMENT_NODE) rewriteDomAssets(node);
+                });
+            });
+        });
+        assetObserver.observe(document.documentElement, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['src', 'srcset', 'poster', 'style']
+        });
+        rewriteDomAssets(document);
+    }
+
     function cacheNamespace(resource, appVersion) {
         const result = classify(resource);
         if (!state) return `site|${appVersion || '1'}`;
@@ -214,6 +351,8 @@
             debugMode: debugLocalMode,
             debugLocal
         });
+        installDomAssetHooks();
+        observeDomAssets();
         window.dispatchEvent(new CustomEvent('akeDataSourceReady', { detail: state }));
         return state;
     }
@@ -224,6 +363,8 @@
         ready,
         classify,
         resolveUrl,
+        resolveImageUrl,
+        rewriteDomAssets,
         cacheNamespace,
         getState: () => state,
         async configure({ baseUrl, selection }) {

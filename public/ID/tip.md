@@ -2,6 +2,16 @@ AKEData telah pindah ke domain www.akedata.wiki. Domain lama, akedata.top, kini 
 
 # Catatan Pembaruan Versi AKEData
 
+### v1.2.1
+
+Memperbaiki masalah yang dapat menyebabkan beberapa gambar game keliru diminta dari `www.akedata.wiki` setelah berpindah modul atau Service Worker dimulai ulang. Jalur gambar kini ditulis ulang secara sinkron ke `data.akedata.wiki` saat dimasukkan ke halaman.
+
+Service Worker kini memulihkan asal data dan revisi data bersama dari URL pendaftarannya. Perutean gambar tetap benar meskipun browser menghentikan lalu memulai ulang Worker. Ikon situs juga dimuat langsung dari asal data.
+
+Menambahkan penguraian data musuh `LevelScriptData` ke perhitungan atribut Dungeon, Contingency Contract, dan Echoes of War. Musuh, level, dan Buff saat muncul yang ditentukan langsung dalam skrip, serta Buff bersyarat dari spawner, kini ikut dihitung. Stage tanpa SpawnerConfig juga dapat dihitung dengan benar. Pemuatan awal Buff kondisi Contingency Contract dan perhitungan ulang setelah kondisi berubah juga telah diperbaiki.
+
+Meningkatkan tooltip nilai mentah. Nilai tanpa perubahan perhitungan tetap menampilkan nilai asli; nilai yang diubah oleh atribut, Buff, kondisi kontrak, atau ekspresi kini menampilkan nilai asli, parameter substitusi, rumus lengkap, dan hasil akhir. Pelacakan rumus mencakup Dungeon, Contingency Contract, Echoes of War, musuh, serta ekspresi karakter, senjata, perlengkapan, dan item.
+
 ### v1.2.0
 
 Menambahkan perbandingan data antarversi game. Saat `Latest` dipilih, situs otomatis membandingkannya dengan Hotfix terakhir dari versi game sebelumnya. Entri baru selalu ditempatkan di depan dan diberi tag; tag perubahan serta Diff detail dapat diaktifkan melalui opsi eksperimental di pengaturan global yang secara default nonaktif.

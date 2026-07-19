@@ -13,32 +13,45 @@
     const DEFAULT_ATTR_DISPLAY_ORDER = [0, 1, 2, 3, 20, 21, 27, 12, 8, 9, 10, 11, 15];
     const MULTIPLIER_MODIFIER_TYPES = new Set([1, 4, 6, 8]);
 
-    function computeAttrWithModifiers(baseValue, modifiers, attrType) {
-        let addition = 0;
-        let multiplier = 1;
-        let finalAddition = 0;
-        let finalMultiplier = 1;
-        let baseAddition = 0;
-        let baseMultiplier = 1;
-        let baseFinalAddition = 0;
-        let baseFinalMultiplier = 1;
+    function compactNumber(value) {
+        if (!Number.isFinite(value)) return String(value);
+        return Number.isInteger(value) ? String(value) : String(Number(value.toFixed(8)));
+    }
 
-        (modifiers || []).forEach(modifier => {
-            if (modifier.attrType !== attrType) return;
-            const value = modifier.attrValue;
-            switch (modifier.modifierType) {
-                case 0: addition += value; break;
-                case 1: multiplier *= (1 + value); break;
-                case 3: finalAddition += value; break;
-                case 4: finalMultiplier *= value; break;
-                case 5: baseAddition += value; break;
-                case 6: baseMultiplier *= (1 + value); break;
-                case 7: baseFinalAddition += value; break;
-                case 8: baseFinalMultiplier *= value; break;
-            }
+    function analyzeAttrWithModifiers(baseValue, modifiers, attrType) {
+        const relevant = (modifiers || []).filter(modifier => modifier.attrType === attrType && Number.isFinite(Number(modifier.attrValue)));
+        let expression = compactNumber(baseValue);
+        let value = baseValue;
+        const stages = [
+            { type: 5, operator: '+', wrap: false },
+            { type: 6, operator: '×', onePlus: true },
+            { type: 7, operator: '+', wrap: false },
+            { type: 8, operator: '×' },
+            { type: 3, operator: '+', wrap: false },
+            { type: 4, operator: '×' },
+            { type: 0, operator: '+', wrap: false },
+            { type: 1, operator: '×', onePlus: true }
+        ];
+        stages.forEach(stage => {
+            const entries = relevant.filter(modifier => modifier.modifierType === stage.type);
+            entries.forEach(modifier => {
+                const operand = Number(modifier.attrValue);
+                const term = stage.onePlus ? `(1 + ${compactNumber(operand)})` : compactNumber(operand);
+                expression = stage.operator === '+' ? `(${expression} + ${term})` : `${expression} × ${term}`;
+                value = stage.operator === '+' ? value + operand : value * (stage.onePlus ? 1 + operand : operand);
+            });
         });
+        return {
+            rawValue: baseValue,
+            value,
+            changed: relevant.length > 0 && value !== baseValue,
+            formula: `${expression} = ${compactNumber(value)}`,
+            modifiers: relevant
+        };
+    }
 
-        return ((((baseValue + baseAddition) * baseMultiplier + baseFinalAddition) * baseFinalMultiplier + finalAddition) * finalMultiplier + addition) * multiplier;
+    function computeAttrWithModifiers(baseValue, modifiers, attrType) {
+        return analyzeAttrWithModifiers(baseValue, modifiers, attrType).value;
     }
 
     function pickLevelAttributes(levelDependentAttributes, enemyLevel) {
@@ -59,19 +72,28 @@
     }
 
     function getEnemyStatsAtLevel(attrTemplateData, enemyLevel, modifiers, options) {
+        return getEnemyStatDetailsAtLevel(attrTemplateData, enemyLevel, modifiers, options)?.values || null;
+    }
+
+    function getEnemyStatDetailsAtLevel(attrTemplateData, enemyLevel, modifiers, options) {
         if (!attrTemplateData) return null;
         const opts = options || {};
         const displayOrder = opts.displayOrder || DEFAULT_ATTR_DISPLAY_ORDER;
         const excludedAttrTypes = new Set(opts.excludeAttrTypes || []);
         const getAttrName = opts.getAttrName || (attrType => window.akeI18n.t('modules.character.attributeFallback', { name: attrType }));
         const baseAttrs = {};
+        const baseSources = {};
 
         pickLevelAttributes(attrTemplateData.levelDependentAttributes || [], enemyLevel).forEach(attr => {
             baseAttrs[attr.attrType] = attr.attrValue;
+            baseSources[attr.attrType] = 'levelDependent';
         });
 
         (attrTemplateData.levelIndependentAttributes?.attrs || []).forEach(attr => {
-            if (baseAttrs[attr.attrType] === undefined) baseAttrs[attr.attrType] = attr.attrValue;
+            if (baseAttrs[attr.attrType] === undefined) {
+                baseAttrs[attr.attrType] = attr.attrValue;
+                baseSources[attr.attrType] = 'levelIndependent';
+            }
         });
 
         if (modifiers && modifiers.length > 0) {
@@ -86,28 +108,49 @@
                     const attrModifiers = modifiers.filter(modifier => modifier.attrType === attrType);
                     const baseValue = attrModifiers.every(modifier => MULTIPLIER_MODIFIER_TYPES.has(modifier.modifierType)) ? 1 : 0;
                     baseAttrs[attrType] = computeAttrWithModifiers(baseValue, modifiers, attrType);
+                    baseSources[attrType] = 'modifierOnly';
                 });
             }
         }
 
         const result = {};
+        const details = {};
+        const addResult = attrType => {
+            const name = getAttrName(attrType);
+            const finalValue = baseAttrs[attrType];
+            const relevant = (modifiers || []).filter(modifier => modifier.attrType === attrType);
+            let rawValue = finalValue;
+            if (relevant.length) {
+                if (baseSources[attrType] === 'modifierOnly') rawValue = relevant.every(modifier => MULTIPLIER_MODIFIER_TYPES.has(modifier.modifierType)) ? 1 : 0;
+                else {
+                    const levelAttrs = pickLevelAttributes(attrTemplateData.levelDependentAttributes || [], enemyLevel);
+                    rawValue = levelAttrs.find(attr => attr.attrType === attrType)?.attrValue
+                        ?? attrTemplateData.levelIndependentAttributes?.attrs?.find(attr => attr.attrType === attrType)?.attrValue
+                        ?? finalValue;
+                }
+            }
+            result[name] = finalValue;
+            details[name] = { ...analyzeAttrWithModifiers(rawValue, modifiers, attrType), name, attrType, baseSource: baseSources[attrType] };
+        };
         displayOrder.forEach(attrType => {
             if (excludedAttrTypes.has(attrType)) return;
-            if (baseAttrs[attrType] !== undefined) result[getAttrName(attrType)] = baseAttrs[attrType];
+            if (baseAttrs[attrType] !== undefined) addResult(attrType);
         });
         Object.keys(baseAttrs).forEach(key => {
             const attrType = parseInt(key, 10);
             if (!excludedAttrTypes.has(attrType) && !displayOrder.includes(attrType) && attrType >= 4) {
-                result[getAttrName(attrType)] = baseAttrs[attrType];
+                addResult(attrType);
             }
         });
-        return result;
+        return { values: result, details };
     }
 
     window.AKEStats = {
         FORMULA_TO_MODTYPE,
         DEFAULT_ATTR_DISPLAY_ORDER,
+        analyzeAttrWithModifiers,
         computeAttrWithModifiers,
-        getEnemyStatsAtLevel
+        getEnemyStatsAtLevel,
+        getEnemyStatDetailsAtLevel
     };
 })();

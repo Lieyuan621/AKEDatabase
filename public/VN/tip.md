@@ -2,6 +2,16 @@ AKEData đã chuyển sang tên miền www.akedata.wiki. Tên miền cũ akedata
 
 # Nhật ký cập nhật phiên bản AKEData
 
+### v1.2.1
+
+Đã sửa lỗi khiến một số hình ảnh trò chơi có thể bị yêu cầu nhầm từ `www.akedata.wiki` sau khi chuyển mô-đun hoặc khởi động lại Service Worker. Đường dẫn hình ảnh giờ được viết lại đồng bộ sang `data.akedata.wiki` khi được chèn vào trang.
+
+Service Worker giờ khôi phục nguồn dữ liệu và phiên bản dữ liệu dùng chung từ URL đăng ký. Vì vậy trạng thái định tuyến hình ảnh vẫn được giữ khi trình duyệt dừng rồi khởi động lại Worker. Biểu tượng trang web cũng được tải trực tiếp từ nguồn dữ liệu.
+
+Đã bổ sung phân tích dữ liệu kẻ địch từ `LevelScriptData` vào phép tính thuộc tính của Phó bản, Contingency Contract và Echoes of War. Hệ thống giờ đọc kẻ địch, cấp độ và Buff khi xuất hiện được định nghĩa trực tiếp trong script, cùng các Buff có điều kiện áp dụng qua bộ sinh. Nhờ đó các màn không có SpawnerConfig vẫn được tính chính xác. Việc tải trước Buff điều kiện và tính lại sau khi đổi điều kiện cũng đã được sửa.
+
+Cải thiện chú thích giá trị gốc. Giá trị không bị thay đổi bởi phép tính vẫn hiển thị giá trị gốc; giá trị bị thay đổi bởi thuộc tính, Buff, điều kiện hợp đồng hoặc biểu thức giờ hiển thị giá trị gốc, tham số thay thế, công thức đầy đủ và kết quả cuối. Theo dõi công thức áp dụng cho Phó bản, Contingency Contract, Echoes of War, kẻ địch và biểu thức của nhân vật, vũ khí, trang bị cùng vật phẩm.
+
 ### v1.2.0
 
 Đã bổ sung tính năng so sánh dữ liệu giữa các phiên bản trò chơi. Khi chọn `Latest`, trang web tự động so sánh với Hotfix cuối cùng của phiên bản trước. Dữ liệu mới luôn được đưa lên đầu và gắn nhãn; nhãn dữ liệu sửa đổi cùng Diff chi tiết có thể bật bằng tùy chọn thử nghiệm trong cài đặt toàn cục, mặc định tắt.

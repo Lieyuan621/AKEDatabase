@@ -194,7 +194,10 @@
 
             // ---------- 工具函数 ----------
             function setContent(html) {
-                contentArea.innerHTML = html;
+                const template = document.createElement('template');
+                template.innerHTML = html;
+                window.akeDataSource?.rewriteDomAssets?.(template.content);
+                contentArea.replaceChildren(template.content.cloneNode(true));
                 window.akeI18n?.translateDOM(contentArea);
             }
 
@@ -536,6 +539,7 @@
                     if (generation !== moduleLoadGeneration) return false;
                     const template = document.createElement('template');
                     template.innerHTML = html;
+                    window.akeDataSource?.rewriteDomAssets?.(template.content);
                     const styles = Array.from(template.content.querySelectorAll('link[rel="stylesheet"][href]'));
                     const styleKeys = new Set(styles.map(link => canonicalResourceUrl(link.getAttribute('href'))));
                     moduleStyleKeys.set(module.id, styleKeys);
@@ -873,10 +877,35 @@
 
             window.renderRawValueTip = function(displayValue, rawValue, variableName) {
                 const showHidden = window.akeData?.getConfig().showHidden ?? false;
-                if (!showHidden || rawValue === undefined || rawValue === null || rawValue === '') return String(displayValue);
+                const details = rawValue && typeof rawValue === 'object' && !Array.isArray(rawValue)
+                    ? rawValue
+                    : { rawValue, value: rawValue, name: variableName, changed: false };
+                if (!showHidden || details.rawValue === undefined || details.rawValue === null || details.rawValue === '') return String(displayValue);
                 const escape = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-                const rawText = typeof rawValue === 'number' ? String(rawValue) : String(rawValue);
-                const title = variableName ? tr('common.rawValueWithName', { name: variableName, value: rawText }) : tr('common.rawValue', { value: rawText });
+                const rawText = String(details.rawValue);
+                let title;
+                if (details.changed) {
+                    const formulaFallbacks = config.language === 'CH'
+                        ? { formula: '公式：{value}', expression: '表达式：{value}', bindings: '代入：{value}', result: '结果：{value}' }
+                        : config.language === 'TC'
+                            ? { formula: '公式：{value}', expression: '表達式：{value}', bindings: '代入：{value}', result: '結果：{value}' }
+                            : { formula: 'Formula: {value}', expression: 'Expression: {value}', bindings: 'Values: {value}', result: 'Result: {value}' };
+                    const lines = [];
+                    if (details.name) lines.push(String(details.name));
+                    lines.push(tr('common.rawValue', { value: rawText }));
+                    if (details.formula) lines.push(tr('common.formula', { value: details.formula }, formulaFallbacks.formula.replace('{value}', details.formula)));
+                    else if (details.expression) lines.push(tr('common.expression', { value: details.expression }, formulaFallbacks.expression.replace('{value}', details.expression)));
+                    if (details.bindings && Object.keys(details.bindings).length) {
+                        const bindings = Object.entries(details.bindings).map(([key, value]) => `${key}=${value}`).join(', ');
+                        lines.push(tr('common.bindings', { value: bindings }, formulaFallbacks.bindings.replace('{value}', bindings)));
+                    }
+                    lines.push(tr('common.resultValue', { value: details.value ?? details.rawValue }, formulaFallbacks.result.replace('{value}', details.value ?? details.rawValue)));
+                    title = lines.join('\n');
+                } else {
+                    title = details.name
+                        ? tr('common.rawValueWithName', { name: details.name, value: rawText })
+                        : tr('common.rawValue', { value: rawText });
+                }
                 return `<span class="raw-value-tip" title="${escape(title)}">${displayValue}</span>`;
             };
 
@@ -1110,6 +1139,7 @@
 
                 await window.akeI18n?.ready;
                 await window.akeDataSource?.ready;
+                await window.akeServiceWorkerReady;
                 config.language = window.akeI18n?.getLanguage?.() || 'CH';
                 renderLanguageOptions();
                 renderDataSourceSettings();

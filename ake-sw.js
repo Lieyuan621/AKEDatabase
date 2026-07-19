@@ -1,6 +1,7 @@
-let dataBaseUrl = '';
-let sharedRevision = '';
-let forceRefreshTimestamp = '';
+const startupConfig = new URL(self.location.href).searchParams;
+let dataBaseUrl = String(startupConfig.get('dataBaseUrl') || '').replace(/\/$/, '');
+let sharedRevision = String(startupConfig.get('sharedRevision') || '');
+let forceRefreshTimestamp = String(startupConfig.get('forceRefreshTimestamp') || '');
 
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', event => event.waitUntil(self.clients.claim()));

@@ -2,6 +2,16 @@ AKEData ist auf die Domain www.akedata.wiki umgezogen. Die bisherige Domain aked
 
 # AKEData-Versionsprotokoll
 
+### v1.2.1
+
+Ein Fehler wurde behoben, durch den einige Spielbilder nach einem Modulwechsel oder Neustart des Service Workers fälschlicherweise von `www.akedata.wiki` angefordert werden konnten. Bildpfade werden nun beim Einfügen in die Seite synchron auf `data.akedata.wiki` umgeschrieben.
+
+Der Service Worker stellt Datenursprung und Revision der gemeinsamen Daten jetzt aus seiner Registrierungs-URL wieder her. Dadurch bleibt das Bild-Routing auch nach dem Beenden und Neustarten des Workers durch den Browser erhalten. Auch das Website-Symbol wird direkt vom Datenursprung geladen.
+
+Die Gegnerdaten aus `LevelScriptData` wurden in die Attributberechnung für Dungeons, Contingency Contract und Echoes of War integriert. Gegner, Stufen und Start-Buffs, die direkt in Skripten definiert sind, sowie bedingte Buffs über Spawner werden nun berücksichtigt. Dadurch werden auch Stufen ohne SpawnerConfig korrekt berechnet. Außerdem wurden das Vorladen von Contingency-Contract-Buffs und die Neuberechnung nach einer Bedingungsänderung korrigiert.
+
+Die Hinweise für Rohwerte wurden verbessert. Werte ohne rechnerische Änderung zeigen weiterhin den ursprünglichen Wert; durch Attribute, Buffs, Vertragsbedingungen oder Ausdrücke veränderte Werte zeigen nun Ausgangswert, eingesetzte Parameter, vollständige Formel und Endergebnis. Die Formelverfolgung gilt für Dungeons, Contingency Contract, Echoes of War, Gegner sowie berechnete Beschreibungen von Charakteren, Waffen, Ausrüstung und Gegenständen.
+
 ### v1.2.0
 
 Der Datenvergleich zwischen Spielversionen wurde hinzugefügt. Bei Auswahl von `Latest` vergleicht die Website automatisch mit dem letzten Hotfix der vorherigen Spielversion. Neue Einträge werden stets zuerst angezeigt und markiert; Markierungen für Änderungen und der Detail-Diff lassen sich über die standardmäßig deaktivierte experimentelle globale Einstellung aktivieren.

@@ -541,7 +541,10 @@
         const rewardIds = new Set();
         const enemyIds = new Set();
         const spawnerByDungeon = {};
+        const scriptBuffsByDungeon = {};
+        const scriptEnemiesByDungeon = {};
         const levelDataByDungeon = {};
+        const sceneRuntimeCache = new Map();
         Object.values(dungeonRows).forEach(row => {
             ['rewardId', 'firstPassRewardId', 'extraRewardId', 'customRewardId', 'hunterModeRewardId'].forEach(key => { if (row[key]) rewardIds.add(row[key]); });
             (row.enemyIds || []).forEach(enemyId => enemyIds.add(enemyId));
@@ -550,18 +553,32 @@
             if (!row.sceneId) return;
             const mainLevelData = await optionalJson(`/public/Json/LevelData/${row.sceneId}/${row.sceneId}_lv_data.json`);
             levelDataByDungeon[dungeonId] = mainLevelData ? { [`${row.sceneId}_lv_data`]: mainLevelData } : {};
-            const base = `/public/Json/SpawnerConfig/${row.sceneId}`;
-            const manifest = await optionalJson(`${base}/manifest.json`);
-            if (!Array.isArray(manifest)) return;
-            const entries = manifest.filter(entry => !entry.hidden).sort((a, b) =>
-                (a.priority || 999) - (b.priority || 999) || String(a.id || '').localeCompare(String(b.id || ''), 'en'));
-            const configs = await Promise.all(entries.map(entry => optionalJson(entry.contentFile || `${base}/${entry.id}.json`)));
-            const spawners = {};
-            configs.filter(Boolean).forEach(config => {
-                spawners[config.configId] = config;
-                (config.enemyLibrary || []).forEach(enemy => enemyIds.add(enemy.enemyId));
-            });
-            spawnerByDungeon[dungeonId] = spawners;
+            if (!sceneRuntimeCache.has(row.sceneId)) {
+                sceneRuntimeCache.set(row.sceneId, (async () => {
+                    const spawnerBase = `/public/Json/SpawnerConfig/${row.sceneId}`;
+                    const spawnerManifest = await optionalJson(`${spawnerBase}/manifest.json`);
+                    const loadEntries = (manifest, base) => Array.isArray(manifest)
+                        ? Promise.all(manifest.filter(entry => !entry.hidden).sort((a, b) =>
+                            (a.priority || 999) - (b.priority || 999) || String(a.id || '').localeCompare(String(b.id || ''), 'en'))
+                            .map(entry => optionalJson(entry.contentFile || `${base}/${entry.id}.json`)))
+                        : Promise.resolve([]);
+                    const [configs, scriptBuffs, scriptEnemies] = await Promise.all([
+                        loadEntries(spawnerManifest, spawnerBase),
+                        window.AKECombatData?.loadSceneScriptBuffs(row.sceneId) || {},
+                        window.AKECombatData?.loadSceneScriptEnemies(row.sceneId) || []
+                    ]);
+                    const spawners = {};
+                    configs.filter(Boolean).forEach(config => { spawners[config.configId] = config; });
+                    return { spawners, scriptBuffs, scriptEnemies };
+                })());
+            }
+            const runtime = await sceneRuntimeCache.get(row.sceneId);
+            Object.values(runtime.spawners).forEach(config =>
+                (config.enemyLibrary || []).forEach(enemy => enemyIds.add(enemy.enemyId)));
+            spawnerByDungeon[dungeonId] = runtime.spawners;
+            scriptBuffsByDungeon[dungeonId] = runtime.scriptBuffs;
+            scriptEnemiesByDungeon[dungeonId] = runtime.scriptEnemies;
+            runtime.scriptEnemies.forEach(enemy => enemyIds.add(enemy.enemyId));
         }));
         const rewardRows = pick(rewards, Array.from(rewardIds));
         const itemIds = Object.values(rewardRows).flatMap(row => (row.itemBundles || []).map(bundle => bundle.id));
@@ -575,6 +592,8 @@
         Object.entries(dungeonRows).forEach(([dungeonId, row]) => {
             row.LevelData = levelDataByDungeon[dungeonId] || {};
             row.SpawnerConfig = spawnerByDungeon[dungeonId] || {};
+            row.ScriptBuffsBySpawner = scriptBuffsByDungeon[dungeonId] || {};
+            row.LevelScriptEnemies = scriptEnemiesByDungeon[dungeonId] || [];
         });
         return { dungeonSeriesId: id, dungeonseriestable: seriesRow, dungeontable: dungeonRows };
     }

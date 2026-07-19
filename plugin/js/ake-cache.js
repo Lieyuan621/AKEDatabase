@@ -169,21 +169,37 @@
         });
         const workerUrl = new URL('/ake-sw.js', window.location.href);
         workerUrl.searchParams.set('v', version.appversion);
-        if (window.__akeForceRefreshTimestamp) workerUrl.searchParams.set('t', window.__akeForceRefreshTimestamp);
-        navigator.serviceWorker.register(workerUrl.href, { scope: '/' })
-            .then(registration => {
-                const notify = worker => worker?.postMessage({
-                    type: 'AKE_VERSION',
-                    dataBaseUrl: dataSource?.baseUrl || '',
-                    sharedRevision: dataSource?.manifest?.sharedRevision || '',
-                    forceRefreshTimestamp: window.__akeForceRefreshTimestamp || ''
-                });
-                notify(registration.active);
-                notify(registration.waiting);
-                notify(registration.installing);
-                navigator.serviceWorker.ready.then(readyRegistration => notify(readyRegistration.active));
-            })
-            .catch(error => console.warn('Service Worker 注册失败，原生 public 资源使用浏览器 HTTP 缓存。', error));
+        workerUrl.searchParams.set('dataBaseUrl', dataSource?.baseUrl || '');
+        workerUrl.searchParams.set('sharedRevision', dataSource?.manifest?.sharedRevision || '');
+        if (window.__akeForceRefreshTimestamp) {
+            workerUrl.searchParams.set('t', window.__akeForceRefreshTimestamp);
+            workerUrl.searchParams.set('forceRefreshTimestamp', window.__akeForceRefreshTimestamp);
+        }
+        const notify = worker => worker?.postMessage({
+            type: 'AKE_VERSION',
+            dataBaseUrl: dataSource?.baseUrl || '',
+            sharedRevision: dataSource?.manifest?.sharedRevision || '',
+            forceRefreshTimestamp: window.__akeForceRefreshTimestamp || ''
+        });
+        try {
+            const registration = await navigator.serviceWorker.register(workerUrl.href, { scope: '/' });
+            notify(navigator.serviceWorker.controller);
+            notify(registration.active);
+            notify(registration.waiting);
+            notify(registration.installing);
+            const readyRegistration = await navigator.serviceWorker.ready;
+            notify(readyRegistration.active);
+            if (!navigator.serviceWorker.controller) {
+                await Promise.race([
+                    new Promise(resolve => navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true })),
+                    new Promise(resolve => setTimeout(resolve, 3000))
+                ]);
+            }
+            return readyRegistration;
+        } catch (error) {
+            console.warn('Service Worker 注册失败，图片 URL 仍由页面数据路由改写。', error);
+            return null;
+        }
     }
 
     const storage = {
@@ -387,7 +403,7 @@
     }
 
     const versionPromise = loadVersion();
-    versionPromise.then(registerServiceWorker);
+    const serviceWorkerPromise = versionPromise.then(registerServiceWorker);
     const databasePromise = Promise.all([versionPromise, openDatabase()]).then(async ([version, db]) => ({
         version,
         db: await Promise.race([
@@ -397,6 +413,7 @@
     }));
 
     window.akeVersionReady = versionPromise;
+    window.akeServiceWorkerReady = serviceWorkerPromise;
     window.akeCacheReady = databasePromise;
 
     window.akeFetch = async function (resource, init) {

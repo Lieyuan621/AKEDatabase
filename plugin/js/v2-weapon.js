@@ -260,8 +260,14 @@
             }
             else if (format.includes('0')) formatted = Math.round(result).toString();
             else formatted = result.toString();
-            const tipKey = varNames.length === 1 ? varNames[0] : expr;
-            return window.renderRawValueTip ? window.renderRawValueTip(formatted, result, tipKey) : formatted;
+            const bindings = Object.fromEntries(varNames.map(name => [name, lowerValueMap[name.toLowerCase()]]));
+            const changed = !(varNames.length === 1 && expr.toLowerCase() === varNames[0].toLowerCase());
+            const rawValue = varNames.length === 1 ? bindings[varNames[0]] : Object.entries(bindings).map(([key, value]) => `${key}=${value}`).join(', ');
+            return window.renderRawValueTip ? window.renderRawValueTip(formatted, {
+                rawValue, value: result, changed, expression: expr,
+                formula: changed ? `${evalExpr} = ${result}` : undefined,
+                bindings
+            }) : formatted;
         });
     }
 

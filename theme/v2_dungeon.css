@@ -483,6 +483,26 @@
 .v2d-has-tip:hover .v2d-buff-tip {
     display: block;
 }
+.v2d-script-buff {
+    border: 1px solid color-mix(in srgb, var(--accent-color, #1677ff) 55%, var(--border-color, #d9e0e8));
+}
+.v2d-script-buff small {
+    margin-left: 4px;
+    color: var(--accent-color, #1677ff);
+    font-size: .62rem;
+}
+.v2d-script-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    margin-top: 8px;
+    padding: 8px 10px;
+    border-left: 2px solid var(--accent-color, #1677ff);
+    background: var(--sidebar-bg, #f2f4f8);
+    color: var(--desc-color, #5b6f86);
+    font-size: .72rem;
+}
+.v2d-script-stats b { color: var(--text-color, #1e2b3c); }
 
 .v2d-enemies-title {
     font-size: 1.2rem;
