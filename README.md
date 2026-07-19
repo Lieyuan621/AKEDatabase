@@ -111,15 +111,6 @@ public/
 
 只有 `TableCfg` 按游戏版本和 Hotfix 建立不可变目录；`Json` 与 `images` 始终维护一份当前数据。`manifest.json` 包含所有可选版本、`latest` 指针和共享数据修订号，并在每次发布的最后一步上传。
 
-### 首次配置
-
-1. 在 Cloudflare R2 创建 `akedatabase`，创建仅限该 Bucket 的 Object Read & Write 凭据。
-2. 使用 `rclone config` 创建名为 `r2` 的 Cloudflare S3 Remote，并设置 `no_check_bucket = true`。
-3. 将 Bucket 自定义源站域绑定到 `r2-origin.akedata.wiki`。
-4. 在 Bucket 设置中应用 `tools/r2-cors.json` 对应的 CORS 规则。
-5. 在 EdgeOne 添加加速域名 `data.akedata.wiki`，源站设置为 `r2-origin.akedata.wiki`。
-6. 在 EdgeOne 为版本化 TableCfg 配置一年节点缓存，为共享 Json/images 配置一天节点缓存，并为 `/manifest.json` 配置不缓存。
-
 凭据只保存在本机 rclone 配置中，不得写入仓库。对象级令牌没有创建 Bucket 的权限，因此脚本始终向 rclone 传递 `--s3-no-check-bucket`。
 
 ### 交互式发布
