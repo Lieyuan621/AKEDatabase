@@ -194,6 +194,7 @@
 
             // ---------- 工具函数 ----------
             function setContent(html) {
+                closeRawValueTip();
                 const template = document.createElement('template');
                 template.innerHTML = html;
                 window.akeDataSource?.rewriteDomAssets?.(template.content);
@@ -882,7 +883,15 @@
                     : { rawValue, value: rawValue, name: variableName, changed: false };
                 if (!showHidden || details.rawValue === undefined || details.rawValue === null || details.rawValue === '') return String(displayValue);
                 const escape = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-                const rawText = String(details.rawValue);
+                const displayRawValue = value => {
+                    if (value === null || value === undefined) return '';
+                    if (typeof value !== 'object') return String(value);
+                    for (const key of ['value', 'valueFloat', 'valueDouble', 'valueInt', 'floatValue', 'paramValue', 'attrValue', 'text']) {
+                        if (value[key] !== undefined && value[key] !== value) return displayRawValue(value[key]);
+                    }
+                    try { return JSON.stringify(value); } catch { return ''; }
+                };
+                const rawText = displayRawValue(details.rawValue);
                 let title;
                 if (details.changed) {
                     const formulaFallbacks = config.language === 'CH'
@@ -899,15 +908,83 @@
                         const bindings = Object.entries(details.bindings).map(([key, value]) => `${key}=${value}`).join(', ');
                         lines.push(tr('common.bindings', { value: bindings }, formulaFallbacks.bindings.replace('{value}', bindings)));
                     }
-                    lines.push(tr('common.resultValue', { value: details.value ?? details.rawValue }, formulaFallbacks.result.replace('{value}', details.value ?? details.rawValue)));
+                    const resultText = displayRawValue(details.value ?? details.rawValue);
+                    lines.push(tr('common.resultValue', { value: resultText }, formulaFallbacks.result.replace('{value}', resultText)));
                     title = lines.join('\n');
                 } else {
                     title = details.name
                         ? tr('common.rawValueWithName', { name: details.name, value: rawText })
                         : tr('common.rawValue', { value: rawText });
                 }
-                return `<span class="raw-value-tip" title="${escape(title)}">${displayValue}</span>`;
+                return `<span class="raw-value-tip" role="button" tabindex="0" aria-expanded="false" data-raw-value-tip="${escape(title)}">${displayValue}</span>`;
             };
+
+            const rawValueTooltip = document.createElement('div');
+            rawValueTooltip.className = 'raw-value-popover';
+            rawValueTooltip.setAttribute('role', 'tooltip');
+            rawValueTooltip.setAttribute('aria-hidden', 'true');
+            document.body.appendChild(rawValueTooltip);
+            let rawValueAnchor = null;
+
+            function closeRawValueTip() {
+                if (rawValueAnchor) rawValueAnchor.setAttribute('aria-expanded', 'false');
+                rawValueAnchor = null;
+                rawValueTooltip.classList.remove('visible');
+                rawValueTooltip.setAttribute('aria-hidden', 'true');
+                rawValueTooltip.textContent = '';
+            }
+
+            function positionRawValueTip() {
+                if (!rawValueAnchor?.isConnected) {
+                    closeRawValueTip();
+                    return;
+                }
+                const anchorRect = rawValueAnchor.getBoundingClientRect();
+                const tooltipRect = rawValueTooltip.getBoundingClientRect();
+                const gap = 8;
+                const margin = 10;
+                let left = anchorRect.left + anchorRect.width / 2 - tooltipRect.width / 2;
+                left = Math.max(margin, Math.min(left, window.innerWidth - tooltipRect.width - margin));
+                let top = anchorRect.bottom + gap;
+                if (top + tooltipRect.height > window.innerHeight - margin && anchorRect.top >= tooltipRect.height + gap + margin) {
+                    top = anchorRect.top - tooltipRect.height - gap;
+                }
+                rawValueTooltip.style.left = `${Math.round(left)}px`;
+                rawValueTooltip.style.top = `${Math.max(margin, Math.round(top))}px`;
+            }
+
+            function openRawValueTip(anchor) {
+                if (rawValueAnchor && rawValueAnchor !== anchor) rawValueAnchor.setAttribute('aria-expanded', 'false');
+                rawValueAnchor = anchor;
+                rawValueAnchor.setAttribute('aria-expanded', 'true');
+                rawValueTooltip.textContent = anchor.dataset.rawValueTip || '';
+                rawValueTooltip.classList.add('visible');
+                rawValueTooltip.setAttribute('aria-hidden', 'false');
+                positionRawValueTip();
+            }
+
+            document.addEventListener('click', event => {
+                const anchor = event.target.closest('.raw-value-tip');
+                if (anchor) {
+                    event.stopPropagation();
+                    openRawValueTip(anchor);
+                    return;
+                }
+                if (!event.target.closest('.raw-value-popover')) closeRawValueTip();
+            }, true);
+
+            document.addEventListener('keydown', event => {
+                const anchor = event.target.closest?.('.raw-value-tip');
+                if (anchor && (event.key === 'Enter' || event.key === ' ')) {
+                    event.preventDefault();
+                    openRawValueTip(anchor);
+                } else if (event.key === 'Escape') {
+                    closeRawValueTip();
+                }
+            });
+
+            window.addEventListener('resize', positionRawValueTip);
+            window.addEventListener('scroll', positionRawValueTip, true);
 
             window.parseText = function(text, baseImagePath = '/public/images/', depth = 0) {
                 if (!text) return '';

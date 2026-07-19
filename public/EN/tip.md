@@ -2,6 +2,12 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.2.2
+
+Raw values and calculation formulas now open in a persistent popover when a value is clicked, replacing delayed hover tooltips. Clicking another value switches the content; clicking blank page space or pressing Esc closes it. The popover repositions on scrolling and resizing, supports mobile and keyboard interaction, and does not add new visual styling to the values themselves.
+
+Fixed module-level parent click handlers preventing real mouse clicks from opening the popover. Also fixed skill raw values for `chr_0032_lizhiyan` appearing as `[object Object]`. Common numeric object shapes are now safely unwrapped, with JSON text used as a fallback for unknown structures.
+
 ### v1.2.1
 
 Fixed an issue where some game images could incorrectly be requested from `www.akedata.wiki` after switching modules or after the Service Worker was suspended and restarted. Image paths are now synchronously rewritten to `data.akedata.wiki` when inserted into the page, covering dynamic HTML, image attributes, `srcset`, posters, and inline backgrounds.

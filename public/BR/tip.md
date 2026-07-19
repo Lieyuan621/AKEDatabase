@@ -2,6 +2,12 @@ O AKEData foi transferido para o domínio www.akedata.wiki. O domínio anterior,
 
 # Registro de atualizações do AKEData
 
+### v1.2.2
+
+Valores originais e fórmulas agora são abertos em um popover persistente ao clicar no número, substituindo a dica atrasada ao passar o mouse. Clicar em outro valor troca o conteúdo; clicar em uma área vazia da página ou pressionar Esc fecha o popover. Ele se reposiciona ao rolar ou redimensionar a janela, oferece suporte a dispositivos móveis e teclado e não altera o estilo visual dos números.
+
+Foi corrigido um problema em que manipuladores de clique dos módulos impediam que cliques reais do mouse abrissem o popover. Também foi corrigida a exibição de `[object Object]` nos valores de habilidade de `chr_0032_lizhiyan`; objetos numéricos comuns agora são desembrulhados com segurança.
+
 ### v1.2.1
 
 Corrigido um problema que podia fazer algumas imagens do jogo serem solicitadas incorretamente de `www.akedata.wiki` após trocar de módulo ou reiniciar o Service Worker. Os caminhos de imagem agora são reescritos de forma síncrona para `data.akedata.wiki` ao serem inseridos na página.

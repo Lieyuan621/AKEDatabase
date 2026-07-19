@@ -2,6 +2,12 @@ AKEData se ha trasladado al dominio www.akedata.wiki. El dominio anterior, akeda
 
 # Registro de actualizaciones de AKEData
 
+### v1.2.2
+
+Los valores originales y las fórmulas ahora se abren en un panel persistente al hacer clic en un número, en lugar de usar una ayuda retrasada al pasar el ratón. Al hacer clic en otro valor se cambia el contenido; al hacer clic en un espacio vacío o pulsar Esc se cierra. El panel se reposiciona al desplazar o cambiar el tamaño de la ventana y admite móviles y teclado. Los números mantienen su estilo visual original.
+
+Se corrigió un problema por el que los controladores de clic de algunos módulos impedían abrir el panel con un clic real del ratón. También se corrigieron los valores de habilidades de `chr_0032_lizhiyan` que aparecían como `[object Object]`; ahora se desempaquetan de forma segura los objetos numéricos habituales.
+
 ### v1.2.1
 
 Se corrigió un problema por el que algunas imágenes del juego podían solicitarse por error desde `www.akedata.wiki` después de cambiar de módulo o reiniciar el Service Worker. Las rutas de imagen ahora se reescriben de forma síncrona a `data.akedata.wiki` al insertarse en la página.

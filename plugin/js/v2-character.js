@@ -107,9 +107,16 @@
         }
 
         function replacePlaceholders(desc, valueMap, modifierTypes, showModTag) {
+            const normalizePlaceholderValue = value => {
+                if (!value || typeof value !== 'object') return value;
+                for (const key of ['value', 'valueFloat', 'valueDouble', 'valueInt', 'floatValue', 'paramValue', 'attrValue']) {
+                    if (value[key] !== undefined && value[key] !== value) return normalizePlaceholderValue(value[key]);
+                }
+                return value;
+            };
             const lowerValueMap = {};
             for (const [key, val] of Object.entries(valueMap || {})) {
-                lowerValueMap[String(key).toLowerCase()] = val;
+                lowerValueMap[String(key).toLowerCase()] = normalizePlaceholderValue(val);
             }
             const lowerModTypes = {};
             if (modifierTypes) {
@@ -158,6 +165,13 @@
         function replaceV2Placeholders(desc, objWithBlackboard) {
             if (!desc || !desc.includes('{')) return desc;
             const lookup = {};
+            function normalizePlaceholderValue(value) {
+                if (!value || typeof value !== 'object') return value;
+                for (const key of ['value', 'valueFloat', 'valueDouble', 'valueInt', 'floatValue', 'paramValue', 'attrValue']) {
+                    if (value[key] !== undefined && value[key] !== value) return normalizePlaceholderValue(value[key]);
+                }
+                return value;
+            }
             function traverse(o) {
                 if (!o || typeof o !== 'object') return;
                 if (Array.isArray(o)) {
@@ -165,28 +179,28 @@
                 } else {
                     if (o.key !== undefined && (o.value !== undefined || o.valueStr !== undefined)) {
                         let v = o.valueStr !== undefined && o.valueStr !== "" ? o.valueStr : o.value;
-                        lookup[o.key.toLowerCase()] = v;
+                        lookup[o.key.toLowerCase()] = normalizePlaceholderValue(v);
                     }
                     if (o.bbKey !== undefined && (o.floatValue !== undefined || o.stringValue !== undefined)) {
                         let v = o.stringValue !== undefined && o.stringValue !== "" ? o.stringValue : o.floatValue;
-                        lookup[o.bbKey.toLowerCase()] = v;
+                        lookup[o.bbKey.toLowerCase()] = normalizePlaceholderValue(v);
                     }
                     if (o.paramType !== undefined && o.paramValue !== undefined) {
                         const ptName = paramTypeMap[o.paramType];
                         if (ptName) {
-                            lookup[ptName.toLowerCase()] = o.paramValue;
+                            lookup[ptName.toLowerCase()] = normalizePlaceholderValue(o.paramValue);
                         }
                     }
                     if (o.attrType !== undefined && o.attrValue !== undefined) {
                         const atName = attrEnMap[o.attrType];
                         if (atName) {
-                            lookup[atName.toLowerCase()] = o.attrValue;
+                            lookup[atName.toLowerCase()] = normalizePlaceholderValue(o.attrValue);
                         }
                     }
                     if (o.modifyAttributeType !== undefined && o.attrValue !== undefined) {
                         const atModName = attrEnMap[o.modifyAttributeType];
                         if (atModName) {
-                            lookup[atModName.toLowerCase()] = o.attrValue;
+                            lookup[atModName.toLowerCase()] = normalizePlaceholderValue(o.attrValue);
                         }
                     }
                     Object.values(o).forEach(traverse);

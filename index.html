@@ -202,6 +202,9 @@
         .welcome-home{position:relative}
         .home-tip-button{position:absolute;top:20px;right:24px;padding:8px 16px;border:1px solid var(--border-color,#cbd5e1);border-radius:999px;background:var(--button-bg,#e0e8f0);color:var(--text-color,#1e2b3c);font-size:.9rem;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.08);transition:background-color .2s,transform .2s}
         .home-tip-button:hover{background:var(--hover-bg,#d2dceb);transform:translateY(-1px)}
+        .raw-value-popover{position:fixed;display:none;box-sizing:border-box;width:max-content;max-width:min(420px,calc(100vw - 20px));padding:10px 12px;border:1px solid var(--border-color,#d9e0e8);border-radius:10px;background:var(--tooltip-bg,var(--module-bg,#fff));color:var(--tooltip-text,var(--text-color,#1e2b3c));box-shadow:0 8px 28px rgba(20,35,55,.22);font-size:.82rem;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;z-index:13000;pointer-events:auto}
+        .raw-value-popover.visible{display:block}
+        @media(max-width:600px){.raw-value-popover{max-width:calc(100vw - 20px);font-size:.78rem}}
         .home-tip-button:focus-visible{outline:2px solid var(--accent-color,#1e6f9f);outline-offset:2px}
         @media (max-width:999px){.home-tip-button{top:12px;right:12px;padding:7px 13px;font-size:.82rem}}
         .tip-modal[hidden]{display:none}
