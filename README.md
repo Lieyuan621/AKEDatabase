@@ -12,9 +12,19 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 
 ## 当前版本
 
+`1.2.3` 以信息可见性和细节体验为重点：关闭“显示隐藏模块”时，页面不再展示角色、装备、活动、Buff 等内部 ID；原始值与计算公式改为常态可用。Buff 属性修正按“出生加成”“buff加成”“副本加成”等来源合并显示，内部计算仍保留完整的原始修正链。
+
+活动起始页新增活动日历时间轴，支持状态区分、日期范围提示、视口外标题吸附和右侧活动图标；通过模块主页按钮返回时也会重新渲染。战争回响按轮换状态显示不同边框并支持折叠，默认展开进行中轮换和最高难度怪物配置；三个难度说明相同时只在难度列表前统一展示，不同时分别展示。
+
+副本、危机合约和战争回响现共用怪物渲染器，统一使用新的元素抗性数据（94–99），不再显示旧抗性系数（80–85）。敌人模块会将影响属性的 Buff 纳入计算，并在隐藏模式关闭时仅显示来源汇总。危机合约参数、活动配置和任务信息的显示问题，以及角色、武器技能说明中的转义换行也已修复。
+
+导出长图功能结束测试状态并默认开启，导出内容不含侧栏且文件名与当前页面匹配；装备制造消耗按钮旁新增默认装备元件图标。任务模块标记为“开发中”并暂时隐藏，BuffData、SkillData 和 SpawnerConfig 调试模块停用。
+
+缓存策略调整为仅在 Hotfix 变化时更新 TableCfg 缓存，Json 与图片只跟随独立的 `sharedRevision`。网站公告现支持 Markdown 语法渲染；关于页与 README 新增“终末地一图流”数据合作友链。
+
 `1.2.2` 将“显示原始值”和计算公式改为点击数值后打开常驻浮层，不再依赖鼠标悬停。点击另一个数值会切换内容，点击网页空白处或按 Esc 关闭；浮层支持滚动与窗口缩放重定位、移动端宽度限制及键盘操作，同时保持数值原有显示样式。
 
-本版本修复部分模块父级点击事件导致真实鼠标点击无法打开浮层的问题，并修复角色 `chr_0032_lizhiyan` 技能原始值显示为 `[object Object]`。常见数值对象会自动解包，未知结构使用 JSON 文本兜底。
+该版本还修复了部分模块父级点击事件导致真实鼠标点击无法打开浮层的问题，以及角色 `chr_0032_lizhiyan` 技能原始值显示为 `[object Object]` 的问题。
 
 `1.2.1` 修复模块切换和 Service Worker 休眠重启后，部分图片可能回退到网站域名请求的问题。模块 HTML、动态图片属性、`srcset`、海报和内联背景图现在会在写入 DOM 时同步解析到当前数据域；Service Worker 同时从注册 URL 恢复数据域与共享数据修订号，为未经过页面路由的图片请求提供后备代理。
 
@@ -31,10 +41,13 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 - 角色、武器和敌人的等级属性展示
 - 副本波次、生成器、出生位置和 Buff 属性计算
 - LevelScriptData 静态敌人、出生 Buff、条件 Buff 与怪物属性公式追踪
+- 副本、危机合约和战争回响共用怪物卡片与新元素抗性数据
+- 按来源汇总的属性加成，以及隐藏模式关闭时的内部 ID 保护
 - 点击常驻的原始值与计算公式浮层
 - 游戏富文本、术语链接和双层说明浮窗
+- 活动起始页日历时间轴与战争回响轮换/难度折叠
 - 亮色、暗色、护眼三种主题
-- 隐藏模块、默认等级、URL 同步和截图导出设置
+- 隐藏模块、默认等级、URL 同步和默认开启的长图导出设置
 - 模块和实体深链接
 - 桌面与移动端响应式布局
 - 首页数据更新时间倒计时、可重复查看的多语言网站公告和公告版本更新自动提醒
@@ -64,13 +77,14 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 
 ### 隐藏模块
 
-- `v2_cc`、`v2_character`、`v2_weapon`、`v2_enemy`、`v2_equip`、`v2_item`、`v2_dungeon`：v2 聚合数据版本，保留用于回归和数据对照，优先级低于 v3。
-- `buff`：BuffData 浏览和调试。
-- `skill_v2`：SkillData 全量动作节点与时间线调试。
-- `spawn`：SpawnerConfig、敌人库和波次调试。
+- `v3_mission`：任务流程与剧情对话，仍在开发中。
 - `hidden-example`：隐藏模块行为测试。
 
-旧版 v1 模块和旧 Skill 模块仍保留文件，但目前在 manifest 中禁用。
+### 禁用模块
+
+- `v2_cc`、`v2_character`、`v2_weapon`、`v2_enemy`、`v2_equip`、`v2_item`、`v2_dungeon`：已由对应 v3 模块取代的聚合数据版本。
+- `buff`、`skill_v2`、`spawn`：BuffData、SkillData 和 SpawnerConfig 调试模块。
+- 旧版 v1 模块、旧 Skill 模块及旧活动、奖章页面仍保留文件，但目前在 manifest 中禁用。
 
 ## 项目结构
 
@@ -88,6 +102,7 @@ AKEDatabase/
 │     ├─ ake-data-source.js       # R2 清单、版本选择和逻辑 URL 解析
 │     ├─ ake-cache.js             # 按数据域和版本隔离的 fetch 缓存策略
 │     ├─ ake-stats.js             # 属性和 modifier 计算
+│     ├─ ake-enemy-renderer.js    # 副本、危机合约和战争回响的共享怪物渲染器
 │     ├─ v3-table-data.js         # TableCfg/Json 到 v2 UI 数据契约的适配层
 │     └─ <module>.js              # 各模块控制器
 ├─ theme/
@@ -192,13 +207,13 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1 -Sha
 
 同一标签页内，模块 HTML、脚本源码和 CSS 按规范化 URL 缓存。再次进入模块时不重复网络获取 JS/CSS，但会从内存源码重新执行控制器以挂载新 DOM。模块 CSS 每个 URL 只创建一次，并按当前模块启用或禁用。
 
-应用资源（模块 HTML、JavaScript、CSS）使用 `appversion` 生成版本 URL，并采用浏览器 `force-cache`。TableCfg 请求解析为当前清单版本的不可变 R2 路径；Json/images 使用 `sharedRevision` 查询参数。网站自身的语言、公告和研究资料继续使用同源 `/public/**` 路径。
+应用资源（模块 HTML、JavaScript、CSS）使用 `appversion` 生成版本 URL，并采用浏览器 `force-cache`。TableCfg 的持久缓存命名空间只由数据域和当前 Hotfix 决定，`appversion` 变化不会使其失效；Json/images 只使用独立的 `sharedRevision`，不随 `appversion` 或 Hotfix 变化。网站自身的语言、公告和研究资料继续使用同源 `/public/**` 路径。
 
 ### 缓存分层
 
 - localStorage：保存主题、隐藏开关、默认等级、URL 设置、数据域、版本选择和令牌等小型偏好；所有访问都有异常保护。
 - 页面内存：缓存模块 HTML、脚本源码、CSS Promise、模块 DOM，以及 v3 已解析的 TableCfg/I18n/maps。
-- IndexedDB：数据库 `akedata-data-cache` 使用“数据域 + TableCfg 版本”或“数据域 + sharedRevision”命名空间保存 `akeFetch` 响应；多个版本可以共存。
+- IndexedDB：数据库 `akedata-data-cache` 使用“数据域 + TableCfg Hotfix”或“数据域 + sharedRevision”命名空间保存 `akeFetch` 响应；多个版本可以共存。
 - 图片路由：模块 HTML 和图片属性写入 DOM 时会同步将 `/public/images/**` 改写为当前数据域的绝对 URL；运行时新增或修改的图片、`srcset`、海报及内联背景图另由 DOM 观察器复查，避免浏览器先向网站域名发出请求。
 - Service Worker：根目录 `ake-sw.js` 为尚未改写或绕过 `akeFetch` 的 `/public/images/**` 请求提供后备代理。数据域与 `sharedRevision` 同时编码在 Worker 注册 URL 中，确保 Worker 休眠后重新启动仍会直接请求数据域，而不会回退到网站域名。
 - HTTP Cache：继续负责版本化的 HTML、JS、CSS 和网络响应。

@@ -2,6 +2,32 @@ AKEData telah pindah ke domain www.akedata.wiki. Domain lama, akedata.top, kini 
 
 # Catatan Pembaruan Versi AKEData
 
+### v1.2.3
+
+#### Modul dan visibilitas
+
+- Modul Misi disembunyikan sementara dan ditandai “Dalam pengembangan”. Modul debug BuffData, SkillData, dan SpawnerConfig dinonaktifkan, serta deskripsi Echoes of War diperbarui.
+- Saat “Tampilkan modul tersembunyi” dimatikan, ID internal karakter, perlengkapan, aktivitas, Buff, dan data lain tidak ditampilkan. Nilai mentah dan rumus perhitungan kini selalu tersedia.
+- Pengubah atribut dikelompokkan berdasarkan sumber seperti kemunculan, Buff, atau stage. Buff atribut di modul Musuh ikut dihitung; saat mode tersembunyi mati, ID Buff dan Buff tanpa efek atribut tidak ditampilkan.
+
+#### Musuh dan mode permainan
+
+- Dungeon, Contingency Contract, dan Echoes of War memakai satu renderer musuh untuk atribut level, Buff saat muncul, dan hasil modifikasi. Resistansi elemen baru (94–99) digunakan, sedangkan koefisien lama (80–85) tidak lagi ditampilkan.
+- Rotasi Echoes of War dapat dibuka atau ditutup, dengan warna bingkai untuk status aktif, akan datang, dan selesai. Hanya rotasi aktif yang terbuka secara default, dan hanya konfigurasi musuh pada tingkat kesulitan tertinggi yang dibuka di setiap rotasi.
+- Jika deskripsi sifat dan bonus sifat sama pada ketiga tingkat kesulitan, deskripsi ditampilkan sekali sebelum daftar. Perbedaan tetap ditampilkan pada tingkat kesulitan masing-masing.
+- Memperbaiki rendering `v2cc-term-param` di Contingency Contract. Konfigurasi aktivitas diciutkan secara default dan syarat pembukaan misi disembunyikan.
+
+#### Aktivitas dan antarmuka
+
+- Halaman awal Aktivitas kini memiliki lini masa kalender dengan tanggal mulai, selesai, dan status. Tersedia tooltip tanggal, judul di luar layar tetap terlihat di tepi kiri, serta ikon setinggi baris di sisi kanan. Kembali melalui tombol Beranda kini merender ulang lini masa dengan benar.
+- Memperbaiki baris baru yang di-escape dalam deskripsi skill karakter dan senjata. Ikon komponen bawaan tampil di samping tombol biaya pembuatan perlengkapan.
+- Ekspor gambar panjang tidak lagi eksperimental dan aktif secara default. Sidebar dikecualikan dan nama file sesuai dengan modul atau halaman saat ini.
+
+#### Pemuatan data dan pengumuman
+
+- Cache persisten TableCfg hanya berubah ketika Hotfix berubah. Json dan gambar menggunakan revisi data bersama yang independen dan tidak dimuat ulang hanya karena versi situs atau Hotfix berubah.
+- Pengumuman kini merender judul, daftar, dan kode sebaris Markdown dengan benar. Halaman Tentang dan README juga menambahkan tautan mitra data “终末地一图流”.
+
 ### v1.2.2
 
 Nilai mentah dan rumus kini dibuka dalam popover persisten saat angka diklik, menggantikan tooltip tertunda saat kursor diarahkan. Mengklik nilai lain mengganti isi; mengklik area kosong halaman atau menekan Esc menutup popover. Posisi diperbarui saat menggulir atau mengubah ukuran, mendukung perangkat seluler dan papan ketik, serta tidak mengubah gaya visual angka.

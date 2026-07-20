@@ -12,7 +12,7 @@
         let modifierTypeMap = {};
 
         const FORMULA_TO_MODTYPE = window.AKEStats.FORMULA_TO_MODTYPE;
-        const LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES = Object.freeze([80, 81, 82, 83, 84, 85]);
+        const LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES = window.AKEEnemyRenderer.LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES;
 
         const IMAGE_BASE_PATH = '/public/images/';
 
@@ -553,7 +553,6 @@
             if (enemyConfig.isDangerous) flags.push(`<span class="v2d-enemy-flag danger">${t('flags.dangerous')}</span>`);
             if (enemyConfig.showBigEffect) flags.push(`<span class="v2d-enemy-flag big-effect">${t('flags.globalEffect')}</span>`);
             if (enemyConfig.showBigHeadbar) flags.push(`<span class="v2d-enemy-flag big-headbar">${t('flags.pinnedHealthBar')}</span>`);
-            const flagsHtml = flags.length ? `<div class="v2d-enemy-flags">${flags.join('')}</div>` : '';
 
             const showHidden = getCurrentShowHidden();
             const modifierGroups = [
@@ -618,41 +617,26 @@
                     return `<span class="v2d-buff-tag v2d-has-tip">${id}<span class="v2d-buff-tip">${tipHtml}</span></span>`;
                 }).join('')}</div>` : '';
 
-            const statResult = getEnemyStatDetailsAtLevel(attrData, enemyLevel, allModifiers);
-            const stats = statResult?.values || {};
-            const scriptResult = scriptModifiers.length ? getEnemyStatDetailsAtLevel(attrData, enemyLevel, [...allModifiers, ...scriptModifiers]) : null;
-            const scriptStats = scriptResult?.values || null;
-            const changedScriptStats = scriptStats ? Object.fromEntries(Object.entries(scriptStats).filter(([key, val]) => val !== stats?.[key])) : {};
             const scriptBuffTagsHtml = showHidden && (scriptedBuffs || []).length ? `<div class="v2d-enemy-buffs">${scriptedBuffs.map(row => `<span class="v2d-buff-tag v2d-script-buff v2d-has-tip">${escH(row.buffId)}<small>脚本</small><span class="v2d-buff-tip"><div>条件性脚本 Buff · LevelScript ${escH(row.scriptId)}</div></span></span>`).join('')}</div>` : '';
-            let statsHtml = '';
-            if (stats && Object.keys(stats).length > 0) {
-                statsHtml = '<div class="v2d-attr-grid">';
-                Object.entries(stats).forEach(([key, val]) => {
-                    statsHtml += `<div class="v2d-attr-item"><span class="v2d-attr-key">${key}</span><span class="v2d-attr-val">${formatStatValue(val, statResult.details[key])}</span></div>`;
-                });
-                statsHtml += '</div>';
-            }
-
-            return `
-                <div class="v2d-enemy-card">
-                    <div class="v2d-enemy-header">
-                        <img class="v2d-enemy-icon" src="${iconSrc}" onerror="this.onerror=null; this.src='';">
-                        <div class="v2d-enemy-title">
-                            <span class="v2d-enemy-name">${name}</span>
-                            ${nickname && nickname !== name ? `<span class="v2d-enemy-nick">${nickname}</span>` : ''}
-                        </div>
-                        <span class="v2d-enemy-level">Lv.${enemyLevel}</span>
-                    </div>
-                    ${desc ? `<div class="v2d-enemy-desc">${parseText(desc)}</div>` : ''}
-                    ${showHidden ? '' : modifierSummaryHtml}
-                    ${modifierHtml}
-                    ${buffTagsHtml}
-                    ${scriptBuffTagsHtml}
-                    ${flagsHtml}
-                    ${statsHtml}
-                    ${Object.keys(changedScriptStats).length ? `<div class="v2d-script-stats"><b>脚本 Buff 生效时</b>${Object.entries(changedScriptStats).map(([key, val]) => `<span>${escH(key)} ${formatValue(stats[key])} → ${formatStatValue(val, scriptResult.details[key])}</span>`).join('')}</div>` : ''}
-                </div>
-            `;
+            const statState = window.AKEEnemyRenderer.calculateStats({
+                attrData,
+                level: enemyLevel,
+                baseModifiers: allModifiers,
+                scriptModifiers,
+                getDetails: getEnemyStatDetailsAtLevel
+            });
+            return window.AKEEnemyRenderer.renderCard({
+                iconSrc,
+                name,
+                nickname,
+                level: enemyLevel,
+                descriptionHtml: desc ? parseText(desc) : '',
+                extraHtml: `${showHidden ? '' : modifierSummaryHtml}${modifierHtml}${buffTagsHtml}${scriptBuffTagsHtml}`,
+                flags,
+                statState,
+                formatStatValue,
+                formatBaseValue: formatValue
+            });
         }
 
         function renderDungeonCard(dungeonId, dungeon) {

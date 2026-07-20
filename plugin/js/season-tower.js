@@ -4,6 +4,7 @@
     const SCENE_ID = 'indie_tower001';
     const DIFFICULTIES = { 1: '普通', 2: '困难', 3: '残酷' };
     const ATTR_ORDER = [0, 1, 2, 3, 20, 21, 27, 12, 8, 9, 10, 11, 15];
+    const LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES = window.AKEEnemyRenderer.LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES;
 
     const root = document.getElementById('seasonTowerModule');
     const list = document.getElementById('seasonTowerList');
@@ -38,6 +39,10 @@
         });
     }
 
+    function comparableText(value) {
+        return String(value || '').replace(/\s+/g, ' ').trim();
+    }
+
     function parseDate(value) {
         if (!value) return null;
         const parts = String(value).match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})\s+(\d{1,2}):(\d{1,2}):(\d{1,2})$/);
@@ -59,7 +64,7 @@
         const now = Date.now();
         const open = parseDate(season.openTime)?.getTime();
         const close = parseDate(season.closeTime)?.getTime();
-        if (open && now < open) return { key: 'upcoming', label: '即将开放' };
+        if (open && now < open) return { key: 'upcoming', label: '未开始' };
         if (close && now >= close) return { key: 'closed', label: '已结束' };
         return { key: 'active', label: '进行中' };
     }
@@ -134,17 +139,28 @@
         return detail && window.renderRawValueTip ? window.renderRawValueTip(display, detail) : display;
     }
 
+    function getEnemyStatDetails(attrTemplate, level, modifiers) {
+        return window.AKEStats.getEnemyStatDetailsAtLevel(attrTemplate, level, modifiers, {
+            displayOrder: ATTR_ORDER,
+            getAttrName: type => attrMap[type] || `属性 ${type}`,
+            includeModifierOnlyAttrs: false,
+            excludeAttrTypes: LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES
+        });
+    }
+
     function formatModifierSummary(modifiers) {
-        return window.AKEStats.combineModifiers(modifiers).map(modifier => {
-            const name = attrMap[modifier.attrType] || `属性 ${modifier.attrType}`;
-            const directMultiplier = modifier.modifierType === 4 || modifier.modifierType === 8;
-            const multiplier = directMultiplier || modifier.modifierType === 1 || modifier.modifierType === 6;
-            const value = directMultiplier ? modifier.attrValue - 1 : modifier.attrValue;
-            const display = multiplier
-                ? `${value > 0 ? '+' : ''}${(value * 100).toFixed(1)}%`
-                : `${value > 0 ? '+' : ''}${Number.isInteger(value) ? value : Number(value.toFixed(4))}`;
-            return `${escapeHtml(name)} ${display}`;
-        }).join(', ');
+        return window.AKEStats.combineModifiers(modifiers)
+            .filter(modifier => !LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES.includes(modifier.attrType))
+            .map(modifier => {
+                const name = attrMap[modifier.attrType] || `属性 ${modifier.attrType}`;
+                const directMultiplier = modifier.modifierType === 4 || modifier.modifierType === 8;
+                const multiplier = directMultiplier || modifier.modifierType === 1 || modifier.modifierType === 6;
+                const value = directMultiplier ? modifier.attrValue - 1 : modifier.attrValue;
+                const display = multiplier
+                    ? `${value > 0 ? '+' : ''}${(value * 100).toFixed(1)}%`
+                    : `${value > 0 ? '+' : ''}${Number.isInteger(value) ? value : Number(value.toFixed(4))}`;
+                return `${escapeHtml(name)} ${display}`;
+            }).join(', ');
     }
 
     function renderBuffs(inlineModifiers, ownBuffs, libraryBuffs, scriptedBuffs) {
@@ -184,36 +200,30 @@
         const modifiers = [...(enemy.attrModifiers || [])];
         ownBuffs.forEach(id => modifiers.push(...buffModifiers(id, [])));
         (libraryBuffs || []).forEach(buff => modifiers.push(...buffModifiers(buff.buffId, buff.blackboard)));
-        const statResult = window.AKEStats.getEnemyStatDetailsAtLevel(attrTemplate, level, modifiers, {
-            displayOrder: ATTR_ORDER,
-            getAttrName: type => attrMap[type] || `属性 ${type}`,
-            includeModifierOnlyAttrs: false
-        });
-        const stats = statResult?.values || {};
         const scriptedModifiers = (scriptedBuffs || []).flatMap(buff => buffModifiers(buff.buffId, buff.blackboard));
-        const scriptedResult = scriptedModifiers.length ? window.AKEStats.getEnemyStatDetailsAtLevel(attrTemplate, level, [...modifiers, ...scriptedModifiers], {
-            displayOrder: ATTR_ORDER,
-            getAttrName: type => attrMap[type] || `属性 ${type}`,
-            includeModifierOnlyAttrs: false
-        }) : null;
-        const scriptedStats = scriptedResult?.values || null;
-        const changedStats = scriptedStats ? Object.fromEntries(Object.entries(scriptedStats).filter(([name, value]) => value !== stats[name])) : {};
         const flags = [];
         if (enemy.isDangerous) flags.push('<span class="v2d-enemy-flag danger">危险敌人</span>');
         if (enemy.showBigEffect) flags.push('<span class="v2d-enemy-flag big-effect">全局效果</span>');
         if (enemy.showBigHeadbar) flags.push('<span class="v2d-enemy-flag big-headbar">固定血条</span>');
-        return `<div class="v2d-enemy-card">
-            <div class="v2d-enemy-header">
-                <img class="v2d-enemy-icon" src="/public/images/enemy/monstericonbig/${escapeHtml(enemy.templateId || enemyId)}.png" alt="" onerror="this.style.display='none'">
-                <div class="v2d-enemy-title"><span class="v2d-enemy-name">${escapeHtml(text(display.name, enemy.templateId || enemyId))}</span>${text(display.nickname) ? `<span class="v2d-enemy-nick">${escapeHtml(text(display.nickname))}</span>` : ''}</div>
-                <span class="v2d-enemy-level">Lv.${level}</span>
-            </div>
-            ${text(display.description) ? `<div class="v2d-enemy-desc">${parseGameText(text(display.description))}</div>` : ''}
-            ${renderBuffs(enemy.attrModifiers || [], ownBuffs, libraryBuffs, scriptedBuffs)}
-            ${flags.length ? `<div class="v2d-enemy-flags">${flags.join('')}</div>` : ''}
-            <div class="v2d-attr-grid">${Object.entries(stats).map(([name, value]) => `<div class="v2d-attr-item"><span class="v2d-attr-key">${escapeHtml(name)}</span><span class="v2d-attr-val">${formatStat(value, statResult.details[name])}</span></div>`).join('')}</div>
-            ${Object.keys(changedStats).length ? `<div class="v2d-script-stats"><b>脚本 Buff 生效时</b>${Object.entries(changedStats).map(([name, value]) => `<span>${escapeHtml(name)} ${formatAttr(stats[name])} → ${formatStat(value, scriptedResult.details[name])}</span>`).join('')}</div>` : ''}
-        </div>`;
+        const statState = window.AKEEnemyRenderer.calculateStats({
+            attrData: attrTemplate,
+            level,
+            baseModifiers: modifiers,
+            scriptModifiers: scriptedModifiers,
+            getDetails: getEnemyStatDetails
+        });
+        return window.AKEEnemyRenderer.renderCard({
+            iconSrc: `/public/images/enemy/monstericonbig/${enemy.templateId || enemyId}.png`,
+            name: text(display.name, enemy.templateId || enemyId),
+            nickname: text(display.nickname),
+            level,
+            descriptionHtml: text(display.description) ? parseGameText(text(display.description)) : '',
+            extraHtml: renderBuffs(enemy.attrModifiers || [], ownBuffs, libraryBuffs, scriptedBuffs),
+            flags,
+            statState,
+            formatStatValue: formatStat,
+            formatBaseValue: formatAttr
+        });
     }
 
     function parseWaves(config, data) {
@@ -296,11 +306,11 @@
         return `<div class="v2d-spawn-map-container"><div class="v2d-spawn-map" style="--unit:${unit}%"><div class="v2d-map-center"></div>${spots}</div><div class="v2d-map-coords">X: ${(-halfX).toFixed(0)} ~ ${halfX.toFixed(0)}&nbsp;&nbsp;Z: ${(-halfZ).toFixed(0)} ~ ${halfZ.toFixed(0)}</div></div>`;
     }
 
-    function renderCombat(gameId, dungeon) {
+    function renderCombat(gameId, dungeon, openByDefault, isHighestDifficulty) {
         const configs = Object.values(dungeon.spawnerConfigs || {});
         const fallbackEnemies = (dungeon.enemyIds || []).map((id, index) => ({ id, level: dungeon.enemyLevels?.[index] || dungeon.recommendLv, buffs: [] }));
         if (!configs.length && !fallbackEnemies.length) return '';
-        return `<details class="st-combat" data-game-id="${escapeHtml(gameId)}"><summary>怪物配置与属性${configs.length ? `（${configs.length} 组）` : ''}</summary><div class="st-combat-body"><span class="st-muted">展开后加载怪物数据...</span></div></details>`;
+        return `<details class="st-combat" data-game-id="${escapeHtml(gameId)}"${isHighestDifficulty ? ' data-default-open="true"' : ''}${openByDefault ? ' open' : ''}><summary>怪物配置与属性${configs.length ? `（${configs.length} 组）` : ''}</summary><div class="st-combat-body"><span class="st-muted">展开后加载怪物数据...</span></div></details>`;
     }
 
     function renderCombatBody(dungeon, data) {
@@ -336,29 +346,60 @@
         return standard + (glowing ? `<div class="st-rank st-rank--glowing"><span>✦</span><div><b>${escapeHtml(text(glowing.rankName, '增辉称号'))}</b><small>增辉称号</small></div></div>` : '');
     }
 
-    function renderDifficulty(baseId, gameId, star, data) {
-        const dungeon = data.dungeons[gameId] || {};
-        const mechanic = data.mechanics[gameId] || {};
-        const rewardId = data.gameGroups[baseId]?.stars?.[star]?.rewardId;
-        const feature = fillParams(text(dungeon.featureDesc), dungeon.paramList);
-        const special = fillParams(text(data.towerDungeons[gameId]?.specialBuffDesc), dungeon.paramList);
+    function renderDifficulty(entry, data, options) {
+        const { baseId, gameId, star, dungeon, mechanic, rewardId, feature, special } = entry;
         return `<div class="st-difficulty st-difficulty--${star}">
             <div class="st-difficulty-head"><span>${star} ★</span><b>${DIFFICULTIES[star] || `难度 ${star}`}</b><small>推荐等级 ${dungeon.recommendLv || '-'}</small></div>
             <div class="st-goal">${parseGameText(text(mechanic.desc, '击败所有敌人'))}</div>
-            ${feature ? `<div class="st-feature">${parseGameText(feature)}</div>` : ''}
-            ${special ? `<div class="st-special"><b>特殊增益</b>${parseGameText(special)}</div>` : ''}
+            ${options.showFeature && feature ? `<div class="st-feature">${parseGameText(feature)}</div>` : ''}
+            ${options.showSpecial && special ? `<div class="st-special"><b>特殊增益</b>${parseGameText(special)}</div>` : ''}
             <div class="st-rewards">${(data.rewards[rewardId]?.itemBundles || []).map(bundle => itemReward(bundle, data.items)).join('') || '<span class="st-muted">未配置荣勋</span>'}</div>
-            ${renderCombat(gameId, dungeon)}
+            ${renderCombat(gameId, dungeon, options.openCombat, options.isHighestDifficulty)}
         </div>`;
     }
 
-    function renderStage(baseId, data) {
+    function renderStage(baseId, data, expandHighestDifficulty) {
         const group = data.mechanicGroups[baseId] || {};
         const towerGroup = data.gameGroups[baseId] || {};
+        const entries = Object.entries(towerGroup.stars || {}).map(([starValue, row]) => {
+            const star = Number(starValue);
+            const dungeon = data.dungeons[row.gameId] || {};
+            return {
+                baseId,
+                gameId: row.gameId,
+                star,
+                dungeon,
+                mechanic: data.mechanics[row.gameId] || {},
+                rewardId: row.rewardId,
+                feature: fillParams(text(dungeon.featureDesc), dungeon.paramList),
+                special: fillParams(text(data.towerDungeons[row.gameId]?.specialBuffDesc), dungeon.paramList)
+            };
+        }).sort((a, b) => a.star - b.star);
+        const highestStar = Math.max(0, ...entries.map(entry => entry.star));
+        const sameFeature = new Set(entries.map(entry => comparableText(entry.feature))).size <= 1;
+        const sameSpecial = new Set(entries.map(entry => comparableText(entry.special))).size <= 1;
+        const sharedFeature = sameFeature ? entries.find(entry => entry.feature)?.feature || '' : '';
+        const sharedSpecial = sameSpecial ? entries.find(entry => entry.special)?.special || '' : '';
         return `<article class="st-stage">
             <header class="st-stage-head"><div><h3>${escapeHtml(text(group.gameGroupName, baseId))}</h3><code class="st-stage-id">${escapeHtml(baseId)}</code></div><strong>最高 3 ★</strong></header>
-            <div>${Object.entries(towerGroup.stars || {}).sort(([a], [b]) => Number(a) - Number(b)).map(([star, row]) => renderDifficulty(baseId, row.gameId, Number(star), data)).join('')}</div>
+            ${sharedFeature ? `<div class="st-feature st-feature--shared">${parseGameText(sharedFeature)}</div>` : ''}
+            ${sharedSpecial ? `<div class="st-special st-special--shared"><b>特殊增益</b>${parseGameText(sharedSpecial)}</div>` : ''}
+            <div>${entries.map(entry => renderDifficulty(entry, data, {
+                showFeature: !sameFeature,
+                showSpecial: !sameSpecial,
+                openCombat: expandHighestDifficulty && entry.star === highestStar,
+                isHighestDifficulty: entry.star === highestStar
+            })).join('')}</div>
         </article>`;
+    }
+
+    function renderWeek(week, index, data) {
+        const status = seasonStatus(week);
+        const open = status.key === 'active';
+        return `<details class="st-week st-week--${status.key}" data-week-id="${escapeHtml(week.id)}"${open ? ' open' : ''}>
+            <summary class="st-week-head"><div><h2>${escapeHtml(week.name)}</h2><small>轮换 ${index + 1} · ${week.groupIds.length} 个关卡 · 最高 ${week.groupIds.length * 3} 星</small></div><div class="st-week-time"><b class="st-week-status">${status.label}</b><span>${formatDate(week.openTime)}</span><i></i><span>${formatDate(week.closeTime)}</span></div></summary>
+            <div class="st-week-body"><div class="st-stage-grid">${week.groupIds.map(id => renderStage(id, data, open)).join('')}</div></div>
+        </details>`;
     }
 
     function renderIntro(data) {
@@ -376,7 +417,8 @@
         </div>
         ${renderIntro(data)}
         <section class="st-section"><h2>最终评级与称号</h2><div class="st-rank-grid">${renderRanks(data)}</div></section>
-        <section class="st-section"><h2>轮换周期</h2>${season.weeks.map((week, index) => `<section class="st-week"><header class="st-week-head"><div><h2>${escapeHtml(week.name)}</h2><small>轮换 ${index + 1} · 3 个关卡 · 最高 9 星</small></div><div class="st-week-time"><span>${formatDate(week.openTime)}</span><i></i><span>${formatDate(week.closeTime)}</span></div></header><div class="st-stage-grid">${week.groupIds.map(id => renderStage(id, data)).join('')}</div></section>`).join('')}</section>`;
+        <section class="st-section"><h2>轮换周期</h2>${season.weeks.map((week, index) => renderWeek(week, index, data)).join('')}</section>`;
+        loadOpenCombats(detail);
         detail.scrollTop = 0;
     }
 
@@ -416,6 +458,18 @@
         if (!config) return;
         config.querySelectorAll('.v2d-map-spot').forEach(spot => spot.classList.remove('group-highlight', 'target-highlight'));
         config.querySelectorAll('.v2d-wave-enemy').forEach(enemy => enemy.classList.remove('enemy-highlight', 'enemy-target-highlight'));
+    }
+
+    function loadCombat(combat) {
+        if (!combat?.open || combat.dataset.loaded === 'true' || !activeData) return;
+        const dungeon = activeData.dungeons[combat.dataset.gameId];
+        if (!dungeon) return;
+        combat.querySelector('.st-combat-body').innerHTML = renderCombatBody(dungeon, activeData);
+        combat.dataset.loaded = 'true';
+    }
+
+    function loadOpenCombats(scope) {
+        scope.querySelectorAll('.st-combat[open]').forEach(loadCombat);
     }
 
     function adjustMapTip(spot) {
@@ -467,6 +521,8 @@
     root.addEventListener('click', event => {
         const seasonItem = event.target.closest('[data-season-id]');
         if (seasonItem) { selectSeason(seasonItem.dataset.seasonId, true); return; }
+        const combatSummary = event.target.closest('.st-combat > summary');
+        if (combatSummary) combatSummary.parentElement.dataset.userToggled = 'true';
         const wave = event.target.closest('.v2d-wave-line, .v2d-wave-enemy');
         const config = wave?.closest('.st-config');
         if (config && wave.dataset.waveIdx !== undefined) switchWave(config, wave.dataset.waveIdx);
@@ -507,12 +563,15 @@
         if (target) clearMapHighlights(target.closest('.st-config'));
     });
     root.addEventListener('toggle', event => {
-        const combat = event.target.closest?.('.st-combat');
-        if (!combat?.open || combat.dataset.loaded === 'true' || !activeData) return;
-        const dungeon = activeData.dungeons[combat.dataset.gameId];
-        if (!dungeon) return;
-        combat.querySelector('.st-combat-body').innerHTML = renderCombatBody(dungeon, activeData);
-        combat.dataset.loaded = 'true';
+        if (event.target.matches?.('.st-week')) {
+            if (!event.target.open) return;
+            event.target.querySelectorAll('.st-combat[data-default-open="true"]').forEach(combat => {
+                if (combat.dataset.userToggled !== 'true') combat.open = true;
+            });
+            loadOpenCombats(event.target);
+            return;
+        }
+        loadCombat(event.target.closest?.('.st-combat'));
     }, true);
     document.getElementById('seasonTowerMobileButton').addEventListener('click', () => {
         overlay.classList.add('is-open');

@@ -138,8 +138,40 @@
         }
 
         const TIMELINE_DAY_MS = 24 * 60 * 60 * 1000;
+        const TIMELINE_DAY_WIDTH = 28;
         const TIMELINE_PAST_DAYS = 14;
         const TIMELINE_FUTURE_DAYS = 90;
+
+        function getTimelineTooltip() {
+            let tooltip = document.getElementById('activityTimelineTooltip');
+            if (tooltip) return tooltip;
+            tooltip = document.createElement('div');
+            tooltip.id = 'activityTimelineTooltip';
+            tooltip.className = 'activity-timeline-tooltip';
+            tooltip.hidden = true;
+            document.body.appendChild(tooltip);
+            return tooltip;
+        }
+
+        function positionTimelineTooltip(tooltip, x, y) {
+            const gap = 12;
+            const maxLeft = window.innerWidth - tooltip.offsetWidth - 8;
+            const maxTop = window.innerHeight - tooltip.offsetHeight - 8;
+            tooltip.style.left = `${Math.max(8, Math.min(x + gap, maxLeft))}px`;
+            tooltip.style.top = `${Math.max(8, Math.min(y + gap, maxTop))}px`;
+        }
+
+        function showTimelineTooltip(item, x, y) {
+            const tooltip = getTimelineTooltip();
+            tooltip.textContent = `${item.name || item.activityId}\n${t('dates.range', { start: formatTime(item.openTime), end: formatTime(item.closeTime) })}`;
+            tooltip.hidden = false;
+            positionTimelineTooltip(tooltip, x, y);
+        }
+
+        function hideTimelineTooltip() {
+            const tooltip = document.getElementById('activityTimelineTooltip');
+            if (tooltip) tooltip.hidden = true;
+        }
 
         function parseActivityTime(value) {
             if (!value) return null;
@@ -187,6 +219,7 @@
             section.className = 'activity-timeline';
             section.setAttribute('aria-label', t('overview.title'));
             section.style.setProperty('--timeline-days', dayCount);
+            section.style.setProperty('--timeline-day-width', `${TIMELINE_DAY_WIDTH}px`);
 
             const viewport = document.createElement('div');
             viewport.className = 'activity-timeline__viewport';
@@ -223,9 +256,30 @@
                 const status = getActivityStatus(item.openTime, item.closeTime);
                 bar.className = `activity-timeline__bar activity-timeline__bar--type-${typeIndex} ${status.class}`;
                 bar.style.gridColumn = `${offset + 1} / span ${Math.min(span, dayCount - offset)}`;
-                bar.textContent = item.name || item.activityId;
-                bar.title = `${item.name || item.activityId}\n${formatTime(item.openTime)} - ${formatTime(item.closeTime)}`;
+                const title = document.createElement('span');
+                title.className = 'activity-timeline__bar-title';
+                title.textContent = item.name || item.activityId;
+                bar.appendChild(title);
+                if (item.tabImg) {
+                    const image = document.createElement('img');
+                    image.className = 'activity-timeline__bar-icon';
+                    image.src = item.tabImg;
+                    image.alt = '';
+                    image.loading = 'lazy';
+                    image.onerror = function () { this.remove(); };
+                    bar.appendChild(image);
+                }
+                bar.setAttribute('aria-label', `${item.name || item.activityId}，${t('dates.range', { start: formatTime(item.openTime), end: formatTime(item.closeTime) })}`);
+                bar.addEventListener('pointerenter', event => showTimelineTooltip(item, event.clientX, event.clientY));
+                bar.addEventListener('pointermove', event => positionTimelineTooltip(getTimelineTooltip(), event.clientX, event.clientY));
+                bar.addEventListener('pointerleave', hideTimelineTooltip);
+                bar.addEventListener('focus', () => {
+                    const rect = bar.getBoundingClientRect();
+                    showTimelineTooltip(item, rect.left + Math.min(rect.width, 160), rect.bottom);
+                });
+                bar.addEventListener('blur', hideTimelineTooltip);
                 bar.addEventListener('click', () => {
+                    hideTimelineTooltip();
                     activeActivityId = item.activityId;
                     renderActivityList();
                 });
@@ -246,7 +300,7 @@
             container.querySelector('.ake-overview__header')?.after(section);
             requestAnimationFrame(() => {
                 const todayOffset = (now - rangeStart) / TIMELINE_DAY_MS;
-                if (todayOffset >= 0) viewport.scrollLeft = Math.max(0, todayOffset * 40 - viewport.clientWidth * 0.3);
+                if (todayOffset >= 0) viewport.scrollLeft = Math.max(0, todayOffset * TIMELINE_DAY_WIDTH - viewport.clientWidth * 0.3);
             });
         }
 
@@ -256,6 +310,7 @@
                 title: t('overview.title'), description: t('overview.description'),
                 group: item => { const status = getActivityStatus(item.openTime, item.closeTime); return { id: status.class, name: status.text, order: statusOrder[status.class] }; },
                 onReset: () => { activeActivityId = null; },
+                afterRender: () => renderActivityTimeline(items, container),
                 onSelect: item => { activeActivityId = item.activityId; renderActivityList(); },
                 sidebarSelector: item => `.activity-item[data-activity-id="${CSS.escape(item.activityId)}"]`,
                 items: items.map(item => {
@@ -265,7 +320,6 @@
                         tags: [...(item.tags || []).map(tag => tag.name || tag.tagId), item.openTime ? t('dates.opensOn', { date: item.openTime.split(' ')[0] }) : t('dates.permanentContent')] };
                 })
             });
-            renderActivityTimeline(items, container);
         }
 
         function renderActivityList() {

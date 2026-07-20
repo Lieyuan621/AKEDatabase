@@ -2,6 +2,32 @@ AKEData đã chuyển sang tên miền www.akedata.wiki. Tên miền cũ akedata
 
 # Nhật ký cập nhật phiên bản AKEData
 
+### v1.2.3
+
+#### Mô-đun và khả năng hiển thị
+
+- Mô-đun Nhiệm vụ tạm thời bị ẩn và được đánh dấu “Đang phát triển”. Các mô-đun gỡ lỗi BuffData, SkillData và SpawnerConfig đã bị vô hiệu hóa; mô tả của Echoes of War cũng được cập nhật.
+- Khi tắt “Hiển thị mô-đun ẩn”, ID nội bộ của nhân vật, trang bị, hoạt động, Buff và dữ liệu khác sẽ không xuất hiện. Giá trị gốc và công thức tính giờ luôn có thể xem.
+- Các hiệu chỉnh thuộc tính được gộp theo nguồn như khi xuất hiện, Buff hoặc màn chơi. Buff thuộc tính trong mô-đun Kẻ địch tham gia phép tính; khi tắt chế độ ẩn, ID Buff và Buff không ảnh hưởng thuộc tính sẽ không hiển thị.
+
+#### Kẻ địch và chế độ chơi
+
+- Phó bản, Contingency Contract và Echoes of War dùng chung bộ hiển thị kẻ địch cho thuộc tính cấp độ, Buff khi xuất hiện và kết quả sau hiệu chỉnh. Dữ liệu kháng nguyên tố mới (94–99) được dùng thống nhất, còn hệ số cũ (80–85) không còn hiển thị.
+- Có thể mở hoặc thu gọn các vòng xoay Echoes of War; màu viền phân biệt đang diễn ra, sắp bắt đầu và đã kết thúc. Mặc định chỉ vòng đang diễn ra được mở, và mỗi vòng chỉ mở cấu hình kẻ địch ở độ khó cao nhất.
+- Nếu mô tả đặc tính và phần tăng cường giống nhau ở cả ba độ khó, chúng chỉ xuất hiện một lần trước danh sách. Nội dung khác nhau vẫn hiển thị riêng theo từng độ khó.
+- Đã sửa cách hiển thị `v2cc-term-param` trong Contingency Contract. Cấu hình hoạt động mặc định được thu gọn và điều kiện mở khóa nhiệm vụ bị ẩn.
+
+#### Hoạt động và giao diện
+
+- Trang đầu Hoạt động có thêm dòng thời gian lịch, hiển thị ngày bắt đầu, kết thúc và trạng thái. Dòng thời gian có chú thích ngày, giữ tiêu đề ngoài màn hình ở cạnh trái và đặt biểu tượng lấp đầy chiều cao ở cạnh phải. Nút Trang chủ giờ cũng kết xuất lại đúng.
+- Đã sửa ký tự xuống dòng đã thoát trong mô tả kỹ năng nhân vật và vũ khí. Biểu tượng linh kiện mặc định xuất hiện cạnh nút chi phí chế tạo trang bị.
+- Xuất ảnh dài đã rời trạng thái thử nghiệm và được bật mặc định. Thanh bên bị loại khỏi ảnh và tên tệp khớp với mô-đun hoặc trang hiện tại.
+
+#### Tải dữ liệu và thông báo
+
+- Bộ nhớ đệm TableCfg lâu dài chỉ thay đổi khi Hotfix thay đổi. Json và hình ảnh dùng bản sửa đổi dữ liệu dùng chung độc lập, không tải lại chỉ vì phiên bản trang web hoặc Hotfix thay đổi.
+- Thông báo giờ hiển thị đúng tiêu đề, danh sách và mã nội tuyến Markdown. Trang Giới thiệu và README cũng thêm liên kết đối tác dữ liệu “终末地一图流”.
+
 ### v1.2.2
 
 Giá trị gốc và công thức giờ mở trong cửa sổ nổi duy trì khi nhấp vào một số, thay cho chú thích xuất hiện chậm khi rê chuột. Nhấp giá trị khác sẽ đổi nội dung; nhấp vùng trống của trang hoặc nhấn Esc sẽ đóng. Cửa sổ tự định vị lại khi cuộn hay đổi kích thước, hỗ trợ thiết bị di động và bàn phím, đồng thời không thay đổi kiểu hiển thị của các số.

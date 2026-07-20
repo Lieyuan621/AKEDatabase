@@ -2,6 +2,32 @@ AKEData se ha trasladado al dominio www.akedata.wiki. El dominio anterior, akeda
 
 # Registro de actualizaciones de AKEData
 
+### v1.2.3
+
+#### Módulos y visibilidad
+
+- El módulo de Misiones queda oculto temporalmente y marcado como «En desarrollo». Los módulos de depuración BuffData, SkillData y SpawnerConfig se han desactivado, y se actualizó la descripción de Echoes of War.
+- Al desactivar «Mostrar módulos ocultos», dejan de mostrarse los ID internos de personajes, equipo, actividades, Buff y otros datos. Los valores originales y las fórmulas están disponibles de forma permanente.
+- Los modificadores de atributos se agrupan por su origen, como aparición, Buff o etapa. Los Buffs de atributos del módulo Enemigos participan en el cálculo; con el modo oculto desactivado no se muestran sus ID ni los Buffs sin efectos de atributos.
+
+#### Enemigos y modos de juego
+
+- Mazmorras, Contingency Contract y Echoes of War comparten un único renderizador para atributos por nivel, Buffs de aparición y resultados modificados. Usan las nuevas resistencias elementales (94–99) y dejan de mostrar los coeficientes antiguos (80–85).
+- Las rotaciones de Echoes of War se pueden expandir o contraer, con bordes distintos para estados activos, próximos y finalizados. Solo se abre por defecto la rotación activa y, en cada rotación, la configuración de enemigos de mayor dificultad.
+- Si las tres dificultades comparten las mismas descripciones de característica y bonificación, estas se muestran una sola vez antes de la lista. Las diferencias se mantienen dentro de cada dificultad.
+- Se corrigió el renderizado de `v2cc-term-param` en Contingency Contract. La configuración de actividad aparece contraída y se ocultan las condiciones de desbloqueo de las misiones.
+
+#### Actividades e interfaz
+
+- La portada de Actividades incorpora una línea temporal con fechas de inicio, final y estado. Incluye información de fechas al pasar el cursor, fija a la izquierda los títulos fuera de pantalla y muestra a la derecha iconos que ocupan toda la altura. El botón Inicio vuelve a renderizarla correctamente.
+- Se corrigieron los saltos de línea escapados en habilidades de personajes y armas. Junto al botón de coste de fabricación del equipo aparece el icono del componente predeterminado.
+- La exportación de imágenes largas deja de ser experimental y se activa por defecto. Excluye la barra lateral y usa el nombre correcto del módulo o página.
+
+#### Carga de datos y avisos
+
+- La caché persistente de TableCfg solo cambia al cambiar el Hotfix. Json e imágenes usan una revisión independiente de datos compartidos y ya no se recargan por cambios de la versión del sitio o del Hotfix.
+- Los avisos ahora renderizan correctamente títulos, listas y código en línea de Markdown. La página Acerca de y el README añaden el enlace colaborador «终末地一图流».
+
 ### v1.2.2
 
 Los valores originales y las fórmulas ahora se abren en un panel persistente al hacer clic en un número, en lugar de usar una ayuda retrasada al pasar el ratón. Al hacer clic en otro valor se cambia el contenido; al hacer clic en un espacio vacío o pulsar Esc se cierra. El panel se reposiciona al desplazar o cambiar el tamaño de la ventana y admite móviles y teclado. Los números mantienen su estilo visual original.

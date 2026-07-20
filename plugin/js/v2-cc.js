@@ -15,6 +15,7 @@
     let ccBuffCache = {};
 
     const FORMULA_TO_MODTYPE = window.AKEStats.FORMULA_TO_MODTYPE;
+    const LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES = window.AKEEnemyRenderer.LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES;
 
     const ATTR_DISPLAY_ORDER = [0, 1, 2, 3, 20, 21, 27, 12, 8, 9, 10, 11, 15];
 
@@ -457,7 +458,7 @@
                 ? escapeHtml(String(bb.valueStr))
                 : formatBlackboardValue(bb.value);
             return `<span class="v2cc-term-param"><span class="v2cc-term-param-key">${escapeHtml(bb.key)}</span><span class="v2cc-term-param-value">${value}</span></span>`;
-        }).join(', ');
+        }).join('');
 
         return `
             <div class="v2cc-tag-term">
@@ -852,7 +853,8 @@
         return window.AKEStats.getEnemyStatsAtLevel(attrTemplateData, enemyLevel, modifiers, {
             displayOrder: ATTR_DISPLAY_ORDER,
             getAttrName: attrType => ccAttrMap[attrType] || t('attributeFallback', { type: attrType }),
-            includeModifierOnlyAttrs: false
+            includeModifierOnlyAttrs: false,
+            excludeAttrTypes: LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES
         });
     }
 
@@ -860,7 +862,8 @@
         return window.AKEStats.getEnemyStatDetailsAtLevel(attrTemplateData, enemyLevel, modifiers, {
             displayOrder: ATTR_DISPLAY_ORDER,
             getAttrName: attrType => ccAttrMap[attrType] || t('attributeFallback', { type: attrType }),
-            includeModifierOnlyAttrs: false
+            includeModifierOnlyAttrs: false,
+            excludeAttrTypes: LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES
         });
     }
 
@@ -883,16 +886,18 @@
     }
 
     function formatModifierSummary(modifiers) {
-        return window.AKEStats.combineModifiers(modifiers).map(modifier => {
-            const name = ccAttrMap[modifier.attrType] || t('attributeFallback', { type: modifier.attrType });
-            const directMultiplier = modifier.modifierType === 4 || modifier.modifierType === 8;
-            const multiplier = directMultiplier || modifier.modifierType === 1 || modifier.modifierType === 6;
-            const value = directMultiplier ? modifier.attrValue - 1 : modifier.attrValue;
-            const display = multiplier
-                ? `${value > 0 ? '+' : ''}${(value * 100).toFixed(1)}%`
-                : `${value > 0 ? '+' : ''}${Number.isInteger(value) ? value : Number(value.toFixed(4))}`;
-            return `${escapeHtml(name)} ${display}`;
-        }).join(', ');
+        return window.AKEStats.combineModifiers(modifiers)
+            .filter(modifier => !LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES.includes(modifier.attrType))
+            .map(modifier => {
+                const name = ccAttrMap[modifier.attrType] || t('attributeFallback', { type: modifier.attrType });
+                const directMultiplier = modifier.modifierType === 4 || modifier.modifierType === 8;
+                const multiplier = directMultiplier || modifier.modifierType === 1 || modifier.modifierType === 6;
+                const value = directMultiplier ? modifier.attrValue - 1 : modifier.attrValue;
+                const display = multiplier
+                    ? `${value > 0 ? '+' : ''}${(value * 100).toFixed(1)}%`
+                    : `${value > 0 ? '+' : ''}${Number.isInteger(value) ? value : Number(value.toFixed(4))}`;
+                return `${escapeHtml(name)} ${display}`;
+            }).join(', ');
     }
 
     function renderModifierSources(groups) {
@@ -992,20 +997,6 @@
         if (enemyConfig.showBigEffect) flags.push(`<span class="v2d-enemy-flag big-effect">${t('enemyFlags.globalEffect')}</span>`);
         if (enemyConfig.showBigHeadbar) flags.push(`<span class="v2d-enemy-flag big-headbar">${t('enemyFlags.pinnedHealthBar')}</span>`);
 
-        const statResult = getEnemyStatDetailsAtLevel(attrData, enemyLevel, allModifiers);
-        const stats = statResult?.values || {};
-        const scriptResult = scriptModifiers.length ? getEnemyStatDetailsAtLevel(attrData, enemyLevel, [...allModifiers, ...scriptModifiers]) : null;
-        const scriptStats = scriptResult?.values || null;
-        const changedScriptStats = scriptStats ? Object.fromEntries(Object.entries(scriptStats).filter(([key, val]) => val !== stats?.[key])) : {};
-        let statsHtml = '';
-        if (stats && Object.keys(stats).length > 0) {
-            statsHtml = '<div class="v2d-attr-grid">';
-            Object.entries(stats).forEach(([key, val]) => {
-                statsHtml += `<div class="v2d-attr-item"><span class="v2d-attr-key">${key}</span><span class="v2d-attr-val">${formatStatValue(val, statResult.details[key])}</span></div>`;
-            });
-            statsHtml += '</div>';
-        }
-
         const showHidden = getCurrentShowHidden();
         const buffTagsHtml = showHidden
             ? buildEnemyBuffTagsHtml(ownBuffs, libBuffs, [])
@@ -1016,24 +1007,32 @@
             ]);
         const scriptBuffTagsHtml = showHidden && (scriptedBuffs || []).length ? `<div class="v2d-enemy-buffs">${scriptedBuffs.map(row => `<span class="v2d-buff-tag v2d-script-buff v2d-has-tip">${escapeHtml(row.buffId)}<small>脚本</small><span class="v2d-buff-tip"><div>条件性脚本 Buff · LevelScript ${escapeHtml(row.scriptId)}</div></span></span>`).join('')}</div>` : '';
 
-        return `
-            <div class="v2d-enemy-card" data-dungeon-id="${escapeHtml(dungeonId)}" data-enemy-id="${enemyId}" data-enemy-level="${enemyLevel}" data-lib-buffs='${JSON.stringify(libBuffs)}' data-script-buffs='${JSON.stringify(scriptedBuffs || [])}'>
-                <div class="v2d-enemy-header">
-                    <img class="v2d-enemy-icon" src="${iconSrc}" onerror="this.onerror=null; this.src='';">
-                    <div class="v2d-enemy-title">
-                        <span class="v2d-enemy-name">${escapeHtml(name)}</span>
-                        ${nickname && nickname !== name ? `<span class="v2d-enemy-nick">${escapeHtml(nickname)}</span>` : ''}
-                    </div>
-                    <span class="v2d-enemy-level">Lv.${enemyLevel}</span>
-                </div>
-                ${desc ? `<div class="v2d-enemy-desc">${parseText(desc)}</div>` : ''}
-                ${buffTagsHtml}
-                ${scriptBuffTagsHtml}
-                ${flags.length ? `<div class="v2d-enemy-flags">${flags.join('')}</div>` : ''}
-                ${statsHtml}
-                ${Object.keys(changedScriptStats).length ? `<div class="v2d-script-stats"><b>脚本 Buff 生效时</b>${Object.entries(changedScriptStats).map(([key, val]) => `<span>${escapeHtml(key)} ${formatAttrVal(stats[key])} → ${formatStatValue(val, scriptResult.details[key])}</span>`).join('')}</div>` : ''}
-            </div>
-        `;
+        const statState = window.AKEEnemyRenderer.calculateStats({
+            attrData,
+            level: enemyLevel,
+            baseModifiers: allModifiers,
+            scriptModifiers,
+            getDetails: getEnemyStatDetailsAtLevel
+        });
+        return window.AKEEnemyRenderer.renderCard({
+            dataAttributes: {
+                dungeonId,
+                enemyId,
+                enemyLevel,
+                libBuffs,
+                scriptBuffs: scriptedBuffs || []
+            },
+            iconSrc,
+            name,
+            nickname,
+            level: enemyLevel,
+            descriptionHtml: desc ? parseText(desc) : '',
+            extraHtml: `${buffTagsHtml}${scriptBuffTagsHtml}`,
+            flags,
+            statState,
+            formatStatValue,
+            formatBaseValue: formatAttrVal
+        });
     }
 
     function parseDungeonWaves(dungeon) {

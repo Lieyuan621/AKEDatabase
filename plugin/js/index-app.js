@@ -1057,6 +1057,7 @@
 
             window.parseText = function(text, baseImagePath = '/public/images/', depth = 0) {
                 if (!text) return '';
+                text = String(text).replace(/\\r\\n|\\n|\\r/g, '\n').replace(/\r\n?/g, '\n');
                 let result = '';
                 let i = 0;
                 const len = text.length;
@@ -1064,7 +1065,10 @@
                 const textstyleCfg = window.textstyleConfig || {};
 
                 while (i < len) {
-                    if (text[i] === '<') {
+                    if (text[i] === '\n') {
+                        result += '<br>';
+                        i++;
+                    } else if (text[i] === '<') {
                         if (text.substr(i, 6) === '<image') {
                             const endIdx = text.indexOf('>', i);
                             if (endIdx === -1) { result += text[i]; i++; continue; }

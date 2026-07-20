@@ -2,6 +2,32 @@ AKEData ist auf die Domain www.akedata.wiki umgezogen. Die bisherige Domain aked
 
 # AKEData-Versionsprotokoll
 
+### v1.2.3
+
+#### Module und Sichtbarkeit
+
+- Das Missionsmodul ist vorübergehend ausgeblendet und als „In Entwicklung“ markiert. Die Debugmodule BuffData, SkillData und SpawnerConfig wurden deaktiviert; die Beschreibung von Echoes of War wurde aktualisiert.
+- Wenn „Verborgene Module anzeigen“ deaktiviert ist, werden interne IDs von Charakteren, Ausrüstung, Aktivitäten, Buffs und weiteren Daten nicht mehr angezeigt. Rohwerte und Berechnungsformeln sind nun dauerhaft verfügbar.
+- Attributmodifikatoren werden nach Quelle zusammengefasst, etwa Spawn-, Buff- oder Stufenbonus. Attribut-Buffs im Gegnermodul fließen in die Berechnung ein; bei deaktiviertem verborgenen Modus werden Buff-IDs und Buffs ohne Attributwirkung nicht angezeigt.
+
+#### Gegner und Spielmodi
+
+- Dungeons, Contingency Contract und Echoes of War verwenden einen gemeinsamen Gegner-Renderer für Stufenwerte, Spawn-Buffs und korrigierte Ergebnisse. Die neuen Elementarresistenzen (94–99) werden einheitlich genutzt; alte Koeffizienten (80–85) werden nicht mehr angezeigt.
+- Rotationen in Echoes of War lassen sich ein- und ausklappen; Rahmenfarben kennzeichnen aktive, kommende und beendete Zustände. Standardmäßig ist nur die aktive Rotation geöffnet und darin nur die Gegnerkonfiguration des höchsten Schwierigkeitsgrads.
+- Sind Eigenschafts- und Bonusbeschreibungen in allen drei Schwierigkeitsgraden identisch, erscheinen sie einmal vor der Liste. Abweichende Beschreibungen bleiben beim jeweiligen Schwierigkeitsgrad.
+- Die Darstellung von `v2cc-term-param` in Contingency Contract wurde korrigiert. Aktivitätskonfigurationen sind standardmäßig eingeklappt und Freischaltbedingungen von Missionen werden ausgeblendet.
+
+#### Aktivitäten und Oberfläche
+
+- Die Aktivitätsstartseite besitzt nun eine Kalender-Zeitleiste mit Start, Ende und Status. Sie zeigt Datumsangaben beim Überfahren, hält außerhalb des Bildschirms liegende Titel am linken Rand und zeigt rechts höhenfüllende Aktivitätssymbole. Auch nach Rückkehr über die Home-Schaltfläche wird sie korrekt neu gerendert.
+- Maskierte Zeilenumbrüche in Fertigkeitsbeschreibungen von Charakteren und Waffen wurden korrigiert. Neben der Schaltfläche für Herstellungskosten erscheint das Symbol der standardmäßigen Ausrüstungskomponente.
+- Der Langbild-Export ist nicht mehr experimentell und standardmäßig aktiviert. Die Seitenleiste wird ausgeschlossen und der Dateiname entspricht dem aktuellen Modul oder der Seite.
+
+#### Daten und Ankündigungen
+
+- Der dauerhafte TableCfg-Cache ändert sich nur bei einem neuen Hotfix. Json und Bilder verwenden eine unabhängige Revision gemeinsamer Daten und werden nicht allein durch Änderungen der Website-Version oder des Hotfix neu geladen.
+- Ankündigungen stellen Markdown-Überschriften, Listen und Inline-Code jetzt korrekt dar. Auf der About-Seite und im README wurde außerdem der Datenpartner „终末地一图流“ verlinkt.
+
 ### v1.2.2
 
 Rohwerte und Berechnungsformeln werden nun nach einem Klick auf eine Zahl in einem dauerhaft sichtbaren Popover angezeigt; die verzögerte Hover-Anzeige entfällt. Ein Klick auf einen anderen Wert wechselt den Inhalt, ein Klick auf eine freie Seitenfläche oder Esc schließt das Popover. Es wird beim Scrollen und Ändern der Fenstergröße neu positioniert, unterstützt Mobilgeräte und Tastatur und verändert die Darstellung der Zahlen nicht.

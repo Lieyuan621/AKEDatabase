@@ -240,6 +240,7 @@
             root.appendChild(section);
         });
         container.appendChild(root);
+        options.afterRender?.(root);
     }
 
     function isActive(module) {

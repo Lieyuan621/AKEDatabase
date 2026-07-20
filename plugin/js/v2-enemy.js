@@ -12,7 +12,9 @@
         let currentEnemyData = null;
         let attrMap = {};
         let attrEnMap = {};
+        let attrNameToId = {};
         let modifierTypeMap = {};
+        const buffCache = {};
 
         const IMAGE_BASE_PATH = '/public/images/';
         const LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES = Object.freeze([80, 81, 82, 83, 84, 85]);
@@ -44,11 +46,13 @@
                 const data = await window.akeLoadMaps();
                 attrMap = data.ATTR_MAP || {};
                 attrEnMap = data.ATTR_MAP_EN || {};
+                attrNameToId = Object.fromEntries(Object.entries(attrEnMap).map(([id, name]) => [name, Number(id)]));
                 modifierTypeMap = data.MODIFIER_TYPE_MAP || {};
             } catch (err) {
                 console.error('加载映射数据失败:', err);
                 attrMap = {};
                 attrEnMap = {};
+                attrNameToId = {};
             }
         }
 
@@ -87,6 +91,44 @@
 
         function computeVariantAttr(baseValue, modifiers, attrType) {
             return window.AKEStats.computeAttrWithModifiers(baseValue, modifiers, attrType);
+        }
+
+        async function loadEnemyBuffData(rawData) {
+            const ids = new Set();
+            Object.values(rawData.enemytable || {}).forEach(enemy => (enemy.bornBuffs || []).forEach(id => ids.add(id)));
+            Object.values(rawData.enemyattributetemplatetable || {}).forEach(attr => (attr.poiseKnotBuffList || []).forEach(id => ids.add(id)));
+            await Promise.all(Array.from(ids).map(async id => {
+                if (Object.prototype.hasOwnProperty.call(buffCache, id)) return;
+                try {
+                    const response = await (window.akeFetch || fetch)(`/public/Json/BuffData/${id}.json`);
+                    buffCache[id] = response.ok ? await response.json() : null;
+                } catch {
+                    buffCache[id] = null;
+                }
+            }));
+        }
+
+        function getBuffModifiers(buffId) {
+            const buff = buffCache[buffId];
+            if (!buff?.attributeModifier?.attributeModifiers?.length) return [];
+            const blackboard = {};
+            (buff.blackboard || []).forEach(row => {
+                blackboard[row.key] = row.valueFloat ?? row.valueDouble ?? row.value ?? 0;
+            });
+            return buff.attributeModifier.attributeModifiers.map(modifier => {
+                const attrType = attrNameToId[modifier.attributeType];
+                const modifierType = window.AKEStats.FORMULA_TO_MODTYPE[modifier.formulaItem];
+                if (attrType === undefined || modifierType === undefined) return null;
+                const param = modifier.param || {};
+                const value = param.useBlackboardKey && param.blackboardKey
+                    ? blackboard[param.blackboardKey] ?? param.value
+                    : param.value;
+                return { attrType, modifierType, attrValue: value };
+            }).filter(Boolean);
+        }
+
+        function buffModifierSummary(buffIds) {
+            return formatAttrModifiers((buffIds || []).flatMap(getBuffModifiers));
         }
 
         function filterEnemiesBySearch(enemies) {
@@ -183,6 +225,7 @@
                 ...baseSnapshot,
                 poiseKnotPct: attrData.poiseKnotPctList?.join(', '),
                 poiseKnotBuffList: attrData.poiseKnotBuffList || [],
+                poiseKnotBuffModifiersStr: buffModifierSummary(attrData.poiseKnotBuffList || []),
                 distributionInfo: distributionInfo,
                 baseSnapshot: baseSnapshot,
                 variants: []
@@ -202,7 +245,9 @@
 
                 const levels = [], hpArr = [], atkArr = [], defArr = [];
                 const hpDetails = [], atkDetails = [], defDetails = [];
-                const mods = entry.attrModifiers || [];
+                const inlineModifiers = entry.attrModifiers || [];
+                const bornBuffModifiers = (entry.bornBuffs || []).flatMap(getBuffModifiers);
+                const mods = [...inlineModifiers, ...bornBuffModifiers];
                 levelDepAttrs.forEach(ld => {
                     const attrs = ld.attrs || [];
                     let lv = 0, hp = 0, atk = 0, def = 0;
@@ -243,8 +288,10 @@
                     enemyId,
                     attrTemplateId: variantAttrTemplateId,
                     templateId: entry.templateId || baseInfo.templateId,
-                    attrModifiers: mods,
-                    attrModifiersStr: formatAttrModifiers(mods),
+                    attrModifiers: inlineModifiers,
+                    attrModifiersStr: formatAttrModifiers(inlineModifiers),
+                    buffModifiers: bornBuffModifiers,
+                    buffModifiersStr: formatAttrModifiers(bornBuffModifiers),
                     aiTemplateId: entry.aiTemplateId || '',
                     bornBuffs: entry.bornBuffs || [],
                     isDangerous: entry.isDangerous || false,
@@ -454,6 +501,7 @@
             container.innerHTML = `<div class="v2e-loader">${t('loading')}</div>`;
             try {
                 const rawData = await (window.akeFetch || fetch)(enemy.contentFile).then(r => r.json());
+                await loadEnemyBuffData(rawData);
                 const data = normalizeV2ToLegacy(enemy, rawData);
                 currentEnemyData = data;
                 currentEnemy = enemy;
@@ -462,6 +510,7 @@
                 data.variants.forEach((_, idx) => { variantExpandStates[idx] = false; });
 
                 container.innerHTML = renderDetail(data, enemy);
+                if (rawData.__versionDiff?.baseline) await loadEnemyBuffData(rawData.__versionDiff.baseline);
                 const baselineData = rawData.__versionDiff?.baseline
                     ? normalizeV2ToLegacy(enemy, rawData.__versionDiff.baseline)
                     : null;
@@ -559,8 +608,10 @@
 
                 const titleExtra = !variant.isBase ? renderVariantTooltip(variant) : '';
                 const modifierHtml = variant.attrModifiersStr ? `<div class="v2e-variant-modifier">${variant.attrModifiersStr}</div>` : '';
-
-                const buffHtml = variant.bornBuffs.length > 0 ? `<div class="v2e-buffs">${variant.bornBuffs.map(b => `<span class="v2e-buff-tag">${b}</span>`).join('')}</div>` : '';
+                const showHidden = getCurrentShowHidden();
+                const buffHtml = showHidden
+                    ? (variant.bornBuffs.length > 0 ? `<div class="v2e-buffs">${variant.bornBuffs.map(b => `<span class="v2e-buff-tag">${b}</span>`).join('')}</div>` : '')
+                    : (variant.buffModifiersStr ? `<div class="v2e-variant-modifier"><b>buff加成</b> ${variant.buffModifiersStr}</div>` : '');
 
                 const flags = [];
                 if (variant.isDangerous) flags.push(`<span class="v2e-flag danger">${t('flags.dangerous')}</span>`);
@@ -574,7 +625,7 @@
                 const showAll = variantExpandStates[idx] || false;
                 const rowsToRender = showAll ? allRows : filterRows(allRows);
 
-                const variantId = getCurrentShowHidden() && variant.enemyId
+                const variantId = showHidden && variant.enemyId
                     ? variant.enemyId
                     : t('variantFallback', { number: idx + 1 });
                 const toggleButton = enemyLevelsToShow ? `
@@ -631,12 +682,18 @@
                 </div>
             `;
 
-            const poiseBuffHtml = data.poiseKnotBuffList.length > 0 ? `
+            const showHidden = getCurrentShowHidden();
+            const poiseBuffHtml = showHidden && data.poiseKnotBuffList.length > 0 ? `
                 <div class="v2e-section">
                     <h3>${t('sections.poiseBreakBuffs')}</h3>
                     <div class="v2e-buffs">${data.poiseKnotBuffList.map(b => `<span class="v2e-buff-tag">${b}</span>`).join('')}</div>
                 </div>
-            ` : '';
+            ` : (!showHidden && data.poiseKnotBuffModifiersStr ? `
+                <div class="v2e-section">
+                    <h3>${t('sections.poiseBreakBuffs')}</h3>
+                    <div class="v2e-variant-modifier"><b>buff加成</b> ${data.poiseKnotBuffModifiersStr}</div>
+                </div>
+            ` : '');
 
             const variantsHtml = renderVariants(data.variants, data.baseSnapshot);
 

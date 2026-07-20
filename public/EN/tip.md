@@ -2,6 +2,32 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.2.3
+
+#### Modules and visibility
+
+- The Missions module is temporarily hidden and marked “In development.” The BuffData, SkillData, and SpawnerConfig debug modules are now disabled, and the Echoes of War entry description has been updated.
+- Character, equipment, activity, Buff, and other internal IDs are hidden unless “Show hidden modules” is enabled. Raw values and calculation formulas are now always available.
+- Attribute modifiers are grouped by source, such as spawn, Buff, and stage bonuses. Attribute Buffs in the Enemy module now participate in calculations; when hidden mode is off, Buff IDs and Buffs without attribute effects are not shown.
+
+#### Enemies and game modes
+
+- Dungeons, Contingency Contract, and Echoes of War now share one enemy renderer for level stats, spawn Buffs, and modified results. All three use the new elemental resistance attributes (94–99), while legacy coefficients (80–85) are no longer shown.
+- Echoes of War rotations can be expanded or collapsed and use border colors for active, upcoming, and ended states. Only active rotations open by default, with only the highest-difficulty enemy configuration expanded in each rotation.
+- When all three difficulties of a stage share the same trait and trait-bonus descriptions, those descriptions appear once before the difficulty list. Different descriptions remain attached to their respective difficulties.
+- Fixed `v2cc-term-param` rendering in Contingency Contract. Activity configuration is collapsed by default, and mission unlock conditions are hidden.
+
+#### Activities and interface details
+
+- The Activity landing page now includes a calendar timeline showing start dates, end dates, and status. It provides date tooltips, keeps off-screen titles at the visible left edge, and displays height-filling activity icons aligned to the right. Returning through the module Home button now rerenders the timeline correctly.
+- Fixed escaped line breaks in character and weapon skill descriptions. Equipment crafting now shows the default component icon beside the crafting-cost button.
+- Long-image export has left testing and is enabled by default. Exports from every module omit the sidebar and use the correct module or page filename.
+
+#### Data loading and announcements
+
+- Persistent TableCfg caches now change only with the Hotfix. Json and images use an independent shared-data revision and are no longer reloaded because the site version or Hotfix changed.
+- Announcements now render Markdown headings, lists, inline code, and related syntax correctly. The About page and README also add the Endfield Yituliu data partner link.
+
 ### v1.2.2
 
 Raw values and calculation formulas now open in a persistent popover when a value is clicked, replacing delayed hover tooltips. Clicking another value switches the content; clicking blank page space or pressing Esc closes it. The popover repositions on scrolling and resizing, supports mobile and keyboard interaction, and does not add new visual styling to the values themselves.

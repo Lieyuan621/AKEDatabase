@@ -2,6 +2,32 @@ AKEData è stato trasferito al dominio www.akedata.wiki. Il precedente dominio a
 
 # Registro degli aggiornamenti di AKEData
 
+### v1.2.3
+
+#### Moduli e visibilità
+
+- Il modulo Missioni è temporaneamente nascosto e indicato come “In sviluppo”. I moduli di debug BuffData, SkillData e SpawnerConfig sono stati disattivati e la descrizione di Echoes of War è stata aggiornata.
+- Quando “Mostra moduli nascosti” è disattivato, gli ID interni di personaggi, equipaggiamento, attività, Buff e altri dati non vengono mostrati. Valori originali e formule di calcolo sono ora sempre disponibili.
+- I modificatori degli attributi sono raggruppati per origine, come comparsa, Buff o fase. I Buff degli attributi nel modulo Nemici partecipano ai calcoli; con la modalità nascosta disattivata, gli ID e i Buff senza effetti sugli attributi non vengono visualizzati.
+
+#### Nemici e modalità di gioco
+
+- Dungeon, Contingency Contract ed Echoes of War condividono un unico renderer dei nemici per attributi di livello, Buff di comparsa e risultati modificati. Usano le nuove resistenze elementali (94–99), mentre i vecchi coefficienti (80–85) non vengono più mostrati.
+- Le rotazioni di Echoes of War possono essere espanse o compresse; i colori del bordo distinguono gli stati attivo, futuro e concluso. Per impostazione predefinita si apre solo la rotazione attiva e, al suo interno, solo la configurazione nemici della difficoltà massima.
+- Se le descrizioni della caratteristica e del relativo bonus sono uguali nelle tre difficoltà, vengono mostrate una sola volta prima dell'elenco. Le differenze restano associate alla rispettiva difficoltà.
+- Corretta la visualizzazione di `v2cc-term-param` in Contingency Contract. La configurazione dell'attività è compressa per impostazione predefinita e le condizioni di sblocco delle missioni sono nascoste.
+
+#### Attività e interfaccia
+
+- La pagina iniziale delle Attività include ora una sequenza temporale con date di inizio, fine e stato. Mostra le date al passaggio del mouse, mantiene i titoli fuori schermo sul bordo sinistro e dispone a destra icone che riempiono l'altezza. Il pulsante Home ora la ridisegna correttamente.
+- Corretti i ritorni a capo con escape nelle descrizioni delle abilità di personaggi e armi. L'icona del componente predefinito appare accanto al pulsante del costo di produzione dell'equipaggiamento.
+- L'esportazione di immagini lunghe non è più sperimentale ed è attiva per impostazione predefinita. Esclude la barra laterale e usa il nome corretto del modulo o della pagina.
+
+#### Caricamento dati e annunci
+
+- La cache persistente di TableCfg cambia solo quando cambia l'Hotfix. Json e immagini usano una revisione indipendente dei dati condivisi e non vengono ricaricati solo per variazioni della versione del sito o dell'Hotfix.
+- Gli annunci ora mostrano correttamente titoli, elenchi e codice inline Markdown. La pagina Informazioni e il README includono inoltre il collegamento del partner dati “终末地一图流”.
+
 ### v1.2.2
 
 I valori originali e le formule ora si aprono in un popover persistente facendo clic su un numero, sostituendo il suggerimento ritardato al passaggio del mouse. Un clic su un altro valore cambia il contenuto; un clic su un'area vuota o Esc chiude il popover. La posizione viene aggiornata durante scorrimento e ridimensionamento, con supporto per dispositivi mobili e tastiera, senza modificare lo stile visivo dei numeri.
