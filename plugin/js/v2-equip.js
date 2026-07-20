@@ -46,7 +46,7 @@
         }
 
         function getDomainName(domainId) {
-            return domainMap[domainId] || domainId;
+            return domainMap[domainId] || (getCurrentShowHidden() ? domainId : '');
         }
 
         function formatAttrValue(attrType, val, compositeAttr) {
@@ -315,10 +315,18 @@
                     costsHtml += renderCostItem(costItemId, costNums[index], '×');
                 });
                 const chainClass = chain.isDefault ? ' v2eq-cost-chain-default' : '';
-                return `<div class="v2eq-cost-chain${chainClass}"><div class="v2eq-cost-chain-title" title="isDefault: ${chain.isDefault === true}">${escapeHtml(formulaData.level || '')} · #${escapeHtml(String(chain.chainId ?? ''))}</div>${costsHtml}</div>`;
+                const chainId = getCurrentShowHidden() ? ` · #${escapeHtml(String(chain.chainId ?? ''))}` : '';
+                return `<div class="v2eq-cost-chain${chainClass}"><div class="v2eq-cost-chain-title" title="isDefault: ${chain.isDefault === true}">${escapeHtml(formulaData.level || '')}${chainId}</div>${costsHtml}</div>`;
             }).join('');
 
-            return `<span class="v2eq-cost-wrap"><span class="v2eq-cost-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-cost-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">${t('craftingCost')}</span><span class="v2eq-cost-tip">${tipHtml}</span></span>`;
+            const defaultChain = chains.find(chain => chain.isDefault === true) || chains[0];
+            const componentId = defaultChain?.costItemId?.[0];
+            const component = itemTable[componentId] || {};
+            const componentTitle = component.name?.text || (getCurrentShowHidden() ? componentId : '');
+            const componentIcon = componentId
+                ? `<img class="v2eq-default-component" src="/public/images/item/itemiconbig/${escapeHtml(component.iconId || componentId)}.png" alt="" title="${escapeHtml(componentTitle)}" onerror="this.style.display='none'">`
+                : '';
+            return `<span class="v2eq-cost-wrap">${componentIcon}<span class="v2eq-cost-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-cost-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">${t('craftingCost')}</span><span class="v2eq-cost-tip">${tipHtml}</span></span>`;
         }
 
         function renderGuaranteeBtn(itemId, displayAttrModifiers, guaranteeRules, enhanceConst) {
@@ -398,7 +406,7 @@
                         <div class="v2eq-card-meta">
                             <span class="v2eq-part-tag">${partName}</span>
                             <span>${t('levelAbbreviation', { level: minWearLv })}</span>
-                            ${domainId ? `<span class="v2eq-domain-tag" title="${escapeHtml(domainId)}">${escapeHtml(domainName)}</span>` : ''}
+                            ${domainName ? `<span class="v2eq-domain-tag"${showHidden ? ` title="${escapeHtml(domainId)}"` : ''}>${escapeHtml(domainName)}</span>` : ''}
                         </div>
                         <div class="v2eq-card-mainstat">
                             <span class="v2eq-mainstat-desc">${escapeHtml(mainName)}</span>
@@ -504,8 +512,8 @@
 
             let html = '';
             for (const [packId, pack] of Object.entries(packTable)) {
-                const packName = pack.name?.text || packId;
-                html += `<span class="v2eq-pack-tag" title="${escapeHtml(packId)}">${escapeHtml(packName)}</span>`;
+                const packName = pack.name?.text || (getCurrentShowHidden() ? packId : '');
+                if (packName) html += `<span class="v2eq-pack-tag"${getCurrentShowHidden() ? ` title="${escapeHtml(packId)}"` : ''}>${escapeHtml(packName)}</span>`;
             }
             return html;
         }

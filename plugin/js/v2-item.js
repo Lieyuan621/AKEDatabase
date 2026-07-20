@@ -439,10 +439,11 @@
 
         function renderCraftItem(entry, itemTable, currentId) {
             const item = itemTable[entry.id] || {};
-            const name = item.name?.text || entry.id;
+            const name = item.name?.text || commonT('unknown');
             const iconId = item.iconId || entry.id;
             const currentClass = entry.id === currentId ? ' is-current' : '';
-            return `<a class="v2i-craft-item${currentClass}" href="/?plugin=v3_item&id=${encodeURIComponent(entry.id)}" data-item-id="${entry.id}" title="${entry.id}">
+            const title = getCurrentShowHidden() ? ` title="${entry.id}"` : '';
+            return `<a class="v2i-craft-item${currentClass}" href="/?plugin=v3_item&id=${encodeURIComponent(entry.id)}" data-item-id="${entry.id}"${title}>
                 <img src="/public/images/item/itemiconbig/${iconId}.png" onerror="this.onerror=null; this.src='';">
                 <span class="v2i-craft-item-name">${name}</span><strong>×${entry.count ?? 1}</strong>
             </a>`;
@@ -468,7 +469,7 @@
             };
             const renderGroup = (title, rows) => rows.length ? `<div class="v2i-craft-group"><h4>${title}</h4>${rows.map(recipe => `
                 <div class="v2i-craft-card">
-                    <div class="v2i-craft-head"><span class="v2i-craft-kind">${recipe.kind}</span><span>${recipe.name || recipe.recipeId}</span>${recipe.meta ? `<small>${recipe.meta}</small>` : ''}<small>${t('craft.duration', { duration: recipe.durationMs ? formatDuration(recipe.durationMs) : t('craft.notConfigured') })}</small></div>
+                    <div class="v2i-craft-head"><span class="v2i-craft-kind">${recipe.kind}</span>${recipe.name ? `<span>${recipe.name}</span>` : ''}${recipe.meta ? `<small>${recipe.meta}</small>` : ''}<small>${t('craft.duration', { duration: recipe.durationMs ? formatDuration(recipe.durationMs) : t('craft.notConfigured') })}</small></div>
                     <div class="v2i-craft-flow"><div class="v2i-craft-side">${recipe.inputs.length ? recipe.inputs.map(entry => renderCraftItem(entry, itemTable, data.itemId)).join('') : `<span class="v2i-craft-empty">${t('craft.noMaterials')}</span>`}</div><span class="v2i-craft-arrow">→</span><div class="v2i-craft-side">${recipe.outputs.map(entry => renderCraftItem(entry, itemTable, data.itemId)).join('')}</div></div>
                 </div>`).join('')}</div>` : '';
             return `<div class="v2i-section"><h3>${t('sections.craftingPaths')}</h3><div class="v2i-craft-groups">${renderGroup(t('craft.sources'), incoming)}${renderGroup(t('craft.uses'), outgoing)}</div></div>`;
@@ -476,8 +477,9 @@
 
         function renderExtraTables(data) {
             let h = '';
+            const showHidden = getCurrentShowHidden();
 
-            if (data.weaponpotentialuptable) {
+            if (showHidden && data.weaponpotentialuptable) {
                 const wpns = data.weaponpotentialuptable.weaponIds || [];
                 if (wpns.length) {
                     h += `<div class="v2i-section">
@@ -487,7 +489,7 @@
                 }
             }
 
-            if (data.usableitemchesttable) {
+            if (showHidden && data.usableitemchesttable) {
                 const ch = data.usableitemchesttable;
                 const rwd = ch.rewardIdList || [];
                 h += `<div class="v2i-section"><h3>${t('sections.choiceBoxContents')}</h3>`;
@@ -513,7 +515,7 @@
                 </div>`;
             }
 
-            if (data.wikientrydatatable) {
+            if (showHidden && data.wikientrydatatable) {
                 const w = data.wikientrydatatable;
                 h += `<div class="v2i-section"><h3>${t('sections.encyclopediaEntry')}</h3><div class="v2i-props-grid">`;
                 h += `<div class="v2i-prop-item"><span class="v2i-prop-label">${t('encyclopedia.entryId')}</span><span class="v2i-prop-value">${w.id}</span></div>`;

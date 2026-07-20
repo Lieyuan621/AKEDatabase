@@ -521,14 +521,22 @@
 
 .v2eq-cost-wrap {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     vertical-align: middle;
+}
+.v2eq-default-component {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    flex: 0 0 auto;
 }
 .v2eq-cost-btn {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    margin-left: 6px;
+    margin-left: 0;
     padding: 2px 8px;
     font-size: 0.72rem;
     background: var(--button-bg, #e0e8f0);

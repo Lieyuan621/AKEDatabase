@@ -6,7 +6,7 @@ AKEData telah pindah ke domain www.akedata.wiki. Domain lama, akedata.top, kini 
 
 Nilai mentah dan rumus kini dibuka dalam popover persisten saat angka diklik, menggantikan tooltip tertunda saat kursor diarahkan. Mengklik nilai lain mengganti isi; mengklik area kosong halaman atau menekan Esc menutup popover. Posisi diperbarui saat menggulir atau mengubah ukuran, mendukung perangkat seluler dan papan ketik, serta tidak mengubah gaya visual angka.
 
-Memperbaiki handler klik induk pada beberapa modul yang mencegah klik mouse nyata membuka popover. Nilai skill `chr_0032_lizhiyan` yang tampil sebagai `[object Object]` juga diperbaiki; struktur objek numerik umum kini dibuka dengan aman.
+Memperbaiki handler klik induk pada beberapa modul yang mencegah klik mouse nyata membuka popover. Nilai skill `chr_0032_lizhiyan` yang tampil sebagai `[object Object]` juga diperbaiki.
 
 ### v1.2.1
 

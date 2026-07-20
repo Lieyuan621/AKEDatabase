@@ -6,7 +6,7 @@ AKEData ist auf die Domain www.akedata.wiki umgezogen. Die bisherige Domain aked
 
 Rohwerte und Berechnungsformeln werden nun nach einem Klick auf eine Zahl in einem dauerhaft sichtbaren Popover angezeigt; die verzögerte Hover-Anzeige entfällt. Ein Klick auf einen anderen Wert wechselt den Inhalt, ein Klick auf eine freie Seitenfläche oder Esc schließt das Popover. Es wird beim Scrollen und Ändern der Fenstergröße neu positioniert, unterstützt Mobilgeräte und Tastatur und verändert die Darstellung der Zahlen nicht.
 
-Ein Problem wurde behoben, durch das übergeordnete Klick-Handler einiger Module echte Mausklicks auf das Popover blockierten. Außerdem wurde die Anzeige `[object Object]` bei Fertigkeits-Rohwerten von `chr_0032_lizhiyan` behoben; übliche numerische Objektstrukturen werden nun sicher entpackt.
+Ein Problem wurde behoben, durch das übergeordnete Klick-Handler einiger Module echte Mausklicks auf das Popover blockierten. Außerdem wurde die Anzeige `[object Object]` bei Fertigkeits-Rohwerten von `chr_0032_lizhiyan` behoben.
 
 ### v1.2.1
 

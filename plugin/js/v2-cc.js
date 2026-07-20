@@ -882,6 +882,27 @@
         return window.renderRawValueTip ? window.renderRawValueTip(display, val) : display;
     }
 
+    function formatModifierSummary(modifiers) {
+        return window.AKEStats.combineModifiers(modifiers).map(modifier => {
+            const name = ccAttrMap[modifier.attrType] || t('attributeFallback', { type: modifier.attrType });
+            const directMultiplier = modifier.modifierType === 4 || modifier.modifierType === 8;
+            const multiplier = directMultiplier || modifier.modifierType === 1 || modifier.modifierType === 6;
+            const value = directMultiplier ? modifier.attrValue - 1 : modifier.attrValue;
+            const display = multiplier
+                ? `${value > 0 ? '+' : ''}${(value * 100).toFixed(1)}%`
+                : `${value > 0 ? '+' : ''}${Number.isInteger(value) ? value : Number(value.toFixed(4))}`;
+            return `${escapeHtml(name)} ${display}`;
+        }).join(', ');
+    }
+
+    function renderModifierSources(groups) {
+        const rows = groups.map(([label, modifiers]) => {
+            const summary = formatModifierSummary(modifiers);
+            return summary ? `<div class="v2d-enemy-modifier"><b>${label}</b> ${summary}</div>` : '';
+        }).join('');
+        return rows ? `<div class="v2cc-current-buffs">${rows}</div>` : '';
+    }
+
     function buildEnemyBuffTagsHtml(ownBuffs, libBuffs, extraTagBuffs) {
         const extraIds = (extraTagBuffs || []).map(t => t.buffId);
         const allBuffIds = [...new Set([...ownBuffs, ...libBuffs.map(b => b.buffId), ...extraIds])];
@@ -960,9 +981,9 @@
 
         const ownBuffs = enemyConfig.bornBuffs || [];
         const libBuffs = [...(libraryBuffs || []), ...(window.AKECombatData?.staticEnemyBuffs(dungeonData, enemyId, enemyLevel) || [])];
-        const buffModifiers = [];
-        ownBuffs.forEach(id => buffModifiers.push(...getBuffModifiers(id, [])));
-        libBuffs.forEach(b => buffModifiers.push(...getBuffModifiers(b.buffId, b.blackboard)));
+        const ownBuffModifiers = ownBuffs.flatMap(id => getBuffModifiers(id, []));
+        const libraryBuffModifiers = libBuffs.flatMap(b => getBuffModifiers(b.buffId, b.blackboard));
+        const buffModifiers = [...ownBuffModifiers, ...libraryBuffModifiers];
         const allModifiers = [...inlineModifiers, ...buffModifiers];
         const scriptModifiers = (scriptedBuffs || []).flatMap(b => getBuffModifiers(b.buffId, b.blackboard));
 
@@ -985,8 +1006,15 @@
             statsHtml += '</div>';
         }
 
-        const buffTagsHtml = buildEnemyBuffTagsHtml(ownBuffs, libBuffs, []);
-        const scriptBuffTagsHtml = (scriptedBuffs || []).length ? `<div class="v2d-enemy-buffs">${scriptedBuffs.map(row => `<span class="v2d-buff-tag v2d-script-buff v2d-has-tip">${escapeHtml(row.buffId)}<small>脚本</small><span class="v2d-buff-tip"><div>条件性脚本 Buff · LevelScript ${escapeHtml(row.scriptId)}</div></span></span>`).join('')}</div>` : '';
+        const showHidden = getCurrentShowHidden();
+        const buffTagsHtml = showHidden
+            ? buildEnemyBuffTagsHtml(ownBuffs, libBuffs, [])
+            : renderModifierSources([
+                ['出生加成', [...inlineModifiers, ...ownBuffModifiers]],
+                ['buff加成', libraryBuffModifiers],
+                ['副本加成', scriptModifiers]
+            ]);
+        const scriptBuffTagsHtml = showHidden && (scriptedBuffs || []).length ? `<div class="v2d-enemy-buffs">${scriptedBuffs.map(row => `<span class="v2d-buff-tag v2d-script-buff v2d-has-tip">${escapeHtml(row.buffId)}<small>脚本</small><span class="v2d-buff-tip"><div>条件性脚本 Buff · LevelScript ${escapeHtml(row.scriptId)}</div></span></span>`).join('')}</div>` : '';
 
         return `
             <div class="v2d-enemy-card" data-dungeon-id="${escapeHtml(dungeonId)}" data-enemy-id="${enemyId}" data-enemy-level="${enemyLevel}" data-lib-buffs='${JSON.stringify(libBuffs)}' data-script-buffs='${JSON.stringify(scriptedBuffs || [])}'>
@@ -1320,7 +1348,7 @@
                     <div class="v2cc-header-icon">⚔️</div>
                     <div class="v2cc-header-text">
                         <div class="v2cc-title">${escapeHtml(title)}</div>
-                        <div class="v2cc-subtitle">${t('detail.subtitle', { activity: escapeHtml(game.activityId), groups: groupCount, terms: tagCount })}</div>
+                        ${getCurrentShowHidden() ? `<div class="v2cc-subtitle">${t('detail.subtitle', { activity: escapeHtml(game.activityId), groups: groupCount, terms: tagCount })}</div>` : ''}
                     </div>
                 </div>
                 ${renderActivityInfo(acc)}
@@ -1433,9 +1461,9 @@
 
                 const libBuffs = JSON.parse(card.dataset.libBuffs || '[]');
                 const ownBuffs = enemyConfig.bornBuffs || [];
-                const buffModifiers = [];
-                ownBuffs.forEach(id => buffModifiers.push(...getBuffModifiers(id, [])));
-                libBuffs.forEach(b => buffModifiers.push(...getBuffModifiers(b.buffId, b.blackboard)));
+                const ownBuffModifiers = ownBuffs.flatMap(id => getBuffModifiers(id, []));
+                const libraryBuffModifiers = libBuffs.flatMap(b => getBuffModifiers(b.buffId, b.blackboard));
+                const buffModifiers = [...ownBuffModifiers, ...libraryBuffModifiers];
                 const allModifiers = [...inlineModifiers, ...buffModifiers, ...tagModifiers];
                 const scriptBuffs = JSON.parse(card.dataset.scriptBuffs || '[]');
                 const scriptModifiers = scriptBuffs.flatMap(b => getBuffModifiers(b.buffId, b.blackboard));
@@ -1458,7 +1486,14 @@
                 if (scriptStatsEl) scriptStatsEl.outerHTML = scriptStatsHtml;
                 else if (scriptStatsHtml) card.insertAdjacentHTML('beforeend', scriptStatsHtml);
 
-                const newBuffTagsHtml = buildEnemyBuffTagsHtml(ownBuffs, libBuffs, ccTagBuffs);
+                const newBuffTagsHtml = getCurrentShowHidden()
+                    ? buildEnemyBuffTagsHtml(ownBuffs, libBuffs, ccTagBuffs)
+                    : renderModifierSources([
+                        ['出生加成', [...inlineModifiers, ...ownBuffModifiers]],
+                        ['buff加成', libraryBuffModifiers],
+                        ['副本加成', scriptModifiers],
+                        ['词条加成', tagModifiers]
+                    ]);
                 const oldBuffTags = card.querySelector('.v2cc-current-buffs');
                 if (newBuffTagsHtml) {
                     if (oldBuffTags) {

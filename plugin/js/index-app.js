@@ -85,7 +85,7 @@
                 language: window.akeI18n?.getLanguage?.() || 'CH',
                 theme: 'light',
                 showHidden: false,
-                showExportButton: false,
+                showExportButton: true,
                 showVersionChanges: storage.get('akedata-showVersionChanges', 'false') === 'true',
                 levelSettings: {
                     enabled: true,
@@ -206,34 +206,103 @@
                 return window.akeI18n?.t(key, params, fallback) ?? fallback ?? key;
             }
 
+            function appendTipInlineMarkdown(parent, source) {
+                const text = String(source || '');
+                const tokenPattern = /(`[^`\n]+`|\[([^\]]+)\]\(([^)\s]+)\)|\*\*([^*\n]+)\*\*|__([^_\n]+)__|~~([^~\n]+)~~|\*([^*\n]+)\*|_([^_\n]+)_)/g;
+                let offset = 0;
+                for (const match of text.matchAll(tokenPattern)) {
+                    if (match.index > offset) parent.append(document.createTextNode(text.slice(offset, match.index)));
+                    let element;
+                    if (match[0].startsWith('`')) {
+                        element = document.createElement('code');
+                        element.textContent = match[0].slice(1, -1);
+                    } else if (match[2] !== undefined) {
+                        let url;
+                        try { url = new URL(match[3], window.location.href); } catch { url = null; }
+                        if (url && ['http:', 'https:', 'mailto:'].includes(url.protocol)) {
+                            element = document.createElement('a');
+                            element.href = url.href;
+                            element.target = '_blank';
+                            element.rel = 'noopener noreferrer';
+                            appendTipInlineMarkdown(element, match[2]);
+                        } else {
+                            element = document.createTextNode(match[0]);
+                        }
+                    } else {
+                        const strong = match[4] ?? match[5];
+                        const strike = match[6];
+                        const emphasis = match[7] ?? match[8];
+                        element = document.createElement(strong !== undefined ? 'strong' : strike !== undefined ? 'del' : 'em');
+                        appendTipInlineMarkdown(element, strong ?? strike ?? emphasis);
+                    }
+                    parent.append(element);
+                    offset = match.index + match[0].length;
+                }
+                if (offset < text.length) parent.append(document.createTextNode(text.slice(offset)));
+            }
+
             function renderTipMarkdown(markdown) {
                 const fragment = document.createDocumentFragment();
+                const lines = String(markdown || '').replace(/\r\n?/g, '\n').split('\n');
                 let list = null;
-                String(markdown || '').replace(/\r\n?/g, '\n').split('\n').forEach(line => {
-                    const heading = line.match(/^(#{1,3})\s+(.+)$/);
-                    const item = line.match(/^[-*]\s+(.+)$/);
-                    if (heading) {
-                        list = null;
-                        const element = document.createElement(`h${heading[1].length}`);
-                        element.textContent = heading[2];
-                        fragment.appendChild(element);
-                    } else if (item) {
-                        if (!list) {
-                            list = document.createElement('ul');
-                            fragment.appendChild(list);
+                let code = null;
+                const closeList = () => { list = null; };
+                lines.forEach(line => {
+                    const fence = line.match(/^```\s*([\w-]+)?\s*$/);
+                    if (fence) {
+                        closeList();
+                        if (code) {
+                            fragment.append(code.pre);
+                            code = null;
+                        } else {
+                            const pre = document.createElement('pre');
+                            const element = document.createElement('code');
+                            if (fence[1]) element.className = `language-${fence[1]}`;
+                            pre.append(element);
+                            code = { pre, element, lines: [] };
                         }
-                        const element = document.createElement('li');
-                        element.textContent = item[1];
-                        list.appendChild(element);
-                    } else if (line.trim()) {
-                        list = null;
-                        const element = document.createElement('p');
-                        element.textContent = line.trim();
-                        fragment.appendChild(element);
-                    } else {
-                        list = null;
+                        return;
                     }
+                    if (code) {
+                        code.lines.push(line);
+                        code.element.textContent = code.lines.join('\n');
+                        return;
+                    }
+                    const heading = line.match(/^(#{1,6})\s+(.+)$/);
+                    const item = line.match(/^\s*([-*+] |\d+\. )(.+)$/);
+                    const quote = line.match(/^>\s?(.*)$/);
+                    let element = null;
+                    if (heading) {
+                        closeList();
+                        element = document.createElement(`h${heading[1].length}`);
+                        appendTipInlineMarkdown(element, heading[2]);
+                    } else if (/^\s*(?:---+|___+|\*\*\*+)\s*$/.test(line)) {
+                        closeList();
+                        element = document.createElement('hr');
+                    } else if (item) {
+                        const type = /\d/.test(item[1]) ? 'ol' : 'ul';
+                        if (!list || list.tagName.toLowerCase() !== type) {
+                            list = document.createElement(type);
+                            fragment.append(list);
+                        }
+                        element = document.createElement('li');
+                        appendTipInlineMarkdown(element, item[2]);
+                        list.append(element);
+                        element = null;
+                    } else if (quote) {
+                        closeList();
+                        element = document.createElement('blockquote');
+                        appendTipInlineMarkdown(element, quote[1]);
+                    } else if (line.trim()) {
+                        closeList();
+                        element = document.createElement('p');
+                        appendTipInlineMarkdown(element, line.trim());
+                    } else {
+                        closeList();
+                    }
+                    if (element) fragment.append(element);
                 });
+                if (code) fragment.append(code.pre);
                 return fragment;
             }
 
@@ -736,7 +805,7 @@
                 const modalShowExportCheck = document.getElementById('modalShowExportCheck');
                 if (modalShowExportCheck) {
                     config.showExportButton = modalShowExportCheck.checked;
-                    storage.set('akedata-showExportButton', config.showExportButton);
+                    storage.set('akedata-showExportButtonStable', config.showExportButton);
                 }
 
                 let requiresReload = false;
@@ -781,6 +850,7 @@
                 const showHidden = modalShowHiddenCheck.checked;
                 if (showHidden !== config.showHidden) {
                     config.showHidden = showHidden;
+                    document.documentElement.classList.toggle('ake-show-hidden', showHidden);
                     applyFilterAndRender();
                     storage.set('akedata-showHidden', showHidden);
                 }
@@ -877,11 +947,10 @@
             ]);
 
             window.renderRawValueTip = function(displayValue, rawValue, variableName) {
-                const showHidden = window.akeData?.getConfig().showHidden ?? false;
                 const details = rawValue && typeof rawValue === 'object' && !Array.isArray(rawValue)
                     ? rawValue
                     : { rawValue, value: rawValue, name: variableName, changed: false };
-                if (!showHidden || details.rawValue === undefined || details.rawValue === null || details.rawValue === '') return String(displayValue);
+                if (details.rawValue === undefined || details.rawValue === null || details.rawValue === '') return String(displayValue);
                 const escape = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
                 const displayRawValue = value => {
                     if (value === null || value === undefined) return '';
@@ -1199,9 +1268,9 @@
 
             function updateExportButtonVisibility() {
                 const exportBtn = document.getElementById('exportButton');
-                if (exportBtn) {
-                    exportBtn.style.display = config.showExportButton ? 'flex' : 'none';
-                }
+                const mobileExportBtn = document.getElementById('mobileExportBtn');
+                if (exportBtn) exportBtn.style.display = config.showExportButton ? 'flex' : 'none';
+                if (mobileExportBtn) mobileExportBtn.style.display = config.showExportButton ? 'flex' : 'none';
             }
 
             async function initApp() {
@@ -1308,6 +1377,7 @@
                         document.getElementById('modalSkillLevels').value = '1,9,10,11,12';
                         document.getElementById('modalThemeSelect').value = 'light';
                         document.getElementById('modalShowHiddenCheck').checked = false;
+                        document.getElementById('modalShowExportCheck').checked = true;
                         document.getElementById('modalShowVersionChanges').checked = false;
                         document.getElementById('modalKeepUrlSync').checked = true;
                         const currentDataSource = window.akeDataSource?.getState?.();
@@ -1406,24 +1476,30 @@
                         }
                     }
                     config.showHidden = e.target.checked;
+                    document.documentElement.classList.toggle('ake-show-hidden', config.showHidden);
                     applyFilterAndRender();
                     storage.set('akedata-showHidden', config.showHidden);
                     window.dispatchEvent(new CustomEvent('globalConfigChanged', { detail: { showHidden: config.showHidden } }));
                 });
 
-                document.getElementById('exportButton').addEventListener('click', async () => {
+                document.getElementById('exportButton').addEventListener('click', async (event) => {
                     const contentArea = document.getElementById('contentArea');
                     if (!contentArea) return;
+                    const exportControl = event.currentTarget;
+                    exportControl.dataset.exportStatus = 'rendering';
+                    exportControl.setAttribute('aria-busy', 'true');
 
                     // 获取文件名（优先使用详情标题）
                     let title = tr('home.exportFallback');
-                    const possibleSelectors = [
-                        '.detail-title', '.detail-name', '.suit-name',
-                        '.category-title', '.series-title', '.dungeon-name',
-                        '.weapon-detail .detail-title', '.character-detail .detail-name',
-                        '.enemy-detail .detail-name', '.equip-detail .suit-name',
-                        '.achievement-detail .category-title', '.dungeon-detail .series-title',
-                        '.v2e-name', '.v2d-series-title', '.v2cc-title'
+                    const moduleTitleSelectors = {
+                        v3_weapon: ['.detail-title'], v3_character: ['.detail-name'], v3_enemy: ['.v2e-name'],
+                        v3_equip: ['.v2eq-name'], v3_item: ['.v2i-name'], v3_activity: ['.detail-name'],
+                        v3_achievement: ['.category-title'], v3_dungeon: ['.v2d-series-title'], v3_cc: ['.v2cc-title'],
+                        season_tower: ['.st-detail-title h1'], research: ['.article-content h1', '.article-content h2'],
+                        about: ['.about-content h2'], v3_mission: ['.mission-hero h1']
+                    };
+                    const possibleSelectors = moduleTitleSelectors[activeModuleId] || [
+                        '.detail-title', '.detail-name', '.category-title', '.v2e-name', '.v2d-series-title', '.v2cc-title'
                     ];
                     for (const sel of possibleSelectors) {
                         const el = contentArea.querySelector(sel);
@@ -1437,21 +1513,24 @@
                          if (mod?.title) title = translateModuleField(mod, 'title');
                     }
                     title = title.replace(/[/?<>\\:*|"]/g, '_');
-                
+                    exportControl.dataset.exportFilename = title + '.png';
+
                     try {
+                        const exportArea = Math.max(contentArea.scrollWidth, contentArea.clientWidth) * Math.max(contentArea.scrollHeight, contentArea.clientHeight);
                         const canvas = await html2canvas(contentArea, {
-                            scale: 2,
+                            scale: exportArea > 8_000_000 ? 1 : 2,
                             useCORS: true,
                             logging: false,
                             allowTaint: false,
+                            imageTimeout: 8000,
                             scrollY: 0,
                             onclone: (clonedDoc, element) => {
                                 // 移除左侧栏和内部列
                                 const globalSidebar = clonedDoc.querySelector('.sidebar');
                                 if (globalSidebar) globalSidebar.remove();
-                                const leftColumns = clonedDoc.querySelectorAll('.left-column, .v2e-left, .v2d-left, .v2cc-left');
+                                const leftColumns = clonedDoc.querySelectorAll('.left-column, .weapon-list, .v2e-left, .v2d-left, .v2cc-left, .v2eq-left, .v2i-left, .st-sidebar, .mission-sidebar, .research-toc');
                                 leftColumns.forEach(col => col.remove());
-                                const mobileBtns = clonedDoc.querySelectorAll('.v2cc-mobile-btn');
+                                const mobileBtns = clonedDoc.querySelectorAll('.mobile-list-btn, .st-mobile-button, .toc-toggle-btn, [class*="-mobile-btn"], [class*="-mobile-list-button"], [class*="-mobile-overlay"]');
                                 mobileBtns.forEach(btn => btn.remove());
                                 const weaponList = clonedDoc.querySelector('.weapon-list');
                                 if (weaponList) weaponList.remove();
@@ -1469,21 +1548,27 @@
                                     mainContent.style.overflow = 'visible';
                                     mainContent.style.padding = '0';
                                 }
-                                const v2Modules = clonedDoc.querySelectorAll('.v2e-module, .v2d-module, .dungeon-module, .v2cc-module');
-                                v2Modules.forEach(m => { m.style.display = 'block'; });
+                                const v2Modules = clonedDoc.querySelectorAll('.character-module, .weapon-module, .v2e-module, .v2d-module, .dungeon-module, .v2cc-module, .v2eq-module, .v2i-module, .activity-module, .achievement-module, .research-module, .st-module, .mission-module');
+                                v2Modules.forEach(m => {
+                                    m.style.display = 'block';
+                                    m.style.height = 'auto';
+                                    m.style.minHeight = '0';
+                                    m.style.overflow = 'visible';
+                                });
+
+                                const detailAreas = clonedDoc.querySelectorAll('.weapon-detail, .character-detail, .v2e-detail, .v2d-detail, .v2cc-detail, .v2eq-detail, .v2i-detail, .activity-detail, .achievement-detail, .research-detail, .st-content, .mission-detail');
+                                detailAreas.forEach(detail => {
+                                    detail.style.width = '100%';
+                                    detail.style.maxWidth = 'none';
+                                    detail.style.height = 'auto';
+                                    detail.style.maxHeight = 'none';
+                                    detail.style.overflow = 'visible';
+                                });
                             
                                 element.style.margin = '0';
                                 element.style.padding = '0';
                                 element.style.overflow = 'visible';
                                 element.style.height = 'auto';
-                            
-                                const allElements = clonedDoc.querySelectorAll('*');
-                                allElements.forEach(el => {
-                                    el.style.overflow = 'visible';
-                                    el.style.maxHeight = 'none';
-                                    el.style.height = 'auto';
-                                    el.style.minHeight = 'auto';
-                                });
                             
                                 clonedDoc.body.style.margin = '0';
                                 clonedDoc.body.style.padding = '0';
@@ -1511,16 +1596,27 @@
                             }
                         }
                     
+                        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                        if (!blob) throw new Error('无法生成 PNG 文件');
+                        const objectUrl = URL.createObjectURL(blob);
                         const link = document.createElement('a');
                         link.download = title + '.png';
-                        link.href = canvas.toDataURL('image/png');
+                        link.href = objectUrl;
+                        link.style.display = 'none';
+                        document.body.appendChild(link);
                         link.click();
+                        link.remove();
+                        setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+                        exportControl.dataset.exportStatus = 'complete';
                     } catch (err) {
+                        exportControl.dataset.exportStatus = 'error';
                         alert(tr('errors.exportFailed', { message: err.message }));
+                    } finally {
+                        exportControl.removeAttribute('aria-busy');
                     }
                 });
 
-                const savedShowExport = storage.get('akedata-showExportButton');
+                const savedShowExport = storage.get('akedata-showExportButtonStable');
                 if (savedShowExport !== null) {
                     config.showExportButton = savedShowExport === 'true';
                 }
@@ -1533,6 +1629,7 @@
                 const savedShowHidden = storage.get('akedata-showHidden');
                 if (savedShowHidden !== null) {
                     config.showHidden = savedShowHidden === 'true';
+                    document.documentElement.classList.toggle('ake-show-hidden', config.showHidden);
                     applyFilterAndRender();
                 }
             }
@@ -1545,6 +1642,7 @@
                 translateDOM: root => window.akeI18n?.translateDOM(root),
                 toggleShowHidden: (val) => {
                     config.showHidden = val;
+                    document.documentElement.classList.toggle('ake-show-hidden', val);
                     applyFilterAndRender();
                     storage.set('akedata-showHidden', val);
                     if (modalShowHiddenCheck) modalShowHiddenCheck.checked = val;

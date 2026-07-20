@@ -6,7 +6,7 @@ AKEData a été transféré vers le domaine www.akedata.wiki. L'ancien domaine a
 
 Les valeurs brutes et les formules s'ouvrent désormais dans une fenêtre persistante en cliquant sur un nombre, à la place de l'infobulle retardée au survol. Cliquer sur une autre valeur change le contenu ; cliquer dans une zone vide ou appuyer sur Échap ferme la fenêtre. Elle se repositionne lors du défilement ou du redimensionnement, prend en charge le mobile et le clavier, et ne modifie pas le style visuel des nombres.
 
-Correction d'un problème où les gestionnaires de clic parents de certains modules empêchaient un vrai clic de souris d'ouvrir la fenêtre. Correction également des valeurs de compétence de `chr_0032_lizhiyan` affichées comme `[object Object]` ; les structures numériques courantes sont maintenant déballées en toute sécurité.
+Correction d'un problème où les gestionnaires de clic parents de certains modules empêchaient un vrai clic de souris d'ouvrir la fenêtre. Correction également des valeurs de compétence de `chr_0032_lizhiyan` affichées comme `[object Object]`.
 
 ### v1.2.1
 

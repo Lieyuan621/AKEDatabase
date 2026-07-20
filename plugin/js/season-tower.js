@@ -134,7 +134,34 @@
         return detail && window.renderRawValueTip ? window.renderRawValueTip(display, detail) : display;
     }
 
-    function renderBuffs(ownBuffs, libraryBuffs, scriptedBuffs) {
+    function formatModifierSummary(modifiers) {
+        return window.AKEStats.combineModifiers(modifiers).map(modifier => {
+            const name = attrMap[modifier.attrType] || `属性 ${modifier.attrType}`;
+            const directMultiplier = modifier.modifierType === 4 || modifier.modifierType === 8;
+            const multiplier = directMultiplier || modifier.modifierType === 1 || modifier.modifierType === 6;
+            const value = directMultiplier ? modifier.attrValue - 1 : modifier.attrValue;
+            const display = multiplier
+                ? `${value > 0 ? '+' : ''}${(value * 100).toFixed(1)}%`
+                : `${value > 0 ? '+' : ''}${Number.isInteger(value) ? value : Number(value.toFixed(4))}`;
+            return `${escapeHtml(name)} ${display}`;
+        }).join(', ');
+    }
+
+    function renderBuffs(inlineModifiers, ownBuffs, libraryBuffs, scriptedBuffs) {
+        if (window.akeData?.getConfig?.().showHidden !== true) {
+            const ownModifiers = (ownBuffs || []).flatMap(buffId => buffModifiers(buffId, []));
+            const libraryModifiers = (libraryBuffs || []).flatMap(buff => buffModifiers(buff.buffId, buff.blackboard));
+            const scriptModifiers = (scriptedBuffs || []).flatMap(buff => buffModifiers(buff.buffId, buff.blackboard));
+            const groups = [
+                ['出生加成', [...(inlineModifiers || []), ...ownModifiers]],
+                ['buff加成', libraryModifiers],
+                ['副本加成', scriptModifiers]
+            ];
+            return groups.map(([label, modifiers]) => {
+                const summary = formatModifierSummary(modifiers);
+                return summary ? `<div class="v2d-enemy-modifier"><b>${label}</b> ${summary}</div>` : '';
+            }).join('');
+        }
         const rows = [...(ownBuffs || []).map(buffId => ({ buffId })), ...(libraryBuffs || []), ...(scriptedBuffs || [])];
         const unique = [...new Map(rows.map(row => [`${row.buffId}:${row.conditional ? 'script' : 'base'}`, row])).values()];
         if (!unique.length) return '';
@@ -182,7 +209,7 @@
                 <span class="v2d-enemy-level">Lv.${level}</span>
             </div>
             ${text(display.description) ? `<div class="v2d-enemy-desc">${parseGameText(text(display.description))}</div>` : ''}
-            ${renderBuffs(ownBuffs, libraryBuffs, scriptedBuffs)}
+            ${renderBuffs(enemy.attrModifiers || [], ownBuffs, libraryBuffs, scriptedBuffs)}
             ${flags.length ? `<div class="v2d-enemy-flags">${flags.join('')}</div>` : ''}
             <div class="v2d-attr-grid">${Object.entries(stats).map(([name, value]) => `<div class="v2d-attr-item"><span class="v2d-attr-key">${escapeHtml(name)}</span><span class="v2d-attr-val">${formatStat(value, statResult.details[name])}</span></div>`).join('')}</div>
             ${Object.keys(changedStats).length ? `<div class="v2d-script-stats"><b>脚本 Buff 生效时</b>${Object.entries(changedStats).map(([name, value]) => `<span>${escapeHtml(name)} ${formatAttr(stats[name])} → ${formatStat(value, scriptedResult.details[name])}</span>`).join('')}</div>` : ''}
@@ -288,7 +315,7 @@
             const unique = [...new Map(waves.flatMap(wave => wave.enemies).map(enemy => [enemy.id, enemy])).values()];
             const mapHtml = renderSpawnMap(waves, data);
             return `<div class="st-config">
-                <div class="st-config-title"><code>${escapeHtml(config.configId)}</code><span>${waves.length} 波 · ${total} 个敌人</span></div>
+                <div class="st-config-title"><code class="st-config-id">${escapeHtml(config.configId)}</code><span>${waves.length} 波 · ${total} 个敌人</span></div>
                 <div class="v2d-wave-map-row"><div class="v2d-wave-section"><div class="v2d-wave-detail">${waves.map((wave, waveIndex) => `<div class="v2d-wave-line${waveIndex === 0 ? ' active' : ''}" data-wave-idx="${waveIndex}"><span class="v2d-wave-num">第 ${escapeHtml(wave.waveId)} 波</span>${wave.repeatable ? '<span class="v2d-wave-repeat">可重复</span>' : ''}${wave.maxAlive ? `<span class="v2d-wave-alive">同时在场 ${wave.maxAlive}</span>` : ''}${wave.externallyControlled ? '<span class="v2d-wave-pause">外部控制</span>' : ''}: ${wave.enemies.map(enemy => `<span class="v2d-wave-enemy" data-wave-idx="${waveIndex}" data-enemy-id="${escapeHtml(enemy.id)}"><img class="v2d-wave-icon" src="/public/images/enemy/monstericonbig/${escapeHtml(enemy.templateId)}.png" alt="" onerror="this.style.display='none'"><span class="v2d-wave-ename">${escapeHtml(text(data.enemyDisplay[data.enemies[enemy.id]?.templateId]?.name, enemy.id))}</span> ×${enemy.count} <span class="v2d-wave-lv">Lv.${enemy.level}</span></span>`).join(' ')}</div>`).join('')}</div></div>${mapHtml}</div>
                 <div class="v2d-enemy-list">${unique.map(enemy => renderEnemy(enemy.id, enemy.level, libraryBuffs[enemy.id] || [], scriptedBuffs, data)).join('')}</div>
             </div>`;
@@ -329,7 +356,7 @@
         const group = data.mechanicGroups[baseId] || {};
         const towerGroup = data.gameGroups[baseId] || {};
         return `<article class="st-stage">
-            <header class="st-stage-head"><div><h3>${escapeHtml(text(group.gameGroupName, baseId))}</h3><code>${escapeHtml(baseId)}</code></div><strong>最高 3 ★</strong></header>
+            <header class="st-stage-head"><div><h3>${escapeHtml(text(group.gameGroupName, baseId))}</h3><code class="st-stage-id">${escapeHtml(baseId)}</code></div><strong>最高 3 ★</strong></header>
             <div>${Object.entries(towerGroup.stars || {}).sort(([a], [b]) => Number(a) - Number(b)).map(([star, row]) => renderDifficulty(baseId, row.gameId, Number(star), data)).join('')}</div>
         </article>`;
     }
@@ -493,6 +520,10 @@
     });
     overlay.addEventListener('click', event => {
         if (event.target === overlay || event.target.closest('.st-mobile-title button')) closeOverlay();
+    });
+    window.addEventListener('globalConfigChanged', () => {
+        const season = seasons.find(entry => entry.id === activeSeasonId);
+        if (season) renderSeason(season);
     });
     load();
 })();

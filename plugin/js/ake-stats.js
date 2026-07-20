@@ -54,6 +54,27 @@
         return analyzeAttrWithModifiers(baseValue, modifiers, attrType).value;
     }
 
+    function combineModifiers(modifiers) {
+        const groups = new Map();
+        (modifiers || []).forEach(modifier => {
+            const value = Number(modifier.attrValue);
+            if (!Number.isFinite(value)) return;
+            const key = `${modifier.attrType}:${modifier.modifierType}`;
+            if (!groups.has(key)) groups.set(key, { ...modifier, attrValue: value });
+            else {
+                const current = groups.get(key);
+                if (modifier.modifierType === 1 || modifier.modifierType === 6) {
+                    current.attrValue = (1 + current.attrValue) * (1 + value) - 1;
+                } else if (modifier.modifierType === 4 || modifier.modifierType === 8) {
+                    current.attrValue *= value;
+                } else {
+                    current.attrValue += value;
+                }
+            }
+        });
+        return Array.from(groups.values());
+    }
+
     function pickLevelAttributes(levelDependentAttributes, enemyLevel) {
         const levelRows = levelDependentAttributes || [];
         for (const row of levelRows) {
@@ -149,6 +170,7 @@
         FORMULA_TO_MODTYPE,
         DEFAULT_ATTR_DISPLAY_ORDER,
         analyzeAttrWithModifiers,
+        combineModifiers,
         computeAttrWithModifiers,
         getEnemyStatsAtLevel,
         getEnemyStatDetailsAtLevel

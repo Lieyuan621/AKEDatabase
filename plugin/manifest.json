@@ -244,10 +244,11 @@
     {
         "id": "v3_mission",
         "title": "任务",
-        "description": "查看任务流程与剧情对话",
+        "description": "查看任务流程与剧情对话 开发中",
         "priority": 12,
         "icon": "📜",
-        "contentFile": "/plugin/v3_mission.html"
+        "contentFile": "/plugin/v3_mission.html",
+        "hidden": true
     },
     {
         "id": "v2_cc",
@@ -270,7 +271,7 @@
     {
         "id": "season_tower",
         "title": "战争回响",
-        "description": "查看战争回响赛季、轮换关卡与荣勋数据",
+        "description": "查看战争回响数据",
         "priority": 2,
         "icon": "✦",
         "contentFile": "/plugin/season_tower.html"
@@ -282,6 +283,7 @@
         "priority": 50,
         "icon": "✨",
         "hidden": true,
+        "disabled": true,
         "contentFile": "plugin/buff.html"
     },
     {
@@ -301,6 +303,7 @@
         "priority": 48,
         "icon": "🧭",
         "hidden": true,
+        "disabled": true,
         "contentFile": "plugin/skill_v2.html"
     },
     {
@@ -310,6 +313,7 @@
         "priority": 51,
         "icon": "⚡",
         "hidden": true,
+        "disabled": true,
         "contentFile": "plugin/spawner.html"
     }
 ]

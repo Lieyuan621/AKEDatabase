@@ -299,7 +299,7 @@
         function renderDistributionTags(data) {
             const entries = Object.values(data.distributionInfo || {});
             if (!entries.length) return '';
-            return entries.map(d => `<span class="v2e-dist-tag">${d.areaName?.text || d.distributionId}</span>`).join('');
+            return entries.map(d => d.areaName?.text ? `<span class="v2e-dist-tag">${d.areaName.text}</span>` : '').join('');
         }
 
         function renderVariantDiff(variant, baseSnapshot) {
@@ -574,7 +574,9 @@
                 const showAll = variantExpandStates[idx] || false;
                 const rowsToRender = showAll ? allRows : filterRows(allRows);
 
-                const variantId = variant.enemyId || t('variantFallback', { number: idx + 1 });
+                const variantId = getCurrentShowHidden() && variant.enemyId
+                    ? variant.enemyId
+                    : t('variantFallback', { number: idx + 1 });
                 const toggleButton = enemyLevelsToShow ? `
                     <div style="text-align:right; margin-top:4px;">
                         <button class="v2e-toggle-btn" data-variant="${idx}">${showAll ? commonT('collapseExtraLevels') : commonT('expandAllLevels')}</button>

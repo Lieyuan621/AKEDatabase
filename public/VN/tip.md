@@ -6,7 +6,7 @@ AKEData đã chuyển sang tên miền www.akedata.wiki. Tên miền cũ akedata
 
 Giá trị gốc và công thức giờ mở trong cửa sổ nổi duy trì khi nhấp vào một số, thay cho chú thích xuất hiện chậm khi rê chuột. Nhấp giá trị khác sẽ đổi nội dung; nhấp vùng trống của trang hoặc nhấn Esc sẽ đóng. Cửa sổ tự định vị lại khi cuộn hay đổi kích thước, hỗ trợ thiết bị di động và bàn phím, đồng thời không thay đổi kiểu hiển thị của các số.
 
-Đã sửa lỗi bộ xử lý nhấp của phần tử cha trong một số mô-đun khiến nhấp chuột thật không mở được cửa sổ. Đồng thời sửa giá trị kỹ năng của `chr_0032_lizhiyan` hiển thị thành `[object Object]`; các cấu trúc số phổ biến giờ được giải nén an toàn.
+Đã sửa lỗi bộ xử lý nhấp của phần tử cha trong một số mô-đun khiến nhấp chuột thật không mở được cửa sổ. Đồng thời sửa giá trị kỹ năng của `chr_0032_lizhiyan` hiển thị thành `[object Object]`.
 
 ### v1.2.1
 

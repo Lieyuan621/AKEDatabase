@@ -6,7 +6,7 @@ O AKEData foi transferido para o domínio www.akedata.wiki. O domínio anterior,
 
 Valores originais e fórmulas agora são abertos em um popover persistente ao clicar no número, substituindo a dica atrasada ao passar o mouse. Clicar em outro valor troca o conteúdo; clicar em uma área vazia da página ou pressionar Esc fecha o popover. Ele se reposiciona ao rolar ou redimensionar a janela, oferece suporte a dispositivos móveis e teclado e não altera o estilo visual dos números.
 
-Foi corrigido um problema em que manipuladores de clique dos módulos impediam que cliques reais do mouse abrissem o popover. Também foi corrigida a exibição de `[object Object]` nos valores de habilidade de `chr_0032_lizhiyan`; objetos numéricos comuns agora são desembrulhados com segurança.
+Foi corrigido um problema em que manipuladores de clique dos módulos impediam que cliques reais do mouse abrissem o popover. Também foi corrigida a exibição de `[object Object]` nos valores de habilidade de `chr_0032_lizhiyan`.
 
 ### v1.2.1
 

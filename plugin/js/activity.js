@@ -325,7 +325,7 @@
 
             let stagesHtml = renderStages(data.stageList);
             const tagsHtml = (data.tags || []).length
-                ? `<div class="activity-tags">${data.tags.map(tag => `<span class="activity-tag">${tag.name || tag.tagId}</span>`).join('')}</div>`
+                ? `<div class="activity-tags">${data.tags.map(tag => tag.name ? `<span class="activity-tag">${tag.name}</span>` : '').join('')}</div>`
                 : '';
 
             return `

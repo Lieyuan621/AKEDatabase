@@ -275,7 +275,7 @@
         function formatAttrModifiers(modifiers) {
             if (!Array.isArray(modifiers) || modifiers.length === 0) return '';
             const showHidden = getCurrentShowHidden();
-            return modifiers.filter(m => !LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES.includes(m.attrType)).map(m => {
+            return window.AKEStats.combineModifiers(modifiers).filter(m => !LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES.includes(m.attrType)).map(m => {
                 const name = getAttrName(m.attrType);
                 const val = m.attrValue;
                 const isMult = (m.modifierType === 1 || m.modifierType === 4 ||
@@ -543,9 +543,9 @@
 
             const ownBuffs = enemyConfig.bornBuffs || [];
             const libBuffs = [...(libraryBuffs || []), ...(window.AKECombatData?.staticEnemyBuffs(dungeonData, enemyId, enemyLevel) || [])];
-            const buffModifiers = [];
-            ownBuffs.forEach(id => buffModifiers.push(...getBuffModifiers(id, [])));
-            libBuffs.forEach(b => buffModifiers.push(...getBuffModifiers(b.buffId, b.blackboard)));
+            const ownBuffModifiers = ownBuffs.flatMap(id => getBuffModifiers(id, []));
+            const libraryBuffModifiers = libBuffs.flatMap(b => getBuffModifiers(b.buffId, b.blackboard));
+            const buffModifiers = [...ownBuffModifiers, ...libraryBuffModifiers];
             const allModifiers = [...inlineModifiers, ...buffModifiers];
             const scriptModifiers = (scriptedBuffs || []).flatMap(b => getBuffModifiers(b.buffId, b.blackboard));
 
@@ -555,8 +555,18 @@
             if (enemyConfig.showBigHeadbar) flags.push(`<span class="v2d-enemy-flag big-headbar">${t('flags.pinnedHealthBar')}</span>`);
             const flagsHtml = flags.length ? `<div class="v2d-enemy-flags">${flags.join('')}</div>` : '';
 
+            const showHidden = getCurrentShowHidden();
+            const modifierGroups = [
+                ['出生加成', [...inlineModifiers, ...ownBuffModifiers]],
+                ['buff加成', libraryBuffModifiers],
+                ['副本加成', scriptModifiers]
+            ];
+            const modifierSummaryHtml = modifierGroups.map(([label, modifiers]) => {
+                const summary = formatAttrModifiers(modifiers);
+                return summary ? `<div class="v2d-enemy-modifier"><b>${label}</b> ${summary}</div>` : '';
+            }).join('');
             const modifierStr = formatAttrModifiers(inlineModifiers);
-            const modifierHtml = modifierStr ? `<div class="v2d-enemy-modifier">${modifierStr}</div>` : '';
+            const modifierHtml = showHidden && modifierStr ? `<div class="v2d-enemy-modifier">${modifierStr}</div>` : '';
 
             const allBuffIds = [...new Set([...ownBuffs, ...libBuffs.map(b => b.buffId)])];
             const buffBbMap = {};
@@ -566,7 +576,7 @@
                     if (!buffBbMap[b.buffId].find(x => x.key === bb.key)) buffBbMap[b.buffId].push(bb);
                 });
             });
-            const buffTagsHtml = allBuffIds.length > 0 ?
+            const buffTagsHtml = showHidden && allBuffIds.length > 0 ?
                 `<div class="v2d-enemy-buffs">${allBuffIds.map(id => {
                     const bb = buffBbMap[id] || [];
                     const buff = buffCache[id];
@@ -613,7 +623,7 @@
             const scriptResult = scriptModifiers.length ? getEnemyStatDetailsAtLevel(attrData, enemyLevel, [...allModifiers, ...scriptModifiers]) : null;
             const scriptStats = scriptResult?.values || null;
             const changedScriptStats = scriptStats ? Object.fromEntries(Object.entries(scriptStats).filter(([key, val]) => val !== stats?.[key])) : {};
-            const scriptBuffTagsHtml = (scriptedBuffs || []).length ? `<div class="v2d-enemy-buffs">${scriptedBuffs.map(row => `<span class="v2d-buff-tag v2d-script-buff v2d-has-tip">${escH(row.buffId)}<small>脚本</small><span class="v2d-buff-tip"><div>条件性脚本 Buff · LevelScript ${escH(row.scriptId)}</div></span></span>`).join('')}</div>` : '';
+            const scriptBuffTagsHtml = showHidden && (scriptedBuffs || []).length ? `<div class="v2d-enemy-buffs">${scriptedBuffs.map(row => `<span class="v2d-buff-tag v2d-script-buff v2d-has-tip">${escH(row.buffId)}<small>脚本</small><span class="v2d-buff-tip"><div>条件性脚本 Buff · LevelScript ${escH(row.scriptId)}</div></span></span>`).join('')}</div>` : '';
             let statsHtml = '';
             if (stats && Object.keys(stats).length > 0) {
                 statsHtml = '<div class="v2d-attr-grid">';
@@ -634,6 +644,7 @@
                         <span class="v2d-enemy-level">Lv.${enemyLevel}</span>
                     </div>
                     ${desc ? `<div class="v2d-enemy-desc">${parseText(desc)}</div>` : ''}
+                    ${showHidden ? '' : modifierSummaryHtml}
                     ${modifierHtml}
                     ${buffTagsHtml}
                     ${scriptBuffTagsHtml}
