@@ -79,7 +79,8 @@
         }
 
         function parseText(text) {
-            return window.parseText(text, IMAGE_BASE_PATH);
+            const normalized = typeof text === 'string' ? text.replace(/\\r\\n|\\n|\\r/g, '\n') : text;
+            return window.parseText(normalized, IMAGE_BASE_PATH);
         }
 
         function getText(value) {

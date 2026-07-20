@@ -460,6 +460,7 @@
 .v2cc-tag-term {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 6px;
     font-size: 0.75rem;
     padding: 3px 8px;
@@ -474,9 +475,27 @@
 .v2cc-term-type.enemy-buff { color: #e74c3c; }
 .v2cc-term-type.self-buff { color: #27ae60; }
 .v2cc-term-type.time-reduce { color: #8e44ad; }
-.v2cc-term-param {
+.v2cc-term-params {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    min-width: 0;
     color: var(--desc-color, #5b6f86);
 }
+.v2cc-term-param {
+    display: inline-flex;
+    gap: 4px;
+    min-width: 0;
+}
+.v2cc-term-param-key::after { content: ':'; }
+.v2cc-term-param-value { overflow-wrap: anywhere; }
+.v2cc-activity-config > summary {
+    cursor: pointer;
+    font-size: 1.08rem;
+    font-weight: 600;
+    color: var(--text-color, #1e2b3c);
+}
+.v2cc-activity-config[open] > summary { margin-bottom: 12px; }
 
 /* Tag meta (key/lock/conflict) */
 .v2cc-tag-meta {

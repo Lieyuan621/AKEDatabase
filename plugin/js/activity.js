@@ -137,6 +137,119 @@
             }
         }
 
+        const TIMELINE_DAY_MS = 24 * 60 * 60 * 1000;
+        const TIMELINE_PAST_DAYS = 14;
+        const TIMELINE_FUTURE_DAYS = 90;
+
+        function parseActivityTime(value) {
+            if (!value) return null;
+            const date = new Date(value);
+            return Number.isNaN(date.getTime()) ? null : date;
+        }
+
+        function startOfDay(value) {
+            const date = new Date(value);
+            date.setHours(0, 0, 0, 0);
+            return date;
+        }
+
+        function timelineLocale() {
+            const language = window.akeData?.getLanguage?.() || 'CH';
+            return { CH: 'zh-CN', TC: 'zh-TW', JP: 'ja-JP', KR: 'ko-KR', EN: 'en-US' }[language] || 'en-US';
+        }
+
+        function renderActivityTimeline(items, container) {
+            const now = new Date();
+            const windowStart = startOfDay(now.getTime() - TIMELINE_PAST_DAYS * TIMELINE_DAY_MS);
+            const windowEnd = startOfDay(now.getTime() + TIMELINE_FUTURE_DAYS * TIMELINE_DAY_MS);
+            windowEnd.setDate(windowEnd.getDate() + 1);
+
+            const timedItems = items.map(item => ({
+                item,
+                open: parseActivityTime(item.openTime),
+                close: parseActivityTime(item.closeTime)
+            })).filter(entry => entry.open && entry.close && entry.close > entry.open);
+            let visibleItems = timedItems.filter(entry => entry.close >= windowStart && entry.open <= windowEnd);
+            if (!visibleItems.length) {
+                visibleItems = timedItems.sort((a, b) => b.close - a.close).slice(0, 12);
+            }
+            if (!visibleItems.length) return;
+
+            visibleItems.sort((a, b) => a.open - b.open || a.close - b.close || String(a.item.name).localeCompare(String(b.item.name), timelineLocale()));
+            const earliestOpen = Math.min(...visibleItems.map(entry => entry.open.getTime()));
+            const latestClose = Math.max(...visibleItems.map(entry => entry.close.getTime()));
+            const rangeStart = startOfDay(Math.max(earliestOpen, windowStart.getTime()));
+            const rangeEnd = startOfDay(Math.min(latestClose, windowEnd.getTime()));
+            rangeEnd.setDate(rangeEnd.getDate() + 1);
+            const dayCount = Math.max(1, Math.ceil((rangeEnd - rangeStart) / TIMELINE_DAY_MS));
+
+            const section = document.createElement('section');
+            section.className = 'activity-timeline';
+            section.setAttribute('aria-label', t('overview.title'));
+            section.style.setProperty('--timeline-days', dayCount);
+
+            const viewport = document.createElement('div');
+            viewport.className = 'activity-timeline__viewport';
+            const canvas = document.createElement('div');
+            canvas.className = 'activity-timeline__canvas';
+
+            const axis = document.createElement('div');
+            axis.className = 'activity-timeline__axis';
+            const locale = timelineLocale();
+            for (let index = 0; index < dayCount; index += 1) {
+                const date = new Date(rangeStart);
+                date.setDate(date.getDate() + index);
+                const tick = document.createElement('div');
+                tick.className = 'activity-timeline__tick';
+                if (date.getDate() === 1 || index === 0) tick.classList.add('is-month-start');
+                tick.textContent = new Intl.DateTimeFormat(locale, {
+                    month: date.getDate() === 1 || index === 0 ? 'numeric' : undefined,
+                    day: '2-digit'
+                }).format(date);
+                axis.appendChild(tick);
+            }
+            canvas.appendChild(axis);
+
+            visibleItems.forEach(({ item, open, close }) => {
+                const row = document.createElement('div');
+                row.className = 'activity-timeline__row';
+                const clippedOpen = Math.max(open.getTime(), rangeStart.getTime());
+                const clippedClose = Math.min(close.getTime(), rangeEnd.getTime());
+                const offset = Math.max(0, Math.floor((clippedOpen - rangeStart) / TIMELINE_DAY_MS));
+                const span = Math.max(1, Math.ceil((clippedClose - clippedOpen) / TIMELINE_DAY_MS));
+                const bar = document.createElement('button');
+                bar.type = 'button';
+                const typeIndex = Math.abs(Number(item.rawType) || 0) % 5;
+                const status = getActivityStatus(item.openTime, item.closeTime);
+                bar.className = `activity-timeline__bar activity-timeline__bar--type-${typeIndex} ${status.class}`;
+                bar.style.gridColumn = `${offset + 1} / span ${Math.min(span, dayCount - offset)}`;
+                bar.textContent = item.name || item.activityId;
+                bar.title = `${item.name || item.activityId}\n${formatTime(item.openTime)} - ${formatTime(item.closeTime)}`;
+                bar.addEventListener('click', () => {
+                    activeActivityId = item.activityId;
+                    renderActivityList();
+                });
+                row.appendChild(bar);
+                canvas.appendChild(row);
+            });
+
+            if (now >= rangeStart && now <= rangeEnd) {
+                const todayOffset = (now - rangeStart) / TIMELINE_DAY_MS;
+                const marker = document.createElement('div');
+                marker.className = 'activity-timeline__today';
+                marker.style.setProperty('--today-offset', todayOffset);
+                canvas.appendChild(marker);
+            }
+
+            viewport.appendChild(canvas);
+            section.appendChild(viewport);
+            container.querySelector('.ake-overview__header')?.after(section);
+            requestAnimationFrame(() => {
+                const todayOffset = (now - rangeStart) / TIMELINE_DAY_MS;
+                if (todayOffset >= 0) viewport.scrollLeft = Math.max(0, todayOffset * 40 - viewport.clientWidth * 0.3);
+            });
+        }
+
         function renderActivityOverview(items, container) {
             const statusOrder = { 'status-active': 0, 'status-upcoming': 1, 'status-closed': 2, 'status-permanent': 3 };
             window.AKEModuleOverview.render(container, {
@@ -152,6 +265,7 @@
                         tags: [...(item.tags || []).map(tag => tag.name || tag.tagId), item.openTime ? t('dates.opensOn', { date: item.openTime.split(' ')[0] }) : t('dates.permanentContent')] };
                 })
             });
+            renderActivityTimeline(items, container);
         }
 
         function renderActivityList() {

@@ -76,7 +76,7 @@
         return validateManifest({
             schemaVersion: 1,
             latest: id,
-            sharedRevision: `local-${bootstrapVersion.appversion || bootstrapVersion.updatedAt || '1'}`,
+            sharedRevision: 'local',
             updatedAt: bootstrapVersion.updatedAt || '',
             versions: [{
                 id,
@@ -305,7 +305,7 @@
     function cacheNamespace(resource, appVersion) {
         const result = classify(resource);
         if (!state) return `site|${appVersion || '1'}`;
-        if (result.type === 'table') return `table|${state.baseUrl}|${state.selected.id}`;
+        if (result.type === 'table') return `table|${state.baseUrl}|${state.selected.hotfixVersion}`;
         if (result.type === 'shared') return `shared|${state.baseUrl}|${state.manifest.sharedRevision}`;
         return `site|${window.location.origin}|${appVersion || '1'}`;
     }

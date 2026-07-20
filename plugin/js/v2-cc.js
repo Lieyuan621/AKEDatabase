@@ -436,8 +436,8 @@
         if (!items.length) return '';
 
         return `
-            <div class="v2cc-section">
-                <h3>${t('sections.activityConfiguration')}</h3>
+            <details class="v2cc-section v2cc-activity-config">
+                <summary>${t('sections.activityConfiguration')}</summary>
                 <div class="v2cc-info-grid">
                     ${items.map(i => `
                         <div class="v2cc-info-item">
@@ -446,21 +446,23 @@
                         </div>
                     `).join('')}
                 </div>
-            </div>
+            </details>
         `;
     }
 
     function renderTagTermEffect(term) {
         const typeInfo = TERM_TYPE_MAP[term.termType] || TERM_TYPE_MAP['None'];
         const params = (term.blackboard || []).map(bb => {
-            const val = bb.valueStr || formatBlackboardValue(bb.value);
-            return `${escapeHtml(bb.key)}: ${escapeHtml(val)}`;
+            const value = bb.valueStr !== undefined && bb.valueStr !== ''
+                ? escapeHtml(String(bb.valueStr))
+                : formatBlackboardValue(bb.value);
+            return `<span class="v2cc-term-param"><span class="v2cc-term-param-key">${escapeHtml(bb.key)}</span><span class="v2cc-term-param-value">${value}</span></span>`;
         }).join(', ');
 
         return `
             <div class="v2cc-tag-term">
                 <span class="v2cc-term-type ${typeInfo.cls}">${escapeHtml(t(typeInfo.labelKey))}</span>
-                ${params ? `<span class="v2cc-term-param">${params}</span>` : ''}
+                ${params ? `<span class="v2cc-term-params">${params}</span>` : ''}
             </div>
         `;
     }
@@ -760,14 +762,12 @@
                                         ${tasks.map(task => {
                                             const desc = task.desc?.text ? parseText(task.desc.text) : '';
                                             const rewards = resolveRewardItems(task.rewardId, rewardTable, itemTable);
-                                            const unlockHint = task.unlockTimeId ? `<div class="v2cc-task-unlock">${t('tasks.unlockCondition', { condition: escapeHtml(task.unlockTimeId) })}</div>` : '';
                                             return `
                                                 <div class="v2cc-task-item">
                                                     <div class="v2cc-task-item-header">
                                                         <span class="v2cc-task-item-id">${escapeHtml(task.taskId)}</span>
                                                     </div>
                                                     ${desc ? `<div class="v2cc-task-item-desc">${desc}</div>` : ''}
-                                                    ${unlockHint}
                                                     ${rewards.length ? `
                                                         <div class="v2cc-task-item-rewards">
                                                             <span class="v2cc-task-reward-label">${t('tasks.rewards')}</span>

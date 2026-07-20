@@ -519,6 +519,7 @@ git status --short
 - [CEP 终末地基质规划器](https://end.canmoe.com/)：基质、精锻和养成规划工具
 - [排轴终端 - Endaxis](https://www.end-axis.com/)：排轴模拟器
 - [终末地战斗日志](https://zmdlogs.com/)：战斗数据记录和竞速排行
+- [终末地一图流](https://ef.yituliu.cn/)：《明日方舟：终末地》材料价值计算、性价比计算，以及攒抽计算等其它小工具。
 
 ## 赞助支持
 
