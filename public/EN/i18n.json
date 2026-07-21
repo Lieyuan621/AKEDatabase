@@ -193,6 +193,12 @@
                 "iconComposite": { "type": "Composition Type", "showRarity": "Show Rarity", "markIcon": "Marker Icon" },
                 "encyclopedia": { "entryId": "Entry ID", "group": "Group" }
             },
+            "shop": {
+                "title": "Shop", "description": "Browse goods, prices, and contents by shop group", "groupHint": "Browse by shop group", "search": "Search shops or goods (name/ID)", "groupList": "Shop group list", "loading": "Loading shop data", "groups": "Shop Groups", "selectGroup": "Select a shop group", "close": "Close", "recommendations": "Dijiang Picks", "goodsCount": "{count} goods", "noMatches": "No matching shop groups", "noGoods": "No matching goods in this shop group", "loadFailed": "Failed to load shop data", "unknown": "Unknown", "permanent": "Permanent", "separator": ", ", "free": "Free", "unlimited": "No purchase limit", "limitWithRefresh": "Limit {count} · {refresh}", "hidden": "Hidden in game", "weaponClaim": "Weapon Claim", "bonusReward": "Recharge Bonus", "monthlyReward": "Recurring Rewards",
+                "groupTypes": { "type0": "Regional and Event Shops", "type2": "Quota Exchange", "type3": "Regional Dispatch", "type4": "Credit Exchange", "type5": "Paid Shop", "cash": "Paid Shop", "recommend": "Featured", "other": "Other Shops" },
+                "context": { "activity": "Event", "openTime": "Availability", "domain": "Region", "channels": "Dispatchers" },
+                "refresh": { "none": "Permanent limit", "daily": "Daily refresh", "weekly": "Weekly refresh", "monthly": "Monthly refresh", "pool": "Weapon banner refresh", "subVersion": "Sub-version refresh", "byTime": "Configured time range", "unknown": "Refresh type {type}" }
+            },
             "dungeon": {
                 "title": "Dungeons", "description": "View detailed dungeon data", "search": "Search dungeon series (name/ID)", "loading": "Loading dungeon data...", "select": "Select dungeon series", "noMatches": "No matching series", "loadFailed": "Failed to load: {message}", "noData": "No dungeon data in this series", "attributeFallback": "Attribute {type}", "enemyDetails": "Enemy Details", "stamina": "Stamina: {value}",
                 "overview": { "title": "Dungeon Overview", "description": "Grouped by dungeon type with series and stage counts", "fallback": "Dungeon", "stageCount": "{count} stages" },

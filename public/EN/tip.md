@@ -2,6 +2,21 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.2.4
+
+#### Shop module
+
+- New Shop module (`v3_shop`) covering all in-game stores: regional exchanges, quota redemption, credit trading, cash shop, and Weapon Exchange.
+- Weapon Exchange includes a "Weapon Rotation" page with current weekly/daily weapons, live countdown, next-batch preview, and a full rotation calendar table.
+- Weapon claim products display gacha pool contents with weights; 6-star weapons are expanded by default.
+- Discounts shown as `-xx%` (remaining percentage).
+
+#### Other
+
+- Added items in version comparison are always highlighted with a green "New" badge and pinned to top.
+- Missing baseline tables now fall back gracefully to empty data for all modules.
+- Internal IDs are hidden when "Show hidden modules" is off.
+
 ### v1.2.3
 
 #### Modules and visibility

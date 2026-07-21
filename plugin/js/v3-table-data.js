@@ -64,7 +64,12 @@
     async function table(name, version) {
         const cacheKey = `${version?.id || 'current'}:${languageInfo().table}:${name}`;
         if (!tableCache.has(cacheKey)) {
-            const raw = fetchText(versionTableUrl(name, version)).then(losslessParse);
+            const raw = fetchText(versionTableUrl(name, version))
+                .catch(error => {
+                    console.warn(`Table ${name} not found${version ? ` in version ${version.id}` : ''}, treating as empty`, error.message || error);
+                    return '{}';
+                })
+                .then(losslessParse);
             tableCache.set(cacheKey, Promise.all([raw, loadI18n()]).then(([data, i18n]) => hydrate(data, i18n)));
         }
         return tableCache.get(cacheKey);

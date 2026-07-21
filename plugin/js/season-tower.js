@@ -203,7 +203,7 @@
         const scriptedModifiers = (scriptedBuffs || []).flatMap(buff => buffModifiers(buff.buffId, buff.blackboard));
         const flags = [];
         if (enemy.isDangerous) flags.push('<span class="v2d-enemy-flag danger">危险敌人</span>');
-        if (enemy.showBigEffect) flags.push('<span class="v2d-enemy-flag big-effect">全局效果</span>');
+        if (enemy.showBigEffect) flags.push('<span class="v2d-enemy-flag big-effect">全局特效</span>');
         if (enemy.showBigHeadbar) flags.push('<span class="v2d-enemy-flag big-headbar">固定血条</span>');
         const statState = window.AKEEnemyRenderer.calculateStats({
             attrData: attrTemplate,
