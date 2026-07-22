@@ -217,7 +217,7 @@
                 templateId: baseInfo.templateId,
                 name: displayInfo.name?.text || baseInfo.name || rawData.name || '',
                 icon: baseInfo.icon || '',
-                iconbig: `/public/images/enemy/monstericonbig/${baseInfo.templateId}.png`,
+                iconbig: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${baseInfo.templateId}.png`,
                 enemyTag: displayType,
                 rarity: baseInfo.rarity || 1,
                 description: displayInfo.description?.text || '',

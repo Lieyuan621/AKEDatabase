@@ -271,11 +271,11 @@
 
     function icon(kind, id, iconId) {
         const paths = {
-            character: `/public/images/character/charremoteicon/icon_${id}.png`,
-            weapon: `/public/images/weapon/iconbig/${iconId || id}.png`,
-            enemy: `/public/images/enemy/monstericonbig/${id}.png`,
-            item: `/public/images/item/itemiconbig/${iconId || id}.png`,
-            equip: `/public/images/equip/iconbig/${iconId || id}.png`
+            character: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/charremoteicon/icon_${id}.png`,
+            weapon: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId || id}.png`,
+            enemy: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${id}.png`,
+            item: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId || id}.png`,
+            equip: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId || id}.png`
         };
         return paths[kind] || '';
     }
@@ -529,7 +529,7 @@
             templateId, name: text(row.name, templateId), rarity: dungeonRarity(row),
             gameCategory: row.gameCategory, gameCategoryName: categoryNames[row.gameCategory] ? dungeonT(`categories.${categoryNames[row.gameCategory]}`) : row.gameCategory,
             categoryOrder: dungeonRarity(row) * -1, dungeonCount: (row.includeDungeonIds || []).length,
-            image: row.dungeonPicPath ? `/public/images/dungeon/${row.dungeonPicPath}_bg.png` : '',
+            image: row.dungeonPicPath ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/dungeon/${row.dungeonPicPath}_bg.png` : '',
             contentFile: `/__v3/dungeon/${templateId}.json`, sourceOrder: index, hidden: false,
             __diffSignature: diffSignature([row, pick(dungeons, row.includeDungeonIds || [])])
         }));
@@ -624,7 +624,7 @@
             })]));
             return { categoryId, name: text(row.categoryName, categoryId), achievementCount: entries.length,
                 groupCount: groupIds.size, platedCount: entries.filter(([, achievement]) => achievement.canBePlated).length,
-                icon: first && firstLevel ? `/public/images/achievement/medaliconbig/${first[0]}_lv${String(firstLevel.achieveLevel).padStart(2, '0')}.png` : '',
+                icon: first && firstLevel ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/medaliconbig/${first[0]}_lv${String(firstLevel.achieveLevel).padStart(2, '0')}.png` : '',
                 contentFile: `/__v3/achievement/${categoryId}.json`, categoryPriority: row.categoryPriority, hidden: false,
                 __diffGroupSignature: diffSignature({
                     categoryName: row.categoryName,
@@ -650,7 +650,7 @@
             group[groupName][achieveId] = { name: text(row.name, achieveId), order: row.order, canBeUpgraded: row.canBeUpgraded,
                 canBePlated: row.canBePlated, applyRareEffect: row.applyRareEffect, noObtainCanView: category.noObtainCanView,
                 level: Object.values(row.levelInfos || {}).map(level => ({ level: level.achieveLevel,
-                    icon: `/public/images/achievement/medaliconbig/${achieveId}_lv${String(level.achieveLevel).padStart(2, '0')}.png`,
+                    icon: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/medaliconbig/${achieveId}_lv${String(level.achieveLevel).padStart(2, '0')}.png`,
                     desc: text(level.completeDesc), conditions: (level.conditions || []).map(cond => text(cond.desc)),
                     progressToCompare: (level.conditions || []).map(cond => cond.progressToCompare) })) };
         });
@@ -675,7 +675,7 @@
             return { activityId, name: text(row.name, activityId), rawType: row.type,
                 tags: (row.tagIds || []).map(tagId => ({ tagId, name: text(tags[tagId]?.name, tagId) })),
                 openTime: range.openTime || '', closeTime: range.closeTime || '',
-                tabImg: row.tabImg ? `/public/images/activity/${row.tabImg}.png` : '', contentFile: `/__v3/activity/${activityId}.json`,
+                tabImg: row.tabImg ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/activity/${row.tabImg}.png` : '', contentFile: `/__v3/activity/${activityId}.json`,
                 statusOrder, sourceOrder: row.sortId ?? index, hidden: false,
                 __diffSignature: diffSignature([row, times[row.timeId], pick(tags, row.tagIds || [])]) };
         });
@@ -724,7 +724,7 @@
             const groups = Object.values(contracts[row.gameId]?.contractGroupMap || {});
             const contractCount = groups.reduce((sum, group) => sum + Object.keys(group.contractMap || {}).length, 0);
             return { gameId: row.gameId, activityId: row.activityId, name: text(activity.name, row.gameId),
-                image: activity.tabImg ? `/public/images/activity/${activity.tabImg}.png` : '',
+                image: activity.tabImg ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/activity/${activity.tabImg}.png` : '',
                 openTime: range.openTime || '', closeTime: range.closeTime || '', statusOrder,
                 dungeonName: text(dungeon.dungeonName), contractGroupCount: groups.length, contractCount,
                 contentFile: `/__v3/cc/${row.gameId}.json`,

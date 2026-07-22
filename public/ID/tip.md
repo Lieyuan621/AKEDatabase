@@ -2,6 +2,16 @@ AKEData telah pindah ke domain www.akedata.wiki. Domain lama, akedata.top, kini 
 
 # Catatan Pembaruan Versi AKEData
 
+### v1.2.5
+
+#### Gambar dan unggahan aset
+
+- Gambar kini mempertahankan struktur asli di bawah `assets/beyond/dynamicassets/gameplay`, dan semua modul menggunakan jalur baru.
+- Aset yang hilang akibat pencocokan direktori dan pemetaan internal beyond-sdk yang tidak lengkap telah diperbaiki, termasuk pemisahan tepat antara `charremoteicon` dan `charremoteicon700`.
+- AKE Data Tool kini dapat mengunggah gambar, data Json, atau keduanya serta memeriksa ukuran saat ini dan puncak perkiraan seluruh bucket R2; unggahan diblokir pada 10 GB.
+- `pluginversion` dan `jsversion` memperbarui HTML modul dan JavaScript secara terpisah sehingga aset yang tidak berubah tetap memakai cache lokal.
+- Modul Baker tidak disertakan dalam versi ini dan ditunda ke `1.2.6`.
+
 ### v1.2.3
 
 #### Modul dan visibilitas

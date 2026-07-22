@@ -14,6 +14,25 @@
             const scriptSourceCache = new Map();
             const stylesheetCache = new Map();
             const moduleStyleKeys = new Map();
+            const pluginVersionStorageKey = 'akedata-plugin-versions';
+            const jsVersionStorageKey = 'akedata-js-versions';
+            const bootstrapVersion = window.__akeBootstrapVersion || {};
+            const configuredPluginVersions = bootstrapVersion.pluginversion || {};
+            const configuredJsVersions = bootstrapVersion.jsversion || {};
+            const readStoredVersions = key => {
+                try {
+                    const value = JSON.parse(storage.get(key, '{}'));
+                    return value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+                } catch {
+                    return {};
+                }
+            };
+            const storedPluginVersions = readStoredVersions(pluginVersionStorageKey);
+            const storedJsVersions = readStoredVersions(jsVersionStorageKey);
+            const changedPluginVersions = new Set(Object.keys(configuredPluginVersions)
+                .filter(id => storedPluginVersions[id] !== configuredPluginVersions[id]));
+            const changedJsVersions = new Set(Object.keys(configuredJsVersions)
+                .filter(path => storedJsVersions[path] !== configuredJsVersions[path]));
             let mountedModuleId = null;
             let moduleLoadGeneration = 0;
             let tipCheckStarted = false;
@@ -513,6 +532,33 @@
                 return url.href;
             }
 
+            function resourcePathKey(resource) {
+                return new URL(resource, window.location.href).pathname.replace(/^\/+/, '');
+            }
+
+            function rememberResourceVersion(storageKey, versions, key, value) {
+                if (!value || versions[key] === value) return;
+                versions[key] = value;
+                storage.set(storageKey, JSON.stringify(versions));
+            }
+
+            async function fetchVersionedResource(resource, currentVersion, versions, changedVersions, storageKey, key) {
+                const url = new URL(resource, window.location.href);
+                if (currentVersion) url.searchParams.set('v', currentVersion);
+                if (window.__akeForceRefreshTimestamp) url.searchParams.set('t', window.__akeForceRefreshTimestamp);
+                const cache = window.__akeForceRefreshTimestamp
+                    ? 'no-store'
+                    : currentVersion && changedVersions.has(key)
+                        ? 'reload'
+                        : 'force-cache';
+                const response = await (window.akeFetch || fetch)(url.href, { cache });
+                if (response.ok) {
+                    rememberResourceVersion(storageKey, versions, key, currentVersion);
+                    changedVersions.delete(key);
+                }
+                return response;
+            }
+
             async function ensureStylesheet(href) {
                 const key = canonicalResourceUrl(href);
                 if (stylesheetCache.has(key)) return stylesheetCache.get(key);
@@ -550,18 +596,27 @@
             }
 
             function getScriptSource(src) {
-                const key = canonicalResourceUrl(src);
-                if (!scriptSourceCache.has(key)) {
-                    const promise = (window.akeFetch || fetch)(src).then(response => {
+                const pathKey = resourcePathKey(src);
+                const currentVersion = configuredJsVersions[pathKey] || bootstrapVersion.appversion || '';
+                const cacheKey = `${canonicalResourceUrl(src)}|${currentVersion}`;
+                if (!scriptSourceCache.has(cacheKey)) {
+                    const promise = fetchVersionedResource(
+                        src,
+                        currentVersion,
+                        storedJsVersions,
+                        changedJsVersions,
+                        jsVersionStorageKey,
+                        pathKey
+                    ).then(response => {
                         if (!response.ok) throw new Error(`HTTP ${response.status}`);
                         return response.text();
                     }).catch(error => {
-                        scriptSourceCache.delete(key);
+                        scriptSourceCache.delete(cacheKey);
                         throw error;
                     });
-                    scriptSourceCache.set(key, promise);
+                    scriptSourceCache.set(cacheKey, promise);
                 }
-                return scriptSourceCache.get(key);
+                return scriptSourceCache.get(cacheKey);
             }
 
             async function executeModuleScript(sourceScript) {
@@ -596,16 +651,25 @@
                 if (mountedModuleId !== module.id) stashMountedModule();
                 setContent(`<div class="loader">${tr('common.loadingModule')}<br><small>${firstLoadTextTableHint()}</small></div>`);
                 try {
-                    if (!moduleHtmlCache.has(module.contentFile)) {
-                        moduleHtmlCache.set(module.contentFile, (window.akeFetch || fetch)(module.contentFile).then(response => {
+                    const currentVersion = configuredPluginVersions[module.id] || bootstrapVersion.appversion || '';
+                    const cacheKey = `${module.id}|${canonicalResourceUrl(module.contentFile)}|${currentVersion}`;
+                    if (!moduleHtmlCache.has(cacheKey)) {
+                        moduleHtmlCache.set(cacheKey, fetchVersionedResource(
+                            module.contentFile,
+                            currentVersion,
+                            storedPluginVersions,
+                            changedPluginVersions,
+                            pluginVersionStorageKey,
+                            module.id
+                        ).then(response => {
                             if (!response.ok) throw new Error(`HTTP ${response.status}`);
                             return response.text();
                         }).catch(error => {
-                            moduleHtmlCache.delete(module.contentFile);
+                            moduleHtmlCache.delete(cacheKey);
                             throw error;
                         }));
                     }
-                    const html = await moduleHtmlCache.get(module.contentFile);
+                    const html = await moduleHtmlCache.get(cacheKey);
                     if (generation !== moduleLoadGeneration) return false;
                     const template = document.createElement('template');
                     template.innerHTML = html;
@@ -890,10 +954,54 @@
             window.hyperlinkConfig = {};
             window.textstyleConfig = {};
 
+            const RAW_IMAGE_ROOT = '/public/images/assets/beyond/dynamicassets/gameplay/ui/';
+            const IMAGE_PATH_PREFIXES = [
+                ['weapon/full/', 'sprites/gachaweapon/'],
+                ['weapon/iconbig/', 'sprites/itemiconbig/'],
+                ['weapon/icon/', 'sprites/itemicon/'],
+                ['item/itemiconbig/', 'sprites/itemiconbig/'],
+                ['item/itemicon/', 'sprites/itemicon/'],
+                ['item/itemtips/', 'sprites/itemtips/'],
+                ['equip/iconbig/', 'sprites/itemiconbig/'],
+                ['equip/icon/', 'sprites/itemicon/'],
+                ['character/charremoteicon/', 'sprites/charremoteicon/'],
+                ['character/charpic/', 'sprites/charpic/'],
+                ['character/skillicon/', 'sprites/skillicon/'],
+                ['character/spaceshipskillicon/', 'sprites/spaceshipskillicon/'],
+                ['character/businesscardbg/', 'sprites/businesscardbg/'],
+                ['character/charprofessionicon/', 'sprites/charprofessionicon/'],
+                ['character/elementicon/', 'sprites/elementicon/'],
+                ['character/imagepoaster/', 'textures/spaceship/imageposter/'],
+                ['enemy/monstericonbig/', 'sprites/monstericonbig/'],
+                ['enemy/monstericon/', 'sprites/monstericon/'],
+                ['achievement/medaliconbig/', 'sprites/medaliconbig/'],
+                ['activity/', 'sprites/activity/'],
+                ['BuffIcon/', 'sprites/bufficon/'],
+                ['bufficon/', 'sprites/bufficon/'],
+                ['dungeon/', 'sprites/dungeon/'],
+                ['TermIcon/', 'sprites/termicon/'],
+                ['contingencycontract/', 'sprites/contingencycontract/']
+            ];
+
+            window.resolveImagePath = function(path) {
+                const source = String(path || '').replace(/\\/g, '/');
+                if (!source || /^(?:data:|blob:|https?:\/\/)/i.test(source)) return source;
+                const absolute = source.startsWith('/') ? source : `/${source}`;
+                if (absolute.startsWith(RAW_IMAGE_ROOT)) return absolute;
+                if (!absolute.startsWith('/public/images/')) return absolute;
+                const relative = absolute.slice('/public/images/'.length);
+                for (const [legacy, current] of IMAGE_PATH_PREFIXES) {
+                    if (relative.startsWith(legacy)) {
+                        return `${RAW_IMAGE_ROOT}${current}${relative.slice(legacy.length)}`;
+                    }
+                }
+                return absolute;
+            };
+
             function normalizeTableImagePath(path) {
                 if (!path) return '';
                 const value = String(path).replace(/^\/?public\/images\//, '');
-                return `public/images/${value}${value.includes('.') ? '' : '.png'}`;
+                return window.resolveImagePath(`/public/images/${value}${value.includes('.') ? '' : '.png'}`);
             }
 
             function normalizeHyperlinkTable(table) {
@@ -1078,7 +1186,8 @@
                                 let path = imgMatch[1];
                                 const scale = imgMatch[2];
                                 if (!path.includes('.')) path += '.png';
-                                result += `<img src="${baseImagePath}${path}" style="transform: scale(${scale}); width: auto; height: 1em; display: inline-block; vertical-align: middle;" class="inline-icon" onerror="this.onerror=null; this.src='';">`;
+                                const source = window.resolveImagePath(`${baseImagePath}${path}`);
+                                result += `<img src="${source}" style="transform: scale(${scale}); width: auto; height: 1em; display: inline-block; vertical-align: middle;" class="inline-icon" onerror="this.onerror=null; this.src='';">`;
                             }
                             i = endIdx + 1;
                             continue;
@@ -1215,7 +1324,7 @@
                 let iconHtml = '';
                 if (hyperDef.iconPath) {
                     const iconFullPath = hyperDef.iconPath.includes('.') ? hyperDef.iconPath : hyperDef.iconPath + '.png';
-                    iconHtml = `<img src="/${iconFullPath}" style="width: 1.2em; height: 1.2em; vertical-align: middle; margin-right: 4px;" onerror="this.onerror=null; this.src='';">`;
+                    iconHtml = `<img src="${window.resolveImagePath(iconFullPath)}" style="width: 1.2em; height: 1.2em; vertical-align: middle; margin-right: 4px;" onerror="this.onerror=null; this.src='';">`;
                 }
                 const content = `
                     <div class="tooltip-name">${iconHtml}${name}</div>

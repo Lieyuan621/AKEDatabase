@@ -410,7 +410,7 @@
         const bundles = [...(reward.itemBundles || []), ...(reward.probItemBundles || [])];
         return `<div class="mission-reward-list">${bundles.map(bundle => {
             const item = auxiliary.ItemTable?.[bundle.id] || {};
-            const icon = item.iconId ? `/public/images/item/itemiconbig/${item.iconId}.png` : '';
+            const icon = item.iconId ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${item.iconId}.png` : '';
             return `<div class="mission-reward">${icon ? `<img src="${escapeHtml(icon)}" alt="">` : ''}<div><b>${escapeHtml(item.name?.text || bundle.id)}</b><br><small>× ${escapeHtml(bundle.count ?? '?')}</small></div></div>`;
         }).join('') || `<div class="mission-reward"><b>${escapeHtml(rewardId)}</b></div>`}</div>`;
     }
@@ -473,7 +473,7 @@
             );
             if (npc?.headIcon && npc.headIcon !== 'icon_default') iconId = npc.headIcon;
         }
-        const path = iconId ? `/public/images/character/charremoteicon/${iconId}.png` : '';
+        const path = iconId ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/charremoteicon/${iconId}.png` : '';
         state.avatarCache.set(raw, path);
         return path;
     }

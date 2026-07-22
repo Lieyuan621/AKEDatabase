@@ -2,6 +2,16 @@ AKEData đã chuyển sang tên miền www.akedata.wiki. Tên miền cũ akedata
 
 # Nhật ký cập nhật phiên bản AKEData
 
+### v1.2.5
+
+#### Hình ảnh và tải tài sản lên
+
+- Hình ảnh giờ giữ nguyên cấu trúc thư mục gốc dưới `assets/beyond/dynamicassets/gameplay`, và mọi mô-đun đã chuyển sang đường dẫn mới.
+- Đã sửa tài sản bị thiếu do đối sánh thư mục và ánh xạ nội bộ chưa đầy đủ của beyond-sdk, bao gồm việc phân biệt chính xác `charremoteicon` với `charremoteicon700`.
+- AKE Data Tool cho phép tải hình ảnh, dữ liệu Json hoặc cả hai lên và kiểm tra dung lượng hiện tại cùng mức đỉnh dự kiến của toàn bộ R2 bucket; quá trình tải bị chặn khi đạt 10 GB.
+- HTML mô-đun và JavaScript được cập nhật riêng bằng `pluginversion` và `jsversion`, nên tài nguyên không đổi tiếp tục dùng bộ nhớ đệm cục bộ.
+- Mô-đun Baker không nằm trong phiên bản này và được hoãn sang `1.2.6`.
+
 ### v1.2.3
 
 #### Mô-đun và khả năng hiển thị

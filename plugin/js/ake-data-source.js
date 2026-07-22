@@ -170,10 +170,13 @@
     function resolveImageUrl(value) {
         const raw = String(value || '').trim();
         if (!raw) return raw;
-        const result = classify(raw);
-        return result.type === 'shared' && result.url.pathname.startsWith('/public/images/')
-            ? resolveUrl(raw)
+        const migrated = typeof window.resolveImagePath === 'function'
+            ? window.resolveImagePath(raw)
             : raw;
+        const result = classify(migrated);
+        return result.type === 'shared' && result.url.pathname.startsWith('/public/images/')
+            ? resolveUrl(migrated)
+            : migrated;
     }
 
     function rewriteSrcset(value) {

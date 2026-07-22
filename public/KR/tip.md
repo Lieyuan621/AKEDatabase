@@ -2,6 +2,16 @@ AKEData가 www.akedata.wiki로 이전되었습니다. 기존 도메인 akedata.t
 
 # AKEData 버전 업데이트 내역
 
+### v1.2.5
+
+#### 이미지 에셋 및 업로드
+
+- 이미지는 `assets/beyond/dynamicassets/gameplay` 아래의 원본 디렉터리 구조를 유지하며, 모든 모듈이 새 경로를 사용합니다.
+- beyond-sdk의 디렉터리 판정과 불완전한 내부 매핑으로 누락되던 에셋을 수정하고, `charremoteicon`과 `charremoteicon700`처럼 접두사가 같은 디렉터리를 정확히 구분합니다.
+- AKE Data Tool에서 이미지, Json 또는 둘 다 선택해 업로드할 수 있습니다. 동기화 전후에 전체 R2 버킷의 현재 용량과 예상 최대 용량을 확인하며, 10 GB에 도달하면 업로드를 차단합니다.
+- 모듈 HTML과 JavaScript는 `pluginversion`, `jsversion`으로 각각 갱신되어 변경되지 않은 리소스는 로컬 캐시를 계속 사용합니다.
+- Baker 모듈은 이번 버전에 포함되지 않으며 `1.2.6`으로 연기되었습니다.
+
 ### v1.2.3
 
 #### 모듈 및 정보 표시

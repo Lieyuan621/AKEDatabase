@@ -2,6 +2,16 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.2.5
+
+#### Image assets and uploads
+
+- Image assets now keep their original directory structure under `assets/beyond/dynamicassets/gameplay`, and all modules request them from the new paths.
+- Fixed missing assets caused by beyond-sdk directory matching and incomplete internal mappings, including exact separation of `charremoteicon` from similarly prefixed directories such as `charremoteicon700`.
+- AKE Data Tool now supports uploading images, Json data, or both. It checks the entire R2 bucket's current and projected peak size before and after syncing, and blocks uploads at 10 GB.
+- Module HTML and JavaScript use `pluginversion` and `jsversion` independently, so unchanged resources continue to use the local cache.
+- Baker module development is not included in this release and has been postponed to `1.2.6`.
+
 ### v1.2.4
 
 #### Shop module

@@ -35,7 +35,7 @@
             '电磁': 'electro'
         };
 
-        const IMAGE_BASE_PATH = '/public/images/bufficon/';
+        const IMAGE_BASE_PATH = '/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/bufficon/';
         const COLUMN_KEY_MAP = {
             'coolDown': 'columns.coolDown',
             'costValue': 'columns.costValue',
@@ -677,7 +677,7 @@
             const legacy = {
                 charId: baseInfo.charId,
                 icon: baseInfo.icon || '',
-                pic: rawData.pic || `/public/images/character/charpic/${baseInfo.charId}.png`,
+                pic: rawData.pic || `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/charpic/${baseInfo.charId}.png`,
                 potentialpics: [],
                 name: baseInfo.name || rawData.name || '',
                 rarity: baseInfo.rarity,
@@ -864,7 +864,7 @@
                 (p.unlockCharPictureItemList || []).forEach(itemId => {
                     if (!itemId) return;
                     const imgName = itemId.replace(/^item_/, '');
-                    legacy.potentialpics.push(`/public/images/character/imagepoaster/largesize/${imgName}.png`);
+                    legacy.potentialpics.push(`/public/images/assets/beyond/dynamicassets/gameplay/ui/textures/spaceship/imageposter/largesize/${imgName}.png`);
                 });
             });
 
@@ -902,7 +902,7 @@
                 .map(node => rawData.potentialtalenteffecttable?.[node.passiveSkillNodeInfo.talentEffectId])
                 .filter(Boolean);
             legacy.skills = skillGroups.map(s => {
-                const iconPath = s.icon ? `/public/images/character/skillicon/${s.icon}.png` : '';
+                const iconPath = s.icon ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/skillicon/${s.icon}.png` : '';
                 const groupName = getText(s.name);
                 const groupDescription = getText(s.desc);
                 const skillIdList = Array.isArray(s.skillIdList) ? s.skillIdList : [];
@@ -920,7 +920,7 @@
                     return {
                         id: conditionId,
                         name: s[`conditionName${index}`]?.text || '',
-                        icon: s[`conditionIcon${index}`] ? `/public/images/character/skillicon/${s[`conditionIcon${index}`]}.png` : iconPath,
+                        icon: s[`conditionIcon${index}`] ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/skillicon/${s[`conditionIcon${index}`]}.png` : iconPath,
                         conditionDesc: s[`conditionDesc${index}`]?.text || '',
                         description: s[`conditionPostDesc${index}`]?.text || ''
                     };
@@ -1063,7 +1063,7 @@
                 const tName = getText(skill.talentName);
                 if (!groupedSkills[tName]) {
                     groupedSkills[tName] = {
-                        icon: skill.icon ? `/public/images/character/spaceshipskillicon/${skill.icon}.png` : '',
+                        icon: skill.icon ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/spaceshipskillicon/${skill.icon}.png` : '',
                         talentName: tName,
                         roomTypeName: roomTypeMap[String(skill.roomType)] || '',
                         levels: []
@@ -1238,13 +1238,13 @@
             if (parts.length === 0) return '';
             return parts.map(it => {
                 const info = itemInfoMap?.[it.id] || {};
-                return `<div class="cost-item" title="${escapeAttribute(info.description)}"><img src="/public/images/item/itemiconbig/${info.iconId || it.id}.png" onerror="this.style.display='none'"><span class="ci-name">${info.name || it.id}</span><span class="ci-cnt">×${it.count}</span></div>`;
+                return `<div class="cost-item" title="${escapeAttribute(info.description)}"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${info.iconId || it.id}.png" onerror="this.style.display='none'"><span class="ci-name">${info.name || it.id}</span><span class="ci-cnt">×${it.count}</span></div>`;
             }).join('');
         }
 
         function costBtnHtml(innerHtml, itemIds, itemInfoMap) {
             if (!innerHtml) return '';
-            const icons = (itemIds || []).map(id => `<img src="/public/images/item/itemiconbig/${itemInfoMap?.[id]?.iconId || id}.png" onerror="this.style.display='none'">`).join('');
+            const icons = (itemIds || []).map(id => `<img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${itemInfoMap?.[id]?.iconId || id}.png" onerror="this.style.display='none'">`).join('');
             return `<span class="cost-wrap"><span class="cost-btn" onclick="event.stopPropagation();var tip=this.nextElementSibling;tip.classList.toggle('pinned');if(tip.classList.contains('pinned'))document.querySelectorAll('.cost-tip.pinned').forEach(x=>{if(x!==tip)x.classList.remove('pinned')})">${t('developmentCost')}</span><span class="cost-btn-icons">${icons}</span><span class="cost-tip">${innerHtml}</span></span>`;
         }
 
@@ -1484,7 +1484,7 @@
                         const itemParts = [...(c.goldCost > 0 ? [{ id: 'item_gold', count: c.goldCost }] : []), ...c.items.filter(it => it.id !== 'item_gold')];
                         const itemsStr = itemParts.map(it => {
                             const info = itemInfoMap[it.id] || {};
-                            return `<span class="ci-ri" title="${escapeAttribute(info.description)}"><img src="/public/images/item/itemiconbig/${info.iconId || it.id}.png" onerror="this.style.display='none'">${info.name || it.id} ×${it.count}</span>`;
+                            return `<span class="ci-ri" title="${escapeAttribute(info.description)}"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${info.iconId || it.id}.png" onerror="this.style.display='none'">${info.name || it.id} ×${it.count}</span>`;
                         }).join('');
                         return `<div class="sk-cost-row"><span class="cost-section-title">${t('levelRange', { name: `${c.level - 1}→${c.level}` })}</span>${itemsStr}</div>`;
                     }).join('');

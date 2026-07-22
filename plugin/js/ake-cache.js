@@ -240,8 +240,12 @@
     window.akeStorage = storage;
 
     function validVersion(value) {
+        const validVersionMap = map => map && typeof map === 'object' && !Array.isArray(map) &&
+            Object.values(map).every(version => typeof version === 'string' && version.length > 0);
         return value &&
             typeof value.appversion === 'string' &&
+            validVersionMap(value.pluginversion) &&
+            validVersionMap(value.jsversion) &&
             typeof value.updatedAt === 'string';
     }
 
@@ -345,6 +349,16 @@
             (url.pathname.startsWith('/plugin/') || url.pathname.startsWith('/theme/'));
     }
 
+    function applicationResourceVersion(resource, version) {
+        const raw = typeof resource === 'string' ? resource : resource?.url;
+        if (!raw || !version) return '';
+        const url = new URL(raw, window.location.href);
+        const explicitVersion = url.searchParams.get('v');
+        if (explicitVersion) return explicitVersion;
+        const key = url.pathname.replace(/^\/+/, '');
+        return version.jsversion?.[key] || version.appversion || '';
+    }
+
     function isPublicResource(request) {
         if (request.method !== 'GET') return false;
         return ['table', 'shared', 'site-public'].includes(window.akeDataSource?.classify(request)?.type);
@@ -429,7 +443,8 @@
         if (!cacheable) {
             if (version && isApplicationResource(request)) {
                 const appUrl = new URL(request.url);
-                appUrl.searchParams.set('v', version.appversion);
+                const resourceVersion = applicationResourceVersion(request, version);
+                if (resourceVersion) appUrl.searchParams.set('v', resourceVersion);
                 if (forceRefresh) appUrl.searchParams.set('t', forceRefreshTimestamp);
                 return fetch(appUrl.href, {
                     method: request.method,
@@ -441,7 +456,7 @@
                     referrerPolicy: request.referrerPolicy,
                     integrity: request.integrity,
                     signal: request.signal,
-                    cache: forceRefresh ? 'no-store' : 'force-cache'
+                    cache: forceRefresh ? 'no-store' : (request.cache === 'default' ? 'force-cache' : request.cache)
                 });
             }
             if (version && isPublicResource(request)) {

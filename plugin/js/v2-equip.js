@@ -71,8 +71,8 @@
         }
 
         function getEquipIconSrc(itemId, iconId) {
-            if (iconId) return `/public/images/equip/icon/${iconId}.png`;
-            return `/public/images/equip/icon/${itemId}.png`;
+            if (iconId) return `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemicon/${iconId}.png`;
+            return `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemicon/${itemId}.png`;
         }
 
         function filterSuits(suits) {
@@ -304,7 +304,7 @@
                 const item = itemTable[costItemId] || {};
                 const name = item.name?.text || costItemId;
                 const iconId = item.iconId || costItemId;
-                return `<div class="v2eq-cost-item"><img src="/public/images/item/itemiconbig/${iconId}.png" onerror="this.style.display='none'"><span class="v2eq-ci-name">${escapeHtml(name)}</span><span class="v2eq-ci-cnt">${prefix}${Number(count || 0).toLocaleString()}</span></div>`;
+                return `<div class="v2eq-cost-item"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png" onerror="this.style.display='none'"><span class="v2eq-ci-name">${escapeHtml(name)}</span><span class="v2eq-ci-cnt">${prefix}${Number(count || 0).toLocaleString()}</span></div>`;
             }
 
             const tipHtml = chains.map(chain => {
@@ -324,7 +324,7 @@
             const component = itemTable[componentId] || {};
             const componentTitle = component.name?.text || (getCurrentShowHidden() ? componentId : '');
             const componentIcon = componentId
-                ? `<img class="v2eq-default-component" src="/public/images/item/itemiconbig/${escapeHtml(component.iconId || componentId)}.png" alt="" title="${escapeHtml(componentTitle)}" onerror="this.style.display='none'">`
+                ? `<img class="v2eq-default-component" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escapeHtml(component.iconId || componentId)}.png" alt="" title="${escapeHtml(componentTitle)}" onerror="this.style.display='none'">`
                 : '';
             return `<span class="v2eq-cost-wrap">${componentIcon}<span class="v2eq-cost-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-cost-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">${t('craftingCost')}</span><span class="v2eq-cost-tip">${tipHtml}</span></span>`;
         }

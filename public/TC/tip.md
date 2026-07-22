@@ -2,6 +2,16 @@ AKEData 已遷移至網域：www.akedata.wiki，原先的 akedata.top 現已重�
 
 # AKEData 版本更新日誌
 
+### v1.2.5
+
+#### 圖片資源與資產上傳
+
+- 圖片改為保留 `assets/beyond/dynamicassets/gameplay` 下的原始目錄結構，各模組已切換至新請求路徑。
+- 修正 beyond-sdk 目錄比對及內部映射缺失造成的資源遺漏，精確區分 `charremoteicon` 與 `charremoteicon700` 等同名前綴目錄。
+- AKE Data Tool 新增「資產上傳」，可選擇圖片、Json 或同時上傳；同步前後檢查整個 R2 Bucket 的目前與預估峰值容量，達到 10 GB 時阻止上傳。
+- 模組 HTML 與 JavaScript 分別使用 `pluginversion`、`jsversion` 判斷更新，未變更資源繼續使用本機快取。
+- Baker 模組相關開發未包含於本版本，延後至 `1.2.6`。
+
 ### v1.2.3
 
 #### 模組與資訊顯示

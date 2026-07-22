@@ -562,7 +562,7 @@
                                         <div class="v2cc-tag-card ${stateClass}" data-tag-id="${tid}">
                                             <div class="v2cc-tag-header">
                                                 <div class="v2cc-tag-check">${isSelected ? '✓' : ''}</div>
-                                                ${icon ? `<img class="v2cc-tag-icon" src="/public/images/contingencycontract/${icon}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
+                                                ${icon ? `<img class="v2cc-tag-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/contingencycontract/buff/${icon}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
                                                 <span class="v2cc-tag-name">${escapeHtml(name)}</span>
                                                 ${roman ? `<span class="v2cc-tag-roman">${escapeHtml(roman)}</span>` : ''}
                                                 <span class="v2cc-tag-score">+${score}</span>
@@ -630,7 +630,7 @@
                                 <div class="v2cc-level-reward-list">
                                     ${items.length ? items.map(it => `
                                         <div class="v2cc-reward-item">
-                                            <img class="v2cc-reward-icon" src="/public/images/item/itemiconbig/${it.iconId}.png" onerror="this.onerror=null; this.style.display='none';">
+                                            <img class="v2cc-reward-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${it.iconId}.png" onerror="this.onerror=null; this.style.display='none';">
                                             <span class="v2cc-reward-name">${escapeHtml(it.name)}</span>
                                             <span class="v2cc-reward-count">×${it.count}</span>
                                         </div>
@@ -705,7 +705,7 @@
                                     return `
                                         <div class="v2cc-shop-goods-row">
                                             <span class="col-icon">
-                                                ${itemIcon ? `<img class="v2cc-goods-icon" src="/public/images/item/itemiconbig/${itemIcon}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
+                                                ${itemIcon ? `<img class="v2cc-goods-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${itemIcon}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
                                             </span>
                                             <span class="col-name">${itemName}</span>
                                             <span class="col-price">${hasDiscount ? `<span class="v2cc-price-original">${g.price}</span> ` : ''}${actualPrice} ${currencyName}${hasDiscount ? ` <span class="v2cc-goods-discount">-${Math.round((1 - g.cnDiscount) * 100)}%</span>` : ''}</span>
@@ -753,7 +753,7 @@
                         return `
                             <div class="v2cc-task-group-card">
                                 <div class="v2cc-task-group-header">
-                                    ${tg.icon ? `<img class="v2cc-task-group-icon" src="/public/images/contingencycontract/${tg.icon}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
+                                    ${tg.icon ? `<img class="v2cc-task-group-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/contingencycontract/${tg.icon}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
                                     <span class="v2cc-task-group-name">${tg.name?.text ? parseText(tg.name.text) : escapeHtml(tgId)}</span>
                                     <span class="v2cc-task-group-badge">${t('tasks.count', { count: tasks.length })}</span>
                                     ${tg.canUpdate ? `<span class="v2cc-task-group-badge update">${t('tasks.updatable')}</span>` : ''}
@@ -774,7 +774,7 @@
                                                             <span class="v2cc-task-reward-label">${t('tasks.rewards')}</span>
                                                             ${rewards.map(r => `
                                                                 <span class="v2cc-task-reward">
-                                                                    ${r.iconId ? `<img class="v2cc-task-reward-icon" src="/public/images/item/itemiconbig/${r.iconId}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
+                                                                    ${r.iconId ? `<img class="v2cc-task-reward-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${r.iconId}.png" onerror="this.onerror=null; this.style.display='none';">` : ''}
                                                                     <span class="v2cc-task-reward-name">${escapeHtml(r.name)}</span>
                                                                     <span class="v2cc-task-reward-count">×${r.count}</span>
                                                                 </span>
@@ -982,7 +982,7 @@
         const nickname = displayInfo.nickname?.text || '';
         const desc = displayInfo.description?.text || '';
         const inlineModifiers = enemyConfig.attrModifiers || [];
-        const iconSrc = `/public/images/enemy/monstericonbig/${templateId}.png`;
+        const iconSrc = `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${templateId}.png`;
 
         const ownBuffs = enemyConfig.bornBuffs || [];
         const libBuffs = [...(libraryBuffs || []), ...(window.AKECombatData?.staticEnemyBuffs(dungeonData, enemyId, enemyLevel) || [])];
@@ -1186,7 +1186,7 @@
                     : 'z-index:10;';
 
                 mapSpotsHtml += `<div class="v2cc-map-spot" data-wave="${wi}" data-group="${g.groupKey}" data-target-group="${targetGroupKey}" style="left:${pct.left}%;top:${pct.top}%;${vis}${stackStyle}">
-                    <img class="v2cc-map-spot-icon" src="/public/images/enemy/monstericonbig/${spawn.templateId}.png" onerror="this.style.display='none'">
+                    <img class="v2cc-map-spot-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${spawn.templateId}.png" onerror="this.style.display='none'">
                     <div class="v2cc-map-tip">${tipLines.map(l => `<div>${l}</div>`).join('')}</div>
                 </div>`;
             });
@@ -1254,7 +1254,7 @@
                         const aliveTag = wave.maxAlive > 0 ? ` <span class="v2d-wave-alive">${t('waves.aliveLimit', { count: wave.maxAlive })}</span>` : '';
                         const pauseTag = wave.hasPause ? ` <span class="v2d-wave-pause">${t('waves.externallyControlled')}</span>` : '';
                         const enemyParts = wave.enemies.map(e => {
-                            const iconSrc = `/public/images/enemy/monstericonbig/${e.templateId}.png`;
+                            const iconSrc = `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${e.templateId}.png`;
                             return `<span class="v2d-wave-enemy" data-wave-idx="${wIdx}" data-enemy-id="${e.instanceId}"><img class="v2d-wave-icon" src="${iconSrc}" onerror="this.style.display='none'"><span class="v2d-wave-ename">${escapeHtml(e.name)}</span> ×${e.count} <span class="v2d-wave-lv">Lv.${e.level}</span></span>`;
                         }).join(' ');
                         const activeCls = wIdx === 0 ? ' active' : '';

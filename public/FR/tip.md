@@ -2,6 +2,16 @@ AKEData a été transféré vers le domaine www.akedata.wiki. L'ancien domaine a
 
 # Journal des mises à jour d'AKEData
 
+### v1.2.5
+
+#### Images et envoi des ressources
+
+- Les images conservent désormais leur arborescence d'origine sous `assets/beyond/dynamicassets/gameplay`, et tous les modules utilisent les nouveaux chemins.
+- Les ressources manquantes dues aux règles de répertoire et à la table interne incomplète de beyond-sdk ont été corrigées, avec une distinction exacte entre `charremoteicon` et `charremoteicon700`.
+- AKE Data Tool peut envoyer les images, les données Json ou les deux. Il contrôle la taille actuelle et le pic estimé de l'ensemble du bucket R2 et bloque l'envoi à 10 Go.
+- `pluginversion` et `jsversion` versionnent séparément le HTML des modules et JavaScript afin de conserver les ressources inchangées dans le cache local.
+- Le module Baker n'est pas inclus dans cette version et est reporté à la `1.2.6`.
+
 ### v1.2.3
 
 #### Modules et visibilité

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="app.title">AKEData · 终末地数据库</title>
-    <link rel="icon" type="image/png" href="https://data.akedata.wiki/public/images/character/charremoteicon/icon_chr_0013_aglina.png">
+    <link rel="icon" type="image/png" href="https://data.akedata.wiki/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/charremoteicon/icon_chr_0013_aglina.png">
     <link rel="stylesheet" id="theme-style">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
@@ -240,9 +240,28 @@
             const requestedRefresh = new URLSearchParams(location.search).get('t');
             const refreshTimestamp = version?.debugmode === true ? String(Date.now()) : requestedRefresh;
             window.__akeForceRefreshTimestamp = refreshTimestamp || '';
+            const jsVersionStorageKey = 'akedata-js-versions';
+            const resourceKey = src => new URL(src, location.href).pathname.replace(/^\/+/, '');
+            const currentResourceVersion = src => {
+                const key = resourceKey(src);
+                return version?.jsversion?.[key] || version?.appversion || '';
+            };
+            let storedJsVersions = {};
+            try {
+                storedJsVersions = JSON.parse(localStorage.getItem(jsVersionStorageKey) || '{}');
+                if (!storedJsVersions || typeof storedJsVersions !== 'object' || Array.isArray(storedJsVersions)) storedJsVersions = {};
+            } catch {
+                storedJsVersions = {};
+            }
+            const rememberJsVersion = (key, value) => {
+                if (!value || storedJsVersions[key] === value) return;
+                storedJsVersions[key] = value;
+                try { localStorage.setItem(jsVersionStorageKey, JSON.stringify(storedJsVersions)); } catch {}
+            };
             const resourceUrl = src => {
                 const url = new URL(src, location.href);
-                if (version?.appversion) url.searchParams.set('v', version.appversion);
+                const resourceVersion = currentResourceVersion(src);
+                if (resourceVersion) url.searchParams.set('v', resourceVersion);
                 if (refreshTimestamp) url.searchParams.set('t', refreshTimestamp);
                 return url.href;
             };
@@ -260,10 +279,19 @@
                 themeLink.href = themeUrl;
             }
             const loadScript = async src => {
-                const response = await fetch(resourceUrl(src), { cache: resourceCache });
+                const key = resourceKey(src);
+                const resourceVersion = currentResourceVersion(src);
+                const cacheMode = refreshTimestamp
+                    ? 'no-store'
+                    : resourceVersion && storedJsVersions[key] !== resourceVersion
+                        ? 'reload'
+                        : 'force-cache';
+                const response = await fetch(resourceUrl(src), { cache: cacheMode });
                 if (!response.ok) throw new Error(`无法加载 ${src} (HTTP ${response.status})`);
+                const source = await response.text();
+                rememberJsVersion(key, resourceVersion);
                 const script = document.createElement('script');
-                script.textContent = `${await response.text()}\n//# sourceURL=${new URL(src, location.href).href}`;
+                script.textContent = `${source}\n//# sourceURL=${new URL(src, location.href).href}`;
                 document.body.appendChild(script);
             };
             try {

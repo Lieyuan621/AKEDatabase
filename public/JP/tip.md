@@ -2,6 +2,16 @@ AKEDataはwww.akedata.wikiへ移行しました。旧ドメインのakedata.top�
 
 # AKEDataバージョン更新履歴
 
+### v1.2.5
+
+#### 画像素材とアセットアップロード
+
+- 画像は `assets/beyond/dynamicassets/gameplay` 以下の元のディレクトリ構造を維持し、各モジュールも新しいパスから取得するようになりました。
+- beyond-sdk のディレクトリ判定と不完全な内部マッピングによる素材欠落を修正し、`charremoteicon` と `charremoteicon700` のような同一接頭辞のディレクトリを厳密に区別します。
+- AKE Data Tool で画像、Json、または両方を選択してアップロードできます。R2 バケット全体の現在容量と予測ピーク容量を同期前後に確認し、10 GB 以上になる場合は停止します。
+- モジュール HTML と JavaScript は `pluginversion` と `jsversion` で個別に更新され、変更のない素材はローカルキャッシュを使用します。
+- Baker モジュールは本バージョンに含まれず、`1.2.6` に延期されました。
+
 ### v1.2.3
 
 #### モジュールと表示設定

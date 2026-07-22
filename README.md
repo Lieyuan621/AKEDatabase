@@ -12,6 +12,14 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 
 ## 当前版本
 
+`1.2.5` 完成图片资源路径迁移：解析和发布流程不再将图片重排到模块专用目录，而是保留 `assets/beyond/dynamicassets/gameplay` 下的原始目录结构；网站各模块的图片请求同步切换到新路径，并继续兼容旧逻辑路径。角色头像、技能图标、物品、敌人等资源会按精确目录边界匹配，避免 `charremoteicon` 错误命中 `charremoteicon700` 等同名前缀目录。
+
+AKE Data Tool 的图片解析改为根据旧版 `ake2.py` 的 `COPY_RULES` 源目录生成默认并集规则，自动合并被父目录覆盖的子目录。对于 beyond-sdk 内置容器映射中缺失的目录，工具会追加一次精确补充解析；Java 解析进程使用 `-Xmx32G`，并将结果按原始路径发布到 `public/images`。
+
+原“Json 数据上传”升级为“资产上传”，可以选择图片、Json 或同时上传。同步前先比较本地与远端差异，并检查 R2 当前总容量以及删除前上传阶段的峰值容量；预计达到或超过 10 GB 时阻止同步。正式同步使用先删除后上传的镜像策略，完成零差异复查后更新 `manifest.sharedRevision`，使图片或 Json 任一变化都能刷新网站缓存。
+
+网站启动时读取 `version.json` 中的 `pluginversion` 与 `jsversion`，分别为模块 HTML 和 JavaScript 生成独立版本 URL。未更新的模块和脚本继续使用本地缓存，只有本轮实际改动的资源需要重新请求。Baker 模块相关开发不纳入本版本，推迟至 `1.2.6`。
+
 `1.2.4` 新增商店模块（`v3_shop`），按商店组归类展示地区交易所、配额兑换、信用交易、付费商店和武库交易所等全部游戏商店。商店组以左侧栏导航，支持名称/ID 搜索与 URL 深链接；每个商店组按分商店标签页切换，展示商品图标、名称、价格、折扣、限购信息和奖励内容。
 
 武库交易所内置"武库轮换"专题页：上方展示当前周轮换（六星+五星各一）和日轮换（每日两把五星武器）的在售商品卡片，右侧附带距离下次刷新的 DD:HH:MM:SS 实时倒计时和下批轮换预览；下方完整轮换表以双行表头汇总 32 周六星/五星周轮换及 7×32 天日轮换数据，当前周/当天高亮标识。轮换起始于 2026/1/22，每日凌晨 4:00 (UTC+8) 刷新日轮换、每周四正午 12:00 刷新周轮换。商品卡片用六星紫/五星金左侧彩条标识稀有度。
@@ -105,7 +113,7 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 AKEDatabase/
 ├─ index.html                     # 应用外壳、设置弹窗和全局脚本入口
 ├─ ake-sw.js                      # 图片逻辑路径到 R2 的根作用域网络代理
-├─ version.json                   # 应用、公告版本、数据域、最后修改时间和下次更新时间配置
+├─ version.json                   # 应用、模块、脚本、公告版本及数据域配置
 ├─ plugin/
 │  ├─ manifest.json               # 顶层模块注册表
 │  ├─ v3_*.html                   # v3 模块 DOM 壳
@@ -129,8 +137,9 @@ AKEDatabase/
 │  ├─ <语言>/                     # 各语言 i18n.json、maps.json 和网站公告 tip.md
 │  └─ TableCfg、Json、images      # 本地开发可保留，但由 .gitignore 排除
 ├─ tools/
-│  ├─ sync-r2.ps1                # 交互式/参数式 R2 发布脚本
-│  └─ r2-cors.json               # R2 CORS 配置模板
+│  ├─ ake-data-tool/              # TableCfg、图片解析和资产上传工具
+│  ├─ sync-r2.ps1                 # 交互式/参数式 R2 发布脚本
+│  └─ r2-cors.json                # R2 CORS 配置模板
 ├─ .kilo/skills/akedatabase/      # Agent 项目知识 skill
 ├─ .vscode/settings.json          # Live Server 端口配置
 ├─ LICENSE
@@ -146,7 +155,7 @@ manifest.json
 public/
 ├─ <gameVersion>/<hotfixVersion>/TableCfg/*.json
 ├─ Json/**
-└─ images/**
+└─ images/assets/beyond/dynamicassets/gameplay/**
 ```
 
 只有 `TableCfg` 按游戏版本和 Hotfix 建立不可变目录；`Json` 与 `images` 始终维护一份当前数据。`manifest.json` 包含所有可选版本、`latest` 指针和共享数据修订号，并在每次发布的最后一步上传。
@@ -190,6 +199,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1 -Sha
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1 -SharedOnly -Apply
 ```
 
+AKE Data Tool 的“资产上传”分页可以单独选择图片、Json 或同时选择两者。工具先保存本地与远端的差异计划，再使用 `rclone sync --delete-before` 执行镜像同步；同步前后都会读取整个 Bucket 的对象总量，并按删除前上传峰值检查 10 GB 容量上限。任一所选资产发生变化时，零差异复查通过后都会更新 `manifest.sharedRevision`。该流程与上面的 PowerShell 共享数据模式相互独立。
+
 ### 本地数据
 
 `version.json` 的 `debugmode` 为 `true` 且版本选择为 `latest` 时，网站使用当前页面同源数据；因此 VS Code Live Server 会读取本地 `/public/TableCfg`、`/public/Json` 和 `/public/images`。本地没有 `manifest.json` 时自动兼容未版本化目录 `/public/TableCfg`。显式选择固定版本时会改用生产数据域中的对应历史版本，并在刷新后保留选择。发布网站前必须将 `debugmode` 恢复为 `false`。
@@ -202,7 +213,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1 -Sha
 
 ### 应用启动
 
-`index.html` 先以 `no-store` 读取根目录 `version.json`，再以 `appversion` 查询参数依次加载：
+`index.html` 先以 `no-store` 读取根目录 `version.json`，再按 `jsversion`（缺失时回退到 `appversion`）查询参数依次加载：
 
 1. `plugin/js/index-parse-fallback.js`
 2. `plugin/js/i18n.js`
@@ -220,7 +231,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1 -Sha
 
 同一标签页内，模块 HTML、脚本源码和 CSS 按规范化 URL 缓存。再次进入模块时不重复网络获取 JS/CSS，但会从内存源码重新执行控制器以挂载新 DOM。模块 CSS 每个 URL 只创建一次，并按当前模块启用或禁用。
 
-应用资源（模块 HTML、JavaScript、CSS）使用 `appversion` 生成版本 URL，并采用浏览器 `force-cache`。TableCfg 的持久缓存命名空间只由数据域和当前 Hotfix 决定，`appversion` 变化不会使其失效；Json/images 只使用独立的 `sharedRevision`，不随 `appversion` 或 Hotfix 变化。网站自身的语言、公告和研究资料继续使用同源 `/public/**` 路径。
+模块 HTML 使用 `pluginversion` 中对应模块 ID 的版本号，JavaScript 使用 `jsversion` 中对应脚本路径的版本号；字段缺失时才回退到 `appversion`。这些资源采用浏览器 `force-cache`，因此未改动的模块和脚本可以继续复用缓存。CSS 和其余应用资源仍使用 `appversion`。TableCfg 的持久缓存命名空间只由数据域和当前 Hotfix 决定，应用版本变化不会使其失效；Json/images 只使用独立的 `sharedRevision`，不随应用版本或 Hotfix 变化。网站自身的语言、公告和研究资料继续使用同源 `/public/**` 路径。
 
 ### 缓存分层
 
@@ -244,6 +255,8 @@ Service Worker 首次安装或应用版本更新并取得页面控制权时，�
 | 字段 | 用途 |
 |---|---|
 | `appversion` | 网站 HTML、JavaScript、CSS 与 Service Worker 的缓存版本 |
+| `pluginversion` | 按模块 ID 记录模块 HTML 版本；未更新模块继续使用缓存 |
+| `jsversion` | 按脚本路径记录 JavaScript 版本；未更新脚本继续使用缓存 |
 | `dataBaseUrl` | 游戏数据请求域名 |
 | `dataManifestPath` | 数据域中的版本清单路径 |
 | `tipversion` | 公告版本，通常填写公告最后更新时间；值变化后首页自动弹出新公告 |

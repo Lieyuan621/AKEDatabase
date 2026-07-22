@@ -2,6 +2,16 @@ AKEData se ha trasladado al dominio www.akedata.wiki. El dominio anterior, akeda
 
 # Registro de actualizaciones de AKEData
 
+### v1.2.5
+
+#### Imágenes y carga de recursos
+
+- Las imágenes conservan ahora su estructura original bajo `assets/beyond/dynamicassets/gameplay`, y todos los módulos utilizan las rutas nuevas.
+- Se corrigieron los recursos ausentes por la coincidencia de directorios y el mapa interno incompleto de beyond-sdk, incluida la separación exacta de `charremoteicon` y `charremoteicon700`.
+- AKE Data Tool permite subir imágenes, datos Json o ambos y comprueba el tamaño actual y el máximo previsto de todo el bucket R2; la carga se bloquea al alcanzar 10 GB.
+- `pluginversion` y `jsversion` actualizan por separado el HTML de los módulos y JavaScript, manteniendo en la caché local los recursos sin cambios.
+- El módulo Baker no se incluye en esta versión y se aplaza a la `1.2.6`.
+
 ### v1.2.3
 
 #### Módulos y visibilidad

@@ -310,7 +310,7 @@
                     <div class="v2i-obtain-list">
                         ${ways.map(w => `
                             <div class="v2i-obtain-item">
-                                <img class="v2i-obtain-icon" src="/public/images/item/itemtips/${w.iconId}.png" onerror="this.onerror=null; this.src='';">
+                                <img class="v2i-obtain-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemtips/${w.iconId}.png" onerror="this.onerror=null; this.src='';">
                                 <span class="v2i-obtain-desc">${parseText(w.desc?.text || w.id)}</span>
                             </div>
                         `).join('')}
@@ -444,7 +444,7 @@
             const currentClass = entry.id === currentId ? ' is-current' : '';
             const title = getCurrentShowHidden() ? ` title="${entry.id}"` : '';
             return `<a class="v2i-craft-item${currentClass}" href="/?plugin=v3_item&id=${encodeURIComponent(entry.id)}" data-item-id="${entry.id}"${title}>
-                <img src="/public/images/item/itemiconbig/${iconId}.png" onerror="this.onerror=null; this.src='';">
+                <img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png" onerror="this.onerror=null; this.src='';">
                 <span class="v2i-craft-item-name">${name}</span><strong>×${entry.count ?? 1}</strong>
             </a>`;
         }
@@ -532,7 +532,7 @@
             const name = it.name?.text || data.name || item.name;
             const rarity = it.rarity ?? item.rarity;
             const iconId = it.iconId || '';
-            const iconBig = iconId ? `/public/images/item/itemiconbig/${iconId}.png` : (item.icon || '');
+            const iconBig = iconId ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png` : (item.icon || '');
             const typeName = getTypeName(it.type, itt);
             const desc = it.desc?.text || '';
             const decoDesc = it.decoDesc?.text || '';

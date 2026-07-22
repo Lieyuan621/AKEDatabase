@@ -2,6 +2,16 @@ AKEData ist auf die Domain www.akedata.wiki umgezogen. Die bisherige Domain aked
 
 # AKEData-Versionsprotokoll
 
+### v1.2.5
+
+#### Bilder und Asset-Upload
+
+- Bilder behalten nun ihre ursprüngliche Struktur unter `assets/beyond/dynamicassets/gameplay`; alle Module verwenden die neuen Pfade.
+- Fehlende Dateien durch die Verzeichniszuordnung und unvollständige interne Zuordnung von beyond-sdk wurden behoben, einschließlich der exakten Trennung von `charremoteicon` und `charremoteicon700`.
+- AKE Data Tool kann Bilder, Json-Daten oder beides hochladen und prüft die aktuelle sowie die erwartete Spitzengröße des gesamten R2-Buckets; ab 10 GB wird der Upload blockiert.
+- `pluginversion` und `jsversion` versionieren Modul-HTML und JavaScript getrennt, sodass unveränderte Dateien im lokalen Cache bleiben.
+- Das Baker-Modul ist nicht Teil dieser Version und wurde auf `1.2.6` verschoben.
+
 ### v1.2.3
 
 #### Module und Sichtbarkeit

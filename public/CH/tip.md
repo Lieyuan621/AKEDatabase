@@ -6,6 +6,16 @@ AKEData已迁移至域名：www.akedata.wiki，原先的akedata.top现已重定�
 
 # AKEData版本更新日志
 
+### v1.2.5
+
+#### 图片资源与资产上传
+
+- 图片改为保留 `assets/beyond/dynamicassets/gameplay` 下的原始目录结构，网站各模块已切换到新请求路径。
+- 修复 beyond-sdk 目录匹配和内置映射缺失导致的资源遗漏，精确区分 `charremoteicon` 与 `charremoteicon700` 等同名前缀目录。
+- AKE Data Tool 新增“资产上传”，可选择图片、Json 或同时上传；同步前后检查整个 R2 Bucket 的当前与预计峰值容量，达到 10 GB 时阻止上传。
+- 模块 HTML 与 JavaScript 分别使用 `pluginversion`、`jsversion` 判断更新，未改动资源继续使用本地缓存。
+- Baker 模块相关开发未包含在本版本中，推迟至 `1.2.6`。
+
 ### v1.2.4
 
 #### 商店模块

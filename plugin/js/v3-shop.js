@@ -508,7 +508,7 @@
         return `<div class="akeshop-rewards ${className || ''}">${items.map(entry => {
             const name = gameText(entry.item.name, entry.id);
             return `<div class="akeshop-reward">
-                ${entry.item.iconId ? `<img src="/public/images/item/itemiconbig/${escapeHtml(entry.item.iconId)}.png" alt="" onerror="this.style.display='none'">` : ''}
+                ${entry.item.iconId ? `<img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escapeHtml(entry.item.iconId)}.png" alt="" onerror="this.style.display='none'">` : ''}
                 <span>${escapeHtml(name)}</span><b>×${formatNumber(entry.count)}</b>
             </div>`;
         }).join('')}</div>`;
@@ -535,7 +535,7 @@
         }
         const currencyName = gameText(product.currency.name, goods.moneyId);
         return `<div class="akeshop-price">
-            ${product.currency.iconId ? `<img src="/public/images/item/itemiconbig/${escapeHtml(product.currency.iconId)}.png" alt="">` : ''}
+            ${product.currency.iconId ? `<img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escapeHtml(product.currency.iconId)}.png" alt="">` : ''}
             ${original ? `<del>${formatNumber(original)}</del>` : ''}<strong>${formatNumber(current)}</strong><span>${escapeHtml(currencyName)}</span>
             ${discount < 1 ? `<em>-${Math.round((1 - discount) * 100)}%</em>` : ''}
         </div>`;
@@ -565,12 +565,12 @@
             if (bestWeaponId) {
                 const item = state.tables.items[bestWeaponId];
                 const iconId = item?.iconId || bestWeaponId;
-                return `/public/images/weapon/iconbig/${iconId}.png`;
+                return `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png`;
             }
         }
         const rewardIcon = product.rewards[0]?.item?.iconId;
-        if (rewardIcon) return `/public/images/item/itemiconbig/${rewardIcon}.png`;
-        if (product.weapon?.iconId) return `/public/images/weapon/iconbig/${product.weapon.iconId}.png`;
+        if (rewardIcon) return `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${rewardIcon}.png`;
+        if (product.weapon?.iconId) return `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${product.weapon.iconId}.png`;
         return '';
     }
 
@@ -701,7 +701,7 @@
         const name = weaponName(weaponId);
         const item = state.tables.items[weaponId];
         const iconId = item?.iconId || weaponId;
-        return `<a href="/?plugin=v3_weapon&id=${escapeHtml(weaponId)}" class="akeshop-rot-weapon" title="${escapeHtml(name)}"><img src="/public/images/weapon/iconbig/${escapeHtml(iconId)}.png" alt="${escapeHtml(name)}" onerror="this.style.display='none'"></a>`;
+        return `<a href="/?plugin=v3_weapon&id=${escapeHtml(weaponId)}" class="akeshop-rot-weapon" title="${escapeHtml(name)}"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escapeHtml(iconId)}.png" alt="${escapeHtml(name)}" onerror="this.style.display='none'"></a>`;
     }
 
     function renderRotationCombinedTable() {
