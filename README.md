@@ -12,6 +12,10 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 
 ## 当前版本
 
+`1.2.6` 正式上线 Baker 通讯模块，直接读取 SNSChat、SNSDialog、SNSDialogOption 与 SNSDialogTopic 等 TableCfg 数据，展示干员、联系人和群聊中的完整通讯记录。模块支持会话类型筛选、全文搜索、URL 深链接，以及根据对话选项切换后续分支。
+
+同一联系人拥有多段对话时，左侧栏会按独立 `dialogId` 分开显示，不再合并为一条长会话。消息正文、图片、物品与任务附件、系统消息、表情回应和 `sns_emoji` 对话选项均使用对应资源呈现；头像、滚动区域及桌面和移动端布局也已完成适配。
+
 `1.2.5` 完成图片资源路径迁移：解析和发布流程不再将图片重排到模块专用目录，而是保留 `assets/beyond/dynamicassets/gameplay` 下的原始目录结构；网站各模块的图片请求同步切换到新路径，并继续兼容旧逻辑路径。角色头像、技能图标、物品、敌人等资源会按精确目录边界匹配，避免 `charremoteicon` 错误命中 `charremoteicon700` 等同名前缀目录。
 
 AKE Data Tool 的图片解析改为根据旧版 `ake2.py` 的 `COPY_RULES` 源目录生成默认并集规则，自动合并被父目录覆盖的子目录。对于 beyond-sdk 内置容器映射中缺失的目录，工具会追加一次精确补充解析；Java 解析进程使用 `-Xmx32G`，并将结果按原始路径发布到 `public/images`。
@@ -54,7 +58,8 @@ AKE Data Tool 的图片解析改为根据旧版 `ake2.py` 的 `COPY_RULES` 源�
 
 ## 功能
 
-- 角色、武器、敌人、装备、物品、商店、副本、活动、奖章和危机合约查询
+- 角色、武器、敌人、装备、物品、商店、副本、活动、奖章、Baker 通讯和危机合约查询
+- Baker 联系人、群聊与干员会话浏览、全文搜索、分支选择和多媒体消息展示
 - 商店组分类浏览、分商店切换、价格折扣、限购兑换与奖励内容展示
 - 武库交易所武器轮换日历、实时倒计时与卡池内容权重
 - 名称、ID、稀有度、类型、职业、元素等多维搜索和筛选
@@ -94,6 +99,7 @@ AKE Data Tool 的图片解析改为根据旧版 `ake2.py` 的 `COPY_RULES` 源�
 | `v3_item` | 物品 | TableCfg、`public/CH/maps.json` |
 | `v3_dungeon` | 副本 | TableCfg、LevelData、SpawnerConfig、LevelScriptData、BuffData |
 | `v3_achievement` | 奖章 | TableCfg |
+| `baker` | Baker | SNSChat、SNSDialog、SNSDialogOption、SNSDialogTopic、Item 等 TableCfg |
 | `about` | 关于 | 静态内容、赞助信息 |
 
 ### 隐藏模块

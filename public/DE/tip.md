@@ -2,6 +2,14 @@ AKEData ist auf die Domain www.akedata.wiki umgezogen. Die bisherige Domain aked
 
 # AKEData-Versionsprotokoll
 
+### v1.2.6
+
+#### Baker-Kommunikation
+
+- Das neue Baker-Modul zeigt vollständige Unterhaltungen von Operatoren, Kontakten und Gruppen und bietet Typfilter, Volltextsuche sowie URL-Deep-Links.
+- Mehrere Gespräche mit demselben Kontakt erscheinen nun als getrennte Einträge in der Seitenleiste; Dialogoptionen wechseln den weiteren Gesprächszweig.
+- Unterstützt werden Text, Bilder, Gegenstands- und Missionsanhänge, Systemmeldungen, Reaktionen und Bilder für `sns_emoji`-Optionen; außerdem wurden Avatare, Bildlauf sowie Desktop- und Mobil-Layouts verbessert.
+
 ### v1.2.5
 
 #### Bilder und Asset-Upload

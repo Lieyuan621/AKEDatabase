@@ -2,6 +2,14 @@ AKEData đã chuyển sang tên miền www.akedata.wiki. Tên miền cũ akedata
 
 # Nhật ký cập nhật phiên bản AKEData
 
+### v1.2.6
+
+#### Mô-đun liên lạc Baker
+
+- Thêm mô-đun Baker để xem đầy đủ hội thoại của Operator, liên hệ và nhóm, kèm bộ lọc loại, tìm kiếm toàn văn và liên kết sâu URL.
+- Nhiều cuộc hội thoại với cùng một liên hệ nay được hiển thị thành các mục riêng trong thanh bên; lựa chọn hội thoại có thể đổi nhánh tiếp theo.
+- Hỗ trợ văn bản, hình ảnh, tệp đính kèm vật phẩm và nhiệm vụ, tin nhắn hệ thống, phản ứng và hình ảnh cho lựa chọn `sns_emoji`; đồng thời cải thiện ảnh đại diện, cuộn trang và bố cục máy tính/di động.
+
 ### v1.2.5
 
 #### Hình ảnh và tải tài sản lên

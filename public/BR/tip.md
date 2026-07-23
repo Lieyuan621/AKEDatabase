@@ -2,6 +2,14 @@ O AKEData foi transferido para o domínio www.akedata.wiki. O domínio anterior,
 
 # Registro de atualizações do AKEData
 
+### v1.2.6
+
+#### Comunicações do Baker
+
+- Adicionado o módulo Baker para consultar conversas completas de Operadores, contatos e grupos, com filtros de tipo, busca de texto completo e links diretos por URL.
+- Várias conversas com o mesmo contato agora aparecem como entradas separadas na barra lateral, e as opções de diálogo alteram a ramificação seguinte.
+- Há suporte a texto, imagens, anexos de itens e missões, mensagens do sistema, reações e imagens de opções `sns_emoji`, além de melhorias em avatares, rolagem e layouts para desktop e celular.
+
 ### v1.2.5
 
 #### Imagens e envio de ativos

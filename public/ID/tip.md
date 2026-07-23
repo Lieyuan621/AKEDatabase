@@ -2,6 +2,14 @@ AKEData telah pindah ke domain www.akedata.wiki. Domain lama, akedata.top, kini 
 
 # Catatan Pembaruan Versi AKEData
 
+### v1.2.6
+
+#### Komunikasi Baker
+
+- Menambahkan modul Baker untuk melihat percakapan lengkap Operator, kontak, dan grup, dengan filter tipe, pencarian teks lengkap, serta deep link URL.
+- Beberapa percakapan dengan kontak yang sama kini ditampilkan sebagai entri terpisah di bilah samping, dan pilihan dialog dapat mengubah cabang lanjutan.
+- Mendukung teks, gambar, lampiran item dan misi, pesan sistem, reaksi, serta gambar pilihan `sns_emoji`, disertai perbaikan avatar, pengguliran, dan tata letak desktop/mobile.
+
 ### v1.2.5
 
 #### Gambar dan unggahan aset

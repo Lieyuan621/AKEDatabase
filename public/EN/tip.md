@@ -2,6 +2,14 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.2.6
+
+#### Baker communications
+
+- Added the Baker module for browsing complete Operator, contact, and group conversations, with type filters, full-text search, and URL deep links.
+- Multiple conversations with the same contact now appear as separate sidebar entries, and dialogue choices can switch the following branch.
+- Added text, picture, item and mission attachments, system messages, reactions, and image rendering for `sns_emoji` choices, with improved avatar, scrolling, desktop, and mobile layouts.
+
 ### v1.2.5
 
 #### Image assets and uploads
