@@ -677,7 +677,7 @@
             const legacy = {
                 charId: baseInfo.charId,
                 icon: baseInfo.icon || '',
-                pic: rawData.pic || `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/charpic/${baseInfo.charId}.png`,
+                pic: rawData.pic || `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/characterportrait/${baseInfo.charId}.png`,
                 potentialpics: [],
                 name: baseInfo.name || rawData.name || '',
                 rarity: baseInfo.rarity,
