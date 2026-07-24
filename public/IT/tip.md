@@ -2,6 +2,19 @@ AKEData è stato trasferito al dominio www.akedata.wiki. Il precedente dominio a
 
 # Registro degli aggiornamenti di AKEData
 
+### v1.2.7
+
+#### Dungeon e attività
+
+- I dettagli dei dungeon ora mostrano le ricompense fisse e casuali ripetibili che consumano Sanità, separate dalle ricompense per il primo completamento.
+- I blocchi nella cronologia delle attività usano ora gli orari esatti di inizio e fine invece di essere allineati a giorni interi.
+
+#### Panoramiche e immagini
+
+- Le schede personaggio e la barra laterale mostrano ora le icone di elemento e professione, con colori ricalibrati e l'icona scelta in base all'ID della professione.
+- Rimosse le stelle di rarità dalle panoramiche Personaggi e Armi e il livello di pericolo dalla panoramica Nemici. Filtri, ordinamento e dettagli restano invariati.
+- Le icone integrate nel testo ricco, nei collegamenti dei termini e nei tooltip ora passano dal dominio dati attivo, correggendo l'assenza di `data.akedata.wiki` e i percorsi `//public/...` errati.
+
 ### v1.2.6
 
 #### Comunicazioni Baker

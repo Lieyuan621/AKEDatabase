@@ -317,6 +317,24 @@
     flex: 1;
     min-width: 200px;
 }
+.v2d-rewards-heading {
+    flex: 0 0 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color, #e2e7f0);
+}
+.v2d-rewards-mode {
+    color: var(--text-color, #1e2b3c);
+    font-weight: 600;
+}
+.v2d-rewards-cost {
+    color: var(--accent-color, #1e6f9f);
+    font-size: 0.88rem;
+    white-space: nowrap;
+}
 .v2d-rewards-title {
     font-weight: 600;
     display: block;

@@ -212,8 +212,27 @@
 
                 const body = document.createElement('div');
                 body.className = 'ake-overview__body';
+                const titleRow = document.createElement('div');
+                titleRow.className = 'ake-overview__title-row';
                 const cardTitle = document.createElement('h3');
                 cardTitle.textContent = item.name;
+                titleRow.appendChild(cardTitle);
+                if (item.icons?.length) {
+                    const iconList = document.createElement('span');
+                    iconList.className = 'ake-overview__meta-icons';
+                    item.icons.forEach(icon => {
+                        if (!icon?.src) return;
+                        const image = document.createElement('img');
+                        image.className = 'ake-overview__meta-icon';
+                        image.src = icon.src;
+                        image.alt = icon.label || '';
+                        image.title = icon.label || '';
+                        if (icon.kind) image.dataset.kind = icon.kind;
+                        image.onerror = function () { this.remove(); };
+                        iconList.appendChild(image);
+                    });
+                    titleRow.appendChild(iconList);
+                }
                 const id = document.createElement('div');
                 id.className = 'ake-overview__id';
                 id.textContent = item.id;
@@ -232,7 +251,7 @@
                     chip.textContent = tag;
                     tags.appendChild(chip);
                 });
-                body.append(cardTitle, id, tags);
+                body.append(titleRow, id, tags);
                 card.append(visual, body);
                 grid.appendChild(card);
             });

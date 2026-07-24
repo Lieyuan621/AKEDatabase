@@ -2,6 +2,19 @@ AKEData a été transféré vers le domaine www.akedata.wiki. L'ancien domaine a
 
 # Journal des mises à jour d'AKEData
 
+### v1.2.7
+
+#### Donjons et activités
+
+- Les détails des donjons affichent désormais les récompenses fixes et aléatoires répétables consommant de la Raison, séparément des récompenses de première réussite.
+- Les blocs de la chronologie des activités utilisent maintenant les heures exactes de début et de fin au lieu d'être alignés sur des journées entières.
+
+#### Vues d'ensemble et images
+
+- Les cartes de personnages et la barre latérale affichent maintenant les icônes d'élément et de profession, avec des couleurs recalibrées et l'icône choisie selon l'ID de profession.
+- Les étoiles de rareté ont été retirées des vues Personnages et Armes, et le niveau de danger de la vue Ennemis. Les filtres, le tri et les détails restent inchangés.
+- Les icônes intégrées au texte riche, aux liens de termes et aux infobulles passent par le domaine de données actif, corrigeant l'absence de `data.akedata.wiki` et les chemins `//public/...` incorrects.
+
 ### v1.2.6
 
 #### Communications Baker

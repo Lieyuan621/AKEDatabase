@@ -401,7 +401,7 @@
                 onSelect: item => { activeEnemyId = item.templateId; renderEnemyList(); },
                 sidebarSelector: item => `.v2e-item[data-enemy-id="${CSS.escape(item.templateId)}"]`,
                 items: items.slice().sort((a, b) => (b.rarity || 1) - (a.rarity || 1) || (a.priority || 999) - (b.priority || 999)).map(item => ({ ...item, id: item.templateId, image: item.icon, fallback: t('overview.fallback'),
-                    tags: [t('overview.dangerLevel', { level: item.rarity || 1 }), item.variantCount ? t('overview.variantCount', { count: item.variantCount }) : ''] }))
+                    tags: item.variantCount ? [t('overview.variantCount', { count: item.variantCount })] : [] }))
             });
         }
 

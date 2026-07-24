@@ -27,12 +27,14 @@
         let selectedProfessions = new Set();
         let selectedWeaponTypes = new Set();
 
-        const TYPE_CLASS_MAP = {
-            '物理': 'physical',
-            '自然': 'nature',
-            '寒冷': 'cold',
-            '灼热': 'hot',
-            '电磁': 'electro'
+        const CHARACTER_META_ICON_BASE = '/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/elementicon/';
+        const CHARACTER_PROFESSION_ICON_BASE = '/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/charprofessionicon/';
+        const CHAR_TYPE_ICON_MAP = {
+            Physical: 'physical', Fire: 'fire', Pulse: 'pulse', Cryst: 'cold', Natural: 'nature'
+        };
+        const PROFESSION_ICON_MAP = {
+            0: '0', 2: '2', 4: '4', 5: '5', 7: '7', 8: '8',
+            GUARD: '0', DEFENDER: '2', SUPPORTER: '4', CASTER: '5', VANGUARD: '7', ASSAULT: '8'
         };
 
         const IMAGE_BASE_PATH = '/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/bufficon/';
@@ -331,6 +333,49 @@
             return professionMap[prof] || prof;
         }
 
+        function findMapKey(map, value) {
+            if (value === undefined || value === null || value === '') return '';
+            const directKey = String(value);
+            if (Object.prototype.hasOwnProperty.call(map, directKey)) return directKey;
+            return Object.keys(map).find(key => map[key] === value) || directKey;
+        }
+
+        function getCharacterMetaIcons(character) {
+            const charTypeId = character.charTypeId || findMapKey(charTypeMap, character.charType);
+            const professionId = character.professionId ?? findMapKey(professionMap, character.profession);
+            const charTypeIcon = CHAR_TYPE_ICON_MAP[charTypeId];
+            const professionIcon = PROFESSION_ICON_MAP[professionId];
+            const icons = [];
+            if (charTypeIcon) {
+                icons.push({
+                    src: `${CHARACTER_META_ICON_BASE}icon_charattrtype_${charTypeIcon}.png`,
+                    label: character.charType || getCharTypeName(charTypeId) || charTypeId,
+                    kind: `element-${charTypeIcon}`
+                });
+            }
+            if (professionIcon) {
+                icons.push({
+                    src: `${CHARACTER_PROFESSION_ICON_BASE}icon_profession_${professionIcon}.png`,
+                    label: character.profession || getProfessionName(professionId) || professionId,
+                    kind: 'profession'
+                });
+            }
+            return icons;
+        }
+
+        function appendCharacterMetaIcons(container, character) {
+            getCharacterMetaIcons(character).forEach(icon => {
+                const image = document.createElement('img');
+                image.className = 'character-meta-icon';
+                image.src = icon.src;
+                image.alt = icon.label;
+                image.title = icon.label;
+                image.dataset.kind = icon.kind;
+                image.onerror = function () { this.remove(); };
+                container.appendChild(image);
+            });
+        }
+
         function filterCharacters(chars) {
             return chars.filter(c => {
                 // 搜索过滤
@@ -458,10 +503,19 @@
                 item.className = 'mobile-list-item';
                 window.AKEModuleOverview?.markVersionChange(item, char);
                 if (char.charId === activeCharId) item.classList.add('active');
-                item.innerHTML = `
-                    <div class="item-name">${char.name}</div>
-                    <div class="item-id">${char.charId}</div>
-                `;
+                const nameRow = document.createElement('div');
+                nameRow.className = 'character-name-row';
+                const name = document.createElement('div');
+                name.className = 'item-name';
+                name.textContent = char.name;
+                const metaIcons = document.createElement('span');
+                metaIcons.className = 'character-meta-icons';
+                appendCharacterMetaIcons(metaIcons, char);
+                nameRow.append(name, metaIcons);
+                const id = document.createElement('div');
+                id.className = 'item-id';
+                id.textContent = char.charId;
+                item.append(nameRow, id);
                 item.addEventListener('click', () => {
                     activeCharId = char.charId;
                     loadCharacterDetail(char, document.getElementById('v2characterDetail'));
@@ -504,7 +558,7 @@
                 onSelect: char => { activeCharId = char.charId; renderCharacterList(); },
                 sidebarSelector: char => `.character-item[data-char-id="${CSS.escape(char.charId)}"]`,
                 items: items.map(char => ({ ...char, id: char.charId, image: char.icon, fallback: t('overview.fallback'),
-                    tags: [t('rarityStars', { name: char.rarity || 1 }), char.charType, char.weapontype] }))
+                    icons: getCharacterMetaIcons(char) }))
             });
         }
 
@@ -544,22 +598,21 @@
                 const nameDiv = document.createElement('div');
                 nameDiv.className = 'character-name';
                 nameDiv.textContent = char.name;
+                const nameRow = document.createElement('div');
+                nameRow.className = 'character-name-row';
+                const metaIcons = document.createElement('span');
+                metaIcons.className = 'character-meta-icons';
+                appendCharacterMetaIcons(metaIcons, char);
+                nameRow.append(nameDiv, metaIcons);
                 const idDiv = document.createElement('div');
                 idDiv.className = 'character-id';
                 idDiv.textContent = char.charId;
-                textContainer.appendChild(nameDiv);
+                textContainer.appendChild(nameRow);
                 textContainer.appendChild(idDiv);
-
-                const typeDisplayName = getCharTypeName(char.charType) || char.charType || t('unknown');
-                const typeClass = TYPE_CLASS_MAP[typeDisplayName] || 'unknown';
-                const typeDot = document.createElement('span');
-                typeDot.className = `char-type-dot type-${typeClass}`;
-                typeDot.title = typeDisplayName;
 
                 item.appendChild(rarityBar);
                 item.appendChild(icon);
                 item.appendChild(textContainer);
-                item.appendChild(typeDot);
 
                 item.addEventListener('click', () => {
                     document.querySelectorAll('.character-item').forEach(el => el.classList.remove('active'));

@@ -287,8 +287,11 @@
             return {
                 charId, name: text(row.name, charId), rarity: row.rarity,
                 charType: maps.char_type_map?.[grow.charTypeId] || grow.charTypeId,
+                charTypeId: grow.charTypeId,
                 profession: maps.profession_id_map?.[String(grow.profession)] || grow.profession,
+                professionId: grow.profession,
                 weapontype: maps.weapon_id_map?.[String(grow.weaponType)] || grow.weaponType,
+                weaponTypeId: grow.weaponType,
                 mainAttrType: row.mainAttrType, charBattleTag: grow.charBattleTag || [],
                 icon: icon('character', charId), contentFile: `/__v3/character/${charId}.json`,
                 sourceOrder: index, hidden: false, __diffSignature: diffSignature([row, grow])
@@ -586,7 +589,10 @@
             runtime.scriptEnemies.forEach(enemy => enemyIds.add(enemy.enemyId));
         }));
         const rewardRows = pick(rewards, Array.from(rewardIds));
-        const itemIds = Object.values(rewardRows).flatMap(row => (row.itemBundles || []).map(bundle => bundle.id));
+        const itemIds = Object.values(rewardRows).flatMap(row => [
+            ...(row.itemBundles || []),
+            ...(row.probItemBundles || [])
+        ].map(bundle => bundle.id));
         const enemyRows = pick(enemies, Array.from(enemyIds));
         const templateIds = Object.values(enemyRows).map(row => row.templateId);
         const attrIds = Object.values(enemyRows).map(row => row.attrTemplateId);

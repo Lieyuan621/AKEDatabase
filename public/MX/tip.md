@@ -2,6 +2,19 @@ AKEData se ha trasladado al dominio www.akedata.wiki. El dominio anterior, akeda
 
 # Registro de actualizaciones de AKEData
 
+### v1.2.7
+
+#### Mazmorras y actividades
+
+- Los detalles de las mazmorras ahora muestran recompensas fijas y aleatorias repetibles que consumen Cordura, separadas de las recompensas del primer despeje.
+- Los bloques de la línea temporal de actividades ahora usan las horas exactas de inicio y fin en lugar de alinearse por días completos.
+
+#### Vistas generales e imágenes
+
+- Las tarjetas de personajes y la barra lateral ahora muestran iconos de elemento y profesión, con colores recalibrados y el icono elegido según el ID de profesión.
+- Se eliminaron las estrellas de rareza de las vistas de Personajes y Armas y el nivel de peligro de la vista de Enemigos. Los filtros, el orden y los detalles no cambian.
+- Los iconos integrados de texto enriquecido, enlaces de términos y tooltips ahora se resuelven mediante el dominio de datos activo, corrigiendo la ausencia de `data.akedata.wiki` y las rutas `//public/...` incorrectas.
+
 ### v1.2.6
 
 #### Comunicaciones de Baker

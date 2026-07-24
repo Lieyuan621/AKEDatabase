@@ -2,6 +2,19 @@ AKEData ist auf die Domain www.akedata.wiki umgezogen. Die bisherige Domain aked
 
 # AKEData-Versionsprotokoll
 
+### v1.2.7
+
+#### Dungeons und Aktivitäten
+
+- Dungeon-Details zeigen nun wiederholbare feste und zufällige Belohnungen, die Vernunft verbrauchen, getrennt von Erstabschluss-Belohnungen.
+- Aktivitätsblöcke in der Übersichtszeitleiste werden jetzt anhand ihrer genauen Start- und Endzeit statt an ganzen Tagen positioniert.
+
+#### Übersichten und Bildressourcen
+
+- Charakterkarten und Seitenleiste zeigen nun Element- und Berufssymbole. Elementfarben wurden neu kalibriert und Berufssymbole werden über die Berufs-ID gewählt.
+- Seltenheitssterne wurden aus Charakter- und Waffenübersichten entfernt, Gefahrenstufen aus der Gegnerübersicht. Filter, Sortierung und Detaildaten bleiben unverändert.
+- Eingebettete Rich-Text-Symbole, Begriffslinks und Link-Tooltips werden über die aktive Datendomäne aufgelöst. Fehlende `data.akedata.wiki`-Hosts und fehlerhafte `//public/...`-Pfade wurden behoben.
+
 ### v1.2.6
 
 #### Baker-Kommunikation

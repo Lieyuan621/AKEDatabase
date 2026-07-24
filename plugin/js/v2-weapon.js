@@ -135,7 +135,7 @@
             onReset: () => { activeWeaponId = null; },
             onSelect: item => { activeWeaponId = item.weaponId; renderWeaponList(); },
             sidebarSelector: item => `.weapon-item[data-weapon-id="${CSS.escape(item.weaponId)}"]`,
-            items: items.map(item => ({ ...item, id: item.weaponId, image: item.icon, fallback: t('overview.fallback'), tags: [commonT('rarityStars', { rarity: item.rarity || 1 })] }))
+            items: items.map(item => ({ ...item, id: item.weaponId, image: item.icon, fallback: t('overview.fallback') }))
         });
     }
 

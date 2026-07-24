@@ -2,6 +2,19 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.2.7
+
+#### Dungeons and activities
+
+- Dungeon details now show repeatable fixed and random rewards that consume Sanity, separately from first-clear rewards.
+- Activity blocks on the overview timeline now use their exact start and end timestamps instead of being aligned to whole days.
+
+#### Overviews and image assets
+
+- Character overview cards and the sidebar now show element and profession icons, with recalibrated element colors and profession icons selected by the character's profession ID.
+- Removed rarity-star labels from Character and Weapon overviews and danger-level labels from the Enemy overview. Filters, sorting, and detail data are unchanged.
+- Rich-text inline icons, term-link icons, and link-tooltip icons now resolve through the active data origin, fixing missing `data.akedata.wiki` hosts and malformed `//public/...` paths.
+
 ### v1.2.6
 
 #### Baker communications

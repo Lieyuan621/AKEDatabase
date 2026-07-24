@@ -998,6 +998,11 @@
                 return absolute;
             };
 
+            function resolveRichTextImageUrl(path) {
+                const migrated = window.resolveImagePath(path);
+                return window.akeDataSource?.resolveImageUrl(migrated) || migrated;
+            }
+
             function normalizeTableImagePath(path) {
                 if (!path) return '';
                 const value = String(path).replace(/^\/?public\/images\//, '');
@@ -1186,7 +1191,7 @@
                                 let path = imgMatch[1];
                                 const scale = imgMatch[2];
                                 if (!path.includes('.')) path += '.png';
-                                const source = window.resolveImagePath(`${baseImagePath}${path}`);
+                                const source = resolveRichTextImageUrl(`${baseImagePath}${path}`);
                                 result += `<img src="${source}" style="transform: scale(${scale}); width: auto; height: 1em; display: inline-block; vertical-align: middle;" class="inline-icon" onerror="this.onerror=null; this.src='';">`;
                             }
                             i = endIdx + 1;
@@ -1216,7 +1221,7 @@
                                                     const image = styleDef.image?.[1] ?? styleDef.image?.[0] ?? null;
                                                     const scale = styleDef.scale?.[1] ?? styleDef.scale?.[0] ?? 1;
                                                     if (image) {
-                                                        tagResult = `<span class="textstyle-icon-text"><img src="/${image}" style="transform: scale(${scale});" alt="" onerror="this.onerror=null; this.src='';"><span style="${color ? `color: ${color};` : ''}">${renderedInner}</span></span>`;
+                                                        tagResult = `<span class="textstyle-icon-text"><img src="${resolveRichTextImageUrl(image)}" style="transform: scale(${scale});" alt="" onerror="this.onerror=null; this.src='';"><span style="${color ? `color: ${color};` : ''}">${renderedInner}</span></span>`;
                                                     } else {
                                                         tagResult = color ? `<span style="color: ${color};">${renderedInner}</span>` : renderedInner;
                                                     }
@@ -1235,7 +1240,7 @@
                                                             const scale = styleDef.scale?.[1] ?? styleDef.scale?.[0] ?? 1;
                                                             if (image) {
                                                                 tagResult = `<span class="textstyle-icon-text">
-                                                                    <img src="/${image}" style="transform: scale(${scale});" alt="" onerror="this.onerror=null; this.src='';">
+                                                                    <img src="${resolveRichTextImageUrl(image)}" style="transform: scale(${scale});" alt="" onerror="this.onerror=null; this.src='';">
                                                                     <span class="tag-hyperlink" data-tag-id="${tagName}" style="${color ? `color: ${color};` : ''}">${renderedInner}</span>
                                                                 </span>`;
                                                             } else if (color) {
@@ -1324,7 +1329,7 @@
                 let iconHtml = '';
                 if (hyperDef.iconPath) {
                     const iconFullPath = hyperDef.iconPath.includes('.') ? hyperDef.iconPath : hyperDef.iconPath + '.png';
-                    iconHtml = `<img src="${window.resolveImagePath(iconFullPath)}" style="width: 1.2em; height: 1.2em; vertical-align: middle; margin-right: 4px;" onerror="this.onerror=null; this.src='';">`;
+                    iconHtml = `<img src="${resolveRichTextImageUrl(iconFullPath)}" style="width: 1.2em; height: 1.2em; vertical-align: middle; margin-right: 4px;" onerror="this.onerror=null; this.src='';">`;
                 }
                 const content = `
                     <div class="tooltip-name">${iconHtml}${name}</div>

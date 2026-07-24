@@ -2,6 +2,19 @@ AKEData telah pindah ke domain www.akedata.wiki. Domain lama, akedata.top, kini 
 
 # Catatan Pembaruan Versi AKEData
 
+### v1.2.7
+
+#### Dungeon dan aktivitas
+
+- Detail dungeon kini menampilkan hadiah tetap dan acak yang dapat diperoleh berulang dengan memakai Sanity, terpisah dari hadiah penyelesaian pertama.
+- Blok pada lini masa aktivitas kini ditempatkan berdasarkan waktu mulai dan selesai yang tepat, bukan disejajarkan per hari penuh.
+
+#### Ikhtisar dan gambar
+
+- Kartu karakter dan bilah samping kini menampilkan ikon elemen dan profesi, dengan warna elemen yang dikalibrasi ulang serta ikon yang dipilih berdasarkan ID profesi.
+- Bintang kelangkaan di ikhtisar Karakter dan Senjata serta tingkat bahaya di ikhtisar Musuh telah dihapus. Filter, pengurutan, dan data detail tidak berubah.
+- Ikon inline rich text, tautan istilah, dan tooltip kini diselesaikan melalui domain data aktif, memperbaiki host `data.akedata.wiki` yang hilang dan jalur `//public/...` yang salah.
+
 ### v1.2.6
 
 #### Komunikasi Baker

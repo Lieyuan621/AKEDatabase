@@ -2,6 +2,19 @@ AKEData đã chuyển sang tên miền www.akedata.wiki. Tên miền cũ akedata
 
 # Nhật ký cập nhật phiên bản AKEData
 
+### v1.2.7
+
+#### Phó bản và hoạt động
+
+- Chi tiết phó bản giờ hiển thị riêng phần thưởng cố định và ngẫu nhiên có thể nhận lặp lại bằng cách tiêu hao Lý trí, bên cạnh phần thưởng vượt lần đầu.
+- Các khối trên dòng thời gian hoạt động giờ được đặt theo thời điểm bắt đầu và kết thúc chính xác thay vì căn theo cả ngày.
+
+#### Tổng quan và hình ảnh
+
+- Thẻ nhân vật và thanh bên giờ hiển thị biểu tượng thuộc tính và nghề nghiệp, với màu thuộc tính được hiệu chỉnh lại và biểu tượng được chọn theo ID nghề nghiệp.
+- Đã bỏ sao độ hiếm khỏi tổng quan Nhân vật và Vũ khí, đồng thời bỏ cấp nguy hiểm khỏi tổng quan Kẻ địch. Bộ lọc, sắp xếp và dữ liệu chi tiết không thay đổi.
+- Biểu tượng nội tuyến Rich Text, liên kết thuật ngữ và tooltip giờ được phân giải qua miền dữ liệu hiện tại, sửa lỗi thiếu `data.akedata.wiki` và đường dẫn `//public/...` không hợp lệ.
+
 ### v1.2.6
 
 #### Mô-đun liên lạc Baker

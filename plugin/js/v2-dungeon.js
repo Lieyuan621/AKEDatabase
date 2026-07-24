@@ -487,12 +487,13 @@
             }
         }
 
-        function renderRewards(rewardId, rewardTable, itemTable) {
+        function renderRewards(rewardId, rewardTable, itemTable, bundleKey = 'itemBundles') {
             if (!rewardId || !rewardTable) return '';
             const reward = rewardTable[rewardId];
-            if (!reward || !reward.itemBundles || reward.itemBundles.length === 0) return '';
+            const bundles = reward?.[bundleKey] || [];
+            if (bundles.length === 0) return '';
 
-            return reward.itemBundles.map(bundle => {
+            return bundles.map(bundle => {
                 const item = itemTable?.[bundle.id];
                 const name = item?.name?.text || bundle.id;
                 const rarity = item?.rarity || 0;
@@ -500,7 +501,8 @@
                 const iconSrc = iconId ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png` : '';
                 const iconHtml = iconSrc ? `<img class="v2d-reward-icon" src="${iconSrc}" onerror="this.style.display='none'">` : '';
                 const rarityDot = rarity > 0 ? `<span class="v2d-reward-rarity r-${rarity}"></span>` : '';
-                return `<span class="v2d-reward-item">${iconHtml}${rarityDot}${name} ×${bundle.count}</span>`;
+                const countHtml = bundle.count > 0 ? ` ×${bundle.count}` : '';
+                return `<span class="v2d-reward-item">${iconHtml}${rarityDot}${name}${countHtml}</span>`;
             }).join('');
         }
 
@@ -662,12 +664,25 @@
             const itemTable = dungeon.itemTable || {};
             const fixedRewards = renderRewards(dungeon.rewardId, rewardTable, itemTable);
             const firstRewards = renderRewards(dungeon.firstPassRewardId, rewardTable, itemTable);
+            const hunterFixedRewards = renderRewards(dungeon.hunterModeRewardId, rewardTable, itemTable);
+            const hunterRandomRewards = renderRewards(dungeon.hunterModeRewardId, rewardTable, itemTable, 'probItemBundles');
+            const hunterModeCostStamina = dungeon.hunterModeCostStamina || 0;
 
             let rewardsHtml = '';
             if (fixedRewards || firstRewards) {
                 rewardsHtml = `<div class="v2d-rewards">
                     ${fixedRewards ? `<div class="v2d-rewards-block"><span class="v2d-rewards-title">${t('rewards.fixed')}</span><div class="v2d-rewards-content">${fixedRewards}</div></div>` : ''}
                     ${firstRewards ? `<div class="v2d-rewards-block"><span class="v2d-rewards-title">${t('rewards.firstClear')}</span><div class="v2d-rewards-content">${firstRewards}</div></div>` : ''}
+                </div>`;
+            }
+            if (hunterFixedRewards || hunterRandomRewards) {
+                rewardsHtml += `<div class="v2d-rewards v2d-hunter-rewards">
+                    <div class="v2d-rewards-heading">
+                        <span class="v2d-rewards-mode">${t('rewards.hunterMode')}</span>
+                        ${hunterModeCostStamina > 0 ? `<span class="v2d-rewards-cost">${t('meta.staminaCost')} ${hunterModeCostStamina}</span>` : ''}
+                    </div>
+                    ${hunterFixedRewards ? `<div class="v2d-rewards-block"><span class="v2d-rewards-title">${t('rewards.fixed')}</span><div class="v2d-rewards-content">${hunterFixedRewards}</div></div>` : ''}
+                    ${hunterRandomRewards ? `<div class="v2d-rewards-block"><span class="v2d-rewards-title">${t('rewards.random')}</span><div class="v2d-rewards-content">${hunterRandomRewards}</div></div>` : ''}
                 </div>`;
             }
 

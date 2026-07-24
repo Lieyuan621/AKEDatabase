@@ -201,7 +201,7 @@
                 open: parseActivityTime(item.openTime),
                 close: parseActivityTime(item.closeTime)
             })).filter(entry => entry.open && entry.close && entry.close > entry.open);
-            let visibleItems = timedItems.filter(entry => entry.close >= windowStart && entry.open <= windowEnd);
+            let visibleItems = timedItems.filter(entry => entry.close > windowStart && entry.open < windowEnd);
             if (!visibleItems.length) {
                 visibleItems = timedItems.sort((a, b) => b.close - a.close).slice(0, 12);
             }
@@ -248,14 +248,16 @@
                 row.className = 'activity-timeline__row';
                 const clippedOpen = Math.max(open.getTime(), rangeStart.getTime());
                 const clippedClose = Math.min(close.getTime(), rangeEnd.getTime());
-                const offset = Math.max(0, Math.floor((clippedOpen - rangeStart) / TIMELINE_DAY_MS));
-                const span = Math.max(1, Math.ceil((clippedClose - clippedOpen) / TIMELINE_DAY_MS));
+                const offsetDays = Math.max(0, (clippedOpen - rangeStart) / TIMELINE_DAY_MS);
+                const durationDays = Math.max(0, (clippedClose - clippedOpen) / TIMELINE_DAY_MS);
+                const visibleDurationDays = Math.min(durationDays, dayCount - offsetDays);
                 const bar = document.createElement('button');
                 bar.type = 'button';
                 const typeIndex = Math.abs(Number(item.rawType) || 0) % 5;
                 const status = getActivityStatus(item.openTime, item.closeTime);
                 bar.className = `activity-timeline__bar activity-timeline__bar--type-${typeIndex} ${status.class}`;
-                bar.style.gridColumn = `${offset + 1} / span ${Math.min(span, dayCount - offset)}`;
+                bar.style.left = `${offsetDays * TIMELINE_DAY_WIDTH}px`;
+                bar.style.width = `${visibleDurationDays * TIMELINE_DAY_WIDTH}px`;
                 const title = document.createElement('span');
                 title.className = 'activity-timeline__bar-title';
                 title.textContent = item.name || item.activityId;

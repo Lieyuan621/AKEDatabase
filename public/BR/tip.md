@@ -2,6 +2,19 @@ O AKEData foi transferido para o domínio www.akedata.wiki. O domínio anterior,
 
 # Registro de atualizações do AKEData
 
+### v1.2.7
+
+#### Masmorras e atividades
+
+- Os detalhes das masmorras agora exibem recompensas fixas e aleatórias repetíveis que consomem Sanidade, separadas das recompensas da primeira conclusão.
+- Os blocos da linha do tempo de atividades agora usam os horários exatos de início e fim, em vez de serem alinhados a dias inteiros.
+
+#### Visões gerais e imagens
+
+- Os cards de personagens e a barra lateral agora mostram ícones de elemento e profissão, com cores recalibradas e o ícone escolhido pelo ID da profissão.
+- As estrelas de raridade foram removidas das visões de Personagens e Armas, e o nível de perigo da visão de Inimigos. Filtros, ordenação e detalhes permanecem iguais.
+- Ícones embutidos em rich text, links de termos e tooltips agora são resolvidos pelo domínio de dados ativo, corrigindo a ausência de `data.akedata.wiki` e caminhos `//public/...` incorretos.
+
 ### v1.2.6
 
 #### Comunicações do Baker
