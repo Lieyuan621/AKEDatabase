@@ -1064,16 +1064,31 @@
                     ? rawValue
                     : { rawValue, value: rawValue, name: variableName, changed: false };
                 if (details.rawValue === undefined || details.rawValue === null || details.rawValue === '') return String(displayValue);
-                const escape = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+                const escape = (s) => String(s)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/\r\n?|\n/g, '&#10;');
+                const displayNumber = value => {
+                    if (!Number.isFinite(value)) return String(value);
+                    if (Object.is(value, -0)) return '0';
+                    return Number.isInteger(value) ? String(value) : String(Number(value.toPrecision(15)));
+                };
                 const displayRawValue = value => {
                     if (value === null || value === undefined) return '';
+                    if (typeof value === 'number') return displayNumber(value);
                     if (typeof value !== 'object') return String(value);
                     for (const key of ['value', 'valueFloat', 'valueDouble', 'valueInt', 'floatValue', 'paramValue', 'attrValue', 'text']) {
                         if (value[key] !== undefined && value[key] !== value) return displayRawValue(value[key]);
                     }
                     try { return JSON.stringify(value); } catch { return ''; }
                 };
-                const rawText = displayRawValue(details.rawValue);
+                const displayFormula = value => String(value).replace(
+                    /(^|[^\w.])(-?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?)(?=$|[^\w.])/gi,
+                    (match, prefix, number) => `${prefix}${displayNumber(Number(number))}`
+                );
+                const rawText = displayRawValue(details.changed && details.expression ? details.expression : details.rawValue);
                 let title;
                 if (details.changed) {
                     const formulaFallbacks = config.language === 'CH'
@@ -1084,10 +1099,13 @@
                     const lines = [];
                     if (details.name) lines.push(String(details.name));
                     lines.push(tr('common.rawValue', { value: rawText }));
-                    if (details.formula) lines.push(tr('common.formula', { value: details.formula }, formulaFallbacks.formula.replace('{value}', details.formula)));
+                    if (details.formula) {
+                        const formula = displayFormula(details.formula);
+                        lines.push(tr('common.formula', { value: formula }, formulaFallbacks.formula.replace('{value}', formula)));
+                    }
                     else if (details.expression) lines.push(tr('common.expression', { value: details.expression }, formulaFallbacks.expression.replace('{value}', details.expression)));
                     if (details.bindings && Object.keys(details.bindings).length) {
-                        const bindings = Object.entries(details.bindings).map(([key, value]) => `${key}=${value}`).join(', ');
+                        const bindings = Object.entries(details.bindings).map(([key, value]) => `${key}=${displayRawValue(value)}`).join(', ');
                         lines.push(tr('common.bindings', { value: bindings }, formulaFallbacks.bindings.replace('{value}', bindings)));
                     }
                     const resultText = displayRawValue(details.value ?? details.rawValue);
