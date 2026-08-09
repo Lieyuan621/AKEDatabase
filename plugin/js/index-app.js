@@ -398,9 +398,9 @@
             function renderDataSourceSettings() {
                 const dataState = window.akeDataSource?.getState?.();
                 if (!dataState || !modalDataVersionSelect || !modalDataBaseUrl) return;
-                modalDataBaseUrl.value = dataState.debugMode ? dataState.defaultBaseUrl : dataState.baseUrl;
+                modalDataBaseUrl.value = dataState.baseUrl;
                 modalDataBaseUrl.disabled = Boolean(dataState.debugMode);
-                modalDataVersionSelect.disabled = false;
+                modalDataVersionSelect.disabled = Boolean(dataState.debugMode);
                 modalDataVersionSelect.replaceChildren();
                 const latestVersion = dataState.manifest.versions.find(item => item.id === dataState.manifest.latest);
                 const latestOption = document.createElement('option');
@@ -420,8 +420,6 @@
                 if (dataSourceStatus) {
                     const sourceText = dataState.debugLocal
                         ? tr('settings.dataSource.debugLocal', null, '调试模式已启用，强制使用当前本地服务器数据')
-                        : dataState.debugMode
-                        ? tr('settings.dataSource.debugFixed', null, '调试模式下正在使用数据服务中的固定版本')
                         : dataState.manifestSource === 'network'
                         ? tr('settings.dataSource.online', null, '版本清单已从数据服务加载')
                         : tr('settings.dataSource.fallback', null, '当前正在使用兼容版本配置');

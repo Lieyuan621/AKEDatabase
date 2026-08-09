@@ -1116,7 +1116,7 @@
                 const tName = getText(skill.talentName);
                 if (!groupedSkills[tName]) {
                     groupedSkills[tName] = {
-                        icon: skill.icon ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/spaceshipskillicon/${skill.icon}.png` : '',
+                        icon: skill.icon ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/spaceship/spaceshipskillicon/${skill.icon}.png` : '',
                         talentName: tName,
                         roomTypeName: roomTypeMap[String(skill.roomType)] || '',
                         levels: []

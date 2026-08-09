@@ -314,10 +314,15 @@
     }
 
     async function initialize() {
-        let selection = storage.get(VERSION_KEY, 'latest');
+        let selection = debugLocalMode ? 'latest' : storage.get(VERSION_KEY, 'latest');
         let baseUrl;
+        let loaded;
         if (debugLocalMode) {
-            baseUrl = selection === 'latest' ? localBaseUrl : defaultBaseUrl;
+            baseUrl = localBaseUrl;
+            loaded = {
+                manifest: fallbackManifest(localBaseUrl),
+                source: 'local'
+            };
         } else {
             try {
                 baseUrl = normalizeBaseUrl(storage.get(BASE_URL_KEY, defaultBaseUrl));
@@ -325,12 +330,11 @@
                 storage.remove(BASE_URL_KEY);
                 baseUrl = defaultBaseUrl;
             }
+            loaded = await loadManifest(
+                baseUrl,
+                isLocalDataSource(baseUrl) ? baseUrl : null
+            );
         }
-        const manifestBaseUrl = debugLocalMode ? defaultBaseUrl : baseUrl;
-        const localFallbackBaseUrl = debugLocalMode && selection === 'latest'
-            ? localBaseUrl
-            : (isLocalDataSource(baseUrl) ? baseUrl : null);
-        const loaded = await loadManifest(manifestBaseUrl, localFallbackBaseUrl);
         let selectedId = selection === 'latest' ? loaded.manifest.latest : selection;
         let selected = loaded.manifest.versions.find(item => item.id === selectedId);
         if (!selected) {
@@ -338,10 +342,7 @@
             selected = loaded.manifest.versions.find(item => item.id === loaded.manifest.latest);
             storage.set(VERSION_KEY, selection);
         }
-        const debugLocal = debugLocalMode && selection === 'latest';
-        if (debugLocal) {
-            selected = Object.freeze({ ...selected, tableCfgPath: 'public/TableCfg' });
-        }
+        const debugLocal = debugLocalMode;
         state = Object.freeze({
             baseUrl,
             defaultBaseUrl,
@@ -350,7 +351,9 @@
             manifestSource: loaded.source,
             selection,
             selected,
-            comparison: selection === 'latest' ? findLatestComparison(loaded.manifest) : null,
+            comparison: !debugLocalMode && selection === 'latest'
+                ? findLatestComparison(loaded.manifest)
+                : null,
             debugMode: debugLocalMode,
             debugLocal
         });
@@ -371,14 +374,13 @@
         cacheNamespace,
         getState: () => state,
         async configure({ baseUrl, selection }) {
+            if (debugLocalMode) return false;
             const normalizedBase = normalizeBaseUrl(baseUrl || defaultBaseUrl);
             const nextSelection = String(selection || 'latest');
-            if (!debugLocalMode) {
-                if (normalizedBase === defaultBaseUrl) storage.remove(BASE_URL_KEY);
-                else storage.set(BASE_URL_KEY, normalizedBase);
-            }
+            if (normalizedBase === defaultBaseUrl) storage.remove(BASE_URL_KEY);
+            else storage.set(BASE_URL_KEY, normalizedBase);
             storage.set(VERSION_KEY, nextSelection);
-            return nextSelection !== state?.selection || (!debugLocalMode && normalizedBase !== state?.baseUrl);
+            return nextSelection !== state?.selection || normalizedBase !== state?.baseUrl;
         },
         reset() {
             storage.remove(BASE_URL_KEY);
