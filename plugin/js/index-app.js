@@ -14,6 +14,7 @@
             const scriptSourceCache = new Map();
             const stylesheetCache = new Map();
             const moduleStyleKeys = new Map();
+            const moduleViewCache = new Map();
             const pluginVersionStorageKey = 'akedata-plugin-versions';
             const jsVersionStorageKey = 'akedata-js-versions';
             const bootstrapVersion = window.__akeBootstrapVersion || {};
@@ -83,6 +84,7 @@
                         <p data-i18n="errors.hiddenContentHelp">errors.hiddenContentHelp</p>
                     </div>
                 ` : '';
+                window.AKESidebarResize?.unmountModule();
                 contentArea.innerHTML = `
                     <div class="not-found-page">
                         <div class="not-found-code">404</div>
@@ -122,6 +124,8 @@
 
             const moduleListEl = document.getElementById('moduleListContainer');
             const contentArea = document.getElementById('contentArea');
+            const moduleViewState = window.AKEModuleViewState?.create({ contentArea });
+            window.AKESidebarResize?.initMain();
             const brandHome = document.getElementById('brandHome');
             const themeLink = document.getElementById('theme-style');
             const settingsButton = document.getElementById('settingsButton');
@@ -170,8 +174,7 @@
                             document.querySelectorAll('.module-item').forEach(el => el.classList.remove('active'));
                             const sidebarItem = document.querySelector(`.module-item[data-id="${mod.id}"]`);
                             if (sidebarItem) sidebarItem.classList.add('active');
-                            if (window.__akeRouter) window.__akeRouter.updateUrl(mod.id);
-                            window.AKEModuleOverview?.showRoot(mod.id);
+                            syncModuleNavigation(mod.id, loaded);
                         }
                     });
                     mobileMenuList.appendChild(item);
@@ -214,6 +217,7 @@
             // ---------- 工具函数 ----------
             function setContent(html) {
                 closeRawValueTip();
+                window.AKESidebarResize?.unmountModule();
                 const template = document.createElement('template');
                 template.innerHTML = html;
                 window.akeDataSource?.rewriteDomAssets?.(template.content);
@@ -427,8 +431,49 @@
                 }
             }
 
+            function currentModuleRouteId(moduleId) {
+                const rememberedRoute = moduleViewState?.getLastRoute(moduleId);
+                if (rememberedRoute !== null && rememberedRoute !== undefined) return rememberedRoute;
+                if (!config.keepUrlSync) return null;
+                const params = new URLSearchParams(window.location.search);
+                return params.get('plugin') === moduleId ? params.get('id') : null;
+            }
+
+            function dispatchModuleLifecycle(type, moduleId) {
+                window.dispatchEvent(new CustomEvent(`ake:module-${type}`, {
+                    detail: { moduleId }
+                }));
+            }
+
             function stashMountedModule() {
+                if (!mountedModuleId) return;
+                const moduleId = mountedModuleId;
+                const routeId = currentModuleRouteId(moduleId);
+                const fragment = document.createDocumentFragment();
+                closeRawValueTip();
+                moduleViewState?.deactivate(moduleId);
+                dispatchModuleLifecycle('deactivate', moduleId);
+                window.AKESidebarResize?.unmountModule();
+                while (contentArea.firstChild) fragment.appendChild(contentArea.firstChild);
+                moduleViewCache.set(moduleId, { fragment, routeId });
                 mountedModuleId = null;
+            }
+
+            function restoreStashedModule(moduleId) {
+                const state = moduleViewCache.get(moduleId);
+                if (!state) return null;
+                moduleViewCache.delete(moduleId);
+                contentArea.replaceChildren(state.fragment);
+                window.AKESidebarResize?.mountModule(contentArea, moduleId);
+                mountedModuleId = moduleId;
+                moduleViewState?.activate(moduleId, state.routeId);
+                dispatchModuleLifecycle('activate', moduleId);
+                return state;
+            }
+
+            function syncModuleNavigation(moduleId, loadResult) {
+                window.__akeRouter?.updateUrl(moduleId, loadResult.restored ? loadResult.routeId : null);
+                if (!loadResult.restored) window.AKEModuleOverview?.showRoot(moduleId);
             }
 
             function activateModuleStyles(moduleId) {
@@ -645,8 +690,13 @@
                     show404Page(false);
                     return false;
                 }
-                if (mountedModuleId === module.id) return true;
+                if (mountedModuleId === module.id) return { restored: false, reused: true };
                 if (mountedModuleId !== module.id) stashMountedModule();
+                if (moduleViewCache.has(module.id)) {
+                    activateModuleStyles(module.id);
+                    const state = restoreStashedModule(module.id);
+                    return { restored: true, routeId: state?.routeId || null };
+                }
                 setContent(`<div class="loader">${tr('common.loadingModule')}<br><small>${firstLoadTextTableHint()}</small></div>`);
                 try {
                     const currentVersion = configuredPluginVersions[module.id] || bootstrapVersion.appversion || '';
@@ -686,8 +736,11 @@
                         await executeModuleScript(oldScript);
                     }
                     if (generation !== moduleLoadGeneration) return false;
+                    window.AKESidebarResize?.mountModule(contentArea, module.id);
                     mountedModuleId = module.id;
-                    return true;
+                    moduleViewState?.activate(module.id);
+                    dispatchModuleLifecycle('activate', module.id);
+                    return { restored: false, reused: false };
                 } catch (err) {
                     if (generation !== moduleLoadGeneration) return false;
                     setContent(`<div class="error-message">${tr('errors.moduleLoad', { message: err.message })}</div>`);
@@ -734,14 +787,16 @@
                 const sorted = sortModulesByPriority(modulesArray);
                 let html = '';
                 sorted.forEach(mod => {
-                    const icon = mod.icon || '📦';
+                    const icon = String(mod.icon || '').trim();
+                    const hasIcon = Boolean(icon);
                     const title = translateModuleField(mod, 'title');
                     const desc = translateModuleField(mod, 'description') || tr('common.noDescription');
-                    const hiddenMarker = mod.hidden ? '🔒' : '';
+                    const iconHtml = hasIcon ? `<span class="module-icon" aria-hidden="true">${icon}</span>` : '';
+                    const hiddenMarker = mod.hidden ? '<span class="module-hidden-marker" aria-hidden="true">🔒</span>' : '';
                     html += `
-                        <div class="module-item" data-id="${mod.id}">
+                        <div class="module-item" data-id="${mod.id}" data-has-icon="${hasIcon}">
                             <div class="module-title">
-                                 <span>${icon}</span> ${title} ${hiddenMarker}
+                                ${iconHtml}<span class="module-name">${title}</span>${hiddenMarker}
                             </div>
                             <div class="module-desc">${desc}</div>
                         </div>
@@ -749,6 +804,9 @@
                 });
                 moduleListEl.innerHTML = html;
                 document.querySelectorAll('.module-item').forEach(item => {
+                    if (item.dataset.hasIcon === 'true') {
+                        item.title = item.querySelector('.module-title')?.textContent.trim() || '';
+                    }
                     item.addEventListener('click', async (e) => {
                         const id = item.dataset.id;
                         const module = allModules.find(m => m.id === id);
@@ -758,8 +816,7 @@
                         document.querySelectorAll('.module-item').forEach(el => el.classList.remove('active'));
                         item.classList.add('active');
                         activeModuleId = id;
-                        if (window.__akeRouter) window.__akeRouter.updateUrl(id);
-                        window.AKEModuleOverview?.showRoot(id);
+                        syncModuleNavigation(id, loaded);
                     });
                 });
                 if (activeModuleId) {
@@ -1036,13 +1093,15 @@
 
             window.__akeRouter = {
                 updateUrl(plugin, id) {
+                    moduleViewState?.route(plugin, id);
                     if (!config.keepUrlSync) return;
                     const params = new URLSearchParams();
                     if (plugin) params.set('plugin', plugin);
                     if (id) params.set('id', id);
                     const qs = params.toString();
                     const newUrl = window.location.pathname + (qs ? '?' + qs : '');
-                    history.replaceState(null, '', newUrl);
+                    const currentState = history.state && typeof history.state === 'object' ? history.state : {};
+                    history.replaceState({ ...currentState, akeModuleSession: true }, '', newUrl);
                 },
                 clearUrl() {
                     if (!config.keepUrlSync) return;
@@ -1409,9 +1468,17 @@
 
             async function initApp() {
                 const urlParams = new URLSearchParams(window.location.search);
+                const navigationEntry = window.performance?.getEntriesByType?.('navigation')?.[0];
+                const legacyNavigation = window.performance?.navigation;
+                const isReload = navigationEntry?.type === 'reload'
+                    || Boolean(legacyNavigation && legacyNavigation.type === legacyNavigation.TYPE_RELOAD);
+                if (isReload && history.state?.akeModuleSession === true) {
+                    urlParams.delete('plugin');
+                    urlParams.delete('id');
+                }
                 const deepPlugin = urlParams.get('plugin');
                 const deepId = urlParams.get('id');
-                if (urlParams.has('t')) {
+                if (urlParams.has('t') || (isReload && history.state?.akeModuleSession === true)) {
                     urlParams.delete('t');
                     const query = urlParams.toString();
                     history.replaceState(null, '', window.location.pathname + (query ? `?${query}` : ''));
@@ -1504,6 +1571,7 @@
                 const resetBtn = document.getElementById('resetSettingsBtn');
                 if (resetBtn) {
                     resetBtn.addEventListener('click', () => {
+                        window.AKESidebarResize?.resetAll();
                         document.getElementById('modalLevelsEnabled').checked = true;
                         document.getElementById('modalCharacterLevels').value = '1,20,40,60,80,90';
                         document.getElementById('modalWeaponLevels').value = '1,20,40,60,80,90';
@@ -1659,6 +1727,7 @@
                             imageTimeout: 8000,
                             scrollY: 0,
                             onclone: (clonedDoc, element) => {
+                                clonedDoc.querySelectorAll('.ake-sidebar-resize-handle').forEach(handle => handle.remove());
                                 // 移除左侧栏和内部列
                                 const globalSidebar = clonedDoc.querySelector('.sidebar');
                                 if (globalSidebar) globalSidebar.remove();

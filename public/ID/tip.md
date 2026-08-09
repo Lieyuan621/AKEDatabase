@@ -2,6 +2,18 @@ AKEData telah pindah ke domain www.akedata.wiki. Domain lama, akedata.top, kini 
 
 # Catatan Pembaruan Versi AKEData
 
+### v1.2.8
+
+#### Bilah samping dan tata letak
+
+- Bilah samping utama dan bilah samping setiap modul kini dapat diubah lebarnya dengan menyeret, dan lebar yang disesuaikan disimpan secara terpisah. Saat bilah menyempit, entri yang memiliki ikon hanya menampilkan ikon, sedangkan entri tanpa ikon tetap menampilkan nama agar mudah dikenali.
+- Tombol Pengaturan global dan ekspor gambar panjang di kiri bawah kini menempati area bawah khusus dan tidak lagi menutupi daftar modul.
+
+#### Status penelusuran
+
+- Dalam sesi kunjungan yang sama, kembali ke suatu modul akan memulihkan halaman, entri, dan posisi gulir yang sebelumnya dibuka.
+- Posisi gulir detail disimpan secara terpisah untuk setiap entri dalam modul yang sama. Memuat ulang halaman akan menghapus status sementara ini dan kembali menampilkan halaman awal.
+
 ### v1.2.7
 
 #### Dungeon dan aktivitas

@@ -2,6 +2,18 @@ AKEData a été transféré vers le domaine www.akedata.wiki. L'ancien domaine a
 
 # Journal des mises à jour d'AKEData
 
+### v1.2.8
+
+#### Barres latérales et mise en page
+
+- La barre latérale principale et celles de chaque module peuvent désormais être redimensionnées par glissement, et leurs largeurs sont enregistrées séparément. Lorsqu'une barre devient étroite, les entrées dotées d'une icône n'affichent plus que celle-ci, tandis que les entrées sans icône conservent leur nom.
+- Les boutons Paramètres globaux et export d'image longue disposent maintenant d'une zone inférieure réservée et ne recouvrent plus la liste des modules.
+
+#### État de navigation
+
+- Pendant une même session de navigation, revenir à un module restaure la page, l'entrée et la position de défilement précédemment affichées.
+- La position de défilement des détails est mémorisée séparément pour chaque entrée d'un même module. L'actualisation de la page efface ces états temporaires et ramène à la page de départ.
+
 ### v1.2.7
 
 #### Donjons et activités

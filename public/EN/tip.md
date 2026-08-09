@@ -2,6 +2,18 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.2.8
+
+#### Sidebars and layout
+
+- The main sidebar and each module sidebar can now be resized by dragging, with their adjusted widths saved separately. At narrow widths, entries with icons collapse to icon-only mode, while entries without icons keep their names for identification.
+- Global Settings and long-image export now occupy a dedicated bottom area and no longer overlap the module list.
+
+#### Browsing state
+
+- During the same browsing session, returning to a module restores its previously open page, item, and scroll position.
+- Detail scroll positions are stored separately for different items in the same module. Refreshing the page clears these temporary states and returns to the starting page.
+
 ### v1.2.7
 
 #### Dungeons and activities

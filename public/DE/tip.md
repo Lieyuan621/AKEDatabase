@@ -2,6 +2,18 @@ AKEData ist auf die Domain www.akedata.wiki umgezogen. Die bisherige Domain aked
 
 # AKEData-Versionsprotokoll
 
+### v1.2.8
+
+#### Seitenleisten und Layout
+
+- Die Hauptseitenleiste und die Seitenleisten der einzelnen Module lassen sich jetzt durch Ziehen in der Breite ändern; die angepassten Breiten werden getrennt gespeichert. Bei geringer Breite zeigen Einträge mit Symbol nur noch das Symbol, während Einträge ohne Symbol zur Erkennung ihren Namen behalten.
+- Globale Einstellungen und der Export langer Bilder belegen nun einen eigenen Bereich am unteren Rand und überdecken die Modulliste nicht mehr.
+
+#### Navigationsstatus
+
+- Innerhalb derselben Browsersitzung werden beim Zurückkehren zu einem Modul die zuvor geöffnete Seite, der Eintrag und die Scrollposition wiederhergestellt.
+- Detail-Scrollpositionen werden für verschiedene Einträge desselben Moduls getrennt gespeichert. Beim Neuladen der Seite werden diese temporären Zustände gelöscht und wieder die Startseite angezeigt.
+
 ### v1.2.7
 
 #### Dungeons und Aktivitäten

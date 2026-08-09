@@ -2,6 +2,18 @@ AKEData đã chuyển sang tên miền www.akedata.wiki. Tên miền cũ akedata
 
 # Nhật ký cập nhật phiên bản AKEData
 
+### v1.2.8
+
+#### Thanh bên và bố cục
+
+- Thanh bên chính và thanh bên phụ của từng mô-đun giờ có thể được thay đổi độ rộng bằng cách kéo, đồng thời độ rộng đã điều chỉnh được lưu riêng. Khi thanh bên hẹp, mục có biểu tượng chỉ hiển thị biểu tượng, còn mục không có biểu tượng vẫn giữ tên để dễ nhận biết.
+- Các nút Cài đặt chung và xuất ảnh dài ở góc dưới bên trái giờ có khu vực phía dưới riêng và không còn che danh sách mô-đun.
+
+#### Trạng thái duyệt
+
+- Trong cùng một phiên truy cập, khi quay lại mô-đun, trang, mục và vị trí cuộn đã mở trước đó sẽ được khôi phục.
+- Vị trí cuộn phần chi tiết được ghi nhớ riêng cho từng mục trong cùng một mô-đun. Khi tải lại trang, các trạng thái tạm thời này sẽ bị xóa và trang bắt đầu sẽ được hiển thị lại.
+
 ### v1.2.7
 
 #### Phó bản và hoạt động

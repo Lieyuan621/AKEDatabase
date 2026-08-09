@@ -677,6 +677,15 @@
         if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
     }
 
+    function onModuleActivate(event) {
+        if (event.detail?.moduleId !== MODULE_ID || !root.isConnected) return;
+        if (root.querySelector('#akeShopCountdown')) startCountdown();
+    }
+
+    function onModuleDeactivate(event) {
+        if (event.detail?.moduleId === MODULE_ID) stopCountdown();
+    }
+
     function nextBatchWeekly() {
         const rot = rotationState();
         const nextIdx = rot.weekIndex + 1;
@@ -899,8 +908,15 @@
         if (event.target === overlay || event.target.closest('.akeshop-mobile-title button')) closeOverlay();
     });
     window.addEventListener('globalConfigChanged', onConfigChanged);
+    window.addEventListener('ake:module-activate', onModuleActivate);
+    window.addEventListener('ake:module-deactivate', onModuleDeactivate);
     window.__akeShopController = {
-        destroy() { window.removeEventListener('globalConfigChanged', onConfigChanged); stopCountdown(); }
+        destroy() {
+            window.removeEventListener('globalConfigChanged', onConfigChanged);
+            window.removeEventListener('ake:module-activate', onModuleActivate);
+            window.removeEventListener('ake:module-deactivate', onModuleDeactivate);
+            stopCountdown();
+        }
     };
     load();
 })();

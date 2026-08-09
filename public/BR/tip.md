@@ -2,6 +2,18 @@ O AKEData foi transferido para o domínio www.akedata.wiki. O domínio anterior,
 
 # Registro de atualizações do AKEData
 
+### v1.2.8
+
+#### Barras laterais e layout
+
+- A barra lateral principal e as barras secundárias de cada módulo agora podem ser redimensionadas ao arrastar, e as larguras ajustadas são salvas separadamente. Quando uma barra fica estreita, as entradas com ícone exibem apenas o ícone, enquanto as entradas sem ícone mantêm o nome para identificação.
+- Os botões de Configurações globais e exportação de imagem longa agora ocupam uma área inferior exclusiva e não se sobrepõem mais à lista de módulos.
+
+#### Estado de navegação
+
+- Durante a mesma sessão de navegação, ao voltar a um módulo são restaurados a página, a entrada e a posição de rolagem abertas anteriormente.
+- As posições de rolagem dos detalhes são salvas separadamente para diferentes entradas do mesmo módulo. Atualizar a página limpa esses estados temporários e retorna à página inicial.
+
 ### v1.2.7
 
 #### Masmorras e atividades
