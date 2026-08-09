@@ -71,8 +71,8 @@
         }
 
         function getEquipIconSrc(itemId, iconId) {
-            if (iconId) return `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemicon/${iconId}.png`;
-            return `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemicon/${itemId}.png`;
+            if (iconId) return `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png`;
+            return `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${itemId}.png`;
         }
 
         function filterSuits(suits) {
