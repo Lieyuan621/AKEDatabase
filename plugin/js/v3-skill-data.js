@@ -24,8 +24,20 @@
     function formatActionType(type) {
         if (!type) return 'UnknownAction';
         const qualifiedName = String(type).split(',')[0].trim();
-        const typeName = qualifiedName.split('.').pop() || qualifiedName;
-        return (typeName.split('+')[0] || typeName).trim() || 'UnknownAction';
+        const ownerName = qualifiedName.split('+')[0].trim();
+        const parts = ownerName.split('.').filter(Boolean);
+        let typeName = parts.pop() || ownerName;
+
+        // Older exports encode nested Data classes with dots instead of '+'.
+        if (typeName === 'Data') {
+            typeName = parts.pop() || typeName;
+        } else if (/ActionData$/i.test(typeName)) {
+            const parentName = parts[parts.length - 1];
+            typeName = parentName && /Action$/i.test(parentName)
+                ? parentName
+                : typeName.replace(/Data$/i, '');
+        }
+        return typeName.trim() || 'UnknownAction';
     }
 
     function blackboardScalar(entry) {
@@ -215,41 +227,109 @@
 
     function isPresentationType(type) {
         const normalized = String(type || '').toLowerCase();
+        if (/^(check|compare)/.test(normalized)
+            || normalized.includes('effectfindtarget')
+            || normalized.includes('raycasteffect')) return false;
         return normalized.includes('animation')
             || normalized.includes('animator')
-            || normalized.includes('playanim')
+            || normalized.includes('animevent')
             || normalized.includes('hurtanim')
-            || normalized.includes('effectaction')
+            || normalized.includes('dashanim')
+            || normalized.includes('dodgeanim')
+            || normalized.includes('playanim')
+            || normalized.includes('effect')
             || normalized.includes('playsound')
             || normalized.includes('voice')
             || normalized.includes('camera')
+            || normalized.includes('warningaction')
             || normalized.includes('showhideactor')
-            || normalized.includes('weaponvisible');
+            || normalized.includes('weaponvisible')
+            || normalized.includes('weaponanimation')
+            || normalized.includes('weaponmountpoint')
+            || normalized.includes('hideui')
+            || normalized.includes('showcomboskillui')
+            || normalized.includes('forcehideheadbar')
+            || normalized.includes('ultimateshow')
+            || normalized.includes('togglemesh')
+            || normalized.includes('debugprint')
+            || normalized === 'logaction';
     }
 
     function isMovementType(type) {
-        return /^(Move|RootMotion|Teleport|Jump|SnapTo|Rotate|Pull|Pushback|Knockback)/i.test(type)
-            || /Move(To|Input|Direction|Location|Target|Slot)/i.test(type)
-            || /RootMotion|Teleport/i.test(type);
+        const normalized = String(type || '');
+        if (/^JumpToAction$/i.test(normalized)) return false;
+        return /^(Move|RootMotion|Teleport|JumpToTarget|SnapTo|SelfRotate|Pull|PushBack|SkillAIMove)/i.test(normalized)
+            || /Move(To|Input|Direction|Location|Target|Slot)/i.test(normalized)
+            || /RootMotion|Teleport/i.test(normalized);
+    }
+
+    function isActionNode(value) {
+        return isObject(value) && !!value.$type
+            && hasOwn(value, 'isEnable')
+            && hasOwn(value, 'priorityLevel')
+            && hasOwn(value, 'priorityOffset')
+            && hasOwn(value, 'serverActionIndex');
+    }
+
+    function isNestedActionKey(key) {
+        const normalized = String(key || '').toLowerCase();
+        return normalized === 'action'
+            || normalized === 'actiondata'
+            || normalized === '_sequenceactiondata'
+            || normalized === 'sequenceactiondata'
+            || normalized === 'actionontick'
+            || normalized === 'actioninaura'
+            || normalized === 'actionwhenexitaura'
+            || normalized === 'abilityactionmap'
+            || normalized === 'actiononevent'
+            || normalized === 'onendaction'
+            || normalized === 'condition'
+            || normalized === 'conditionlist'
+            || normalized === 'options'
+            || normalized === 'actions'
+            || normalized.endsWith('actions')
+            || normalized.includes('conditionaction')
+            || normalized.includes('succeedaction')
+            || normalized.includes('successaction')
+            || normalized.includes('failaction')
+            || normalized.includes('thenaction')
+            || normalized.includes('elseaction');
     }
 
     function classifyAction(type) {
         const normalized = String(type || '').toLowerCase();
         if (isPresentationType(type)) return 'presentation';
-        if (normalized === 'damageaction') return 'damage';
-        if (normalized.includes('superarmor')) return 'defense';
+        if (normalized.includes('damageaction') || normalized === 'waterdronehitaction') return 'damage';
+        if (normalized.includes('heal') || normalized.includes('recoverpoise')) return 'recovery';
+        if (normalized.includes('superarmor') || normalized.includes('armor')) return 'defense';
         if (normalized.includes('allownextskill') || normalized.includes('combocache')
             || normalized.includes('markcaninterrupt') || normalized.includes('markcandash')
             || normalized.includes('blockmoveinterrupt')) return 'cancel';
-        if (normalized.includes('hitstop') || normalized.includes('timedilation')) return 'timing';
-        if (normalized.includes('createbuff') || normalized.includes('addbuff')) return 'buff';
+        if (normalized.includes('hitstop') || normalized.includes('timedilation')
+            || normalized.includes('channeling') || normalized.includes('tickinterval')
+            || normalized === 'jumptoaction' || normalized.includes('pausecomboskilltime')) return 'timing';
+        if (normalized.includes('buff') || normalized.includes('aura') || normalized.includes('weakness')
+            || normalized.includes('tagaction') || normalized.includes('dispel')) return 'buff';
         if (normalized.includes('projectile') || normalized.includes('castskill')
-            || normalized.includes('abilityentity')) return 'spawn';
+            || normalized.includes('spawnabilityentity') || normalized.includes('spawnenemy')) return 'spawn';
+        if (normalized.includes('cost') || normalized.includes('atb') || normalized.includes('usp')
+            || normalized.includes('resource')) return 'resource';
         if (normalized === 'interruptaction' || normalized.includes('crushaction')
-            || normalized.includes('fractureaction') || normalized.includes('spellinfliction')) return 'control';
+            || normalized.includes('fractureaction') || normalized.includes('spellinfliction')
+            || normalized.includes('blowoff') || normalized.includes('airborne')
+            || normalized.includes('knockdown') || normalized.includes('takedown')
+            || normalized.includes('launchupward') || normalized.includes('slowaction')) return 'control';
         if (isMovementType(type)) return 'movement';
         if (normalized.includes('condition') || normalized.includes('ifelse')
-            || normalized.startsWith('check') || normalized.startsWith('compare')) return 'logic';
+            || normalized.startsWith('check') || normalized.startsWith('compare')
+            || normalized.includes('blackboard') || normalized.includes('calcbb')
+            || normalized.startsWith('save') || normalized.startsWith('store')
+            || normalized.includes('probablity') || normalized.includes('random')
+            || normalized.includes('switchaction') || normalized.includes('foreach')
+            || normalized.includes('repeataction') || normalized.includes('doonce')) return 'logic';
+        if (normalized.includes('findtarget') || normalized.includes('picktarget')
+            || normalized.includes('mergetarget') || normalized.includes('targetpostprocessor')
+            || normalized.includes('converttotarget')) return 'targeting';
         return 'other';
     }
 
@@ -464,12 +544,170 @@
             return { buffId, values, raw: buff };
         };
 
+        const summaryMetaKeys = new Set([
+            '$type', 'isEnable', 'priorityLevel', 'priorityOffset', 'serverActionIndex'
+        ]);
+        const summaryPriority = [
+            'skillId', 'castSkillId', 'targetSkillId', 'projectileId', 'abilityEntityId', 'enemyId',
+            'buffId', 'buffIds', 'markerId', 'signalId', 'key', 'blackboardKey', 'bbKey', 'contextKey',
+            'operation', 'operationType', 'calculateType', 'compare', 'compareType', 'value', 'valueA',
+            'valueB', 'costType', 'costValue', 'coefficient', 'damageType', 'damageAttributeType',
+            'healType', 'superArmorValue', 'impactResistance', 'overrideSuperArmorLimit', 'duration',
+            'totalTime', 'triggerInterval', 'tickInterval', 'distance', 'moveDistance', 'horizontalSpeed',
+            'verticalSpeed', 'height', 'targetGroupKey', 'targetSource', 'source', 'target', 'owner'
+        ];
+        const summaryPriorityIndex = new Map(summaryPriority.map((key, index) => [key.toLowerCase(), index]));
+        const summaryFieldLimit = 32;
+
+        const isBlackboardReference = value => isObject(value)
+            && hasOwn(value, 'useBlackboardKey')
+            && hasOwn(value, 'blackboardKey')
+            && hasOwn(value, 'value');
+
+        const countActionNodes = (value, depth) => {
+            const currentDepth = Number(depth) || 0;
+            if (!value || currentDepth > 24) return 0;
+            if (Array.isArray(value)) {
+                return value.reduce((total, child) => total + countActionNodes(child, currentDepth + 1), 0);
+            }
+            if (!isObject(value)) return 0;
+            const ownCount = isActionNode(value) ? 1 : 0;
+            return ownCount + Object.keys(value).reduce((total, key) => (
+                total + countActionNodes(value[key], currentDepth + 1)
+            ), 0);
+        };
+
+        const buildActionSummary = (action, path) => {
+            const fields = [];
+            let truncated = false;
+
+            const append = (key, value, fieldPath) => {
+                if (fields.length >= summaryFieldLimit) {
+                    truncated = true;
+                    return;
+                }
+                if (value === undefined || value === null || value === '') return;
+                fields.push({ key: String(key || 'value').replace(/^_+/, ''), value, path: fieldPath });
+            };
+
+            const appendBlackboardPairs = (value, fieldPath) => {
+                const consumed = new Set();
+                Object.keys(value).forEach(flagKey => {
+                    const match = /^use(.+)BlackboardKey$/i.exec(flagKey);
+                    if (!match || value[flagKey] !== true) return;
+                    const baseKey = `${match[1][0].toLowerCase()}${match[1].slice(1)}`;
+                    const blackboardKeyField = `${baseKey}BlackboardKey`;
+                    if (!hasOwn(value, baseKey) || !hasOwn(value, blackboardKeyField)) return;
+                    append(baseKey, resolveField({
+                        useBlackboardKey: true,
+                        value: value[baseKey],
+                        blackboardKey: value[blackboardKeyField]
+                    }, `${fieldPath}.${baseKey}`), `${fieldPath}.${baseKey}`);
+                    consumed.add(flagKey);
+                    consumed.add(baseKey);
+                    consumed.add(blackboardKeyField);
+                });
+                if (value.readIdFromBlackboard === true && value.buffIdKey && hasOwn(value, 'buffId')) {
+                    append('buffId', resolveField({
+                        useBlackboardKey: true,
+                        value: value.buffId,
+                        blackboardKey: value.buffIdKey
+                    }, `${fieldPath}.buffId`), `${fieldPath}.buffId`);
+                    consumed.add('readIdFromBlackboard');
+                    consumed.add('buffId');
+                    consumed.add('buffIdKey');
+                }
+                return consumed;
+            };
+
+            const orderedKeys = value => Object.keys(value)
+                .filter(key => !summaryMetaKeys.has(key))
+                .sort((left, right) => {
+                    const leftRank = summaryPriorityIndex.get(left.toLowerCase()) ?? Number.MAX_SAFE_INTEGER;
+                    const rightRank = summaryPriorityIndex.get(right.toLowerCase()) ?? Number.MAX_SAFE_INTEGER;
+                    return leftRank - rightRank;
+                });
+
+            const visit = (value, key, fieldPath, depth) => {
+                if (fields.length >= summaryFieldLimit) {
+                    truncated = true;
+                    return;
+                }
+                if (value === undefined || value === null || value === '') return;
+                if (isBlackboardReference(value)) {
+                    append(key, resolveField(value, fieldPath), fieldPath);
+                    return;
+                }
+                if (Array.isArray(value)) {
+                    if (!value.length) return;
+                    if (value.every(child => !isObject(child) && !Array.isArray(child))) {
+                        append(key, value, fieldPath);
+                        return;
+                    }
+                    value.slice(0, 8).forEach((child, index) => (
+                        visit(child, key, `${fieldPath}[${index}]`, depth + 1)
+                    ));
+                    if (value.length > 8) append(`${key}RemainingCount`, value.length - 8, fieldPath);
+                    return;
+                }
+                if (!isObject(value)) {
+                    append(key, value, fieldPath);
+                    return;
+                }
+                if (isActionNode(value)) return;
+                if (hasOwn(value, 'inputValueKey') && value.inputValueKey && value.useDirectValue !== true) {
+                    const assignmentKey = value.targetKey || value.inputValueKey || key;
+                    append(assignmentKey, resolveField({
+                        useBlackboardKey: true,
+                        value: value.numericValue ?? value.stringValue ?? null,
+                        blackboardKey: value.inputValueKey
+                    }, fieldPath), fieldPath);
+                    return;
+                }
+                if (value.useDirectValue === true && (hasOwn(value, 'numericValue') || hasOwn(value, 'stringValue'))) {
+                    append(value.targetKey || key, value.directValueType === 'String' ? value.stringValue : value.numericValue, fieldPath);
+                    return;
+                }
+                if (depth >= 5) {
+                    truncated = true;
+                    return;
+                }
+                if (value.$type) {
+                    append(`${key}Type`, formatActionType(value.$type), `${fieldPath}.$type`);
+                }
+                const consumedKeys = appendBlackboardPairs(value, fieldPath);
+                orderedKeys(value).forEach(childKey => {
+                    if (childKey === '$type' || consumedKeys.has(childKey)) return;
+                    const child = value[childKey];
+                    const nestedCount = isNestedActionKey(childKey) ? countActionNodes(child) : 0;
+                    if (nestedCount) {
+                        append(`${childKey}Count`, nestedCount, `${fieldPath}.${childKey}`);
+                        return;
+                    }
+                    visit(child, childKey, `${fieldPath}.${childKey}`, depth + 1);
+                });
+            };
+
+            const consumedKeys = appendBlackboardPairs(action, path);
+            orderedKeys(action).forEach(key => {
+                if (consumedKeys.has(key)) return;
+                const value = action[key];
+                const nestedCount = isNestedActionKey(key) ? countActionNodes(value) : 0;
+                if (nestedCount) {
+                    append(`${key}Count`, nestedCount, `${path}.${key}`);
+                    return;
+                }
+                visit(value, key, `${path}.${key}`, 0);
+            });
+            return { fields, truncated };
+        };
+
         const handleAction = (action, event) => {
             const type = event.type;
             const normalized = type.toLowerCase();
             const path = event.path;
 
-            if (normalized === 'damageaction') {
+            if (normalized === 'damageaction' || normalized === 'channelingdamageaction') {
                 const units = Array.isArray(action.damageUnits) ? action.damageUnits : [];
                 event.details = { unitCount: units.length, targetGroupKey: action.targetSettings?.targetGroupKey ?? '' };
                 addWindow('damage', event, event.details);
@@ -582,7 +820,7 @@
                 return;
             }
 
-            if (normalized.includes('createbuff') || normalized.includes('addbuff')) {
+            if ((normalized === 'createbuffaction' || normalized === 'addbuffaction') && Array.isArray(action.buffs)) {
                 const buffs = (Array.isArray(action.buffs) ? action.buffs : []).map((buff, index) => (
                     normalizeBuff(buff, index, event, `${path}.buffs[${index}]`)
                 ));
@@ -605,15 +843,19 @@
             if (normalized.includes('launchprojectile')) {
                 const projectileId = addResolvedLink('projectile', action.projectileId, 'launch', event, `${path}.projectileId`);
                 const skillFields = [
-                    ['projectileSkillId', 'projectileHit'],
-                    ['skillIdOnBlock', 'projectileBlock'],
-                    ['skillIdOnReach', 'projectileReach'],
-                    ['skillIdOnFinish', 'projectileFinish']
+                    ['projectileSkillId', 'projectileHit', 'castSkillOnHit'],
+                    ['skillIdOnBlock', 'projectileBlock', 'castSkillOnBlock'],
+                    ['skillIdOnReach', 'projectileReach', 'castSkillOnReach'],
+                    ['skillIdOnFinish', 'projectileFinish', 'castSkillOnFinish']
                 ];
                 const linkedSkills = {};
-                skillFields.forEach(([key, relation]) => {
+                skillFields.forEach(([key, relation, gateKey]) => {
                     if (!hasOwn(action, key)) return;
-                    linkedSkills[key] = addResolvedLink('skill', action[key], relation, event, `${path}.${key}`);
+                    const resolvedId = resolveField(action[key], `${path}.${key}`);
+                    linkedSkills[key] = resolvedId;
+                    if (!hasOwn(action, gateKey) || action[gateKey] !== false) {
+                        addLink('skill', resolvedId.value, relation, event, { resolvedId, gate: gateKey });
+                    }
                 });
                 event.details = { projectileId, linkedSkills };
                 return;
@@ -629,7 +871,7 @@
                 return;
             }
 
-            if (normalized.includes('abilityentity')) {
+            if (normalized === 'spawnabilityentity') {
                 const abilityEntityId = addResolvedLink(
                     'abilityEntity',
                     action.abilityEntityId ?? action.entityId,
@@ -653,8 +895,9 @@
                 return;
             }
 
-            if (normalized === 'interruptaction' || normalized.includes('crushaction')
-                || normalized.includes('fractureaction') || normalized.includes('spellinfliction')) {
+            if (normalized === 'interruptaction' || normalized === 'crushaction'
+                || normalized === 'fractureaction' || normalized === 'spellinfliction'
+                || normalized === 'spellinflictiononchar' || normalized === 'inversespellinfliction') {
                 event.details = resolvedFields(action, [
                     'overrideSuperArmorLimit', 'immobilizedTime', 'blowOffDistance', 'distanceRandomRange',
                     'blowOffHeight', 'totalTime', 'damageMultiplier', 'duration', 'value'
@@ -674,77 +917,86 @@
             }
         };
 
-        const isNestedActionKey = key => {
-            const normalized = String(key || '').toLowerCase();
-            return normalized === 'actiondata'
-                || normalized === 'actions'
-                || normalized.endsWith('actions')
-                || normalized.includes('conditionaction')
-                || normalized.includes('succeedaction')
-                || normalized.includes('successaction')
-                || normalized.includes('failaction')
-                || normalized.includes('thenaction')
-                || normalized.includes('elseaction');
-        };
-
         const branchName = key => String(key || 'actions')
             .replace(/ActionData$/i, '')
             .replace(/Actions?$/i, '')
             || 'actions';
 
+        const branchRelation = key => {
+            const normalized = String(key || '').toLowerCase();
+            if (normalized.includes('condition')) return 'condition';
+            if (normalized.includes('succeed') || normalized.includes('success') || normalized.includes('then')) return 'success';
+            if (normalized.includes('fail') || normalized.includes('else')) return 'failure';
+            if (normalized.includes('tick')) return 'tick';
+            if (normalized === 'actioninaura') return 'aura-enter';
+            if (normalized === 'actionwhenexitaura') return 'aura-exit';
+            if (normalized.includes('end')) return 'on-end';
+            if (normalized === 'options') return 'switch-case';
+            if (normalized === 'abilityactionmap' || normalized === 'actiononevent') return 'ability-event';
+            return branchName(key);
+        };
+
+        const walkedObjects = new WeakSet();
+        let walkedNodeCount = 0;
+
         const walkContainer = (container, inherited, path, depth) => {
-            if (depth > 48) {
-                addWarning('ACTION_DEPTH_LIMIT', 'Nested action traversal stopped at depth 48.', { path });
+            if (depth > 64) {
+                addWarning('ACTION_DEPTH_LIMIT', 'Nested action traversal stopped at depth 64.', { path });
                 return;
             }
             if (Array.isArray(container)) {
-                container.forEach((item, index) => walkContainer(item, inherited, `${path}[${index}]`, depth));
+                container.forEach((item, index) => walkContainer(item, inherited, `${path}[${index}]`, depth + 1));
                 return;
             }
             if (!isObject(container)) return;
-
-            if (!container.$type) {
-                if (container._sequenceActionData) {
-                    walkContainer(container._sequenceActionData, inherited, `${path}._sequenceActionData`, depth + 1);
-                }
-                if (container.actionData) {
-                    walkContainer(container.actionData, inherited, `${path}.actionData`, depth + 1);
-                }
-                if (container.actions) {
-                    walkContainer(container.actions, inherited, `${path}.actions`, depth + 1);
-                }
+            if (walkedObjects.has(container)) return;
+            walkedObjects.add(container);
+            walkedNodeCount += 1;
+            if (walkedNodeCount > 200000) {
+                addWarning('ACTION_NODE_LIMIT', 'Action traversal stopped after 200000 structured nodes.', { path });
                 return;
             }
 
-            const type = formatActionType(container.$type);
-            const event = Object.assign({
-                index: events.length,
-                type,
-                rawType: container.$type,
-                category: classifyAction(type),
-                presentation: isPresentationType(type),
-                enabled: container.isEnable !== false,
-                serverActionIndex: container.serverActionIndex ?? null,
-                priorityLevel: container.priorityLevel ?? null,
-                priorityOffset: container.priorityOffset ?? null,
-                branchPath: inherited.branchPath.slice(),
-                path,
-                raw: container
-            }, frameInfo(inherited.startFrame, inherited.endFrame), {
-                source: inherited.source,
-                abilityEvent: inherited.abilityEvent,
-                groupIndex: inherited.groupIndex,
-                sequenceIndex: inherited.sequenceIndex
-            });
-            events.push(event);
-            handleAction(container, event);
+            let parentEventIndex = inherited.parentEventIndex ?? null;
+            if (isActionNode(container)) {
+                const type = formatActionType(container.$type);
+                const summary = buildActionSummary(container, path);
+                const event = Object.assign({
+                    index: events.length,
+                    type,
+                    rawType: container.$type,
+                    category: classifyAction(type),
+                    presentation: isPresentationType(type),
+                    enabled: container.isEnable !== false,
+                    serverActionIndex: container.serverActionIndex ?? null,
+                    priorityLevel: container.priorityLevel ?? null,
+                    priorityOffset: container.priorityOffset ?? null,
+                    parentEventIndex,
+                    relation: inherited.relation || '',
+                    summaryFields: summary.fields,
+                    summaryTruncated: summary.truncated,
+                    branchPath: inherited.branchPath.slice(),
+                    path,
+                    raw: container
+                }, frameInfo(inherited.startFrame, inherited.endFrame), {
+                    source: inherited.source,
+                    abilityEvent: inherited.abilityEvent,
+                    groupIndex: inherited.groupIndex,
+                    sequenceIndex: inherited.sequenceIndex
+                });
+                events.push(event);
+                handleAction(container, event);
+                parentEventIndex = event.index;
+            }
 
             Object.keys(container).forEach(key => {
-                if (!isNestedActionKey(key)) return;
                 const child = container[key];
                 if (!child || typeof child !== 'object') return;
+                const isBranch = isNestedActionKey(key);
                 walkContainer(child, Object.assign({}, inherited, {
-                    branchPath: inherited.branchPath.concat(branchName(key))
+                    parentEventIndex,
+                    relation: isBranch ? branchRelation(key) : inherited.relation,
+                    branchPath: isBranch ? inherited.branchPath.concat(branchName(key)) : inherited.branchPath
                 }), `${path}.${key}`, depth + 1);
             });
         };
@@ -762,14 +1014,15 @@
                     endFrame: range.endFrame
                 });
             }
-            const sequence = groupItem?._sequenceActionData ?? groupItem?.sequenceActionData ?? groupItem?.actionData ?? [];
-            walkContainer(sequence, {
+            walkContainer(groupItem, {
                 source: 'timeline',
                 abilityEvent: null,
                 groupIndex,
                 sequenceIndex: 0,
                 startFrame: groupItem?._startFrame,
                 endFrame: groupItem?._endFrame,
+                parentEventIndex: null,
+                relation: '',
                 branchPath: []
             }, `actionGroupData.timelineActions[${groupIndex}]`, 0);
         });
@@ -778,20 +1031,34 @@
             ? actionGroupData.passiveEventActions
             : (Array.isArray(data.passiveEventActions) ? data.passiveEventActions : []);
         passiveEventActions.forEach((passiveEvent, eventIndex) => {
-            const wrappers = Array.isArray(passiveEvent?.actions)
-                ? passiveEvent.actions
-                : (passiveEvent?.actions ? [passiveEvent.actions] : []);
-            wrappers.forEach((wrapper, sequenceIndex) => {
-                walkContainer(wrapper, {
-                    source: 'passive',
-                    abilityEvent: passiveEvent?.abilityEvent ?? '',
-                    groupIndex: eventIndex,
-                    sequenceIndex,
-                    startFrame: null,
-                    endFrame: null,
-                    branchPath: []
-                }, `actionGroupData.passiveEventActions[${eventIndex}].actions[${sequenceIndex}]`, 0);
-            });
+            walkContainer(passiveEvent, {
+                source: 'passive',
+                abilityEvent: passiveEvent?.abilityEvent ?? '',
+                groupIndex: eventIndex,
+                sequenceIndex: 0,
+                startFrame: null,
+                endFrame: null,
+                parentEventIndex: null,
+                relation: '',
+                branchPath: []
+            }, `actionGroupData.passiveEventActions[${eventIndex}]`, 0);
+        });
+
+        Object.keys(actionGroupData).forEach(key => {
+            if (key === 'timelineActions' || key === 'passiveEventActions') return;
+            walkContainer(actionGroupData[key], {
+                source: 'config', abilityEvent: null, groupIndex: null, sequenceIndex: null,
+                startFrame: null, endFrame: null, parentEventIndex: null, relation: branchRelation(key), branchPath: [branchName(key)]
+            }, `actionGroupData.${key}`, 0);
+        });
+
+        Object.keys(data).forEach(key => {
+            if (key === 'actionGroupData' || key === 'timelineActions' || key === 'passiveEventActions') return;
+            const source = /highlight/i.test(key) ? 'highlight' : (/switch.*condition/i.test(key) ? 'switch-condition' : 'config');
+            walkContainer(data[key], {
+                source, abilityEvent: null, groupIndex: null, sequenceIndex: null,
+                startFrame: null, endFrame: null, parentEventIndex: null, relation: branchRelation(key), branchPath: [branchName(key)]
+            }, key, 0);
         });
 
         return {

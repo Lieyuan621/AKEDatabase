@@ -1,8 +1,12 @@
 (function () {
     'use strict';
 
+    const t = window.akeI18n?.scope?.('modules.combat')
+        || ((key, params, fallback) => fallback ?? key);
+    const commonT = window.akeI18n?.scope?.('common')
+        || ((key, params, fallback) => fallback ?? key);
     const MODULE_ID = 'v3_skill';
-    const MODULE_TITLE = '战斗';
+    const MODULE_TITLE = () => t('title', null, '战斗');
     const OTHER_ID = '__other_combat_entities__';
     const HIDDEN_ENTITY_PATTERN = /^(?:chr_9000_endmin|eny_0057_dog)(?:_|$)/i;
     const root = document.getElementById('combatv3Module');
@@ -30,7 +34,7 @@
     const pendingDeepLink = parseDeepLink(window.__deepLinkId || '');
     window.__deepLinkId = null;
     root.dataset.moduleId = MODULE_ID;
-    root.dataset.moduleTitle = MODULE_TITLE;
+    root.dataset.moduleTitle = MODULE_TITLE();
 
     const state = {
         rawManifest: [],
@@ -59,47 +63,494 @@
     };
 
     const GROUP_TYPE_LABELS = {
-        0: '普通攻击',
-        1: '战技',
-        2: '终结技',
-        3: '连携技'
+        0: ['enums.groupTypes.normalAttack', '普通攻击'],
+        1: ['enums.groupTypes.combatSkill', '战技'],
+        2: ['enums.groupTypes.ultimate', '终结技'],
+        3: ['enums.groupTypes.comboSkill', '连携技']
     };
     const ATTACK_ATTRIBUTE_LABELS = {
-        physical: '物理伤害',
-        real: '真实伤害',
-        fire: '灼热伤害',
-        pulse: '电磁伤害',
-        cryst: '寒冷伤害',
-        crystal: '寒冷伤害',
-        lifedrain: '吸血伤害',
-        natural: '自然伤害',
-        ether: '超域伤害'
+        physical: ['enums.attackAttributes.physical', '物理伤害'],
+        real: ['enums.attackAttributes.real', '真实伤害'],
+        fire: ['enums.attackAttributes.fire', '灼热伤害'],
+        pulse: ['enums.attackAttributes.pulse', '电磁伤害'],
+        cryst: ['enums.attackAttributes.cryst', '寒冷伤害'],
+        crystal: ['enums.attackAttributes.crystal', '寒冷伤害'],
+        lifedrain: ['enums.attackAttributes.lifedrain', '吸血伤害'],
+        natural: ['enums.attackAttributes.natural', '自然伤害'],
+        ether: ['enums.attackAttributes.ether', '超域伤害']
     };
     const ENEMY_RARITY_BY_DISPLAY_TYPE = { 0: 2, 3: 3, 1: 4, 4: 5, 2: 6 };
     const BASIC_LABELS = {
-        durationFrame: '动作总时长', durationFrames: '动作总时长', totalFrames: '动作总时长',
-        exclusiveFrame: '排他期', exclusiveFrames: '排他期', offsetRecordFrame: '续段记录帧',
-        offsetFrame: '续段记录帧', offsetTime: '续段保留时间', startupFrame: '起手', startupFrames: '起手',
-        firstHitFrame: '首段命中', lastHitFrame: '末段命中', recoveryFrame: '收招', recoveryFrames: '收招',
-        cancelFrame: '可取消时点', cancelFrames: '可取消时点', cooldown: '冷却', cooldownTime: '冷却',
-        hitCount: '命中段数', totalDamage: '总伤害倍率', damage: '伤害倍率', poiseDamage: '破韧',
-        toughnessDamage: '破韧', atb: '失衡值', atbValue: '失衡值', superArmor: '抗打断',
-        antiInterrupt: '抗打断', moveDistance: '位移距离', displacement: '位移距离',
-        invulnerableFrame: '无敌时间', invulnerableFrames: '无敌时间'
+        durationFrame: ['metrics.durationFrame', '动作总时长'], durationFrames: ['metrics.durationFrame', '动作总时长'], totalFrames: ['metrics.durationFrame', '动作总时长'],
+        exclusiveFrame: ['metrics.exclusiveFrame', '排他期'], exclusiveFrames: ['metrics.exclusiveFrame', '排他期'], offsetRecordFrame: ['metrics.offsetRecordFrame', '续段记录帧'],
+        offsetFrame: ['metrics.offsetRecordFrame', '续段记录帧'], offsetTime: ['metrics.offsetTime', '续段保留时间'], startupFrame: ['metrics.startupFrame', '起手'], startupFrames: ['metrics.startupFrame', '起手'],
+        firstHitFrame: ['metrics.firstHitFrame', '首段命中'], lastHitFrame: ['metrics.lastHitFrame', '末段命中'], recoveryFrame: ['metrics.recoveryFrame', '收招'], recoveryFrames: ['metrics.recoveryFrame', '收招'],
+        cancelFrame: ['metrics.cancelFrame', '可取消时点'], cancelFrames: ['metrics.cancelFrame', '可取消时点'], cooldown: ['metrics.cooldown', '冷却'], cooldownTime: ['metrics.cooldown', '冷却'],
+        hitCount: ['metrics.hitCount', '命中段数'], totalDamage: ['metrics.totalDamage', '总伤害倍率'], damage: ['metrics.damage', '伤害倍率'], poiseDamage: ['metrics.poiseDamage', '破韧'],
+        toughnessDamage: ['metrics.poiseDamage', '破韧'], atb: ['metrics.atb', '失衡值'], atbValue: ['metrics.atb', '失衡值'], superArmor: ['metrics.superArmor', '抗打断'],
+        antiInterrupt: ['metrics.superArmor', '抗打断'], moveDistance: ['metrics.moveDistance', '位移距离'], displacement: ['metrics.moveDistance', '位移距离'],
+        invulnerableFrame: ['metrics.invulnerableFrame', '无敌时间'], invulnerableFrames: ['metrics.invulnerableFrame', '无敌时间']
     };
     const WINDOW_LABELS = {
-        damage: '命中', superArmor: '抗打断', buffSuperArmor: '霸体 Buff', damageImmune: '无敌',
-        allowNextSkill: '允许接续', comboCache: '输入缓存', canInterrupt: '可取消', canDash: '可闪避取消',
-        blockMoveInterrupt: '禁止移动打断', hitStop: '顿帧', timeDilation: '时间膨胀', movement: '位移',
-        exclusive: '排他期', offsetRecord: '续段记录帧', costCommit: '资源提交帧'
+        damage: ['windows.damage', '命中'], superArmor: ['windows.superArmor', '抗打断'], buffSuperArmor: ['windows.buffSuperArmor', '霸体 Buff'], damageImmune: ['windows.damageImmune', '无敌'],
+        allowNextSkill: ['windows.allowNextSkill', '允许接续'], comboCache: ['windows.comboCache', '输入缓存'], canInterrupt: ['windows.canInterrupt', '可取消'], canDash: ['windows.canDash', '可闪避取消'],
+        blockMoveInterrupt: ['windows.blockMoveInterrupt', '禁止移动打断'], hitStop: ['windows.hitStop', '顿帧'], timeDilation: ['windows.timeDilation', '时间膨胀'], movement: ['windows.movement', '位移'],
+        exclusive: ['windows.exclusive', '排他期'], offsetRecord: ['windows.offsetRecord', '续段记录帧'], costCommit: ['windows.costCommit', '资源提交帧']
     };
-    const ACTION_LABELS = {
-        DamageAction: '伤害结算', SetSuperArmorAction: '设置抗打断', AllowNextSkillAction: '开放接续',
-        ComboCacheAction: '输入缓存', MarkCanInterruptAction: '开放取消', MarkCanDashAction: '开放闪避取消',
-        BlockMoveInterruptAction: '阻止移动打断', HitStopAction: '顿帧', TimeDilationAction: '时间膨胀',
-        CreateBuffAction: '创建 Buff', LaunchProjectileAction: '发射投射物', CastSkillAction: '触发子技能',
-        InterruptAction: '打断控制', CrushAction: '压倒', FractureAction: '碎甲', SpellInflictionAction: '元素附着'
-    };
+    const ACTION_LABELS = Object.freeze({
+        AchieveSpecialGameEventAction: ['timeline.actions.AchieveSpecialGameEventAction', '达成特殊游戏事件'],
+        AddAIMarkerAction: ['timeline.actions.AddAIMarkerAction', '添加 AI 标记'],
+        AddCameraControlStateAction: ['timeline.actions.AddCameraControlStateAction', '添加镜头控制状态'],
+        AddDynamicCcsAction: ['timeline.actions.AddDynamicCcsAction', '添加动态镜头控制状态'],
+        AddDynamicNavmeshObstacle: ['timeline.actions.AddDynamicNavmeshObstacle', '添加动态导航障碍'],
+        AddGlobalCDTimer: ['timeline.actions.AddGlobalCDTimer', '添加全局冷却计时'],
+        AddTagAction: ['timeline.actions.AddTagAction', '添加标签'],
+        AddTagToEntities: ['timeline.actions.AddTagToEntities', '为实体添加标签'],
+        AirborneAction: ['timeline.actions.AirborneAction', '浮空'],
+        AllowNextSkillAction: ['timeline.actions.AllowNextSkillAction', '开放接续'],
+        AnimatedCameraAction: ['timeline.actions.AnimatedCameraAction', '播放演出镜头'],
+        AnimatorAimOffsetAction: ['timeline.actions.AnimatorAimOffsetAction', '设置瞄准偏移'],
+        AnimEventReceiver: ['timeline.actions.AnimEventReceiver', '监听动画事件'],
+        ApplyArmor: ['timeline.actions.ApplyArmor', '应用护甲'],
+        AuraAction: ['timeline.actions.AuraAction', '创建领域'],
+        BlightMiasmaToleranceZero: ['timeline.actions.BlightMiasmaToleranceZero', '瘴气耐受归零'],
+        BlockMoveInterruptSkill: ['timeline.actions.BlockMoveInterruptSkill', '禁止移动打断'],
+        BlowOffAction: ['timeline.actions.BlowOffAction', '击退'],
+        BlowOffCharacterAction: ['timeline.actions.BlowOffCharacterAction', '击退角色'],
+        BlowOffEnemyAction: ['timeline.actions.BlowOffEnemyAction', '击退敌人'],
+        BoneAttachAction: ['timeline.actions.BoneAttachAction', '骨骼挂接'],
+        BreakInteractiveAction: ['timeline.actions.BreakInteractiveAction', '破坏交互物'],
+        BroadcastAlertToCharactersAction: ['timeline.actions.BroadcastAlertToCharactersAction', '广播角色警戒'],
+        CameraImpulseAction: ['timeline.actions.CameraImpulseAction', '镜头震动'],
+        CameraRotateAction: ['timeline.actions.CameraRotateAction', '镜头旋转'],
+        CastSkill: ['timeline.actions.CastSkill', '施放子技能'],
+        ChangeSkillAction: ['timeline.actions.ChangeSkillAction', '替换技能'],
+        ChangeSpecificLayerAction: ['timeline.actions.ChangeSpecificLayerAction', '切换指定层'],
+        ChannelingAction: ['timeline.actions.ChannelingAction', '持续引导'],
+        ChannelingActionV2: ['timeline.actions.ChannelingActionV2', '持续引导'],
+        ChannelingCastingAction: ['timeline.actions.ChannelingCastingAction', '引导施法'],
+        ChannelingDamageAction: ['timeline.actions.ChannelingDamageAction', '持续伤害结算'],
+        CharAlertJumpAction: ['timeline.actions.CharAlertJumpAction', '角色警戒跳跃'],
+        CharFollowAction: ['timeline.actions.CharFollowAction', '角色跟随'],
+        CharHurtAnimAction: ['timeline.actions.CharHurtAnimAction', '角色受击动画'],
+        CharWeaponAnimationAction: ['timeline.actions.CharWeaponAnimationAction', '武器动画'],
+        CharWeaponVisibleAction: ['timeline.actions.CharWeaponVisibleAction', '武器显隐'],
+        CheckAbilityEntityCurDuration: ['timeline.actions.CheckAbilityEntityCurDuration', '检查能力实体剩余时间'],
+        CheckAllowNormalSkillHighlight: ['timeline.actions.CheckAllowNormalSkillHighlight', '检查普通技能高亮条件'],
+        CheckAttackRangeType: ['timeline.actions.CheckAttackRangeType', '检查攻击距离类型'],
+        CheckBuffIdInContext: ['timeline.actions.CheckBuffIdInContext', '检查上下文 Buff'],
+        CheckBuffIdInContextAdvanced: ['timeline.actions.CheckBuffIdInContextAdvanced', '高级检查上下文 Buff'],
+        CheckBuffStackNum: ['timeline.actions.CheckBuffStackNum', '检查 Buff 层数'],
+        CheckBuffStackNumAdvanced: ['timeline.actions.CheckBuffStackNumAdvanced', '高级检查 Buff 层数'],
+        CheckBuffStackNumByTag: ['timeline.actions.CheckBuffStackNumByTag', '按标签检查 Buff 层数'],
+        CheckComboSkillCameraAlphaSetting: ['timeline.actions.CheckComboSkillCameraAlphaSetting', '检查连携技镜头透明度'],
+        CheckConsumeBuffLayer: ['timeline.actions.CheckConsumeBuffLayer', '检查消耗 Buff 层数'],
+        CheckDamageDecorateMask: ['timeline.actions.CheckDamageDecorateMask', '检查伤害修饰掩码'],
+        CheckDamageType: ['timeline.actions.CheckDamageType', '检查伤害类型'],
+        CheckDamageTypeMask: ['timeline.actions.CheckDamageTypeMask', '检查伤害类型掩码'],
+        CheckDistanceCondition: ['timeline.actions.CheckDistanceCondition', '检查距离'],
+        CheckEnemyRank: ['timeline.actions.CheckEnemyRank', '检查敌人阶级'],
+        CheckEntityNum: ['timeline.actions.CheckEntityNum', '检查实体数量'],
+        CheckGlobalCDTimerAction: ['timeline.actions.CheckGlobalCDTimerAction', '检查全局冷却'],
+        CheckHasMoveInput: ['timeline.actions.CheckHasMoveInput', '检查移动输入'],
+        CheckHealTag: ['timeline.actions.CheckHealTag', '检查治疗标签'],
+        CheckHitColliderOptions: ['timeline.actions.CheckHitColliderOptions', '检查命中碰撞选项'],
+        CheckHp: ['timeline.actions.CheckHp', '检查生命值'],
+        CheckIsCriticalDamage: ['timeline.actions.CheckIsCriticalDamage', '检查是否暴击'],
+        CheckMainCharacterCondition: ['timeline.actions.CheckMainCharacterCondition', '检查主控角色'],
+        CheckObjectTypeMatch: ['timeline.actions.CheckObjectTypeMatch', '检查对象类型'],
+        CheckObtainAtbType: ['timeline.actions.CheckObtainAtbType', '检查 ATB 获取方式'],
+        CheckOriginSkillType: ['timeline.actions.CheckOriginSkillType', '检查来源技能类型'],
+        CheckOverHeal: ['timeline.actions.CheckOverHeal', '检查溢出治疗'],
+        CheckPartTagMatch: ['timeline.actions.CheckPartTagMatch', '检查部件标签'],
+        CheckPerfectDodgeDirection: ['timeline.actions.CheckPerfectDodgeDirection', '检查完美闪避方向'],
+        CheckPhysicalInflictionType: ['timeline.actions.CheckPhysicalInflictionType', '检查物理附着类型'],
+        CheckPoiseValue: ['timeline.actions.CheckPoiseValue', '检查韧性值'],
+        CheckSkillCameraMotionFree: ['timeline.actions.CheckSkillCameraMotionFree', '检查技能镜头自由移动'],
+        CheckSkillHasHit: ['timeline.actions.CheckSkillHasHit', '检查技能是否命中'],
+        CheckSkillType: ['timeline.actions.CheckSkillType', '检查技能类型'],
+        CheckSpellInflictionType: ['timeline.actions.CheckSpellInflictionType', '检查元素附着类型'],
+        CheckSquadInFight: ['timeline.actions.CheckSquadInFight', '检查小队战斗状态'],
+        CheckSuperArmor: ['timeline.actions.CheckSuperArmor', '检查抗打断'],
+        CheckTagMatch: ['timeline.actions.CheckTagMatch', '检查标签匹配'],
+        CheckTargetAngle: ['timeline.actions.CheckTargetAngle', '检查目标夹角'],
+        CheckTargetContains: ['timeline.actions.CheckTargetContains', '检查目标包含关系'],
+        CheckTargetInScreen: ['timeline.actions.CheckTargetInScreen', '检查目标是否在屏幕内'],
+        CheckTargetsEqual: ['timeline.actions.CheckTargetsEqual', '检查目标相同'],
+        CheckTimedMarkerCondition: ['timeline.actions.CheckTimedMarkerCondition', '检查计时标记'],
+        CheckTwoDirectionAngle: ['timeline.actions.CheckTwoDirectionAngle', '检查双方向夹角'],
+        CheckWeaponTypeCondition: ['timeline.actions.CheckWeaponTypeCondition', '检查武器类型'],
+        ClearProjectileAction: ['timeline.actions.ClearProjectileAction', '清除投射物'],
+        ComboAction: ['timeline.actions.ComboAction', '执行连段'],
+        ComboCacheAction: ['timeline.actions.ComboCacheAction', '输入缓存'],
+        CommandToCharactersAction: ['timeline.actions.CommandToCharactersAction', '向角色下达指令'],
+        CompareDeckAttr: ['timeline.actions.CompareDeckAttr', '比较卡组属性'],
+        CompareFloat: ['timeline.actions.CompareFloat', '比较数值'],
+        CompareString: ['timeline.actions.CompareString', '比较字符串'],
+        ContinuousFindTargetAction: ['timeline.actions.ContinuousFindTargetAction', '持续查找目标'],
+        ContinuousSetAnimTimeScale: ['timeline.actions.ContinuousSetAnimTimeScale', '持续设置动画速度'],
+        ConvertToTargetContext: ['timeline.actions.ConvertToTargetContext', '转换目标上下文'],
+        CreateAdditionalBattleShape: ['timeline.actions.CreateAdditionalBattleShape', '创建附加战斗形状'],
+        CreateBuffAction: ['timeline.actions.CreateBuffAction', '创建 Buff'],
+        CreateBuffAttachingSkill: ['timeline.actions.CreateBuffAttachingSkill', '创建附属技能 Buff'],
+        CreateGlobalBuffAction: ['timeline.actions.CreateGlobalBuffAction', '创建全局 Buff'],
+        CreateTimedMarker: ['timeline.actions.CreateTimedMarker', '创建计时标记'],
+        CrushAction: ['timeline.actions.CrushAction', '压倒'],
+        CurveEvaluateFloat: ['timeline.actions.CurveEvaluateFloat', '曲线取值'],
+        CustomRootMotionAction: ['timeline.actions.CustomRootMotionAction', '自定义根运动'],
+        DamageAction: ['timeline.actions.DamageAction', '伤害结算'],
+        DebugPrintAction: ['timeline.actions.DebugPrintAction', '调试输出'],
+        DiceFloat: ['timeline.actions.DiceFloat', '随机浮点数'],
+        DisableMoveColliderAction: ['timeline.actions.DisableMoveColliderAction', '禁用移动碰撞体'],
+        DisableRootMotionAction: ['timeline.actions.DisableRootMotionAction', '禁用根运动'],
+        DispelAction: ['timeline.actions.DispelAction', '驱散'],
+        DoOnceAction: ['timeline.actions.DoOnceAction', '仅执行一次'],
+        EffectAction: ['timeline.actions.EffectAction', '播放特效'],
+        EffectControlAction: ['timeline.actions.EffectControlAction', '控制特效'],
+        EffectFindTargetAction: ['timeline.actions.EffectFindTargetAction', '按特效查找目标'],
+        EliteBackSwingBeHit: ['timeline.actions.EliteBackSwingBeHit', '精英后摇受击'],
+        EnablePartsAction: ['timeline.actions.EnablePartsAction', '切换部件'],
+        EnemyHurtAnimAction: ['timeline.actions.EnemyHurtAnimAction', '敌人受击动画'],
+        EnemyWarningAction: ['timeline.actions.EnemyWarningAction', '敌人攻击预警'],
+        EventListenerAction: ['timeline.actions.EventListenerAction', '监听事件'],
+        ExtendBuffAction: ['timeline.actions.ExtendBuffAction', '延长 Buff'],
+        FacBuildingPlayAnimationAction: ['timeline.actions.FacBuildingPlayAnimationAction', '建筑播放动画'],
+        FindTargetAction: ['timeline.actions.FindTargetAction', '查找目标'],
+        FinishAngryOnEnd: ['timeline.actions.FinishAngryOnEnd', '结束时解除愤怒'],
+        FinishBuffAction: ['timeline.actions.FinishBuffAction', '移除 Buff'],
+        FinishBuffAdvanced: ['timeline.actions.FinishBuffAdvanced', '高级移除 Buff'],
+        FinishBuffByTag: ['timeline.actions.FinishBuffByTag', '按标签移除 Buff'],
+        FinishOwnerAction: ['timeline.actions.FinishOwnerAction', '销毁持有者'],
+        ForceHideHeadBarAction: ['timeline.actions.ForceHideHeadBarAction', '强制隐藏血条'],
+        ForceSpellStatusAction: ['timeline.actions.ForceSpellStatusAction', '强制元素状态'],
+        ForEachAction: ['timeline.actions.ForEachAction', '遍历目标'],
+        FractureAction: ['timeline.actions.FractureAction', '碎甲'],
+        GainBreakingAttackAtb: ['timeline.actions.GainBreakingAttackAtb', '增加破防失衡值'],
+        GetAITransDataAction: ['timeline.actions.GetAITransDataAction', '读取 AI 位姿'],
+        GetPatrolTeleportPos: ['timeline.actions.GetPatrolTeleportPos', '获取巡逻传送位置'],
+        GetTargetBuffBBAdvanced: ['timeline.actions.GetTargetBuffBBAdvanced', '读取目标 Buff 黑板'],
+        HealAction: ['timeline.actions.HealAction', '治疗结算'],
+        HideUIAction: ['timeline.actions.HideUIAction', '隐藏界面'],
+        HitStopAction: ['timeline.actions.HitStopAction', '顿帧'],
+        HurtAnimAction: ['timeline.actions.HurtAnimAction', '受击动画'],
+        IfElseAction: ['timeline.actions.IfElseAction', '条件分支'],
+        IgniteAction: ['timeline.actions.IgniteAction', '点燃'],
+        IgnoreModelIntervalCheck: ['timeline.actions.IgnoreModelIntervalCheck', '忽略模型间隔检测'],
+        InheritBuffAction: ['timeline.actions.InheritBuffAction', '继承 Buff'],
+        InheritCCSAction: ['timeline.actions.InheritCCSAction', '继承镜头控制状态'],
+        InterruptAction: ['timeline.actions.InterruptAction', '施加打断'],
+        InterruptCurSkillAction: ['timeline.actions.InterruptCurSkillAction', '中断当前技能'],
+        IntResourceHpCheckAction: ['timeline.actions.IntResourceHpCheckAction', '交互资源生命检查'],
+        IntResourceOnHpZeroAction: ['timeline.actions.IntResourceOnHpZeroAction', '交互资源生命归零'],
+        InverseSpellInfliction: ['timeline.actions.InverseSpellInfliction', '反向元素附着'],
+        JumpToAction: ['timeline.actions.JumpToAction', '跳转到指定帧'],
+        JumpToTargetAction: ['timeline.actions.JumpToTargetAction', '跳向目标'],
+        KnockDownAction: ['timeline.actions.KnockDownAction', '击倒'],
+        LaunchProjectile: ['timeline.actions.LaunchProjectile', '发射投射物'],
+        LaunchUpwardAction: ['timeline.actions.LaunchUpwardAction', '击飞'],
+        LockCameraAimAction: ['timeline.actions.LockCameraAimAction', '锁定瞄准镜头'],
+        LogAction: ['timeline.actions.LogAction', '日志输出'],
+        LookAtAction: ['timeline.actions.LookAtAction', '朝向目标'],
+        MarkCanDash: ['timeline.actions.MarkCanDash', '开放闪避取消'],
+        MarkCanInterrupt: ['timeline.actions.MarkCanInterrupt', '开放取消'],
+        MergeTargetAction: ['timeline.actions.MergeTargetAction', '合并目标'],
+        ModifyCameraLockPointAction: ['timeline.actions.ModifyCameraLockPointAction', '修改镜头锁定点'],
+        ModifyCollectedBuffBbValue: ['timeline.actions.ModifyCollectedBuffBbValue', '修改已收集 Buff 黑板值'],
+        ModifyDynamicBlackboard: ['timeline.actions.ModifyDynamicBlackboard', '修改动态黑板'],
+        ModifyWeaponMountPoint: ['timeline.actions.ModifyWeaponMountPoint', '修改武器挂点'],
+        MoveToAction: ['timeline.actions.MoveToAction', '移动'],
+        MoveToDirectionAction: ['timeline.actions.MoveToDirectionAction', '向指定方向移动'],
+        MoveToLocationAction: ['timeline.actions.MoveToLocationAction', '移动到位置'],
+        MoveToSlotAction: ['timeline.actions.MoveToSlotAction', '移动到站位'],
+        MoveToTargetAction: ['timeline.actions.MoveToTargetAction', '移动到目标'],
+        NotNextCheckAction: ['timeline.actions.NotNextCheckAction', '反转下一项检查'],
+        ObtainCostAction: ['timeline.actions.ObtainCostAction', '获取资源'],
+        ObtainUspInNormalSkill: ['timeline.actions.ObtainUspInNormalSkill', '普通战技获取 USP'],
+        OrConditionAction: ['timeline.actions.OrConditionAction', '或条件'],
+        OverrideBornPosition: ['timeline.actions.OverrideBornPosition', '覆盖出生位置'],
+        OverrideCameraFollowAction: ['timeline.actions.OverrideCameraFollowAction', '覆盖镜头跟随'],
+        PatrolRefreshCheckPoint: ['timeline.actions.PatrolRefreshCheckPoint', '刷新巡逻检查点'],
+        PauseComboSkillTime: ['timeline.actions.PauseComboSkillTime', '暂停连携技计时'],
+        PhysicsCastAction: ['timeline.actions.PhysicsCastAction', '物理投射检测'],
+        PickTargetAction: ['timeline.actions.PickTargetAction', '选取目标'],
+        PlayAnimationAction: ['timeline.actions.PlayAnimationAction', '播放动画'],
+        PlayAnimationWithStep: ['timeline.actions.PlayAnimationWithStep', '分段播放动画'],
+        PlayNormalDashAnimAction: ['timeline.actions.PlayNormalDashAnimAction', '播放普通冲刺动画'],
+        PlayPerfectDodgeAnim: ['timeline.actions.PlayPerfectDodgeAnim', '播放完美闪避动画'],
+        PlaySoundAction: ['timeline.actions.PlaySoundAction', '播放音效'],
+        Probablity: ['timeline.actions.Probablity', '概率判断'],
+        PullAction: ['timeline.actions.PullAction', '牵引'],
+        PushAction: ['timeline.actions.PushAction', '推动'],
+        PushBackAction: ['timeline.actions.PushBackAction', '推开'],
+        RandomAction: ['timeline.actions.RandomAction', '生成随机值'],
+        RayCastEffectAction: ['timeline.actions.RayCastEffectAction', '射线检测特效'],
+        ReadSkillSettingData: ['timeline.actions.ReadSkillSettingData', '读取技能设置'],
+        ReceiveMoveInputAction: ['timeline.actions.ReceiveMoveInputAction', '接收移动输入'],
+        RecoverPoiseAction: ['timeline.actions.RecoverPoiseAction', '恢复韧性'],
+        RemoveAIMarkerAction: ['timeline.actions.RemoveAIMarkerAction', '移除 AI 标记'],
+        RepeatAction: ['timeline.actions.RepeatAction', '重复执行'],
+        SaveAtbObtainValue: ['timeline.actions.SaveAtbObtainValue', '保存 ATB 获取值'],
+        SaveBuffStackNumAdvanced: ['timeline.actions.SaveBuffStackNumAdvanced', '高级保存 Buff 层数'],
+        SaveBuffStackNumByTag: ['timeline.actions.SaveBuffStackNumByTag', '按标签保存 Buff 层数'],
+        SaveCameraAngle: ['timeline.actions.SaveCameraAngle', '保存镜头角度'],
+        SaveCharTypeId: ['timeline.actions.SaveCharTypeId', '保存角色类型 ID'],
+        SaveTargetDistanceAction: ['timeline.actions.SaveTargetDistanceAction', '保存目标距离'],
+        SaveTwoDirectionAngle: ['timeline.actions.SaveTwoDirectionAngle', '保存双方向夹角'],
+        SaveValueFromAIBlackboard: ['timeline.actions.SaveValueFromAIBlackboard', '保存 AI 黑板值'],
+        SelfRotateAction: ['timeline.actions.SelfRotateAction', '自身转向'],
+        SendBattleSignalToLevel: ['timeline.actions.SendBattleSignalToLevel', '向关卡发送战斗信号'],
+        SetAbilityEntityDuration: ['timeline.actions.SetAbilityEntityDuration', '设置能力实体持续时间'],
+        SetAbilityEntityTarget: ['timeline.actions.SetAbilityEntityTarget', '设置能力实体目标'],
+        SetAbilityEntityToMainChar: ['timeline.actions.SetAbilityEntityToMainChar', '将能力实体关联至主控角色'],
+        SetAnimatorParamAction: ['timeline.actions.SetAnimatorParamAction', '设置动画参数'],
+        SetIgnoreGlobalTimeScaleAction: ['timeline.actions.SetIgnoreGlobalTimeScaleAction', '设置忽略全局时间缩放'],
+        SetMultiTimesWeakness: ['timeline.actions.SetMultiTimesWeakness', '设置多段弱点'],
+        SetSkillCdAtOnce: ['timeline.actions.SetSkillCdAtOnce', '立即设置技能冷却'],
+        SetSuperArmorAction: ['timeline.actions.SetSuperArmorAction', '设置抗打断'],
+        SetWeaknessAction: ['timeline.actions.SetWeaknessAction', '设置弱点'],
+        ShowComboSkillUI: ['timeline.actions.ShowComboSkillUI', '显示连携技界面'],
+        ShowHideActorAction: ['timeline.actions.ShowHideActorAction', '角色显隐'],
+        SimpleCalcBBAction: ['timeline.actions.SimpleCalcBBAction', '黑板数值计算'],
+        SkillAIMoveAction: ['timeline.actions.SkillAIMoveAction', '技能 AI 移动'],
+        SlowAction: ['timeline.actions.SlowAction', '减速'],
+        SnapToTargetWithRangeAction: ['timeline.actions.SnapToTargetWithRangeAction', '贴近目标'],
+        SpawnAbilityEntity: ['timeline.actions.SpawnAbilityEntity', '生成能力实体'],
+        SpawnEnemyAction: ['timeline.actions.SpawnEnemyAction', '生成敌人'],
+        SpawnInteractiveGoldCoin: ['timeline.actions.SpawnInteractiveGoldCoin', '生成交互金币'],
+        SpellInfliction: ['timeline.actions.SpellInfliction', '元素附着'],
+        SpellInflictionOnChar: ['timeline.actions.SpellInflictionOnChar', '对角色施加元素附着'],
+        StoreAttributeValue: ['timeline.actions.StoreAttributeValue', '保存属性值'],
+        StoreCurSkillExecuteFrame: ['timeline.actions.StoreCurSkillExecuteFrame', '保存当前技能执行帧'],
+        SwitchAction: ['timeline.actions.SwitchAction', '多分支选择'],
+        SwitchModeAction: ['timeline.actions.SwitchModeAction', '切换模式'],
+        TakeDownAction: ['timeline.actions.TakeDownAction', '压制击倒'],
+        TargetPostProcessorAction: ['timeline.actions.TargetPostProcessorAction', '目标后处理'],
+        TeleportAction: ['timeline.actions.TeleportAction', '瞬移'],
+        TeleportPosSelectAction: ['timeline.actions.TeleportPosSelectAction', '选择瞬移位置'],
+        TemporaryUnlockAction: ['timeline.actions.TemporaryUnlockAction', '临时解除锁定'],
+        ThrowPickupItemAction: ['timeline.actions.ThrowPickupItemAction', '投掷拾取物'],
+        ThrowPickupItemStartAction: ['timeline.actions.ThrowPickupItemStartAction', '开始投掷拾取物'],
+        TickIntervalAction: ['timeline.actions.TickIntervalAction', '间隔触发'],
+        TickIntervalActionV2: ['timeline.actions.TickIntervalActionV2', '间隔触发'],
+        TimeDilationAction: ['timeline.actions.TimeDilationAction', '时间膨胀'],
+        TogglableAction: ['timeline.actions.TogglableAction', '条件开关动作'],
+        ToggleMeshAction: ['timeline.actions.ToggleMeshAction', '切换模型网格'],
+        TriggerComboSkillAction: ['timeline.actions.TriggerComboSkillAction', '触发连携技'],
+        TriggerCustomAbilityEvent: ['timeline.actions.TriggerCustomAbilityEvent', '触发自定义能力事件'],
+        TryToTeleportSquadAction: ['timeline.actions.TryToTeleportSquadAction', '尝试传送小队'],
+        UltimateShowAction: ['timeline.actions.UltimateShowAction', '终结技演出'],
+        UltimateTimeAction: ['timeline.actions.UltimateTimeAction', '终结技时间控制'],
+        VoiceInterruptAction: ['timeline.actions.VoiceInterruptAction', '中断语音'],
+        VoiceTriggerAction: ['timeline.actions.VoiceTriggerAction', '触发语音'],
+        WaterDroneHitAction: ['timeline.actions.WaterDroneHitAction', '水无人机命中'],
+        UnknownAction: ['timeline.actions.UnknownAction', '未知动作']
+    });
+    const TIMELINE_DETAIL_LABELS = Object.freeze({
+        unitCount: ['timeline.fields.unitCount', '结算单元数'],
+        targetSettings: ['timeline.fields.targetSettings', '目标'],
+        targetGroupKey: ['timeline.fields.targetGroupKey', '目标组'],
+        sourceSettings: ['timeline.fields.sourceSettings', '来源'],
+        source: ['timeline.fields.source', '来源'],
+        actionSource: ['timeline.fields.actionSource', '动作来源'],
+        target: ['timeline.fields.target', '目标'],
+        attacker: ['timeline.fields.attacker', '攻击者'],
+        attackerTargetSettings: ['timeline.fields.attackerTargetSettings', '攻击者'],
+        defender: ['timeline.fields.defender', '承受者'],
+        owner: ['timeline.fields.owner', '持有者'],
+        skillOwner: ['timeline.fields.skillOwner', '技能持有者'],
+        buffOwner: ['timeline.fields.buffOwner', 'Buff 持有者'],
+        healer: ['timeline.fields.healer', '治疗者'],
+        caster: ['timeline.fields.caster', '施放者'],
+        auraRoot: ['timeline.fields.auraRoot', '领域中心'],
+        calculationTarget: ['timeline.fields.calculationTarget', '计算目标'],
+        contextKey: ['timeline.fields.contextKey', '上下文键'],
+        targetContextKey: ['timeline.fields.targetContextKey', '目标上下文键'],
+        targetSource: ['timeline.fields.targetSource', '目标来源'],
+        selectorData: ['timeline.fields.selectorData', '目标选择器'],
+        selectorOwner: ['timeline.fields.selectorOwner', '选择器持有者'],
+        selectorDirection: ['timeline.fields.selectorDirection', '选择方向'],
+        center: ['timeline.fields.center', '中心'],
+        centerContextKey: ['timeline.fields.centerContextKey', '中心上下文'],
+        saveToContext: ['timeline.fields.saveToContext', '保存到上下文'],
+        excludeTarget: ['timeline.fields.excludeTarget', '排除目标'],
+        targets: ['timeline.fields.targets', '目标列表'],
+        skillId: ['timeline.fields.skillId', '技能'],
+        targetSkillId: ['timeline.fields.targetSkillId', '目标技能'],
+        allowedSkillIdList: ['timeline.fields.allowedSkillIdList', '可接续技能'],
+        allowedSkillIds: ['timeline.fields.allowedSkillIds', '可接续技能'],
+        projectileId: ['timeline.fields.projectileId', '投射物'],
+        projectileSkillId: ['timeline.fields.projectileSkillId', '命中技能'],
+        skillIdOnBlock: ['timeline.fields.skillIdOnBlock', '格挡技能'],
+        skillIdOnReach: ['timeline.fields.skillIdOnReach', '到达技能'],
+        skillIdOnFinish: ['timeline.fields.skillIdOnFinish', '结束技能'],
+        linkedSkills: ['timeline.fields.linkedSkills', '关联技能'],
+        abilityEntityId: ['timeline.fields.abilityEntityId', '能力实体'],
+        abilityEntitySkillId: ['timeline.fields.abilityEntitySkillId', '能力实体技能'],
+        enemyId: ['timeline.fields.enemyId', '敌人'],
+        buffId: ['timeline.fields.buffId', 'Buff'],
+        buffIds: ['timeline.fields.buffIds', 'Buff 列表'],
+        buffIdList: ['timeline.fields.buffIdList', 'Buff 列表'],
+        buffs: ['timeline.fields.buffs', 'Buff'],
+        values: ['timeline.fields.values', '赋值'],
+        tag: ['timeline.fields.tag', '标签'],
+        tags: ['timeline.fields.tags', '标签'],
+        tagQuery: ['timeline.fields.tagQuery', '标签条件'],
+        marker: ['timeline.fields.marker', '标记'],
+        markerId: ['timeline.fields.markerId', '标记'],
+        signalId: ['timeline.fields.signalId', '战斗信号'],
+        modeId: ['timeline.fields.modeId', '模式'],
+        effectId: ['timeline.fields.effectId', '特效'],
+        effectName: ['timeline.fields.effectName', '特效'],
+        animName: ['timeline.fields.animName', '动画'],
+        montageName: ['timeline.fields.montageName', '动画'],
+        soundEvent: ['timeline.fields.soundEvent', '音效事件'],
+        _soundEvent: ['timeline.fields.soundEvent', '音效事件'],
+        triggerKey: ['timeline.fields.triggerKey', '语音触发键'],
+        _triggerKey: ['timeline.fields.triggerKey', '语音触发键'],
+        configKey: ['timeline.fields.configKey', '配置键'],
+        key: ['timeline.fields.key', '黑板键'],
+        blackboardKey: ['timeline.fields.blackboardKey', '黑板键'],
+        bbKey: ['timeline.fields.bbKey', '黑板键'],
+        storeKey: ['timeline.fields.storeKey', '保存键'],
+        saveTo: ['timeline.fields.saveTo', '保存到'],
+        duration: ['timeline.fields.duration', '持续时间'],
+        totalTime: ['timeline.fields.totalTime', '总时长'],
+        time: ['timeline.fields.time', '时间'],
+        startFrame: ['timeline.fields.startFrame', '起始帧'],
+        destFrame: ['timeline.fields.destFrame', '目标帧'],
+        startOffsetFrame: ['timeline.fields.startOffsetFrame', '起始偏移帧'],
+        playbackSpeed: ['timeline.fields.playbackSpeed', '播放速度'],
+        blendDuration: ['timeline.fields.blendDuration', '混合时间'],
+        triggerInterval: ['timeline.fields.triggerInterval', '触发间隔'],
+        targetTriggerInterval: ['timeline.fields.targetTriggerInterval', '单目标触发间隔'],
+        tickInterval: ['timeline.fields.tickInterval', '触发间隔'],
+        fixedTickCount: ['timeline.fields.fixedTickCount', '固定次数'],
+        totalTickCount: ['timeline.fields.totalTickCount', '总次数'],
+        maxCountPerTarget: ['timeline.fields.maxCountPerTarget', '单目标上限'],
+        count: ['timeline.fields.count', '数量'],
+        layer: ['timeline.fields.layer', '层级'],
+        value: ['timeline.fields.value', '数值'],
+        directValue: ['timeline.fields.directValue', '直接值'],
+        valueA: ['timeline.fields.valueA', '左值'],
+        valueB: ['timeline.fields.valueB', '右值'],
+        lhsValue: ['timeline.fields.lhsValue', '左值'],
+        rhsValue: ['timeline.fields.rhsValue', '右值'],
+        compare: ['timeline.fields.compare', '比较方式'],
+        compareType: ['timeline.fields.compareType', '比较方式'],
+        operation: ['timeline.fields.operation', '运算'],
+        operationType: ['timeline.fields.operationType', '运算'],
+        calculateType: ['timeline.fields.calculateType', '计算类型'],
+        inputValue: ['timeline.fields.inputValue', '输入值'],
+        minValue: ['timeline.fields.minValue', '最小值'],
+        maxValue: ['timeline.fields.maxValue', '最大值'],
+        coefficient: ['timeline.fields.coefficient', '系数'],
+        multiplier: ['timeline.fields.multiplier', '倍率'],
+        addition: ['timeline.fields.addition', '附加值'],
+        rate: ['timeline.fields.rate', '比例'],
+        curveKey: ['timeline.fields.curveKey', '曲线'],
+        useDirectCurve: ['timeline.fields.useDirectCurve', '使用直接曲线'],
+        useCurveKey: ['timeline.fields.useCurveKey', '使用曲线键'],
+        damageUnits: ['timeline.fields.damageUnits', '伤害单元'],
+        damageType: ['timeline.fields.damageType', '伤害类型'],
+        damageMultiplier: ['timeline.fields.damageMultiplier', '伤害倍率'],
+        healType: ['timeline.fields.healType', '治疗类型'],
+        healCalculation: ['timeline.fields.healCalculation', '治疗公式'],
+        poiseType: ['timeline.fields.poiseType', '韧性类型'],
+        recoverValue: ['timeline.fields.recoverValue', '恢复值'],
+        superArmorValue: ['timeline.fields.superArmorValue', '抗打断'],
+        impactResistance: ['timeline.fields.impactResistance', '冲击抗性'],
+        overrideSuperArmorLimit: ['timeline.fields.overrideSuperArmorLimit', '控制穿透'],
+        immobilizedTime: ['timeline.fields.immobilizedTime', '定身时间'],
+        unmovableTime: ['timeline.fields.unmovableTime', '不可移动时间'],
+        blowOffDistance: ['timeline.fields.blowOffDistance', '击退距离'],
+        distanceRandomRange: ['timeline.fields.distanceRandomRange', '距离随机范围'],
+        blowOffHeight: ['timeline.fields.blowOffHeight', '击飞高度'],
+        verticalSpeed: ['timeline.fields.verticalSpeed', '垂直速度'],
+        horizontalSpeed: ['timeline.fields.horizontalSpeed', '水平速度'],
+        distance: ['timeline.fields.distance', '距离'],
+        moveDistance: ['timeline.fields.moveDistance', '位移距离'],
+        speed: ['timeline.fields.speed', '速度'],
+        moveSpeed: ['timeline.fields.moveSpeed', '移动速度'],
+        moveType: ['timeline.fields.moveType', '移动类型'],
+        rotateType: ['timeline.fields.rotateType', '转向类型'],
+        height: ['timeline.fields.height', '高度'],
+        floatingHeight: ['timeline.fields.floatingHeight', '浮空高度'],
+        floatingDuration: ['timeline.fields.floatingDuration', '浮空时间'],
+        directionType: ['timeline.fields.directionType', '方向类型'],
+        costType: ['timeline.fields.costType', '资源类型'],
+        costValue: ['timeline.fields.costValue', '资源值'],
+        atbSourceType: ['timeline.fields.atbSourceType', 'ATB 来源'],
+        atbGainMethod: ['timeline.fields.atbGainMethod', 'ATB 获取方式'],
+        buffStackNumType: ['timeline.fields.buffStackNumType', 'Buff 层数类型'],
+        finishLayerCnt: ['timeline.fields.finishLayerCnt', '移除层数'],
+        mappings: ['timeline.fields.mappings', '输入映射'],
+        command: ['timeline.fields.command', '输入指令'],
+        cacheTime: ['timeline.fields.cacheTime', '缓存时间'],
+        cacheEndByAction: ['timeline.fields.cacheEndByAction', '随动作结束缓存'],
+        overrideCacheTime: ['timeline.fields.overrideCacheTime', '覆盖缓存时间'],
+        skipApplyCost: ['timeline.fields.skipApplyCost', '跳过消耗'],
+        inheritSourceSkillCastId: ['timeline.fields.inheritSourceSkillCastId', '继承来源施放 ID'],
+        overrideDuration: ['timeline.fields.overrideDuration', '覆盖持续时间'],
+        finishByAction: ['timeline.fields.finishByAction', '随动作结束'],
+        alwaysNext: ['timeline.fields.alwaysNext', '始终继续'],
+        enabled: ['timeline.fields.enabled', '启用'],
+        visible: ['timeline.fields.visible', '显示'],
+        finishAll: ['timeline.fields.finishAll', '全部移除'],
+        isExtra: ['timeline.fields.isExtra', '额外结算'],
+        isPercentValue: ['timeline.fields.isPercentValue', '百分比'],
+        playObtainAtbEffect: ['timeline.fields.playObtainAtbEffect', '播放 ATB 特效'],
+        playObtainAtbAudio: ['timeline.fields.playObtainAtbAudio', '播放 ATB 音效'],
+        affectType: ['timeline.fields.affectType', '影响目标'],
+        controlType: ['timeline.fields.controlType', '控制类型'],
+        condition: ['timeline.fields.condition', '条件'],
+        actionCount: ['timeline.fields.actionCount', '子动作数'],
+        successActionCount: ['timeline.fields.successActionCount', '成功分支数'],
+        failActionCount: ['timeline.fields.failActionCount', '失败分支数'],
+        tickActionCount: ['timeline.fields.tickActionCount', '单次触发动作数'],
+        enterActionCount: ['timeline.fields.enterActionCount', '进入动作数'],
+        exitActionCount: ['timeline.fields.exitActionCount', '离开动作数'],
+        shapeType: ['timeline.fields.shapeType', '形状'],
+        radius: ['timeline.fields.radius', '半径'],
+        range: ['timeline.fields.range', '范围'],
+        faction: ['timeline.fields.faction', '阵营']
+    });
+    const TIMELINE_ENUM_LABELS = Object.freeze({
+        eq: ['timeline.enums.eq', '='], ne: ['timeline.enums.ne', '≠'], gt: ['timeline.enums.gt', '>'],
+        ge: ['timeline.enums.ge', '≥'], gte: ['timeline.enums.ge', '≥'], lt: ['timeline.enums.lt', '<'],
+        le: ['timeline.enums.le', '≤'], lte: ['timeline.enums.le', '≤'], equal: ['timeline.enums.eq', '='],
+        notequal: ['timeline.enums.ne', '≠'], greater: ['timeline.enums.gt', '>'], less: ['timeline.enums.lt', '<'],
+        owner: ['timeline.enums.owner', '持有者'], actionowner: ['timeline.enums.actionOwner', '动作持有者'],
+        source: ['timeline.enums.source', '来源'], actionsource: ['timeline.enums.actionSource', '动作来源'],
+        target: ['timeline.enums.target', '目标'], context: ['timeline.enums.context', '上下文'],
+        atb: ['timeline.enums.atb', 'ATB'], ultimatesp: ['timeline.enums.ultimateSp', '终结技能量'],
+        usp: ['timeline.enums.usp', 'USP'], gain: ['timeline.enums.gain', '获取'],
+        consume: ['timeline.enums.consume', '消耗'], set: ['timeline.enums.set', '设置'],
+        assign: ['timeline.enums.assign', '赋值'], add: ['timeline.enums.add', '相加'],
+        subtract: ['timeline.enums.subtract', '相减'], multiply: ['timeline.enums.multiply', '相乘'],
+        divide: ['timeline.enums.divide', '相除'], sourceforward: ['timeline.enums.sourceForward', '来源朝向'],
+        sourcetotarget: ['timeline.enums.sourceToTarget', '来源指向目标'],
+        targettosource: ['timeline.enums.targetToSource', '目标指向来源'],
+        self: ['timeline.enums.self', '自身'], friend: ['timeline.enums.friend', '友方'],
+        anti: ['timeline.enums.anti', '敌方'], all: ['timeline.enums.all', '全部'],
+        hp: ['timeline.enums.hp', '生命'], poise: ['timeline.enums.poise', '韧性'],
+        interrupt: ['timeline.enums.interrupt', '打断'], crush: ['timeline.enums.crush', '压倒'],
+        fracture: ['timeline.enums.fracture', '碎甲'], spellinfliction: ['timeline.enums.spellInfliction', '元素附着'],
+        normalattack: ['timeline.enums.normalAttack', '普通攻击'], normalskill: ['timeline.enums.normalSkill', '战技'],
+        ultimateskill: ['timeline.enums.ultimateSkill', '终结技'], comboskill: ['timeline.enums.comboSkill', '连携技'],
+        melee: ['timeline.enums.melee', '近战'], ranged: ['timeline.enums.ranged', '远程']
+    });
+    const TIMELINE_DETAIL_PRIORITY = Object.freeze([
+        'skillId', 'targetSkillId', 'projectileId', 'projectileSkillId', 'skillIdOnBlock', 'skillIdOnReach',
+        'skillIdOnFinish', 'abilityEntityId', 'abilityEntitySkillId', 'enemyId', 'buffId', 'buffIds', 'buffIdList',
+        'tag', 'tags', 'markerId', 'signalId', 'key', 'storeKey', 'targetGroupKey', 'target', 'actionSource',
+        'source', 'count', 'unitCount', 'value', 'costType', 'costValue', 'superArmorValue', 'impactResistance',
+        'damageMultiplier', 'recoverValue', 'distance', 'moveDistance', 'speed', 'height', 'duration', 'totalTime',
+        'triggerInterval', 'destFrame', 'compare', 'operation', 'condition', 'actionCount', 'successActionCount',
+        'failActionCount', 'tickActionCount', 'shapeType', 'radius', 'range', 'enabled', 'visible'
+    ]);
+    const TIMELINE_DETAIL_META_KEYS = new Set([
+        'usesBlackboard', 'resolved', 'fallbackValue', 'raw', 'rawType', 'path'
+    ]);
 
     function emptyAnalysis() {
         return { basic: {}, windows: [], hits: [], events: [], links: [], blackboard: {}, warnings: [] };
@@ -121,6 +572,63 @@
 
     function gameText(ref, fallback) {
         return window.AKEV3.text(ref, fallback || '');
+    }
+
+    function localizedEntry(entry) {
+        if (!entry) return '';
+        if (Array.isArray(entry)) return t(entry[0], null, entry[1]);
+        if (isObject(entry)) return t(entry.key, null, entry.fallback);
+        return String(entry);
+    }
+
+    function currentLocale() {
+        return window.akeI18n?.getLanguageInfo?.().htmlLang || 'zh-CN';
+    }
+
+    function splitIdentifier(value, removeActionSuffix) {
+        let text = String(value || '')
+            .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+            .replace(/([a-z\d])([A-Z])/g, '$1 $2')
+            .replace(/[_-]+/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+        if (removeActionSuffix) text = text.replace(/(?:\s+Action)?(?:\s+Data)?$/i, '').trim();
+        return text || String(value || '');
+    }
+
+    function actionLabel(type) {
+        const normalized = String(type || 'UnknownAction');
+        return localizedEntry(ACTION_LABELS[normalized])
+            || t(`timeline.actions.${normalized}`, null, splitIdentifier(normalized, true));
+    }
+
+    function timelineFieldLabel(key) {
+        const normalized = String(key || 'value');
+        const direct = localizedEntry(TIMELINE_DETAIL_LABELS[normalized]);
+        if (direct) return direct;
+        const patterns = [
+            [/^(.+?)RemainingCount$/, 'remainingCount', '剩余数量'],
+            [/^(.+?)Count$/, 'count', '数量'],
+            [/^(.+?)Type$/, 'type', '类型']
+        ];
+        for (const [pattern, suffixKey, suffixFallback] of patterns) {
+            const match = normalized.match(pattern);
+            if (!match) continue;
+            const field = localizedEntry(TIMELINE_DETAIL_LABELS[match[1]])
+                || t(`timeline.fields.${match[1]}`, null, splitIdentifier(match[1], false));
+            return t(`timeline.fields.templates.${suffixKey}`, { field }, `${field}${suffixFallback}`);
+        }
+        return t(`timeline.fields.${normalized}`, null, splitIdentifier(normalized, false));
+    }
+
+    function timelineEnumLabel(value) {
+        const text = String(value ?? '');
+        const entry = TIMELINE_ENUM_LABELS[text.toLowerCase()];
+        return entry ? localizedEntry(entry) : text;
+    }
+
+    function timelineMoreLabel(count) {
+        return t('timeline.summary.more', { count }, `另 ${count} 项`);
     }
 
     function safeJson(value) {
@@ -146,13 +654,17 @@
 
     function formatValue(value) {
         if (!isPresent(value)) return '--';
-        if (typeof value === 'boolean') return value ? '是' : '否';
-        if (typeof value === 'number') return Number.isInteger(value)
-            ? String(value)
-            : new Intl.NumberFormat('zh-CN', { maximumFractionDigits: 4 }).format(value);
+        if (typeof value === 'boolean') return value
+            ? commonT('yes', null, '是')
+            : commonT('no', null, '否');
+        if (typeof value === 'number') {
+            return new Intl.NumberFormat(currentLocale(), { maximumFractionDigits: 4 }).format(value);
+        }
         if (typeof value === 'string') return value;
         if (isObject(value) && isPresent(value.text)) return String(value.text);
-        if (Array.isArray(value) && value.every(item => ['string', 'number', 'boolean'].includes(typeof item))) return value.join(' / ');
+        if (Array.isArray(value) && value.every(item => ['string', 'number', 'boolean'].includes(typeof item))) {
+            return value.map(item => formatValue(item)).join(' / ');
+        }
         return safeJson(value);
     }
 
@@ -173,8 +685,10 @@
         const scalar = resolvedScalar(value);
         if (!isPresent(scalar)) return undefined;
         const normalized = String(scalar).toLowerCase();
-        if (normalized === '0' || normalized === 'ultimatesp' || normalized === 'usp') return '终结技能量';
-        if (normalized === '1' || normalized === 'atb') return '技力';
+        if (normalized === '0' || normalized === 'ultimatesp' || normalized === 'usp') {
+            return t('enums.costTypes.ultimateSp', null, '终结技能量');
+        }
+        if (normalized === '1' || normalized === 'atb') return t('enums.costTypes.atb', null, '技力');
         return formatValue(scalar);
     }
 
@@ -182,7 +696,19 @@
         const scalar = resolvedScalar(value);
         if (!isPresent(scalar)) return undefined;
         const normalized = String(scalar).trim().split('.').pop().toLowerCase();
-        return ATTACK_ATTRIBUTE_LABELS[normalized] || formatValue(scalar);
+        return localizedEntry(ATTACK_ATTRIBUTE_LABELS[normalized]) || formatValue(scalar);
+    }
+
+    function enumValueLabel(group, value) {
+        if (!isPresent(value)) return '';
+        const raw = String(value);
+        const segment = raw.split('.').pop() || raw;
+        const key = segment ? `${segment[0].toLowerCase()}${segment.slice(1)}` : segment;
+        return t(`enums.${group}.${key}`, null, formatValue(value));
+    }
+
+    function metricLabel(key, fallback) {
+        return localizedEntry(BASIC_LABELS[key]) || t(`metrics.${key}`, null, fallback || splitIdentifier(key, false));
     }
 
     function readPath(source, path) {
@@ -248,7 +774,7 @@
     }
 
     function groupDisplayName(group) {
-        return gameText(group.name, GROUP_TYPE_LABELS[group.skillGroupType] || group.fallbackName || group.skillGroupId);
+        return gameText(group.name, localizedEntry(GROUP_TYPE_LABELS[group.skillGroupType]) || group.fallbackName || group.skillGroupId);
     }
 
     function itemSearchText(item, character, group) {
@@ -257,11 +783,11 @@
     }
 
     function otherGroup(id) {
-        if (/^(eny_|race_)/i.test(id)) return ['other_enemy', '未映射怪物与召唤物', 0];
-        if (/^(int_|abilityentity_)/i.test(id)) return ['other_interaction', '交互与场景实体', 1];
-        if (/^(wpn_|passive_)/i.test(id)) return ['other_equipment', '装备与被动', 2];
-        if (/^(common_|sk_|skill_|rpg_|cc_|potential_)/i.test(id)) return ['other_system', '系统与通用逻辑', 3];
-        return ['other_misc', '其他', 4];
+        if (/^(eny_|race_)/i.test(id)) return ['other_enemy', t('directory.otherGroups.unmappedEnemy', null, '未映射怪物与召唤物'), 0];
+        if (/^(int_|abilityentity_)/i.test(id)) return ['other_interaction', t('directory.otherGroups.interaction', null, '交互与场景实体'), 1];
+        if (/^(wpn_|passive_)/i.test(id)) return ['other_equipment', t('directory.otherGroups.equipment', null, '装备与被动'), 2];
+        if (/^(common_|sk_|skill_|rpg_|cc_|potential_)/i.test(id)) return ['other_system', t('directory.otherGroups.system', null, '系统与通用逻辑'), 3];
+        return ['other_misc', t('directory.otherGroups.misc', null, '其他'), 4];
     }
 
     function inferCharacterGroup(character, skillId) {
@@ -299,7 +825,7 @@
                 id: charId,
                 entityKind: 'character',
                 sectionId: 'characters',
-                sectionName: '角色',
+                sectionName: t('directory.sections.characters', null, '角色'),
                 sectionOrder: 0,
                 name: gameText(char.name, gameText(grow.name, grow.engName || charId)),
                 engName: grow.engName || '',
@@ -341,7 +867,8 @@
             if (!group) group = character.groups.find(entry => entry.id === `${charId}__other_actions`);
             if (!group) {
                 group = { id: `${charId}__other_actions`, skillGroupId: `${charId}__other_actions`, order: 90,
-                    displayName: '其他战斗动作', fallbackName: '其他战斗动作', skills: [] };
+                    displayName: t('directory.groups.otherCombatActions', null, '其他战斗动作'),
+                    fallbackName: t('directory.groups.otherCombatActions', null, '其他战斗动作'), skills: [] };
                 character.groups.push(group);
             }
             group.skills.push(item);
@@ -365,7 +892,7 @@
                     id: templateId,
                     entityKind: 'enemy',
                     sectionId: 'enemies',
-                    sectionName: '怪物',
+                    sectionName: t('directory.sections.monsters', null, '怪物'),
                     sectionOrder: 10,
                     name: gameText(display.name, templateId),
                     engName: gameText(display.nickname, ''),
@@ -378,8 +905,8 @@
                         id: `${templateId}__combat_actions`,
                         skillGroupId: `${templateId}__combat_actions`,
                         order: 0,
-                        displayName: '怪物技能',
-                        fallbackName: '怪物技能',
+                        displayName: t('directory.groups.monsterSkills', null, '怪物技能'),
+                        fallbackName: t('directory.groups.monsterSkills', null, '怪物技能'),
                         skills: []
                     }]
                 };
@@ -397,8 +924,8 @@
             buckets.get(id).skills.push(item);
         });
         const other = {
-            id: OTHER_ID, name: '其他战斗实体', engName: '', rarity: -1,
-            entityKind: 'other', sectionId: 'other', sectionName: '其他', sectionOrder: 1000,
+            id: OTHER_ID, name: t('directory.entityKinds.otherCombatEntities', null, '其他战斗实体'), engName: '', rarity: -1,
+            entityKind: 'other', sectionId: 'other', sectionName: t('directory.sections.other', null, '其他'), sectionOrder: 1000,
             sourceOrder: Number.MAX_SAFE_INTEGER, config: {}, growth: {}, groups: [...buckets.values()], isOther: true
         };
 
@@ -448,7 +975,7 @@
     function renderDirectoryNode(target, directory) {
         if (!target) return;
         if (!directory.length) {
-            target.innerHTML = '<div class="combatv3-empty-inline">没有匹配的战斗数据</div>';
+            target.innerHTML = `<div class="combatv3-empty-inline">${escapeHtml(t('empty.noMatchingCombatData', null, '没有匹配的战斗数据'))}</div>`;
             return;
         }
         const sectionCounts = directory.reduce((counts, entity) => {
@@ -458,7 +985,7 @@
         let previousSectionId = '';
         target.innerHTML = directory.map(character => {
             const sectionHeading = character.sectionId !== previousSectionId
-                ? `<div class="combatv3-directory-heading"><span>${escapeHtml(character.sectionName)}</span><span>${escapeHtml(sectionCounts.get(character.sectionId))} 个</span></div>`
+                ? `<div class="combatv3-directory-heading"><span>${escapeHtml(character.sectionName)}</span><span>${escapeHtml(t('counts.sectionEntities', { count: sectionCounts.get(character.sectionId) }, `${sectionCounts.get(character.sectionId)} 个`))}</span></div>`
                 : '';
             previousSectionId = character.sectionId;
             const characterOpen = Boolean(state.query) || state.expandedCharacters.has(character.id);
@@ -505,7 +1032,11 @@
         const count = new Set(directory.flatMap(character => character.groups.flatMap(group => group.skills.map(item => item.id)))).size;
         const characterCount = directory.filter(entity => entity.entityKind === 'character').length;
         const enemyCount = directory.filter(entity => entity.entityKind === 'enemy').length;
-        if (elements.meta) elements.meta.textContent = `${characterCount} 个角色 · ${enemyCount} 个怪物 · ${count} 条 SkillData`;
+        if (elements.meta) elements.meta.textContent = t('counts.directorySummary', {
+            characters: characterCount,
+            monsters: enemyCount,
+            skills: count
+        }, `${characterCount} 个角色 · ${enemyCount} 个怪物 · ${count} 条 SkillData`);
     }
 
     function openMobileList() {
@@ -559,7 +1090,7 @@
         const promise = (async () => {
             const path = item.contentFile || `/public/Json/SkillData/${encodeURIComponent(item.id)}.json`;
             const response = await (window.akeFetch || fetch)(path);
-            if (!response.ok) throw new Error(`无法读取 ${item.id}`);
+            if (!response.ok) throw new Error(t('errors.readSkillData', { id: item.id }, `无法读取 ${item.id}`));
             return response.json();
         })().catch(error => {
             state.skillCache.delete(item.id);
@@ -578,8 +1109,22 @@
             events: collection(source.events),
             links: collection(source.links),
             blackboard: source.blackboard ?? {},
-            warnings: collection(source.warnings).map(warning => typeof warning === 'string' ? warning : formatValue(warning))
+            warnings: collection(source.warnings)
         };
+    }
+
+    function warningText(warning) {
+        if (!isObject(warning)) {
+            const message = formatValue(warning);
+            return t('warnings.UNKNOWN', { message }, `分析警告：${message}`);
+        }
+        let code = String(warning.code || 'UNKNOWN');
+        if (code === 'PATCH_LEVEL_FALLBACK' && isPresent(warning.requestedLevel)) {
+            code = 'PATCH_LEVEL_FALLBACK_REQUESTED';
+        }
+        const message = isPresent(warning.message) ? formatValue(warning.message) : code;
+        return t(`warnings.${code}`, { ...warning, message },
+            code === 'UNKNOWN' ? `分析警告：${message}` : message);
     }
 
     async function analyzeCurrent(token) {
@@ -603,12 +1148,12 @@
         };
         let result;
         if (typeof analyzer !== 'function') {
-            result = { warnings: ['战斗分析器尚未加载，当前仅展示原始基础字段。'] };
+            result = { warnings: [{ code: 'ANALYZER_UNAVAILABLE' }] };
         } else {
             try {
                 result = await analyzer(state.currentData, state.currentPatch, context);
             } catch (error) {
-                result = { warnings: [`分析失败：${error.message || error}`] };
+                result = { warnings: [{ code: 'ANALYSIS_FAILED', message: error.message || error }] };
             }
         }
         if (token !== state.detailToken) return;
@@ -636,7 +1181,8 @@
         state.currentPatch = selectedPatch(skillId, state.level);
         renderDirectories();
         closeMobileList();
-        elements.detail.innerHTML = loadingHtml(owner.item.displayName, '正在分析战斗数据');
+        elements.detail.innerHTML = loadingHtml(owner.item.displayName,
+            t('loading.analyzing', null, '正在分析战斗数据'));
         const token = ++state.detailToken;
         if (settings.updateUrl !== false) updateDeepLink();
         try {
@@ -648,7 +1194,8 @@
             if (settings.updateUrl !== false) updateDeepLink();
             await analyzeCurrent(token);
         } catch (error) {
-            if (token === state.detailToken) elements.detail.innerHTML = errorHtml('技能读取失败', error.message || error);
+            if (token === state.detailToken) elements.detail.innerHTML = errorHtml(
+                t('errors.skillReadTitle', null, '技能读取失败'), error.message || error);
         }
         return true;
     }
@@ -672,13 +1219,22 @@
         value = resolvedScalar(value);
         const lower = String(key).toLowerCase();
         if (lower === 'attackrangetype') {
-            const rangeLabel = { melee: '近战', ranged: '远程' }[String(value).toLowerCase()];
+            const rangeLabel = {
+                melee: t('enums.attackRanges.melee', null, '近战'),
+                ranged: t('enums.attackRanges.ranged', null, '远程')
+            }[String(value).toLowerCase()];
             if (rangeLabel) return { value: rangeLabel, unit: '' };
         }
         if (typeof value === 'number' && lower.includes('frame')) {
-            return { value: formatValue(value), unit: `帧，约${formatValue(value / 30)}秒` };
+            return {
+                value: t('units.frameSeconds', { frames: formatValue(value), seconds: formatValue(value / 30) },
+                    `${formatValue(value)} 帧，约 ${formatValue(value / 30)} 秒`),
+                unit: ''
+            };
         }
-        if (typeof value === 'number' && (lower.includes('time') || lower.includes('cooldown'))) return { value: formatValue(value), unit: '秒' };
+        if (typeof value === 'number' && (lower.includes('time') || lower.includes('cooldown'))) {
+            return { value: t('units.seconds', { value: formatValue(value) }, `${formatValue(value)} 秒`), unit: '' };
+        }
         return { value: formatValue(value), unit: '' };
     }
 
@@ -735,10 +1291,13 @@
             const value = resolvedScalar(item.superArmorValue ?? buffArmor);
             const impact = resolvedScalar(item.impactResistance);
             const range = isPresent(item.startFrame)
-                ? `${formatValue(item.startFrame)}${item.endFrame !== item.startFrame ? `–${formatValue(item.endFrame)}` : ''}帧`
+                ? (item.endFrame !== item.startFrame
+                    ? t('units.frameRange', { start: formatValue(item.startFrame), end: formatValue(item.endFrame) },
+                        `${formatValue(item.startFrame)}–${formatValue(item.endFrame)} 帧`)
+                    : t('units.frames', { value: formatValue(item.startFrame) }, `${formatValue(item.startFrame)} 帧`))
                 : '';
             return {
-                value: [isPresent(value) ? value : item.buffId || 'Buff', isPresent(impact) ? `冲击抗性 ${impact}` : '']
+                value: [isPresent(value) ? value : item.buffId || 'Buff', isPresent(impact) ? `${timelineFieldLabel('impactResistance')} ${impact}` : '']
                     .filter(Boolean).join(' · '),
                 range
             };
@@ -760,24 +1319,24 @@
         const patch = state.currentPatch || {};
         const runtimeCooldown = runtimeCast.cooldownTime ?? raw.castData?.cooldownTime;
         const definitions = [
-            ['durationFrame', '动作总时长', firstValue(basic, ['durationFrame', 'durationFrames', 'totalFrames']) ?? raw.durationFrame, true],
-            ['exclusiveFrame', '排他期', firstValue(basic, ['exclusiveFrame', 'exclusiveFrames']) ?? raw.exclusiveFrame, true],
-            ['offsetRecordFrame', '续段记录帧', Number(firstValue(basic, ['offsetRecordFrame', 'offsetFrame']) ?? raw.offsetRecordFrame) > 0
+            ['durationFrame', metricLabel('durationFrame', '动作总时长'), firstValue(basic, ['durationFrame', 'durationFrames', 'totalFrames']) ?? raw.durationFrame, true],
+            ['exclusiveFrame', metricLabel('exclusiveFrame', '排他期'), firstValue(basic, ['exclusiveFrame', 'exclusiveFrames']) ?? raw.exclusiveFrame, true],
+            ['offsetRecordFrame', metricLabel('offsetRecordFrame', '续段记录帧'), Number(firstValue(basic, ['offsetRecordFrame', 'offsetFrame']) ?? raw.offsetRecordFrame) > 0
                 ? firstValue(basic, ['offsetRecordFrame', 'offsetFrame']) ?? raw.offsetRecordFrame : undefined, true],
-            ['firstHitFrame', '首段命中', firstValue(basic, ['firstHitFrame', 'startupFrame', 'startupFrames']) ?? (hitFrames.length ? Math.min(...hitFrames) : undefined), true],
-            ['lastHitFrame', '末段命中', firstValue(basic, ['lastHitFrame']) ?? (hitFrames.length ? Math.max(...hitFrames) : undefined), false],
-            ['hitCount', '命中段数', firstValue(basic, ['hitCount']) ?? hitGroups.length, true],
-            ['cooldownTime', '运行时冷却', hasNonZeroValue(runtimeCooldown) ? runtimeCooldown : undefined, false],
-            ['startCdFrame', '资源提交帧', runtimeCast.startCdFrame ?? raw.castData?.startCdFrame, false],
-            ['attackRangeType', '攻击距离类型', targeting.attackRangeType, false],
-            ['castDistance', '施放距离', targeting.castDistance ?? raw.castData?.castDistance, false],
-            ['poiseDamage', '确定路径总削韧', numericPoiseSummary(hitGroups), false],
-            ['patchCost', '等级配置消耗', hasNonZeroValue(patch.costValue) ? `${costTypeLabel(patch.costType)} ${formatValue(patch.costValue)}` : undefined, false],
-            ['runtimeCost', '运行时消耗', hasNonZeroValue(runtimeCast.costValue) ? `${costTypeLabel(runtimeCast.costType)} ${formatValue(resolvedScalar(runtimeCast.costValue))}` : undefined, false],
-            ['superArmor', '技能抗打断', superArmorSummary(), true],
-            ['canMove', '可移动施放', mobility.canMove === true ? true : undefined, false],
-            ['canCastInAir', '可空中施放', mobility.canCastInAir === true ? true : undefined, false],
-            ['dontInterruptCombo', '保持连段标记', raw.dontInterruptCombo === true ? true : undefined, false]
+            ['firstHitFrame', metricLabel('firstHitFrame', '首段命中'), firstValue(basic, ['firstHitFrame', 'startupFrame', 'startupFrames']) ?? (hitFrames.length ? Math.min(...hitFrames) : undefined), true],
+            ['lastHitFrame', metricLabel('lastHitFrame', '末段命中'), firstValue(basic, ['lastHitFrame']) ?? (hitFrames.length ? Math.max(...hitFrames) : undefined), false],
+            ['hitCount', metricLabel('hitCount', '命中段数'), firstValue(basic, ['hitCount']) ?? hitGroups.length, true],
+            ['runtimeCooldown', t('metrics.runtimeCooldown', null, '运行时冷却'), hasNonZeroValue(runtimeCooldown) ? runtimeCooldown : undefined, false],
+            ['costCommitFrame', t('metrics.costCommitFrame', null, '资源提交帧'), runtimeCast.startCdFrame ?? raw.castData?.startCdFrame, false],
+            ['attackRangeType', t('metrics.attackRangeType', null, '攻击距离类型'), targeting.attackRangeType, false],
+            ['castDistance', t('metrics.castDistance', null, '施放距离'), targeting.castDistance ?? raw.castData?.castDistance, false],
+            ['confirmedPoiseDamage', t('metrics.confirmedPoiseDamage', null, '确定路径总削韧'), numericPoiseSummary(hitGroups), false],
+            ['patchCost', t('metrics.patchCost', null, '等级配置消耗'), hasNonZeroValue(patch.costValue) ? `${costTypeLabel(patch.costType)} ${formatValue(patch.costValue)}` : undefined, false],
+            ['runtimeCost', t('metrics.runtimeCost', null, '运行时消耗'), hasNonZeroValue(runtimeCast.costValue) ? `${costTypeLabel(runtimeCast.costType)} ${formatValue(resolvedScalar(runtimeCast.costValue))}` : undefined, false],
+            ['skillSuperArmor', t('metrics.skillSuperArmor', null, '技能抗打断'), superArmorSummary(), true],
+            ['canMove', t('metrics.canMove', null, '可移动施放'), mobility.canMove === true ? true : undefined, false],
+            ['canCastInAir', t('metrics.canCastInAir', null, '可空中施放'), mobility.canCastInAir === true ? true : undefined, false],
+            ['dontInterruptCombo', t('metrics.dontInterruptCombo', null, '保持连段标记'), raw.dontInterruptCombo === true ? true : undefined, false]
         ];
         return definitions.filter(row => isPresent(row[2]));
     }
@@ -786,10 +1345,10 @@
         const patch = state.currentPatch || {};
         const hasCost = hasNonZeroValue(patch.costValue);
         return [
-            ['level', '等级', patch.level],
-            ['cooldownTime', '冷却', hasNonZeroValue(patch.coolDown) ? patch.coolDown : undefined],
-            ['costType', '消耗类型', hasCost ? costTypeLabel(patch.costType) : undefined],
-            ['costValue', '消耗值', hasCost ? patch.costValue : undefined]
+            ['level', t('metrics.level', null, '等级'), patch.level],
+            ['cooldown', metricLabel('cooldown', '冷却'), hasNonZeroValue(patch.coolDown) ? patch.coolDown : undefined],
+            ['costType', t('metrics.costType', null, '消耗类型'), hasCost ? costTypeLabel(patch.costType) : undefined],
+            ['costValue', t('metrics.costValue', null, '消耗值'), hasCost ? patch.costValue : undefined]
         ].filter(row => isPresent(row[2]));
     }
 
@@ -799,15 +1358,22 @@
         const basic = state.analysis.basic;
         const patch = state.currentPatch || {};
         const icon = skillIconPath(patch.iconId || owner.group.icon) || owner.character.icon || '';
-        const entityLabel = owner.character.entityKind === 'enemy' ? '怪物'
-            : (owner.character.entityKind === 'character' ? '角色' : '归类');
+        const entityLabel = owner.character.entityKind === 'enemy'
+            ? t('directory.entityKinds.monster', null, '怪物')
+            : (owner.character.entityKind === 'character'
+                ? t('directory.entityKinds.character', null, '角色')
+                : t('directory.entityKinds.category', null, '归类'));
         const isEnemy = owner.character.entityKind === 'enemy';
         const title = gameText(patch.skillName,
             firstValue(basic, ['name', 'skillName', 'title']) || raw.skillName || owner.item.displayName);
         const levels = [...new Set(patchesFor(owner.item.id).map(item => Number(item.level)))].sort((a, b) => a - b);
         const options = (levels.length ? levels : [state.level]).map(level =>
-            `<option value="${escapeHtml(level)}"${Number(level) === Number(state.level) ? ' selected' : ''}>等级 ${escapeHtml(level)}</option>`).join('');
-        const tags = [raw.castType, raw.skillSpecification, raw.passiveSkillType].filter(Boolean);
+            `<option value="${escapeHtml(level)}"${Number(level) === Number(state.level) ? ' selected' : ''}>${escapeHtml(t('units.level', { value: level }, `等级 ${level}`))}</option>`).join('');
+        const tags = [
+            enumValueLabel('castTypes', raw.castType),
+            enumValueLabel('skillSpecifications', raw.skillSpecification),
+            enumValueLabel('passiveSkillTypes', raw.passiveSkillType)
+        ].filter(Boolean);
         return `<header class="combatv3-detail-header">
             <div class="combatv3-detail-heading${icon ? '' : ' without-icon'}">${icon ? `<img class="combatv3-detail-icon" src="${escapeHtml(icon)}" alt="" onerror="this.remove();this.parentElement.classList.add('without-icon')">` : ''}<div class="combatv3-detail-copy">
                 <div class="combatv3-eyebrow">${escapeHtml(owner.character.name)}${isEnemy ? '' : ` · ${escapeHtml(owner.group.displayName)}`}</div>
@@ -816,9 +1382,9 @@
             <code class="combatv3-detail-id" title="${escapeHtml(owner.item.id)}">${escapeHtml(owner.item.id)}</code>
         </header>
         <div class="combatv3-context-row">
-            <label class="combatv3-context-item"><span>等级</span><select id="combatv3LevelSelect"${levels.length <= 1 ? ' disabled' : ''}>${options}</select></label>
+            <label class="combatv3-context-item"><span>${escapeHtml(t('metrics.level', null, '等级'))}</span><select id="combatv3LevelSelect"${levels.length <= 1 ? ' disabled' : ''}>${options}</select></label>
             <span class="combatv3-context-item"><span>${escapeHtml(entityLabel)}</span><strong>${escapeHtml(owner.character.name)}</strong></span>
-            ${isEnemy ? '' : `<span class="combatv3-context-item"><span>技能组</span><strong>${escapeHtml(owner.group.displayName)}</strong></span>`}
+            ${isEnemy ? '' : `<span class="combatv3-context-item"><span>${escapeHtml(t('directory.groupLabel', null, '技能组'))}</span><strong>${escapeHtml(owner.group.displayName)}</strong></span>`}
         </div>
         ${tags.length ? `<div class="combatv3-tag-row">${tags.map((tag, index) => `<span class="combatv3-tag${index === 0 ? ' combatv3-tag--accent' : ''}">${escapeHtml(tag)}</span>`).join('')}</div>` : ''}`;
     }
@@ -829,17 +1395,17 @@
             const value = metricValue(key, rawValue);
             return `<div class="combatv3-metric${important ? ' is-important' : ''}"><span class="combatv3-metric-label">${escapeHtml(label)}</span>
                 <strong class="combatv3-metric-value">${escapeHtml(value.value)}</strong>${value.unit ? `<span class="combatv3-metric-unit">${escapeHtml(value.unit)}</span>` : ''}</div>`;
-        }).join('') : '<div class="combatv3-empty-inline">分析器未返回核心指标</div>';
+        }).join('') : `<div class="combatv3-empty-inline">${escapeHtml(t('empty.noCoreMetrics', null, '分析器未返回核心指标'))}</div>`;
         const patches = patchMetrics();
         const patchHtml = patches.length ? `<section class="combatv3-section">
-            <header class="combatv3-section-header"><h3 class="combatv3-section-title">技能等级配置</h3></header>
+            <header class="combatv3-section-header"><h3 class="combatv3-section-title">${escapeHtml(t('sections.skillLevelConfiguration', null, '技能等级配置'))}</h3></header>
             <div class="combatv3-metric-grid">${patches.map(([key, label, rawValue]) => {
                 const value = metricValue(key, rawValue);
                 return `<div class="combatv3-metric"><span class="combatv3-metric-label">${escapeHtml(label)}</span>
                     <strong class="combatv3-metric-value">${escapeHtml(value.value)}</strong>${value.unit ? `<span class="combatv3-metric-unit">${escapeHtml(value.unit)}</span>` : ''}</div>`;
             }).join('')}</div></section>` : '';
-        return `${patchHtml}<section class="combatv3-section"><header class="combatv3-section-header"><h2 class="combatv3-section-title">核心指标</h2>
-            <span class="combatv3-section-note">关键战斗字段</span></header><div class="combatv3-metric-grid">${metricHtml}</div></section>`;
+        return `${patchHtml}<section class="combatv3-section"><header class="combatv3-section-header"><h2 class="combatv3-section-title">${escapeHtml(t('sections.coreMetrics', null, '核心指标'))}</h2>
+            <span class="combatv3-section-note">${escapeHtml(t('sectionNotes.keyCombatFields', null, '关键战斗字段'))}</span></header><div class="combatv3-metric-grid">${metricHtml}</div></section>`;
     }
 
     function frameOf(item, names) {
@@ -867,28 +1433,121 @@
 
     function windowLabel(item, index) {
         const kind = firstValue(item, ['kind']);
-        return firstValue(item, ['label', 'name', 'title']) || WINDOW_LABELS[kind] || ACTION_LABELS[item.type]
-            || firstValue(item, ['type', '__key']) || `窗口 ${index + 1}`;
+        const typeLabel = isPresent(item.type) ? actionLabel(item.type) : '';
+        return localizedEntry(WINDOW_LABELS[kind]) || typeLabel || firstValue(item, ['label', 'name', 'title'])
+            || firstValue(item, ['type', '__key'])
+            || t('windows.named', { index: index + 1 }, `窗口 ${index + 1}`);
     }
 
     function resolvedLabel(value) {
-        if (!isObject(value)) return formatValue(value);
+        return formatValue(resolvedScalar(value));
+    }
+
+    function timelineScalarText(value) {
         const scalar = resolvedScalar(value);
-        const suffix = value.usesBlackboard && value.blackboardKey ? ` (${value.blackboardKey})` : '';
-        return `${formatValue(scalar)}${suffix}`;
+        if (!isPresent(scalar)) return '';
+        if (typeof scalar === 'boolean' || typeof scalar === 'number') return formatValue(scalar);
+        if (typeof scalar === 'string') return timelineEnumLabel(scalar);
+        return '';
+    }
+
+    function timelineDetailRank(key) {
+        const index = TIMELINE_DETAIL_PRIORITY.indexOf(key);
+        return index < 0 ? Number.MAX_SAFE_INTEGER : index;
+    }
+
+    function timelineDescriptorLabel(descriptor) {
+        const fallback = isPresent(descriptor.label)
+            ? String(descriptor.label)
+            : timelineFieldLabel(descriptor.key);
+        if (!descriptor.labelKey) return fallback;
+        const key = String(descriptor.labelKey);
+        return key.startsWith('modules.')
+            ? (window.akeI18n?.t(key, null, fallback) ?? fallback)
+            : t(key, null, fallback);
+    }
+
+    function compactTimelineDetail(value, depth) {
+        const currentDepth = Number(depth) || 0;
+        if (!isPresent(value) || currentDepth > 4) return '';
+        if (Array.isArray(value)) {
+            const limit = 4;
+            const parts = value.slice(0, limit)
+                .map(item => compactTimelineDetail(item, currentDepth + 1))
+                .filter(Boolean);
+            if (value.length > limit) parts.push(timelineMoreLabel(value.length - limit));
+            return parts.join(' / ');
+        }
+        if (!isObject(value)) return timelineScalarText(value);
+        if (Object.prototype.hasOwnProperty.call(value, 'key')
+            && Object.prototype.hasOwnProperty.call(value, 'value')) {
+            const detail = compactTimelineDetail(value.value, currentDepth + 1);
+            return detail ? `${timelineDescriptorLabel(value)} ${detail}` : '';
+        }
+        if (Object.prototype.hasOwnProperty.call(value, 'displayValue')) {
+            const detail = compactTimelineDetail(value.displayValue, currentDepth + 1);
+            const unit = timelineScalarText(value.displayUnit);
+            return [detail, unit].filter(Boolean).join(' ');
+        }
+        if (Object.prototype.hasOwnProperty.call(value, 'value')) {
+            return compactTimelineDetail(value.value, currentDepth + 1);
+        }
+        if (isPresent(value.text) && typeof value.text === 'string') return timelineEnumLabel(value.text);
+
+        const parts = [];
+        const entries = Object.entries(value)
+            .filter(([key, child]) => !TIMELINE_DETAIL_META_KEYS.has(key) && isPresent(child))
+            .sort(([left], [right]) => timelineDetailRank(left) - timelineDetailRank(right));
+        let cursor = 0;
+        for (; cursor < entries.length && parts.length < 8; cursor += 1) {
+            const [key, child] = entries[cursor];
+            const detail = compactTimelineDetail(child, currentDepth + 1);
+            if (detail) parts.push(`${timelineFieldLabel(key)} ${detail}`);
+        }
+        if (cursor < entries.length) parts.push(timelineMoreLabel(entries.length - cursor));
+        return parts.join(' · ');
     }
 
     function windowDetail(item) {
-        if (item.kind === 'superArmor') {
-            return `抗打断 ${resolvedLabel(item.superArmorValue)} · 冲击抗性 ${resolvedLabel(item.impactResistance)}`;
+        const details = isObject(item.details) ? item.details : item;
+        let detail = '';
+        if (item.kind === 'superArmor' || /setsuperarmor/i.test(item.type || '')) {
+            const armor = details.superArmorValue ?? item.superArmorValue;
+            const impact = details.impactResistance ?? item.impactResistance;
+            detail = [isPresent(armor) ? `${timelineFieldLabel('superArmorValue')} ${compactTimelineDetail(armor)}` : '',
+                isPresent(impact) ? `${timelineFieldLabel('impactResistance')} ${compactTimelineDetail(impact)}` : '']
+                .filter(Boolean).join(' · ');
         }
-        if (item.kind === 'buffSuperArmor' || item.kind === 'damageImmune') return item.buffId || '';
-        if (item.kind === 'allowNextSkill') return (item.allowedSkillIds || []).join(' / ');
-        if (item.kind === 'comboCache') return (item.mappings || []).map(mapping => `${mapping.command || '输入'} → ${mapping.skillId}`).join(' / ');
-        if (item.kind === 'hitStop' || item.kind === 'timeDilation') return `持续 ${resolvedLabel(item.duration)}`;
-        if (item.kind === 'movement') return formatValue(item.values);
-        if (item.kind === 'damage') return `${item.unitCount || 0} 个结算单元${item.targetGroupKey ? ` · ${item.targetGroupKey}` : ''}`;
-        return formatValue(firstValue(item, ['detail', 'details', 'description', 'note', 'condition']));
+        if (!detail && (item.kind === 'buffSuperArmor' || item.kind === 'damageImmune')) {
+            detail = timelineScalarText(item.buffId);
+        }
+        if (!detail && item.kind === 'allowNextSkill') detail = compactTimelineDetail(item.allowedSkillIds || []);
+        if (!detail && item.kind === 'comboCache') {
+            detail = (item.mappings || []).slice(0, 4).map(mapping => {
+                const command = timelineScalarText(mapping.command)
+                    || t('timeline.summary.input', null, '输入');
+                const skillId = compactTimelineDetail(mapping.skillId);
+                return skillId ? `${command} → ${skillId}` : command;
+            }).join(' / ');
+            if ((item.mappings || []).length > 4) {
+                detail += `${detail ? ' / ' : ''}${timelineMoreLabel(item.mappings.length - 4)}`;
+            }
+        }
+        if (!detail && (item.kind === 'hitStop' || item.kind === 'timeDilation')) {
+            const duration = compactTimelineDetail(item.duration);
+            if (duration) detail = t('timeline.summary.duration', { value: duration }, `持续 ${duration}`);
+        }
+        if (!detail && item.kind === 'movement') detail = compactTimelineDetail(item.values);
+        if (!detail && item.kind === 'damage') {
+            const count = isPresent(item.unitCount) ? item.unitCount : 0;
+            detail = t('timeline.summary.damageUnits', { count }, `${count} 个结算单元`);
+            if (item.targetGroupKey) detail += ` · ${timelineFieldLabel('targetGroupKey')} ${timelineScalarText(item.targetGroupKey)}`;
+        }
+        if (!detail) {
+            detail = compactTimelineDetail(firstValue(item, ['detail', 'details', 'description', 'note', 'condition']));
+        }
+        if (!detail) detail = compactTimelineDetail(item.summaryFields);
+        return detail;
     }
 
     function renderWindowStage(rows, emptyText) {
@@ -902,7 +1561,10 @@
             const width = Math.max(0.35, Math.min(100 - left, Math.max(0, end - start) / max * 100));
             const label = windowLabel(item, index);
             const detail = windowDetail(item);
-            const tooltip = `${label} · ${start === end ? `${start} 帧` : `${start}–${end} 帧`}${isPresent(detail) ? ` · ${formatValue(detail)}` : ''}`;
+            const frameText = start === end
+                ? t('units.frames', { value: formatValue(start) }, `${formatValue(start)} 帧`)
+                : t('units.frameRange', { start: formatValue(start), end: formatValue(end) }, `${formatValue(start)}–${formatValue(end)} 帧`);
+            const tooltip = `${label} · ${frameText}${isPresent(detail) ? ` · ${formatValue(detail)}` : ''}`;
             const kind = windowKind(item);
             const blockClass = start === end ? 'combatv3-window-point' : `combatv3-window combatv3-window--${kind}`;
             return `<div class="combatv3-window-lane"><span class="combatv3-lane-label" title="${escapeHtml(label)}">${escapeHtml(label)}</span>
@@ -910,13 +1572,13 @@
                     data-combatv3-tooltip="${escapeHtml(tooltip)}">${start === end ? '' : `<span>${escapeHtml(label)}</span>`}</span></div></div>`;
         }).join('');
         return `<div class="combatv3-window-scroll"><div class="combatv3-window-stage"><div class="combatv3-window-ruler">
-            <span class="combatv3-lane-label">帧</span><div class="combatv3-ruler-track">${ruler}</div></div>${lanes}</div></div>`;
+            <span class="combatv3-lane-label">${escapeHtml(t('units.frames', { value: '' }, '帧').trim())}</span><div class="combatv3-ruler-track">${ruler}</div></div>${lanes}</div></div>`;
     }
 
     function renderWindows() {
-        return `<section class="combatv3-section"><header class="combatv3-section-header"><h2 class="combatv3-section-title">关键窗口</h2>
-            <span class="combatv3-section-count">${escapeHtml(state.analysis.windows.length)} 项</span></header>
-            ${renderWindowStage(state.analysis.windows, '未识别到命中、取消、抗打断、无敌或续段窗口')}</section>`;
+        return `<section class="combatv3-section"><header class="combatv3-section-header"><h2 class="combatv3-section-title">${escapeHtml(t('sections.keyWindows', null, '关键窗口'))}</h2>
+            <span class="combatv3-section-count">${escapeHtml(t('counts.items', { count: state.analysis.windows.length }, `${state.analysis.windows.length} 项`))}</span></header>
+            ${renderWindowStage(state.analysis.windows, t('empty.noKeyWindows', null, '未识别到命中、取消、抗打断、无敌或续段窗口'))}</section>`;
     }
 
     function hitCell(hit, paths) {
@@ -925,7 +1587,10 @@
 
     function hitScale(hit) {
         const value = resolvedScalar(hit.atkScale);
-        if (typeof value === 'number') return `${formatValue(value * 100)}% ATK`;
+        if (typeof value === 'number') {
+            const amount = formatValue(value * 100);
+            return t('units.atkPercent', { value: amount }, `${amount}% ATK`);
+        }
         return resolvedLabel(hit.atkScale);
     }
 
@@ -935,23 +1600,30 @@
 
     function hitResources(group) {
         return group.resources.filter(cost => hasNonZeroValue(cost.costValue))
-            .map(cost => `${costTypeLabel(cost.costType) || '资源'} ${resolvedLabel(cost.costValue)}`)
+            .map(cost => `${costTypeLabel(cost.costType) || t('enums.costTypes.resource', null, '资源')} ${resolvedLabel(cost.costValue)}`)
             .concat(group.effects).join(' / ');
     }
 
     function renderHits() {
         const hits = groupedHits();
+        const hitTiming = hit => {
+            if (!isPresent(hit.startFrame)) return '--';
+            return hit.endFrame !== hit.startFrame
+                ? t('units.frameRange', { start: formatValue(hit.startFrame), end: formatValue(hit.endFrame) },
+                    `${formatValue(hit.startFrame)}–${formatValue(hit.endFrame)} 帧`)
+                : t('units.frames', { value: formatValue(hit.startFrame) }, `${formatValue(hit.startFrame)} 帧`);
+        };
         const body = hits.map((hit, index) => `<tr><td>${escapeHtml(index + 1)}</td>
-            <td>${escapeHtml(`F${hit.startFrame ?? '--'}${hit.endFrame !== hit.startFrame ? `–${hit.endFrame}` : ''}`)}</td>
+            <td>${escapeHtml(hitTiming(hit))}</td>
             <td>${escapeHtml([...hit.damageTypes].map(attackAttributeLabel).join(' / ') || '--')}</td>
             <td>${escapeHtml(hit.hp.map(hitScale).join(' / ') || '--')}</td>
             <td>${escapeHtml(hit.poise.map(hitPoise).join(' / ') || '--')}</td>
             <td data-column="logic">${escapeHtml(hitResources(hit) || '--')}</td>
             <td data-column="note">${escapeHtml([hit.branchPath.join(' → '), hit.targetGroupKey].filter(Boolean).join(' · ') || '--')}</td></tr>`).join('');
-        return `<section class="combatv3-section"><header class="combatv3-section-header"><h2 class="combatv3-section-title">命中账本</h2>
-            <span class="combatv3-section-count">${escapeHtml(hits.length)} 段</span></header>
-            ${hits.length ? `<div class="combatv3-ledger-scroll"><table class="combatv3-ledger"><thead><tr><th>#</th><th>时点</th><th>类型</th><th>倍率/伤害</th><th>破韧/失衡</th><th>资源/异常</th><th>条件/目标</th></tr></thead><tbody>${body}</tbody></table></div>`
-                : '<div class="combatv3-empty-inline">未识别到命中结算</div>'}</section>`;
+        return `<section class="combatv3-section"><header class="combatv3-section-header"><h2 class="combatv3-section-title">${escapeHtml(t('sections.hitLedger', null, '命中账本'))}</h2>
+            <span class="combatv3-section-count">${escapeHtml(t('counts.hits', { count: hits.length }, `${hits.length} 段`))}</span></header>
+            ${hits.length ? `<div class="combatv3-ledger-scroll"><table class="combatv3-ledger"><thead><tr><th>${escapeHtml(t('columns.hits.index', null, '#'))}</th><th>${escapeHtml(t('columns.hits.time', null, '时点'))}</th><th>${escapeHtml(t('columns.hits.type', null, '类型'))}</th><th>${escapeHtml(t('columns.hits.damage', null, '倍率/伤害'))}</th><th>${escapeHtml(t('columns.hits.poise', null, '破韧/失衡'))}</th><th>${escapeHtml(t('columns.hits.resource', null, '资源/异常'))}</th><th>${escapeHtml(t('columns.hits.note', null, '条件/目标'))}</th></tr></thead><tbody>${body}</tbody></table></div>`
+                : `<div class="combatv3-empty-inline">${escapeHtml(t('empty.noHits', null, '未识别到命中结算'))}</div>`}</section>`;
     }
 
     function isPerformanceEvent(event) {
@@ -962,8 +1634,10 @@
     }
 
     function eventLabel(event, index) {
-        return firstValue(event, ['label', 'name', 'title']) || ACTION_LABELS[event.type]
-            || firstValue(event, ['action', 'type', 'kind', '__key']) || `事件 ${index + 1}`;
+        const typeLabel = isPresent(event.type) ? actionLabel(event.type) : '';
+        return typeLabel || firstValue(event, ['label', 'name', 'title'])
+            || firstValue(event, ['action', 'type', 'kind', '__key'])
+            || t('events.named', { index: index + 1 }, `事件 ${index + 1}`);
     }
 
     function renderTimeline() {
@@ -971,9 +1645,14 @@
         state.timelineEvents = events;
         const rows = events.map((event, index) => ({ ...event, label: eventLabel(event, index) }));
         return `<div class="combatv3-context-row"><button type="button" class="combatv3-segment-tab" data-combatv3-action="toggle-performance"
-            aria-pressed="${state.showPerformance ? 'true' : 'false'}">${state.showPerformance ? '含表现事件' : '仅战斗事件'}</button>
-            <span class="combatv3-section-note">${escapeHtml(events.length)} / ${escapeHtml(state.analysis.events.length)} 项</span></div>
-            ${renderWindowStage(rows, '分析器未返回战斗时间轴事件')}`;
+            aria-pressed="${state.showPerformance ? 'true' : 'false'}">${escapeHtml(state.showPerformance
+                ? t('buttons.showPerformance', null, '含表现事件')
+                : t('buttons.combatOnly', null, '仅战斗事件'))}</button>
+            <span class="combatv3-section-note">${escapeHtml(t('counts.filteredEvents', {
+                visible: events.length,
+                total: state.analysis.events.length
+            }, `${events.length} / ${state.analysis.events.length} 项`))}</span></div>
+            ${renderWindowStage(rows, t('empty.noTimelineEvents', null, '分析器未返回战斗时间轴事件'))}`;
     }
 
     function linkClass(link) {
@@ -987,20 +1666,27 @@
     function renderLogic() {
         const links = state.analysis.links;
         const branchEvents = state.analysis.events.filter(event => Array.isArray(event.branchPath) && event.branchPath.length);
-        if (!links.length && !branchEvents.length) return '<div class="combatv3-empty-inline">未识别到条件、跳转或后继动作</div>';
+        if (!links.length && !branchEvents.length) {
+            return `<div class="combatv3-empty-inline">${escapeHtml(t('empty.noLogic', null, '未识别到条件、跳转或后继动作'))}</div>`;
+        }
         const nodes = links.map((link, index) => {
-            const title = firstValue(link, ['label', 'name', 'title', 'to', 'targetId', 'id', '__key']) || `逻辑 ${index + 1}`;
-            const kicker = firstValue(link, ['kind', 'type', 'category']) || 'Link';
+            const title = firstValue(link, ['label', 'name', 'title', 'to', 'targetId', 'id', '__key'])
+                || t('logic.named', { index: index + 1 }, `逻辑 ${index + 1}`);
+            const rawKicker = firstValue(link, ['kind', 'type', 'category']);
+            const kicker = rawKicker
+                ? (ACTION_LABELS[rawKicker] ? actionLabel(rawKicker) : timelineEnumLabel(rawKicker))
+                : t('logic.link', null, '链接');
             const detail = firstValue(link, ['condition', 'detail', 'description', 'from', 'sourceId', 'path']);
             return `<article class="combatv3-logic-node ${linkClass(link)}"><div class="combatv3-logic-kicker">${escapeHtml(kicker)}</div>
-                <div class="combatv3-logic-title">${escapeHtml(title)}</div>${isPresent(detail) ? `<div class="combatv3-logic-detail">${escapeHtml(formatValue(detail))}</div>` : ''}</article>`;
+                <div class="combatv3-logic-title">${escapeHtml(title)}</div>${isPresent(detail) ? `<div class="combatv3-logic-detail">${escapeHtml(compactTimelineDetail(detail))}</div>` : ''}</article>`;
         });
         branchEvents.forEach((event, index) => {
-            nodes.push(`<article class="combatv3-logic-node is-condition"><div class="combatv3-logic-kicker">条件分支</div>
+            const frame = t('units.frames', { value: formatValue(event.startFrame ?? '--') }, `${formatValue(event.startFrame ?? '--')} 帧`);
+            nodes.push(`<article class="combatv3-logic-node is-condition"><div class="combatv3-logic-kicker">${escapeHtml(t('logic.conditionBranch', null, '条件分支'))}</div>
                 <div class="combatv3-logic-title">${escapeHtml(event.branchPath.join(' → '))}</div>
-                <div class="combatv3-logic-detail">${escapeHtml(eventLabel(event, index))} · F${escapeHtml(event.startFrame ?? '--')}</div></article>`);
+                <div class="combatv3-logic-detail">${escapeHtml(eventLabel(event, index))} · ${escapeHtml(frame)}</div></article>`);
         });
-        return `<div class="combatv3-logic-node"><div class="combatv3-logic-kicker">根技能</div>
+        return `<div class="combatv3-logic-node"><div class="combatv3-logic-kicker">${escapeHtml(t('logic.rootSkill', null, '根技能'))}</div>
             <div class="combatv3-logic-title">${escapeHtml(state.activeSkillId)}</div></div>
             <div class="combatv3-logic-branches">${nodes.join('')}</div>`;
     }
@@ -1008,7 +1694,9 @@
     function blackboardRows() {
         const value = state.analysis.blackboard;
         if (Array.isArray(value?.entries)) return value.entries.map((row, index) => [row?.key ?? index,
-            `${formatValue(row?.value)} · ${row?.source === 'patch' ? `SkillPatch Lv.${row?.level ?? '?'}` : 'SkillData 默认值'}`]);
+            `${formatValue(row?.value)} · ${row?.source === 'patch'
+                ? t('blackboard.patchSource', { level: row?.level ?? '?' }, `SkillPatch Lv.${row?.level ?? '?'}`)
+                : t('blackboard.defaultSource', null, 'SkillData 默认值')}`]);
         if (Array.isArray(value)) return value.map((row, index) => [row?.key ?? row?.name ?? index, row?.resolvedValue ?? row?.value ?? row]);
         if (isObject(value)) return Object.entries(value);
         return isPresent(value) ? [['value', value]] : [];
@@ -1017,23 +1705,29 @@
     function renderDebug() {
         const warnings = state.analysis.warnings;
         const boards = blackboardRows();
-        const warningHtml = warnings.length ? warnings.map(warning => `<div class="combatv3-note is-warning">${escapeHtml(warning)}</div>`).join('') : '';
+        const warningHtml = warnings.length ? warnings.map(warning => `<div class="combatv3-note is-warning">${escapeHtml(warningText(warning))}</div>`).join('') : '';
         const boardHtml = boards.length ? `<dl class="combatv3-definition-list">${boards.map(([key, value]) => `<dt>${escapeHtml(key)}</dt><dd>${escapeHtml(formatValue(value))}</dd>`).join('')}</dl>`
-            : '<div class="combatv3-empty-inline">没有解析后的黑板值</div>';
+            : `<div class="combatv3-empty-inline">${escapeHtml(t('empty.noBlackboard', null, '没有解析后的黑板值'))}</div>`;
         const events = state.analysis.events;
-        const eventTable = events.length ? `<div class="combatv3-ledger-scroll"><table class="combatv3-data-table"><thead><tr><th>#</th><th>分类</th><th>时点</th><th>事件</th><th>详情</th></tr></thead><tbody>
-            ${events.map((event, index) => `<tr><td>${escapeHtml(index + 1)}</td><td>${escapeHtml(isPerformanceEvent(event) ? '表现' : '战斗')}</td>
+        const eventTable = events.length ? `<div class="combatv3-ledger-scroll"><table class="combatv3-data-table"><thead><tr><th>${escapeHtml(t('columns.events.index', null, '#'))}</th><th>${escapeHtml(t('columns.events.category', null, '分类'))}</th><th>${escapeHtml(t('columns.events.time', null, '时点'))}</th><th>${escapeHtml(t('columns.events.event', null, '事件'))}</th><th>${escapeHtml(t('columns.events.details', null, '详情'))}</th></tr></thead><tbody>
+            ${events.map((event, index) => `<tr><td>${escapeHtml(index + 1)}</td><td>${escapeHtml(isPerformanceEvent(event)
+                ? t('enums.eventKinds.presentation', null, '表现')
+                : t('enums.eventKinds.combat', null, '战斗'))}</td>
                 <td>${escapeHtml(formatValue(firstValue(event, ['frame', 'startFrame', 'time'])))}</td><td>${escapeHtml(eventLabel(event, index))}</td>
-                <td data-column="note">${escapeHtml(formatValue(firstValue(event, ['detail', 'details', 'description', 'note', 'condition'])))}</td></tr>`).join('')}</tbody></table></div>` : '';
-        return `${warningHtml}<section class="combatv3-section"><header class="combatv3-section-header"><h3 class="combatv3-section-title">黑板解析</h3></header>${boardHtml}</section>
-            <section class="combatv3-section"><header class="combatv3-section-header"><h3 class="combatv3-section-title">全部事件</h3><span class="combatv3-section-count">${escapeHtml(events.length)} 项</span></header>${eventTable || '<div class="combatv3-empty-inline">没有事件</div>'}</section>
-            <section class="combatv3-section"><details class="combatv3-raw"><summary>分析器输出</summary><pre>${escapeHtml(safeJson(state.analysisSource))}</pre></details>
-            <details class="combatv3-raw"><summary>当前等级 SkillPatch</summary><pre>${escapeHtml(safeJson(state.currentPatch))}</pre></details>
-            <details class="combatv3-raw"><summary>原始 SkillData</summary><pre>${escapeHtml(safeJson(state.currentData))}</pre></details></section>`;
+                <td data-column="note">${escapeHtml(compactTimelineDetail(firstValue(event, ['detail', 'details', 'description', 'note', 'condition'])))}</td></tr>`).join('')}</tbody></table></div>` : '';
+        return `${warningHtml}<section class="combatv3-section"><header class="combatv3-section-header"><h3 class="combatv3-section-title">${escapeHtml(t('sections.blackboardResolution', null, '黑板解析'))}</h3></header>${boardHtml}</section>
+            <section class="combatv3-section"><header class="combatv3-section-header"><h3 class="combatv3-section-title">${escapeHtml(t('sections.allEvents', null, '全部事件'))}</h3><span class="combatv3-section-count">${escapeHtml(t('counts.events', { count: events.length }, `${events.length} 个事件`))}</span></header>${eventTable || `<div class="combatv3-empty-inline">${escapeHtml(t('empty.noEvents', null, '没有事件'))}</div>`}</section>
+            <section class="combatv3-section"><details class="combatv3-raw"><summary>${escapeHtml(t('raw.analyzerOutput', null, '分析器输出'))}</summary><pre>${escapeHtml(safeJson(state.analysisSource))}</pre></details>
+            <details class="combatv3-raw"><summary>${escapeHtml(t('raw.currentPatch', null, '当前等级 SkillPatch'))}</summary><pre>${escapeHtml(safeJson(state.currentPatch))}</pre></details>
+            <details class="combatv3-raw"><summary>${escapeHtml(t('raw.skillData', null, '原始 SkillData'))}</summary><pre>${escapeHtml(safeJson(state.currentData))}</pre></details></section>`;
     }
 
     function renderTabs() {
-        const tabs = [['timeline', '战斗时间轴'], ['logic', '逻辑链'], ['debug', '调试数据']];
+        const tabs = [
+            ['timeline', t('tabs.timeline', null, '战斗时间轴')],
+            ['logic', t('tabs.logic', null, '逻辑链')],
+            ['debug', t('tabs.debug', null, '调试数据')]
+        ];
         const content = state.activeTab === 'logic' ? renderLogic() : (state.activeTab === 'debug' ? renderDebug() : renderTimeline());
         return `<section class="combatv3-section"><div class="combatv3-segment-tabs" role="tablist">${tabs.map(([id, label]) =>
             `<button type="button" class="combatv3-segment-tab${state.activeTab === id ? ' is-active' : ''}" role="tab" data-combatv3-tab="${escapeHtml(id)}"
@@ -1044,7 +1738,8 @@
     function renderSourceWarning() {
         const dataState = window.akeDataSource?.getState?.();
         if (!dataState || dataState.selection === 'latest') return '';
-        return '<div class="combatv3-note is-warning">当前 SkillData 使用共享最新数据，角色与等级表使用所选历史版本；跨版本字段仅供对照。</div>';
+        return `<div class="combatv3-note is-warning">${escapeHtml(t('sourceWarning', null,
+            '当前 SkillData 使用共享最新数据，角色与等级表使用所选历史版本；跨版本字段仅供对照。'))}</div>`;
     }
 
     function renderDetail() {
@@ -1099,7 +1794,8 @@
         state.currentPatch = selectedPatch(state.activeSkillId, state.level);
         updateDeepLink();
         const token = ++state.detailToken;
-        elements.detail.innerHTML = loadingHtml(state.currentItem?.displayName || state.activeSkillId, '正在切换技能等级');
+        elements.detail.innerHTML = loadingHtml(state.currentItem?.displayName || state.activeSkillId,
+            t('loading.switchingLevel', null, '正在切换技能等级'));
         analyzeCurrent(token);
     }
 
@@ -1138,7 +1834,7 @@
 
     async function fetchManifest() {
         const response = await (window.akeFetch || fetch)('/public/Json/SkillData/manifest.json');
-        if (!response.ok) throw new Error('无法加载 SkillData 清单');
+        if (!response.ok) throw new Error(t('errors.manifestLoad', null, '无法加载 SkillData 清单'));
         const data = await response.json();
         return Array.isArray(data) ? data : Object.values(data || {});
     }
@@ -1146,7 +1842,8 @@
     async function load(options) {
         const preserve = options?.preserve === true;
         const token = ++state.loadToken;
-        if (!preserve) elements.detail.innerHTML = loadingHtml(MODULE_TITLE, '正在建立角色与技能目录');
+        if (!preserve) elements.detail.innerHTML = loadingHtml(MODULE_TITLE(),
+            t('loading.buildingDirectory', null, '正在建立角色与技能目录'));
         try {
             if (window.configLoaded) await window.configLoaded;
             const [manifest, characters, growth, patches, enemyDisplay, enemies] = await Promise.all([
@@ -1183,13 +1880,15 @@
             const firstCharacter = state.directory.find(character => !character.isOther) || state.directory[0];
             const firstOwner = firstCharacter && firstCharacter.groups[0]?.skills[0];
             if (firstOwner) await selectSkill(firstOwner.id, { level: state.level, updateUrl: true });
-            else elements.detail.innerHTML = errorHtml('没有可展示的数据', 'SkillData 清单为空');
+            else elements.detail.innerHTML = errorHtml(
+                t('errors.emptyTitle', null, '没有可展示的数据'),
+                t('errors.manifestEmpty', null, 'SkillData 清单为空'));
         } catch (error) {
             if (token !== state.loadToken) return;
-            if (elements.meta) elements.meta.textContent = '读取失败';
+            if (elements.meta) elements.meta.textContent = t('errors.readFailed', null, '读取失败');
             elements.list.innerHTML = '';
             if (elements.mobileList) elements.mobileList.innerHTML = '';
-            elements.detail.innerHTML = errorHtml('战斗数据读取失败', error.message || error);
+            elements.detail.innerHTML = errorHtml(t('errors.combatDataTitle', null, '战斗数据读取失败'), error.message || error);
         }
     }
 
@@ -1242,7 +1941,7 @@
     bind();
     window.__akeV3SkillController = {
         id: MODULE_ID,
-        title: MODULE_TITLE,
+        get title() { return MODULE_TITLE(); },
         refresh: () => load({ preserve: true }),
         selectSkill: (skillId, level) => selectSkill(skillId, { level, updateUrl: true }),
         destroy

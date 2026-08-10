@@ -3,14 +3,14 @@
 <link rel="stylesheet" href="/theme/v3_skill.css">
 
 <div class="combatv3-module" id="combatv3Module">
-    <aside class="combatv3-sidebar" aria-label="战斗技能列表">
+    <aside class="combatv3-sidebar" aria-label="战斗技能列表" data-i18n-aria-label="modules.combat.aria.sidebar">
         <header class="combatv3-sidebar-header">
-            <h1>战斗</h1>
-            <div class="combatv3-list-meta" id="combatv3ListMeta" aria-live="polite">正在读取数据</div>
+            <h1 data-i18n="modules.combat.title">战斗</h1>
+            <div class="combatv3-list-meta" id="combatv3ListMeta" aria-live="polite" data-i18n="modules.combat.loading.directory">正在读取数据</div>
         </header>
 
         <label class="combatv3-search" for="combatv3SearchInput">
-            <span>搜索</span>
+            <span data-i18n="modules.combat.search.label">搜索</span>
             <input
                 id="combatv3SearchInput"
                 type="search"
@@ -18,6 +18,8 @@
                 spellcheck="false"
                 placeholder="角色、怪物或技能"
                 aria-label="搜索角色、怪物或技能"
+                data-i18n-placeholder="modules.combat.search.placeholder"
+                data-i18n-aria-label="modules.combat.aria.search"
             >
         </label>
 
@@ -25,6 +27,7 @@
             class="combatv3-group-list"
             id="combatv3GroupList"
             aria-label="角色、怪物与技能"
+            data-i18n-aria-label="modules.combat.aria.directory"
         ></nav>
     </aside>
 
@@ -32,8 +35,8 @@
         <div class="combatv3-state combatv3-state--loading">
             <span class="combatv3-spinner" aria-hidden="true"></span>
             <div>
-                <h2>战斗</h2>
-                <p>正在读取技能数据</p>
+                <h2 data-i18n="modules.combat.title">战斗</h2>
+                <p data-i18n="modules.combat.loading.skillData">正在读取技能数据</p>
             </div>
         </div>
     </main>
@@ -44,6 +47,7 @@
         type="button"
         aria-controls="combatv3MobileOverlay"
         aria-expanded="false"
+        data-i18n="modules.combat.buttons.skillList"
     >技能列表</button>
 
     <div
@@ -59,17 +63,19 @@
             aria-labelledby="combatv3MobileTitle"
         >
             <header class="combatv3-mobile-header">
-                <strong id="combatv3MobileTitle">选择技能</strong>
+                <strong id="combatv3MobileTitle" data-i18n="modules.combat.buttons.selectSkill">选择技能</strong>
                 <button
                     class="combatv3-icon-button"
                     id="combatv3MobileClose"
                     type="button"
                     aria-label="关闭技能列表"
                     title="关闭"
+                    data-i18n-aria-label="modules.combat.aria.close"
+                    data-i18n-title="modules.combat.buttons.close"
                 >×</button>
             </header>
             <label class="combatv3-search combatv3-search--mobile" for="combatv3MobileSearchInput">
-                <span>搜索</span>
+                <span data-i18n="modules.combat.search.label">搜索</span>
                 <input
                     id="combatv3MobileSearchInput"
                     type="search"
@@ -77,12 +83,15 @@
                     spellcheck="false"
                     placeholder="角色、怪物或技能"
                     aria-label="搜索角色、怪物或技能"
+                    data-i18n-placeholder="modules.combat.search.placeholder"
+                    data-i18n-aria-label="modules.combat.aria.search"
                 >
             </label>
             <nav
                 class="combatv3-group-list combatv3-mobile-list"
                 id="combatv3MobileList"
                 aria-label="移动端角色、怪物与技能"
+                data-i18n-aria-label="modules.combat.aria.mobileDirectory"
             ></nav>
         </section>
     </div>
