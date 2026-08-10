@@ -805,7 +805,7 @@
         };
     }
 
-    global.AKECombatData = Object.freeze({
+    global.AKEV3SkillData = Object.freeze({
         analyzeSkill,
         formatActionType,
         resolveValue,

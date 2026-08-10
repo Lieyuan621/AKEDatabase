@@ -64,6 +64,17 @@
         2: '终结技',
         3: '连携技'
     };
+    const ATTACK_ATTRIBUTE_LABELS = {
+        physical: '物理伤害',
+        real: '真实伤害',
+        fire: '灼热伤害',
+        pulse: '电磁伤害',
+        cryst: '寒冷伤害',
+        crystal: '寒冷伤害',
+        lifedrain: '吸血伤害',
+        natural: '自然伤害',
+        ether: '超域伤害'
+    };
     const ENEMY_RARITY_BY_DISPLAY_TYPE = { 0: 2, 3: 3, 1: 4, 4: 5, 2: 6 };
     const BASIC_LABELS = {
         durationFrame: '动作总时长', durationFrames: '动作总时长', totalFrames: '动作总时长',
@@ -151,13 +162,27 @@
         return value;
     }
 
+    function hasNonZeroValue(value) {
+        const scalar = resolvedScalar(value);
+        if (!isPresent(scalar)) return false;
+        const numeric = Number(scalar);
+        return Number.isFinite(numeric) ? numeric !== 0 : true;
+    }
+
     function costTypeLabel(value) {
         const scalar = resolvedScalar(value);
         if (!isPresent(scalar)) return undefined;
         const normalized = String(scalar).toLowerCase();
-        if (normalized === '0' || normalized === 'ultimatesp' || normalized === 'usp') return 'USP';
-        if (normalized === '1' || normalized === 'atb') return 'ATB';
+        if (normalized === '0' || normalized === 'ultimatesp' || normalized === 'usp') return '终结技能量';
+        if (normalized === '1' || normalized === 'atb') return '技力';
         return formatValue(scalar);
+    }
+
+    function attackAttributeLabel(value) {
+        const scalar = resolvedScalar(value);
+        if (!isPresent(scalar)) return undefined;
+        const normalized = String(scalar).trim().split('.').pop().toLowerCase();
+        return ATTACK_ATTRIBUTE_LABELS[normalized] || formatValue(scalar);
     }
 
     function readPath(source, path) {
@@ -211,17 +236,8 @@
     }
 
     function skillDisplayName(item, characterId) {
-        const ownName = String(item.name || '');
-        if (ownName && ownName !== item.id) return ownName;
         const suffix = skillSuffix(item.id, item.ownerPrefix || characterId);
-        const attack = suffix.match(/^attack(\d+)$/i);
-        if (attack) return `普通攻击 ${attack[1]}`;
-        const known = {
-            normal_skill: '战技', ultimate_skill: '终结技', combo_skill: '连携技', power_attack: '重击',
-            dash_attack: '冲刺攻击', dodge: '闪避', plunging_attack_start: '下落攻击（起始）',
-            plunging_attack_end: '下落攻击（落地）'
-        };
-        return known[suffix] || suffix || item.id;
+        return suffix || item.id;
     }
 
     function skillIconPath(iconId) {
@@ -308,7 +324,7 @@
                     id: rawGroup.skillGroupId || `group_${groupOrder}`,
                     skillGroupId: rawGroup.skillGroupId || `group_${groupOrder}`,
                     order: Number(rawGroup.skillGroupType ?? 99),
-                    displayName: gameText(rawGroup.name, GROUP_TYPE_LABELS[rawGroup.skillGroupType] || rawGroup.skillGroupId),
+                    displayName: groupDisplayName(rawGroup),
                     skills
                 });
             });
@@ -568,7 +584,7 @@
 
     async function analyzeCurrent(token) {
         const owner = state.activeOwner;
-        const analyzer = window.AKECombatData?.analyzeSkill;
+        const analyzer = window.AKEV3SkillData?.analyzeSkill;
         const entity = owner?.character || {};
         const isCharacter = entity.entityKind === 'character';
         const isEnemy = entity.entityKind === 'enemy';
@@ -616,7 +632,7 @@
         state.showPerformance = false;
         state.expandedCharacters.add(owner.character.id);
         state.expandedGroups.add(groupKey(owner.character.id, owner.group.id));
-        state.level = selectLevel(patchesFor(skillId), settings.level ?? state.level);
+        state.level = selectLevel(patchesFor(skillId), isPresent(settings.level) ? settings.level : undefined);
         state.currentPatch = selectedPatch(skillId, state.level);
         renderDirectories();
         closeMobileList();
@@ -647,12 +663,21 @@
     }
 
     function metricValue(key, value) {
+        if (isObject(value) && Object.prototype.hasOwnProperty.call(value, 'displayValue')) {
+            return {
+                value: formatValue(value.displayValue),
+                unit: isPresent(value.displayUnit) ? formatValue(value.displayUnit) : ''
+            };
+        }
         value = resolvedScalar(value);
         const lower = String(key).toLowerCase();
-        if (typeof value === 'number' && lower === 'startcdframe') {
-            return { value: `F${formatValue(value)}`, unit: `约 ${formatValue(value / 30)} 秒` };
+        if (lower === 'attackrangetype') {
+            const rangeLabel = { melee: '近战', ranged: '远程' }[String(value).toLowerCase()];
+            if (rangeLabel) return { value: rangeLabel, unit: '' };
         }
-        if (typeof value === 'number' && lower.includes('frame')) return { value: `F${formatValue(value)}`, unit: '' };
+        if (typeof value === 'number' && lower.includes('frame')) {
+            return { value: formatValue(value), unit: `帧，约${formatValue(value / 30)}秒` };
+        }
         if (typeof value === 'number' && (lower.includes('time') || lower.includes('cooldown'))) return { value: formatValue(value), unit: '秒' };
         return { value: formatValue(value), unit: '' };
     }
@@ -703,16 +728,25 @@
     function superArmorSummary() {
         const windows = state.analysis.windows.filter(item => ['superArmor', 'buffSuperArmor'].includes(item.kind));
         if (!windows.length) return undefined;
-        return windows.map(item => {
+        const summaries = windows.map(item => {
             const buffArmor = isObject(item.values)
                 ? Object.entries(item.values).find(([key]) => /super.?armor/i.test(key))?.[1]
                 : undefined;
             const value = resolvedScalar(item.superArmorValue ?? buffArmor);
             const impact = resolvedScalar(item.impactResistance);
-            const range = isPresent(item.startFrame) ? `F${item.startFrame}${item.endFrame !== item.startFrame ? `–${item.endFrame}` : ''}` : '';
-            return [isPresent(value) ? value : item.buffId || 'Buff', isPresent(impact) ? `冲击抗性 ${impact}` : '', range]
-                .filter(Boolean).join(' · ');
-        }).join(' / ');
+            const range = isPresent(item.startFrame)
+                ? `${formatValue(item.startFrame)}${item.endFrame !== item.startFrame ? `–${formatValue(item.endFrame)}` : ''}帧`
+                : '';
+            return {
+                value: [isPresent(value) ? value : item.buffId || 'Buff', isPresent(impact) ? `冲击抗性 ${impact}` : '']
+                    .filter(Boolean).join(' · '),
+                range
+            };
+        });
+        return {
+            displayValue: summaries.map(item => item.value).join(' / '),
+            displayUnit: summaries.map(item => item.range).filter(Boolean).join(' / ')
+        };
     }
 
     function coreMetrics() {
@@ -724,6 +758,7 @@
         const targeting = basic.targeting || {};
         const mobility = basic.mobility || {};
         const patch = state.currentPatch || {};
+        const runtimeCooldown = runtimeCast.cooldownTime ?? raw.castData?.cooldownTime;
         const definitions = [
             ['durationFrame', '动作总时长', firstValue(basic, ['durationFrame', 'durationFrames', 'totalFrames']) ?? raw.durationFrame, true],
             ['exclusiveFrame', '排他期', firstValue(basic, ['exclusiveFrame', 'exclusiveFrames']) ?? raw.exclusiveFrame, true],
@@ -732,13 +767,13 @@
             ['firstHitFrame', '首段命中', firstValue(basic, ['firstHitFrame', 'startupFrame', 'startupFrames']) ?? (hitFrames.length ? Math.min(...hitFrames) : undefined), true],
             ['lastHitFrame', '末段命中', firstValue(basic, ['lastHitFrame']) ?? (hitFrames.length ? Math.max(...hitFrames) : undefined), false],
             ['hitCount', '命中段数', firstValue(basic, ['hitCount']) ?? hitGroups.length, true],
-            ['cooldownTime', '运行时冷却', runtimeCast.cooldownTime ?? raw.castData?.cooldownTime, false],
+            ['cooldownTime', '运行时冷却', hasNonZeroValue(runtimeCooldown) ? runtimeCooldown : undefined, false],
             ['startCdFrame', '资源提交帧', runtimeCast.startCdFrame ?? raw.castData?.startCdFrame, false],
             ['attackRangeType', '攻击距离类型', targeting.attackRangeType, false],
             ['castDistance', '施放距离', targeting.castDistance ?? raw.castData?.castDistance, false],
             ['poiseDamage', '确定路径总削韧', numericPoiseSummary(hitGroups), false],
-            ['patchCost', '等级配置消耗', isPresent(patch.costValue) ? `${costTypeLabel(patch.costType)} ${formatValue(patch.costValue)}` : undefined, false],
-            ['runtimeCost', '运行时消耗', isPresent(resolvedScalar(runtimeCast.costValue)) ? `${costTypeLabel(runtimeCast.costType)} ${formatValue(resolvedScalar(runtimeCast.costValue))}` : undefined, false],
+            ['patchCost', '等级配置消耗', hasNonZeroValue(patch.costValue) ? `${costTypeLabel(patch.costType)} ${formatValue(patch.costValue)}` : undefined, false],
+            ['runtimeCost', '运行时消耗', hasNonZeroValue(runtimeCast.costValue) ? `${costTypeLabel(runtimeCast.costType)} ${formatValue(resolvedScalar(runtimeCast.costValue))}` : undefined, false],
             ['superArmor', '技能抗打断', superArmorSummary(), true],
             ['canMove', '可移动施放', mobility.canMove === true ? true : undefined, false],
             ['canCastInAir', '可空中施放', mobility.canCastInAir === true ? true : undefined, false],
@@ -747,15 +782,15 @@
         return definitions.filter(row => isPresent(row[2]));
     }
 
-    function sourceComparisonRows() {
+    function patchMetrics() {
         const patch = state.currentPatch || {};
+        const hasCost = hasNonZeroValue(patch.costValue);
         return [
-            ['等级', patch.level, 'SkillPatch.level'],
-            ['冷却', patch.coolDown, 'SkillPatch.coolDown'],
-            ['消耗类型', costTypeLabel(patch.costType), 'SkillPatch.costType'],
-            ['消耗值', patch.costValue, 'SkillPatch.costValue'],
-            ['最大蓄力时间', patch.maxChargeTime, 'SkillPatch.maxChargeTime']
-        ].filter(row => isPresent(row[1]));
+            ['level', '等级', patch.level],
+            ['cooldownTime', '冷却', hasNonZeroValue(patch.coolDown) ? patch.coolDown : undefined],
+            ['costType', '消耗类型', hasCost ? costTypeLabel(patch.costType) : undefined],
+            ['costValue', '消耗值', hasCost ? patch.costValue : undefined]
+        ].filter(row => isPresent(row[2]));
     }
 
     function renderIdentity() {
@@ -777,7 +812,7 @@
             <div class="combatv3-detail-heading${icon ? '' : ' without-icon'}">${icon ? `<img class="combatv3-detail-icon" src="${escapeHtml(icon)}" alt="" onerror="this.remove();this.parentElement.classList.add('without-icon')">` : ''}<div class="combatv3-detail-copy">
                 <div class="combatv3-eyebrow">${escapeHtml(owner.character.name)}${isEnemy ? '' : ` · ${escapeHtml(owner.group.displayName)}`}</div>
                 <h1 class="combatv3-detail-title">${escapeHtml(title)}</h1>
-                <p class="combatv3-detail-subtitle">${escapeHtml(owner.item.displayName)}</p></div></div>
+                <p class="combatv3-detail-subtitle">${escapeHtml(raw.skillId || owner.item.id)}</p></div></div>
             <code class="combatv3-detail-id" title="${escapeHtml(owner.item.id)}">${escapeHtml(owner.item.id)}</code>
         </header>
         <div class="combatv3-context-row">
@@ -795,14 +830,16 @@
             return `<div class="combatv3-metric${important ? ' is-important' : ''}"><span class="combatv3-metric-label">${escapeHtml(label)}</span>
                 <strong class="combatv3-metric-value">${escapeHtml(value.value)}</strong>${value.unit ? `<span class="combatv3-metric-unit">${escapeHtml(value.unit)}</span>` : ''}</div>`;
         }).join('') : '<div class="combatv3-empty-inline">分析器未返回核心指标</div>';
-        const comparisons = sourceComparisonRows();
-        const comparisonHtml = comparisons.length ? `<div class="combatv3-ledger-scroll"><table class="combatv3-data-table"><thead><tr>
-            <th>参数</th><th>技能等级配置值</th><th>来源</th></tr></thead><tbody>
-            ${comparisons.map(row => `<tr><td>${escapeHtml(row[0])}</td><td>${escapeHtml(formatValue(row[1]))}</td>
-                <td data-column="note">${escapeHtml(row[2])}</td></tr>`).join('')}</tbody></table></div>` : '';
-        return `<section class="combatv3-section"><header class="combatv3-section-header"><h2 class="combatv3-section-title">核心指标</h2>
-            <span class="combatv3-section-note">关键战斗字段</span></header><div class="combatv3-metric-grid">${metricHtml}</div>
-            ${comparisonHtml ? `<div class="combatv3-section">${comparisonHtml}</div>` : ''}</section>`;
+        const patches = patchMetrics();
+        const patchHtml = patches.length ? `<section class="combatv3-section">
+            <header class="combatv3-section-header"><h3 class="combatv3-section-title">技能等级配置</h3></header>
+            <div class="combatv3-metric-grid">${patches.map(([key, label, rawValue]) => {
+                const value = metricValue(key, rawValue);
+                return `<div class="combatv3-metric"><span class="combatv3-metric-label">${escapeHtml(label)}</span>
+                    <strong class="combatv3-metric-value">${escapeHtml(value.value)}</strong>${value.unit ? `<span class="combatv3-metric-unit">${escapeHtml(value.unit)}</span>` : ''}</div>`;
+            }).join('')}</div></section>` : '';
+        return `${patchHtml}<section class="combatv3-section"><header class="combatv3-section-header"><h2 class="combatv3-section-title">核心指标</h2>
+            <span class="combatv3-section-note">关键战斗字段</span></header><div class="combatv3-metric-grid">${metricHtml}</div></section>`;
     }
 
     function frameOf(item, names) {
@@ -897,7 +934,8 @@
     }
 
     function hitResources(group) {
-        return group.resources.map(cost => `${costTypeLabel(cost.costType) || '资源'} ${resolvedLabel(cost.costValue)}`)
+        return group.resources.filter(cost => hasNonZeroValue(cost.costValue))
+            .map(cost => `${costTypeLabel(cost.costType) || '资源'} ${resolvedLabel(cost.costValue)}`)
             .concat(group.effects).join(' / ');
     }
 
@@ -905,7 +943,7 @@
         const hits = groupedHits();
         const body = hits.map((hit, index) => `<tr><td>${escapeHtml(index + 1)}</td>
             <td>${escapeHtml(`F${hit.startFrame ?? '--'}${hit.endFrame !== hit.startFrame ? `–${hit.endFrame}` : ''}`)}</td>
-            <td>${escapeHtml([...hit.damageTypes].join(' / ') || '--')}</td>
+            <td>${escapeHtml([...hit.damageTypes].map(attackAttributeLabel).join(' / ') || '--')}</td>
             <td>${escapeHtml(hit.hp.map(hitScale).join(' / ') || '--')}</td>
             <td>${escapeHtml(hit.poise.map(hitPoise).join(' / ') || '--')}</td>
             <td data-column="logic">${escapeHtml(hitResources(hit) || '--')}</td>
