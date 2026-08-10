@@ -1008,7 +1008,7 @@
                     <button type="button" class="combatv3-character-toggle" data-combatv3-action="toggle-group"
                         data-character-id="${escapeHtml(character.id)}" data-group-id="${escapeHtml(group.id)}"
                         aria-expanded="${groupOpen ? 'true' : 'false'}">
-                        <span class="combatv3-character-name">${group.icon ? `<img class="combatv3-group-icon" src="${escapeHtml(skillIconPath(group.icon))}" alt="" onerror="this.hidden=true">` : ''}<span>${escapeHtml(group.displayName)}</span></span>
+                        <span class="combatv3-character-name">${group.icon ? `<img class="combatv3-group-icon" src="${escapeHtml(skillIconPath(group.icon))}" alt="">` : ''}<span>${escapeHtml(group.displayName)}</span></span>
                         <span class="combatv3-character-count">${escapeHtml(group.skills.length)}</span>
                     </button>
                     <div class="combatv3-skill-list">${skills}</div>
@@ -1017,7 +1017,7 @@
             return `${sectionHeading}<section class="combatv3-character-group${characterOpen ? ' is-open' : ''}">
                 <button type="button" class="combatv3-character-toggle" data-combatv3-action="toggle-character"
                     data-character-id="${escapeHtml(character.id)}" aria-expanded="${characterOpen ? 'true' : 'false'}">
-                    <span class="combatv3-character-name">${character.icon ? `<img class="combatv3-character-icon" src="${escapeHtml(character.icon)}" alt="" onerror="this.hidden=true">` : ''}<span>${escapeHtml(character.name)}</span></span>
+                    <span class="combatv3-character-name">${character.icon ? `<img class="combatv3-character-icon" src="${escapeHtml(character.icon)}" alt="">` : ''}<span>${escapeHtml(character.name)}</span></span>
                     <span class="combatv3-character-count">${escapeHtml(total)}</span>
                 </button>
                 <div class="combatv3-skill-list">${groups}</div>
@@ -1375,7 +1375,7 @@
             enumValueLabel('passiveSkillTypes', raw.passiveSkillType)
         ].filter(Boolean);
         return `<header class="combatv3-detail-header">
-            <div class="combatv3-detail-heading${icon ? '' : ' without-icon'}">${icon ? `<img class="combatv3-detail-icon" src="${escapeHtml(icon)}" alt="" onerror="this.remove();this.parentElement.classList.add('without-icon')">` : ''}<div class="combatv3-detail-copy">
+            <div class="combatv3-detail-heading${icon ? '' : ' without-icon'}">${icon ? `<img class="combatv3-detail-icon" src="${escapeHtml(icon)}" alt="">` : ''}<div class="combatv3-detail-copy">
                 <div class="combatv3-eyebrow">${escapeHtml(owner.character.name)}${isEnemy ? '' : ` · ${escapeHtml(owner.group.displayName)}`}</div>
                 <h1 class="combatv3-detail-title">${escapeHtml(title)}</h1>
                 <p class="combatv3-detail-subtitle">${escapeHtml(raw.skillId || owner.item.id)}</p></div></div>

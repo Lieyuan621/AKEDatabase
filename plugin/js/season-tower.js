@@ -297,7 +297,7 @@
                 const offset = (0.3 * 100 / (halfX * 2)).toFixed(2);
                 const stackStyle = stackIndex ? `margin-left:${stackIndex * offset}%;margin-top:-${stackIndex * offset}%;z-index:${10 - stackIndex};` : 'z-index:10;';
                 spots += `<div class="v2d-map-spot" data-wave="${waveIndex}" data-group="${escapeHtml(group.key)}" data-target-group="${escapeHtml(group.targetKey)}" data-enemy-id="${escapeHtml(spawn.id)}" style="left:${point.left}%;top:${point.top}%;${waveIndex ? 'display:none;' : ''}${stackStyle}">
-                    <img class="v2d-map-spot-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${escapeHtml(spawn.templateId)}.png" alt="" onerror="this.style.display='none'">
+                    <img class="v2d-map-spot-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${escapeHtml(spawn.templateId)}.png" alt="">
                     <div class="v2d-map-tip"><div><b>${escapeHtml(enemyName)} ×${spawn.count} Lv.${spawn.level}</b></div>${details.map(detail => `<div>${escapeHtml(detail)}</div>`).join('')}</div>
                 </div>`;
             }));
@@ -326,7 +326,7 @@
             const mapHtml = renderSpawnMap(waves, data);
             return `<div class="st-config">
                 <div class="st-config-title"><code class="st-config-id">${escapeHtml(config.configId)}</code><span>${waves.length} 波 · ${total} 个敌人</span></div>
-                <div class="v2d-wave-map-row"><div class="v2d-wave-section"><div class="v2d-wave-detail">${waves.map((wave, waveIndex) => `<div class="v2d-wave-line${waveIndex === 0 ? ' active' : ''}" data-wave-idx="${waveIndex}"><span class="v2d-wave-num">第 ${escapeHtml(wave.waveId)} 波</span>${wave.repeatable ? '<span class="v2d-wave-repeat">可重复</span>' : ''}${wave.maxAlive ? `<span class="v2d-wave-alive">同时在场 ${wave.maxAlive}</span>` : ''}${wave.externallyControlled ? '<span class="v2d-wave-pause">外部控制</span>' : ''}: ${wave.enemies.map(enemy => `<span class="v2d-wave-enemy" data-wave-idx="${waveIndex}" data-enemy-id="${escapeHtml(enemy.id)}"><img class="v2d-wave-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${escapeHtml(enemy.templateId)}.png" alt="" onerror="this.style.display='none'"><span class="v2d-wave-ename">${escapeHtml(text(data.enemyDisplay[data.enemies[enemy.id]?.templateId]?.name, enemy.id))}</span> ×${enemy.count} <span class="v2d-wave-lv">Lv.${enemy.level}</span></span>`).join(' ')}</div>`).join('')}</div></div>${mapHtml}</div>
+                <div class="v2d-wave-map-row"><div class="v2d-wave-section"><div class="v2d-wave-detail">${waves.map((wave, waveIndex) => `<div class="v2d-wave-line${waveIndex === 0 ? ' active' : ''}" data-wave-idx="${waveIndex}"><span class="v2d-wave-num">第 ${escapeHtml(wave.waveId)} 波</span>${wave.repeatable ? '<span class="v2d-wave-repeat">可重复</span>' : ''}${wave.maxAlive ? `<span class="v2d-wave-alive">同时在场 ${wave.maxAlive}</span>` : ''}${wave.externallyControlled ? '<span class="v2d-wave-pause">外部控制</span>' : ''}: ${wave.enemies.map(enemy => `<span class="v2d-wave-enemy" data-wave-idx="${waveIndex}" data-enemy-id="${escapeHtml(enemy.id)}"><img class="v2d-wave-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${escapeHtml(enemy.templateId)}.png" alt=""><span class="v2d-wave-ename">${escapeHtml(text(data.enemyDisplay[data.enemies[enemy.id]?.templateId]?.name, enemy.id))}</span> ×${enemy.count} <span class="v2d-wave-lv">Lv.${enemy.level}</span></span>`).join(' ')}</div>`).join('')}</div></div>${mapHtml}</div>
                 <div class="v2d-enemy-list">${unique.map(enemy => renderEnemy(enemy.id, enemy.level, libraryBuffs[enemy.id] || [], scriptedBuffs, data)).join('')}</div>
             </div>`;
         }).join('');
@@ -336,7 +336,7 @@
 
     function itemReward(bundle, items) {
         const item = items[bundle.id] || {};
-        return `<span class="st-reward"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escapeHtml(item.iconId || bundle.id)}.png" alt="" onerror="this.style.display='none'"><span>${escapeHtml(text(item.name, bundle.id))}</span><b>×${Number(bundle.count || 0).toLocaleString()}</b></span>`;
+        return `<span class="st-reward"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escapeHtml(item.iconId || bundle.id)}.png" alt=""><span>${escapeHtml(text(item.name, bundle.id))}</span><b>×${Number(bundle.count || 0).toLocaleString()}</b></span>`;
     }
 
     function renderRanks(data) {

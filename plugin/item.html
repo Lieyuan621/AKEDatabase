@@ -338,7 +338,6 @@
                 const icon = document.createElement('img');
                 icon.className = 'item-icon';
                 icon.src = item.icon || '';
-                icon.onerror = function() { this.onerror = null; this.src = ''; };
 
                 const infoDiv = document.createElement('div');
                 infoDiv.className = 'item-info';
@@ -425,7 +424,7 @@
                         <div class="obtain-list">
                             ${data.obtainWays.map(way => `
                                 <div class="obtain-item">
-                                    <img class="obtain-icon" src="${way.icon}" onerror="this.onerror=null; this.src='';">
+                                    <img class="obtain-icon" src="${way.icon}">
                                     <span class="obtain-desc">${way.desc}</span>
                                 </div>
                             `).join('')}
@@ -464,7 +463,7 @@
                 <div class="item-detail-container">
                     <div class="detail-header">
                         <div class="detail-icon">
-                            <img src="${iconBig}" onerror="this.onerror=null; this.src='';">
+                            <img src="${iconBig}">
                         </div>
                         <div class="detail-text">
                             <div class="detail-title-row">

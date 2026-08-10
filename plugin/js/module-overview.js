@@ -203,7 +203,6 @@
                     image.src = item.image;
                     image.alt = '';
                     image.loading = 'lazy';
-                    image.onerror = function () { this.remove(); visual.classList.add('is-empty'); };
                     visual.appendChild(image);
                 } else {
                     visual.classList.add('is-empty');
@@ -228,7 +227,6 @@
                         image.alt = icon.label || '';
                         image.title = icon.label || '';
                         if (icon.kind) image.dataset.kind = icon.kind;
-                        image.onerror = function () { this.remove(); };
                         iconList.appendChild(image);
                     });
                     titleRow.appendChild(iconList);

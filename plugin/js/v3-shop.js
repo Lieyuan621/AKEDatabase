@@ -508,7 +508,7 @@
         return `<div class="akeshop-rewards ${className || ''}">${items.map(entry => {
             const name = gameText(entry.item.name, entry.id);
             return `<div class="akeshop-reward">
-                ${entry.item.iconId ? `<img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escapeHtml(entry.item.iconId)}.png" alt="" onerror="this.style.display='none'">` : ''}
+                ${entry.item.iconId ? `<img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escapeHtml(entry.item.iconId)}.png" alt="">` : ''}
                 <span>${escapeHtml(name)}</span><b>×${formatNumber(entry.count)}</b>
             </div>`;
         }).join('')}</div>`;
@@ -600,7 +600,7 @@
         return `<article class="akeshop-product ${rarityClass}${product.hidden ? ' is-hidden' : ''}">
             ${changeHtml}
             <div class="akeshop-product-head">
-                <div class="akeshop-product-icon">${icon ? `<img src="${escapeHtml(icon)}" alt="" onerror="this.style.display='none'">` : '<span aria-hidden="true">◇</span>'}</div>
+                <div class="akeshop-product-icon">${icon ? `<img src="${escapeHtml(icon)}" alt="">` : '<span aria-hidden="true">◇</span>'}</div>
                 <div class="akeshop-product-title"><h3>${escapeHtml(product.name)}</h3><small class="akeshop-product-id">${escapeHtml(product.id)}</small></div>
             </div>
             ${badges.length ? `<div class="akeshop-badges">${badges.map(value => `<span>${escapeHtml(value)}</span>`).join('')}</div>` : ''}
@@ -710,7 +710,7 @@
         const name = weaponName(weaponId);
         const item = state.tables.items[weaponId];
         const iconId = item?.iconId || weaponId;
-        return `<a href="/?plugin=v3_weapon&id=${escapeHtml(weaponId)}" class="akeshop-rot-weapon" title="${escapeHtml(name)}"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escapeHtml(iconId)}.png" alt="${escapeHtml(name)}" onerror="this.style.display='none'"></a>`;
+        return `<a href="/?plugin=v3_weapon&id=${escapeHtml(weaponId)}" class="akeshop-rot-weapon" title="${escapeHtml(name)}"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escapeHtml(iconId)}.png" alt="${escapeHtml(name)}"></a>`;
     }
 
     function renderRotationCombinedTable() {

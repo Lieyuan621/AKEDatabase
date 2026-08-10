@@ -339,6 +339,7 @@
                 document.body.appendChild(script);
             };
             try {
+                await loadScript('/plugin/js/ake-image-fallback.js');
                 await loadScript('/plugin/js/index-parse-fallback.js');
                 await loadScript('/plugin/js/i18n.js');
                 await loadScript('/plugin/js/toast.js');

@@ -61,7 +61,7 @@
                 if (src.charAt(0) !== '/' && !src.startsWith('http://') && !src.startsWith('https://')) {
                     src = '/' + src;
                 }
-                return '<img src="' + src + '" alt="' + escapeHtml(alt) + '" class="md-img" onerror="this.onerror=null;this.style.display=\'none\';">';
+                return '<img src="' + src + '" alt="' + escapeHtml(alt) + '" class="md-img">';
             });
             result = result.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function(m, label, href) {
                 if (href.charAt(0) === '#') {

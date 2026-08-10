@@ -182,7 +182,6 @@
                 const icon = document.createElement('img');
                 icon.className = 'v2eq-item-icon';
                 icon.src = suit.icon || '';
-                icon.onerror = function() { this.onerror = null; this.src = ''; };
 
                 const info = document.createElement('div');
                 info.className = 'v2eq-item-info';
@@ -304,7 +303,7 @@
                 const item = itemTable[costItemId] || {};
                 const name = item.name?.text || costItemId;
                 const iconId = item.iconId || costItemId;
-                return `<div class="v2eq-cost-item"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png" onerror="this.style.display='none'"><span class="v2eq-ci-name">${escapeHtml(name)}</span><span class="v2eq-ci-cnt">${prefix}${Number(count || 0).toLocaleString()}</span></div>`;
+                return `<div class="v2eq-cost-item"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png"><span class="v2eq-ci-name">${escapeHtml(name)}</span><span class="v2eq-ci-cnt">${prefix}${Number(count || 0).toLocaleString()}</span></div>`;
             }
 
             const tipHtml = chains.map(chain => {
@@ -324,7 +323,7 @@
             const component = itemTable[componentId] || {};
             const componentTitle = component.name?.text || (getCurrentShowHidden() ? componentId : '');
             const componentIcon = componentId
-                ? `<img class="v2eq-default-component" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escapeHtml(component.iconId || componentId)}.png" alt="" title="${escapeHtml(componentTitle)}" onerror="this.style.display='none'">`
+                ? `<img class="v2eq-default-component" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escapeHtml(component.iconId || componentId)}.png" alt="" title="${escapeHtml(componentTitle)}">`
                 : '';
             return `<span class="v2eq-cost-wrap">${componentIcon}<span class="v2eq-cost-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-cost-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">${t('craftingCost')}</span><span class="v2eq-cost-tip">${tipHtml}</span></span>`;
         }
@@ -391,7 +390,7 @@
             return `
                 <div class="v2eq-card${isVersionAdded ? ' v2eq-card--version-added' : ''}"${isVersionAdded ? ' data-ake-change="added"' : ''}>
                     <div class="v2eq-card-header">
-                        <img class="v2eq-card-icon" src="${iconSrc}" onerror="this.onerror=null; this.src='';">
+                        <img class="v2eq-card-icon" src="${iconSrc}">
                         <div class="v2eq-card-title">
                             <div class="v2eq-card-name-row">
                                 <span class="v2eq-card-name">${escapeHtml(name)}</span>
@@ -625,7 +624,7 @@
                 <div class="v2eq-detail-container">
                     <div class="v2eq-header">
                         <div class="v2eq-header-icon">
-                            <img src="${suit.icon || ''}" onerror="this.onerror=null; this.src='';">
+                            <img src="${suit.icon || ''}">
                         </div>
                         <div class="v2eq-header-text">
                             <div class="v2eq-title-row">

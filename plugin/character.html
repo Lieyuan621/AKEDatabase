@@ -317,7 +317,6 @@
                 const icon = document.createElement('img');
                 icon.className = 'character-icon';
                 icon.src = char.icon || '';
-                icon.onerror = function() { this.onerror = null; this.src = ''; };
 
                 const textContainer = document.createElement('div');
                 textContainer.className = 'character-info';
@@ -563,7 +562,7 @@
                 <div class="detail-header">
                     <div class="detail-left">
                         <div class="detail-icon">
-                            <img src="${data.icon || ''}" onerror="this.onerror=null; this.src='';">
+                            <img src="${data.icon || ''}">
                         </div>
                         <div class="detail-text">
                             <div class="detail-title-row">
@@ -585,7 +584,7 @@
                         </div>
                     </div>
                     <div class="detail-pic">
-                        <img src="${data.pic || ''}" onerror="this.style.display='none'">
+                        <img src="${data.pic || ''}">
                     </div>
                 </div>
             `;
@@ -757,7 +756,7 @@
                 return `
                     <div class="skill-item" data-skill-name="${group.name}">
                         <div class="skill-name">
-                            <img class="skill-icon" src="${group.icon}" alt="" onerror="this.onerror=null; this.src='';">
+                            <img class="skill-icon" src="${group.icon}" alt="">
                             ${displayName}
                         </div>
                         <div class="skill-desc">${groupDesc}</div>
@@ -777,7 +776,7 @@
                     </h3>
                     <div class="collapse-content" style="display:none;">
                         <div class="potential-pics">
-                            ${potentialPics.map(src => `<img src="${src}" onerror="this.style.display='none'">`).join('')}
+                            ${potentialPics.map(src => `<img src="${src}">`).join('')}
                         </div>
                     </div>
                 </div>
@@ -805,7 +804,7 @@
             const spaceshipHtml = spaceshipSkills.length ? spaceshipSkills.map(slot => `
                 <div class="spaceship-skill-item">
                     <div class="spaceship-skill-header">
-                        <img class="spaceship-icon" src="${slot.icon}" alt="" onerror="this.onerror=null; this.src='';">
+                        <img class="spaceship-icon" src="${slot.icon}" alt="">
                         <span class="spaceship-skill-name">${slot.talentName}</span>
                         <span class="spaceship-skill-room">${slot.roomTypeName}</span>
                     </div>

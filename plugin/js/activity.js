@@ -268,7 +268,6 @@
                     image.src = item.tabImg;
                     image.alt = '';
                     image.loading = 'lazy';
-                    image.onerror = function () { this.remove(); };
                     bar.appendChild(image);
                 }
                 bar.setAttribute('aria-label', `${item.name || item.activityId}，${t('dates.range', { start: formatTime(item.openTime), end: formatTime(item.closeTime) })}`);
@@ -346,7 +345,8 @@
                 item.dataset.contentFile = act.contentFile;
 
                 if (act.tabImg) {
-                    item.style.setProperty('--bg-image', `url(${act.tabImg})`);
+                    const tabImage = String(act.tabImg).replace(/(["\\])/g, '\\$1');
+                    item.style.setProperty('--bg-image', `url("${tabImage}"), url("/icon_default_missing.png")`);
                 }
 
                 const infoDiv = document.createElement('div');
@@ -432,7 +432,7 @@
                 const iconSrc = reward.picpath || '';
                 html += `
                     <div class="reward-item">
-                        <img class="reward-icon" src="${iconSrc}" onerror="this.onerror=null; this.src='';">
+                        <img class="reward-icon" src="${iconSrc}">
                         <span class="reward-name">${reward.name}</span>
                         <span class="reward-count">${t('rewards.count', { count: reward.count })}</span>
                     </div>

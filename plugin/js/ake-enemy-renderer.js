@@ -57,7 +57,7 @@
         return `
             <div class="v2d-enemy-card"${dataAttributes(options.dataAttributes)}>
                 <div class="v2d-enemy-header">
-                    <img class="v2d-enemy-icon" src="${escapeHtml(options.iconSrc || '')}" alt="" onerror="this.onerror=null; this.style.display='none';">
+                    <img class="v2d-enemy-icon" src="${escapeHtml(options.iconSrc || '')}" alt="">
                     <div class="v2d-enemy-title">
                         <span class="v2d-enemy-name">${escapeHtml(options.name)}</span>
                         ${nickname ? `<span class="v2d-enemy-nick">${escapeHtml(nickname)}</span>` : ''}

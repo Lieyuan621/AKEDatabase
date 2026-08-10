@@ -173,7 +173,7 @@
                     const offsetPct = (0.3 * 100 / (2 * halfX)).toFixed(2);
                     const stackStyle = stackIdx > 0 ? `margin-left:${stackIdx * offsetPct}%;margin-top:-${stackIdx * offsetPct}%;z-index:${10 - stackIdx};` : 'z-index:10;';
                     mapSpotsHtml += `<div class="v2d-map-spot" data-wave="${wi}" data-group="${g.groupKey}" data-target-group="${targetGroupKey}" style="left:${pct.left}%;top:${pct.top}%;${vis}${stackStyle}">
-                        <img class="v2d-map-spot-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${spawn.templateId}.png" onerror="this.style.display='none'">
+                        <img class="v2d-map-spot-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${spawn.templateId}.png">
                         <div class="v2d-map-tip">${tipLines.map(l => `<div>${l}</div>`).join('')}</div>
                     </div>`;
                 });
@@ -499,7 +499,7 @@
                 const rarity = item?.rarity || 0;
                 const iconId = item?.iconId || '';
                 const iconSrc = iconId ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png` : '';
-                const iconHtml = iconSrc ? `<img class="v2d-reward-icon" src="${iconSrc}" onerror="this.style.display='none'">` : '';
+                const iconHtml = iconSrc ? `<img class="v2d-reward-icon" src="${iconSrc}">` : '';
                 const rarityDot = rarity > 0 ? `<span class="v2d-reward-rarity r-${rarity}"></span>` : '';
                 const countHtml = bundle.count > 0 ? ` ×${bundle.count}` : '';
                 return `<span class="v2d-reward-item">${iconHtml}${rarityDot}${name}${countHtml}</span>`;
@@ -719,7 +719,7 @@
                     const pauseTag = wave.hasPause ? ` <span class="v2d-wave-pause">${t('waves.externallyControlled')}</span>` : '';
                     const enemyParts = wave.enemies.map(e => {
                         const iconSrc = `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${e.templateId}.png`;
-                        return `<span class="v2d-wave-enemy" data-wave-idx="${wIdx}" data-enemy-id="${e.instanceId}"><img class="v2d-wave-icon" src="${iconSrc}" onerror="this.style.display='none'"><span class="v2d-wave-ename">${e.name}</span> ×${e.count} <span class="v2d-wave-lv">Lv.${e.level}</span></span>`;
+                        return `<span class="v2d-wave-enemy" data-wave-idx="${wIdx}" data-enemy-id="${e.instanceId}"><img class="v2d-wave-icon" src="${iconSrc}"><span class="v2d-wave-ename">${e.name}</span> ×${e.count} <span class="v2d-wave-lv">Lv.${e.level}</span></span>`;
                     }).join(' ');
                     const activeCls = wIdx === 0 ? ' active' : '';
                     waveDetailHtml += `<div class="v2d-wave-line${activeCls}" data-wave-idx="${wIdx}"><span class="v2d-wave-num" data-wave-idx="${wIdx}">${t('waves.number', { number: wave.waveIdx })}</span>${repeatTag}${aliveTag}${pauseTag}: ${enemyParts}</div>`;
@@ -783,10 +783,10 @@
             }
 
             const cardBgSrc = picPath ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/dungeon/${picPath}.png` : '';
-            const cardBgHtml = cardBgSrc ? `<img class="v2d-card-bg" src="${cardBgSrc}" onerror="this.style.display='none'">` : '';
+            const cardBgHtml = cardBgSrc ? `<img class="v2d-card-bg" src="${cardBgSrc}">` : '';
 
             const dungeonIconSrc = dungeonImg ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${dungeonImg}.png` : '';
-            const dungeonIconHtml = dungeonIconSrc ? `<img class="v2d-card-icon" src="${dungeonIconSrc}" onerror="this.style.display='none'">` : '';
+            const dungeonIconHtml = dungeonIconSrc ? `<img class="v2d-card-icon" src="${dungeonIconSrc}">` : '';
 
             return `
                 <div class="v2d-card">
@@ -836,10 +836,10 @@
             if (metaHtml) metaHtml = `<div class="v2d-series-meta">${metaHtml}</div>`;
 
             const bgSrc = picPath ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/dungeon/${picPath}_bg.png` : '';
-            const bgImg = bgSrc ? `<img class="v2d-series-bg" src="${bgSrc}" onerror="this.style.display='none'">` : '';
+            const bgImg = bgSrc ? `<img class="v2d-series-bg" src="${bgSrc}">` : '';
 
             const roleSrc = roleImg ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${roleImg}.png` : '';
-            const roleImgHtml = roleSrc ? `<img class="v2d-series-role" src="${roleSrc}" onerror="this.style.display='none'">` : '';
+            const roleImgHtml = roleSrc ? `<img class="v2d-series-role" src="${roleSrc}">` : '';
 
             let dungeonsHtml = '';
             orderedIds.forEach(id => {
