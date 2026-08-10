@@ -224,6 +224,8 @@
         .tip-modal-body pre code{padding:0;border:0;background:transparent;font-size:.85rem;white-space:pre}
         .tip-modal-body blockquote{margin:0 0 12px;padding:2px 0 2px 14px;border-left:3px solid var(--accent-color,#1e6f9f);color:var(--desc-color,#5b6f86)}
         .tip-modal-body hr{margin:18px 0;border:0;border-top:1px solid var(--border-color,#d9e0e8)}
+        .pre-release-watermark{position:fixed;inset:0;z-index:2147483646;pointer-events:none;user-select:none;background-repeat:repeat;background-position:center;background-size:340px 180px}
+        @media(max-width:600px){.pre-release-watermark{background-size:280px 148px}}
         :root:not(.ake-show-hidden) [class$="-id"],:root:not(.ake-show-hidden) [class*="-id "],:root:not(.ake-show-hidden) [class$="__id"],:root:not(.ake-show-hidden) [class*="__id "]{display:none!important}
     </style>
 
@@ -237,6 +239,48 @@
                 console.warn('无法读取 version.json，将使用无版本启动资源。', error);
             }
             window.__akeBootstrapVersion = version;
+            const isPreRelease = String(version?.appversion || '').toLowerCase().includes('pre');
+            document.documentElement.classList.toggle('ake-pre-release', isPreRelease);
+            const brandBadge = document.querySelector('#brandHome span');
+            if (brandBadge && isPreRelease) brandBadge.textContent = 'beta';
+            if (isPreRelease) {
+                const svgNamespace = 'http://www.w3.org/2000/svg';
+                const svg = document.createElementNS(svgNamespace, 'svg');
+                svg.setAttribute('xmlns', svgNamespace);
+                svg.setAttribute('width', '340');
+                svg.setAttribute('height', '180');
+                svg.setAttribute('viewBox', '0 0 340 180');
+
+                const group = document.createElementNS(svgNamespace, 'g');
+                group.setAttribute('transform', 'rotate(-24 170 90)');
+                const addWatermarkLine = (content, y, fontSize, fontWeight) => {
+                    const text = document.createElementNS(svgNamespace, 'text');
+                    text.textContent = content;
+                    text.setAttribute('x', '170');
+                    text.setAttribute('y', String(y));
+                    text.setAttribute('fill', '#969696');
+                    text.setAttribute('fill-opacity', '0.1');
+                    text.setAttribute('font-family', 'Segoe UI, Microsoft YaHei, sans-serif');
+                    text.setAttribute('font-size', String(fontSize));
+                    text.setAttribute('font-weight', String(fontWeight));
+                    text.setAttribute('text-anchor', 'middle');
+                    if (content.length > 30) {
+                        text.setAttribute('textLength', '280');
+                        text.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+                    }
+                    group.appendChild(text);
+                };
+                addWatermarkLine(location.hostname || 'localhost', 82, 16, 600);
+                addWatermarkLine('测试版本，仅供参考', 108, 14, 500);
+                svg.appendChild(group);
+
+                const watermark = document.createElement('div');
+                watermark.className = 'pre-release-watermark';
+                watermark.setAttribute('aria-hidden', 'true');
+                const svgSource = new XMLSerializer().serializeToString(svg);
+                watermark.style.backgroundImage = `url("data:image/svg+xml,${encodeURIComponent(svgSource)}")`;
+                document.body.appendChild(watermark);
+            }
             const requestedRefresh = new URLSearchParams(location.search).get('t');
             const refreshTimestamp = version?.debugmode === true ? String(Date.now()) : requestedRefresh;
             window.__akeForceRefreshTimestamp = refreshTimestamp || '';
