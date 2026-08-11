@@ -345,8 +345,14 @@
                 item.dataset.contentFile = act.contentFile;
 
                 if (act.tabImg) {
-                    const tabImage = String(act.tabImg).replace(/(["\\])/g, '\\$1');
-                    item.style.setProperty('--bg-image', `url("${tabImage}"), url("/icon_default_missing.png")`);
+                    const backgroundImage = document.createElement('img');
+                    backgroundImage.className = 'activity-item__background';
+                    backgroundImage.src = act.tabImg;
+                    backgroundImage.alt = '';
+                    backgroundImage.setAttribute('aria-hidden', 'true');
+                    backgroundImage.loading = 'lazy';
+                    backgroundImage.decoding = 'async';
+                    item.appendChild(backgroundImage);
                 }
 
                 const infoDiv = document.createElement('div');

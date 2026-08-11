@@ -160,6 +160,46 @@
         };
     }
 
+    function overlayBlackboard(blackboard, overlay, source) {
+        if (!blackboard || !overlay) return blackboard;
+        const pairs = overlay instanceof Map
+            ? Array.from(overlay.entries())
+            : Object.entries(overlay);
+        pairs.forEach(([rawKey, rawValue]) => {
+            const key = String(rawKey || '');
+            if (!key) return;
+            const resolution = isObject(rawValue) && hasOwn(rawValue, 'resolved')
+                ? rawValue
+                : {
+                    value: blackboardScalar(rawValue),
+                    resolved: true,
+                    source: source || 'inherited'
+                };
+            const previous = blackboard.byKey[key];
+            const history = previous ? previous.history.slice() : [];
+            history.push({
+                source: source || 'inherited',
+                level: blackboard.level,
+                value: resolution.resolved === false ? null : resolution.value
+            });
+            blackboard.byKey[key] = {
+                key,
+                value: resolution.resolved === false ? null : resolution.value,
+                valueStr: '',
+                isDynamic: true,
+                source: source || 'inherited',
+                level: blackboard.level,
+                overridden: history.length > 1,
+                defaultValue: history[0]?.value,
+                history,
+                resolved: resolution.resolved !== false,
+                inheritedResolution: resolution
+            };
+        });
+        blackboard.entries = Object.keys(blackboard.byKey).map(key => blackboard.byKey[key]);
+        return blackboard;
+    }
+
     function findBlackboardEntry(blackboard, key) {
         if (!blackboard || !key) return undefined;
         if (blackboard instanceof Map) return blackboard.get(key);
@@ -343,7 +383,7 @@
         };
     }
 
-    function analyzeSkill(skillData, patchBundle, context) {
+    async function analyzeSkill(skillData, patchBundle, context) {
         const data = isObject(skillData) ? skillData : {};
         const metaContext = isObject(context) ? context : {};
         const requestedLevel = firstDefined(metaContext.level, metaContext.skillLevel, data.level);
@@ -351,6 +391,7 @@
             requestedLevel === data.level ? data : Object.assign({}, data, { level: requestedLevel }),
             patchBundle
         );
+        overlayBlackboard(blackboardData, metaContext._spatialInheritedBlackboard, 'inherited');
         const warnings = blackboardData.warnings.slice();
         const warningKeys = new Set(warnings.map(item => `${item.code}|${item.key || ''}|${item.message || ''}`));
         const windows = [];
@@ -358,6 +399,612 @@
         const events = [];
         const links = [];
         const linkKeys = new Set();
+        const spatial = {
+            unit: { distance: 'meter', angle: 'degree' },
+            castLimits: [],
+            selectionHints: [],
+            targetSearches: [],
+            impactVolumes: [],
+            persistentFields: [],
+            collisionVolumes: [],
+            relations: [],
+            warnings: [],
+            externalVariants: [],
+            pendingReferences: []
+        };
+        const spatialWarningKeys = new Set();
+        const spatialMutations = [];
+        const spawnReferences = [];
+        const consumedSpatialKeys = new Set();
+        const scopeId = String(metaContext._spatialScope || data.skillId || 'unknown');
+        let spatialFactSerial = 0;
+
+        const addSpatialWarning = (code, message, details) => {
+            const key = `${code}|${details?.path || ''}|${details?.key || ''}|${message}`;
+            if (spatialWarningKeys.has(key)) return;
+            spatialWarningKeys.add(key);
+            spatial.warnings.push(Object.assign({ code, message }, details || {}));
+        };
+
+        const normalizedNamedOperation = operation => {
+            const value = String(operation ?? '').toLowerCase();
+            if (value.includes('assign') || value === 'set') return 'Assign';
+            if (value.includes('subtract') || value === 'sub') return 'Subtract';
+            if (value.includes('multiply') || value === 'mul') return 'Multiply';
+            if (value.includes('divide') || value === 'div') return 'Divide';
+            if (value.includes('add') || value === 'plus') return 'Add';
+            return operation ? String(operation) : 'Unknown';
+        };
+
+        const normalizedPotentialOperation = operation => {
+            const value = String(operation ?? '').trim();
+            if (value === '1') return 'Add';
+            if (value === '2') return 'Multiply';
+            if (value === '3') return 'Assign';
+            return normalizedNamedOperation(operation);
+        };
+
+        const normalizedBlackboardOperation = operation => {
+            const value = String(operation ?? '').trim();
+            if (value === '0') return 'Assign';
+            if (value === '1') return 'Add';
+            if (value === '2') return 'Multiply';
+            if (value === '3') return 'Divide';
+            return normalizedNamedOperation(operation);
+        };
+
+        const collectExternalVariants = () => {
+            const result = [];
+            const table = metaContext.tables?.potentialTalents
+                || metaContext.tables?.PotentialTalentEffectTable
+                || metaContext.potentialTalents;
+            const rows = Array.isArray(table)
+                ? table.map((row, index) => [row?.id || String(index), row])
+                : Object.entries(isObject(table) ? table : {});
+            rows.forEach(([rowKey, row]) => {
+                const modifiers = [];
+                (Array.isArray(row?.dataList) ? row.dataList : []).forEach((item, itemIndex) => {
+                    const modifier = item?.skillBbModifier;
+                    if (!isObject(modifier) || String(modifier.skillId || '') !== String(data.skillId || '')) return;
+                    const key = String(modifier.bbKey || '');
+                    if (!key) return;
+                    const value = modifier.stringValue !== undefined && modifier.stringValue !== ''
+                        ? modifier.stringValue
+                        : modifier.floatValue;
+                    modifiers.push({
+                        key,
+                        operation: normalizedPotentialOperation(modifier.modifyType),
+                        rawOperation: modifier.modifyType,
+                        value,
+                        path: `PotentialTalentEffectTable.${rowKey}.dataList[${itemIndex}].skillBbModifier`
+                    });
+                });
+                if (modifiers.length) {
+                    result.push({
+                        id: String(row?.id || rowKey),
+                        source: 'PotentialTalentEffectTable',
+                        skillId: data.skillId ?? '',
+                        condition: { type: 'external', source: 'potential', sourceId: String(row?.id || rowKey) },
+                        modifiers
+                    });
+                }
+            });
+
+            (Array.isArray(metaContext.externalSpatialVariants) ? metaContext.externalSpatialVariants : [])
+                .forEach((variant, index) => {
+                    if (!isObject(variant)) return;
+                    if (variant.skillId && String(variant.skillId) !== String(data.skillId || '')) return;
+                    const modifiers = (Array.isArray(variant.modifiers) ? variant.modifiers : [variant])
+                        .map((modifier, modifierIndex) => ({
+                            key: String(modifier?.key ?? modifier?.bbKey ?? ''),
+                            operation: modifier?.operation !== undefined
+                                ? normalizedNamedOperation(modifier.operation)
+                                : normalizedPotentialOperation(modifier?.modifyType),
+                            rawOperation: modifier?.operation ?? modifier?.modifyType,
+                            value: firstDefined(modifier?.value, modifier?.floatValue, modifier?.stringValue),
+                            path: modifier?.path || `externalSpatialVariants[${index}].modifiers[${modifierIndex}]`
+                        }))
+                        .filter(modifier => modifier.key);
+                    if (!modifiers.length) return;
+                    result.push({
+                        id: String(variant.id || `external-${index}`),
+                        source: variant.source || 'context',
+                        skillId: data.skillId ?? '',
+                        condition: variant.condition || { type: 'external', source: variant.source || 'context', sourceId: String(variant.id || index) },
+                        modifiers
+                    });
+                });
+            return result;
+        };
+
+        const externalVariants = collectExternalVariants();
+
+        const combineConditions = conditions => {
+            const items = (Array.isArray(conditions) ? conditions : []).filter(Boolean);
+            if (!items.length) return null;
+            return items.length === 1 ? items[0] : { type: 'all', items };
+        };
+
+        const conditionItems = condition => {
+            if (!condition) return [];
+            if (Array.isArray(condition)) return condition.flatMap(conditionItems);
+            if (condition.type === 'all' && Array.isArray(condition.items)) {
+                return condition.items.flatMap(conditionItems);
+            }
+            return [condition];
+        };
+
+        const branchControllerKey = condition => (
+            `${condition?.controllerScope || scopeId}|${condition?.controllerEventIndex}`
+        );
+
+        const branchConstraints = conditions => {
+            const result = new Map();
+            conditionItems(conditions).forEach(condition => {
+                if (condition?.type !== 'branch' || condition.controllerEventIndex === undefined
+                    || condition.controllerEventIndex === null || !condition.outcome) return;
+                result.set(branchControllerKey(condition), String(condition.outcome));
+            });
+            return result;
+        };
+
+        const conditionsCompatible = (leftConditions, rightConditions) => {
+            const left = branchConstraints(leftConditions);
+            const right = branchConstraints(rightConditions);
+            for (const [controller, outcome] of left) {
+                if (right.has(controller) && right.get(controller) !== outcome) return false;
+            }
+            return true;
+        };
+
+        const conditionsImply = (actualConditions, requiredConditions) => {
+            const requiredItems = conditionItems(requiredConditions);
+            if (!requiredItems.length) return true;
+            if (requiredItems.some(condition => condition?.type !== 'branch')) return false;
+            const actual = branchConstraints(actualConditions);
+            const required = branchConstraints(requiredItems);
+            return [...required].every(([controller, outcome]) => actual.get(controller) === outcome);
+        };
+
+        const mergeConditionItems = (left, right) => {
+            const merged = [];
+            const seen = new Set();
+            conditionItems(left).concat(conditionItems(right)).forEach(condition => {
+                const key = JSON.stringify(condition);
+                if (seen.has(key)) return;
+                seen.add(key);
+                merged.push(condition);
+            });
+            return merged;
+        };
+
+        const conditionSignature = conditions => conditionItems(conditions)
+            .map(condition => JSON.stringify(condition))
+            .sort()
+            .join('|');
+
+        const applyNumericOperation = (current, operand, operation) => {
+            if (operation === 'Assign') return { value: operand, resolved: operand !== undefined && operand !== null };
+            const left = finiteNumber(current);
+            const right = finiteNumber(operand);
+            if (left === null || right === null) return { value: null, resolved: false };
+            if (operation === 'Add') return { value: left + right, resolved: true };
+            if (operation === 'Subtract') return { value: left - right, resolved: true };
+            if (operation === 'Multiply') return { value: left * right, resolved: true };
+            if (operation === 'Divide') {
+                return right === 0
+                    ? { value: null, resolved: false, error: 'DIVIDE_BY_ZERO' }
+                    : { value: left / right, resolved: true };
+            }
+            return { value: null, resolved: false };
+        };
+
+        const baseSpatialResolution = (rawValue, path, suppressWarning) => {
+            const base = resolveValue(rawValue, blackboardData);
+            const entry = base.usesBlackboard ? findBlackboardEntry(blackboardData, base.blackboardKey) : null;
+            const inherited = isObject(entry?.inheritedResolution) ? entry.inheritedResolution : null;
+            const resolved = inherited
+                ? Object.assign({}, inherited, {
+                    usesBlackboard: true,
+                    blackboardKey: base.blackboardKey,
+                    fallbackValue: base.fallbackValue,
+                    source: inherited.source || 'inherited'
+                })
+                : Object.assign({}, base);
+            if (resolved.resolved === false) {
+                resolved.value = null;
+                if (!suppressWarning) {
+                    addSpatialWarning(
+                        'SPATIAL_RUNTIME_VALUE',
+                        `Spatial blackboard key "${resolved.blackboardKey}" requires a runtime value.`,
+                        { key: resolved.blackboardKey, path }
+                    );
+                }
+            }
+            resolved.variants = Array.isArray(resolved.variants) ? resolved.variants.slice() : [];
+            return resolved;
+        };
+
+        const resolveSpatialField = (rawValue, path, eventLimit, trackKey, factConditions, flowId) => {
+            const result = baseSpatialResolution(rawValue, path, trackKey === false);
+            const key = result.usesBlackboard && result.blackboardKey ? String(result.blackboardKey) : '';
+            if (!key) return result;
+            if (trackKey !== false) consumedSpatialKeys.add(key);
+            const limit = Number.isFinite(Number(eventLimit)) ? Number(eventLimit) : Number.POSITIVE_INFINITY;
+            const activeConditions = conditionItems(factConditions);
+            let variants = result.variants
+                .filter(variant => conditionsCompatible(variant.condition, activeConditions));
+
+            externalVariants.forEach(external => {
+                const modifiers = external.modifiers.filter(modifier => modifier.key === key);
+                if (!modifiers.length) return;
+                let externalState = Object.assign({}, result);
+                delete externalState.variants;
+                modifiers.forEach(modifier => {
+                    const calculated = applyNumericOperation(
+                        externalState.resolved === false ? null : externalState.value,
+                        modifier.value,
+                        modifier.operation
+                    );
+                    externalState = Object.assign(externalState, {
+                        value: calculated.value,
+                        resolved: calculated.resolved,
+                        source: external.source,
+                        operation: modifier.operation,
+                        operationPath: modifier.path,
+                        condition: external.condition,
+                        error: calculated.error || null
+                    });
+                });
+                variants.push(externalState);
+            });
+
+            const applicableMutations = spatialMutations
+                .filter(mutation => mutation.key === key
+                    && !!flowId
+                    && mutation.flowId === flowId
+                    && mutation.eventIndex <= limit
+                    && conditionsCompatible(mutation.conditions, activeConditions));
+
+            applicableMutations.forEach(mutation => {
+                    const operand = mutation.operand;
+                    if (operand.resolved === false) {
+                        addSpatialWarning(
+                            'SPATIAL_RUNTIME_OPERATION_VALUE',
+                            `Spatial operation for "${key}" requires a runtime operand.`,
+                            { key, path: mutation.path }
+                        );
+                    }
+                    const apply = candidate => {
+                        const calculated = applyNumericOperation(
+                            candidate.resolved === false ? null : candidate.value,
+                            operand.resolved === false ? null : operand.value,
+                            mutation.operation
+                        );
+                        return Object.assign({}, candidate, {
+                            value: calculated.value,
+                            resolved: calculated.resolved,
+                            source: 'computed',
+                            operation: mutation.operation,
+                            operationPath: mutation.path,
+                            error: calculated.error || null
+                        });
+                    };
+                    if (mutation.conditions.length && !conditionsImply(activeConditions, mutation.conditions)) {
+                        const matchingVariants = variants.filter(variant => (
+                            conditionsCompatible(variant.condition, mutation.conditions)
+                            && conditionsImply(variant.condition, mutation.conditions)
+                        ));
+                        if (matchingVariants.length) {
+                            variants = variants.map(variant => {
+                                if (!matchingVariants.includes(variant)) return variant;
+                                return Object.assign(apply(variant), {
+                                    condition: variant.condition,
+                                    source: 'action'
+                                });
+                            });
+                        } else {
+                            const requiredBranches = branchConstraints(mutation.conditions);
+                            const candidateGroups = new Map();
+                            [{ state: result, condition: null }]
+                                .concat(variants.map(variant => ({ state: variant, condition: variant.condition })))
+                                .filter(candidate => conditionsCompatible(candidate.condition, mutation.conditions))
+                                .forEach(candidate => {
+                                    const items = conditionItems(candidate.condition);
+                                    const unrelated = items.filter(condition => (
+                                        condition?.type !== 'branch'
+                                        || !requiredBranches.has(branchControllerKey(condition))
+                                    ));
+                                    const groupKey = unrelated
+                                        .map(condition => JSON.stringify(condition))
+                                        .sort()
+                                        .join('|');
+                                    const score = [...branchConstraints(candidate.condition)]
+                                        .filter(([controller, outcome]) => requiredBranches.get(controller) === outcome)
+                                        .length;
+                                    const previous = candidateGroups.get(groupKey);
+                                    if (!previous || score > previous.score) {
+                                        candidateGroups.set(groupKey, Object.assign({ score }, candidate));
+                                    }
+                                });
+                            candidateGroups.forEach(candidate => {
+                                const computed = apply(candidate.state);
+                                variants.push(Object.assign(computed, {
+                                    condition: combineConditions(mergeConditionItems(candidate.condition, mutation.conditions)),
+                                    source: 'action'
+                                }));
+                            });
+                        }
+                    } else {
+                        Object.assign(result, apply(result));
+                        variants = variants.map(variant => (
+                            conditionsCompatible(variant.condition, mutation.conditions)
+                                ? apply(variant)
+                                : variant
+                        ));
+                    }
+            });
+
+            const activeBranches = branchConstraints(activeConditions);
+            const branchOutcomes = new Map();
+            applicableMutations.forEach(mutation => {
+                const mutationBranches = branchConstraints(mutation.conditions);
+                if (mutationBranches.size !== activeBranches.size + 1) return;
+                if (![...activeBranches].every(([controller, outcome]) => (
+                    mutationBranches.get(controller) === outcome
+                ))) return;
+                const extra = [...mutationBranches]
+                    .find(([controller]) => !activeBranches.has(controller));
+                if (!extra) return;
+                if (!branchOutcomes.has(extra[0])) branchOutcomes.set(extra[0], new Set());
+                branchOutcomes.get(extra[0]).add(extra[1]);
+            });
+            const exhaustiveControllers = [...branchOutcomes]
+                .filter(([, outcomes]) => outcomes.has('success') && outcomes.has('failure'))
+                .map(([controller]) => controller);
+            if (exhaustiveControllers.length) {
+                result.value = null;
+                result.resolved = false;
+                result.source = 'conditional';
+                result.scenarioOnly = true;
+                variants = variants.filter(variant => {
+                    const constraints = branchConstraints(variant.condition);
+                    return exhaustiveControllers.every(controller => constraints.has(controller));
+                });
+            }
+
+            const seenVariants = new Set();
+            result.variants = variants.filter(variant => {
+                const dedupe = JSON.stringify([
+                    variant.value,
+                    variant.resolved,
+                    variant.operation,
+                    variant.condition
+                ]);
+                if (seenVariants.has(dedupe)) return false;
+                seenVariants.add(dedupe);
+                return true;
+            });
+            return result;
+        };
+
+        const spatialDimension = (rawValue, path, unit, eventLimit, conditions, flowId) => Object.assign(
+            resolveSpatialField(rawValue, path, eventLimit, undefined, conditions, flowId),
+            { unit: unit || 'meter' }
+        );
+
+        const resolutionState = dimensions => {
+            const values = Object.values(dimensions || {});
+            if (values.some(value => value?.resolved === false && value?.scenarioOnly !== true)) return 'runtime';
+            if (values.some(value => value?.scenarioOnly === true
+                || (Array.isArray(value?.variants) && value.variants.length))) return 'conditional';
+            return 'resolved';
+        };
+
+        const inheritedSpatialConditions = conditionItems(metaContext._spatialInheritedConditions);
+
+        const addSpatialFact = (collection, fact) => {
+            const item = Object.assign({
+                id: `spatial:${scopeId}:${spatialFactSerial++}`,
+                skillId: data.skillId ?? '',
+                confidence: 'medium',
+                conditions: [],
+                timing: null,
+                origin: metaContext._spatialOrigin || null
+            }, fact || {});
+            item.conditions = mergeConditionItems(inheritedSpatialConditions, item.conditions);
+            item.resolution = item.resolution || resolutionState(item.geometry?.dimensions);
+            collection.push(item);
+            return item;
+        };
+        const spatialRelationKeys = new Set();
+
+        const addSpatialRelation = relation => {
+            if (!isObject(relation) || !relation.type || !relation.from || !relation.to) return;
+            const key = `${relation.type}|${relation.from}|${relation.to}|${relation.status || ''}`;
+            if (spatialRelationKeys.has(key)) return;
+            spatialRelationKeys.add(key);
+            spatial.relations.push(relation);
+        };
+
+        const eventSpatialMetadata = event => ({
+            actionType: event.type,
+            eventIndex: event.index,
+            eventSource: event.source,
+            flowId: event.flowId,
+            groupIndex: event.groupIndex,
+            abilityEvent: event.abilityEvent,
+            path: event.path,
+            conditions: Array.isArray(event.conditions) ? event.conditions.slice() : [],
+            timing: Object.assign({ scope: 'skill-local' }, frameInfo(event.startFrame, event.endFrame))
+        });
+
+        const keyedValue = (value, key, enabled) => ({
+            useBlackboardKey: !!enabled && !!key,
+            value,
+            blackboardKey: key || ''
+        });
+
+        const uiKeyedValue = (shape, name) => {
+            const upper = `${name[0].toUpperCase()}${name.slice(1)}`;
+            return keyedValue(shape?.[name], shape?.[`${name}Key`], shape?.[`use${upper}Key`]);
+        };
+
+        const vectorDimensions = (vector, path, prefix, unit, eventLimit, conditions, flowId) => {
+            const result = {};
+            ['x', 'y', 'z'].forEach(axis => {
+                if (!isObject(vector) || !hasOwn(vector, axis)) return;
+                result[prefix ? `${prefix}${axis.toUpperCase()}` : axis] = spatialDimension(
+                    vector[axis], `${path}.${axis}`, unit, eventLimit, conditions, flowId
+                );
+            });
+            return result;
+        };
+
+        const parseUiGeometry = (shapeData, path) => {
+            if (!isObject(shapeData)) return null;
+            const allowed = new Set(['Point', 'Circle', 'Sector', 'Arrow']);
+            const shape = String(shapeData.shape || '');
+            if (!allowed.has(shape)) {
+                addSpatialWarning('SPATIAL_UNSUPPORTED_UI_SHAPE', `Unsupported UI range shape "${shape || '?'}".`, { path });
+                return null;
+            }
+            const dimensions = {};
+            if (shape === 'Circle' || shape === 'Sector') {
+                dimensions.radius = spatialDimension(
+                    uiKeyedValue(shapeData, 'radius'), `${path}.radius`, 'meter', -1
+                );
+            }
+            if (shape === 'Sector') {
+                dimensions.angle = spatialDimension(
+                    uiKeyedValue(shapeData, 'angle'), `${path}.angle`, 'degree', -1
+                );
+            }
+            if (shape === 'Arrow') {
+                dimensions.width = spatialDimension(
+                    uiKeyedValue(shapeData, 'width'), `${path}.width`, 'meter', -1
+                );
+                const extent = isObject(shapeData.extent) ? shapeData.extent : {};
+                const useExtentKey = !!shapeData.useExtentKey;
+                const extentX = finiteNumber(extent.x);
+                const extentY = finiteNumber(extent.y);
+                if (shapeData.fixedExtent || useExtentKey
+                    || (extentX !== null && extentX !== 0)
+                    || (extentY !== null && extentY !== 0)) {
+                    dimensions.extentX = spatialDimension(
+                        keyedValue(extent.x, shapeData.extentXKey, useExtentKey), `${path}.extent.x`, 'meter', -1
+                    );
+                    dimensions.extentZ = spatialDimension(
+                        keyedValue(extent.y, shapeData.extentZKey, useExtentKey), `${path}.extent.y`, 'meter', -1
+                    );
+                }
+            }
+
+            const centerOffset = isObject(shapeData.centerOffset) ? shapeData.centerOffset : {};
+            const anchor = {
+                centerBaseIsEndPoint: !!shapeData.centerBaseIsEndPoint,
+                restrictEndPointInRange: !!shapeData.restrictEndPointInRange,
+                centerOffset: {
+                    x: spatialDimension(
+                        keyedValue(centerOffset.x, shapeData.centerOffsetXKey, shapeData.useCenterOffsetKey),
+                        `${path}.centerOffset.x`, 'meter', -1
+                    ),
+                    z: spatialDimension(
+                        keyedValue(centerOffset.y, shapeData.centerOffsetZKey, shapeData.useCenterOffsetKey),
+                        `${path}.centerOffset.y`, 'meter', -1
+                    )
+                }
+            };
+            return { geometry: { space: 'ui-2d', shape, dimensions }, anchor };
+        };
+
+        const parseHitBoxGeometry = (shapeData, path, eventIndex, conditions, flowId) => {
+            if (!isObject(shapeData)) return null;
+            const shapeMap = { box: 'Box', capsule: 'Capsule', sphere: 'Sphere', point: 'Point' };
+            const shape = shapeMap[String(shapeData.shapeType || '').toLowerCase()];
+            if (!shape) {
+                addSpatialWarning(
+                    'SPATIAL_UNSUPPORTED_HITBOX_SHAPE',
+                    `Unsupported hit-box shape "${shapeData.shapeType || '?'}".`,
+                    { path }
+                );
+                return null;
+            }
+            const dimensions = {};
+            if (shape === 'Box') {
+                Object.assign(dimensions, vectorDimensions(shapeData.size, `${path}.size`, 'size', 'meter', eventIndex, conditions, flowId));
+            } else if (shape === 'Capsule') {
+                dimensions.radius = spatialDimension(shapeData.radius, `${path}.radius`, 'meter', eventIndex, conditions, flowId);
+                dimensions.height = spatialDimension(shapeData.height, `${path}.height`, 'meter', eventIndex, conditions, flowId);
+            } else if (shape === 'Sphere') {
+                dimensions.radius = spatialDimension(shapeData.radius, `${path}.radius`, 'meter', eventIndex, conditions, flowId);
+            }
+            if (shapeData.limitAngle) {
+                dimensions.angle = spatialDimension(shapeData.angle, `${path}.angle`, 'degree', eventIndex, conditions, flowId);
+            }
+            if (shapeData.limitHeight) {
+                dimensions.maxHeight = spatialDimension(shapeData.maxHeight, `${path}.maxHeight`, 'meter', eventIndex, conditions, flowId);
+            }
+            const anchor = {
+                positionRef: shapeData.positionRef ?? '',
+                positionMountPoint: shapeData.posRefMP ?? '',
+                directionRef: shapeData.directionRef ?? '',
+                directionMountPoint: shapeData.dirRefMountPoint ?? '',
+                castDirection: shapeData.castDirection ?? '',
+                useDirection: !!shapeData.useDirection,
+                centerOffset: vectorDimensions(shapeData.centerOffset, `${path}.centerOffset`, '', 'meter', eventIndex, conditions, flowId),
+                eulerAngle: vectorDimensions(shapeData.eulerAngle, `${path}.eulerAngle`, '', 'degree', eventIndex, conditions, flowId)
+            };
+            return { geometry: { space: 'world-3d', shape, dimensions }, anchor };
+        };
+
+        const auraKeyedValue = (shape, name) => {
+            const key = shape?.[`_${name}Key`];
+            return keyedValue(shape?.[`_${name}`], key, !!key);
+        };
+
+        const parseAuraGeometry = (shapeData, path, eventIndex, conditions, flowId) => {
+            if (!isObject(shapeData)) return null;
+            const shapeMap = { box: 'Box', capsule: 'Capsule', sphere: 'Sphere', point: 'Point' };
+            const shape = shapeMap[String(shapeData._shape ?? shapeData.shape ?? '').toLowerCase()];
+            if (!shape) {
+                addSpatialWarning(
+                    'SPATIAL_UNSUPPORTED_AURA_SHAPE',
+                    `Unsupported aura shape "${shapeData._shape ?? shapeData.shape ?? '?'}".`,
+                    { path }
+                );
+                return null;
+            }
+            const dimensions = {};
+            if (shape === 'Box') {
+                const extent = isObject(shapeData._extent) ? shapeData._extent : {};
+                ['x', 'y', 'z'].forEach(axis => {
+                    const upper = axis.toUpperCase();
+                    dimensions[`extent${upper}`] = spatialDimension(
+                        keyedValue(extent[axis], shapeData[`_extent${upper}Key`], shapeData._useExtentKey),
+                        `${path}._extent.${axis}`, 'meter', eventIndex, conditions, flowId
+                    );
+                });
+            } else if (shape === 'Capsule') {
+                dimensions.radius = spatialDimension(auraKeyedValue(shapeData, 'radius'), `${path}._radius`, 'meter', eventIndex, conditions, flowId);
+                dimensions.height = spatialDimension(auraKeyedValue(shapeData, 'height'), `${path}._height`, 'meter', eventIndex, conditions, flowId);
+            } else if (shape === 'Sphere') {
+                dimensions.radius = spatialDimension(auraKeyedValue(shapeData, 'radius'), `${path}._radius`, 'meter', eventIndex, conditions, flowId);
+            }
+            const center = isObject(shapeData._center) ? shapeData._center : {};
+            const centerOffset = {};
+            ['x', 'y', 'z'].forEach(axis => {
+                const upper = axis.toUpperCase();
+                centerOffset[axis] = spatialDimension(
+                    keyedValue(center[axis], shapeData[`_center${upper}Key`], shapeData._useCenterKey),
+                    `${path}._center.${axis}`, 'meter', eventIndex, conditions, flowId
+                );
+            });
+            return {
+                geometry: { space: 'world-3d', shape, dimensions },
+                anchor: { centerOffset }
+            };
+        };
 
         const addWarning = (code, message, details) => {
             const key = `${code}|${details?.path || ''}|${details?.key || ''}|${message}`;
@@ -702,10 +1349,228 @@
             return { fields, truncated };
         };
 
+        const conditionValue = value => {
+            const resolved = resolveValue(value, blackboardData);
+            return Object.assign({}, resolved, {
+                value: resolved.resolved === false ? null : resolved.value
+            });
+        };
+
+        const describeConditionAction = (action, path) => {
+            const type = formatActionType(action?.$type);
+            const operator = firstDefined(
+                action?.compare,
+                action?.compareType,
+                action?.operation,
+                action?.operationType,
+                action?.conditionType
+            );
+            const descriptor = {
+                type: /compare|check/i.test(type) ? 'comparison' : 'condition-action',
+                actionType: type,
+                operator,
+                path
+            };
+            if (hasOwn(action, 'valueA')) descriptor.left = conditionValue(action.valueA);
+            if (hasOwn(action, 'valueB')) descriptor.right = conditionValue(action.valueB);
+            if (!descriptor.left && hasOwn(action, 'value')) descriptor.value = conditionValue(action.value);
+            if (hasOwn(action, 'distance')) descriptor.distance = conditionValue(action.distance);
+            if (hasOwn(action, 'angle')) descriptor.angle = conditionValue(action.angle);
+            if (action.key || action.blackboardKey || action.bbKey) {
+                descriptor.key = String(action.key || action.blackboardKey || action.bbKey);
+            }
+            return descriptor;
+        };
+
+        const describeConditionContainer = (container, path) => {
+            const descriptions = [];
+            const seen = new WeakSet();
+            const visit = (value, currentPath, depth) => {
+                if (!value || depth > 16 || descriptions.length >= 32) return;
+                if (Array.isArray(value)) {
+                    value.forEach((item, index) => visit(item, `${currentPath}[${index}]`, depth + 1));
+                    return;
+                }
+                if (!isObject(value) || seen.has(value)) return;
+                seen.add(value);
+                if (isActionNode(value)) descriptions.push(describeConditionAction(value, currentPath));
+                Object.keys(value).forEach(key => visit(value[key], `${currentPath}.${key}`, depth + 1));
+            };
+            visit(container, path, 0);
+            if (!descriptions.length) return { type: 'condition', path };
+            return descriptions.length === 1 ? descriptions[0] : { type: 'all', items: descriptions, path };
+        };
+
         const handleAction = (action, event) => {
             const type = event.type;
             const normalized = type.toLowerCase();
             const path = event.path;
+
+            if (normalized.includes('modifydynamicblackboard')) {
+                const key = String(action.key || action.blackboardKey || action.bbKey || '');
+                let rawOperand = action.value;
+                if (action.directValue === false && action.inputValueKey) {
+                    rawOperand = keyedValue(
+                        action.value?.value ?? action.numericValue ?? null,
+                        action.inputValueKey,
+                        true
+                    );
+                }
+                const operand = resolveSpatialField(
+                    rawOperand,
+                    `${path}.value`,
+                    event.index - 1,
+                    false,
+                    event.conditions,
+                    event.flowId
+                );
+                const operation = normalizedBlackboardOperation(action.operation ?? action.operationType);
+                event.details = { key, operation, operand };
+                if (key) {
+                    spatialMutations.push({
+                        key,
+                        operation,
+                        operand,
+                        eventIndex: event.index,
+                        flowId: event.flowId,
+                        path,
+                        conditions: event.conditions.slice()
+                    });
+                }
+                if (!['Assign', 'Add', 'Subtract', 'Multiply', 'Divide'].includes(operation)) {
+                    addSpatialWarning(
+                        'SPATIAL_UNSUPPORTED_BLACKBOARD_OPERATION',
+                        `Unsupported spatial blackboard operation "${operation}".`,
+                        { key, path }
+                    );
+                }
+                return;
+            }
+
+            if (normalized === 'findtargetaction' || normalized === 'continuousfindtargetaction') {
+                const finder = action.selectorData?.finderData;
+                const finderType = String(finder?.$type || '');
+                const shapes = /hitboxfinder/i.test(finderType) && Array.isArray(finder?.shapeList)
+                    ? finder.shapeList
+                    : [];
+                shapes.forEach((shapeData, shapeIndex) => {
+                    const shapePath = `${path}.selectorData.finderData.shapeList[${shapeIndex}]`;
+                    const parsed = parseHitBoxGeometry(
+                        shapeData,
+                        shapePath,
+                        event.index,
+                        event.conditions,
+                        event.flowId
+                    );
+                    if (!parsed) return;
+                    const fact = addSpatialFact(spatial.targetSearches, Object.assign(
+                        eventSpatialMetadata(event),
+                        parsed,
+                        {
+                            semantic: normalized === 'continuousfindtargetaction'
+                                ? 'continuous-target-search'
+                                : 'target-search',
+                            confidence: 'medium',
+                            targetGroupKey: action.targetGroupKey ?? '',
+                            targetFaction: finder.factionTarget ?? '',
+                            targetObjectType: finder.targetObjectType ?? '',
+                            continuous: normalized === 'continuousfindtargetaction',
+                            anchor: Object.assign({}, parsed.anchor, {
+                                center: action.center ?? '',
+                                centerContextKey: action.centerContextKey ?? '',
+                                centerMountPoint: action.centerMountPoint ?? '',
+                                centerToGround: !!action.centerToGround,
+                                selectorOwner: action.selectorOwner ?? ''
+                            })
+                        }
+                    ));
+                    addSpatialRelation({
+                        type: 'produces-target-group',
+                        from: fact.id,
+                        to: `target-group:${data.skillId || ''}:${fact.targetGroupKey || '(default)'}`
+                    });
+                });
+                event.details = {
+                    targetGroupKey: action.targetGroupKey ?? '',
+                    finderType: /hitboxfinder/i.test(finderType) ? 'HitBoxFinder' : formatActionType(finderType),
+                    spatialFactIds: spatial.targetSearches
+                        .filter(fact => fact.eventIndex === event.index)
+                        .map(fact => fact.id)
+                };
+                return;
+            }
+
+            if (normalized === 'auraaction') {
+                const globalAura = String(action.auraType || '').toLowerCase() === 'globalaura';
+                const parsed = globalAura
+                    ? { geometry: { space: 'global', shape: 'Global', dimensions: {} }, anchor: {} }
+                    : parseAuraGeometry(
+                        action.shapeData,
+                        `${path}.shapeData`,
+                        event.index,
+                        event.conditions,
+                        event.flowId
+                    );
+                if (parsed) {
+                    const fact = addSpatialFact(spatial.persistentFields, Object.assign(
+                        eventSpatialMetadata(event),
+                        parsed,
+                        {
+                            semantic: 'persistent-field',
+                            confidence: globalAura || action.auraType === 'RangedAura' ? 'high' : 'medium',
+                            auraType: action.auraType ?? '',
+                            targetFaction: action.targetFilter?.factionTarget ?? '',
+                            targetObjectType: action.targetObjectType ?? action.targetFilter?.targetObjectType ?? '',
+                            anchor: Object.assign({}, parsed.anchor, {
+                                center: action.auraRoot?.targetSource ?? '',
+                                centerContextKey: action.auraRoot?.targetGroupKey ?? '',
+                                centerToGround: !!action.auraRoot?.centerToGround,
+                                fixedWhenStart: !!action.fixedWhenStart
+                            })
+                        }
+                    ));
+                    event.details = { auraType: action.auraType ?? '', spatialFactId: fact.id };
+                } else {
+                    event.details = { auraType: action.auraType ?? '', spatialFactId: null };
+                }
+                return;
+            }
+
+            if (normalized === 'createadditionalbattleshape') {
+                const parsed = parseAuraGeometry(
+                    action.shapeData,
+                    `${path}.shapeData`,
+                    event.index,
+                    event.conditions,
+                    event.flowId
+                );
+                if (parsed) {
+                    const fact = addSpatialFact(spatial.collisionVolumes, Object.assign(
+                        eventSpatialMetadata(event),
+                        parsed,
+                        {
+                            semantic: 'collision-volume',
+                            confidence: 'high',
+                            duration: spatialDimension(
+                                action.duration,
+                                `${path}.duration`,
+                                'second',
+                                event.index,
+                                event.conditions,
+                                event.flowId
+                            ),
+                            followsPosition: !!action.followTargetPosition,
+                            followsRotation: !!action.followTargetRotation,
+                            anchor: Object.assign({}, parsed.anchor, {
+                                center: action.targetSettings?.targetSource ?? '',
+                                centerContextKey: action.targetSettings?.targetGroupKey ?? ''
+                            })
+                        }
+                    ));
+                    event.details = { spatialFactId: fact.id };
+                }
+                return;
+            }
 
             if (normalized === 'damageaction' || normalized === 'channelingdamageaction') {
                 const units = Array.isArray(action.damageUnits) ? action.damageUnits : [];
@@ -890,8 +1755,22 @@
                     abilityEntityId,
                     abilityEntitySkillId,
                     duration: hasOwn(action, 'duration') ? resolveField(action.duration, `${path}.duration`) : null,
-                    overrideDuration: !!action.overrideDuration
+                    overrideDuration: !!action.overrideDuration,
+                    assignBlackboard: !!action.assignBlackboard,
+                    assignEntityBlackboard: !!action.assignEntityBlackboard,
+                    assignItems: Array.isArray(action.assignItems)
+                        ? action.assignItems
+                        : (Array.isArray(action.assignPairs) ? action.assignPairs : [])
                 };
+                if (abilityEntitySkillId?.value) {
+                    spawnReferences.push({
+                        event,
+                        childSkillId: String(abilityEntitySkillId.value),
+                        assignBlackboard: !!action.assignBlackboard,
+                        assignItems: event.details.assignItems,
+                        raw: action
+                    });
+                }
                 return;
             }
 
@@ -957,6 +1836,7 @@
                 return;
             }
 
+            const containerEnabled = inherited.enabled !== false && container.isEnable !== false;
             let parentEventIndex = inherited.parentEventIndex ?? null;
             if (isActionNode(container)) {
                 const type = formatActionType(container.$type);
@@ -967,7 +1847,7 @@
                     rawType: container.$type,
                     category: classifyAction(type),
                     presentation: isPresentationType(type),
-                    enabled: container.isEnable !== false,
+                    enabled: containerEnabled,
                     serverActionIndex: container.serverActionIndex ?? null,
                     priorityLevel: container.priorityLevel ?? null,
                     priorityOffset: container.priorityOffset ?? null,
@@ -976,16 +1856,18 @@
                     summaryFields: summary.fields,
                     summaryTruncated: summary.truncated,
                     branchPath: inherited.branchPath.slice(),
+                    conditions: (Array.isArray(inherited.conditions) ? inherited.conditions : []).slice(),
                     path,
                     raw: container
                 }, frameInfo(inherited.startFrame, inherited.endFrame), {
                     source: inherited.source,
+                    flowId: inherited.flowId,
                     abilityEvent: inherited.abilityEvent,
                     groupIndex: inherited.groupIndex,
                     sequenceIndex: inherited.sequenceIndex
                 });
                 events.push(event);
-                handleAction(container, event);
+                if (event.enabled) handleAction(container, event);
                 parentEventIndex = event.index;
             }
 
@@ -993,10 +1875,25 @@
                 const child = container[key];
                 if (!child || typeof child !== 'object') return;
                 const isBranch = isNestedActionKey(key);
+                const relation = isBranch ? branchRelation(key) : inherited.relation;
+                let conditions = (Array.isArray(inherited.conditions) ? inherited.conditions : []).slice();
+                const parentType = isActionNode(container) ? formatActionType(container.$type).toLowerCase() : '';
+                if (parentType.includes('ifelse') && (relation === 'success' || relation === 'failure')) {
+                    const conditionContainer = container.conditionAction || container.condition || container.conditions;
+                    conditions.push({
+                        type: 'branch',
+                        outcome: relation,
+                        controllerScope: scopeId,
+                        controllerEventIndex: parentEventIndex,
+                        expression: describeConditionContainer(conditionContainer, `${path}.conditionAction`)
+                    });
+                }
                 walkContainer(child, Object.assign({}, inherited, {
                     parentEventIndex,
-                    relation: isBranch ? branchRelation(key) : inherited.relation,
-                    branchPath: isBranch ? inherited.branchPath.concat(branchName(key)) : inherited.branchPath
+                    relation,
+                    branchPath: isBranch ? inherited.branchPath.concat(branchName(key)) : inherited.branchPath,
+                    conditions,
+                    enabled: containerEnabled
                 }), `${path}.${key}`, depth + 1);
             });
         };
@@ -1016,6 +1913,7 @@
             }
             walkContainer(groupItem, {
                 source: 'timeline',
+                flowId: `${scopeId}|timeline`,
                 abilityEvent: null,
                 groupIndex,
                 sequenceIndex: 0,
@@ -1023,7 +1921,9 @@
                 endFrame: groupItem?._endFrame,
                 parentEventIndex: null,
                 relation: '',
-                branchPath: []
+                branchPath: [],
+                conditions: [],
+                enabled: true
             }, `actionGroupData.timelineActions[${groupIndex}]`, 0);
         });
 
@@ -1033,6 +1933,7 @@
         passiveEventActions.forEach((passiveEvent, eventIndex) => {
             walkContainer(passiveEvent, {
                 source: 'passive',
+                flowId: `${scopeId}|passive|${String(passiveEvent?.abilityEvent || '(none)')}|${eventIndex}`,
                 abilityEvent: passiveEvent?.abilityEvent ?? '',
                 groupIndex: eventIndex,
                 sequenceIndex: 0,
@@ -1040,15 +1941,19 @@
                 endFrame: null,
                 parentEventIndex: null,
                 relation: '',
-                branchPath: []
+                branchPath: [],
+                conditions: [],
+                enabled: true
             }, `actionGroupData.passiveEventActions[${eventIndex}]`, 0);
         });
 
         Object.keys(actionGroupData).forEach(key => {
             if (key === 'timelineActions' || key === 'passiveEventActions') return;
             walkContainer(actionGroupData[key], {
-                source: 'config', abilityEvent: null, groupIndex: null, sequenceIndex: null,
-                startFrame: null, endFrame: null, parentEventIndex: null, relation: branchRelation(key), branchPath: [branchName(key)]
+                source: 'config', flowId: `${scopeId}|config|actionGroupData.${key}`,
+                abilityEvent: null, groupIndex: null, sequenceIndex: null,
+                startFrame: null, endFrame: null, parentEventIndex: null, relation: branchRelation(key),
+                branchPath: [branchName(key)], conditions: [], enabled: true
             }, `actionGroupData.${key}`, 0);
         });
 
@@ -1056,9 +1961,328 @@
             if (key === 'actionGroupData' || key === 'timelineActions' || key === 'passiveEventActions') return;
             const source = /highlight/i.test(key) ? 'highlight' : (/switch.*condition/i.test(key) ? 'switch-condition' : 'config');
             walkContainer(data[key], {
-                source, abilityEvent: null, groupIndex: null, sequenceIndex: null,
-                startFrame: null, endFrame: null, parentEventIndex: null, relation: branchRelation(key), branchPath: [branchName(key)]
+                source, flowId: `${scopeId}|${source}|${key}`,
+                abilityEvent: null, groupIndex: null, sequenceIndex: null,
+                startFrame: null, endFrame: null, parentEventIndex: null, relation: branchRelation(key),
+                branchPath: [branchName(key)], conditions: [], enabled: true
             }, key, 0);
+        });
+
+        const meaningfulDimension = dimension => {
+            if (!dimension) return false;
+            if (dimension.resolved === false) return true;
+            if (Array.isArray(dimension.variants) && dimension.variants.length) return true;
+            const numeric = finiteNumber(dimension.value);
+            return numeric === null ? dimension.value !== null && dimension.value !== '' : numeric !== 0;
+        };
+
+        if (hasOwn(castData, 'castDistance')) {
+            const distance = spatialDimension(castData.castDistance, 'castData.castDistance', 'meter', -1);
+            if (meaningfulDimension(distance)) {
+                addSpatialFact(spatial.castLimits, {
+                    semantic: 'cast-limit',
+                    confidence: castData.useCustomCastDistance ? 'high' : 'medium',
+                    actionType: 'SkillCastData',
+                    path: 'castData.castDistance',
+                    conditions: [],
+                    timing: null,
+                    checkType: castData.checkCastDistanceType ?? '',
+                    custom: !!castData.useCustomCastDistance,
+                    geometry: {
+                        space: 'scalar',
+                        shape: 'Distance',
+                        dimensions: { distance }
+                    }
+                });
+            }
+        }
+
+        (Array.isArray(data.uiRangeHints) ? data.uiRangeHints : []).forEach((hint, hintIndex) => {
+            const path = `uiRangeHints[${hintIndex}].shapeData`;
+            const parsed = parseUiGeometry(hint?.shapeData, path);
+            if (!parsed) return;
+            addSpatialFact(spatial.selectionHints, Object.assign({}, parsed, {
+                semantic: 'selection-hint',
+                confidence: 'medium',
+                actionType: 'UIRangeHint',
+                path,
+                targetFaction: hint?.targetFaction ?? '',
+                selectAll: !!hint?.selectAll,
+                timing: null,
+                conditions: []
+            }));
+        });
+
+        const targetGroupsForConsumer = event => {
+            if (!['damage', 'recovery', 'defense', 'control', 'buff'].includes(event.category)) return [];
+            const candidates = [
+                event.raw?.targetSettings,
+                event.raw?.targets,
+                event.raw?.target,
+                event.raw?.calculationTarget,
+                event.raw?.effectTarget
+            ];
+            return [...new Set(candidates
+                .map(candidate => candidate?.targetGroupKey)
+                .filter(value => value !== undefined && value !== null && value !== '')
+                .map(String))];
+        };
+
+        spatial.targetSearches.forEach(search => {
+            if (!search.targetGroupKey) return;
+            const consumers = events.filter(event => (
+                event.enabled !== false
+                && event.index >= search.eventIndex
+                && event.source === search.eventSource
+                && event.groupIndex === search.groupIndex
+                && conditionsCompatible(search.conditions, event.conditions)
+                && targetGroupsForConsumer(event).includes(String(search.targetGroupKey))
+            ));
+            if (!consumers.length) return;
+            const consumerGroups = new Map();
+            consumers.forEach(consumer => {
+                const conditions = mergeConditionItems(search.conditions, consumer.conditions);
+                const signature = conditionSignature(conditions);
+                if (!consumerGroups.has(signature)) consumerGroups.set(signature, { conditions, consumers: [] });
+                consumerGroups.get(signature).consumers.push(consumer);
+            });
+            consumerGroups.forEach(grouped => {
+                const impactData = Object.assign({}, search, {
+                    semantic: 'impact-volume',
+                    confidence: grouped.consumers.some(event => event.category === 'damage') ? 'high' : 'medium',
+                    sourceFactId: search.id,
+                    consumerEventIndexes: grouped.consumers.map(event => event.index),
+                    conditions: grouped.conditions
+                });
+                delete impactData.id;
+                const impact = addSpatialFact(spatial.impactVolumes, impactData);
+                grouped.consumers.forEach(consumer => {
+                    addSpatialRelation({
+                        type: 'targets',
+                        from: impact.id,
+                        to: `event:${scopeId}:${consumer.index}`,
+                        details: { actionType: consumer.type, category: consumer.category }
+                    });
+                });
+            });
+        });
+
+        spatial.externalVariants = externalVariants
+            .map(variant => Object.assign({}, variant, {
+                modifiers: variant.modifiers.filter(modifier => consumedSpatialKeys.has(modifier.key))
+            }))
+            .filter(variant => variant.modifiers.length);
+
+        const traversal = isObject(metaContext._spatialTraversal)
+            ? metaContext._spatialTraversal
+            : {
+                stack: [String(data.skillId || scopeId)],
+                depth: 0,
+                budget: { count: 0, limit: 32 }
+            };
+        const loadSkillData = typeof metaContext.loadSkillData === 'function'
+            ? metaContext.loadSkillData
+            : null;
+
+        const inheritedSnapshot = (eventIndex, assignItems, conditions, flowId) => {
+            const snapshot = Object.create(null);
+            Object.keys(blackboardData.byKey).forEach(key => {
+                const entry = blackboardData.byKey[key];
+                snapshot[key] = resolveSpatialField({
+                    useBlackboardKey: true,
+                    value: entry?.defaultValue ?? entry?.value ?? null,
+                    blackboardKey: key
+                }, `blackboard.${key}`, eventIndex, false, conditions, flowId);
+            });
+            (Array.isArray(assignItems) ? assignItems : []).forEach((item, index) => {
+                const targetKey = String(item?.targetKey || '');
+                if (!targetKey) return;
+                if (item.useDirectValue) {
+                    snapshot[targetKey] = {
+                        value: item.directValueType === 'String' ? item.stringValue : item.numericValue,
+                        resolved: true,
+                        source: 'spawn-assignment',
+                        usesBlackboard: false,
+                        blackboardKey: null,
+                        fallbackValue: null,
+                        variants: []
+                    };
+                    return;
+                }
+                if (item.inputValueKey) {
+                    snapshot[targetKey] = resolveSpatialField({
+                        useBlackboardKey: true,
+                        value: item.numericValue ?? item.stringValue ?? null,
+                        blackboardKey: item.inputValueKey
+                    }, `spawn.assignItems[${index}]`, eventIndex, false, conditions, flowId);
+                }
+            });
+            return snapshot;
+        };
+
+        const mergeChildSpatial = childSpatial => {
+            if (!isObject(childSpatial)) return;
+            ['castLimits', 'selectionHints', 'targetSearches', 'impactVolumes', 'persistentFields', 'collisionVolumes']
+                .forEach(key => spatial[key].push(...(Array.isArray(childSpatial[key]) ? childSpatial[key] : [])));
+            (Array.isArray(childSpatial.relations) ? childSpatial.relations : []).forEach(addSpatialRelation);
+            (Array.isArray(childSpatial.warnings) ? childSpatial.warnings : []).forEach(warning => {
+                const warningKey = `${warning.code}|${warning.path || ''}|${warning.key || ''}|${warning.message || ''}`;
+                if (spatialWarningKeys.has(warningKey)) return;
+                spatialWarningKeys.add(warningKey);
+                spatial.warnings.push(warning);
+            });
+            spatial.externalVariants.push(...(Array.isArray(childSpatial.externalVariants) ? childSpatial.externalVariants : []));
+            spatial.pendingReferences.push(...(Array.isArray(childSpatial.pendingReferences) ? childSpatial.pendingReferences : []));
+        };
+
+        for (const reference of spawnReferences) {
+            const childSkillId = reference.childSkillId;
+            const eventNodeId = `event:${scopeId}:${reference.event.index}`;
+            const skillNodeId = `skill:${childSkillId}`;
+            const pending = {
+                type: 'skill',
+                skillId: childSkillId,
+                relation: 'abilityEntitySkill',
+                eventIndex: reference.event.index,
+                path: reference.event.path,
+                status: 'pending'
+            };
+            addSpatialRelation({
+                type: 'spawns',
+                from: eventNodeId,
+                to: skillNodeId,
+                status: 'pending',
+                details: { abilityEntityId: reference.raw.abilityEntityId ?? '' }
+            });
+            if (reference.assignBlackboard) {
+                addSpatialRelation({
+                    type: 'inherits-blackboard',
+                    from: `skill:${data.skillId || ''}`,
+                    to: skillNodeId,
+                    status: 'enabled',
+                    details: {
+                        assignBlackboard: true,
+                        assignedKeys: reference.assignItems.map(item => item?.targetKey).filter(Boolean)
+                    }
+                });
+            }
+
+            if (!loadSkillData) {
+                spatial.pendingReferences.push(pending);
+                continue;
+            }
+            if ((Array.isArray(traversal.stack) ? traversal.stack : []).includes(childSkillId)) {
+                pending.status = 'cycle';
+                spatial.pendingReferences.push(pending);
+                addSpatialWarning('SPATIAL_SKILL_CYCLE', `Spatial child-skill traversal stopped at cycle "${childSkillId}".`, {
+                    path: reference.event.path,
+                    skillId: childSkillId
+                });
+                continue;
+            }
+            if ((Number(traversal.depth) || 0) >= 8) {
+                pending.status = 'depth-limit';
+                spatial.pendingReferences.push(pending);
+                addSpatialWarning('SPATIAL_SKILL_DEPTH_LIMIT', 'Spatial child-skill traversal stopped at depth 8.', {
+                    path: reference.event.path,
+                    skillId: childSkillId
+                });
+                continue;
+            }
+            const budget = isObject(traversal.budget) ? traversal.budget : { count: 0, limit: 32 };
+            if (budget.count >= (finiteNumber(budget.limit) ?? 32)) {
+                pending.status = 'budget-limit';
+                spatial.pendingReferences.push(pending);
+                addSpatialWarning('SPATIAL_SKILL_BUDGET_LIMIT', 'Spatial child-skill traversal stopped after 32 references.', {
+                    path: reference.event.path,
+                    skillId: childSkillId
+                });
+                continue;
+            }
+
+            try {
+                budget.count += 1;
+                const childData = await loadSkillData(childSkillId);
+                if (!isObject(childData)) throw new Error('Child SkillData is empty.');
+                const childScope = `${scopeId}>${reference.event.index}:${childSkillId}`;
+                const spawnConditions = mergeConditionItems(
+                    inheritedSpatialConditions,
+                    reference.event.conditions
+                );
+                const inherited = inheritedSnapshot(
+                    reference.event.index,
+                    reference.assignItems,
+                    spawnConditions,
+                    reference.event.flowId
+                );
+                if (!reference.assignBlackboard) {
+                    Object.keys(inherited).forEach(key => {
+                        if (!reference.assignItems.some(item => String(item?.targetKey || '') === key)) delete inherited[key];
+                    });
+                }
+                const childPatch = metaContext.tables?.patches?.[childSkillId] ?? null;
+                const childResult = await analyzeSkill(childData, childPatch, Object.assign({}, metaContext, {
+                    _spatialInheritedBlackboard: inherited,
+                    _spatialInheritedConditions: spawnConditions,
+                    _spatialScope: childScope,
+                    _spatialOrigin: {
+                        parentSkillId: data.skillId ?? '',
+                        spawnEventIndex: reference.event.index,
+                        spawnPath: reference.event.path
+                    },
+                    _spatialTraversal: {
+                        stack: (Array.isArray(traversal.stack) ? traversal.stack : []).concat(childSkillId),
+                        depth: (Number(traversal.depth) || 0) + 1,
+                        budget
+                    }
+                }));
+                pending.status = 'resolved';
+                mergeChildSpatial(childResult?.spatial);
+                spatial.relations.forEach(relation => {
+                    if (relation.type === 'spawns' && relation.from === eventNodeId && relation.to === skillNodeId) {
+                        relation.status = 'resolved';
+                    }
+                });
+            } catch (error) {
+                pending.status = 'load-failed';
+                pending.message = error?.message || String(error);
+                spatial.pendingReferences.push(pending);
+                addSpatialWarning('SPATIAL_CHILD_SKILL_LOAD_FAILED', `Unable to load spatial child skill "${childSkillId}".`, {
+                    path: reference.event.path,
+                    skillId: childSkillId,
+                    detail: pending.message
+                });
+            }
+        }
+
+        const dimensionOwners = new Map();
+        ['castLimits', 'selectionHints', 'targetSearches', 'impactVolumes', 'persistentFields', 'collisionVolumes']
+            .forEach(collection => {
+                spatial[collection].forEach(fact => {
+                    Object.entries(fact.geometry?.dimensions || {}).forEach(([dimension, value]) => {
+                        if (!value?.usesBlackboard || !value.blackboardKey) return;
+                        const key = `${fact.skillId}|${value.blackboardKey}`;
+                        if (!dimensionOwners.has(key)) dimensionOwners.set(key, []);
+                        dimensionOwners.get(key).push({ factId: fact.id, dimension });
+                    });
+                });
+            });
+        dimensionOwners.forEach((owners, key) => {
+            for (let left = 0; left < owners.length; left += 1) {
+                for (let right = left + 1; right < owners.length; right += 1) {
+                    if (owners[left].factId === owners[right].factId) continue;
+                    addSpatialRelation({
+                        type: 'shares-value',
+                        from: owners[left].factId,
+                        to: owners[right].factId,
+                        details: {
+                            blackboardKey: key.split('|').slice(1).join('|'),
+                            fromDimension: owners[left].dimension,
+                            toDimension: owners[right].dimension
+                        }
+                    });
+                }
+            }
         });
 
         return {
@@ -1068,6 +2292,7 @@
             events,
             links,
             blackboard: blackboardData,
+            spatial,
             warnings
         };
     }

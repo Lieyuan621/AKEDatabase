@@ -517,9 +517,24 @@
 
 .combatv3-metric-unit,
 .combatv3-metric-detail {
+    min-width: 0;
     color: var(--combatv3-muted);
     font-size: 0.62rem;
     font-weight: 500;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.combatv3-metric--spatial {
+    justify-content: flex-start;
+}
+
+.combatv3-metric--spatial .combatv3-metric-value {
+    margin-top: auto;
+}
+
+.combatv3-metric--spatial .combatv3-metric-unit {
+    white-space: normal;
 }
 
 .combatv3-metric.is-important {
@@ -1170,6 +1185,10 @@
 
     .combatv3-metric--wide {
         grid-column: 1 / -1;
+    }
+
+    .combatv3-metric--spatial {
+        min-height: 0;
     }
 
     .combatv3-section-header {

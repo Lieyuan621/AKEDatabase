@@ -553,7 +553,13 @@
     ]);
 
     function emptyAnalysis() {
-        return { basic: {}, windows: [], hits: [], events: [], links: [], blackboard: {}, warnings: [] };
+        return {
+            basic: {}, windows: [], hits: [], events: [], links: [], blackboard: {}, warnings: [],
+            spatial: {
+                castLimits: [], selectionHints: [], targetSearches: [], impactVolumes: [],
+                persistentFields: [], collisionVolumes: [], relations: [], warnings: []
+            }
+        };
     }
 
     function escapeHtml(value) {
@@ -1100,8 +1106,27 @@
         return promise;
     }
 
+    function fetchSkillDataById(skillId) {
+        const id = String(skillId || '').trim();
+        if (!id) return Promise.resolve(null);
+        const item = state.rawManifest.find(entry => entry?.id === id)
+            || state.manifest.find(entry => entry?.id === id)
+            || { id };
+        return fetchSkill(item);
+    }
+
     function normalizeAnalysis(result) {
         const source = isObject(result) ? result : {};
+        const rawSpatial = isObject(source.spatial) ? source.spatial : {};
+        const seenWarnings = new Set();
+        const warnings = [...collection(source.warnings), ...collection(rawSpatial.warnings)].filter(warning => {
+            const key = isObject(warning)
+                ? JSON.stringify([warning.code, warning.path, warning.key, warning.skillId, warning.detail, warning.message])
+                : String(warning);
+            if (seenWarnings.has(key)) return false;
+            seenWarnings.add(key);
+            return true;
+        });
         return {
             basic: isObject(source.basic) ? source.basic : {},
             windows: collection(source.windows),
@@ -1109,7 +1134,17 @@
             events: collection(source.events),
             links: collection(source.links),
             blackboard: source.blackboard ?? {},
-            warnings: collection(source.warnings)
+            warnings,
+            spatial: {
+                castLimits: collection(rawSpatial.castLimits),
+                selectionHints: collection(rawSpatial.selectionHints),
+                targetSearches: collection(rawSpatial.targetSearches),
+                impactVolumes: collection(rawSpatial.impactVolumes),
+                persistentFields: collection(rawSpatial.persistentFields),
+                collisionVolumes: collection(rawSpatial.collisionVolumes),
+                relations: collection(rawSpatial.relations),
+                warnings: collection(rawSpatial.warnings)
+            }
         };
     }
 
@@ -1144,7 +1179,8 @@
             group: owner?.group || {},
             characterConfig: isCharacter ? entity.config || {} : {},
             enemyConfig: isEnemy ? entity.config || {} : {},
-            tables: state.tables
+            tables: state.tables,
+            loadSkillData: skillId => fetchSkillDataById(skillId)
         };
         let result;
         if (typeof analyzer !== 'function') {
@@ -1308,6 +1344,565 @@
         };
     }
 
+    const SPATIAL_SHAPE_KEYS = Object.freeze({
+        point: ['spatial.shapes.point', '点'],
+        circle: ['spatial.shapes.circle', '圆形'],
+        sector: ['spatial.shapes.sector', '扇形'],
+        arrow: ['spatial.shapes.arrow', '箭头'],
+        sphere: ['spatial.shapes.sphere', '球形'],
+        capsule: ['spatial.shapes.capsule', '胶囊体'],
+        box: ['spatial.shapes.box', '盒体'],
+        global: ['spatial.shapes.global', '全局']
+    });
+    const SPATIAL_CENTER_KEYS = Object.freeze({
+        owner: ['spatial.centers.owner', '自身'],
+        self: ['spatial.centers.owner', '自身'],
+        source: ['spatial.centers.source', '来源实体'],
+        target: ['spatial.centers.target', '目标'],
+        contexttarget: ['spatial.centers.contextTarget', '上下文目标'],
+        contextposition: ['spatial.centers.contextPosition', '上下文位置'],
+        actionowner: ['spatial.centers.actionOwner', '动作执行者'],
+        inputcenter: ['spatial.centers.inputCenter', '输入中心'],
+        position: ['spatial.centers.position', '指定位置'],
+        point: ['spatial.centers.position', '指定位置'],
+        ground: ['spatial.centers.ground', '地面落点'],
+        targetposition: ['spatial.centers.targetPosition', '目标位置']
+    });
+
+    function spatialShapeLabel(value) {
+        const scalar = resolvedScalar(value);
+        if (!isPresent(scalar)) return '';
+        const normalized = String(scalar).split('.').pop().replace(/shape(?:data)?$/i, '').toLowerCase();
+        const entry = SPATIAL_SHAPE_KEYS[normalized];
+        return entry ? t(entry[0], null, entry[1]) : formatValue(scalar);
+    }
+
+    function spatialStatus(value) {
+        if (!isObject(value)) return '';
+        const raw = value.status ?? value.state ?? value.source ?? value.kind;
+        return isPresent(raw) ? String(raw).toLowerCase() : '';
+    }
+
+    function isUnresolvedSpatialValue(value, fact) {
+        const candidates = [value, isObject(value) ? value.resolution : undefined];
+        if (!isPresent(value)) candidates.push(fact?.resolution);
+        return candidates.some(candidate => {
+            if (!isObject(candidate)) return /unresolved|runtime|missing|unknown/.test(String(candidate || '').toLowerCase());
+            const status = spatialStatus(candidate);
+            return candidate.resolved === false
+                || /unresolved|runtime|missing|unknown/.test(status)
+                || (candidate.usesBlackboard === true && candidate.resolved !== true
+                    && !isPresent(candidate.resolvedValue));
+        });
+    }
+
+    function spatialScalar(value, fact) {
+        if (isObject(value) && value.scenarioOnly === true) {
+            return { unresolved: false, scenarioOnly: true, text: '' };
+        }
+        if (isUnresolvedSpatialValue(value, fact)) return {
+            unresolved: true,
+            text: t('spatial.values.unresolved', null, '运行时传入/未解析')
+        };
+        let scalar = value;
+        if (isObject(scalar)) {
+            if (Object.prototype.hasOwnProperty.call(scalar, 'resolvedValue')) scalar = scalar.resolvedValue;
+            else if (Object.prototype.hasOwnProperty.call(scalar, 'value')) scalar = scalar.value;
+            else if (Object.prototype.hasOwnProperty.call(scalar, 'literal')) scalar = scalar.literal;
+        }
+        if (!isPresent(scalar)) return { unresolved: false, text: '' };
+        return { unresolved: false, scalar, text: formatValue(scalar) };
+    }
+
+    function spatialDimension(fact, paths) {
+        const geometry = isObject(fact?.geometry) ? fact.geometry : {};
+        const dimensions = isObject(geometry.dimensions) ? geometry.dimensions
+            : (isObject(fact?.dimensions) ? fact.dimensions : {});
+        return firstValue(dimensions, paths)
+            ?? firstValue(geometry, paths)
+            ?? firstValue(fact || {}, paths);
+    }
+
+    function spatialDimensionText(key, value, fact) {
+        if (!isPresent(value)) return '';
+        const result = spatialScalar(value, fact);
+        if (!result.text) return '';
+        const labels = {
+            radius: t('spatial.dimensions.radius', null, 'R'),
+            angle: t('spatial.dimensions.angle', null, '角度'),
+            height: t('spatial.dimensions.height', null, '高'),
+            maxHeight: t('spatial.dimensions.maxHeight', null, '高度上限'),
+            length: t('spatial.dimensions.length', null, '长'),
+            width: t('spatial.dimensions.width', null, '宽'),
+            depth: t('spatial.dimensions.depth', null, '深')
+        };
+        if (result.unresolved) return `${labels[key] || ''} ${result.text}`.trim();
+        if (Number.isFinite(Number(result.scalar)) && Number(result.scalar) === 0) return '';
+        const unit = key === 'angle'
+            ? t('units.degrees', { value: result.text }, `${result.text}°`)
+            : t('units.meters', { value: result.text }, `${result.text} 米`);
+        return `${labels[key] || ''} ${unit}`.trim();
+    }
+
+    function spatialSizeParts(fact) {
+        const size = spatialDimension(fact, ['size', 'extent', 'dimensions.size']);
+        const values = Array.isArray(size)
+            ? { x: size[0], y: size[1], z: size[2] }
+            : (isObject(size) ? size : {});
+        const length = spatialDimension(fact, ['length', 'sizeZ', 'extentZ'])
+            ?? values.length ?? values.z ?? values.depth;
+        const width = spatialDimension(fact, ['width', 'sizeX', 'extentX'])
+            ?? values.width ?? values.x;
+        const height = spatialDimension(fact, ['height', 'sizeY', 'extentY'])
+            ?? values.height ?? values.y;
+        return [
+            spatialDimensionText('length', length, fact),
+            spatialDimensionText('width', width, fact),
+            spatialDimensionText('height', height, fact)
+        ].filter(Boolean);
+    }
+
+    function spatialGeometryText(fact, category) {
+        if (!isObject(fact)) {
+            const scalar = spatialScalar(fact);
+            return scalar.text ? t('units.meters', { value: scalar.text }, `${scalar.text} 米`) : '';
+        }
+        const geometry = isObject(fact.geometry) ? fact.geometry : {};
+        if (category === 'cast') {
+            const rawDistance = spatialDimension(fact, ['distance', 'castDistance', 'limit', 'value', 'radius']);
+            const distance = spatialScalar(rawDistance, fact);
+            return distance.text
+                ? (distance.unresolved ? distance.text : t('units.meters', { value: distance.text }, `${distance.text} 米`))
+                : (isUnresolvedSpatialValue(undefined, fact)
+                    ? t('spatial.values.unresolved', null, '运行时传入/未解析') : '');
+        }
+        const shape = spatialShapeLabel(geometry.shape ?? geometry.shapeType ?? fact.shape ?? fact.shapeType ?? fact.type);
+        const dimensions = [
+            spatialDimensionText('radius', spatialDimension(fact, ['radius', 'range']), fact),
+            spatialDimensionText('angle', spatialDimension(fact, ['angle', 'sectorAngle']), fact),
+            spatialDimensionText('length', spatialDimension(fact, ['length', 'sizeZ', 'extentZ']), fact),
+            spatialDimensionText('width', spatialDimension(fact, ['width', 'sizeX', 'extentX']), fact),
+            spatialDimensionText('height', spatialDimension(fact, ['height', 'sizeY', 'extentY']), fact),
+            spatialDimensionText('maxHeight', spatialDimension(fact, ['maxHeight']), fact),
+            spatialDimensionText('depth', spatialDimension(fact, ['depth']), fact)
+        ].filter(Boolean);
+        if (!dimensions.length) dimensions.push(...spatialSizeParts(fact));
+        const unresolved = isUnresolvedSpatialValue(undefined, fact)
+            ? t('spatial.values.unresolved', null, '运行时传入/未解析') : '';
+        return [shape, ...dimensions, (!dimensions.length ? unresolved : '')].filter(Boolean).join(' · ');
+    }
+
+    function spatialOperatorLabel(value) {
+        const normalized = String(value || '').toLowerCase();
+        const labels = {
+            '==': ['spatial.operators.equal', '等于'], equal: ['spatial.operators.equal', '等于'],
+            '!=': ['spatial.operators.notEqual', '不等于'], notequal: ['spatial.operators.notEqual', '不等于'],
+            '>': ['spatial.operators.greater', '大于'], greater: ['spatial.operators.greater', '大于'],
+            gt: ['spatial.operators.greater', '大于'],
+            '>=': ['spatial.operators.greaterOrEqual', '大于等于'], greaterorequal: ['spatial.operators.greaterOrEqual', '大于等于'],
+            ge: ['spatial.operators.greaterOrEqual', '大于等于'], gte: ['spatial.operators.greaterOrEqual', '大于等于'],
+            '<': ['spatial.operators.less', '小于'], less: ['spatial.operators.less', '小于'],
+            lt: ['spatial.operators.less', '小于'],
+            '<=': ['spatial.operators.lessOrEqual', '小于等于'], lessorequal: ['spatial.operators.lessOrEqual', '小于等于'],
+            le: ['spatial.operators.lessOrEqual', '小于等于'], lte: ['spatial.operators.lessOrEqual', '小于等于'],
+            eq: ['spatial.operators.equal', '等于'], ne: ['spatial.operators.notEqual', '不等于']
+        };
+        const entry = labels[normalized];
+        return entry ? t(entry[0], null, entry[1]) : formatValue(value);
+    }
+
+    function spatialConditionText(condition, depth) {
+        if (!isPresent(condition)) return '';
+        if (['string', 'number', 'boolean'].includes(typeof condition)) return formatValue(condition);
+        if (Array.isArray(condition)) {
+            return condition.map(item => spatialConditionText(item, (depth || 0) + 1)).filter(Boolean)
+                .join(t('spatial.conditions.andSeparator', null, '，'));
+        }
+        if (!isObject(condition) || (depth || 0) > 3) {
+            return t('spatial.conditions.runtime', null, '运行时条件');
+        }
+        const direct = firstValue(condition, ['displayText', 'text', 'label', 'expression', 'description']);
+        if (isPresent(direct)) {
+            const expression = isObject(direct)
+                ? spatialConditionText(direct, (depth || 0) + 1)
+                : formatValue(direct);
+            if (String(condition.type || '').toLowerCase() === 'branch'
+                && String(condition.outcome || '').toLowerCase() === 'failure') {
+                return t('spatial.conditions.notMet', { condition: expression }, `不满足：${expression}`);
+            }
+            return expression;
+        }
+        if (String(condition.type || '').toLowerCase() === 'external' && isPresent(condition.sourceId)) {
+            const potential = String(condition.sourceId).match(/potential[_-]?(\d+)(?:\D|$)/i);
+            if (potential) {
+                return t('spatial.conditions.potentialLevel', { level: potential[1] }, `潜能 ${potential[1]}`);
+            }
+            return t('spatial.conditions.externalSource', { source: formatValue(condition.sourceId) },
+                `外部条件 ${formatValue(condition.sourceId)}`);
+        }
+        const children = collection(condition.conditions ?? condition.children ?? condition.items);
+        if (children.length) {
+            const mode = String(condition.mode ?? condition.logic ?? condition.operator ?? 'and').toLowerCase();
+            const separator = /or|any/.test(mode)
+                ? t('spatial.conditions.orSeparator', null, ' 或 ')
+                : t('spatial.conditions.andSeparator', null, '，');
+            return children.map(item => spatialConditionText(item, (depth || 0) + 1)).filter(Boolean).join(separator);
+        }
+        const left = firstValue(condition, ['left', 'key', 'blackboardKey', 'field', 'source']);
+        const right = firstValue(condition, ['right', 'value', 'target', 'threshold']);
+        const operator = firstValue(condition, ['compare', 'comparison', 'operator', 'op']);
+        if (isPresent(left) && isPresent(operator) && isPresent(right)) {
+            const leftText = isObject(left) ? firstValue(left, ['key', 'blackboardKey', 'name', 'value']) : left;
+            const rightText = isObject(right) ? spatialScalar(right).text : formatValue(right);
+            return [formatValue(leftText), spatialOperatorLabel(operator), rightText].filter(Boolean).join(' ');
+        }
+        return t('spatial.conditions.runtime', null, '运行时条件');
+    }
+
+    function spatialTimingText(fact) {
+        const timing = isObject(fact?.timing) ? fact.timing : {};
+        const start = firstValue(timing, ['startFrame', 'frame', 'start', 'from'])
+            ?? firstValue(fact || {}, ['startFrame', 'frame']);
+        const end = firstValue(timing, ['endFrame', 'end', 'to'])
+            ?? firstValue(fact || {}, ['endFrame']);
+        if (!isPresent(start)) return '';
+        let text;
+        if (isPresent(end) && Number(end) !== Number(start)) {
+            text = t('units.frameRange', { start: formatValue(start), end: formatValue(end) },
+                `${formatValue(start)}–${formatValue(end)} 帧`);
+        } else {
+            text = t('units.frames', { value: formatValue(start) }, `${formatValue(start)} 帧`);
+        }
+        return timing.scope === 'skill-local' && fact?.skillId && fact.skillId !== state.activeSkillId
+            ? t('spatial.timing.skillLocal', { timing: text }, `子技能局部：${text}`)
+            : text;
+    }
+
+    function spatialSourceText(fact) {
+        const source = isObject(fact?.source) ? fact.source : {};
+        const named = firstValue(fact || {}, ['stageLabel', 'stageName'])
+            ?? firstValue(source, ['stageLabel', 'stageName', 'label']);
+        if (isPresent(named)) return named;
+        const skillId = source.skillId ?? fact?.skillId;
+        if (isPresent(skillId) && skillId !== state.activeSkillId) {
+            const displayId = String(skillId).startsWith(`${state.activeSkillId}_`)
+                ? String(skillId).slice(state.activeSkillId.length + 1)
+                : formatValue(skillId);
+            return t('spatial.sources.childSkill', { skillId: displayId }, `子技能：${displayId}`);
+        }
+        if (typeof fact?.source !== 'string') return '';
+        const rawSource = fact.source;
+        return /^(?:timeline|passive|config|highlight|switch-condition)$/i.test(rawSource)
+            ? '' : rawSource;
+    }
+
+    function spatialVariantTexts(fact) {
+        if (!isObject(fact)) return [];
+        const geometry = isObject(fact.geometry) ? fact.geometry : {};
+        const dimensions = isObject(geometry.dimensions) ? geometry.dimensions
+            : (isObject(fact.dimensions) ? fact.dimensions : {});
+        const dimensionKeys = [
+            ['distance', 'distance'], ['radius', 'radius'], ['angle', 'angle'],
+            ['length', 'length'], ['width', 'width'], ['height', 'height'], ['maxHeight', 'maxHeight'], ['depth', 'depth'],
+            ['sizeZ', 'length'], ['extentZ', 'length'], ['sizeX', 'width'], ['extentX', 'width'],
+            ['sizeY', 'height'], ['extentY', 'height']
+        ];
+        const lines = [];
+        const seen = new Set();
+        const conditionAtoms = condition => {
+            if (!condition) return [];
+            if (Array.isArray(condition)) return condition.flatMap(conditionAtoms);
+            if (condition.type === 'all' && Array.isArray(condition.items)) {
+                return condition.items.flatMap(conditionAtoms);
+            }
+            return [JSON.stringify(condition)];
+        };
+        dimensionKeys.forEach(([sourceKey, displayKey]) => {
+            const wrapper = dimensions[sourceKey];
+            if (!isObject(wrapper) || !Array.isArray(wrapper.variants)) return;
+            const variants = wrapper.variants.filter((variant, index, all) => {
+                const atoms = conditionAtoms(variant.condition);
+                if (!atoms.length) return true;
+                const valueKey = JSON.stringify([variant.value, variant.resolved, variant.error]);
+                return !all.some((other, otherIndex) => {
+                    if (otherIndex === index
+                        || JSON.stringify([other.value, other.resolved, other.error]) !== valueKey) return false;
+                    const otherAtoms = conditionAtoms(other.condition);
+                    return otherAtoms.length < atoms.length
+                        && otherAtoms.every(atom => atoms.includes(atom));
+                });
+            });
+            variants.forEach(variant => {
+                const value = spatialDimensionText(displayKey, variant, fact);
+                if (!value) return;
+                const condition = spatialConditionText(variant.condition);
+                const text = condition
+                    ? t('spatial.conditions.variant', { condition, value }, `${condition} → ${value}`)
+                    : value;
+                if (seen.has(text)) return;
+                seen.add(text);
+                lines.push(text);
+            });
+        });
+        return lines;
+    }
+
+    function spatialFactUnit(fact) {
+        if (!isObject(fact)) return '';
+        const condition = spatialConditionText(fact.condition ?? fact.conditions);
+        const conditionText = condition
+            ? t('spatial.conditions.prefixed', { condition }, `条件：${condition}`) : '';
+        const timing = Array.isArray(fact._spatialTimings)
+            ? [...new Set(fact._spatialTimings.filter(Boolean))].join(t('spatial.timing.separator', null, ' / '))
+            : spatialTimingText(fact);
+        const source = spatialSourceText(fact);
+        return [conditionText, ...spatialVariantTexts(fact), timing, source].filter(Boolean).join(' · ');
+    }
+
+    function spatialAnchorValue(fact) {
+        const geometry = isObject(fact?.geometry) ? fact.geometry : {};
+        return fact?.anchor ?? fact?.center ?? geometry.anchor ?? geometry.center
+            ?? geometry.positionRef ?? fact?.positionRef;
+    }
+
+    function spatialCenterText(value) {
+        if (!isPresent(value)) return '';
+        if (isObject(value)) {
+            const direct = firstValue(value, ['displayText', 'text', 'label', 'name']);
+            if (isPresent(direct)) return formatValue(direct);
+            const type = firstValue(value, ['type', 'kind', 'source', 'value', 'center', 'positionRef', 'selectorOwner']);
+            const base = spatialCenterText(type)
+                || (value.centerBaseIsEndPoint === true
+                    ? t('spatial.centers.endPoint', null, '选取终点') : '');
+            const rawOffset = value.centerOffset ?? value.offset;
+            const vector = Array.isArray(rawOffset)
+                ? { x: rawOffset[0], y: rawOffset[1], z: rawOffset[2] }
+                : (isObject(rawOffset) ? rawOffset : {});
+            const offset = ['x', 'y', 'z'].map(axis => {
+                const scalar = spatialScalar(vector[axis] ?? vector[axis.toUpperCase()]);
+                if (!scalar.text) return '';
+                if (!scalar.unresolved && Number.isFinite(Number(scalar.scalar)) && Number(scalar.scalar) === 0) return '';
+                const measured = scalar.unresolved ? scalar.text
+                    : t('units.meters', { value: scalar.text }, `${scalar.text} 米`);
+                return `${axis.toUpperCase()} ${measured}`;
+            }).filter(Boolean).join(' / ');
+            const offsetText = offset
+                ? t('spatial.centers.offset', { value: offset }, `偏移 ${offset}`) : '';
+            const grounded = value.centerToGround === true
+                ? t('spatial.centers.grounded', null, '贴合地面') : '';
+            return [base, grounded, offsetText].filter(Boolean).join(' · ');
+        }
+        const raw = String(value);
+        const normalized = raw.replace(/[_.\s-]/g, '').toLowerCase();
+        const entry = SPATIAL_CENTER_KEYS[normalized];
+        return entry ? t(entry[0], null, entry[1]) : raw;
+    }
+
+    function spatialSignature(fact) {
+        if (!isObject(fact)) return String(fact);
+        const geometry = isObject(fact.geometry) ? fact.geometry : {};
+        const shape = String(geometry.shape ?? geometry.shapeType ?? fact.shape ?? fact.shapeType ?? '').toLowerCase();
+        const dimensions = ['radius', 'angle', 'length', 'width', 'height', 'maxHeight', 'depth']
+            .map(key => spatialScalar(spatialDimension(fact, [key]), fact).text).join('|');
+        const size = spatialSizeParts(fact).join('|');
+        const variants = spatialVariantTexts(fact).slice().sort().join('|');
+        return `${shape}:${dimensions}:${size}:${variants}`;
+    }
+
+    function spatialFactRelationLabel(fact) {
+        if (!isObject(fact)) return '';
+        const semantic = String(fact.semantic || '').toLowerCase().replace(/[_\s-]+/g, '');
+        const labels = {
+            castlimit: ['metrics.spatial.castLimit', '施放距离'],
+            selectionhint: ['metrics.spatial.selectionHint', '操作提示'],
+            targetsearch: ['spatial.purposes.targetSearch', '索敌'],
+            continuoustargetsearch: ['spatial.purposes.targetSearch', '索敌'],
+            impactvolume: ['metrics.spatial.actualImpact', '实际判定'],
+            persistentfield: ['metrics.spatial.persistentField', '持续领域'],
+            collisionvolume: ['spatial.purposes.collision', '碰撞']
+        };
+        const entry = labels[semantic];
+        const category = entry ? t(entry[0], null, entry[1]) : '';
+        const shape = spatialShapeLabel(fact.geometry?.shape ?? fact.shape ?? fact.shapeType);
+        return [category, shape].filter(Boolean).join(' · ');
+    }
+
+    function spatialRelationEndpoint(value, factsById, relation, endpoint) {
+        if (!isPresent(value)) return '';
+        const id = isObject(value) ? firstValue(value, ['id', 'factId', 'label', 'text']) : value;
+        const fact = factsById?.get(String(id));
+        if (fact) return spatialFactRelationLabel(fact);
+        const text = String(id || '');
+        if (endpoint === 'to' && text.startsWith('event:') && isPresent(relation?.details?.category)) {
+            const category = String(relation.details.category).toLowerCase();
+            const categories = {
+                damage: ['spatial.consumers.damage', '伤害结算'],
+                control: ['spatial.consumers.control', '控制效果'],
+                buff: ['spatial.consumers.buff', 'Buff 效果'],
+                timing: ['spatial.consumers.timing', '时序效果']
+            };
+            const entry = categories[category];
+            return entry ? t(entry[0], null, entry[1]) : t('spatial.consumers.effect', null, '战斗效果');
+        }
+        if (text.startsWith('event:')) return t('spatial.sources.skillEvent', null, '技能事件');
+        if (text.startsWith('skill:')) {
+            const skillId = text.slice('skill:'.length);
+            const displayId = skillId.startsWith(`${state.activeSkillId}_`)
+                ? skillId.slice(state.activeSkillId.length + 1)
+                : skillId;
+            return skillId === state.activeSkillId
+                ? t('spatial.sources.currentSkill', null, '当前技能')
+                : t('spatial.sources.childSkill', { skillId: displayId }, `子技能：${displayId}`);
+        }
+        return formatValue(id);
+    }
+
+    function spatialRelationText(relation, factsById) {
+        if (!isPresent(relation)) return '';
+        if (!isObject(relation)) return formatValue(relation);
+        const direct = firstValue(relation, ['displayText', 'text', 'label', 'description']);
+        if (isPresent(direct) && !isObject(direct)) return formatValue(direct);
+        const type = String(relation.type ?? relation.kind ?? relation.semantic ?? '').toLowerCase().replace(/[_\s-]+/g, '');
+        const labels = {
+            hintmismatch: ['spatial.relations.hintMismatch', '操作提示与实际判定不同'],
+            sharesvalue: ['spatial.relations.sharesValue', '共享同一范围参数'],
+            limits: ['spatial.relations.limits', '限制'],
+            targets: ['spatial.relations.targets', '作用于'],
+            spawns: ['spatial.relations.spawns', '生成'],
+            inheritsblackboard: ['spatial.relations.inheritsBlackboard', '继承范围参数'],
+            consumedby: ['spatial.relations.consumedBy', '被用于']
+        };
+        const entry = labels[type];
+        const relationLabel = entry ? t(entry[0], null, entry[1]) : '';
+        const from = firstValue(relation, ['fromLabel', 'sourceLabel', 'from', 'sourceId']);
+        const to = firstValue(relation, ['toLabel', 'targetLabel', 'to', 'targetId']);
+        if (isPresent(from) && isPresent(to)) {
+            const fromText = spatialRelationEndpoint(from, factsById, relation, 'from');
+            const toText = spatialRelationEndpoint(to, factsById, relation, 'to');
+            return t('spatial.relations.link', {
+                from: fromText, relation: relationLabel || formatValue(relation.type), to: toText
+            }, `${fromText} → ${relationLabel || formatValue(relation.type)} → ${toText}`);
+        }
+        return relationLabel || t('spatial.relations.runtime', null, '运行时范围关系');
+    }
+
+    function uniqueSpatialFacts(values) {
+        const groups = new Map();
+        values.forEach(value => {
+            if (!isObject(value)) {
+                const key = String(value);
+                if (!groups.has(key)) groups.set(key, value);
+                return;
+            }
+            const identity = [
+                value.skillId || '', value.semantic || '', value.resolution || '',
+                spatialSignature(value), spatialCenterText(spatialAnchorValue(value)),
+                spatialConditionText(value.condition ?? value.conditions), spatialVariantTexts(value).join('|')
+            ].join('::');
+            const timing = spatialTimingText(value);
+            if (!groups.has(identity)) {
+                groups.set(identity, Object.assign({}, value, { _spatialTimings: timing ? [timing] : [] }));
+                return;
+            }
+            const existing = groups.get(identity);
+            if (timing && !existing._spatialTimings.includes(timing)) existing._spatialTimings.push(timing);
+        });
+        return [...groups.values()];
+    }
+
+    function spatialMetrics() {
+        const spatial = state.analysis.spatial || emptyAnalysis().spatial;
+        const targeting = state.analysis.basic?.targeting || {};
+        const castLimits = collection(spatial.castLimits);
+        const fallbackCastDistance = targeting.castDistance ?? state.currentData?.castData?.castDistance;
+        const fallbackCastScalar = spatialScalar(fallbackCastDistance);
+        if (!castLimits.length && fallbackCastScalar.text
+            && (fallbackCastScalar.unresolved
+                || !Number.isFinite(Number(fallbackCastScalar.scalar))
+                || Number(fallbackCastScalar.scalar) !== 0)) {
+            castLimits.push({ value: fallbackCastDistance });
+        }
+        const cards = [];
+        const addFacts = (facts, key, label, category, important, qualifier) => {
+            uniqueSpatialFacts(collection(facts)).forEach(fact => {
+                const geometry = spatialGeometryText(fact, category);
+                if (!geometry) return;
+                cards.push({
+                    key, label,
+                    value: qualifier ? `${qualifier} · ${geometry}` : geometry,
+                    unit: spatialFactUnit(fact), important: Boolean(important), wide: false
+                });
+            });
+        };
+        addFacts(castLimits, 'spatialCastLimit', t('metrics.spatial.castLimit', null, '施放距离'), 'cast', false);
+        addFacts(spatial.selectionHints, 'spatialSelectionHint',
+            t('metrics.spatial.selectionHint', null, '操作提示'), 'shape', false);
+        const impacts = collection(spatial.impactVolumes);
+        const impactSourceIds = new Set(impacts.map(fact => fact?.sourceFactId).filter(Boolean));
+        const standaloneSearches = collection(spatial.targetSearches)
+            .filter(fact => !impactSourceIds.has(fact?.id));
+        addFacts(impacts, 'spatialImpactVolume',
+            t('metrics.spatial.actualImpact', null, '实际判定'), 'shape', true,
+            t('spatial.purposes.impact', null, '命中'));
+        addFacts(standaloneSearches, 'spatialTargetSearch',
+            t('metrics.spatial.actualImpact', null, '实际判定'), 'shape', true,
+            t('spatial.purposes.targetSearch', null, '索敌'));
+        addFacts(spatial.collisionVolumes, 'spatialCollisionVolume',
+            t('metrics.spatial.actualImpact', null, '实际判定'), 'shape', true,
+            t('spatial.purposes.collision', null, '碰撞'));
+        addFacts(spatial.persistentFields, 'spatialPersistentField',
+            t('metrics.spatial.persistentField', null, '持续领域'), 'shape', true);
+
+        const allFacts = [
+            ...collection(spatial.castLimits), ...collection(spatial.selectionHints),
+            ...collection(spatial.targetSearches), ...collection(spatial.impactVolumes),
+            ...collection(spatial.persistentFields), ...collection(spatial.collisionVolumes)
+        ];
+        const centers = [...new Set(allFacts.map(spatialAnchorValue).map(spatialCenterText).filter(Boolean))];
+        centers.forEach(center => cards.push({
+            key: 'spatialEffectCenter', label: t('metrics.spatial.effectCenter', null, '生效中心'),
+            value: center, unit: '', important: false, wide: false
+        }));
+
+        const factsById = new Map(allFacts.filter(fact => isObject(fact) && isPresent(fact.id))
+            .map(fact => [String(fact.id), fact]));
+        const relationPriority = {
+            sharesvalue: 0, inheritsblackboard: 1, spawns: 2,
+            targets: 3
+        };
+        const normalizeRelation = relation => String(relation?.type || '').toLowerCase().replace(/[_\s-]+/g, '');
+        const rawRelations = collection(spatial.relations).filter(relation =>
+            !(normalizeRelation(relation) === 'inheritsblackboard' && relation?.status === 'disabled')
+            && normalizeRelation(relation) !== 'producestargetgroup'
+            && !String(relation?.from || '').startsWith('target-group:')
+            && !String(relation?.to || '').startsWith('target-group:')).sort((left, right) =>
+            (relationPriority[normalizeRelation(left)] ?? 99) - (relationPriority[normalizeRelation(right)] ?? 99));
+        const relations = rawRelations.map(relation => spatialRelationText(relation, factsById)).filter(Boolean);
+        const hints = collection(spatial.selectionHints);
+        const actual = [...collection(spatial.impactVolumes), ...collection(spatial.targetSearches)];
+        if (hints.length && actual.length) {
+            const hintSignatures = new Set(hints.map(spatialSignature));
+            const actualSignatures = new Set(actual.map(spatialSignature));
+            const same = hintSignatures.size === actualSignatures.size
+                && [...hintSignatures].every(signature => actualSignatures.has(signature));
+            if (!same) relations.unshift(t('spatial.relations.hintMismatch', null, '操作提示与实际判定不同'));
+        }
+        const uniqueRelations = [...new Set(relations)];
+        if (uniqueRelations.length) cards.push({
+            key: 'spatialRelations', label: t('metrics.spatial.relations', null, '范围关系'),
+            value: [
+                ...uniqueRelations.slice(0, 8),
+                ...(uniqueRelations.length > 8
+                    ? [t('spatial.relations.more', { count: uniqueRelations.length - 8 },
+                        `另 ${uniqueRelations.length - 8} 项关系`)] : [])
+            ].join(t('spatial.relations.separator', null, '；')),
+            unit: [...new Set(rawRelations.map(relation => spatialConditionText(relation?.condition)).filter(Boolean))]
+                .map(condition => t('spatial.conditions.prefixed', { condition }, `条件：${condition}`)).join(' · '),
+            important: false, wide: true
+        });
+        return cards;
+    }
+
     function coreMetrics() {
         const basic = state.analysis.basic;
         const raw = state.currentData || {};
@@ -1329,7 +1924,6 @@
             ['runtimeCooldown', t('metrics.runtimeCooldown', null, '运行时冷却'), hasNonZeroValue(runtimeCooldown) ? runtimeCooldown : undefined, false],
             ['costCommitFrame', t('metrics.costCommitFrame', null, '资源提交帧'), runtimeCast.startCdFrame ?? raw.castData?.startCdFrame, false],
             ['attackRangeType', t('metrics.attackRangeType', null, '攻击距离类型'), targeting.attackRangeType, false],
-            ['castDistance', t('metrics.castDistance', null, '施放距离'), targeting.castDistance ?? raw.castData?.castDistance, false],
             ['confirmedPoiseDamage', t('metrics.confirmedPoiseDamage', null, '确定路径总削韧'), numericPoiseSummary(hitGroups), false],
             ['patchCost', t('metrics.patchCost', null, '等级配置消耗'), hasNonZeroValue(patch.costValue) ? `${costTypeLabel(patch.costType)} ${formatValue(patch.costValue)}` : undefined, false],
             ['runtimeCost', t('metrics.runtimeCost', null, '运行时消耗'), hasNonZeroValue(runtimeCast.costValue) ? `${costTypeLabel(runtimeCast.costType)} ${formatValue(resolvedScalar(runtimeCast.costValue))}` : undefined, false],
@@ -1391,11 +1985,19 @@
 
     function renderCore() {
         const metrics = coreMetrics();
-        const metricHtml = metrics.length ? metrics.map(([key, label, rawValue, important]) => {
+        const standardHtml = metrics.map(([key, label, rawValue, important]) => {
             const value = metricValue(key, rawValue);
             return `<div class="combatv3-metric${important ? ' is-important' : ''}"><span class="combatv3-metric-label">${escapeHtml(label)}</span>
                 <strong class="combatv3-metric-value">${escapeHtml(value.value)}</strong>${value.unit ? `<span class="combatv3-metric-unit">${escapeHtml(value.unit)}</span>` : ''}</div>`;
-        }).join('') : `<div class="combatv3-empty-inline">${escapeHtml(t('empty.noCoreMetrics', null, '分析器未返回核心指标'))}</div>`;
+        }).join('');
+        const spatialHtml = spatialMetrics().map(metric =>
+            `<div class="combatv3-metric combatv3-metric--spatial${metric.wide ? ' combatv3-metric--wide' : ''}${metric.important ? ' is-important' : ''}">
+                <span class="combatv3-metric-label">${escapeHtml(metric.label)}</span>
+                <strong class="combatv3-metric-value">${escapeHtml(metric.value)}</strong>
+                ${metric.unit ? `<span class="combatv3-metric-unit">${escapeHtml(metric.unit)}</span>` : ''}</div>`).join('');
+        const metricHtml = standardHtml || spatialHtml
+            ? `${standardHtml}${spatialHtml}`
+            : `<div class="combatv3-empty-inline">${escapeHtml(t('empty.noCoreMetrics', null, '分析器未返回核心指标'))}</div>`;
         const patches = patchMetrics();
         const patchHtml = patches.length ? `<section class="combatv3-section">
             <header class="combatv3-section-header"><h3 class="combatv3-section-title">${escapeHtml(t('sections.skillLevelConfiguration', null, '技能等级配置'))}</h3></header>
@@ -1839,6 +2441,15 @@
         return Array.isArray(data) ? data : Object.values(data || {});
     }
 
+    async function optionalTable(name) {
+        try {
+            return await window.AKEV3.table(name);
+        } catch (error) {
+            console.warn(`[${MODULE_ID}] Optional table unavailable: ${name}`, error);
+            return {};
+        }
+    }
+
     async function load(options) {
         const preserve = options?.preserve === true;
         const token = ++state.loadToken;
@@ -1846,13 +2457,14 @@
             t('loading.buildingDirectory', null, '正在建立角色与技能目录'));
         try {
             if (window.configLoaded) await window.configLoaded;
-            const [manifest, characters, growth, patches, enemyDisplay, enemies] = await Promise.all([
+            const [manifest, characters, growth, patches, enemyDisplay, enemies, potentialTalents] = await Promise.all([
                 fetchManifest(),
                 window.AKEV3.table('CharacterTable'),
                 window.AKEV3.table('CharGrowthTable'),
                 window.AKEV3.table('SkillPatchTable'),
                 window.AKEV3.table('EnemyTemplateDisplayInfoTable'),
-                window.AKEV3.table('EnemyTable')
+                window.AKEV3.table('EnemyTable'),
+                optionalTable('PotentialTalentEffectTable')
             ]);
             if (token !== state.loadToken) return;
             const previousId = preserve ? state.activeSkillId : '';
@@ -1860,7 +2472,7 @@
             state.rawManifest = manifest;
             state.manifest = manifest.filter(item => !isSuppressedEntity(item.id) && (showHidden() || !item.hidden))
                 .sort((a, b) => Number(a.priority ?? 999999) - Number(b.priority ?? 999999) || String(a.id).localeCompare(String(b.id)));
-            state.tables = { characters, growth, patches, enemyDisplay, enemies };
+            state.tables = { characters, growth, patches, enemyDisplay, enemies, potentialTalents };
             state.skillCache.clear();
             state.directory = buildDirectory(state.manifest, characters, growth, enemyDisplay, enemies);
             rebuildSkillIndex();
