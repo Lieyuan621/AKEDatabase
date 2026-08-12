@@ -5,6 +5,16 @@
     const LABEL_TIME_IDS = Object.freeze({
         bp_task_label_return_01: 'time_bp_return_1'
     });
+    const TRACK_REWARD_FIELDS = Object.freeze({
+        0: 'freeRewardId',
+        1: 'originiumRewardId',
+        2: 'payRewardId'
+    });
+    const TRACK_FALLBACK_NAMES = Object.freeze({
+        0: '基础配给',
+        1: '源石配给',
+        2: '协议定制'
+    });
 
     window.AKEMisc.register(MODULE_ID, async function (context) {
         const root = context.root;
@@ -70,19 +80,32 @@
             return [...(reward.itemBundles || []), ...(reward.probItemBundles || [])];
         }
 
-        function renderRewardIds(ids) {
-            const bundles = ids.flatMap(rewardBundles);
+        function renderRewardId(rewardId) {
+            if (!rewardId) return `<span class="misc-pass-track-empty">${escape(t('noReward', null, '无奖励'))}</span>`;
+            const bundles = rewardBundles(rewardId);
             if (!bundles.length) {
-                return ids.some(Boolean)
-                    ? (showHidden() ? ids.filter(Boolean).map(id => `<code>${escape(id)}</code>`).join('') : escape(t('rewardUnavailable', null, '奖励配置不可用')))
-                    : '';
+                return showHidden()
+                    ? `<code>${escape(rewardId)}</code>`
+                    : escape(t('rewardUnavailable', null, '奖励配置不可用'));
             }
-            return bundles.slice(0, 5).map(bundle => {
+            return bundles.map(bundle => {
                 const item = tables.items?.[bundle.id] || {};
                 const name = text(item.name, showHidden() ? bundle.id : t('unnamedItem', null, '未命名物品'));
                 const icon = item.iconId || (showHidden() ? bundle.id : '');
-                return `<span class="misc-reward">${icon ? `<img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escape(icon)}.png" alt="">` : ''}<span>${escape(name)}</span><b>x${Number(bundle.count || 0).toLocaleString()}</b></span>`;
+                return `<span class="misc-reward">${icon ? `<img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escape(icon)}.png" alt="" loading="lazy" decoding="async">` : ''}<span>${escape(name)}</span><b>x${Number(bundle.count || 0).toLocaleString()}</b></span>`;
             }).join('');
+        }
+
+        function rewardTracks() {
+            const byType = new Map(Object.values(tables.tracks || {}).map(track => [Number(track.trackType), track]));
+            return Object.entries(TRACK_REWARD_FIELDS).map(([type, rewardField]) => {
+                const numericType = Number(type);
+                const track = byType.get(numericType) || {};
+                return {
+                    rewardField,
+                    name: text(track.name, TRACK_FALLBACK_NAMES[numericType])
+                };
+            });
         }
 
         function seasonGroups(seasonId) {
@@ -208,14 +231,34 @@
         function renderLevels() {
             const season = tables.seasons?.[selectedSeason] || {};
             const levelGroup = tables.levels?.[season.levelGroupId] || {};
-            const levels = Object.values(levelGroup.levelInfos || {}).sort((a, b) => Number(a.level || 0) - Number(b.level || 0));
-            const milestones = levels.filter(level => level.isMilestone || level.isRecurring);
-            levelContent.innerHTML = milestones.length ? `<div class="misc-level-track">${milestones.map(level => `
-                <article class="misc-level-node ${level.isRecurring ? 'is-recurring' : ''}">
-                    <b>${escape(level.isRecurring ? t('recurringLevel', { level: level.level }, `${level.level}+ 循环`) : t('level', { level: level.level }, `等级 ${level.level}`))}</b>
-                    <small>${Number(level.levelExp || 0).toLocaleString()} EXP</small>
-                    <div class="misc-task-rewards">${renderRewardIds([level.freeRewardId, level.payRewardId])}</div>
-                </article>`).join('')}</div>` : `<div class="misc-task-empty">${escape(t('noLevels', null, '没有等级配置'))}</div>`;
+            const overrideGroup = tables.overrideLevels?.[season.ovrLvRewardGroupId] || {};
+            const overrides = overrideGroup.levelInfos || {};
+            const levels = Object.entries(levelGroup.levelInfos || {})
+                .map(([levelKey, level]) => ({ ...level, ...(overrides[levelKey] || {}) }))
+                .filter(level => Number(level.level || 0) <= Number(season.maxLevel || 0) || level.isRecurring)
+                .sort((a, b) => Number(a.level || 0) - Number(b.level || 0));
+            const tracks = rewardTracks();
+            levelContent.innerHTML = levels.length ? `
+                <div class="misc-pass-level-scroll" tabindex="0" aria-label="${escape(t('levelRewardTable', null, '通行证全部等级奖励'))}">
+                    <div class="misc-pass-level-table">
+                        <div class="misc-pass-level-head" aria-hidden="true">
+                            <span>${escape(t('levelColumn', null, '等级'))}</span>
+                            ${tracks.map(track => `<span>${escape(track.name)}</span>`).join('')}
+                        </div>
+                        ${levels.map(level => `
+                            <article class="misc-pass-level-row ${level.isMilestone ? 'is-milestone' : ''} ${level.isRecurring ? 'is-recurring' : ''}">
+                                <header>
+                                    <b>${escape(level.isRecurring ? t('recurringLevel', { level: level.level }, `${level.level}+ 循环`) : t('level', { level: level.level }, `等级 ${level.level}`))}</b>
+                                    <small>${Number(level.levelExp || 0).toLocaleString()} EXP</small>
+                                </header>
+                                ${tracks.map(track => `
+                                    <section class="misc-pass-level-track" aria-label="${escape(track.name)}">
+                                        <span class="misc-pass-level-track__name">${escape(track.name)}</span>
+                                        <div class="misc-task-rewards">${renderRewardId(level[track.rewardField])}</div>
+                                    </section>`).join('')}
+                            </article>`).join('')}
+                    </div>
+                </div>` : `<div class="misc-task-empty">${escape(t('noLevels', null, '没有等级配置'))}</div>`;
         }
 
         function renderSeason() {
@@ -229,7 +272,7 @@
         }
 
         try {
-            const names = ['BattlePassSeasonTable', 'BattlePassTaskLabelTable', 'BattlePassTaskLabelMapTable', 'BattlePassTaskSubLabelMapTable', 'BattlePassTaskGroupTable', 'BattlePassTaskTable', 'BattlePassConditionTable', 'BattlePassLevelTable', 'TimeRangeTable', 'RewardTable', 'ItemTable'];
+            const names = ['BattlePassSeasonTable', 'BattlePassTaskLabelTable', 'BattlePassTaskLabelMapTable', 'BattlePassTaskSubLabelMapTable', 'BattlePassTaskGroupTable', 'BattlePassTaskTable', 'BattlePassConditionTable', 'BattlePassLevelTable', 'BattlePassOverrideLevelTable', 'BattlePassTrackTable', 'TimeRangeTable', 'RewardTable', 'ItemTable'];
             const values = await Promise.all(names.map(name => context.table(name)));
             if (context.signal.aborted) return;
             tables = Object.fromEntries(names.map((name, index) => [name, values[index] || {}]));
@@ -238,6 +281,7 @@
                 labelMap: tables.BattlePassTaskLabelMapTable, subLabelMap: tables.BattlePassTaskSubLabelMapTable,
                 groups: tables.BattlePassTaskGroupTable, tasks: tables.BattlePassTaskTable,
                 conditions: tables.BattlePassConditionTable, levels: tables.BattlePassLevelTable,
+                overrideLevels: tables.BattlePassOverrideLevelTable, tracks: tables.BattlePassTrackTable,
                 timeRanges: tables.TimeRangeTable, rewards: tables.RewardTable, items: tables.ItemTable
             };
             const seasons = Object.values(tables.seasons).sort((a, b) => String(a.id).localeCompare(String(b.id)));

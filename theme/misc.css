@@ -212,6 +212,15 @@
 .misc-milestone-track > *,
 .misc-completion-track > * { padding: 11px 12px; border-left: 3px solid var(--border-color, #d9e0e8); background: var(--hover-bg, #e8eef5); }
 .misc-milestone-track > .is-major { border-left-color: var(--accent-color, #1e6f9f); }
+[data-misc-module="racing_dungeon_tasks"] .misc-milestone-track {
+    grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+[data-misc-module="racing_dungeon_tasks"] .misc-milestone-track > li {
+    min-width: 0;
+}
 .misc-milestone { min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .misc-milestone__score { flex: 0 0 auto; color: var(--accent-color, #1e6f9f); font-size: .8rem; font-weight: 800; }
 .misc-release-track { display: flex; gap: 6px; margin: 12px 0 18px; overflow-x: auto; padding-bottom: 4px; }
@@ -232,6 +241,33 @@ button.misc-release-step:hover { background: var(--hover-bg, #e8eef5); }
 .misc-level-node > small { display: block; }
 .misc-level-node > small { margin-top: 3px; color: var(--desc-color, #5b6f86); font-size: .68rem; }
 .misc-level-node.is-recurring { border-color: var(--accent-color, #1e6f9f); }
+.misc-pass-level-scroll {
+    max-width: 100%;
+    padding-bottom: 7px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+}
+.misc-pass-level-table { min-width: 820px; display: grid; gap: 1px; background: var(--border-color, #d9e0e8); }
+.misc-pass-level-head,
+.misc-pass-level-row {
+    display: grid;
+    grid-template-columns: 110px repeat(3, minmax(220px, 1fr));
+    gap: 1px;
+}
+.misc-pass-level-head > *,
+.misc-pass-level-row > * { min-width: 0; padding: 9px 10px; background: var(--module-bg, #fff); }
+.misc-pass-level-head > * { color: var(--desc-color, #5b6f86); font-size: .72rem; font-weight: 700; }
+.misc-pass-level-row > header { border-left: 3px solid transparent; }
+.misc-pass-level-row.is-milestone > header,
+.misc-pass-level-row.is-recurring > header { border-left-color: var(--accent-color, #1e6f9f); }
+.misc-pass-level-row > header b,
+.misc-pass-level-row > header small { display: block; }
+.misc-pass-level-row > header small { margin-top: 4px; color: var(--desc-color, #5b6f86); font-size: .68rem; }
+.misc-pass-level-track { display: flex; align-items: center; }
+.misc-pass-level-track__name { display: none; }
+.misc-pass-level-track .misc-task-rewards { margin: 0; }
+.misc-pass-level-track .misc-reward { background: transparent; }
+.misc-pass-track-empty { color: var(--desc-color, #5b6f86); font-size: .72rem; }
 .misc-event-grid,
 .misc-completion-track { margin: 0; padding: 0; list-style: none; }
 .misc-event-card dl { display: grid; gap: 5px; margin: 10px 0 0; }
@@ -491,6 +527,32 @@ details.misc-task-details > :not(summary),
     .misc-task-grid,
     .misc-task-list,
     .misc-event-grid { grid-template-columns: 1fr; }
+    [data-misc-module="racing_dungeon_tasks"] .misc-milestone-track { grid-template-columns: minmax(0, 1fr); }
+    .misc-pass-level-scroll { overflow-x: visible; }
+    .misc-pass-level-table { min-width: 0; gap: 8px; background: transparent; }
+    .misc-pass-level-head { display: none; }
+    .misc-pass-level-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+        border: 1px solid var(--border-color, #d9e0e8);
+        border-radius: 6px;
+        overflow: hidden;
+    }
+    .misc-pass-level-row > * { padding: 9px 10px; }
+    .misc-pass-level-row > header { border-bottom: 1px solid var(--border-color, #d9e0e8); }
+    .misc-pass-level-track { align-items: flex-start; gap: 10px; }
+    .misc-pass-level-track + .misc-pass-level-track { border-top: 1px solid var(--border-color, #d9e0e8); }
+    .misc-pass-level-track__name {
+        width: 74px;
+        flex: 0 0 74px;
+        display: block;
+        padding-top: 6px;
+        color: var(--desc-color, #5b6f86);
+        font-size: .68rem;
+        font-weight: 700;
+    }
+    .misc-pass-level-track .misc-task-rewards { flex: 1 1 auto; }
     .misc-icon-generator { padding: 15px 15px max(82px, calc(70px + env(safe-area-inset-bottom))); }
     .misc-icon-generator__header { align-items: flex-start; }
     .misc-icon-generator__header h2 { font-size: 1.16rem; }

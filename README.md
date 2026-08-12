@@ -12,18 +12,25 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 
 ## 当前版本
 
-`1.2.8` 新增桌面端侧栏调宽功能。主左侧栏和各模块副左侧栏均可独立拖动调整宽度并分别保存；侧栏收窄后，有图标的条目自动只显示图标，没有图标的条目继续保留名称及必要信息。
+`1.2.9` 新增可扩展的“杂项”模块。杂项使用独立二级清单装载子模块，左侧模块列表与右侧内容区域独立滚动，并支持子模块及内部条目的深链接。当前包含每周任务、协议通行证任务、演武集算任务、合约任务、奇境任务、竞技大会完成度任务和角色图标生成器。
 
-同一次访问中，切换模块会保留模块当前页面、已选条目及页面内交互状态，切回时恢复此前内容。模块列表与详情区域的滚动位置会独立记录，同一模块内不同条目也分别保存详情滚动位置；刷新页面后这些临时浏览状态会清空并回到起始页，外部深链接仍可直接打开目标内容。
+周期与玩法任务直接从 TableCfg 解析活动时间、任务描述、目标和奖励；内部 ID、条件目标等技术字段只在“显示隐藏模块”开启时展示。协议通行证支持按赛季、任务类别和开放周次筛选，并列出基础配给、源石配给、协议定制三档的全部等级及循环等级奖励；每周任务同时展示任务周与事务积分里程碑，奇境任务以自动换行布局展示根脉历程奖励。
 
-左下角的全局设置和导出长图按钮改为独占底部区域，不再覆盖模块列表。侧栏调宽与浏览状态恢复分别由共享脚本 `sidebar-resize.js` 和 `module-view-state.js` 统一管理，并与模块切换、长图导出和恢复默认设置流程衔接。
+商店现在能够解析商店组、商店和商品的开放条件，并在商品卡片底部标注对应的物资调度等级解锁要求；商店组与商店的技术条件仍只在隐藏模式中显示。装备页新增制造模板和装备成品的获取来源，区分默认解锁、权限等阶、地图探索或装备模板箱、物资调度、普通商店、任务及活动奖励。点击“在 OEM 查看”后才会读取对应 LevelData，并根据当前点位实时计算 OEM 短链；页面加载不读取 LevelData，也不依赖 LevelData manifest 或预存短码。
+
+角色图标生成器可选择角色及其普通攻击、普通战技、终结技或连携技，生成角色主视觉或技能主视觉组合图标，支持 `192 × 192`、`256 × 256`、`384 × 384`、`512 × 512` 四种尺寸、技能主视觉透明背景和 PNG 下载。战斗与 Buff 深度解析页面的代码仍保留，但 `v3_skill` 和 `v3_buff` 在本版本中暂不开放。
 
 ## 功能
 
-- 角色、武器、敌人、装备、物品、商店、副本、活动、奖章、Baker 通讯和危机合约查询
+- 角色、武器、敌人、装备、物品、商店、副本、活动、奖章、杂项、Baker 通讯和危机合约查询
 - Baker 联系人、群聊与干员会话浏览、全文搜索、分支选择和多媒体消息展示
 - 商店组分类浏览、分商店切换、价格折扣、限购兑换与奖励内容展示
+- 商店开放条件、物资调度等级商品解锁，以及装备制造模板和成品获取来源追踪
+- 装备模板箱点位按需读取 LevelData，并实时生成 OEM 直达短链
 - 武库交易所武器轮换日历、实时倒计时与卡池内容权重
+- 每周、通行证、演武、合约、奇境和竞技大会任务，以及对应的积分、里程碑与奖励解析
+- 协议通行证按赛季、类别和周次筛选，并展示三档完整等级奖励
+- 角色与技能组合图标预览、尺寸选择、透明背景和 PNG 下载
 - 名称、ID、稀有度、类型、职业、元素等多维搜索和筛选
 - 角色、武器和敌人的等级属性展示
 - 副本波次、生成器、出生位置和 Buff 属性计算
@@ -49,20 +56,20 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 
 | ID | 模块 | 主要数据源 |
 |---|---|---|
-| `v3_shop` | 商店 | TableCfg（ShopGroup/Shop/ShopGoods/CashShop 系列、GachaWeaponPool/Content） |
-| `v3_cc` | 危机合约 | TableCfg、SpawnerConfig、LevelScriptData、BuffData |
 | `season_tower` | 战争回响 | SeasonTower、Dungeon、GameMechanic、Reward、Enemy 等 TableCfg，SpawnerConfig、LevelScriptData、BuffData |
-| `research` | 研究 | `public/CH/research` Markdown |
 | `v3_character` | 角色 | TableCfg、`public/CH/maps.json` |
 | `v3_weapon` | 武器 | TableCfg |
 | `v3_enemy` | 敌人 | TableCfg |
 | `v3_equip` | 装备 | TableCfg、LevelData（仅点击 OEM 点位时读取）、`public/CH/maps.json` |
 | `v3_activity` | 活动 | TableCfg |
-| `misc` | 杂项 | TableCfg（每周、通行证、演武、合约、奇境、竞技大会任务） |
+| `v3_shop` | 商店 | TableCfg（ShopGroup/Shop/ShopGoods/CashShop 系列、GachaWeaponPool/Content） |
 | `v3_item` | 物品 | TableCfg、`public/CH/maps.json` |
 | `v3_dungeon` | 副本 | TableCfg、LevelData、SpawnerConfig、LevelScriptData、BuffData |
 | `v3_achievement` | 奖章 | TableCfg |
+| `misc` | 杂项 | TableCfg（周期与玩法任务、通行证等级奖励、角色及技能索引）、`public/misc` 合成素材 |
 | `baker` | Baker | SNSChat、SNSDialog、SNSDialogOption、SNSDialogTopic、Item 等 TableCfg |
+| `v3_cc` | 危机合约 | TableCfg、SpawnerConfig、LevelScriptData、BuffData |
+| `research` | 研究 | `public/CH/research` Markdown |
 | `about` | 关于 | 静态内容、赞助信息 |
 
 ### 隐藏模块
@@ -73,6 +80,7 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 ### 禁用模块
 
 - `v2_cc`、`v2_character`、`v2_weapon`、`v2_enemy`、`v2_equip`、`v2_item`、`v2_dungeon`：已由对应 v3 模块取代的聚合数据版本。
+- `v3_skill`、`v3_buff`：战斗与 Buff 深度解析页面，代码仍保留，`1.2.9` 暂时禁用。
 - `buff`、`skill_v2`、`spawn`：BuffData、SkillData 和 SpawnerConfig 调试模块。
 - 旧版 v1 模块、旧 Skill 模块及旧活动、奖章页面仍保留文件，但目前在 manifest 中禁用。
 
@@ -85,28 +93,36 @@ AKEDatabase/
 ├─ version.json                   # 应用、模块、脚本、公告版本及数据域配置
 ├─ plugin/
 │  ├─ manifest.json               # 顶层模块注册表
+│  ├─ misc.html                   # 杂项二级模块宿主
+│  ├─ misc/
+│  │  ├─ manifest.json            # 杂项子模块注册表
+│  │  └─ *.html                   # 杂项子模块 DOM 壳
 │  ├─ v3_*.html                   # v3 模块 DOM 壳
 │  ├─ v2_*.html                   # v2 模块 DOM 壳
 │  └─ js/
 │     ├─ index-app.js             # 模块加载、路由、设置和富文本运行时
-│     ├─ sidebar-resize.js         # 主侧栏与模块侧栏调宽及窄栏模式
-│     ├─ module-view-state.js      # 访问期内的模块路由与滚动状态恢复
+│     ├─ sidebar-resize.js        # 主侧栏与模块侧栏调宽及窄栏模式
+│     ├─ module-view-state.js     # 访问期内的模块路由与滚动状态恢复
 │     ├─ ake-data-source.js       # R2 清单、版本选择和逻辑 URL 解析
 │     ├─ ake-cache.js             # 按数据域和版本隔离的 fetch 缓存策略
 │     ├─ ake-stats.js             # 属性和 modifier 计算
 │     ├─ ake-enemy-renderer.js    # 副本、危机合约和战争回响的共享怪物渲染器
 │     ├─ v3-table-data.js         # TableCfg/Json 到 v2 UI 数据契约的适配层
+│     ├─ misc.js                  # 杂项清单、二级路由与生命周期宿主
+│     ├─ misc-*.js                # 杂项子模块控制器
 │     └─ <module>.js              # 各模块控制器
 ├─ theme/
 │  ├─ light.css                   # 亮色主题
 │  ├─ dark.css                    # 暗色主题
 │  ├─ yellow.css                  # 护眼主题
+│  ├─ misc.css                    # 杂项宿主与子模块样式
 │  └─ <module>.css                # 模块样式
 ├─ public/
 │  ├─ CH/                         # 中文聚合数据、研究文档、i18n、maps 和 tip.md
 │  ├─ EN/                         # 英文 i18n、maps 和 tip.md 等语言资源
 │  ├─ <语言>/                     # 各语言 i18n.json、maps.json 和网站公告 tip.md
-│  └─ TableCfg、Json、images      # 本地开发可保留，但由 .gitignore 排除
+│  ├─ misc/                       # 角色图标生成器随站点发布的合成素材
+│  └─ TableCfg、Json、images      # 本地游戏数据可保留，但由 .gitignore 排除
 ├─ tools/
 │  ├─ ake-data-tool/              # TableCfg、图片解析和资产上传工具
 │  ├─ sync-r2.ps1                 # 交互式/参数式 R2 发布脚本
@@ -301,8 +317,11 @@ v3 当前采用兼容层设计，而不是重复实现九套 UI：
 - `public/RU`、`MX`、`BR`、`DE`、`FR`、`VN`、`TH`、`ID`、`IT`：其余 TableCfg 语言目录，当前游戏文本已接入对应 `I18nTextTable_*`，但站点界面与枚举的独立本地化仍待完成。
 - 每个语言目录的 `tip.md`：首页网站公告正文；公告按钮、倒计时和更新原因标签位于同目录 `i18n.json`。
 - `public/images`：模块按固定路径约定组装图片 URL。
+- `public/misc`：角色图标生成器使用的组合框 UI 素材，随网站代码发布，不属于 R2 游戏图片代理目录。
 
 副本型模块会通过 `DungeonTable.sceneId` 关联 `LevelData/<sceneId>`、`SpawnerConfig/<sceneId>` 和 `LevelScriptData/<sceneId>`；SpawnerConfig 中的 `enemyLibrary` 再关联 EnemyTable，出生 Buff 则按 ID 加载 `BuffData/<buffId>.json`。没有 SpawnerConfig 的关卡还可能直接在 `LevelScriptData.enemies` 定义敌人、等级和 `buffs`，这些 Buff 按 `enemyId + level` 匹配后直接并入出生面板。`ake-combat-data.js` 另将 LevelScript 的 `AddBuffToTarget*` / `AddBuffsToTargets*` 解析为条件性敌人 Buff，并优先沿动作数据引用定位 `SpawnerGetSpawnedEntityList` 或 `OnSpawnerEntitySpawn` 的具体 Spawner；这类动态 Buff 单独展示运行时属性变化，不会默认并入出生面板。该共享链路由普通副本、危机合约和战争回响共同使用。
+
+装备页通常只通过 TableCfg 解析制造模板与成品的获取来源。只有用户点击探索来源的“在 OEM 查看”按钮时，才会按奖励 ID 推导场景与局部逻辑 ID、读取对应的 `LevelData/<sceneId>/<sceneId>_lv_data.json`，再用当前 `levelIdNum` 组合全局点位 ID 并实时计算 `https://oem.re/<短码>`。该流程不在页面加载阶段读取 LevelData，不依赖 LevelData manifest，也不维护静态 OEM 短码表。
 
 ### 属性映射与敌人抗性
 
@@ -391,6 +410,8 @@ http://localhost:5501/
 | `/?plugin=v3_enemy&id=eny_0045_agtrinit` | 定位到三位一体 |
 | `/?plugin=v3_cc&id=indie_contract001` | 打开危机合约赛季 |
 | `/?plugin=v3_dungeon&id=indie_group_ccdg` | 打开危机合约副本系列 |
+| `/?plugin=misc&id=weekly_tasks/week3` | 打开杂项中的每周任务并定位第 3 周 |
+| `/?plugin=misc&id=character_icon_generator` | 打开角色图标生成器 |
 
 路由使用 `history.replaceState`。设置中的“保持 URL 完整”关闭后，初始深链接仍能读取，但页面会清理地址栏参数。
 
@@ -486,6 +507,8 @@ http://localhost:5501/
 
 页面中的外部脚本必须位于 `/plugin/js/`，且不能使用内联脚本。控制器通过 `window.AKEMisc.register(id, factory)` 注册；宿主会向 `factory` 提供当前根节点、TableCfg 读取、路由、取消信号、事件和定时器管理，并在切换子模块或离开杂项时统一销毁。子模块内部条目使用 `context.navigate(innerId)` 生成 `?plugin=misc&id=<子模块>/<条目>` 深链接。新增脚本后同步登记 `version.json` 的 `jsversion`，修改二级清单或页面结构时同时更新 `appversion` 与 `pluginversion.misc`。
 
+杂项子模块读取游戏数据时继续使用宿主提供的 `context.table()` 或 `window.akeFetch`。仅供站点工具自身使用、需要与代码一同发布的静态素材可放在 `public/misc/`；游戏配置和常规游戏图片仍遵循 TableCfg、Json 与 R2 图片数据的既有职责划分。
+
 ### 新增 v3 适配器
 
 若继续使用当前 v3 架构：
@@ -504,24 +527,29 @@ http://localhost:5501/
 
 ```powershell
 python -m json.tool "plugin/manifest.json" > $null
+python -m json.tool "plugin/misc/manifest.json" > $null
 git diff --check
 git status --short
 ```
 
 浏览器回归至少覆盖：
 
-1. 公开模块列表顺序。
-2. 九个 v3 模块和战争回响专题的列表与详情。
+1. 公开模块列表顺序，确认杂项位于奖章之后，并确认 `v3_skill`、`v3_buff` 不出现在桌面或移动端入口。
+2. 十个公开 v3 模块、战争回响专题和杂项七个子模块的列表与详情。
 3. 搜索、筛选和默认等级。
-4. 合法与非法深链接。
-5. 显示隐藏模块后访问 v2 和开发工具模块。
+4. 合法与非法深链接，包括杂项子模块和内部条目路由。
+5. 显示隐藏模块后访问 v2 与开发工具模块，并检查任务 ID、条件目标及商店组/商店开放条件的显隐。
 6. 亮色、暗色和护眼主题。
-7. 桌面和移动端列表滚动。
-8. 副本 SpawnerConfig、波次和 BuffData。
-9. 富文本与两层 tooltip。
-10. 截图、缓存刷新和 localStorage 设置恢复。
-11. 首页倒计时的东八区转换、空 `desc` 隐藏、到期归零。
-12. 公告按钮重复查看、`tipversion` 变化自动弹出、各语言 `tip.md` 和移动端右上角布局。
+7. 桌面和移动端列表滚动，确认杂项左右区域独立滚动及商店移动端商店组按钮可用。
+8. 协议通行证的赛季、类别、周次筛选，三档全等级与循环奖励；每周积分里程碑及自动换行的根脉历程奖励。
+9. 商店商品的物资调度等级提示，以及装备制造模板和成品的各类获取来源。
+10. OEM 按钮点击前不读取 LevelData，点击后能以实时计算的短链打开对应模板箱点位，且不请求 LevelData manifest。
+11. 角色图标生成器的角色与技能选择、两种构图、四种尺寸、技能主视觉透明背景和 PNG 下载。
+12. 副本 SpawnerConfig、波次和 BuffData。
+13. 富文本与两层 tooltip。
+14. 截图、缓存刷新和 localStorage 设置恢复。
+15. 首页倒计时的东八区转换、空 `desc` 隐藏、到期归零。
+16. 公告按钮重复查看、`tipversion` 变化自动弹出、各语言 `tip.md` 和移动端右上角布局。
 
 ## 已知限制
 

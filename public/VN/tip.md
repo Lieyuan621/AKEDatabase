@@ -2,6 +2,23 @@ AKEData đã chuyển sang tên miền www.akedata.wiki. Tên miền cũ akedata
 
 # Nhật ký cập nhật phiên bản AKEData
 
+### v1.2.9
+
+#### Tiện ích và trung tâm nhiệm vụ
+
+- Thêm mô-đun Tiện ích có thể mở rộng bằng các công cụ hoạt động độc lập. Phiên bản đầu gồm nhiệm vụ hằng tuần, Protocol Pass và nhiệm vụ hoạt động Luyện tập, Hợp đồng, Racing Dungeon và Giải đấu.
+- Nhiệm vụ Protocol Pass có thể lọc theo tuần và hiện hiển thị đầy đủ mọi cấp ở cả ba nhánh phần thưởng.
+
+#### Biểu tượng và nguồn nhận
+
+- Thêm trình tạo biểu tượng nhân vật, cho phép chọn nhân vật và kỹ năng, xem trước ảnh ghép rồi tải xuống dưới dạng PNG.
+- Cửa hàng giờ hiển thị điều kiện mở khóa và cấp Material Dispatch; chi tiết trang bị bổ sung nguồn từ cửa hàng, nhiệm vụ và hộp mẫu trên bản đồ. Liên kết bản đồ OEM chỉ được tính động từ LevelData sau khi người dùng nhấp vào.
+
+#### Trải nghiệm và độ ổn định
+
+- Đồng nhất ảnh thay thế khi tải thất bại, đồng thời sửa cuộn độc lập trong mô-đun Tiện ích, điều khiển trên di động và một số bố cục phần thưởng nhiệm vụ.
+- Mô-đun dữ liệu chiến đấu mới `v3_skill` và mô-đun dữ liệu Buff `v3_buff` vẫn đang được kiểm tra và chưa được mở trong phiên bản này.
+
 ### v1.2.8
 
 #### Thanh bên và bố cục

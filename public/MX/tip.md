@@ -2,6 +2,23 @@ AKEData se ha trasladado al dominio www.akedata.wiki. El dominio anterior, akeda
 
 # Registro de actualizaciones de AKEData
 
+### v1.2.9
+
+#### Miscelánea y centro de tareas
+
+- Se añadió el módulo Miscelánea, ampliable mediante herramientas independientes. Su primera versión incluye tareas semanales, Pase de Protocolo y tareas de actividades de Entrenamiento, Contratos, Mazmorras de carrera y Torneos.
+- Las tareas del Pase de Protocolo pueden filtrarse por semana y ahora muestran todos los niveles de sus tres rutas de recompensas.
+
+#### Iconos y fuentes de obtención
+
+- Se añadió un generador de iconos de personaje para elegir personaje y habilidad, previsualizar la composición y descargarla como PNG.
+- Las tiendas ahora muestran requisitos de desbloqueo y niveles de Despacho de materiales; los detalles del equipo incluyen fuentes como tiendas, misiones y cajas de plantilla del mapa. Los enlaces del mapa OEM se calculan dinámicamente a partir de LevelData únicamente después de hacer clic.
+
+#### Experiencia y estabilidad
+
+- Se unificó la imagen de sustitución cuando falla una carga y se corrigieron el desplazamiento independiente de Miscelánea, los controles móviles y varios diseños de recompensas.
+- Los nuevos módulos de datos de combate `v3_skill` y de Buff `v3_buff` siguen en validación y no están disponibles en esta versión.
+
 ### v1.2.8
 
 #### Barras laterales y diseño
