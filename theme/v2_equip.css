@@ -350,6 +350,25 @@
     font-size: 0.85rem;
     white-space: pre-wrap;
 }
+.v2eq-oem-link {
+    appearance: none;
+    border: 0;
+    padding: 0;
+    background: none;
+    color: var(--accent-color, #1e6f9f);
+    font: inherit;
+    font-style: normal;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.v2eq-oem-link:hover,
+.v2eq-oem-link:focus-visible {
+    color: var(--primary-color, #15577f);
+}
+.v2eq-oem-link:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
 
 .v2eq-enhance-info {
     display: grid;

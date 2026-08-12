@@ -52,6 +52,7 @@
     ];
     const state = {
         tables: null,
+        channelUnlocks: new Map(),
         baseline: null,
         comparisonVersion: '',
         changes: { normal: {}, cash: {}, groups: {} },
@@ -227,6 +228,39 @@
         return value === 'added' ? 0 : value === 'modified' ? 1 : 2;
     }
 
+    function conditionRows(row) {
+        return Array.isArray(row?.unlockConditions)
+            ? row.unlockConditions.filter(condition => condition?.conditionId || gameText(condition?.desc))
+            : [];
+    }
+
+    function conditionSearchText(row) {
+        const conditions = conditionRows(row).map(condition =>
+            `${condition.conditionId || ''} ${gameText(condition.desc)}`);
+        return `${conditions.join(' ')} ${gameText(row?.lockDesc)}`.trim();
+    }
+
+    function renderUnlockRequirements(row, label) {
+        const hiddenDetails = label === 'group' || label === 'shop';
+        if (hiddenDetails && !showIds()) return '';
+        const conditions = conditionRows(row);
+        const lockText = gameText(row?.lockDesc);
+        if (!conditions.length && !lockText) return '';
+        const revealIds = window.akeData?.getConfig?.().showHidden === true;
+        const policy = typeof row?.isShowWhenLock === 'boolean'
+            ? (row.isShowWhenLock ? t('unlock.visibleWhenUnmet', null, 'Shown when conditions are unmet') : t('unlock.hiddenWhenUnmet', null, 'Hidden when conditions are unmet'))
+            : '';
+        const conditionHtml = conditions.map(condition => {
+            const id = condition.conditionId || '';
+            const description = gameText(condition.desc);
+            const visibleText = description ? parseGameText(description) : escapeHtml(revealIds ? id : t('unlock.unexposedCondition', null, 'Contains a condition not exposed by the configuration'));
+            return `<div>${visibleText}${description && id && revealIds ? ` <small>${escapeHtml(id)}</small>` : ''}</div>`;
+        }).join('');
+        const scope = t(`unlock.scopes.${label}`, null, label);
+        return `<div class="akeshop-note"><b>${escapeHtml(t('unlock.title', { scope }, `${scope} availability conditions`))}</b>${policy ? ` <small>${escapeHtml(policy)}</small>` : ''}
+            ${lockText ? `<div>${parseGameText(lockText)}</div>` : ''}${conditionHtml}</div>`;
+    }
+
     function normalProduct(goodsId, recommendation) {
         const goods = state.tables.goods[goodsId];
         if (!goods) return null;
@@ -258,7 +292,7 @@
             hidden: false,
             changeType: state.changes.normal[goodsId] || '',
             changeBaseVersion: state.comparisonVersion,
-            searchText: `${goods.goodsId} ${name} ${goods.moneyId} ${gameText(currency.name)} ${rewardSearchText(rewards)} ${recommendation?.name || ''}`.toLowerCase()
+            searchText: `${goods.goodsId} ${name} ${goods.moneyId} ${gameText(currency.name)} ${rewardSearchText(rewards)} ${recommendation?.name || ''} ${conditionSearchText(goods)}`.toLowerCase()
         };
     }
 
@@ -292,7 +326,7 @@
             recommendation,
             changeType: state.changes.cash[goodsId] || '',
             changeBaseVersion: state.comparisonVersion,
-            searchText: `${goods.cashGoodsId} ${gameText(goods.goodsName)} ${rewardSearchText(rewards)} ${recommendation?.name || ''}`.toLowerCase()
+            searchText: `${goods.cashGoodsId} ${gameText(goods.goodsName)} ${rewardSearchText(rewards)} ${recommendation?.name || ''} ${conditionSearchText(goods)}`.toLowerCase()
         };
     }
 
@@ -439,15 +473,67 @@
         return rows;
     }
 
+    function prepareChannelUnlocks() {
+        const unlocks = new Map();
+        Object.entries(state.tables.channels).forEach(([channelId, channel]) => {
+            const firstLevelByGoods = new Map();
+            Object.entries(channel.channelLevelMap || {}).forEach(([level, levelRow]) => {
+                (levelRow.newGoodsList || []).forEach(goodsId => {
+                    const numericLevel = Number(level);
+                    const previous = firstLevelByGoods.get(goodsId);
+                    if (!previous || numericLevel < previous) firstLevelByGoods.set(goodsId, numericLevel);
+                });
+            });
+            firstLevelByGoods.forEach((level, goodsId) => {
+                if (!unlocks.has(goodsId)) unlocks.set(goodsId, []);
+                unlocks.get(goodsId).push({ channelId, channel, level });
+            });
+        });
+        unlocks.forEach(entries => entries.sort((left, right) =>
+            gameText(left.channel.channelName, left.channel.levelId || left.channelId)
+                .localeCompare(gameText(right.channel.channelName, right.channel.levelId || right.channelId), currentLocale())
+            || left.level - right.level));
+        state.channelUnlocks = unlocks;
+    }
+
+    function renderChannelUnlocks(product) {
+        const entries = state.channelUnlocks.get(product.id) || [];
+        if (!entries.length) return '';
+        return `<span class="akeshop-channel-unlocks">${entries.map(entry => {
+            const name = gameText(entry.channel.channelName, entry.channel.levelId || entry.channelId);
+            return `<span>${escapeHtml(t('channel.goodsUnlock', { name, level: entry.level }, `${name} Level ${entry.level} unlock`))}</span>`;
+        }).join('')}</span>`;
+    }
+
+    function renderChannelTimeline(group) {
+        const channels = Object.entries(state.tables.channels)
+            .filter(([, row]) => row.shopGroupId === group.shopGroupId);
+        if (!channels.length) return '';
+        const rows = channels.flatMap(([channelId, channel]) =>
+            Object.entries(channel.channelLevelMap || {})
+                .sort(([left], [right]) => Number(left) - Number(right))
+                .map(([level, levelRow]) => {
+                    const costs = (levelRow.costItemIdList || []).map((itemId, index) => {
+                        const item = itemInfo(itemId);
+                        return `${gameText(item.name, itemId)} x${formatNumber(levelRow.costItemNumList?.[index])}`;
+                    });
+                    const channelName = gameText(channel.channelName, channel.levelId || channelId);
+                    return `<tr><td><b>${escapeHtml(channelName)}</b><small class="akeshop-shop-id">${escapeHtml(channelId)}</small></td>
+                        <td>${escapeHtml(level)}</td><td>${escapeHtml(costs.join(' + ') || t('channel.none', null, 'None'))}</td></tr>`;
+                }));
+        return `<section class="akeshop-shop-section"><header><div><h2>${escapeHtml(t('channel.title', null, 'Regional Dispatch Levels'))}</h2></div><span>${escapeHtml(t('channel.count', { count: channels.length }, `${channels.length} dispatch points`))}</span></header>
+            <div class="akeshop-rot-scroll"><table class="akeshop-rot-table"><thead><tr><th>${escapeHtml(t('channel.point', null, 'Dispatch Point'))}</th><th>${escapeHtml(t('channel.level', null, 'Level'))}</th><th>${escapeHtml(t('channel.upgradeCost', null, 'Upgrade Cost'))}</th></tr></thead><tbody>${rows.join('')}</tbody></table></div></section>`;
+    }
+
     function matches(product) {
         return !state.query || product.searchText.includes(state.query);
     }
 
     function groupMatches(group) {
         if (!state.query) return true;
-        const ownText = `${group.shopGroupId} ${gameText(group.shopGroupName)} ${groupType(group)}`.toLowerCase();
+        const ownText = `${group.shopGroupId} ${gameText(group.shopGroupName)} ${groupType(group)} ${conditionSearchText(group)}`.toLowerCase();
         return ownText.includes(state.query) || shopsForGroup(group).some(shop =>
-            `${shop.id} ${shop.name}`.toLowerCase().includes(state.query) || shop.products.some(matches));
+            `${shop.id} ${shop.name} ${conditionSearchText(shop.raw)}`.toLowerCase().includes(state.query) || shop.products.some(matches));
     }
 
     function productCount(group) {
@@ -594,7 +680,6 @@
         if (product.recommendation?.name) badges.push(product.recommendation.name);
         if (product.hidden) badges.push(t('hidden'));
         if (product.pool) badges.push(t('weaponClaim'));
-        const lockText = gameText(product.goods.lockDesc);
         const rarityClass = product.rarity ? `akeshop-rarity-${product.rarity}` : '';
         const changeHtml = changeTag(product.changeType);
         return `<article class="akeshop-product ${rarityClass}${product.hidden ? ' is-hidden' : ''}">
@@ -611,9 +696,9 @@
                 ${product.monthlyRewards.length ? `<div class="akeshop-subtitle">${escapeHtml(t('monthlyReward'))}</div>${rewardRows(product.monthlyRewards, 'is-monthly')}` : ''}
                 ${product.pool ? renderPoolContent(product.pool, product.poolContent) : ''}
                 ${product.hint ? `<div class="akeshop-note">${parseGameText(product.hint)}</div>` : ''}
-                ${lockText ? `<div class="akeshop-note">${parseGameText(lockText)}</div>` : ''}
+                ${renderUnlockRequirements(product.goods, 'goods')}
             </div>
-            <footer><span>${escapeHtml(limitLabel(product))}</span></footer>
+            <footer><span>${escapeHtml(limitLabel(product))}</span>${renderChannelUnlocks(product)}</footer>
         </article>`;
     }
 
@@ -767,10 +852,10 @@
             content.innerHTML = `<div class="akeshop-empty">${escapeHtml(t('selectGroup'))}</div>`;
             return;
         }
-        const ownMatch = `${group.shopGroupId} ${gameText(group.shopGroupName)} ${groupType(group)}`.toLowerCase().includes(state.query);
+        const ownMatch = `${group.shopGroupId} ${gameText(group.shopGroupName)} ${groupType(group)} ${conditionSearchText(group)}`.toLowerCase().includes(state.query);
         const shops = shopsForGroup(group).map(shop => ({
             ...shop,
-            products: !state.query || ownMatch || `${shop.id} ${shop.name}`.toLowerCase().includes(state.query)
+            products: !state.query || ownMatch || `${shop.id} ${shop.name} ${conditionSearchText(shop.raw)}`.toLowerCase().includes(state.query)
                 ? shop.products
                 : shop.products.filter(matches)
         })).filter(shop => !state.query || shop.products.length);
@@ -786,10 +871,12 @@
             <strong>${escapeHtml(t('goodsCount', { count: total }))}</strong>
         </section>
         ${contextRows.length ? `<dl class="akeshop-context">${contextRows.map(row => `<div><dt>${escapeHtml(row.label)}</dt><dd>${escapeHtml(row.value)}</dd></div>`).join('')}</dl>` : ''}
+        ${renderUnlockRequirements(group, 'group')}
+        ${renderChannelTimeline(group)}
         ${shops.length > 1 ? `<div class="akeshop-tabs" role="tablist">${shops.map(shop => `<button type="button" role="tab" aria-selected="${shop.id === state.activeShopId}" class="${shop.id === state.activeShopId ? 'is-active' : ''}" data-shop-id="${escapeHtml(shop.id)}"><span>${escapeHtml(shop.name)}</span><b>${shop.products.length}</b>${changeTabBadge(shop.changeType)}</button>`).join('')}</div>` : ''}
         ${activeShop && activeShop.kind === 'rotation'
             ? `<section class="akeshop-shop-section"><header><div><h2>${escapeHtml(activeShop.name)}</h2></div><span>${escapeHtml(t('goodsCount', { count: activeShop.products.length }))}</span></header>${rotationProductsHtml}</section>`
-            : activeShop ? `<section class="akeshop-shop-section"><header><div><h2>${escapeHtml(activeShop.name)}</h2><small class="akeshop-shop-id">${escapeHtml(activeShop.id)}</small></div><span>${escapeHtml(t('goodsCount', { count: activeShop.products.length }))}</span></header><div class="akeshop-products">${activeShop.products.map(renderProduct).join('')}</div></section>` : `<div class="akeshop-empty">${escapeHtml(t('noGoods'))}</div>`}`;
+            : activeShop ? `<section class="akeshop-shop-section"><header><div><h2>${escapeHtml(activeShop.name)}</h2><small class="akeshop-shop-id">${escapeHtml(activeShop.id)}</small></div><span>${escapeHtml(t('goodsCount', { count: activeShop.products.length }))}</span></header>${renderUnlockRequirements(activeShop.raw, 'shop')}<div class="akeshop-products">${activeShop.products.map(renderProduct).join('')}</div></section>` : `<div class="akeshop-empty">${escapeHtml(t('noGoods'))}</div>`}`;
         if (activeShop?.kind === 'rotation') startCountdown(); else stopCountdown();
     }
 
@@ -858,6 +945,7 @@
             const loaded = await Promise.all(names.map(name => window.AKEV3.table(name)));
             const raw = Object.fromEntries(names.map((name, index) => [name, loaded[index]]));
             state.tables = remapShopTables(raw);
+            prepareChannelUnlocks();
             state.groups = Object.values(state.tables.shopGroups);
             const comparison = window.akeDataSource?.getState?.()?.comparison;
             if (comparison?.baseline) {

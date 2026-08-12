@@ -56,8 +56,9 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 | `v3_character` | 角色 | TableCfg、`public/CH/maps.json` |
 | `v3_weapon` | 武器 | TableCfg |
 | `v3_enemy` | 敌人 | TableCfg |
-| `v3_equip` | 装备 | TableCfg、`public/CH/maps.json` |
+| `v3_equip` | 装备 | TableCfg、LevelData（仅点击 OEM 点位时读取）、`public/CH/maps.json` |
 | `v3_activity` | 活动 | TableCfg |
+| `misc` | 杂项 | TableCfg（每周、通行证、演武、合约、奇境、竞技大会任务） |
 | `v3_item` | 物品 | TableCfg、`public/CH/maps.json` |
 | `v3_dungeon` | 副本 | TableCfg、LevelData、SpawnerConfig、LevelScriptData、BuffData |
 | `v3_achievement` | 奖章 | TableCfg |
@@ -469,6 +470,21 @@ http://localhost:5501/
 - 条目导航使用 `window.__akeRouter.updateUrl(moduleId, id)`。
 - manifest 加载后处理并清空 `window.__deepLinkId`。
 - 同时验证桌面和小于 1000px 的移动端布局。
+
+### 新增杂项子模块
+
+杂项使用独立的二级注册表 `plugin/misc/manifest.json`。子模块至少填写 `id`、`title` 和 `contentFile`，可继续使用 `priority`、`hidden`、`disabled` 与 `token`；二级清单不接受 `icon` 或 `description`。子模块页面必须放在 `plugin/misc/`，控制器统一放在 `plugin/js/`。
+
+```json
+{
+  "id": "your_misc_module",
+  "title": "modules.misc.yourModule.title",
+  "priority": 70,
+  "contentFile": "/plugin/misc/your_misc_module.html"
+}
+```
+
+页面中的外部脚本必须位于 `/plugin/js/`，且不能使用内联脚本。控制器通过 `window.AKEMisc.register(id, factory)` 注册；宿主会向 `factory` 提供当前根节点、TableCfg 读取、路由、取消信号、事件和定时器管理，并在切换子模块或离开杂项时统一销毁。子模块内部条目使用 `context.navigate(innerId)` 生成 `?plugin=misc&id=<子模块>/<条目>` 深链接。新增脚本后同步登记 `version.json` 的 `jsversion`，修改二级清单或页面结构时同时更新 `appversion` 与 `pluginversion.misc`。
 
 ### 新增 v3 适配器
 

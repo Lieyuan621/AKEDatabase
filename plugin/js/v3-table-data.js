@@ -14,6 +14,66 @@
         cc: 'v2_cc', activity: 'activity', achievement: 'achievement'
     };
 
+    const POINT_TOKEN_ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const POINT_TOKEN_MOD = 1n << 36n;
+    const POINT_TOKEN_MULTIPLIER = 25214903917n;
+    const POINT_TOKEN_OFFSET = 11n;
+    const POINT_TOKEN_LENGTH = 7;
+    const levelDataJsonPromises = new Map();
+
+    function encodePointIdToken(pointId) {
+        const value = String(pointId ?? '');
+        if (!/^\d+$/.test(value)) return null;
+        const id = BigInt(value);
+        if (id < 0n || id >= POINT_TOKEN_MOD) return null;
+        let remaining = (id * POINT_TOKEN_MULTIPLIER + POINT_TOKEN_OFFSET) % POINT_TOKEN_MOD;
+        let encoded = '';
+        do {
+            encoded = POINT_TOKEN_ALPHABET[Number(remaining % 62n)] + encoded;
+            remaining /= 62n;
+        } while (remaining > 0n);
+        return encoded.padStart(POINT_TOKEN_LENGTH, '0');
+    }
+
+    function equipTemplateRewardParts(rewardId) {
+        const match = String(rewardId || '').match(/^reward_eco_([a-z0-9_-]+)_int_(\d+)$/i);
+        return match ? { sceneId: match[1], localId: match[2] } : null;
+    }
+
+    function cachedLevelDataJson(url) {
+        if (!levelDataJsonPromises.has(url)) {
+            const promise = originalAkeFetch(url).then(response => {
+                if (!response.ok) throw new Error(`无法加载 ${url} (HTTP ${response.status})`);
+                return response.json();
+            }).catch(error => {
+                levelDataJsonPromises.delete(url);
+                throw error;
+            });
+            levelDataJsonPromises.set(url, promise);
+        }
+        return levelDataJsonPromises.get(url);
+    }
+
+    async function equipTemplatePointId(rewardId) {
+        const parts = equipTemplateRewardParts(rewardId);
+        if (!parts) return null;
+        const localId = BigInt(parts.localId);
+        if (localId >= 100000000n) return null;
+        const url = `/public/Json/LevelData/${parts.sceneId}/${parts.sceneId}_lv_data.json`;
+        const payload = await cachedLevelDataJson(url);
+        if (payload?.sceneId !== parts.sceneId) {
+            levelDataJsonPromises.delete(url);
+            return null;
+        }
+        const levelIdNum = String(payload?.levelIdNum ?? '');
+        if (!/^\d+$/.test(levelIdNum)) {
+            levelDataJsonPromises.delete(url);
+            return null;
+        }
+        const pointId = BigInt(levelIdNum) * 100000000n + localId;
+        return pointId < POINT_TOKEN_MOD ? pointId.toString() : null;
+    }
+
     function losslessParse(text) {
         // Text references use signed Int64 IDs. Preserve them before JSON.parse
         // converts them to imprecise Numbers.
@@ -411,10 +471,12 @@
     }
 
     async function equipDetail(id, version) {
-        const [suits, equips, items, skills, formulas, reverse, formulaChains, packs, packFormulas, costs, guarantees, constants, tech] = await Promise.all([
+        const [suits, equips, items, skills, formulas, reverse, formulaChains, packs, packFormulas, costs, guarantees, constants, tech,
+            rewards, shopGoods, shops, channels, adventureLevels] = await Promise.all([
             table('EquipSuitTable', version), table('EquipTable', version), table('ItemTable', version), table('SkillPatchTable', version), table('EquipFormulaTable', version),
             table('EquipFormulaReverseTable', version), table('EquipFormulaChainTable', version), table('EquipPackTable', version), table('EquipPackFormulaTable', version), table('EquipEnhanceCostTable', version),
-            table('EquipEnhanceGuaranteeTimesRuleTable', version), table('EquipConst', version), table('EquipTechConst', version)
+            table('EquipEnhanceGuaranteeTimesRuleTable', version), table('EquipConst', version), table('EquipTechConst', version),
+            table('RewardTable', version), table('ShopGoodsTable', version), table('ShopTable', version), table('ShopChannelDevelopmentTable', version), table('AdventureLevelTable', version)
         ]);
         let suit = suits[id];
         if (!suit && id === 'suit_none') {
@@ -430,10 +492,65 @@
             [chain.costGoldId].concat(chain.costItemId || []).filter(Boolean)));
         const skillIds = (suit.list || []).map(row => row.skillID).filter(Boolean);
         const packIds = formulaIds.map(formulaId => formulas[formulaId]?.packId).filter(Boolean);
+        const rewardBundles = reward => [...(reward?.itemBundles || []), ...(reward?.probItemBundles || [])];
+        const rewardIdsByItem = itemId => Object.entries(rewards).filter(([, reward]) =>
+            rewardBundles(reward).some(bundle => bundle.id === itemId && Number(bundle.count || 0) > 0)).map(([rewardId]) => rewardId);
+        const goodsByReward = rewardId => Object.values(shopGoods).filter(goods => goods.rewardId === rewardId);
+        const shopName = shopId => text(shops[shopId]?.shopName, shopId);
+        const rewardSource = rewardId => {
+            const goods = goodsByReward(rewardId);
+            if (goods.length) return { kind: 'shop', ids: goods.map(row => row.goodsId), names: goods.map(row => shopName(row.shopId)) };
+            const levels = Object.values(adventureLevels).filter(row => row.rewardId === rewardId);
+            if (levels.length) return { kind: 'permission', ids: levels.map(row => String(row.level)), names: levels.map(row => `权限等阶 ${row.level}`) };
+            if (rewardId.startsWith('reward_mission_')) return { kind: 'mission', ids: [], names: [] };
+            if (rewardId.startsWith('reward_activity_')) return { kind: 'activity', ids: [], names: [] };
+            if (rewardId.startsWith('reward_eco_')) return { kind: 'map', ids: [], names: [] };
+            return { kind: 'reward', ids: [], names: [] };
+        };
+        const acquisitionRows = {};
+        (suit.equipList || []).forEach(equipId => {
+            const formulaId = reverse[equipId] || '';
+            const formula = formulas[formulaId] || {};
+            const unlockType = Number(formula.unlockType || 0);
+            const unlockKey = formula.unlockKey || '';
+            const templateRewardIds = formulaId ? rewardIdsByItem(formulaId) : [];
+            let templateSource = { kind: 'default', level: null, channelId: '', channelName: '', goodsId: '', shopId: '', shopName: '', rewardIds: templateRewardIds };
+            if (unlockType === 1) {
+                templateSource = { ...templateSource, kind: 'permission', level: Number(formula.unlockValue || 0) };
+            } else if (unlockType === 2) {
+                const rewardIds = unlockKey ? [unlockKey] : templateRewardIds;
+                templateSource = { ...templateSource, kind: 'map', rewardIds };
+            } else if (unlockType === 3) {
+                const channel = channels[unlockKey] || {};
+                const rewardGoods = templateRewardIds.flatMap(rewardId => goodsByReward(rewardId));
+                const rewardGoodsIds = rewardGoods.map(goods => goods.goodsId);
+                const matchedLevels = Object.entries(channel.channelLevelMap || {}).filter(([, levelRow]) =>
+                    (levelRow.newGoodsList || []).some(goodsId => rewardGoodsIds.includes(goodsId))).map(([level]) => Number(level));
+                const matchedGoods = rewardGoods.filter(goods => Object.values(channel.channelLevelMap || {}).some(levelRow =>
+                    (levelRow.newGoodsList || []).includes(goods.goodsId)));
+                templateSource = { ...templateSource, kind: 'channel', channelId: unlockKey,
+                    channelName: text(channel.channelName, channel.levelId || unlockKey),
+                    level: matchedLevels.length ? Math.min(...matchedLevels) : null,
+                    goodsIds: matchedGoods.map(goods => goods.goodsId),
+                    shopIds: [...new Set(matchedGoods.map(goods => goods.shopId).filter(Boolean))] };
+            } else if (unlockType === 4) {
+                const goods = shopGoods[unlockKey] || {};
+                templateSource = { ...templateSource, kind: 'shop', goodsId: unlockKey, shopId: goods.shopId || '',
+                    shopName: shopName(goods.shopId), rewardIds: goods.rewardId ? [goods.rewardId] : templateRewardIds };
+            } else if (unlockType !== 0) {
+                templateSource = { ...templateSource, kind: 'unknown' };
+            }
+            const directSources = rewardIdsByItem(equipId).map(rewardId => {
+                const reward = rewards[rewardId];
+                const bundle = rewardBundles(reward).find(row => row.id === equipId && Number(row.count || 0) > 0);
+                return { rewardId, count: Number(bundle?.count || 0), preset: equipId.includes('_preset_') || rewardId.includes('chartrial'), ...rewardSource(rewardId) };
+            });
+            acquisitionRows[equipId] = { formulaId, unlockType, unlockKey, unlockValue: formula.unlockValue, templateSource, directSources };
+        });
         return { suitId: id, equipsuittable: suit, equiptable: equipRows, itemtable: pick(items, (suit.equipList || []).concat(materialIds)),
             skillpatchtable: pick(skills, skillIds), equipformulatable: pick(formulas, formulaIds), equipformulareversetable: pick(reverse, suit.equipList || []),
             equipformulachaintable: formulaChainRows, equippacktable: pick(packs, packIds), equippackformulatable: pick(packFormulas, packIds), equipenhancecosttable: costs,
-            equipenhanceguaranteetimesruletable: guarantees, equipconst: constants, equiptechconst: tech };
+            equipenhanceguaranteetimesruletable: guarantees, equipconst: constants, equiptechconst: tech, equipacquisitiontable: acquisitionRows };
     }
 
     async function itemManifest(version) {
@@ -805,6 +922,13 @@
         },
         preloadTextTable: loadI18n,
         table,
-        text
+        text,
+        async equipTemplateShareUrl(rewardIds) {
+            for (const rewardId of rewardIds || []) {
+                const token = encodePointIdToken(await equipTemplatePointId(rewardId));
+                if (token) return `https://oem.re/${token}`;
+            }
+            return '';
+        }
     };
 })();

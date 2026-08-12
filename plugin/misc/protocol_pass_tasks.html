@@ -1,0 +1,40 @@
+<section class="misc-task-page" data-misc-module="protocol_pass_tasks" aria-labelledby="miscPassTitle">
+    <header class="misc-task-page__header">
+        <div>
+            <div class="misc-task-page__eyebrow" data-i18n="modules.misc.protocolPassTasks.eyebrow">协议通行证</div>
+            <h2 id="miscPassTitle" data-i18n="modules.misc.protocolPassTasks.title">协议通行证任务</h2>
+            <p class="misc-task-page__summary" data-i18n="modules.misc.protocolPassTasks.summary">按赛季与开放批次查看通行证任务、经验和等级奖励。</p>
+        </div>
+        <div class="misc-task-status" id="miscPassStatus"></div>
+    </header>
+
+    <div class="misc-task-toolbar misc-pass-toolbar">
+        <label>
+            <span data-i18n="modules.misc.protocolPassTasks.season">赛季</span>
+            <select id="miscPassSeason"></select>
+        </label>
+        <label class="misc-task-search">
+            <span data-i18n="modules.misc.protocolPassTasks.search">筛选任务</span>
+            <input id="miscPassSearch" type="search" data-i18n-placeholder="modules.misc.protocolPassTasks.searchNamePlaceholder" placeholder="任务名称">
+        </label>
+    </div>
+
+    <nav id="miscPassLabels" class="misc-task-tabs" aria-label="任务类别"></nav>
+    <div id="miscPassTimeline" class="misc-release-track"></div>
+
+    <section class="misc-task-section" aria-labelledby="miscPassTaskListTitle">
+        <div class="misc-task-section__heading">
+            <h3 id="miscPassTaskListTitle" data-i18n="modules.misc.protocolPassTasks.taskList">任务列表</h3>
+            <span id="miscPassCount" class="misc-task-chip"></span>
+        </div>
+        <div id="miscPassTasks" class="misc-task-grid">
+            <div class="misc-task-loading" data-i18n="modules.misc.loading">正在读取任务配置...</div>
+        </div>
+    </section>
+
+    <details class="misc-task-details" id="miscPassLevels">
+        <summary data-i18n="modules.misc.protocolPassTasks.levelTrack">通行证等级与里程碑</summary>
+        <div id="miscPassLevelContent"></div>
+    </details>
+</section>
+<script src="/plugin/js/misc-protocol-pass-tasks.js"></script>

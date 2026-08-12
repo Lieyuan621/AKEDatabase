@@ -36,7 +36,8 @@
         v3_shop: 'akeShopContent',
         baker: 'bakerConversation',
         season_tower: 'seasonTowerDetail',
-        v3_mission: 'missionDetail'
+        v3_mission: 'missionDetail',
+        misc: 'miscContent'
     });
     const MODULE_SCROLL_ROOT_IDS = Object.freeze({
         v3_weapon: 'v2wpnListItems',
@@ -52,7 +53,8 @@
         v3_shop: 'akeShopGroupList',
         baker: 'bakerContactList',
         season_tower: 'seasonTowerList',
-        v3_mission: 'missionList'
+        v3_mission: 'missionList',
+        misc: 'miscModuleList'
     });
 
     function normalizeRouteId(routeId) {
