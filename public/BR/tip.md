@@ -2,6 +2,23 @@ O AKEData foi transferido para o domínio www.akedata.wiki. O domínio anterior,
 
 # Registro de atualizações do AKEData
 
+### v1.2.9
+
+#### Diversos e central de tarefas
+
+- Adicionado o módulo Diversos, extensível por ferramentas independentes. A primeira versão abrange tarefas semanais, Passe de Protocolo e tarefas de atividades de Treinamento, Contratos, Masmorras de Corrida e Torneios.
+- As tarefas do Passe de Protocolo podem ser filtradas por semana e agora exibem todos os níveis das três trilhas de recompensas.
+
+#### Ícones e dados de obtenção
+
+- Adicionado um gerador de ícones de personagem para escolher personagem e habilidade, visualizar a composição e baixá-la em PNG.
+- As lojas agora mostram requisitos de desbloqueio e níveis de Despacho de Materiais; os detalhes de equipamento incluem fontes como lojas, missões e caixas de modelo no mapa. Os links do mapa OEM são calculados dinamicamente a partir do LevelData somente após o clique.
+
+#### Experiência e estabilidade
+
+- Padronizada a imagem substituta para falhas de carregamento, além de correções na rolagem independente de Diversos, nos controles móveis e em vários layouts de recompensas.
+- Os novos módulos de dados de combate `v3_skill` e de Buff `v3_buff` continuam em validação e não estão disponíveis nesta versão.
+
 ### v1.2.8
 
 #### Barras laterais e layout

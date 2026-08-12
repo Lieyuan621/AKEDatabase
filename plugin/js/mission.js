@@ -621,10 +621,6 @@
             selectSnsOption(group, button.dataset.snsContent, button.dataset.snsOption);
             renderDialogueContent(data, panel);
         }));
-        panel.querySelectorAll('.mission-dialog-line__avatar').forEach(image => image.addEventListener('error', () => {
-            image.parentElement?.classList.remove('has-avatar');
-            image.remove();
-        }, { once: true }));
     }
 
     async function renderDialoguePanel(row, panel, token) {

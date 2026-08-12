@@ -234,7 +234,7 @@
         if (!names.length) return '';
         return `<div class="baker-picture-grid">${names.map(name => {
             const source = asset(`${IMAGE_ROOT}/sns/picture/${String(name).toLowerCase()}.png`);
-            return `<img src="${escapeHtml(source)}" alt="${escapeHtml(contentText(node) || name)}" loading="lazy" onerror="this.hidden=true">`;
+            return `<img src="${escapeHtml(source)}" alt="${escapeHtml(contentText(node) || name)}" loading="lazy">`;
         }).join('')}</div>`;
     }
 

@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="/theme/misc.css">
+
+<div class="misc-module" id="miscModule">
+    <aside class="misc-sidebar" data-i18n-aria-label="modules.misc.moduleList" aria-label="杂项模块列表">
+        <header class="misc-sidebar__header">
+            <strong data-i18n="modules.misc.title">杂项</strong>
+            <small id="miscModuleCount" data-i18n="modules.misc.loadingManifest">正在读取模块清单</small>
+        </header>
+        <nav class="misc-module-list" id="miscModuleList"></nav>
+    </aside>
+
+    <div class="misc-content" id="miscContent" role="region" aria-label="杂项模块内容" aria-live="polite">
+        <div class="misc-shell-state misc-shell-state--loading">
+            <span></span>
+            <b data-i18n="modules.misc.loading">正在读取杂项模块</b>
+        </div>
+    </div>
+
+    <button class="misc-mobile-button" id="miscMobileButton" type="button" aria-haspopup="dialog" aria-controls="miscMobileOverlay" aria-expanded="false" data-i18n="modules.misc.modules">模块</button>
+    <div class="misc-mobile-overlay" id="miscMobileOverlay" aria-hidden="true">
+        <div class="misc-mobile-panel" role="dialog" aria-modal="true" data-i18n-aria-label="modules.misc.selectModule" aria-label="选择杂项模块">
+            <header class="misc-mobile-title">
+                <strong data-i18n="modules.misc.selectModule">选择模块</strong>
+                <button type="button" data-i18n-aria-label="modules.misc.close" aria-label="关闭">&times;</button>
+            </header>
+            <nav class="misc-module-list misc-module-list--mobile" id="miscMobileList"></nav>
+        </div>
+    </div>
+</div>
+
+<script src="/plugin/js/misc.js"></script>

@@ -114,6 +114,11 @@
         compactThreshold: 200,
         compactListSelector: '.mission-list'
     });
+    registerModules(['misc'], '.misc-module > .misc-sidebar', 264, {
+        minWidth: 180,
+        maxWidth: 420,
+        layout: 'grid'
+    });
     registerModules(['baker'], '.baker-module > .baker-sidebar', 318, {
         ...iconCompact('.baker-contact', '.baker-avatar', '.baker-contact__name', '.baker-contact-list', '.baker-brand > div:last-child, .baker-search', {
             minWidth: 96,

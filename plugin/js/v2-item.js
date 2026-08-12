@@ -203,7 +203,6 @@
                 const icon = document.createElement('img');
                 icon.className = 'v2i-item-icon';
                 icon.src = item.icon || '';
-                icon.onerror = function() { this.onerror = null; this.src = ''; };
 
                 const info = document.createElement('div');
                 info.className = 'v2i-item-info';
@@ -310,7 +309,7 @@
                     <div class="v2i-obtain-list">
                         ${ways.map(w => `
                             <div class="v2i-obtain-item">
-                                <img class="v2i-obtain-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemtips/${w.iconId}.png" onerror="this.onerror=null; this.src='';">
+                                <img class="v2i-obtain-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemtips/${w.iconId}.png">
                                 <span class="v2i-obtain-desc">${parseText(w.desc?.text || w.id)}</span>
                             </div>
                         `).join('')}
@@ -444,7 +443,7 @@
             const currentClass = entry.id === currentId ? ' is-current' : '';
             const title = getCurrentShowHidden() ? ` title="${entry.id}"` : '';
             return `<a class="v2i-craft-item${currentClass}" href="/?plugin=v3_item&id=${encodeURIComponent(entry.id)}" data-item-id="${entry.id}"${title}>
-                <img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png" onerror="this.onerror=null; this.src='';">
+                <img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png">
                 <span class="v2i-craft-item-name">${name}</span><strong>×${entry.count ?? 1}</strong>
             </a>`;
         }
@@ -542,7 +541,7 @@
                 <div class="v2i-detail-container">
                     <div class="v2i-header">
                         <div class="v2i-header-icon">
-                            <img src="${iconBig}" onerror="this.onerror=null; this.src='${item.icon || ''}';">
+                            <img src="${iconBig}">
                         </div>
                         <div class="v2i-header-text">
                             <div class="v2i-title-row">

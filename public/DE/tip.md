@@ -2,6 +2,23 @@ AKEData ist auf die Domain www.akedata.wiki umgezogen. Die bisherige Domain aked
 
 # AKEData-Versionsprotokoll
 
+### v1.2.9
+
+#### Verschiedenes und Aufgabenzentrale
+
+- Das unabhängig erweiterbare Modul „Verschiedenes“ wurde hinzugefügt. Die ersten Werkzeuge decken Wochenaufgaben, Protokollpass-Aufgaben sowie Aktivitätsaufgaben für Training, Verträge, Renn-Dungeons und Turniere ab.
+- Protokollpass-Aufgaben lassen sich nach Woche filtern und zeigen nun alle Stufen in sämtlichen drei Belohnungspfaden.
+
+#### Symbole und Bezugsquellen
+
+- Ein Generator für Charaktersymbole wurde hinzugefügt: Charakter und Fähigkeit wählen, Ergebnis als Vorschau prüfen und als PNG herunterladen.
+- Shops zeigen jetzt Freischaltbedingungen und Stufen der Materialdisposition; Ausrüstungsdetails nennen Quellen wie Shops, Missionen und Vorlagenkisten auf der Karte. OEM-Kartenlinks werden erst beim Anklicken dynamisch aus LevelData berechnet.
+
+#### Bedienung und Stabilität
+
+- Die Ersatzanzeige bei fehlgeschlagenen Bildern wurde vereinheitlicht. Außerdem wurden das unabhängige Scrollen in „Verschiedenes“, mobile Bedienelemente und mehrere Belohnungslayouts korrigiert.
+- Die neuen Datenmodule für Kampf `v3_skill` und Buffs `v3_buff` werden noch geprüft und sind in dieser Version nicht verfügbar.
+
 ### v1.2.8
 
 #### Seitenleisten und Layout

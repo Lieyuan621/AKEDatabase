@@ -100,7 +100,6 @@
                 const icon = document.createElement('img');
                 icon.className = 'enemy-icon';
                 icon.src = enemy.icon || '';
-                icon.onerror = function() { this.onerror = null; this.src = ''; };
 
                 const textContainer = document.createElement('div');
                 textContainer.className = 'enemy-info';
@@ -368,7 +367,7 @@
                 <div class="detail-header">
                     <div class="detail-left">
                         <div class="detail-icon">
-                            <img src="${data.icon || ''}" onerror="this.onerror=null; this.src='';">
+                            <img src="${data.icon || ''}">
                         </div>
                         <div class="detail-text">
                             <div class="detail-title-row">
@@ -387,7 +386,7 @@
                         </div>
                     </div>
                     <div class="detail-pic">
-                        <img src="${data.iconbig || data.icon || ''}" onerror="this.onerror=null; this.src='';">
+                        <img src="${data.iconbig || data.icon || ''}">
                     </div>
                 </div>
             `;

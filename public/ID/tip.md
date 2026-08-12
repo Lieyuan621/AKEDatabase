@@ -2,6 +2,23 @@ AKEData telah pindah ke domain www.akedata.wiki. Domain lama, akedata.top, kini 
 
 # Catatan Pembaruan Versi AKEData
 
+### v1.2.9
+
+#### Serba-serbi dan pusat tugas
+
+- Menambahkan modul Serba-serbi yang dapat diperluas dengan alat yang bekerja mandiri. Isi awalnya mencakup tugas mingguan, Protocol Pass, serta tugas aktivitas Latihan, Kontrak, Racing Dungeon, dan Turnamen.
+- Tugas Protocol Pass dapat difilter menurut minggu dan kini menampilkan semua level pada ketiga jalur hadiah.
+
+#### Ikon dan informasi perolehan
+
+- Menambahkan generator ikon karakter untuk memilih karakter dan skill, melihat pratinjau komposit, lalu mengunduhnya sebagai PNG.
+- Toko kini menampilkan syarat pembukaan dan level Material Dispatch; detail perlengkapan mencantumkan sumber seperti toko, misi, dan peti templat di peta. Tautan peta OEM dihitung secara dinamis dari LevelData hanya setelah diklik.
+
+#### Pengalaman dan stabilitas
+
+- Menyeragamkan gambar pengganti ketika pemuatan gagal, serta memperbaiki pengguliran mandiri Serba-serbi, kontrol seluler, dan beberapa tata letak hadiah tugas.
+- Modul data pertempuran baru `v3_skill` dan modul data Buff `v3_buff` masih dalam tahap validasi dan belum tersedia pada versi ini.
+
 ### v1.2.8
 
 #### Bilah samping dan tata letak

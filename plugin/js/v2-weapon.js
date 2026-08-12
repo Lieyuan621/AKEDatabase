@@ -166,7 +166,6 @@
             const icon = document.createElement('img');
             icon.className = 'weapon-icon';
             icon.src = w.icon || '';
-            icon.onerror = function() { this.onerror = null; this.src = ''; };
 
             const info = document.createElement('div');
             info.className = 'weapon-info';
@@ -336,7 +335,7 @@
                 const iData = itemTable[it.id];
                 const iName = iData?.name?.text || it.id;
                 const iIcon = iData?.iconId || it.id;
-                costsHtml += `<div class="break-cost-row"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iIcon}.png" onerror="this.style.display='none'"><span class="bc-name">${escapeHtml(iName)}</span><span class="bc-cnt">×${it.count}</span></div>`;
+                costsHtml += `<div class="break-cost-row"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iIcon}.png"><span class="bc-name">${escapeHtml(iName)}</span><span class="bc-cnt">×${it.count}</span></div>`;
             });
 
             let boundsHtml = '';
@@ -458,7 +457,7 @@
                 <div class="detail-left">
                     <div class="detail-left-top">
                         <div class="detail-icon">
-                            <img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png" onerror="this.onerror=null; this.src='${weapon.icon || ''}';">
+                            <img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png">
                         </div>
                         <div class="detail-text">
                             <div class="detail-title-row">
@@ -474,7 +473,7 @@
                 </div>
                 <div class="detail-right">
                     <div class="detail-iconfull">
-                        <img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/gachaweapon/${iconId}.png" onerror="this.style.display='none'">
+                        <img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/gachaweapon/${iconId}.png">
                     </div>
                 </div>
             </div>

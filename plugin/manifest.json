@@ -260,6 +260,15 @@
         "hidden": true
     },
     {
+        "id": "misc",
+        "title": "modules.misc.title",
+        "description": "modules.misc.description",
+        "priority": 23,
+        "icon": "🧩",
+        "contentFile": "/plugin/misc.html",
+        "hidden": false
+    },
+    {
         "id": "baker",
         "title": "Baker",
         "description": "查看联系人、群聊与 Baker 对话",
@@ -323,6 +332,26 @@
         "hidden": true,
         "disabled": true,
         "contentFile": "plugin/skill_v2.html"
+    },
+    {
+        "id": "v3_skill",
+        "title": "modules.combat.title",
+        "description": "modules.combat.description",
+        "priority": 101,
+        "icon": "⚔️",
+        "contentFile": "/plugin/v3_skill.html",
+        "hidden": true,
+        "disabled": true
+    },
+    {
+        "id": "v3_buff",
+        "title": "modules.buff.title",
+        "description": "modules.buff.description",
+        "priority": 102,
+        "icon": "✨",
+        "contentFile": "/plugin/v3_buff.html",
+        "hidden": true,
+        "disabled": true
     },
     {
         "id": "spawn",

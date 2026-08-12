@@ -1,0 +1,36 @@
+<section class="misc-task-page" data-misc-module="weekly_tasks" aria-labelledby="miscWeeklyTitle">
+    <header class="misc-task-page__header">
+        <div>
+            <div class="misc-task-page__eyebrow" data-i18n="modules.misc.weeklyTasks.eyebrow">周期任务</div>
+            <h2 id="miscWeeklyTitle" data-i18n="modules.misc.weeklyTasks.title">每周事务</h2>
+            <p class="misc-task-page__summary" data-i18n="modules.misc.weeklyTasks.summary">查看每周任务批次、事务积分与里程碑奖励。</p>
+        </div>
+        <div class="misc-task-status" id="miscWeeklyStatus"></div>
+    </header>
+
+    <div class="misc-task-toolbar" aria-label="周次选择">
+        <button type="button" id="miscWeeklyPrevious" aria-label="上一周">&#x2039;</button>
+        <label>
+            <span data-i18n="modules.misc.weeklyTasks.weekLabel">任务周</span>
+            <select id="miscWeeklySelect"></select>
+        </label>
+        <button type="button" id="miscWeeklyNext" aria-label="下一周">&#x203A;</button>
+        <button type="button" id="miscWeeklyCurrent" data-i18n="modules.misc.weeklyTasks.currentWeek">当前周</button>
+    </div>
+
+    <section class="misc-task-section" aria-labelledby="miscWeeklyMilestoneTitle">
+        <h3 id="miscWeeklyMilestoneTitle" data-i18n="modules.misc.weeklyTasks.milestones">事务积分里程碑</h3>
+        <div id="miscWeeklyMilestones" class="misc-milestone-track"></div>
+    </section>
+
+    <section class="misc-task-section" aria-labelledby="miscWeeklyListTitle">
+        <div class="misc-task-section__heading">
+            <h3 id="miscWeeklyListTitle" data-i18n="modules.misc.weeklyTasks.taskList">任务列表</h3>
+            <span id="miscWeeklyCount" class="misc-task-chip"></span>
+        </div>
+        <div id="miscWeeklyTasks" class="misc-task-grid">
+            <div class="misc-task-loading" data-i18n="modules.misc.loading">正在读取任务配置...</div>
+        </div>
+    </section>
+</section>
+<script src="/plugin/js/misc-weekly-tasks.js"></script>

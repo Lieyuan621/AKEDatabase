@@ -371,7 +371,6 @@
                 image.alt = icon.label;
                 image.title = icon.label;
                 image.dataset.kind = icon.kind;
-                image.onerror = function () { this.remove(); };
                 container.appendChild(image);
             });
         }
@@ -591,7 +590,6 @@
                 const icon = document.createElement('img');
                 icon.className = 'character-icon';
                 icon.src = char.icon || '';
-                icon.onerror = function() { this.onerror = null; this.src = ''; };
 
                 const textContainer = document.createElement('div');
                 textContainer.className = 'character-info';
@@ -1291,13 +1289,13 @@
             if (parts.length === 0) return '';
             return parts.map(it => {
                 const info = itemInfoMap?.[it.id] || {};
-                return `<div class="cost-item" title="${escapeAttribute(info.description)}"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${info.iconId || it.id}.png" onerror="this.style.display='none'"><span class="ci-name">${info.name || it.id}</span><span class="ci-cnt">×${it.count}</span></div>`;
+                return `<div class="cost-item" title="${escapeAttribute(info.description)}"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${info.iconId || it.id}.png"><span class="ci-name">${info.name || it.id}</span><span class="ci-cnt">×${it.count}</span></div>`;
             }).join('');
         }
 
         function costBtnHtml(innerHtml, itemIds, itemInfoMap) {
             if (!innerHtml) return '';
-            const icons = (itemIds || []).map(id => `<img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${itemInfoMap?.[id]?.iconId || id}.png" onerror="this.style.display='none'">`).join('');
+            const icons = (itemIds || []).map(id => `<img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${itemInfoMap?.[id]?.iconId || id}.png">`).join('');
             return `<span class="cost-wrap"><span class="cost-btn" onclick="event.stopPropagation();var tip=this.nextElementSibling;tip.classList.toggle('pinned');if(tip.classList.contains('pinned'))document.querySelectorAll('.cost-tip.pinned').forEach(x=>{if(x!==tip)x.classList.remove('pinned')})">${t('developmentCost')}</span><span class="cost-btn-icons">${icons}</span><span class="cost-tip">${innerHtml}</span></span>`;
         }
 
@@ -1308,7 +1306,7 @@
                 <div class="detail-header">
                     <div class="detail-left">
                         <div class="detail-icon">
-                            <img src="${data.icon || ''}" onerror="this.onerror=null; this.src='';">
+                            <img src="${data.icon || ''}">
                         </div>
                         <div class="detail-text">
                             <div class="detail-title-row">
@@ -1330,7 +1328,7 @@
                         </div>
                     </div>
                     <div class="detail-pic">
-                        <img src="${data.pic || ''}" onerror="this.style.display='none'">
+                        <img src="${data.pic || ''}">
                     </div>
                 </div>
             `;
@@ -1537,7 +1535,7 @@
                         const itemParts = [...(c.goldCost > 0 ? [{ id: 'item_gold', count: c.goldCost }] : []), ...c.items.filter(it => it.id !== 'item_gold')];
                         const itemsStr = itemParts.map(it => {
                             const info = itemInfoMap[it.id] || {};
-                            return `<span class="ci-ri" title="${escapeAttribute(info.description)}"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${info.iconId || it.id}.png" onerror="this.style.display='none'">${info.name || it.id} ×${it.count}</span>`;
+                            return `<span class="ci-ri" title="${escapeAttribute(info.description)}"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${info.iconId || it.id}.png">${info.name || it.id} ×${it.count}</span>`;
                         }).join('');
                         return `<div class="sk-cost-row"><span class="cost-section-title">${t('levelRange', { name: `${c.level - 1}→${c.level}` })}</span>${itemsStr}</div>`;
                     }).join('');
@@ -1547,7 +1545,7 @@
                 const conditionHtml = (group.conditionVariants || []).map(condition => `
                     <div class="skill-condition">
                         <div class="skill-condition-name">
-                            <img class="skill-condition-icon" src="${condition.icon}" alt="" onerror="this.onerror=null; this.src='';">
+                            <img class="skill-condition-icon" src="${condition.icon}" alt="">
                             ${condition.name}
                         </div>
                         ${condition.conditionDesc ? `<div class="skill-condition-trigger">${parseText(condition.conditionDesc)}</div>` : ''}
@@ -1558,7 +1556,7 @@
                 return `
                     <div class="skill-item" data-skill-key="${group.skillKey}">
                         <div class="skill-name">
-                            <img class="skill-icon" src="${group.icon}" alt="" onerror="this.onerror=null; this.src='';">
+                            <img class="skill-icon" src="${group.icon}" alt="">
                             ${displayName} ${costBtnHtml(skCostHtml, ['item_gold', ...new Set(skCosts.flatMap(c => c.items.map(it => it.id)))], itemInfoMap)}
                         </div>
                         <div class="skill-desc">${groupDesc}</div>
@@ -1576,7 +1574,7 @@
                     </h3>
                     <div class="collapse-content">
                         <div class="potential-pics">
-                            ${potentialPics.map(src => `<img src="${src}" onerror="this.style.display='none'">`).join('')}
+                            ${potentialPics.map(src => `<img src="${src}">`).join('')}
                         </div>
                     </div>
                 </div>
@@ -1604,7 +1602,7 @@
             const spaceshipHtml = spaceshipSkills.length ? spaceshipSkills.map(slot => `
                 <div class="spaceship-skill-item">
                     <div class="spaceship-skill-header">
-                        <img class="spaceship-icon" src="${slot.icon}" alt="" onerror="this.onerror=null; this.src='';">
+                        <img class="spaceship-icon" src="${slot.icon}" alt="">
                         <span class="spaceship-skill-name">${slot.talentName}</span>
                         <span class="spaceship-skill-room">${slot.roomTypeName}</span>
                     </div>

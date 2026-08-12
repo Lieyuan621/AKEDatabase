@@ -10,6 +10,8 @@
         let compositeNameMap = {};
         let modifierTypeMap = {};
         let domainMap = {};
+        let detailRequestGeneration = 0;
+        let manifestRequestGeneration = 0;
 
         const IMAGE_BASE_PATH = '/public/images/';
 
@@ -182,7 +184,6 @@
                 const icon = document.createElement('img');
                 icon.className = 'v2eq-item-icon';
                 icon.src = suit.icon || '';
-                icon.onerror = function() { this.onerror = null; this.src = ''; };
 
                 const info = document.createElement('div');
                 info.className = 'v2eq-item-info';
@@ -304,7 +305,7 @@
                 const item = itemTable[costItemId] || {};
                 const name = item.name?.text || costItemId;
                 const iconId = item.iconId || costItemId;
-                return `<div class="v2eq-cost-item"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png" onerror="this.style.display='none'"><span class="v2eq-ci-name">${escapeHtml(name)}</span><span class="v2eq-ci-cnt">${prefix}${Number(count || 0).toLocaleString()}</span></div>`;
+                return `<div class="v2eq-cost-item"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png"><span class="v2eq-ci-name">${escapeHtml(name)}</span><span class="v2eq-ci-cnt">${prefix}${Number(count || 0).toLocaleString()}</span></div>`;
             }
 
             const tipHtml = chains.map(chain => {
@@ -324,7 +325,7 @@
             const component = itemTable[componentId] || {};
             const componentTitle = component.name?.text || (getCurrentShowHidden() ? componentId : '');
             const componentIcon = componentId
-                ? `<img class="v2eq-default-component" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escapeHtml(component.iconId || componentId)}.png" alt="" title="${escapeHtml(componentTitle)}" onerror="this.style.display='none'">`
+                ? `<img class="v2eq-default-component" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escapeHtml(component.iconId || componentId)}.png" alt="" title="${escapeHtml(componentTitle)}">`
                 : '';
             return `<span class="v2eq-cost-wrap">${componentIcon}<span class="v2eq-cost-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-cost-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">${t('craftingCost')}</span><span class="v2eq-cost-tip">${tipHtml}</span></span>`;
         }
@@ -358,7 +359,34 @@
             return `<span class="v2eq-guarantee-wrap"><span class="v2eq-guarantee-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-guarantee-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">${t('enhancementGuarantee')}</span><span class="v2eq-guarantee-tip">${tipHtml}</span></span>`;
         }
 
-        function renderEquipCard(itemId, equipData, itemData, formulaData, formulaChainData, guaranteeRules, enhanceConst, itemTable, isVersionAdded) {
+        function renderAcquisition(acquisition) {
+            if (!acquisition) return '';
+            const source = acquisition.templateSource || {};
+            let templateText = t('acquisition.defaultTemplate', null, 'Crafting template unlocked by default');
+            if (source.kind === 'permission') templateText = t('acquisition.permissionTemplate', { level: source.level || acquisition.unlockValue || '?' }, `Permission Level ${source.level || acquisition.unlockValue || '?'} unlocks the crafting template`);
+            else if (source.kind === 'map') templateText = t('acquisition.mapTemplate', null, 'Unlock the crafting template through exploration or equipment template crates');
+            else if (source.kind === 'channel') templateText = source.level
+                ? t('acquisition.channelTemplateAtLevel', { name: source.channelName || source.channelId, level: source.level }, `Crafting template becomes purchasable from ${source.channelName || source.channelId} at Level ${source.level}`)
+                : t('acquisition.channelTemplateUnknownLevel', { name: source.channelName || source.channelId || t('acquisition.dispatch', null, 'Regional Dispatch') }, `Crafting template is purchasable from ${source.channelName || source.channelId || 'Regional Dispatch'}; the exact level is not exposed`);
+            else if (source.kind === 'shop') templateText = t('acquisition.shopTemplate', { name: source.shopName || source.shopId || t('acquisition.shop', null, 'Shop') }, `Purchase the crafting template from ${source.shopName || source.shopId || 'Shop'}`);
+            else if (source.kind === 'unknown') templateText = t('acquisition.unknownType', { type: acquisition.unlockType }, `Unknown unlock type ${acquisition.unlockType}`);
+            const sourceId = source.goodsId || (source.goodsIds || []).join(', ') || acquisition.unlockKey || (source.rewardIds || []).join(', ');
+            const sourceIdHtml = getCurrentShowHidden() && sourceId ? ` <small>${escapeHtml(sourceId)}</small>` : '';
+            const mapPointsHtml = source.kind === 'map' && source.rewardIds?.length
+                ? `<div><button type="button" class="v2eq-oem-link" data-oem-reward-ids="${escapeHtml(source.rewardIds.join(','))}">${escapeHtml(t('acquisition.oemMapLink', null, 'View on OEM'))}</button></div>`
+                : '';
+            const direct = (acquisition.directSources || []).map(entry => {
+                const names = (entry.names || []).filter(Boolean).join(t('acquisition.sourceSeparator', null, ', '));
+                const label = entry.preset
+                    ? t('acquisition.direct.preset', null, 'Trial preset item (not a permanent source)')
+                    : t(`acquisition.direct.${entry.kind}`, null, t('acquisition.direct.reward', null, 'Item granted directly by a reward'));
+                const detail = names ? t('acquisition.direct.withSource', { label, names }, `${label} · ${names}`) : label;
+                return `<div>${escapeHtml(detail)}${entry.count > 1 ? ` x${entry.count}` : ''}${getCurrentShowHidden() ? ` <small>${escapeHtml(entry.rewardId)}</small>` : ''}</div>`;
+            }).join('');
+            return `<div class="v2eq-deco-desc"><b>${escapeHtml(t('acquisition.title', null, 'Acquisition and Unlock'))}</b><div>${escapeHtml(templateText)}${sourceIdHtml}</div>${mapPointsHtml}${direct}</div>`;
+        }
+
+        function renderEquipCard(itemId, equipData, itemData, formulaData, formulaChainData, guaranteeRules, enhanceConst, itemTable, acquisition, isVersionAdded) {
             const name = itemData?.name?.text || itemId;
             const rarity = itemData?.rarity ?? 0;
             const iconId = itemData?.iconId || '';
@@ -391,7 +419,7 @@
             return `
                 <div class="v2eq-card${isVersionAdded ? ' v2eq-card--version-added' : ''}"${isVersionAdded ? ' data-ake-change="added"' : ''}>
                     <div class="v2eq-card-header">
-                        <img class="v2eq-card-icon" src="${iconSrc}" onerror="this.onerror=null; this.src='';">
+                        <img class="v2eq-card-icon" src="${iconSrc}">
                         <div class="v2eq-card-title">
                             <div class="v2eq-card-name-row">
                                 <span class="v2eq-card-name">${escapeHtml(name)}</span>
@@ -417,6 +445,7 @@
                         </div>
                         ${subTableHtml}
                         ${decoHtml}
+                        ${renderAcquisition(acquisition)}
                     </div>
                 </div>
             `;
@@ -526,6 +555,7 @@
             const formulaChainTable = data.equipformulachaintable || {};
             const guaranteeRules = data.equipenhanceguaranteetimesruletable || {};
             const enhanceConst = data.equipconst || null;
+            const acquisitionTable = data.equipacquisitiontable || {};
             const addedEquipIds = new Set(data.__versionAddedEquipIds || []);
 
             if (!equipTable) return '';
@@ -549,7 +579,7 @@
                 const formulaId = reverseFormulaTable[itemId] || '';
                 const fData = formulaId ? formulaTable[formulaId] : null;
                 const chainData = fData?.level ? formulaChainTable[fData.level] : null;
-                cardsHtml += renderEquipCard(itemId, equipData, iData, fData, chainData, guaranteeRules, enhanceConst, itemTable, addedEquipIds.has(itemId));
+                cardsHtml += renderEquipCard(itemId, equipData, iData, fData, chainData, guaranteeRules, enhanceConst, itemTable, acquisitionTable[itemId], addedEquipIds.has(itemId));
             });
 
             return `
@@ -606,12 +636,15 @@
         }
 
         async function loadSuitDetail(suit, container) {
+            const generation = ++detailRequestGeneration;
             container.innerHTML = `<div class="v2eq-loader">${t('loadingSet')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(suit.contentFile).then(r => r.json());
+                if (generation !== detailRequestGeneration || activeSuitId !== suit.suitID) return;
                 container.innerHTML = renderDetail(data, suit);
                 window.AKEModuleOverview?.renderVersionDiff(container, data, data.__versionDiff?.baseline ? renderDetail(data.__versionDiff.baseline, suit) : '');
             } catch (err) {
+                if (generation !== detailRequestGeneration || activeSuitId !== suit.suitID) return;
                 container.innerHTML = `<div class="v2eq-error">${t('loadFailed', { message: err.message })}</div>`;
             }
         }
@@ -625,7 +658,7 @@
                 <div class="v2eq-detail-container">
                     <div class="v2eq-header">
                         <div class="v2eq-header-icon">
-                            <img src="${suit.icon || ''}" onerror="this.onerror=null; this.src='';">
+                            <img src="${suit.icon || ''}">
                         </div>
                         <div class="v2eq-header-text">
                             <div class="v2eq-title-row">
@@ -650,9 +683,32 @@
             const detail = document.getElementById('v2equipDetail');
             if (!list || !detail) return;
 
+            const generation = ++manifestRequestGeneration;
             const showHidden = getCurrentShowHidden();
-            allSuits = await loadSuitManifest(showHidden);
+            const suits = await loadSuitManifest(showHidden);
+            if (generation !== manifestRequestGeneration) return;
+            allSuits = suits;
             renderSuitList();
+        }
+
+        async function handleDetailClick(event) {
+            const button = event.target.closest('.v2eq-oem-link[data-oem-reward-ids]');
+            if (!button) return;
+            const placeholder = window.open('about:blank', '_blank');
+            if (placeholder) placeholder.opener = null;
+            button.disabled = true;
+            try {
+                const rewardIds = button.dataset.oemRewardIds.split(',').filter(Boolean);
+                const url = await window.AKEV3?.equipTemplateShareUrl?.(rewardIds);
+                if (!url) throw new Error(t('acquisition.oemMapNotFound', null, 'Template crate location was not found'));
+                if (placeholder && !placeholder.closed) placeholder.location.replace(url);
+                else window.location.assign(url);
+            } catch (error) {
+                if (placeholder && !placeholder.closed) placeholder.close();
+                showToast(error.message || t('acquisition.oemMapLoadFailed', null, 'Unable to load the template crate location'), 'warning');
+            } finally {
+                button.disabled = false;
+            }
         }
 
         async function initModule() {
@@ -665,6 +721,7 @@
             if (mobileOverlay) mobileOverlay.addEventListener('click', (e) => {
                 if (e.target === mobileOverlay) closeMobileList();
             });
+            document.getElementById('v2equipDetail')?.addEventListener('click', handleDetailClick);
 
             window.addEventListener('globalConfigChanged', () => {
                 searchTerm = '';

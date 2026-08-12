@@ -433,7 +433,6 @@
                 const icon = document.createElement('img');
                 icon.className = 'v2e-item-icon';
                 icon.src = enemy.icon || '';
-                icon.onerror = function() { this.onerror = null; this.src = ''; };
 
                 const info = document.createElement('div');
                 info.className = 'v2e-item-info';
@@ -659,7 +658,7 @@
                 <div class="v2e-header">
                     <div class="v2e-header-left">
                         <div class="v2e-header-icon">
-                            <img src="${data.icon || ''}" onerror="this.onerror=null; this.src='';">
+                            <img src="${data.icon || ''}">
                         </div>
                         <div class="v2e-header-text">
                             <div class="v2e-title-row">
@@ -677,7 +676,7 @@
                         </div>
                     </div>
                     <div class="v2e-pic">
-                        <img src="${data.iconbig || data.icon || ''}" onerror="this.onerror=null; this.src='';">
+                        <img src="${data.iconbig || data.icon || ''}">
                     </div>
                 </div>
             `;

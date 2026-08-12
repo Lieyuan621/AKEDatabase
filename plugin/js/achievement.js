@@ -202,7 +202,7 @@
                 levelsHtml += `
                     <div class="level-item">
                         <div class="level-icon">
-                            <img src="${iconSrc}" onerror="this.onerror=null; this.src='';">
+                            <img src="${iconSrc}">
                         </div>
                         <div class="level-info">
                             <div class="level-desc">${parseText(lvl.desc || '')}</div>

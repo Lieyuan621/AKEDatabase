@@ -2,6 +2,23 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.2.9
+
+#### Miscellaneous and task center
+
+- Added an independently extensible Miscellaneous module. Its first tools cover weekly tasks, Protocol Pass tasks, and activity tasks for Simulation Training, Contingency Contracts, Racing Dungeons, and Tournament completion.
+- Protocol Pass tasks can be filtered by week and now show every level across all three reward tracks.
+
+#### Icons and acquisition data
+
+- Added a character icon generator for selecting a character and skill, previewing the composite, and downloading it as a PNG.
+- Shops now expose unlock requirements and Material Dispatch levels, while equipment details include shop, mission, and map template-box sources. OEM map links are derived dynamically from LevelData only after they are clicked.
+
+#### Experience and stability
+
+- Standardized the fallback shown when images fail to load, and fixed independent Miscellaneous scrolling, mobile controls, and several task-reward layouts.
+- The new combat-data module `v3_skill` and Buff-data module `v3_buff` remain under validation and are not available in this release.
+
 ### v1.2.8
 
 #### Sidebars and layout

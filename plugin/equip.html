@@ -210,7 +210,6 @@
                 const icon = document.createElement('img');
                 icon.className = 'equip-icon';
                 icon.src = suit.icon || '';
-                icon.onerror = function() { this.onerror = null; this.src = ''; };
 
                 const info = document.createElement('div');
                 info.className = 'equip-info';
@@ -324,7 +323,7 @@
                 html += `
                     <div class="equip-item-card">
                         <div class="card-header">
-                            <img class="card-icon" src="${iconSrc}" onerror="this.onerror=null; this.src='';">
+                            <img class="card-icon" src="${iconSrc}">
                             <div class="card-title">
                                 <span class="card-name">${item.name}</span>
                                 ${rarityDot}
@@ -373,7 +372,7 @@
                 <div class="equip-detail-container">
                     <div class="suit-header">
                         <div class="suit-icon">
-                            <img src="${suitIcon}" onerror="this.onerror=null; this.src='';">
+                            <img src="${suitIcon}">
                         </div>
                         <div class="suit-info">
                             <div class="suit-title-row">

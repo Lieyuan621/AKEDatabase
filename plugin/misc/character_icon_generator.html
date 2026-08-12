@@ -1,0 +1,74 @@
+<section class="misc-icon-generator" data-misc-module="character_icon_generator" aria-labelledby="miscIconGeneratorTitle">
+    <header class="misc-icon-generator__header">
+        <h2 id="miscIconGeneratorTitle" data-i18n="modules.misc.characterIconGenerator.title">角色图标生成器</h2>
+        <span id="miscIconGeneratorStatus" class="misc-icon-generator__status" role="status" aria-live="polite"></span>
+    </header>
+
+    <div class="misc-icon-generator__workspace">
+        <div class="misc-icon-generator__controls">
+            <section class="misc-icon-generator__control-section" aria-labelledby="miscIconCharacterLabel">
+                <div class="misc-icon-generator__section-heading">
+                    <h3 id="miscIconCharacterLabel" data-i18n="modules.misc.characterIconGenerator.character">角色</h3>
+                    <span id="miscIconCharacterCount" aria-hidden="true"></span>
+                </div>
+                <label class="misc-icon-generator__search">
+                    <input id="miscIconCharacterSearch" type="search" autocomplete="off"
+                        data-i18n-placeholder="modules.misc.characterIconGenerator.searchPlaceholder"
+                        data-i18n-aria-label="modules.misc.characterIconGenerator.searchCharacter"
+                        aria-label="搜索角色"
+                        placeholder="搜索角色">
+                </label>
+                <div id="miscIconCharacterList" class="misc-icon-generator__character-list" role="listbox"></div>
+            </section>
+
+            <section class="misc-icon-generator__control-section" aria-labelledby="miscIconSkillLabel">
+                <h3 id="miscIconSkillLabel" data-i18n="modules.misc.characterIconGenerator.skill">技能</h3>
+                <div id="miscIconSkillList" class="misc-icon-generator__skill-list" role="radiogroup"></div>
+            </section>
+
+            <section class="misc-icon-generator__control-section" aria-labelledby="miscIconLayoutLabel">
+                <h3 id="miscIconLayoutLabel" data-i18n="modules.misc.characterIconGenerator.layout">构图</h3>
+                <div class="misc-icon-generator__segments" id="miscIconLayoutOptions" role="radiogroup">
+                    <button type="button" data-layout="character" role="radio" aria-checked="true"
+                        data-i18n="modules.misc.characterIconGenerator.characterFocus">角色主图</button>
+                    <button type="button" data-layout="skill" role="radio" aria-checked="false"
+                        data-i18n="modules.misc.characterIconGenerator.skillFocus">技能主图</button>
+                </div>
+            </section>
+
+            <section class="misc-icon-generator__control-section" aria-labelledby="miscIconSizeLabel">
+                <h3 id="miscIconSizeLabel" data-i18n="modules.misc.characterIconGenerator.size">尺寸</h3>
+                <div class="misc-icon-generator__segments misc-icon-generator__segments--sizes" id="miscIconSizeOptions" role="radiogroup">
+                    <button type="button" data-size="192" role="radio" aria-checked="false">192 x 192</button>
+                    <button type="button" data-size="256" role="radio" aria-checked="true">256 x 256</button>
+                    <button type="button" data-size="384" role="radio" aria-checked="false">384 x 384</button>
+                    <button type="button" data-size="512" role="radio" aria-checked="false">512 x 512</button>
+                </div>
+            </section>
+
+            <div id="miscIconSkillBackgroundOptions" class="misc-icon-generator__toggles" hidden>
+                <label class="misc-icon-generator__toggle">
+                    <input id="miscIconTransparent" type="checkbox">
+                    <span data-i18n="modules.misc.characterIconGenerator.transparentBackground">透明背景</span>
+                </label>
+            </div>
+        </div>
+
+        <section class="misc-icon-generator__preview" aria-labelledby="miscIconPreviewLabel">
+            <div class="misc-icon-generator__preview-heading">
+                <div>
+                    <span id="miscIconPreviewLabel" data-i18n="modules.misc.characterIconGenerator.preview">预览</span>
+                    <strong id="miscIconSelection"></strong>
+                </div>
+                <button id="miscIconDownload" class="misc-icon-generator__download" type="button" disabled>
+                    <span aria-hidden="true">&#x2193;</span>
+                    <span data-i18n="modules.misc.characterIconGenerator.downloadPng">下载 PNG</span>
+                </button>
+            </div>
+            <div class="misc-icon-generator__canvas-stage">
+                <canvas id="miscIconCanvas" width="512" height="512" role="img"></canvas>
+            </div>
+        </section>
+    </div>
+</section>
+<script src="/plugin/js/misc-character-icon-generator.js"></script>
