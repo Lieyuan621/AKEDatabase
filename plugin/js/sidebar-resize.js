@@ -153,63 +153,6 @@
         style.id = STYLE_ID;
         style.textContent = `
             .app > .main-content { min-width: 0; }
-            .sidebar.ake-sidebar-compact .brand {
-                flex-direction: column;
-                justify-content: center;
-                gap: 5px;
-                padding: 14px 6px 12px;
-                font-size: 1rem;
-                text-align: center;
-                overflow-wrap: anywhere;
-            }
-            .sidebar.ake-sidebar-compact .brand span {
-                margin-left: 0;
-                padding: 2px 6px;
-                font-size: .72rem;
-            }
-            .sidebar.ake-sidebar-compact .module-list { padding: 10px 6px; }
-            .sidebar.ake-sidebar-compact .module-item {
-                min-height: 52px;
-                padding: 9px 4px;
-                margin-bottom: 8px;
-                border-radius: 8px;
-            }
-            .sidebar.ake-sidebar-compact .module-item[data-has-icon="true"] .module-title {
-                justify-content: center;
-                margin-bottom: 0;
-                gap: 0;
-            }
-            .sidebar.ake-sidebar-compact .module-item[data-has-icon="true"] .module-name,
-            .sidebar.ake-sidebar-compact .module-item[data-has-icon="true"] .module-hidden-marker {
-                display: none;
-            }
-            .sidebar.ake-sidebar-compact .module-icon {
-                font-size: 1.55rem;
-                line-height: 1;
-            }
-            .sidebar.ake-sidebar-compact .module-item[data-has-icon="false"] .module-title {
-                justify-content: center;
-                margin-bottom: 0;
-                font-size: .75rem;
-                line-height: 1.25;
-                text-align: center;
-                overflow-wrap: anywhere;
-            }
-            .sidebar.ake-sidebar-compact .sidebar-footer {
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 9px;
-                padding: 10px 0;
-            }
-            .sidebar.ake-sidebar-compact .settings-button,
-            .sidebar.ake-sidebar-compact .export-button {
-                width: 40px;
-                height: 40px;
-                flex: 0 0 40px;
-                font-size: 1.35rem;
-            }
-            .sidebar.ake-sidebar-compact .sidebar-tool-label { display: none; }
             .ake-resizable-sidebar { position: relative !important; }
             .ake-resizable-sidebar.ake-resizable-sidebar--active { overflow: visible !important; }
             .ake-resizable-sidebar.ake-sidebar-compact .ake-sidebar-compact-hidden { display: none !important; }
@@ -673,13 +616,12 @@
         mainInstance?.destroy();
         mainInstance = create(element, {
             storageKey: 'main',
-            defaultWidth: 200,
-            fallbackWidth: 200,
-            minWidth: 72,
+            defaultWidth: 255,
+            fallbackWidth: 255,
+            minWidth: 255,
             maxWidth: 420,
             minContentWidth: 520,
-            mediaQuery: DEFAULT_MEDIA_QUERY,
-            compactThreshold: 132
+            mediaQuery: DEFAULT_MEDIA_QUERY
         });
         return mainInstance;
     }

@@ -24,6 +24,8 @@ body {
 /* ---------- 左侧边栏 ---------- */
 .sidebar {
     width: 200px;
+    min-width: 255px;
+    flex: 0 0 auto;
     background-color: #f2f4f8;
     border-right: 1px solid #d9e0e8;
     display: flex;
@@ -33,26 +35,69 @@ body {
 }
 
 .brand {
-    min-height: 70px;
-    padding: 0 20px;
-    gap: 7px;
-    font-size: 1.45rem;
-    font-weight: 700;
+    min-height: 84px;
+    padding: 0 18px;
+    gap: 12px;
     color: #1e2b3c;
     border-bottom: 1px solid #d0d9e5;
     cursor: pointer;
     user-select: none;
     display: flex;
     align-items: center;
-    transition: background-color 0.15s;
+    transition: background-color 0.2s ease;
 }
 .brand:hover {
     background-color: #e8ecf3;
 }
-.brand span {
+.brand-mark {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    border: 1px solid #d1d5da;
+    border-radius: 10px;
+    place-items: center;
+    background: #ffffff;
+    box-shadow: 0 3px 10px rgba(24, 27, 31, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.brand-mark::before {
+    content: '';
+    width: 13px;
+    height: 13px;
+    border: 2px solid #272a2f;
+    transform: rotate(45deg);
+}
+.brand:hover .brand-mark {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(24, 27, 31, 0.12);
+}
+.brand-copy {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+}
+.brand-name {
+    font-size: 1.35rem;
+    font-weight: 750;
+    line-height: 1.05;
+}
+.brand-badge {
+    display: flex;
+    align-items: center;
+    gap: 7px;
     color: #687485;
-    font-size: 0.82rem;
+    font-size: 0.72rem;
     font-weight: 600;
+    line-height: 1;
+}
+.brand-badge::before {
+    content: '';
+    width: 18px;
+    height: 1px;
+    background: #aeb5bf;
 }
 
 .sidebar .module-list {
@@ -308,202 +353,53 @@ body {
 
 /* ---------- 设置弹窗 (模态框) ---------- */
 :root {
-    --dialog-backdrop: rgba(22, 31, 42, 0.46);
+    --dialog-backdrop: rgba(20, 21, 23, 0.46);
     --dialog-surface: #ffffff;
-    --dialog-header: #f7f9fb;
-    --dialog-border: #cbd5df;
-    --dialog-text: #1e2b3c;
-    --dialog-title: #1e2b3c;
-    --dialog-muted: #68798b;
-    --dialog-close-hover: #e8eef5;
-    --dialog-focus: #2f789f;
-    --dialog-shadow: 0 22px 60px rgba(18, 31, 45, 0.28);
-}
-
-.settings-dialog .settings-section {
-    padding: 18px 0;
-    border-top: 1px solid #e2e8f0;
-}
-
-.settings-dialog .settings-section:first-child {
-    border-top: 0;
-}
-
-.settings-dialog .settings-section h4 {
-    margin: 0 0 12px;
-    color: #52677e;
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0;
-}
-
-.settings-dialog .settings-item {
-    display: grid;
-    grid-template-columns: 150px minmax(0, 1fr) auto;
-    align-items: center;
-    min-height: 38px;
-    margin: 10px 0;
-    gap: 12px;
-}
-
-.settings-dialog .settings-item label {
-    width: auto;
-    color: #2c4b6e;
-    font-size: 0.88rem;
-    font-weight: 500;
-}
-
-.settings-dialog .settings-item select,
-.settings-dialog .settings-item input[type="text"],
-.settings-dialog .settings-item input[type="url"] {
-    width: 100%;
-    min-width: 0;
-    height: 38px;
-    padding: 0 10px;
-    border: 1px solid #cbd6e6;
-    border-radius: 4px;
-    background: #ffffff;
-    color: #1e2b3c;
-    font-size: 0.88rem;
-}
-
-.settings-dialog .settings-item input[type="checkbox"] {
-    appearance: none;
-    position: relative;
-    width: 38px;
-    height: 22px;
-    justify-self: end;
-    border: 1px solid #aebdca;
-    border-radius: 11px;
-    background: #cbd5df;
-    cursor: pointer;
-    transition: background-color 0.15s, border-color 0.15s;
-}
-
-.settings-dialog .settings-item input[type="checkbox"]::before {
-    content: "";
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #ffffff;
-    box-shadow: 0 1px 3px rgba(18, 31, 45, 0.24);
-    transition: transform 0.15s;
-}
-
-.settings-dialog .settings-item input[type="checkbox"]:checked {
-    border-color: #2f789f;
-    background: #2f789f;
-}
-
-.settings-dialog .settings-item input[type="checkbox"]:checked::before {
-    transform: translateX(16px);
-}
-
-.settings-dialog .settings-item--hint {
-    display: block;
-    min-height: 0;
-    margin: -2px 0 10px;
-}
-
-.settings-dialog .settings-item--hint p,
-.settings-help,
-.settings-status {
-    margin: 0;
-    color: #6a7c8f;
-    font-size: 0.8rem;
-    line-height: 1.55;
-}
-
-.settings-status:empty {
-    display: none;
-}
-
-.settings-buttons {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-    gap: 8px;
-}
-
-.settings-primary-button,
-.settings-secondary-button,
-.settings-icon-button {
-    height: 36px;
-    padding: 0 14px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.84rem;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.settings-primary-button {
-    border-color: #2f789f;
-    background: #2f789f;
-    color: #ffffff;
-}
-
-.settings-primary-button:hover {
-    border-color: #266786;
-    background: #266786;
-}
-
-.settings-secondary-button,
-.settings-icon-button {
-    border-color: #cbd6e6;
-    background: #eef3f7;
-    color: #2c4b6e;
-}
-
-.settings-secondary-button:hover,
-.settings-icon-button:hover {
-    background: #e0e8f0;
-}
-
-.settings-icon-button {
-    width: 38px;
-    padding: 0;
-    font-size: 1.1rem;
-}
-
-.settings-section--cache .settings-help {
-    margin-top: 10px;
-}
-
-.settings-dialog .about-box {
-    padding: 14px 0 0;
-    border-top: 1px solid #e2e8f0;
-    color: #6a7c8f;
-}
-
-.settings-dialog .about-box p {
-    margin: 4px 0;
-    font-size: 0.78rem;
-    line-height: 1.45;
-}
-
-@media (max-width: 640px) {
-    .settings-dialog .settings-item {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 6px;
-        margin: 12px 0;
-    }
-
-    .settings-dialog .settings-item--toggle {
-        grid-template-columns: minmax(0, 1fr) auto;
-    }
-
-    .settings-dialog .settings-item--token {
-        grid-template-columns: minmax(0, 1fr) auto;
-    }
-
-    .settings-dialog .settings-item--token label {
-        grid-column: 1 / -1;
-    }
+    --dialog-header: #f6f6f7;
+    --dialog-border: #d9dadd;
+    --dialog-text: #25272b;
+    --dialog-title: #161719;
+    --dialog-muted: #71757b;
+    --dialog-close-hover: #ebeced;
+    --dialog-focus: #202226;
+    --dialog-shadow: 0 22px 60px rgba(20, 21, 23, 0.28);
+    --control-section-border: #d5d6d9;
+    --control-section-title: #34373d;
+    --control-accent: #24262a;
+    --control-label: #34373d;
+    --control-border: #d8dadd;
+    --control-border-hover: #858a91;
+    --control-surface: #f5f6f7;
+    --control-surface-hover: #ffffff;
+    --control-text: #25272b;
+    --control-select-arrow: #565b62;
+    --control-placeholder: #8a8e94;
+    --control-muted: #70747a;
+    --control-row-surface: #f5f6f7;
+    --control-row-hover: #eceeef;
+    --control-row-border: #eceef0;
+    --control-row-border-hover: #d5d8db;
+    --control-selected-surface: #e9eaec;
+    --control-selected-text: #161719;
+    --control-focus-ring: rgba(20, 22, 25, 0.12);
+    --control-input-shadow: inset 0 1px 2px rgba(18, 31, 45, 0.04);
+    --control-toggle-border: #aebdca;
+    --control-toggle-bg: #cbd5df;
+    --control-toggle-thumb: #ffffff;
+    --control-toggle-thumb-checked: #ffffff;
+    --control-toggle-shadow: 0 1px 3px rgba(18, 31, 45, 0.24);
+    --control-toggle-inset: inset 0 1px 2px rgba(18, 31, 45, 0.14);
+    --control-toggle-checked: #202226;
+    --control-primary: #202226;
+    --control-primary-hover: #050506;
+    --control-primary-text: #ffffff;
+    --control-secondary-border: #d1d2d5;
+    --control-secondary-bg: #f1f1f2;
+    --control-secondary-hover: #e5e5e7;
+    --control-secondary-text: #34373d;
+    --control-button-shadow: 0 2px 5px rgba(20, 22, 25, 0.08);
+    --control-button-shadow-hover: 0 5px 12px rgba(20, 22, 25, 0.14);
+    --control-menu-shadow: 0 14px 36px rgba(20, 22, 25, 0.18);
 }
 
 /* 独立设置模块保留页面级布局，不与全局设置弹窗共用样式。 */

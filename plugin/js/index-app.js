@@ -394,6 +394,7 @@
                     if (code === current) option.selected = true;
                     modalLanguageSelect.appendChild(option);
                 });
+                window.AKESelect?.refresh(modalLanguageSelect);
             }
 
             function renderDataSourceSettings() {
@@ -418,6 +419,7 @@
                 });
                 modalDataVersionSelect.appendChild(group);
                 modalDataVersionSelect.value = dataState.selection;
+                window.AKESelect?.refresh(modalDataVersionSelect);
                 if (dataSourceStatus) {
                     const sourceText = dataState.debugLocal
                         ? tr('settings.dataSource.debugLocal', null, '调试模式已启用，强制使用当前本地服务器数据')
@@ -847,6 +849,7 @@
                 themeLink.href = themeUrl.href;
                 storage.set('akedata-theme', lowerTheme);
                 if (modalThemeSelect) modalThemeSelect.value = lowerTheme;
+                window.AKESelect?.refresh(modalThemeSelect);
             }
 
             function initTheme() {
@@ -879,6 +882,8 @@
                 renderDataSourceSettings();
                 if (modalLanguageSelect) modalLanguageSelect.value = config.language;
                 modalThemeSelect.value = config.theme;
+                window.AKESelect?.refresh(modalLanguageSelect);
+                window.AKESelect?.refresh(modalThemeSelect);
                 modalShowHiddenCheck.checked = config.showHidden;
                 const modalShowExportCheck = document.getElementById('modalShowExportCheck');
                 if (modalShowExportCheck) modalShowExportCheck.checked = config.showExportButton;
@@ -1626,7 +1631,10 @@
                     resetDataSourceBtn.addEventListener('click', () => {
                         const current = window.akeDataSource?.getState?.();
                         if (modalDataBaseUrl && current) modalDataBaseUrl.value = current.defaultBaseUrl;
-                        if (modalDataVersionSelect) modalDataVersionSelect.value = 'latest';
+                        if (modalDataVersionSelect) {
+                            modalDataVersionSelect.value = 'latest';
+                            window.AKESelect?.refresh(modalDataVersionSelect);
+                        }
                     });
                 }
 

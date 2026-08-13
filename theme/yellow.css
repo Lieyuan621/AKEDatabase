@@ -22,6 +22,8 @@ body {
 /* 左侧边栏 */
 .sidebar {
     width: 200px;
+    min-width: 255px;
+    flex: 0 0 auto;
     background-color: #e8dccc;
     border-right: 1px solid #cbbaa7;
     display: flex;
@@ -31,26 +33,69 @@ body {
 }
 
 .brand {
-    min-height: 70px;
-    padding: 0 20px;
-    gap: 7px;
-    font-size: 1.45rem;
-    font-weight: 700;
+    min-height: 84px;
+    padding: 0 18px;
+    gap: 12px;
     color: #3e3327;
     border-bottom: 1px solid #cbbaa7;
     cursor: pointer;
     user-select: none;
     display: flex;
     align-items: center;
-    transition: background-color 0.15s;
+    transition: background-color 0.2s ease;
 }
 .brand:hover {
     background-color: #d9cbbe;
 }
-.brand span {
+.brand-mark {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    border: 1px solid #cabbab;
+    border-radius: 10px;
+    place-items: center;
+    background: #f8efe4;
+    box-shadow: 0 3px 10px rgba(55, 44, 33, 0.12);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.brand-mark::before {
+    content: '';
+    width: 13px;
+    height: 13px;
+    border: 2px solid #443a31;
+    transform: rotate(45deg);
+}
+.brand:hover .brand-mark {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(55, 44, 33, 0.16);
+}
+.brand-copy {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+}
+.brand-name {
+    font-size: 1.35rem;
+    font-weight: 750;
+    line-height: 1.05;
+}
+.brand-badge {
+    display: flex;
+    align-items: center;
+    gap: 7px;
     color: #796b5d;
-    font-size: 0.82rem;
+    font-size: 0.72rem;
     font-weight: 600;
+    line-height: 1;
+}
+.brand-badge::before {
+    content: '';
+    width: 18px;
+    height: 1px;
+    background: #a99886;
 }
 
 .sidebar .module-list {
@@ -240,199 +285,45 @@ body {
     --dialog-title: #3e3327;
     --dialog-muted: #8c7b68;
     --dialog-close-hover: #e8dccd;
-    --dialog-focus: #9b7e64;
+    --dialog-focus: #36322e;
     --dialog-shadow: 0 22px 60px rgba(55, 44, 33, 0.3);
-}
-
-.settings-dialog .settings-section {
-    padding: 18px 0;
-    border-top: 1px solid #dfd2c2;
-}
-
-.settings-dialog .settings-section:first-child {
-    border-top: 0;
-}
-
-.settings-dialog .settings-section h4 {
-    margin: 0 0 12px;
-    color: #76614f;
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0;
-}
-
-.settings-dialog .settings-item {
-    display: grid;
-    grid-template-columns: 150px minmax(0, 1fr) auto;
-    align-items: center;
-    min-height: 38px;
-    margin: 10px 0;
-    gap: 12px;
-}
-
-.settings-dialog .settings-item label {
-    width: auto;
-    color: #5e4a3b;
-    font-size: 0.88rem;
-    font-weight: 500;
-}
-
-.settings-dialog .settings-item select,
-.settings-dialog .settings-item input[type="text"],
-.settings-dialog .settings-item input[type="url"] {
-    width: 100%;
-    min-width: 0;
-    height: 38px;
-    padding: 0 10px;
-    border: 1px solid #b3a18e;
-    border-radius: 4px;
-    background: #fdf6ed;
-    color: #3e3327;
-    font-size: 0.88rem;
-}
-
-.settings-dialog .settings-item select option {
-    background: #fdf6ed;
-    color: #3e3327;
-}
-
-.settings-dialog .settings-item input[type="checkbox"] {
-    appearance: none;
-    position: relative;
-    width: 38px;
-    height: 22px;
-    justify-self: end;
-    border: 1px solid #b4a18c;
-    border-radius: 11px;
-    background: #cbbba8;
-    cursor: pointer;
-    transition: background-color 0.15s, border-color 0.15s;
-}
-
-.settings-dialog .settings-item input[type="checkbox"]::before {
-    content: "";
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #fffaf3;
-    box-shadow: 0 1px 3px rgba(55, 44, 33, 0.25);
-    transition: transform 0.15s;
-}
-
-.settings-dialog .settings-item input[type="checkbox"]:checked {
-    border-color: #9b7e64;
-    background: #9b7e64;
-}
-
-.settings-dialog .settings-item input[type="checkbox"]:checked::before {
-    transform: translateX(16px);
-}
-
-.settings-dialog .settings-item--hint {
-    display: block;
-    min-height: 0;
-    margin: -2px 0 10px;
-}
-
-.settings-dialog .settings-item--hint p,
-.settings-help,
-.settings-status {
-    margin: 0;
-    color: #766858;
-    font-size: 0.8rem;
-    line-height: 1.55;
-}
-
-.settings-status:empty {
-    display: none;
-}
-
-.settings-buttons {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-    gap: 8px;
-}
-
-.settings-primary-button,
-.settings-secondary-button,
-.settings-icon-button {
-    height: 36px;
-    padding: 0 14px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.84rem;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.settings-primary-button {
-    border-color: #9b7e64;
-    background: #9b7e64;
-    color: #ffffff;
-}
-
-.settings-primary-button:hover {
-    border-color: #846a54;
-    background: #846a54;
-}
-
-.settings-secondary-button,
-.settings-icon-button {
-    border-color: #c5b5a2;
-    background: #eee3d5;
-    color: #5e4a3b;
-}
-
-.settings-secondary-button:hover,
-.settings-icon-button:hover {
-    background: #e3d5c4;
-}
-
-.settings-icon-button {
-    width: 38px;
-    padding: 0;
-    font-size: 1.1rem;
-}
-
-.settings-section--cache .settings-help {
-    margin-top: 10px;
-}
-
-.settings-dialog .about-box {
-    padding: 14px 0 0;
-    border-top: 1px solid #dfd2c2;
-    color: #766858;
-}
-
-.settings-dialog .about-box p {
-    margin: 4px 0;
-    font-size: 0.78rem;
-    line-height: 1.45;
-}
-
-@media (max-width: 640px) {
-    .settings-dialog .settings-item {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 6px;
-        margin: 12px 0;
-    }
-
-    .settings-dialog .settings-item--toggle {
-        grid-template-columns: minmax(0, 1fr) auto;
-    }
-
-    .settings-dialog .settings-item--token {
-        grid-template-columns: minmax(0, 1fr) auto;
-    }
-
-    .settings-dialog .settings-item--token label {
-        grid-column: 1 / -1;
-    }
+    --control-section-border: #d2c3b1;
+    --control-section-title: #4b4640;
+    --control-accent: #393530;
+    --control-label: #4b4640;
+    --control-border: #c9beb1;
+    --control-border-hover: #777069;
+    --control-surface: #f8efe4;
+    --control-surface-hover: #fffaf4;
+    --control-text: #3e3327;
+    --control-select-arrow: #625c55;
+    --control-placeholder: #958674;
+    --control-muted: #766858;
+    --control-row-surface: #f6ecdf;
+    --control-row-hover: #eee3d6;
+    --control-row-border: #eadfd2;
+    --control-row-border-hover: #d4c7b8;
+    --control-selected-surface: #e9ddcf;
+    --control-selected-text: #2f2b27;
+    --control-focus-ring: rgba(54, 50, 46, 0.13);
+    --control-input-shadow: inset 0 1px 2px rgba(55, 44, 33, 0.08);
+    --control-toggle-border: #b4a18c;
+    --control-toggle-bg: #cbbba8;
+    --control-toggle-thumb: #fffaf3;
+    --control-toggle-thumb-checked: #fffaf3;
+    --control-toggle-shadow: 0 1px 3px rgba(55, 44, 33, 0.25);
+    --control-toggle-inset: inset 0 1px 2px rgba(55, 44, 33, 0.2);
+    --control-toggle-checked: #393530;
+    --control-primary: #393530;
+    --control-primary-hover: #1f1d1a;
+    --control-primary-text: #ffffff;
+    --control-secondary-border: #c5b5a2;
+    --control-secondary-bg: #eee3d5;
+    --control-secondary-hover: #e3d5c4;
+    --control-secondary-text: #4b4640;
+    --control-button-shadow: 0 2px 5px rgba(55, 44, 33, 0.14);
+    --control-button-shadow-hover: 0 4px 10px rgba(55, 44, 33, 0.2);
+    --control-menu-shadow: 0 14px 36px rgba(55, 44, 33, 0.22);
 }
 
 /* 独立设置模块保留页面级布局，不与全局设置弹窗共用样式。 */
