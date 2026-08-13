@@ -71,7 +71,28 @@
 }
 .akeshop-group-header h1 { margin: 4px 0 3px; font-size: 1.5rem; letter-spacing: 0; }
 .akeshop-group-header span, .akeshop-group-header small { color: var(--desc-color, #637184); font-size: .74rem; }
-.akeshop-group-header > strong { flex: 0 0 auto; padding-bottom: 3px; color: var(--accent-color, #177a84); font-size: .86rem; }
+.akeshop-group-actions { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; padding-bottom: 3px; }
+.akeshop-group-actions > strong { color: var(--accent-color, #177a84); font-size: .86rem; }
+.akeshop-package-value-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 36px;
+    max-width: 100%;
+    padding: 7px 10px;
+    border: 1px solid var(--accent-color, #177a84);
+    border-radius: 4px;
+    color: var(--accent-color, #177a84);
+    background: color-mix(in srgb, var(--accent-color, #177a84) 7%, transparent);
+    font-size: .78rem;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: center;
+    text-decoration: none;
+}
+.akeshop-package-value-link::after { content: "\2197"; flex: 0 0 auto; font-size: .9rem; }
+.akeshop-package-value-link:hover { color: #fff; background: var(--accent-color, #177a84); }
+.akeshop-package-value-link:focus-visible { outline: 2px solid var(--accent-color, #177a84); outline-offset: 2px; }
 .akeshop-context { display: flex; flex-wrap: wrap; gap: 0; margin: 0; padding: 10px 0; border-bottom: 1px solid var(--border-color, #d8dfe8); }
 .akeshop-context div { display: flex; gap: 7px; padding: 4px 18px 4px 2px; }
 .akeshop-context dt { color: var(--desc-color, #637184); font-size: .72rem; }
@@ -187,6 +208,7 @@
     .akeshop-products { grid-template-columns: minmax(0, 1fr); }
     .akeshop-group-header { align-items: flex-start; }
     .akeshop-group-header h1 { font-size: 1.22rem; }
+    .akeshop-group-actions { align-items: flex-start; width: 100%; }
     .akeshop-mobile-button {
         position: fixed;
         left: 18px;
