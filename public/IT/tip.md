@@ -2,13 +2,18 @@ AKEData è stato trasferito al dominio www.akedata.wiki. Il precedente dominio a
 
 # Registro degli aggiornamenti di AKEData
 
+### v1.2.10-1
+
+#### Confronto tra versioni dell'Archivio
+
+- Con i dati Latest, l'Archivio viene confrontato con l'Hotfix finale della versione precedente del gioco. Gli archivi aggiunti in questa versione vengono fissati in alto e contrassegnati globalmente nella panoramica iniziale, nonché fissati e contrassegnati nella relativa categoria dell'elenco; anche le nuove voci di ogni gruppo vengono mostrate per prime. Le versioni storiche fisse non mostrano indicatori di novità.
+
 ### v1.2.10
 
 #### Archivio
 
 - Aggiunto l'Archivio come modulo pubblico per consultare archivi, documenti e registrazioni presenti nel gioco.
 - La pagina iniziale offre una panoramica di tutti gli archivi, un elenco per supporto e categoria, la ricerca nel testo completo e collegamenti diretti a ogni gruppo di archivi.
-
 #### Contenuto degli archivi
 
 - I dettagli mostrano titoli e testi con formattazione avanzata, oltre alle immagini originali del gioco. Quando un documento include varianti del protagonista, è possibile alternare le immagini della protagonista femminile e del protagonista maschile.

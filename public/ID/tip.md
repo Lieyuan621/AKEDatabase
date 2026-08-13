@@ -2,6 +2,12 @@ AKEData telah pindah ke domain www.akedata.wiki. Domain lama, akedata.top, kini 
 
 # Catatan Pembaruan Versi AKEData
 
+### v1.2.10-1
+
+#### Perbandingan versi Arsip
+
+- Saat menggunakan data Latest, Arsip dibandingkan dengan Hotfix terakhir dari versi gim sebelumnya. Arsip yang ditambahkan pada versi ini disematkan di bagian teratas dan ditandai secara global pada ikhtisar halaman awal, serta disematkan dan ditandai di dalam kategori direktorinya; entri baru dalam setiap grup juga ditampilkan lebih dahulu. Versi historis tetap tidak menampilkan penanda baru.
+
 ### v1.2.10
 
 #### Arsip

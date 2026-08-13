@@ -2,6 +2,12 @@ AKEData ist auf die Domain www.akedata.wiki umgezogen. Die bisherige Domain aked
 
 # AKEData-Versionsprotokoll
 
+### v1.2.10-1
+
+#### Versionsvergleich im Archiv
+
+- Nur bei Verwendung der `Latest`-Daten vergleicht das Archiv mit dem letzten Hotfix der vorherigen Spielversion. In der aktuellen Version hinzugefügte Archive werden sowohl in der globalen Übersicht der Startseite als auch innerhalb der Verzeichniskategorien oben angeheftet und markiert; neue Einträge innerhalb einer Gruppe erscheinen ebenfalls zuerst. Bei fest ausgewählten historischen Versionen werden keine Neu-Markierungen angezeigt.
+
 ### v1.2.10
 
 #### Archiv

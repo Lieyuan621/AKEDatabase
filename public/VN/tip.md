@@ -2,6 +2,12 @@ AKEData đã chuyển sang tên miền www.akedata.wiki. Tên miền cũ akedata
 
 # Nhật ký cập nhật phiên bản AKEData
 
+### v1.2.10-1
+
+#### So sánh phiên bản Kho lưu trữ
+
+- Khi sử dụng dữ liệu Latest, Kho lưu trữ được so sánh với bản Hotfix cuối cùng của phiên bản trò chơi trước. Hồ sơ mới trong phiên bản này được ghim lên đầu và đánh dấu trên toàn bộ trang tổng quan ban đầu, đồng thời được ghim và đánh dấu trong từng danh mục của thư mục; các mục mới trong mỗi nhóm cũng được ưu tiên hiển thị trước. Phiên bản lịch sử cố định không hiển thị dấu mới.
+
 ### v1.2.10
 
 #### Kho lưu trữ

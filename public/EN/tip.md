@@ -2,6 +2,12 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.2.10-1
+
+#### Archive version comparison
+
+- Only when using `Latest` data, Archive compares against the final Hotfix of the previous game version. Archives added in the current version are pinned and marked globally on the start overview and within their directory categories, while new entries appear first inside groups. Fixed historical versions do not show new-entry markers.
+
 ### v1.2.10
 
 #### Archive
