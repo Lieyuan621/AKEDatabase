@@ -54,6 +54,9 @@
 
     const state = {
         tables: null,
+        comparisonVersion: '',
+        addedGroupIds: new Set(),
+        addedItemIds: new Set(),
         pages: [],
         categories: [],
         groups: [],
@@ -153,6 +156,37 @@
             || String(a?.[idField] || '').localeCompare(String(b?.[idField] || ''), 'en');
     }
 
+    function tableEntityIds(table, idField) {
+        return new Set(Object.entries(table || {}).map(([key, row]) => String(row?.[idField] || key)).filter(Boolean));
+    }
+
+    function prepareVersionChanges(raw, baselineRaw, comparison) {
+        state.comparisonVersion = '';
+        state.addedGroupIds.clear();
+        state.addedItemIds.clear();
+        if (!comparison?.baseline || !baselineRaw) return;
+        const baselineVersion = String(comparison.baseline.id || comparison.baseline.gameVersion || '');
+        if (!baselineVersion) {
+            console.warn('Archive version comparison was skipped because the baseline version is missing');
+            return;
+        }
+        const baselineGroups = baselineRaw.PrtsFirstLv || {};
+        const baselineItems = baselineRaw.PrtsAllItem || {};
+        if (!Object.keys(baselineGroups).length || !Object.keys(baselineItems).length) {
+            console.warn('Archive version comparison was skipped because the baseline tables are empty');
+            return;
+        }
+        const baselineGroupIds = tableEntityIds(baselineGroups, 'firstLvId');
+        const baselineItemIds = tableEntityIds(baselineItems, 'id');
+        tableEntityIds(raw.PrtsFirstLv, 'firstLvId').forEach(id => {
+            if (!baselineGroupIds.has(id)) state.addedGroupIds.add(id);
+        });
+        tableEntityIds(raw.PrtsAllItem, 'id').forEach(id => {
+            if (!baselineItemIds.has(id)) state.addedItemIds.add(id);
+        });
+        state.comparisonVersion = baselineVersion;
+    }
+
     function normalizeSearch(value) {
         return String(value || '')
             .normalize('NFKC')
@@ -179,6 +213,41 @@
 
     function itemRowsForGroup(groupId) {
         return state.itemsByGroup.get(String(groupId || '')) || [];
+    }
+
+    function groupVersionInfo(groupId) {
+        const normalizedId = String(groupId || '');
+        const addedItemCount = itemRowsForGroup(normalizedId)
+            .filter(item => state.addedItemIds.has(String(item.id || ''))).length;
+        const isNewGroup = state.addedGroupIds.has(normalizedId);
+        return { isNewGroup, addedItemCount, hasAddition: isNewGroup || addedItemCount > 0 };
+    }
+
+    function groupChangeRank(groupId) {
+        const info = groupVersionInfo(groupId);
+        return !info.hasAddition ? 2 : info.isNewGroup ? 0 : 1;
+    }
+
+    function addedTag(label, className) {
+        return `<span class="akearchive-change-tag${className ? ` ${className}` : ''}">${escapeHtml(label)}</span>`;
+    }
+
+    function groupChangeTag(info, className, compact) {
+        if (!info?.hasAddition) return '';
+        const label = compact || info.isNewGroup
+            ? t('changes.added', null, '新增')
+            : tr('changes.addedEntries', { count: info.addedItemCount }, `新增 ${info.addedItemCount} 条记录`);
+        return addedTag(label, className);
+    }
+
+    function itemChangeTag(item, className) {
+        return state.addedItemIds.has(String(item?.id || ''))
+            ? addedTag(t('changes.added', null, '新增'), className)
+            : '';
+    }
+
+    function comparisonLabel() {
+        return String(state.comparisonVersion || '').split('@')[0];
     }
 
     function popupForItem(item) {
@@ -215,7 +284,11 @@
             if (!state.itemsByGroup.has(groupId)) state.itemsByGroup.set(groupId, []);
             state.itemsByGroup.get(groupId).push(item);
         });
-        state.itemsByGroup.forEach(items => items.sort((a, b) => compareRows(a, b, 'id')));
+        state.itemsByGroup.forEach(items => items.sort((a, b) => {
+            const addedRank = Number(!state.addedItemIds.has(String(a.id || '')))
+                - Number(!state.addedItemIds.has(String(b.id || '')));
+            return addedRank || compareRows(a, b, 'id');
+        }));
         Object.values(state.tables.popups || {}).forEach(popup => {
             const contentId = String(popup.contentId || '');
             if (contentId && !state.popupByContent.has(contentId)) state.popupByContent.set(contentId, popup);
@@ -331,7 +404,8 @@
             </div>
         </section>` : '';
         const sections = state.categories.map(category => {
-            const rows = grouped.get(category.categoryId) || [];
+            const rows = [...(grouped.get(category.categoryId) || [])].sort((a, b) =>
+                groupChangeRank(a.group.firstLvId) - groupChangeRank(b.group.firstLvId));
             if (!rows.length) return '';
             const page = pageForCategory(category.categoryId);
             const entryCount = groupEntryCount(rows);
@@ -339,12 +413,13 @@
                 const group = record.group;
                 const icon = groupIconTag(group);
                 const secondary = gameText(group.subName) || gameText(page?.name, page?.pageType || '');
-                return `<button type="button" class="akearchive-directory-item${group.firstLvId === state.activeGroupId ? ' is-active' : ''}"
+                const changeInfo = groupVersionInfo(group.firstLvId);
+                return `<button type="button" class="akearchive-directory-item${group.firstLvId === state.activeGroupId ? ' is-active' : ''}${changeInfo.hasAddition ? ' akearchive-directory-item--added' : ''}"
                     data-akearchive-action="open-group" data-group-id="${escapeHtml(group.firstLvId)}"
                     aria-current="${group.firstLvId === state.activeGroupId ? 'page' : 'false'}">
                     ${icon}
                     <span class="akearchive-directory-copy"><strong>${gameHtml(gameText(group.name, group.firstLvId))}</strong><small>${gameHtml(secondary)}</small></span>
-                    <span class="akearchive-directory-count">${escapeHtml(record.items.length)}</span>
+                    <span class="akearchive-directory-tail">${groupChangeTag(changeInfo, 'akearchive-directory-change', true)}<span class="akearchive-directory-count">${escapeHtml(record.items.length)}</span></span>
                 </button>`;
             }).join('');
             return `<section class="akearchive-directory-section">
@@ -388,13 +463,14 @@
         const category = categoryForGroup(group);
         const subtitle = gameText(group.subName) || gameText(record.items[0]?.desc) || group.firstLvId;
         const icon = groupIconTag(group);
-        return `<button type="button" class="akearchive-card" data-category="${escapeHtml(group.categoryId)}"
+        const changeInfo = groupVersionInfo(group.firstLvId);
+        return `<button type="button" class="akearchive-card${changeInfo.hasAddition ? ' akearchive-card--added' : ''}" data-category="${escapeHtml(group.categoryId)}"
             data-akearchive-action="open-group" data-group-id="${escapeHtml(group.firstLvId)}">
             ${icon}
             <span class="akearchive-card-copy">
                 <strong>${gameHtml(gameText(group.name, group.firstLvId))}</strong>
                 <small>${gameHtml(subtitle)}</small>
-                <span class="akearchive-card-tags"><span>${gameHtml(gameText(category?.name, group.categoryId))}</span><span>${escapeHtml(tr('counts.entries', { count: record.items.length }, `${record.items.length} 条记录`))}</span></span>
+                <span class="akearchive-card-tags">${groupChangeTag(changeInfo)}<span>${gameHtml(gameText(category?.name, group.categoryId))}</span><span>${escapeHtml(tr('counts.entries', { count: record.items.length }, `${record.items.length} 条记录`))}</span></span>
             </span>
         </button>`;
     }
@@ -404,8 +480,17 @@
         const records = state.activePageType
             ? allRecords.filter(record => pageTypeForCategory(record.group.categoryId) === state.activePageType)
             : allRecords;
+        const addedRecords = records.filter(record => groupVersionInfo(record.group.firstLvId).hasAddition)
+            .sort((a, b) => groupChangeRank(a.group.firstLvId) - groupChangeRank(b.group.firstLvId));
+        const regularRecords = records.filter(record => !groupVersionInfo(record.group.firstLvId).hasAddition);
+        const changeSection = state.comparisonVersion && addedRecords.length
+            ? `<section class="akearchive-overview-section akearchive-overview-section--changes">
+                <header><h2>${escapeHtml(tr('changes.group', { version: comparisonLabel() }, `版本差异 · 相比 ${comparisonLabel()}`))}</h2><span>${escapeHtml(tr('counts.groups', { count: addedRecords.length }, `${addedRecords.length} 组档案`))}</span></header>
+                <div class="akearchive-overview-grid">${addedRecords.map(renderOverviewCard).join('')}</div>
+            </section>`
+            : '';
         const sections = state.categories.map(category => {
-            const rows = records.filter(record => record.group.categoryId === category.categoryId);
+            const rows = regularRecords.filter(record => record.group.categoryId === category.categoryId);
             if (!rows.length) return '';
             const entryCount = groupEntryCount(rows);
             return `<section class="akearchive-overview-section">
@@ -424,7 +509,7 @@
                 </div>
             </header>
             ${renderPageTabs(allRecords)}
-            ${sections || noResults}
+            ${changeSection}${sections || (changeSection ? '' : noResults)}
         </section>`;
     }
 
@@ -529,7 +614,7 @@
         return `<div class="akearchive-entry-tabs" role="group" aria-label="${escapeHtml(t('details.entry', null, '条目'))}">${items.map((item, index) => {
             const active = item.id === activeItem.id;
             return `<button type="button" class="akearchive-entry-tab${active ? ' is-active' : ''}" aria-pressed="${active}"
-                data-akearchive-action="select-entry" data-entry-id="${escapeHtml(item.id)}">${gameHtml(gameText(item.name, `${t('details.entry', null, '条目')} ${index + 1}`))}</button>`;
+                data-akearchive-action="select-entry" data-entry-id="${escapeHtml(item.id)}">${gameHtml(gameText(item.name, `${t('details.entry', null, '条目')} ${index + 1}`))}${itemChangeTag(item, 'akearchive-entry-change')}</button>`;
         }).join('')}</div>`;
     }
 
@@ -542,6 +627,8 @@
         const groupName = gameText(group.name, group.firstLvId);
         const description = gameText(group.subName) || gameText(item.desc) || gameText(item.name, item.id);
         const icon = groupIconTag(group, gamePlainText(groupName));
+        const detailIsAdded = state.addedGroupIds.has(String(group.firstLvId))
+            || state.addedItemIds.has(String(item.id));
         elements.content.innerHTML = `<article class="akearchive-detail">
             <header class="akearchive-detail-header">
                 <div class="akearchive-detail-icon">${icon}</div>
@@ -551,6 +638,7 @@
                         <span>${escapeHtml(t('details.category', null, '分类'))}: ${gameHtml(gameText(category?.name, group.categoryId))}</span>
                         <span>${escapeHtml(t('details.archiveId', null, '档案组 ID'))}: ${escapeHtml(group.firstLvId)}</span>
                         <span>${escapeHtml(t('details.entryId', null, '条目 ID'))}: ${escapeHtml(item.id)}</span>
+                        ${detailIsAdded ? addedTag(t('changes.added', null, '新增'), 'akearchive-detail-change') : ''}
                     </div>
                     <h1>${gameHtml(groupName)}</h1>
                     <p>${gameHtml(description)}</p>
@@ -564,11 +652,12 @@
     function renderEmptyGroup(group) {
         const category = categoryForGroup(group);
         const groupName = gameText(group.name, group.firstLvId);
+        const groupIsAdded = state.addedGroupIds.has(String(group.firstLvId));
         elements.content.innerHTML = `<article class="akearchive-detail">
             <header class="akearchive-detail-header">
                 <div class="akearchive-detail-icon">${groupIconTag(group, gamePlainText(groupName))}</div>
                 <div class="akearchive-detail-copy">
-                    <div class="akearchive-detail-meta"><span>${gameHtml(gameText(category?.name, group.categoryId))}</span><span>${escapeHtml(group.firstLvId)}</span></div>
+                    <div class="akearchive-detail-meta"><span>${gameHtml(gameText(category?.name, group.categoryId))}</span><span>${escapeHtml(group.firstLvId)}</span>${groupIsAdded ? addedTag(t('changes.added', null, '新增'), 'akearchive-detail-change') : ''}</div>
                     <h1>${gameHtml(groupName)}</h1><p>${gameHtml(gameText(group.subName))}</p>
                 </div>
             </header>
@@ -749,9 +838,23 @@
         elements.content.innerHTML = loadingHtml();
         try {
             if (window.configLoaded) await window.configLoaded;
-            const loaded = await Promise.all(TABLE_NAMES.map(name => window.AKEV3.table(name)));
+            const comparison = window.akeDataSource?.getState?.()?.comparison;
+            const baselinePromise = comparison?.baseline
+                ? Promise.all(['PrtsFirstLv', 'PrtsAllItem'].map(name => window.AKEV3.table(name, comparison.baseline)))
+                    .then(loaded => ({ PrtsFirstLv: loaded[0], PrtsAllItem: loaded[1] }))
+                    .catch(error => {
+                        console.warn('Failed to load baseline archive data for version comparison', error);
+                        return null;
+                    })
+                : Promise.resolve(null);
+            const [loaded, baselineRaw] = await Promise.all([
+                Promise.all(TABLE_NAMES.map(name => window.AKEV3.table(name))),
+                baselinePromise
+            ]);
             if (state.disposed || token !== state.loadToken) return;
-            prepareTables(Object.fromEntries(TABLE_NAMES.map((name, index) => [name, loaded[index]])));
+            const raw = Object.fromEntries(TABLE_NAMES.map((name, index) => [name, loaded[index]]));
+            prepareVersionChanges(raw, baselineRaw, comparison);
+            prepareTables(raw);
             renderDirectories();
             if (pendingDeepId) {
                 const selected = openGroup(pendingDeepId, { updateUrl: false, focusContent: false });
