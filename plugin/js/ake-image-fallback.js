@@ -9,6 +9,7 @@
 
     function useFallback(image) {
         if (!(image instanceof HTMLImageElement)) return false;
+        if (image.hasAttribute('data-no-image-fallback')) return false;
 
         const assignedUrl = image.src;
         const currentUrl = image.currentSrc || assignedUrl;

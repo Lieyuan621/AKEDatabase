@@ -148,11 +148,11 @@
             const closeTipModal = document.getElementById('closeTipModal');
 
             // 移动端模块菜单
-            const mobileMenuButton = document.getElementById('mobileMenuButton');
             const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
             const mobileMenuList = document.getElementById('mobileMenuList');
 
             function buildMobileMenu() {
+                if (!mobileMenuList) return false;
                 const visibleModules = filterModules(allModules);
                 const sorted = sortModulesByPriority(visibleModules);
                 mobileMenuList.innerHTML = '';
@@ -178,19 +178,19 @@
                     });
                     mobileMenuList.appendChild(item);
                 });
+                return true;
             }
 
             function openMobileMenu() {
-                buildMobileMenu();
+                if (!mobileMenuOverlay || !buildMobileMenu()) return;
                 mobileMenuOverlay.style.display = 'flex';
             }
 
             function closeMobileMenu() {
-                mobileMenuOverlay.style.display = 'none';
+                if (mobileMenuOverlay) mobileMenuOverlay.style.display = 'none';
             }
 
-            mobileMenuButton.addEventListener('click', openMobileMenu);
-            mobileMenuOverlay.addEventListener('click', (e) => {
+            mobileMenuOverlay?.addEventListener('click', (e) => {
                 if (e.target === mobileMenuOverlay) closeMobileMenu();
             });
 
@@ -206,9 +206,7 @@
                 mobileSettingsBtn.addEventListener('click', openSettings);
             }
             if (mobileExportBtn) {
-                mobileExportBtn.addEventListener('click', async () => {
-                    // 复制桌面端导出按钮的点击逻辑
-                    // 或者直接触发桌面端导出按钮的 click 事件
+                mobileExportBtn.addEventListener('click', () => {
                     document.getElementById('exportButton')?.click();
                 });
             }
@@ -396,6 +394,7 @@
                     if (code === current) option.selected = true;
                     modalLanguageSelect.appendChild(option);
                 });
+                window.AKESelect?.refresh(modalLanguageSelect);
             }
 
             function renderDataSourceSettings() {
@@ -420,6 +419,7 @@
                 });
                 modalDataVersionSelect.appendChild(group);
                 modalDataVersionSelect.value = dataState.selection;
+                window.AKESelect?.refresh(modalDataVersionSelect);
                 if (dataSourceStatus) {
                     const sourceText = dataState.debugLocal
                         ? tr('settings.dataSource.debugLocal', null, '调试模式已启用，强制使用当前本地服务器数据')
@@ -793,21 +793,30 @@
                 let html = '';
                 sorted.forEach(mod => {
                     const icon = String(mod.icon || '').trim();
-                    const hasIcon = Boolean(icon);
+                    const navIcon = config.language === 'CH' ? String(mod.navIcon || '').trim() : '';
+                    const textIcon = config.language === 'CH' ? '' : icon;
+                    const hasIcon = Boolean(navIcon || textIcon);
                     const title = translateModuleField(mod, 'title');
-                    const desc = translateModuleField(mod, 'description') || tr('common.noDescription');
-                    const iconHtml = hasIcon ? `<span class="module-icon" aria-hidden="true">${icon}</span>` : '';
+                    const iconHtml = navIcon
+                        ? `<img class="module-nav-icon" src="${navIcon}" alt="" aria-hidden="true" data-no-image-fallback>`
+                        : textIcon ? `<span class="module-icon" aria-hidden="true">${textIcon}</span>` : '';
                     const hiddenMarker = mod.hidden ? '<span class="module-hidden-marker" aria-hidden="true">🔒</span>' : '';
                     html += `
                         <div class="module-item" data-id="${mod.id}" data-has-icon="${hasIcon}">
                             <div class="module-title">
                                 ${iconHtml}<span class="module-name">${title}</span>${hiddenMarker}
                             </div>
-                            <div class="module-desc">${desc}</div>
                         </div>
                     `;
                 });
                 moduleListEl.innerHTML = html;
+                moduleListEl.querySelectorAll('.module-nav-icon').forEach(image => {
+                    image.addEventListener('error', () => {
+                        const item = image.closest('.module-item');
+                        image.remove();
+                        if (item) item.dataset.hasIcon = 'false';
+                    }, { once: true });
+                });
                 document.querySelectorAll('.module-item').forEach(item => {
                     if (item.dataset.hasIcon === 'true') {
                         item.title = item.querySelector('.module-title')?.textContent.trim() || '';
@@ -840,6 +849,7 @@
                 themeLink.href = themeUrl.href;
                 storage.set('akedata-theme', lowerTheme);
                 if (modalThemeSelect) modalThemeSelect.value = lowerTheme;
+                window.AKESelect?.refresh(modalThemeSelect);
             }
 
             function initTheme() {
@@ -872,6 +882,8 @@
                 renderDataSourceSettings();
                 if (modalLanguageSelect) modalLanguageSelect.value = config.language;
                 modalThemeSelect.value = config.theme;
+                window.AKESelect?.refresh(modalLanguageSelect);
+                window.AKESelect?.refresh(modalThemeSelect);
                 modalShowHiddenCheck.checked = config.showHidden;
                 const modalShowExportCheck = document.getElementById('modalShowExportCheck');
                 if (modalShowExportCheck) modalShowExportCheck.checked = config.showExportButton;
@@ -899,7 +911,7 @@
                 }
                 updateTokenStatus();
 
-                settingsModal.style.display = 'flex';
+                settingsModal.hidden = false;
             }
 
             function closeSettingsModal() {
@@ -955,7 +967,7 @@
                         const selection = modalDataVersionSelect.value || 'latest';
                         if (normalizedBase !== current.baseUrl || selection !== current.selection) {
                             window.akeDataSource.configure({ baseUrl: normalizedBase, selection }).then(() => location.reload());
-                            settingsModal.style.display = 'none';
+                            settingsModal.hidden = true;
                             return;
                         }
                     } catch (error) {
@@ -980,7 +992,7 @@
                 }
 
                 window.dispatchEvent(new CustomEvent('globalConfigChanged', { detail: { config } }));
-                settingsModal.style.display = 'none';
+                settingsModal.hidden = true;
                 if (requiresReload) location.reload();
             }
 
@@ -1619,7 +1631,10 @@
                     resetDataSourceBtn.addEventListener('click', () => {
                         const current = window.akeDataSource?.getState?.();
                         if (modalDataBaseUrl && current) modalDataBaseUrl.value = current.defaultBaseUrl;
-                        if (modalDataVersionSelect) modalDataVersionSelect.value = 'latest';
+                        if (modalDataVersionSelect) {
+                            modalDataVersionSelect.value = 'latest';
+                            window.AKESelect?.refresh(modalDataVersionSelect);
+                        }
                     });
                 }
 

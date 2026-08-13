@@ -19,8 +19,9 @@ self.addEventListener('fetch', event => {
     const url = new URL(request.url);
     if (request.method !== 'GET' || url.origin !== self.location.origin || !url.pathname.startsWith('/public/images/')) return;
     if (!dataBaseUrl || new URL(dataBaseUrl).origin === self.location.origin) return;
-    const target = new URL(url.pathname + url.search, `${dataBaseUrl}/`);
-    if (sharedRevision) target.searchParams.set('v', sharedRevision);
-    if (forceRefreshTimestamp) target.searchParams.set('t', forceRefreshTimestamp);
-    event.respondWith(fetch(new Request(target.href, request), forceRefreshTimestamp ? { cache: 'no-store' } : undefined));
+    const isMainHudAsset = url.pathname.startsWith('/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/mainhud/');
+    const target = new URL(isMainHudAsset ? url.pathname : url.pathname + url.search, `${dataBaseUrl}/`);
+    if (!isMainHudAsset && sharedRevision) target.searchParams.set('v', sharedRevision);
+    if (!isMainHudAsset && forceRefreshTimestamp) target.searchParams.set('t', forceRefreshTimestamp);
+    event.respondWith(fetch(new Request(target.href, request), !isMainHudAsset && forceRefreshTimestamp ? { cache: 'no-store' } : undefined));
 });

@@ -161,7 +161,9 @@
             target.pathname = `/${state.selected.tableCfgPath}/${suffix}`.replace(/\/+/g, '/');
         } else {
             target.pathname = result.url.pathname;
-            target.searchParams.set('v', state.manifest.sharedRevision);
+            if (!result.url.pathname.startsWith('/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/mainhud/')) {
+                target.searchParams.set('v', state.manifest.sharedRevision);
+            }
         }
         result.url.searchParams.forEach((value, key) => target.searchParams.set(key, value));
         return target.href;
@@ -261,6 +263,11 @@
 
     function rewriteElementAssets(element) {
         if (!(element instanceof Element)) return;
+        if (element.hasAttribute('data-database-src')) {
+            const source = element.getAttribute('data-database-src');
+            element.removeAttribute('data-database-src');
+            element.setAttribute('src', resolveImageUrl(source));
+        }
         for (const attribute of ['src', 'poster']) {
             if (!element.hasAttribute(attribute)) continue;
             const current = element.getAttribute(attribute);
@@ -282,7 +289,7 @@
     function rewriteDomAssets(root) {
         if (!root) return root;
         rewriteElementAssets(root);
-        root.querySelectorAll?.('[src], [srcset], [poster], [style]').forEach(rewriteElementAssets);
+        root.querySelectorAll?.('[data-database-src], [src], [srcset], [poster], [style]').forEach(rewriteElementAssets);
         return root;
     }
 
