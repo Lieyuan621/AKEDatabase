@@ -235,100 +235,256 @@ body {
 }
 
 /* ---------- 设置弹窗 (模态框) ---------- */
-.settings-modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.7);
+:root {
+    --dialog-backdrop: rgba(0, 0, 0, 0.72);
+    --dialog-surface: #202a37;
+    --dialog-header: #263445;
+    --dialog-border: #3a4f68;
+    --dialog-text: #e0e0e0;
+    --dialog-title: #ffffff;
+    --dialog-muted: #9aaec9;
+    --dialog-close-hover: #31445a;
+    --dialog-focus: #65b9ef;
+    --dialog-shadow: 0 22px 60px rgba(0, 0, 0, 0.56);
+}
+
+.settings-dialog .settings-section {
+    padding: 18px 0;
+    border-top: 1px solid #35475b;
+}
+
+.settings-dialog .settings-section:first-child {
+    border-top: 0;
+}
+
+.settings-dialog .settings-section h4 {
+    margin: 0 0 12px;
+    color: #9fb4cb;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+.settings-dialog .settings-item {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr) auto;
     align-items: center;
-    justify-content: center;
+    min-height: 38px;
+    margin: 10px 0;
+    gap: 12px;
 }
 
-.modal-content {
-    background-color: #242837;
-    border-radius: 24px;
-    padding: 30px;
-    width: 90%;
-    max-width: 550px;
-    max-height: 90%;
-    overflow-y: auto;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+.settings-dialog .settings-item label {
+    width: auto;
+    color: #c1d0e0;
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+.settings-dialog .settings-item select,
+.settings-dialog .settings-item input[type="text"],
+.settings-dialog .settings-item input[type="url"] {
+    width: 100%;
+    min-width: 0;
+    height: 38px;
+    padding: 0 10px;
+    border: 1px solid #4a5f78;
+    border-radius: 4px;
+    background: #1e2b3c;
+    color: #ffffff;
+    font-size: 0.88rem;
+}
+
+.settings-dialog .settings-item select option {
+    background: #1e2b3c;
+    color: #ffffff;
+}
+
+.settings-dialog .settings-item input[type="checkbox"] {
+    appearance: none;
     position: relative;
-    animation: modalFadeIn 0.3s;
-    border: 1px solid #3a4f68;
-}
-
-@keyframes modalFadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.close-button {
-    position: absolute;
-    top: 20px;
-    right: 25px;
-    font-size: 2rem;
-    font-weight: bold;
-    color: #9aaec9;
+    width: 38px;
+    height: 22px;
+    justify-self: end;
+    border: 1px solid #526981;
+    border-radius: 11px;
+    background: #45596e;
     cursor: pointer;
-    line-height: 1;
-}
-.close-button:hover {
-    color: #ffffff;
+    transition: background-color 0.15s, border-color 0.15s;
 }
 
-.modal-content h3 {
-    font-size: 1.8rem;
-    margin-bottom: 25px;
-    color: #ffffff;
-    border-bottom: 1px solid #3a4f68;
-    padding-bottom: 10px;
+.settings-dialog .settings-item input[type="checkbox"]::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #d8e3ef;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.36);
+    transition: transform 0.15s;
 }
 
-.settings-item {
+.settings-dialog .settings-item input[type="checkbox"]:checked {
+    border-color: #4a9fd8;
+    background: #4a9fd8;
+}
+
+.settings-dialog .settings-item input[type="checkbox"]:checked::before {
+    transform: translateX(16px);
+}
+
+.settings-dialog .settings-item--hint {
+    display: block;
+    min-height: 0;
+    margin: -2px 0 10px;
+}
+
+.settings-dialog .settings-item--hint p,
+.settings-help,
+.settings-status {
+    margin: 0;
+    color: #9aaec1;
+    font-size: 0.8rem;
+    line-height: 1.55;
+}
+
+.settings-status:empty {
+    display: none;
+}
+
+.settings-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    gap: 8px;
+}
+
+.settings-primary-button,
+.settings-secondary-button,
+.settings-icon-button {
+    height: 36px;
+    padding: 0 14px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.84rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.settings-primary-button {
+    border-color: #4a9fd8;
+    background: #4a9fd8;
+    color: #102132;
+}
+
+.settings-primary-button:hover {
+    border-color: #67b3e5;
+    background: #67b3e5;
+}
+
+.settings-secondary-button,
+.settings-icon-button {
+    border-color: #4a5f78;
+    background: #2c4056;
+    color: #d6e1ec;
+}
+
+.settings-secondary-button:hover,
+.settings-icon-button:hover {
+    background: #36506b;
+}
+
+.settings-icon-button {
+    width: 38px;
+    padding: 0;
+    font-size: 1.1rem;
+}
+
+.settings-section--cache .settings-help {
+    margin-top: 10px;
+}
+
+.settings-dialog .about-box {
+    padding: 14px 0 0;
+    border-top: 1px solid #35475b;
+    color: #9aaec1;
+}
+
+.settings-dialog .about-box p {
+    margin: 4px 0;
+    font-size: 0.78rem;
+    line-height: 1.45;
+}
+
+@media (max-width: 640px) {
+    .settings-dialog .settings-item {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 6px;
+        margin: 12px 0;
+    }
+
+    .settings-dialog .settings-item--toggle {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .settings-dialog .settings-item--token {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .settings-dialog .settings-item--token label {
+        grid-column: 1 / -1;
+    }
+}
+
+/* 独立设置模块保留页面级布局，不与全局设置弹窗共用样式。 */
+#contentArea > .settings-section .settings-item {
     display: flex;
     align-items: center;
     margin: 20px 0;
     gap: 15px;
 }
-.settings-item label {
+
+#contentArea > .settings-section .settings-item label {
     width: 120px;
-    font-weight: 500;
     color: #b0c4de;
+    font-weight: 500;
 }
-.settings-item select,
-.settings-item input[type="checkbox"] {
+
+#contentArea > .settings-section .settings-item select,
+#contentArea > .settings-section .settings-item input[type="checkbox"] {
     padding: 8px 12px;
-    border-radius: 30px;
     border: 1px solid #4a5f78;
+    border-radius: 20px;
     background: #1e2b3c;
     color: #ffffff;
     font-size: 1rem;
 }
-.settings-item select option {
+
+#contentArea > .settings-section .settings-item select option {
     background: #1e2b3c;
     color: #ffffff;
 }
-.settings-item input[type="checkbox"] {
+
+#contentArea > .settings-section .settings-item input[type="checkbox"] {
     width: 20px;
     height: 20px;
     cursor: pointer;
     accent-color: #4a9fd8;
 }
 
-.about-box {
-    background: #1e2b3c;
-    padding: 20px;
-    border-radius: 20px;
-    color: #b0c4de;
+#contentArea > .settings-section.about-box {
     margin-top: 25px;
+    padding: 20px;
     border: 1px solid #3a4f68;
+    border-radius: 8px;
+    background: #1e2b3c;
+    color: #b0c4de;
 }
-.about-box p {
+
+#contentArea > .settings-section.about-box p {
     margin: 5px 0;
 }
 

@@ -152,6 +152,7 @@
             const mobileMenuList = document.getElementById('mobileMenuList');
 
             function buildMobileMenu() {
+                if (!mobileMenuList) return false;
                 const visibleModules = filterModules(allModules);
                 const sorted = sortModulesByPriority(visibleModules);
                 mobileMenuList.innerHTML = '';
@@ -177,18 +178,19 @@
                     });
                     mobileMenuList.appendChild(item);
                 });
+                return true;
             }
 
             function openMobileMenu() {
-                buildMobileMenu();
+                if (!mobileMenuOverlay || !buildMobileMenu()) return;
                 mobileMenuOverlay.style.display = 'flex';
             }
 
             function closeMobileMenu() {
-                mobileMenuOverlay.style.display = 'none';
+                if (mobileMenuOverlay) mobileMenuOverlay.style.display = 'none';
             }
 
-            mobileMenuOverlay.addEventListener('click', (e) => {
+            mobileMenuOverlay?.addEventListener('click', (e) => {
                 if (e.target === mobileMenuOverlay) closeMobileMenu();
             });
 
@@ -904,7 +906,7 @@
                 }
                 updateTokenStatus();
 
-                settingsModal.style.display = 'flex';
+                settingsModal.hidden = false;
             }
 
             function closeSettingsModal() {
@@ -960,7 +962,7 @@
                         const selection = modalDataVersionSelect.value || 'latest';
                         if (normalizedBase !== current.baseUrl || selection !== current.selection) {
                             window.akeDataSource.configure({ baseUrl: normalizedBase, selection }).then(() => location.reload());
-                            settingsModal.style.display = 'none';
+                            settingsModal.hidden = true;
                             return;
                         }
                     } catch (error) {
@@ -985,7 +987,7 @@
                 }
 
                 window.dispatchEvent(new CustomEvent('globalConfigChanged', { detail: { config } }));
-                settingsModal.style.display = 'none';
+                settingsModal.hidden = true;
                 if (requiresReload) location.reload();
             }
 

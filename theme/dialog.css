@@ -1,0 +1,122 @@
+/* Shared modal shell. Theme files provide the color variables. */
+.app-modal {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 11000;
+    padding: 24px;
+    align-items: center;
+    justify-content: center;
+    background: var(--dialog-backdrop, rgba(22, 31, 42, 0.46));
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.app-modal[hidden] {
+    display: none;
+}
+
+.app-dialog {
+    display: flex;
+    flex-direction: column;
+    width: min(680px, 100%);
+    max-height: min(820px, calc(100vh - 48px));
+    overflow: hidden;
+    border: 1px solid var(--dialog-border, #cbd5df);
+    border-radius: 8px;
+    background: var(--dialog-surface, #ffffff);
+    box-shadow: var(--dialog-shadow, 0 22px 60px rgba(18, 31, 45, 0.28));
+    color: var(--dialog-text, #1e2b3c);
+    animation: appDialogIn 0.18s ease-out;
+}
+
+.app-dialog--announcement {
+    max-height: min(760px, calc(100vh - 48px));
+}
+
+@keyframes appDialogIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.app-dialog-header {
+    display: flex;
+    flex: 0 0 58px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px 0 20px;
+    border-bottom: 1px solid var(--dialog-border, #d9e0e8);
+    background: var(--dialog-header, #f7f9fb);
+}
+
+.app-dialog-title {
+    min-width: 0;
+    margin: 0;
+    color: var(--dialog-title, var(--dialog-text, #1e2b3c));
+    font-size: 1.08rem;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+.app-dialog-close {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    place-items: center;
+    background: transparent;
+    color: var(--dialog-muted, #68798b);
+    cursor: pointer;
+    font-size: 1.7rem;
+    line-height: 1;
+}
+
+.app-dialog-close:hover {
+    background: var(--dialog-close-hover, #e8eef5);
+    color: var(--dialog-title, var(--dialog-text, #1e2b3c));
+}
+
+.app-dialog-close:focus-visible,
+.app-dialog button:focus-visible,
+.app-dialog input:focus-visible,
+.app-dialog select:focus-visible {
+    outline: 2px solid var(--dialog-focus, var(--accent-color, #2f789f));
+    outline-offset: 2px;
+}
+
+.app-dialog-body {
+    min-height: 0;
+    padding: 0 20px 20px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+}
+
+.app-dialog--announcement .app-dialog-body {
+    padding-top: 22px;
+}
+
+@media (max-width: 640px) {
+    .app-modal {
+        padding: 12px;
+    }
+
+    .app-dialog,
+    .app-dialog--announcement {
+        max-height: calc(100dvh - 24px);
+    }
+
+    .app-dialog-header {
+        flex-basis: 54px;
+        padding-left: 14px;
+    }
+
+    .app-dialog-body {
+        padding: 0 14px 16px;
+    }
+
+    .app-dialog--announcement .app-dialog-body {
+        padding-top: 18px;
+    }
+}
