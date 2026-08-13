@@ -148,7 +148,6 @@
             const closeTipModal = document.getElementById('closeTipModal');
 
             // 移动端模块菜单
-            const mobileMenuButton = document.getElementById('mobileMenuButton');
             const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
             const mobileMenuList = document.getElementById('mobileMenuList');
 
@@ -189,7 +188,6 @@
                 mobileMenuOverlay.style.display = 'none';
             }
 
-            mobileMenuButton.addEventListener('click', openMobileMenu);
             mobileMenuOverlay.addEventListener('click', (e) => {
                 if (e.target === mobileMenuOverlay) closeMobileMenu();
             });
@@ -206,9 +204,7 @@
                 mobileSettingsBtn.addEventListener('click', openSettings);
             }
             if (mobileExportBtn) {
-                mobileExportBtn.addEventListener('click', async () => {
-                    // 复制桌面端导出按钮的点击逻辑
-                    // 或者直接触发桌面端导出按钮的 click 事件
+                mobileExportBtn.addEventListener('click', () => {
                     document.getElementById('exportButton')?.click();
                 });
             }
@@ -793,21 +789,30 @@
                 let html = '';
                 sorted.forEach(mod => {
                     const icon = String(mod.icon || '').trim();
-                    const hasIcon = Boolean(icon);
+                    const navIcon = config.language === 'CH' ? String(mod.navIcon || '').trim() : '';
+                    const textIcon = config.language === 'CH' ? '' : icon;
+                    const hasIcon = Boolean(navIcon || textIcon);
                     const title = translateModuleField(mod, 'title');
-                    const desc = translateModuleField(mod, 'description') || tr('common.noDescription');
-                    const iconHtml = hasIcon ? `<span class="module-icon" aria-hidden="true">${icon}</span>` : '';
+                    const iconHtml = navIcon
+                        ? `<img class="module-nav-icon" src="${navIcon}" alt="" aria-hidden="true" data-no-image-fallback>`
+                        : textIcon ? `<span class="module-icon" aria-hidden="true">${textIcon}</span>` : '';
                     const hiddenMarker = mod.hidden ? '<span class="module-hidden-marker" aria-hidden="true">🔒</span>' : '';
                     html += `
                         <div class="module-item" data-id="${mod.id}" data-has-icon="${hasIcon}">
                             <div class="module-title">
                                 ${iconHtml}<span class="module-name">${title}</span>${hiddenMarker}
                             </div>
-                            <div class="module-desc">${desc}</div>
                         </div>
                     `;
                 });
                 moduleListEl.innerHTML = html;
+                moduleListEl.querySelectorAll('.module-nav-icon').forEach(image => {
+                    image.addEventListener('error', () => {
+                        const item = image.closest('.module-item');
+                        image.remove();
+                        if (item) item.dataset.hasIcon = 'false';
+                    }, { once: true });
+                });
                 document.querySelectorAll('.module-item').forEach(item => {
                     if (item.dataset.hasIcon === 'true') {
                         item.title = item.querySelector('.module-title')?.textContent.trim() || '';

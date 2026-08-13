@@ -174,7 +174,6 @@
                 margin-bottom: 8px;
                 border-radius: 8px;
             }
-            .sidebar.ake-sidebar-compact .module-desc { display: none; }
             .sidebar.ake-sidebar-compact .module-item[data-has-icon="true"] .module-title {
                 justify-content: center;
                 margin-bottom: 0;
@@ -204,13 +203,13 @@
                 padding: 10px 0;
             }
             .sidebar.ake-sidebar-compact .settings-button,
-            .sidebar.ake-sidebar-compact .export-button,
-            .sidebar.ake-sidebar-compact .menu-button {
+            .sidebar.ake-sidebar-compact .export-button {
                 width: 40px;
                 height: 40px;
                 flex: 0 0 40px;
                 font-size: 1.35rem;
             }
+            .sidebar.ake-sidebar-compact .sidebar-tool-label { display: none; }
             .ake-resizable-sidebar { position: relative !important; }
             .ake-resizable-sidebar.ake-resizable-sidebar--active { overflow: visible !important; }
             .ake-resizable-sidebar.ake-sidebar-compact .ake-sidebar-compact-hidden { display: none !important; }
