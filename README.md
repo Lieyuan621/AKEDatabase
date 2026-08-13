@@ -188,7 +188,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1 -Sha
 
 AKE Data Tool 的“资产上传”分页可以单独选择图片、Json 或同时选择两者。工具先保存本地与远端的差异计划，再使用 `rclone sync --delete-before` 执行镜像同步；同步前后都会读取整个 Bucket 的对象总量，并按删除前上传峰值检查 10 GB 容量上限。任一所选资产发生变化时，零差异复查通过后都会更新 `manifest.sharedRevision`。该流程与上面的 PowerShell 共享数据模式相互独立。
 
-图片工具由同一份源目录清单生成 beyond-sdk 解析正则与发布复制路径。档案库相关范围包括 `sprites/prts`（递归覆盖 `icon`）、`sprites/reading`、`sprites/readingpoplogo` 和 `prefabs/nonnarrative`，并额外收集 `sprites/itemtips` 物品提示素材；物品图标仅收集 `sprites/itemiconbig`，不请求或发布 `sprites/itemicon` 小图目录。
+图片工具以配置中的 `containers_filter` 作为唯一素材范围：解析开始前清空上次输出，发布时清理原 `public/images/assets`，再将本次 `output/assets` 中的全部图片按原始相对路径完整复制过去，不再额外套用发布目录白名单；SDK 生成的根目录解析索引 `assets.map` 不会发布。默认解析清单包括档案库使用的 `sprites/prts`（递归覆盖 `icon`）、`sprites/reading`、`sprites/readingpoplogo` 和 `prefabs/nonnarrative`，并收集 `sprites/itemtips` 物品提示素材与 `sprites/mainhud` 主界面素材；物品图标默认仅解析 `sprites/itemiconbig`，不请求 `sprites/itemicon` 小图目录。
 
 ### 本地数据
 
