@@ -1,0 +1,106 @@
+<script src="/plugin/js/v3-table-data.js"></script>
+<link rel="stylesheet" href="/theme/v3_archive.css">
+
+<div class="akearchive-module" id="akeArchiveModule">
+    <aside class="akearchive-sidebar" id="akeArchiveSidebar" data-i18n-aria-label="modules.archive.directory.title" aria-label="档案目录">
+        <header class="akearchive-sidebar-header">
+            <div>
+                <h1 data-i18n="modules.archive.title">档案库</h1>
+                <div class="akearchive-meta" id="akeArchiveMeta" aria-live="polite" data-i18n="modules.archive.loading.directory">正在整理档案目录</div>
+            </div>
+            <button
+                class="akearchive-icon-button akearchive-home-button"
+                id="akeArchiveHome"
+                type="button"
+                aria-label="全部档案"
+                title="全部档案"
+                data-i18n-aria-label="modules.archive.directory.all"
+                data-i18n-title="modules.archive.directory.all"
+            >&#8962;</button>
+        </header>
+
+        <label class="akearchive-search" for="akeArchiveSearch">
+            <span aria-hidden="true">&#8981;</span>
+            <input
+                id="akeArchiveSearch"
+                type="search"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="搜索档案名称或正文"
+                aria-label="搜索档案名称或正文"
+                data-i18n-placeholder="modules.archive.search.placeholder"
+                data-i18n-aria-label="modules.archive.search.label"
+            >
+        </label>
+
+        <nav
+            class="akearchive-directory"
+            id="akeArchiveDirectory"
+            aria-label="档案目录"
+            data-i18n-aria-label="modules.archive.directory.title"
+        ></nav>
+    </aside>
+
+    <main class="akearchive-content" id="akeArchiveContent" tabindex="-1">
+        <div class="akearchive-state akearchive-state--loading" role="status">
+            <span class="akearchive-spinner" aria-hidden="true"></span>
+            <div>
+                <h2 data-i18n="modules.archive.title">档案库</h2>
+                <p data-i18n="modules.archive.loading.archive">正在读取档案数据</p>
+            </div>
+        </div>
+    </main>
+
+    <button
+        class="akearchive-mobile-button"
+        id="akeArchiveMobileButton"
+        type="button"
+        aria-controls="akeArchiveMobileOverlay"
+        aria-expanded="false"
+        data-i18n="modules.archive.buttons.openDirectory"
+    >档案目录</button>
+
+    <div class="akearchive-mobile-overlay" id="akeArchiveMobileOverlay" aria-hidden="true">
+        <section
+            class="akearchive-mobile-panel"
+            id="akeArchiveMobilePanel"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="akeArchiveMobileTitle"
+        >
+            <header class="akearchive-mobile-header">
+                <strong id="akeArchiveMobileTitle" data-i18n="modules.archive.directory.title">档案目录</strong>
+                <button
+                    class="akearchive-icon-button"
+                    id="akeArchiveMobileClose"
+                    type="button"
+                    aria-label="关闭"
+                    title="关闭"
+                    data-i18n-aria-label="modules.archive.buttons.close"
+                    data-i18n-title="modules.archive.buttons.close"
+                >&times;</button>
+            </header>
+            <label class="akearchive-search akearchive-search--mobile" for="akeArchiveMobileSearch">
+                <span aria-hidden="true">&#8981;</span>
+                <input
+                    id="akeArchiveMobileSearch"
+                    type="search"
+                    autocomplete="off"
+                    spellcheck="false"
+                    placeholder="搜索档案名称或正文"
+                    aria-label="搜索档案名称或正文"
+                    data-i18n-placeholder="modules.archive.search.placeholder"
+                    data-i18n-aria-label="modules.archive.search.label"
+                >
+            </label>
+            <nav
+                class="akearchive-directory akearchive-mobile-directory"
+                id="akeArchiveMobileDirectory"
+                aria-label="移动端档案目录"
+                data-i18n-aria-label="modules.archive.directory.title"
+            ></nav>
+        </section>
+    </div>
+</div>
+
+<script src="/plugin/js/v3-archive.js"></script>

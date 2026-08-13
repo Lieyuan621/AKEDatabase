@@ -2,6 +2,19 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.2.10
+
+#### Archive
+
+- Added the public Archive module. Its start page brings every in-game archive together with medium and category directories, full-text search across documents and transcripts, and archive-group deep links.
+- Details render game-styled rich-text titles, illustrated documents, and original archive images. Images with protagonist variants can switch between the female and male versions.
+- Multimedia archives currently provide line-by-line text transcripts only; this release does not load or play audio.
+
+#### Browsing and display
+
+- Archive directories work on desktop and mobile, with browsing and scroll-state restoration when returning to the module and long-image export for details.
+- Improved rendering for redacted rich-text marks and standardized missing-image handling for archive icons, document images, and decorative images.
+
 ### v1.2.9
 
 #### Miscellaneous and task center

@@ -114,6 +114,13 @@
         compactThreshold: 200,
         compactListSelector: '.mission-list'
     });
+    registerModules(['v3_archive'], '#akeArchiveSidebar', 292, {
+        minWidth: 160,
+        compactThreshold: 200,
+        compactListSelector: '#akeArchiveDirectory',
+        layout: 'grid',
+        mediaQuery: '(min-width: 1000px)'
+    });
     registerModules(['misc'], '.misc-module > .misc-sidebar', 264, {
         minWidth: 180,
         maxWidth: 420,

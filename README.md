@@ -6,23 +6,22 @@
 
 > 《明日方舟：终末地》非官方数据查询与研究站。项目是无后端、无构建步骤的静态 HTML/CSS/JavaScript 应用；网站代码与游戏数据分离，游戏数据由 Cloudflare R2 提供。
 
-AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模块以 v3 为主。v3 从完整 `TableCfg` 和 `public/Json` 动态建立实体关系，同时复用经过验证的 v2 页面控制器和样式。
+AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模块以 v3 为主。v3 从完整 `TableCfg` 和 `public/Json` 动态建立实体关系；既有查询页复用经过验证的 v2 页面控制器和样式，商店、档案库等模块则按数据结构使用独立控制器。
 
 在线站点：[https://www.akedata.wiki](https://www.akedata.wiki)（原 `akedata.top` 已重定向至此）
 
 ## 当前版本
 
-`1.2.9` 新增可扩展的“杂项”模块。杂项使用独立二级清单装载子模块，左侧模块列表与右侧内容区域独立滚动，并支持子模块及内部条目的深链接。当前包含每周任务、协议通行证任务、演武集算任务、合约任务、奇境任务、竞技大会完成度任务和角色图标生成器。
+`1.2.10` 新增公开的“档案库”模块。起始页汇总游戏内 PRTS 档案，按中枢档案、音像存档与见闻辑录等载体和分类组织卡片；桌面端与移动端均提供档案目录，并支持名称、正文与字幕全文搜索。
 
-周期与玩法任务直接从 TableCfg 解析活动时间、任务描述、目标和奖励；内部 ID、条件目标等技术字段只在“显示隐藏模块”开启时展示。协议通行证支持按赛季、任务类别和开放周次筛选，并列出基础配给、源石配给、协议定制三档的全部等级及循环等级奖励；每周任务同时展示任务周与事务积分里程碑，奇境任务以自动换行布局展示根脉历程奖励。
+档案详情可在同一档案组内切换条目，展示游戏富文本标题、正文、原始档案图片与阅读弹窗标识；带主角差分的正文图片可切换女性或男性版本。音像存档当前仅展示逐句文字转录，不读取或播放音频。
 
-商店现在能够解析商店组、商店和商品的开放条件，并在商品卡片底部标注对应的物资调度等级解锁要求；商店组与商店的技术条件仍只在隐藏模式中显示。装备页新增制造模板和装备成品的获取来源，区分默认解锁、权限等阶、地图探索或装备模板箱、物资调度、普通商店、任务及活动奖励。点击“在 OEM 查看”后才会读取对应 LevelData，并根据当前点位实时计算 OEM 短链；页面加载不读取 LevelData，也不依赖 LevelData manifest 或预存短码。
-
-角色图标生成器可选择角色及其普通攻击、普通战技、终结技或连携技，生成角色主视觉或技能主视觉组合图标，支持 `192 × 192`、`256 × 256`、`384 × 384`、`512 × 512` 四种尺寸、技能主视觉透明背景和 PNG 下载。战斗与 Buff 深度解析页面的代码仍保留，但 `v3_skill` 和 `v3_buff` 在本版本中暂不开放。
+档案组支持 URL 深链接、模块返回时的目录与滚动状态恢复，以及长图导出。富文本解析器新增遮蔽标记背景支持，档案图标、正文图片和装饰图片也分别采用明确的缺图处理。战斗与 Buff 深度解析页面的代码仍保留，但 `v3_skill` 和 `v3_buff` 在本版本中暂不开放。
 
 ## 功能
 
-- 角色、武器、敌人、装备、物品、商店、副本、活动、奖章、杂项、Baker 通讯和危机合约查询
+- 角色、武器、敌人、装备、物品、商店、副本、活动、奖章、档案库、杂项、Baker 通讯和危机合约查询
+- PRTS 档案一览、载体与分类目录、正文及字幕全文搜索、档案组深链接和富文本详情
 - Baker 联系人、群聊与干员会话浏览、全文搜索、分支选择和多媒体消息展示
 - 商店组分类浏览、分商店切换、价格折扣、限购兑换与奖励内容展示
 - 商店开放条件、物资调度等级商品解锁，以及装备制造模板和成品获取来源追踪
@@ -69,6 +68,7 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 | `misc` | 杂项 | TableCfg（周期与玩法任务、通行证等级奖励、角色及技能索引）、`public/misc` 合成素材 |
 | `baker` | Baker | SNSChat、SNSDialog、SNSDialogOption、SNSDialogTopic、Item 等 TableCfg |
 | `v3_cc` | 危机合约 | TableCfg、SpawnerConfig、LevelScriptData、BuffData |
+| `v3_archive` | 档案库 | PrtsPage/PrtsCategory/PrtsFirstLv/PrtsAllItem、RichContentTable、RadioTable、ReadingPopUpTable/ReadingPopUpIconTable |
 | `research` | 研究 | `public/CH/research` Markdown |
 | `about` | 关于 | 静态内容、赞助信息 |
 
@@ -80,7 +80,7 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 ### 禁用模块
 
 - `v2_cc`、`v2_character`、`v2_weapon`、`v2_enemy`、`v2_equip`、`v2_item`、`v2_dungeon`：已由对应 v3 模块取代的聚合数据版本。
-- `v3_skill`、`v3_buff`：战斗与 Buff 深度解析页面，代码仍保留，`1.2.9` 暂时禁用。
+- `v3_skill`、`v3_buff`：战斗与 Buff 深度解析页面，代码仍保留，`1.2.10` 暂时禁用。
 - `buff`、`skill_v2`、`spawn`：BuffData、SkillData 和 SpawnerConfig 调试模块。
 - 旧版 v1 模块、旧 Skill 模块及旧活动、奖章页面仍保留文件，但目前在 manifest 中禁用。
 
@@ -188,6 +188,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\sync-r2.ps1 -Sha
 
 AKE Data Tool 的“资产上传”分页可以单独选择图片、Json 或同时选择两者。工具先保存本地与远端的差异计划，再使用 `rclone sync --delete-before` 执行镜像同步；同步前后都会读取整个 Bucket 的对象总量，并按删除前上传峰值检查 10 GB 容量上限。任一所选资产发生变化时，零差异复查通过后都会更新 `manifest.sharedRevision`。该流程与上面的 PowerShell 共享数据模式相互独立。
 
+图片工具由同一份源目录清单生成 beyond-sdk 解析正则与发布复制路径。档案库相关范围包括 `sprites/prts`（递归覆盖 `icon`）、`sprites/reading`、`sprites/readingpoplogo` 和 `prefabs/nonnarrative`，并额外收集 `sprites/itemtips` 物品提示素材；物品图标仅收集 `sprites/itemiconbig`，不请求或发布 `sprites/itemicon` 小图目录。
+
 ### 本地数据
 
 `version.json` 的 `debugmode` 为 `true` 且版本选择为 `latest` 时，网站使用当前页面同源数据；因此 VS Code Live Server 会读取本地 `/public/TableCfg`、`/public/Json` 和 `/public/images`。本地没有 `manifest.json` 时自动兼容未版本化目录 `/public/TableCfg`。显式选择固定版本时会改用生产数据域中的对应历史版本，并在刷新后保留选择。发布网站前必须将 `debugmode` 恢复为 `false`。
@@ -287,7 +289,7 @@ Service Worker 位于站点根目录 `/ake-sw.js`，可直接注册根作用域 
 
 ### v3 数据适配
 
-v3 当前采用兼容层设计，而不是重复实现九套 UI：
+多数 v3 查询模块采用兼容层设计，而不是重复实现多套 UI：
 
 1. `plugin/v3_<module>.html` 加载 `v3-table-data.js`。
 2. 页面调用 `window.AKEV3.activate('<module>')`。
@@ -305,9 +307,11 @@ v3 当前采用兼容层设计，而不是重复实现九套 UI：
 
 这些 URL 不对应磁盘文件，由 `v3-table-data.js` 返回内存 `Response`。
 
+商店、档案库等独立模块则直接调用 `window.AKEV3.table()` 读取并本地化 TableCfg，再由各自控制器建立索引、目录和详情。档案库以 `PrtsFirstLv.itemIds -> PrtsAllItem` 组织档案组和条目，并按条目类型关联 `RichContentTable` 或 `RadioTable`；它不依赖 v2 兼容响应。
+
 ### 数据职责
 
-- `public/TableCfg`：角色、物品、副本、活动、奖励、技能补丁等完整结构化表。
+- `public/TableCfg`：角色、物品、副本、活动、奖励、技能补丁、PRTS 档案与富文本等完整结构化表。
 - `public/Json`：TableCfg 无法完整表达的 Buff、SkillData、SpawnerConfig、LevelScriptData 和 LevelData。
 - `public/CH`：简体中文资源目录，包含旧版/v2 聚合数据、研究文档与界面 `i18n.json`。
 - `public/EN`：英文界面资源目录。
@@ -316,7 +320,7 @@ v3 当前采用兼容层设计，而不是重复实现九套 UI：
 - `public/KR`：韩文资源目录，已补齐独立 `i18n.json` 与 `maps.json`。
 - `public/RU`、`MX`、`BR`、`DE`、`FR`、`VN`、`TH`、`ID`、`IT`：其余 TableCfg 语言目录，当前游戏文本已接入对应 `I18nTextTable_*`，但站点界面与枚举的独立本地化仍待完成。
 - 每个语言目录的 `tip.md`：首页网站公告正文；公告按钮、倒计时和更新原因标签位于同目录 `i18n.json`。
-- `public/images`：模块按固定路径约定组装图片 URL。
+- `public/images`：模块按固定路径约定组装图片 URL；档案库图标直接读取 `sprites/prts/icon`，正文与弹窗标识分别读取 `sprites/reading` 和 `sprites/readingpoplogo`。档案图标请求失败时使用站点根目录的 `icon_default_missing.png`。
 - `public/misc`：角色图标生成器使用的组合框 UI 素材，随网站代码发布，不属于 R2 游戏图片代理目录。
 
 副本型模块会通过 `DungeonTable.sceneId` 关联 `LevelData/<sceneId>`、`SpawnerConfig/<sceneId>` 和 `LevelScriptData/<sceneId>`；SpawnerConfig 中的 `enemyLibrary` 再关联 EnemyTable，出生 Buff 则按 ID 加载 `BuffData/<buffId>.json`。没有 SpawnerConfig 的关卡还可能直接在 `LevelScriptData.enemies` 定义敌人、等级和 `buffs`，这些 Buff 按 `enemyId + level` 匹配后直接并入出生面板。`ake-combat-data.js` 另将 LevelScript 的 `AddBuffToTarget*` / `AddBuffsToTargets*` 解析为条件性敌人 Buff，并优先沿动作数据引用定位 `SpawnerGetSpawnedEntityList` 或 `OnSpawnerEntitySpawn` 的具体 Spawner；这类动态 Buff 单独展示运行时属性变化，不会默认并入出生面板。该共享链路由普通副本、危机合约和战争回响共同使用。
@@ -410,6 +414,8 @@ http://localhost:5501/
 | `/?plugin=v3_enemy&id=eny_0045_agtrinit` | 定位到三位一体 |
 | `/?plugin=v3_cc&id=indie_contract001` | 打开危机合约赛季 |
 | `/?plugin=v3_dungeon&id=indie_group_ccdg` | 打开危机合约副本系列 |
+| `/?plugin=v3_archive` | 打开全部档案一览 |
+| `/?plugin=v3_archive&id=document_v0d8_10` | 打开指定档案组 |
 | `/?plugin=misc&id=weekly_tasks/week3` | 打开杂项中的每周任务并定位第 3 周 |
 | `/?plugin=misc&id=character_icon_generator` | 打开角色图标生成器 |
 
@@ -445,7 +451,7 @@ http://localhost:5501/
 <image="path" scale=1.0>
 ```
 
-样式和术语分别来自 `public/TableCfg/RichTextStyleTable.json` 与 `public/TableCfg/HyperlinkTextTable.json`。术语文本通过当前语言的 `I18nTextTable` 水合，样式表的 `preDef` 会转换为网页解析器兼容的颜色与图标配置。当前解析器假定数据可信，不应直接用于用户提交的未过滤 HTML。
+样式和术语分别来自 `public/TableCfg/RichTextStyleTable.json` 与 `public/TableCfg/HyperlinkTextTable.json`。术语文本通过当前语言的 `I18nTextTable` 水合，样式表的 `preDef` 会转换为网页解析器兼容的文字颜色、遮蔽标记背景与图标配置。标题、目录名称等游戏文本也应通过该解析器渲染，例如 `<@nar.mark>■■■</>` 会保留游戏中的遮蔽效果。当前解析器假定数据可信，不应直接用于用户提交的未过滤 HTML。
 
 ## 开发新模块
 
@@ -535,7 +541,7 @@ git status --short
 浏览器回归至少覆盖：
 
 1. 公开模块列表顺序，确认杂项位于奖章之后，并确认 `v3_skill`、`v3_buff` 不出现在桌面或移动端入口。
-2. 十个公开 v3 模块、战争回响专题和杂项七个子模块的列表与详情。
+2. 十一个公开 v3 模块、战争回响专题和杂项七个子模块的列表与详情。
 3. 搜索、筛选和默认等级。
 4. 合法与非法深链接，包括杂项子模块和内部条目路由。
 5. 显示隐藏模块后访问 v2 与开发工具模块，并检查任务 ID、条件目标及商店组/商店开放条件的显隐。
@@ -545,15 +551,17 @@ git status --short
 9. 商店商品的物资调度等级提示，以及装备制造模板和成品的各类获取来源。
 10. OEM 按钮点击前不读取 LevelData，点击后能以实时计算的短链打开对应模板箱点位，且不请求 LevelData manifest。
 11. 角色图标生成器的角色与技能选择、两种构图、四种尺寸、技能主视觉透明背景和 PNG 下载。
-12. 副本 SpawnerConfig、波次和 BuffData。
-13. 富文本与两层 tooltip。
-14. 截图、缓存刷新和 localStorage 设置恢复。
-15. 首页倒计时的东八区转换、空 `desc` 隐藏、到期归零。
-16. 公告按钮重复查看、`tipversion` 变化自动弹出、各语言 `tip.md` 和移动端右上角布局。
+12. 档案库起始一览、分类目录、全文搜索、组内条目切换、档案组深链接、富文本标题、正文图片、主角差分图片和音像文字转录。
+13. 副本 SpawnerConfig、波次和 BuffData。
+14. 富文本、遮蔽标记与两层 tooltip。
+15. 截图、缓存刷新和 localStorage 设置恢复，并确认档案详情可完整导出长图。
+16. 首页倒计时的东八区转换、空 `desc` 隐藏、到期归零。
+17. 公告按钮重复查看、`tipversion` 变化自动弹出、各语言 `tip.md` 和移动端右上角布局。
 
 ## 已知限制
 
-- v3 是 TableCfg/Json 到 v2 UI 的兼容适配层，数据契约尚无类型或 schema。
+- 多数 v3 模块仍通过 TableCfg/Json 到 v2 UI 的兼容适配层工作，数据契约尚无类型或 schema。
+- 档案库的音像存档当前仅展示文字转录，不提供音频读取或播放。
 - 大型 TableCfg 会整表下载、解析、递归本地化并缓存，首次打开部分模块可能较慢。
 - 各语言的 TableCfg 文本已接入，但部分站点界面和枚举仍沿用英文占位翻译。
 - 路由使用 `replaceState`，没有完整的浏览器历史导航生命周期。

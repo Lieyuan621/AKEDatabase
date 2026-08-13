@@ -2,6 +2,23 @@ AKEData a été transféré vers le domaine www.akedata.wiki. L'ancien domaine a
 
 # Journal des mises à jour d'AKEData
 
+### v1.2.10
+
+#### Bibliothèque d'archives
+
+- Ajout de la Bibliothèque d'archives comme module public pour consulter les archives, documents et relevés présents dans le jeu.
+- La page d'accueil propose une vue d'ensemble de toutes les archives, un répertoire par support et catégorie, une recherche en texte intégral et des liens directs vers chaque groupe d'archives.
+
+#### Contenu des archives
+
+- Les détails affichent les titres et le corps du texte avec leur mise en forme enrichie, ainsi que les images originales du jeu. Lorsqu'un document comporte des variantes du protagoniste, il est possible de basculer entre les images de la protagoniste féminine et du protagoniste masculin.
+- Les archives audiovisuelles proposent uniquement une transcription ligne par ligne ; cette version ne charge ni ne lit aucun contenu audio.
+
+#### Navigation et affichage
+
+- Ajout de répertoires adaptés aux ordinateurs et aux appareils mobiles, de la restauration de l'état de navigation au retour dans le module et de la prise en charge de l'exportation en image longue.
+- Le texte enrichi restitue désormais correctement les marques de masquage. Les icônes introuvables utilisent l'image d'absence par défaut, tandis qu'un message clair remplace les images de contenu indisponibles.
+
 ### v1.2.9
 
 #### Divers et centre de tâches
