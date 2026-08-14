@@ -141,8 +141,8 @@
         return `<img class="${escapeHtml(className || '')}" src="${escapeHtml(source)}" alt="${escapeHtml(alt || '')}"${fallbackAttribute}${extraAttributes || ''}>`;
     }
 
-    function groupIconTag(group, alt) {
-        return imageTag(groupIcon(group), '', alt || '', alt ? '' : ' aria-hidden="true"', 'global');
+    function groupIconTag(group, alt, className) {
+        return imageTag(groupIcon(group), className === undefined ? 'ake-ui-directory__item-icon' : className, alt || '', alt ? '' : ' aria-hidden="true"', 'global');
     }
 
     function safeOrder(value) {
@@ -228,21 +228,21 @@
         return !info.hasAddition ? 2 : info.isNewGroup ? 0 : 1;
     }
 
-    function addedTag(label, className) {
-        return `<span class="akearchive-change-tag${className ? ` ${className}` : ''}">${escapeHtml(label)}</span>`;
+    function addedTag(label, compact) {
+        return `<span class="ake-ui-badge" data-tone="added"${compact ? ' data-density="compact"' : ''}>${escapeHtml(label)}</span>`;
     }
 
-    function groupChangeTag(info, className, compact) {
+    function groupChangeTag(info, compact) {
         if (!info?.hasAddition) return '';
         const label = compact || info.isNewGroup
             ? t('changes.added', null, '新增')
             : tr('changes.addedEntries', { count: info.addedItemCount }, `新增 ${info.addedItemCount} 条记录`);
-        return addedTag(label, className);
+        return addedTag(label, compact);
     }
 
-    function itemChangeTag(item, className) {
+    function itemChangeTag(item) {
         return state.addedItemIds.has(String(item?.id || ''))
-            ? addedTag(t('changes.added', null, '新增'), className)
+            ? addedTag(t('changes.added', null, '新增'), true)
             : '';
     }
 
@@ -396,10 +396,10 @@
         });
         const homeSection = includeHome ? `<section class="akearchive-directory-section">
             <div class="akearchive-directory-list">
-                <button type="button" class="akearchive-directory-item${state.activeGroupId ? '' : ' is-active'}" data-akearchive-action="show-overview" aria-current="${state.activeGroupId ? 'false' : 'page'}">
-                    ${imageTag(pageIcon(state.pages[0]), '', '', ' aria-hidden="true"')}
-                    <span class="akearchive-directory-copy"><strong>${escapeHtml(t('directory.all', null, '全部档案'))}</strong><small>${escapeHtml(t('overview.subtitle', null, '浏览全部档案与收录内容'))}</small></span>
-                    <span class="akearchive-directory-count">${escapeHtml(state.itemMap.size)}</span>
+                <button type="button" class="ake-ui-directory__item${state.activeGroupId ? '' : ' is-active'}" data-akearchive-action="show-overview" aria-current="${state.activeGroupId ? 'false' : 'page'}">
+                    ${imageTag(pageIcon(state.pages[0]), 'ake-ui-directory__item-icon', '', ' aria-hidden="true"')}
+                    <span class="ake-ui-directory__item-copy"><strong class="ake-ui-directory__item-title">${escapeHtml(t('directory.all', null, '全部档案'))}</strong><small class="ake-ui-directory__item-subtitle">${escapeHtml(t('overview.subtitle', null, '浏览全部档案与收录内容'))}</small></span>
+                    <span class="ake-ui-directory__item-count">${escapeHtml(state.itemMap.size)}</span>
                 </button>
             </div>
         </section>` : '';
@@ -414,12 +414,12 @@
                 const icon = groupIconTag(group);
                 const secondary = gameText(group.subName) || gameText(page?.name, page?.pageType || '');
                 const changeInfo = groupVersionInfo(group.firstLvId);
-                return `<button type="button" class="akearchive-directory-item${group.firstLvId === state.activeGroupId ? ' is-active' : ''}${changeInfo.hasAddition ? ' akearchive-directory-item--added' : ''}"
+                return `<button type="button" class="ake-ui-directory__item${group.firstLvId === state.activeGroupId ? ' is-active' : ''}"
                     data-akearchive-action="open-group" data-group-id="${escapeHtml(group.firstLvId)}"
                     aria-current="${group.firstLvId === state.activeGroupId ? 'page' : 'false'}">
                     ${icon}
-                    <span class="akearchive-directory-copy"><strong>${gameHtml(gameText(group.name, group.firstLvId))}</strong><small>${gameHtml(secondary)}</small></span>
-                    <span class="akearchive-directory-tail">${groupChangeTag(changeInfo, 'akearchive-directory-change', true)}<span class="akearchive-directory-count">${escapeHtml(record.items.length)}</span></span>
+                    <span class="ake-ui-directory__item-copy"><strong class="ake-ui-directory__item-title">${gameHtml(gameText(group.name, group.firstLvId))}</strong><small class="ake-ui-directory__item-subtitle">${gameHtml(secondary)}</small></span>
+                    <span class="ake-ui-directory__item-tail">${groupChangeTag(changeInfo, true)}<span class="ake-ui-directory__item-count">${escapeHtml(record.items.length)}</span></span>
                 </button>`;
             }).join('');
             return `<section class="akearchive-directory-section">
@@ -428,7 +428,7 @@
             </section>`;
         }).join('');
         const empty = !records.length
-            ? `<div class="akearchive-state"><div><p>${escapeHtml(t('empty.search', null, '没有匹配的档案'))}</p></div></div>`
+            ? `<div class="ake-ui-state" data-state="empty"><div><p>${escapeHtml(t('empty.search', null, '没有匹配的档案'))}</p></div></div>`
             : '';
         node.innerHTML = `${homeSection}${sections}${empty}`;
     }
@@ -446,11 +446,11 @@
     }
 
     function renderPageTabs(records) {
-        return `<div class="akearchive-page-tabs" role="group" aria-label="${escapeHtml(t('overview.title', null, '档案一览'))}">${state.pages.map(page => {
+        return `<div class="ake-ui-tabs" data-variant="media" role="group" aria-label="${escapeHtml(t('overview.title', null, '档案一览'))}">${state.pages.map(page => {
             const type = String(page.pageType || '');
             const count = groupEntryCount(records.filter(record => pageTypeForCategory(record.group.categoryId) === type));
             const active = state.activePageType === type;
-            return `<button type="button" class="akearchive-page-tab${active ? ' is-active' : ''}" aria-pressed="${active}"
+            return `<button type="button" class="ake-ui-tabs__button${active ? ' is-active' : ''}" aria-pressed="${active}"
                 data-akearchive-action="filter-page" data-page-type="${escapeHtml(type)}">
                 ${imageTag(pageIcon(page), '', '', ' aria-hidden="true"')}
                 <span><strong>${gameHtml(gameText(page.name, type))}</strong><small>${escapeHtml(tr('counts.entries', { count }, `${count} 条记录`))}</small></span>
@@ -462,15 +462,15 @@
         const group = record.group;
         const category = categoryForGroup(group);
         const subtitle = gameText(group.subName) || gameText(record.items[0]?.desc) || group.firstLvId;
-        const icon = groupIconTag(group);
+        const icon = groupIconTag(group, '', '');
         const changeInfo = groupVersionInfo(group.firstLvId);
-        return `<button type="button" class="akearchive-card${changeInfo.hasAddition ? ' akearchive-card--added' : ''}" data-category="${escapeHtml(group.categoryId)}"
+        return `<button type="button" class="ake-ui-card is-interactive has-media" data-ake-component="card" data-density="compact" data-card-kind="archive" data-category="${escapeHtml(group.categoryId)}"
             data-akearchive-action="open-group" data-group-id="${escapeHtml(group.firstLvId)}">
-            ${icon}
-            <span class="akearchive-card-copy">
-                <strong>${gameHtml(gameText(group.name, group.firstLvId))}</strong>
-                <small>${gameHtml(subtitle)}</small>
-                <span class="akearchive-card-tags">${groupChangeTag(changeInfo)}<span>${gameHtml(gameText(category?.name, group.categoryId))}</span><span>${escapeHtml(tr('counts.entries', { count: record.items.length }, `${record.items.length} 条记录`))}</span></span>
+            <span class="ake-ui-card__media">${icon}</span>
+            <span class="ake-ui-card__content">
+                <strong class="ake-ui-card__title">${gameHtml(gameText(group.name, group.firstLvId))}</strong>
+                <small class="ake-ui-card__subtitle">${gameHtml(subtitle)}</small>
+                <span class="ake-ui-card__meta">${groupChangeTag(changeInfo)}<span class="ake-ui-badge">${gameHtml(gameText(category?.name, group.categoryId))}</span><span class="ake-ui-badge">${escapeHtml(tr('counts.entries', { count: record.items.length }, `${record.items.length} 条记录`))}</span></span>
             </span>
         </button>`;
     }
@@ -484,26 +484,26 @@
             .sort((a, b) => groupChangeRank(a.group.firstLvId) - groupChangeRank(b.group.firstLvId));
         const regularRecords = records.filter(record => !groupVersionInfo(record.group.firstLvId).hasAddition);
         const changeSection = state.comparisonVersion && addedRecords.length
-            ? `<section class="akearchive-overview-section akearchive-overview-section--changes">
-                <header><h2>${escapeHtml(tr('changes.group', { version: comparisonLabel() }, `版本差异 · 相比 ${comparisonLabel()}`))}</h2><span>${escapeHtml(tr('counts.groups', { count: addedRecords.length }, `${addedRecords.length} 组档案`))}</span></header>
-                <div class="akearchive-overview-grid">${addedRecords.map(renderOverviewCard).join('')}</div>
+            ? `<section class="ake-ui-section" data-tone="added">
+                <header class="ake-ui-section__header"><h2 class="ake-ui-section__title">${escapeHtml(tr('changes.group', { version: comparisonLabel() }, `版本差异 · 相比 ${comparisonLabel()}`))}</h2><span class="ake-ui-section__meta">${escapeHtml(tr('counts.groups', { count: addedRecords.length }, `${addedRecords.length} 组档案`))}</span></header>
+                <div class="ake-ui-card-grid" data-size="regular">${addedRecords.map(renderOverviewCard).join('')}</div>
             </section>`
             : '';
         const sections = state.categories.map(category => {
             const rows = regularRecords.filter(record => record.group.categoryId === category.categoryId);
             if (!rows.length) return '';
             const entryCount = groupEntryCount(rows);
-            return `<section class="akearchive-overview-section">
-                <header><h2>${gameHtml(gameText(category.name, category.categoryId))}</h2><span>${escapeHtml(tr('counts.entries', { count: entryCount }, `${entryCount} 条记录`))}</span></header>
-                <div class="akearchive-overview-grid">${rows.map(renderOverviewCard).join('')}</div>
+            return `<section class="ake-ui-section">
+                <header class="ake-ui-section__header"><h2 class="ake-ui-section__title">${gameHtml(gameText(category.name, category.categoryId))}</h2><span class="ake-ui-section__meta">${escapeHtml(tr('counts.entries', { count: entryCount }, `${entryCount} 条记录`))}</span></header>
+                <div class="ake-ui-card-grid" data-size="regular">${rows.map(renderOverviewCard).join('')}</div>
             </section>`;
         }).join('');
         const visibleCount = groupEntryCount(records);
-        const noResults = `<div class="akearchive-state"><div><h2>${escapeHtml(t('empty.archives', null, '暂无档案'))}</h2><p>${escapeHtml(state.query ? t('empty.search', null, '没有匹配的档案') : t('empty.archives', null, '暂无档案'))}</p></div></div>`;
-        elements.content.innerHTML = `<section class="akearchive-overview">
-            <header class="akearchive-overview-header">
-                <div><h1>${escapeHtml(t('overview.title', null, '档案一览'))}</h1><p>${escapeHtml(t('overview.subtitle', null, '浏览全部档案与收录内容'))}</p></div>
-                <div class="akearchive-overview-total">
+        const noResults = `<div class="ake-ui-state" data-state="empty"><div><h2>${escapeHtml(t('empty.archives', null, '暂无档案'))}</h2><p>${escapeHtml(state.query ? t('empty.search', null, '没有匹配的档案') : t('empty.archives', null, '暂无档案'))}</p></div></div>`;
+        elements.content.innerHTML = `<section class="ake-ui-page">
+            <header class="ake-ui-page__header">
+                <div><h1 class="ake-ui-page__title">${escapeHtml(t('overview.title', null, '档案一览'))}</h1><p class="ake-ui-page__summary">${escapeHtml(t('overview.subtitle', null, '浏览全部档案与收录内容'))}</p></div>
+                <div class="ake-ui-page__status">
                     <strong>${escapeHtml(tr('counts.groups', { count: records.length }, `${records.length} 组档案`))}</strong>
                     <span>${escapeHtml(tr('counts.entries', { count: visibleCount }, `${visibleCount} 条记录`))}</span>
                 </div>
@@ -565,9 +565,9 @@
     function renderGenderControl() {
         return `<div class="akearchive-gender-control">
             <span>${escapeHtml(t('protagonistGender.label', null, '主角性别'))}</span>
-            <span class="akearchive-gender-options" role="group" aria-label="${escapeHtml(t('protagonistGender.label', null, '主角性别'))}">
-                <button type="button" class="${state.gender === 'f' ? 'is-active' : ''}" data-akearchive-action="set-gender" data-gender="f" aria-pressed="${state.gender === 'f'}">${escapeHtml(t('protagonistGender.female', null, '女'))}</button>
-                <button type="button" class="${state.gender === 'm' ? 'is-active' : ''}" data-akearchive-action="set-gender" data-gender="m" aria-pressed="${state.gender === 'm'}">${escapeHtml(t('protagonistGender.male', null, '男'))}</button>
+            <span class="ake-ui-segmented" role="group" aria-label="${escapeHtml(t('protagonistGender.label', null, '主角性别'))}">
+                <button type="button" class="ake-ui-segmented__button${state.gender === 'f' ? ' is-active' : ''}" data-akearchive-action="set-gender" data-gender="f" aria-pressed="${state.gender === 'f'}">${escapeHtml(t('protagonistGender.female', null, '女'))}</button>
+                <button type="button" class="ake-ui-segmented__button${state.gender === 'm' ? ' is-active' : ''}" data-akearchive-action="set-gender" data-gender="m" aria-pressed="${state.gender === 'm'}">${escapeHtml(t('protagonistGender.male', null, '男'))}</button>
             </span>
         </div>`;
     }
@@ -579,10 +579,8 @@
         const body = (rich?.contentList || []).map(entry => renderRichValue(gameText(entry?.content))).join('');
         return `${richContentHasGenderImage(rich) ? renderGenderControl() : ''}
             <article class="akearchive-document">
-                <header class="akearchive-document-header">
-                    ${logo ? imageTag(logo, 'akearchive-popup-logo', '', ' aria-hidden="true"') : ''}
-                    <h2>${gameHtml(title)}</h2>
-                    <p>${gameHtml(gameText(item.name, item.id))}</p>
+                <header class="ake-ui-section__header">
+                    <div>${logo ? imageTag(logo, 'akearchive-popup-logo', '', ' aria-hidden="true"') : ''}<h2 class="ake-ui-section__title">${gameHtml(title)}</h2><p class="ake-ui-section__meta">${gameHtml(gameText(item.name, item.id))}</p></div>
                 </header>
                 ${body || `<p class="akearchive-paragraph">${escapeHtml(t('empty.content', null, '该档案暂无正文内容'))}</p>`}
             </article>`;
@@ -599,22 +597,22 @@
                 <div class="akearchive-line-text">${gameHtml(gameText(line.radioText))}</div>
             </div>`;
         }).join('');
-        return `<section class="akearchive-transcript">
-            <header class="akearchive-transcript-header">
-                <div>${logo ? imageTag(logo, 'akearchive-popup-logo', '', ' aria-hidden="true"') : ''}<h2>${gameHtml(gameText(popup?.title) || gameText(item.name, item.id))}</h2></div>
-                <span>${escapeHtml(tr('counts.entries', { count: lines.length }, `${lines.length} 条记录`))}</span>
+        return `<section class="akearchive-transcript ake-ui-section">
+            <header class="ake-ui-section__header">
+                <div>${logo ? imageTag(logo, 'akearchive-popup-logo', '', ' aria-hidden="true"') : ''}<h2 class="ake-ui-section__title">${gameHtml(gameText(popup?.title) || gameText(item.name, item.id))}</h2></div>
+                <span class="ake-ui-section__meta">${escapeHtml(tr('counts.entries', { count: lines.length }, `${lines.length} 条记录`))}</span>
             </header>
-            <div class="akearchive-transcript-list">${lineHtml || `<div class="akearchive-state"><div><p>${escapeHtml(t('empty.transcript', null, '该档案暂无字幕'))}</p></div></div>`}</div>
+            <div class="akearchive-transcript-list">${lineHtml || `<div class="ake-ui-state" data-state="empty"><div><p>${escapeHtml(t('empty.transcript', null, '该档案暂无字幕'))}</p></div></div>`}</div>
         </section>`;
     }
 
     function renderEntryTabs(group, activeItem) {
         const items = itemRowsForGroup(group.firstLvId);
         if (items.length < 2) return '';
-        return `<div class="akearchive-entry-tabs" role="group" aria-label="${escapeHtml(t('details.entry', null, '条目'))}">${items.map((item, index) => {
+        return `<div class="ake-ui-tabs" data-variant="underline" role="group" aria-label="${escapeHtml(t('details.entry', null, '条目'))}">${items.map((item, index) => {
             const active = item.id === activeItem.id;
-            return `<button type="button" class="akearchive-entry-tab${active ? ' is-active' : ''}" aria-pressed="${active}"
-                data-akearchive-action="select-entry" data-entry-id="${escapeHtml(item.id)}">${gameHtml(gameText(item.name, `${t('details.entry', null, '条目')} ${index + 1}`))}${itemChangeTag(item, 'akearchive-entry-change')}</button>`;
+            return `<button type="button" class="ake-ui-tabs__button${active ? ' is-active' : ''}" aria-pressed="${active}"
+                data-akearchive-action="select-entry" data-entry-id="${escapeHtml(item.id)}">${gameHtml(gameText(item.name, `${t('details.entry', null, '条目')} ${index + 1}`))}${itemChangeTag(item)}</button>`;
         }).join('')}</div>`;
     }
 
@@ -626,19 +624,19 @@
         const popup = popupForItem(item);
         const groupName = gameText(group.name, group.firstLvId);
         const description = gameText(group.subName) || gameText(item.desc) || gameText(item.name, item.id);
-        const icon = groupIconTag(group, gamePlainText(groupName));
+        const icon = groupIconTag(group, gamePlainText(groupName), '');
         const detailIsAdded = state.addedGroupIds.has(String(group.firstLvId))
             || state.addedItemIds.has(String(item.id));
-        elements.content.innerHTML = `<article class="akearchive-detail">
-            <header class="akearchive-detail-header">
-                <div class="akearchive-detail-icon">${icon}</div>
-                <div class="akearchive-detail-copy">
-                    <div class="akearchive-detail-meta">
+        elements.content.innerHTML = `<article class="ake-ui-detail" data-detail-kind="archive">
+            <header class="ake-ui-detail-header">
+                <div class="ake-ui-detail-media">${icon}</div>
+                <div class="ake-ui-detail-copy">
+                    <div class="ake-ui-detail-meta">
                         <span>${gameHtml(gameText(page?.name, page?.pageType || ''))}</span>
                         <span>${escapeHtml(t('details.category', null, '分类'))}: ${gameHtml(gameText(category?.name, group.categoryId))}</span>
                         <span>${escapeHtml(t('details.archiveId', null, '档案组 ID'))}: ${escapeHtml(group.firstLvId)}</span>
                         <span>${escapeHtml(t('details.entryId', null, '条目 ID'))}: ${escapeHtml(item.id)}</span>
-                        ${detailIsAdded ? addedTag(t('changes.added', null, '新增'), 'akearchive-detail-change') : ''}
+                        ${detailIsAdded ? addedTag(t('changes.added', null, '新增')) : ''}
                     </div>
                     <h1>${gameHtml(groupName)}</h1>
                     <p>${gameHtml(description)}</p>
@@ -653,15 +651,15 @@
         const category = categoryForGroup(group);
         const groupName = gameText(group.name, group.firstLvId);
         const groupIsAdded = state.addedGroupIds.has(String(group.firstLvId));
-        elements.content.innerHTML = `<article class="akearchive-detail">
-            <header class="akearchive-detail-header">
-                <div class="akearchive-detail-icon">${groupIconTag(group, gamePlainText(groupName))}</div>
-                <div class="akearchive-detail-copy">
-                    <div class="akearchive-detail-meta"><span>${gameHtml(gameText(category?.name, group.categoryId))}</span><span>${escapeHtml(group.firstLvId)}</span>${groupIsAdded ? addedTag(t('changes.added', null, '新增'), 'akearchive-detail-change') : ''}</div>
+        elements.content.innerHTML = `<article class="ake-ui-detail" data-detail-kind="archive">
+            <header class="ake-ui-detail-header">
+                <div class="ake-ui-detail-media">${groupIconTag(group, gamePlainText(groupName), '')}</div>
+                <div class="ake-ui-detail-copy">
+                    <div class="ake-ui-detail-meta"><span>${gameHtml(gameText(category?.name, group.categoryId))}</span><span>${escapeHtml(group.firstLvId)}</span>${groupIsAdded ? addedTag(t('changes.added', null, '新增')) : ''}</div>
                     <h1>${gameHtml(groupName)}</h1><p>${gameHtml(gameText(group.subName))}</p>
                 </div>
             </header>
-            <div class="akearchive-state"><div><p>${escapeHtml(t('empty.content', null, '该档案暂无正文内容'))}</p></div></div>
+            <div class="ake-ui-state" data-state="empty"><div><p>${escapeHtml(t('empty.content', null, '该档案暂无正文内容'))}</p></div></div>
         </article>`;
     }
 
@@ -822,15 +820,15 @@
     }
 
     function loadingHtml() {
-        return `<div class="akearchive-state akearchive-state--loading" role="status">
-            <span class="akearchive-spinner" aria-hidden="true"></span>
+        return `<div class="ake-ui-state" data-state="loading" role="status">
+            <span class="ake-ui-spinner" aria-hidden="true"></span>
             <div><h2>${escapeHtml(t('title', null, '档案库'))}</h2><p>${escapeHtml(t('loading.archive', null, '正在读取档案库数据'))}</p></div>
         </div>`;
     }
 
     function errorHtml(error) {
         const message = error?.message || String(error || 'Unknown error');
-        return `<div class="akearchive-state akearchive-state--error" role="alert"><div><h2>${escapeHtml(t('title', null, '档案库'))}</h2><p>${escapeHtml(tr('errors.loadFailed', { message }, `档案库加载失败：${message}`))}</p></div></div>`;
+        return `<div class="ake-ui-state" data-state="error" role="alert"><div><h2>${escapeHtml(t('title', null, '档案库'))}</h2><p>${escapeHtml(tr('errors.loadFailed', { message }, `档案库加载失败：${message}`))}</p></div></div>`;
     }
 
     async function load() {

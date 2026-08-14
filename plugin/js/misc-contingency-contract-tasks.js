@@ -62,7 +62,7 @@
 
                 if (!section || !content || !meta) return;
                 if (!table) {
-                    content.innerHTML = '<section class="misc-empty-state" role="alert"><h3>数据接口不可用</h3><p>未找到 AKEV3 TableCfg 读取接口。</p></section>';
+                    content.innerHTML = '<section class="ake-ui-state" role="alert"><h3>数据接口不可用</h3><p>未找到 AKEV3 TableCfg 读取接口。</p></section>';
                     return;
                 }
 
@@ -86,7 +86,7 @@
                     const taskMap = taskConfigs?.[ACTIVITY_ID]?.TaskConfigMap;
                     if (!taskMap || !Object.keys(taskMap).length) {
                         const missing = !Object.keys(taskConfigs || {}).length;
-                        content.innerHTML = `<section class="misc-empty-state" role="${missing ? 'alert' : 'status'}"><h3>${missing ? '任务配置表不可用' : '本期没有合约任务'}</h3><p>${missing ? '任务配置数据未能加载。' : '当前活动没有可展示的任务。'}</p></section>`;
+                        content.innerHTML = `<section class="ake-ui-state" role="${missing ? 'alert' : 'status'}"><h3>${missing ? '任务配置表不可用' : '本期没有合约任务'}</h3><p>${missing ? '任务配置数据未能加载。' : '当前活动没有可展示的任务。'}</p></section>`;
                         meta.textContent = activity ? text(activity.name, '危机合约') : '危机合约';
                         return;
                     }
@@ -166,12 +166,12 @@
                         };
                     }).sort((a, b) => a.sortId - b.sortId);
 
-                    content.innerHTML = `${warnings.length ? `<aside class="misc-data-warning" role="note"><h3>部分数据不可用</h3><ul>${warnings.map(warning => `<li>${escape(warning)}</li>`).join('')}</ul></aside>` : ''}${groups.map((group, groupIndex) => `<section class="misc-task-group" aria-labelledby="contract-group-${groupIndex}"><h3 id="contract-group-${groupIndex}">${escape(group.name)} <small>${escape(group.tasks.length)} 项${group.canUpdate ? ' · 分批释出' : ''}</small></h3><div class="misc-task-list">${group.tasks.map(task => `<article class="misc-task-card"><header>${showHidden ? `<span class="misc-task-order">${escape(task.sortId ?? '')}</span>` : ''}<div><h4>${rich(text(task.desc, showHidden ? task.taskId : '任务描述不可用'))}</h4>${releaseView(task)}</div></header>${conditionView(task)}<footer>${showHidden ? `<code>${escape(task.taskId)}</code>` : ''}${rewardView(task.rewardId)}</footer></article>`).join('')}</div></section>`).join('')}`;
+                    content.innerHTML = `${warnings.length ? `<aside class="misc-data-warning" role="note"><h3>部分数据不可用</h3><ul>${warnings.map(warning => `<li>${escape(warning)}</li>`).join('')}</ul></aside>` : ''}${groups.map((group, groupIndex) => `<section class="ake-ui-section" data-section-kind="misc-task-group" aria-labelledby="contract-group-${groupIndex}"><header class="ake-ui-section__header"><h3 class="ake-ui-section__title" id="contract-group-${groupIndex}">${escape(group.name)} <small>${escape(group.tasks.length)} 项${group.canUpdate ? ' · 分批释出' : ''}</small></h3></header><div class="ake-ui-card-grid" data-size="regular">${group.tasks.map(task => `<article class="ake-ui-card" data-card-kind="misc-task"><header class="ake-ui-card__header">${showHidden ? `<span class="misc-task-order">${escape(task.sortId ?? '')}</span>` : ''}<div><h4 class="ake-ui-card__title">${rich(text(task.desc, showHidden ? task.taskId : '任务描述不可用'))}</h4>${releaseView(task)}</div></header>${conditionView(task)}<footer class="ake-ui-card__footer">${showHidden ? `<code>${escape(task.taskId)}</code>` : ''}${rewardView(task.rewardId)}</footer></article>`).join('')}</div></section>`).join('')}`;
                 } catch (error) {
                     if (inactive()) return;
                     console.error('合约任务加载失败', error);
                     meta.textContent = '危机合约';
-                    content.innerHTML = `<section class="misc-empty-state" role="alert"><h3>合约任务加载失败</h3><p>${escape(error?.message || error)}</p></section>`;
+                    content.innerHTML = `<section class="ake-ui-state" role="alert"><h3>合约任务加载失败</h3><p>${escape(error?.message || error)}</p></section>`;
                 }
             },
             destroy() {

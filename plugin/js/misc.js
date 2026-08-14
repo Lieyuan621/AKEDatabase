@@ -70,13 +70,13 @@
         mobileOverlay.classList.add('is-open');
         mobileOverlay.setAttribute('aria-hidden', 'false');
         mobileButton.setAttribute('aria-expanded', 'true');
-        const selected = mobileList.querySelector('.misc-module-item.is-active');
-        (selected || mobileList.querySelector('.misc-module-item'))?.focus({ preventScroll: true });
+        const selected = mobileList.querySelector('.ake-ui-directory__item.is-active');
+        (selected || mobileList.querySelector('.ake-ui-directory__item'))?.focus({ preventScroll: true });
     }
 
     function renderShellState(kind, title, detail) {
-        const spinner = kind === 'loading' ? '<span></span>' : '';
-        content.innerHTML = `<div class="misc-shell-state misc-shell-state--${escapeHtml(kind)}">${spinner}<b>${escapeHtml(title)}</b>${detail ? `<small>${escapeHtml(detail)}</small>` : ''}</div>`;
+        const spinner = kind === 'loading' ? '<span class="ake-ui-spinner"></span>' : '';
+        content.innerHTML = `<div class="ake-ui-state" data-state="${escapeHtml(kind)}">${spinner}<b>${escapeHtml(title)}</b>${detail ? `<small>${escapeHtml(detail)}</small>` : ''}</div>`;
     }
 
     function normalizeContentFile(value) {
@@ -127,12 +127,11 @@
         const visible = visibleModules();
         count.textContent = `${visible.length} 个模块`;
         const html = visible.map(module => `
-            <button class="misc-module-item${module.id === activeModuleId ? ' is-active' : ''}" type="button" data-misc-id="${escapeHtml(module.id)}"${module.id === activeModuleId ? ' aria-current="page"' : ''}>
-                <span>${escapeHtml(translate(module.title))}</span>
-                ${module.hidden ? '<small>隐藏</small>' : ''}
+            <button class="ake-ui-directory__item${module.id === activeModuleId ? ' is-active' : ''}" type="button" data-misc-id="${escapeHtml(module.id)}"${module.id === activeModuleId ? ' aria-current="page"' : ''}>
+                <span class="ake-ui-directory__item-copy"><strong class="ake-ui-directory__item-title">${escapeHtml(translate(module.title))}</strong>${module.hidden ? '<small class="ake-ui-directory__item-subtitle">隐藏</small>' : ''}</span>
             </button>
         `).join('');
-        const empty = '<div class="misc-module-list__empty">没有可用模块</div>';
+        const empty = '<div class="ake-ui-state" data-state="empty">没有可用模块</div>';
         list.innerHTML = html || empty;
         mobileList.innerHTML = html || empty;
     }
@@ -324,8 +323,8 @@
 
         const template = document.createElement('template');
         template.innerHTML = html;
-        if (template.content.querySelector('link[rel="stylesheet"]')) {
-            throw new Error(`杂项子模块请使用共享样式 theme/misc.css：${module.id}`);
+        if (template.content.querySelector('link[rel="stylesheet"], style')) {
+            throw new Error(`杂项子模块请使用 AKEUI 共享主题模板：${module.id}`);
         }
         window.akeDataSource?.rewriteDomAssets?.(template.content);
         registrations.delete(module.id);
@@ -497,7 +496,7 @@
     addLoaderListener(mobileList, 'click', onModuleListClick);
     addLoaderListener(mobileButton, 'click', openMobileList);
     addLoaderListener(mobileOverlay, 'click', event => {
-        if (event.target === mobileOverlay || event.target.closest('.misc-mobile-title button')) closeMobileList();
+        if (event.target === mobileOverlay || event.target.closest('.ake-ui-directory__mobile-header button')) closeMobileList();
     });
     addLoaderListener(window, 'ake:module-deactivate', onParentDeactivate);
     addLoaderListener(window, 'ake:module-activate', onParentActivate);

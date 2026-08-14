@@ -79,7 +79,7 @@
             container.innerHTML = '';
             tags.forEach(tag => {
                 const btn = document.createElement('span');
-                btn.className = `filter-btn ${selectedTagIds.has(tag.tagId) ? 'active' : ''}`;
+                btn.className = `ake-ui-filter__button ${selectedTagIds.has(tag.tagId) ? 'is-active' : ''}`;
                 btn.dataset.tagId = tag.tagId;
                 btn.textContent = tag.name || tag.tagId;
                 btn.addEventListener('click', () => {
@@ -88,9 +88,9 @@
                     } else {
                         selectedTagIds.add(tag.tagId);
                     }
-                    btn.classList.toggle('active');
+                    btn.classList.toggle('is-active');
                     renderActivityList();
-                    if (mobileOverlay?.style.display === 'flex') buildMobileList();
+                    if (mobileOverlay?.classList.contains('is-open')) buildMobileList();
                 });
                 container.appendChild(btn);
             });
@@ -109,14 +109,14 @@
             container.innerHTML = '';
             statuses.forEach(s => {
                 const btn = document.createElement('span');
-                btn.className = `filter-btn ${selectedStatus === s.value ? 'active' : ''}`;
+                btn.className = `ake-ui-filter__button ${selectedStatus === s.value ? 'is-active' : ''}`;
                 btn.textContent = s.label;
                 btn.addEventListener('click', () => {
                     selectedStatus = s.value;
                     renderActivityList();
-                    document.querySelectorAll('#activityStatusFilter .filter-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    if (mobileOverlay?.style.display === 'flex') buildMobileList();
+                    document.querySelectorAll('#activityStatusFilter .ake-ui-filter__button').forEach(b => b.classList.remove('is-active'));
+                    btn.classList.add('is-active');
+                    if (mobileOverlay?.classList.contains('is-open')) buildMobileList();
                 });
                 container.appendChild(btn);
             });
@@ -298,7 +298,7 @@
 
             viewport.appendChild(canvas);
             section.appendChild(viewport);
-            container.querySelector('.ake-overview__header')?.after(section);
+            container.querySelector('.ake-ui-page__header')?.after(section);
             requestAnimationFrame(() => {
                 const todayOffset = (now - rangeStart) / TIMELINE_DAY_MS;
                 if (todayOffset >= 0) viewport.scrollLeft = Math.max(0, todayOffset * TIMELINE_DAY_WIDTH - viewport.clientWidth * 0.3);
@@ -313,7 +313,7 @@
                 onReset: () => { activeActivityId = null; },
                 afterRender: () => renderActivityTimeline(items, container),
                 onSelect: item => { activeActivityId = item.activityId; renderActivityList(); },
-                sidebarSelector: item => `.activity-item[data-activity-id="${CSS.escape(item.activityId)}"]`,
+                sidebarSelector: item => `.ake-ui-directory__item[data-activity-id="${CSS.escape(item.activityId)}"]`,
                 items: items.map(item => {
                     const status = getActivityStatus(item.openTime, item.closeTime);
                     const outlines = { 'status-active': 'status-active', 'status-upcoming': 'status-upcoming', 'status-closed': 'status-closed' };
@@ -331,17 +331,18 @@
             const filtered = filterActivities(allActivities);
             container.innerHTML = '';
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="loader">${t('noMatches')}</div>`;
-                if (detailContainer) detailContainer.innerHTML = `<div class="loader">${t('select')}</div>`;
+                container.innerHTML = `<div class="ake-ui-state">${t('noMatches')}</div>`;
+                if (detailContainer) detailContainer.innerHTML = `<div class="ake-ui-state">${t('select')}</div>`;
                 activeActivityId = null;
                 return;
             }
 
             filtered.forEach((act, index) => {
                 const item = document.createElement('div');
-                item.className = `activity-item ${act.activityId === activeActivityId ? 'active' : (index === 0 && !activeActivityId && !window.AKEModuleOverview?.isActive('activity') ? 'active' : '')}`;
+                item.className = `ake-ui-directory__item ${act.activityId === activeActivityId ? 'is-active' : (index === 0 && !activeActivityId && !window.AKEModuleOverview?.isActive('activity') ? 'is-active' : '')}`;
                 window.AKEModuleOverview?.markVersionChange(item, act);
                 item.dataset.activityId = act.activityId;
+                item.dataset.akeStatus = getActivityStatus(act.openTime, act.closeTime).class.replace('status-', '');
                 item.dataset.contentFile = act.contentFile;
 
                 if (act.tabImg) {
@@ -356,27 +357,29 @@
                 }
 
                 const infoDiv = document.createElement('div');
-                infoDiv.className = 'activity-info';
+                infoDiv.className = 'ake-ui-directory__item-copy';
                 const nameSpan = document.createElement('div');
-                nameSpan.className = 'activity-name';
+                nameSpan.className = 'ake-ui-directory__item-title';
                 nameSpan.textContent = act.name;
                 const idSpan = document.createElement('div');
-                idSpan.className = 'activity-id';
+                idSpan.className = 'ake-ui-directory__item-id';
                 idSpan.textContent = act.activityId;
                 infoDiv.appendChild(nameSpan);
                 infoDiv.appendChild(idSpan);
 
                 const status = getActivityStatus(act.openTime, act.closeTime);
                 const statusSpan = document.createElement('span');
-                statusSpan.className = `activity-status ${status.class}`;
+                statusSpan.className = 'ake-ui-badge';
+                statusSpan.dataset.accent = 'status';
+                statusSpan.dataset.accentValue = status.class.replace('status-', '');
                 statusSpan.textContent = status.text;
 
                 item.appendChild(infoDiv);
                 item.appendChild(statusSpan);
 
                 item.addEventListener('click', () => {
-                    document.querySelectorAll('.activity-item').forEach(el => el.classList.remove('active'));
-                    item.classList.add('active');
+                    document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
+                    item.classList.add('is-active');
                     activeActivityId = act.activityId;
                     if (window.__akeRouter) window.__akeRouter.updateUrl('activity', act.activityId);
                     loadActivityDetail(act, detailContainer);
@@ -405,15 +408,15 @@
                     return;
                 }
                 activeActivityId = filtered[0].activityId;
-                const firstItem = container.querySelector('.activity-item');
-                if (firstItem) firstItem.classList.add('active');
+                const firstItem = container.querySelector('.ake-ui-directory__item');
+                if (firstItem) firstItem.classList.add('is-active');
                 if (window.__akeRouter) window.__akeRouter.updateUrl('activity', activeActivityId);
                 loadActivityDetail(filtered[0], detailContainer);
             } else if (activeExists) {
                 const activeAct = filtered.find(a => a.activityId === activeActivityId);
                 if (activeAct) {
-                    const activeItem = container.querySelector(`.activity-item[data-activity-id="${activeActivityId}"]`);
-                    if (activeItem) activeItem.classList.add('active');
+                    const activeItem = container.querySelector(`.ake-ui-directory__item[data-activity-id="${activeActivityId}"]`);
+                    if (activeItem) activeItem.classList.add('is-active');
                     if (window.__akeRouter) window.__akeRouter.updateUrl('activity', activeActivityId);
                     loadActivityDetail(activeAct, detailContainer);
                 }
@@ -421,26 +424,25 @@
         }
 
         async function loadActivityDetail(activity, container) {
-            container.innerHTML = `<div class="loader">${t('loading')}</div>`;
+            container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(activity.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data, activity);
                 window.AKEModuleOverview?.renderVersionDiff(container, data, data.__versionDiff?.baseline ? renderDetail(data.__versionDiff.baseline, activity) : '');
             } catch (err) {
-                container.innerHTML = `<div class="error-message">${t('loadFailed', { message: err.message })}</div>`;
+                container.innerHTML = `<div class="ake-ui-state" data-state="error">${t('loadFailed', { message: err.message })}</div>`;
             }
         }
 
         function renderRewards(rewardList) {
             if (!rewardList || rewardList.length === 0) return `<p>${t('rewards.none')}</p>`;
-            let html = '<div class="reward-grid">';
+            let html = '<div class="ake-ui-item-list">';
             rewardList.forEach(reward => {
                 const iconSrc = reward.picpath || '';
                 html += `
-                    <div class="reward-item">
-                        <img class="reward-icon" src="${iconSrc}">
-                        <span class="reward-name">${reward.name}</span>
-                        <span class="reward-count">${t('rewards.count', { count: reward.count })}</span>
+                    <div class="ake-ui-item">
+                        ${iconSrc ? `<img class="ake-ui-item__media" src="${iconSrc}" alt="">` : ''}
+                        <div class="ake-ui-item__copy"><span class="ake-ui-item__title">${reward.name}</span><span class="ake-ui-item__meta">${t('rewards.count', { count: reward.count })}</span></div>
                     </div>
                 `;
             });
@@ -450,7 +452,7 @@
 
         function renderStages(stageList) {
             if (!stageList || Object.keys(stageList).length === 0) return '';
-            let html = `<div class="stage-section"><h3>${t('sections.stages')}</h3><div class="stage-list">`;
+            let html = `<section class="ake-ui-section"><header class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.stages')}</h3></header><div class="ake-ui-card-grid" data-size="regular">`;
             const stages = Object.values(stageList);
             stages.sort((a, b) => (a.sortId || 0) - (b.sortId || 0));
             stages.forEach(function (stage) {
@@ -461,19 +463,19 @@
                     const stageTime = countdown
                         ? t('dates.stageOpenTimeWithCountdown', { time: startTimeStr, countdown })
                         : t('dates.stageOpenTime', { time: startTimeStr });
-                    stageTimeHtml = `<div class="stage-time">${stageTime}</div>`;
+                    stageTimeHtml = `<div class="ake-ui-card__meta">${stageTime}</div>`;
                 }
-                html += '<div class="stage-card">' +
-                    '<div class="stage-name">' + stage.name + '</div>' +
-                    '<div class="stage-desc">' + parseText(stage.desc || '') + '</div>' +
+                html += '<article class="ake-ui-card" data-card-kind="activity-stage" data-density="regular">' +
+                    '<div class="ake-ui-card__title">' + stage.name + '</div>' +
+                    '<div class="ake-ui-card__body">' + parseText(stage.desc || '') + '</div>' +
                     stageTimeHtml +
-                    '<div class="stage-rewards">' +
-                    `<div class="stage-rewards-title">${t('rewards.stage')}</div>` +
+                    '<div class="ake-ui-card__footer"><div class="stage-rewards">' +
+                    `<span class="ake-ui-badge">${t('rewards.stage')}</span>` +
                     renderRewards(stage.rewarddetail || []) +
-                    '</div>' +
-                    '</div>';
+                    '</div></div>' +
+                    '</article>';
             });
-            html += '</div></div>';
+            html += '</div></section>';
             return html;
         }
 
@@ -484,40 +486,40 @@
 
             let countdownHtml = '';
             if (status.class === 'status-upcoming' && activity.openTime) {
-                countdownHtml = `<div class="detail-countdown">${getCountdownText(activity.openTime, false)}</div>`;
+                countdownHtml = `<span>${getCountdownText(activity.openTime, false)}</span>`;
             } else if (status.class === 'status-active' && activity.closeTime) {
-                countdownHtml = `<div class="detail-countdown">${getCountdownText(activity.closeTime, true)}</div>`;
+                countdownHtml = `<span>${getCountdownText(activity.closeTime, true)}</span>`;
             }
 
             let conditionsHtml = '';
             if (data.conditions && data.conditions.length) {
-                conditionsHtml = `<div class="detail-section"><h3>${t('sections.conditions')}</h3><ul class="conditions-list">${data.conditions.map(c => `<li>${parseText(c)}</li>`).join('')}</ul></div>`;
+                conditionsHtml = `<div class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.conditions')}</h3></div><ul class="ake-ui-list">${data.conditions.map(c => `<li>${parseText(c)}</li>`).join('')}</ul></div>`;
             }
 
             let rewardsHtml = '';
             if (data.rewarddetail && data.rewarddetail.length) {
-                rewardsHtml = `<div class="detail-section"><h3>${t('rewards.activity')}</h3>${renderRewards(data.rewarddetail)}</div>`;
+                rewardsHtml = `<div class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('rewards.activity')}</h3></div>${renderRewards(data.rewarddetail)}</div>`;
             }
 
             let stagesHtml = renderStages(data.stageList);
             const tagsHtml = (data.tags || []).length
-                ? `<div class="activity-tags">${data.tags.map(tag => tag.name ? `<span class="activity-tag">${tag.name}</span>` : '').join('')}</div>`
+                ? data.tags.map(tag => tag.name ? `<span class="ake-ui-badge">${tag.name}</span>` : '').join('')
                 : '';
 
             return `
-                <div class="activity-detail-container">
-                    <div class="detail-header">
-                        <div class="detail-info">
-                            <div class="detail-title-row">
-                                <span class="detail-name">${data.name || activity.name}</span>
-                                <span class="detail-status ${status.class}">${status.text}</span>
+                <div class="ake-ui-detail" data-detail-kind="activity">
+                    <div class="ake-ui-detail-header">
+                        <div class="ake-ui-detail-copy">
+                            <div class="ake-ui-detail-title-row">
+                                <span class="ake-ui-detail-title">${data.name || activity.name}</span>
+                                <span class="ake-ui-badge" data-accent="status" data-accent-value="${status.class.replace('status-', '')}">${status.text}</span>
                             </div>
-                            <div class="detail-time">
+                            <div class="ake-ui-detail-meta">
                                 <span>${t('dates.range', { start: openTimeStr, end: closeTimeStr })}</span>
+                                ${countdownHtml}
                             </div>
-                            ${tagsHtml}
-                            ${countdownHtml}
-                            <div class="detail-desc">${parseText(data.desc || '')}</div>
+                            ${tagsHtml ? `<div class="ake-ui-detail-badges">${tagsHtml}</div>` : ''}
+                            ${data.desc ? `<div class="ake-ui-detail-subtitle">${parseText(data.desc)}</div>` : ''}
                         </div>
                     </div>
                     ${conditionsHtml}
@@ -537,7 +539,7 @@
             generateTypeButtons();
             generateStatusButtons();
             renderActivityList();
-            if (mobileOverlay?.style.display === 'flex') buildMobileList();
+            if (mobileOverlay?.classList.contains('is-open')) buildMobileList();
         }
 
         // 移动端列表
@@ -551,21 +553,21 @@
             mobileContent.innerHTML = '';
             filtered.forEach(act => {
                 const item = document.createElement('div');
-                item.className = 'mobile-list-item';
+                item.className = 'ake-ui-directory__item';
                 window.AKEModuleOverview?.markVersionChange(item, act);
-                if (act.activityId === activeActivityId) item.classList.add('active');
+                if (act.activityId === activeActivityId) item.classList.add('is-active');
                 item.innerHTML = `
-                    <div class="item-name">${act.name}</div>
-                    <div class="item-id">${act.activityId}</div>
+                    <div class="ake-ui-directory__item-title">${act.name}</div>
+                    <div class="ake-ui-directory__item-id">${act.activityId}</div>
                 `;
                 item.addEventListener('click', () => {
                     activeActivityId = act.activityId;
                     if (window.__akeRouter) window.__akeRouter.updateUrl('activity', act.activityId);
                     loadActivityDetail(act, document.getElementById('activityDetail'));
                     closeMobileList();
-                    document.querySelectorAll('.activity-item').forEach(el => el.classList.remove('active'));
-                    const activeItem = document.querySelector(`.activity-item[data-activity-id="${act.activityId}"]`);
-                    if (activeItem) activeItem.classList.add('active');
+                    document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
+                    const activeItem = document.querySelector(`.ake-ui-directory__item[data-activity-id="${act.activityId}"]`);
+                    if (activeItem) activeItem.classList.add('is-active');
                 });
                 mobileContent.appendChild(item);
             });
@@ -573,11 +575,11 @@
 
         function openMobileList() {
             buildMobileList();
-            if (mobileOverlay) mobileOverlay.style.display = 'flex';
+            if (mobileOverlay) mobileOverlay.classList.add('is-open'); mobileOverlay.setAttribute('aria-hidden', 'false');
         }
 
         function closeMobileList() {
-            if (mobileOverlay) mobileOverlay.style.display = 'none';
+            if (mobileOverlay) mobileOverlay.classList.remove('is-open'); mobileOverlay.setAttribute('aria-hidden', 'true');
         }
 
         async function initModule() {
@@ -597,7 +599,7 @@
             document.getElementById('activitySearchInput')?.addEventListener('input', (e) => {
                 searchTerm = e.target.value;
                 renderActivityList();
-                if (mobileOverlay?.style.display === 'flex') buildMobileList();
+                if (mobileOverlay?.classList.contains('is-open')) buildMobileList();
             });
 
             if (mobileBtn) mobileBtn.addEventListener('click', openMobileList);

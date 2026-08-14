@@ -17,12 +17,12 @@
             mobileContent.innerHTML = '';
             filtered.forEach(cat => {
                 const item = document.createElement('div');
-                item.className = 'mobile-list-item';
+                item.className = 'ake-ui-directory__item';
                 window.AKEModuleOverview?.markVersionChange(item, cat);
-                if (cat.categoryId === activeCategoryId) item.classList.add('active');
+                if (cat.categoryId === activeCategoryId) item.classList.add('is-active');
                 item.innerHTML = `
-                    <div class="item-name">${cat.name}</div>
-                    <div class="item-id">${cat.categoryId}</div>
+                    <div class="ake-ui-directory__item-title">${cat.name}</div>
+                    <div class="ake-ui-directory__item-id">${cat.categoryId}</div>
                 `;
                 item.addEventListener('click', () => {
                     activeCategoryId = cat.categoryId;
@@ -36,11 +36,11 @@
 
         function openMobileList() {
             buildMobileList();
-            mobileOverlay.style.display = 'flex';
+            mobileOverlay.classList.add('is-open'); mobileOverlay.setAttribute('aria-hidden', 'false');
         }
 
         function closeMobileList() {
-            mobileOverlay.style.display = 'none';
+            mobileOverlay.classList.remove('is-open'); mobileOverlay.setAttribute('aria-hidden', 'true');
         }
 
         function getCurrentShowHidden() {
@@ -81,7 +81,7 @@
                 group: () => ({ id: 'categories', name: t('overview.group'), order: 0 }),
                 onReset: () => { activeCategoryId = null; },
                 onSelect: item => { activeCategoryId = item.categoryId; renderCategoryList(); },
-                sidebarSelector: item => `.category-item[data-cat-id="${CSS.escape(item.categoryId)}"]`,
+                sidebarSelector: item => `.ake-ui-directory__item[data-cat-id="${CSS.escape(item.categoryId)}"]`,
                 items: items.map(item => ({ ...item, id: item.categoryId, image: item.icon, fallback: t('overview.fallback'),
                     tags: [t('overview.achievementCount', { count: item.achievementCount || 0 }), t('overview.groupCount', { count: item.groupCount || 0 }), item.platedCount ? t('overview.platedCount', { count: item.platedCount }) : ''] }))
             });
@@ -96,28 +96,28 @@
 
             container.innerHTML = '';
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="loader">${t('noMatches')}</div>`;
-                if (detailContainer) detailContainer.innerHTML = `<div class="loader">${t('select')}</div>`;
+                container.innerHTML = `<div class="ake-ui-state">${t('noMatches')}</div>`;
+                if (detailContainer) detailContainer.innerHTML = `<div class="ake-ui-state">${t('select')}</div>`;
                 activeCategoryId = null;
                 return;
             }
 
             filtered.forEach((cat, index) => {
                 const item = document.createElement('div');
-                item.className = `category-item ${cat.categoryId === activeCategoryId ? 'active' : (index === 0 && !activeCategoryId && !window.AKEModuleOverview?.isActive('achievement') ? 'active' : '')}`;
+                item.className = `ake-ui-directory__item ${cat.categoryId === activeCategoryId ? 'is-active' : (index === 0 && !activeCategoryId && !window.AKEModuleOverview?.isActive('achievement') ? 'is-active' : '')}`;
                 window.AKEModuleOverview?.markVersionChange(item, cat);
                 item.dataset.catId = cat.categoryId;
                 item.dataset.contentFile = cat.contentFile;
 
                 const nameDiv = document.createElement('div');
-                nameDiv.className = 'category-name';
+                nameDiv.className = 'ake-ui-directory__item-title';
                 nameDiv.textContent = cat.name;
 
                 item.appendChild(nameDiv);
 
                 item.addEventListener('click', () => {
-                    document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
-                    item.classList.add('active');
+                    document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
+                    item.classList.add('is-active');
                     activeCategoryId = cat.categoryId;
                     if (window.__akeRouter) window.__akeRouter.updateUrl('achievement', cat.categoryId);
                     loadCategoryDetail(cat, detailContainer);
@@ -146,15 +146,15 @@
                     return;
                 }
                 activeCategoryId = filtered[0].categoryId;
-                const firstItem = container.querySelector('.category-item');
-                if (firstItem) firstItem.classList.add('active');
+                const firstItem = container.querySelector('.ake-ui-directory__item');
+                if (firstItem) firstItem.classList.add('is-active');
                 if (window.__akeRouter) window.__akeRouter.updateUrl('achievement', activeCategoryId);
                 loadCategoryDetail(filtered[0], detailContainer);
             } else if (activeExists) {
                 const activeCat = filtered.find(c => c.categoryId === activeCategoryId);
                 if (activeCat) {
-                    const activeItem = container.querySelector(`.category-item[data-cat-id="${activeCategoryId}"]`);
-                    if (activeItem) activeItem.classList.add('active');
+                    const activeItem = container.querySelector(`.ake-ui-directory__item[data-cat-id="${activeCategoryId}"]`);
+                    if (activeItem) activeItem.classList.add('is-active');
                     if (window.__akeRouter) window.__akeRouter.updateUrl('achievement', activeCategoryId);
                     loadCategoryDetail(activeCat, detailContainer);
                 }
@@ -162,13 +162,13 @@
         }
 
         async function loadCategoryDetail(category, container) {
-            container.innerHTML = `<div class="loader">${t('loading')}</div>`;
+            container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(category.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data);
                 window.AKEModuleOverview?.renderVersionDiff(container, data, data.__versionDiff?.baseline ? renderDetail(data.__versionDiff.baseline) : '');
             } catch (err) {
-                container.innerHTML = `<div class="error-message">${t('loadFailed', { message: err.message })}</div>`;
+                container.innerHTML = `<div class="ake-ui-state" data-state="error">${t('loadFailed', { message: err.message })}</div>`;
             }
         }
 
@@ -176,13 +176,13 @@
             let badges = [];
             if (isVersionAdded) {
                 const addedLabel = window.akeData?.t('versionDiff.added', null, '新增') || '新增';
-                badges.push(`<span class="badge version-added">${addedLabel}</span>`);
+                badges.push(`<span class="ake-ui-badge" data-tone="added">${addedLabel}</span>`);
             }
-            if (achv.canBeUpgraded) badges.push(`<span class="badge upgrade">${t('badges.upgradable')}</span>`);
-            if (achv.canBePlated) badges.push(`<span class="badge plate">${t('badges.platable')}</span>`);
-            if (achv.applyRareEffect) badges.push(`<span class="badge rare">${t('badges.rareEffect')}</span>`);
-            if (achv.noObtainCanView === false) badges.push(`<span class="badge hidden">${t('badges.hidden')}</span>`);
-            return badges.length ? `<div class="badge-group">${badges.join('')}</div>` : '';
+            if (achv.canBeUpgraded) badges.push(`<span class="ake-ui-badge" data-tone="accent">${t('badges.upgradable')}</span>`);
+            if (achv.canBePlated) badges.push(`<span class="ake-ui-badge" data-tone="special">${t('badges.platable')}</span>`);
+            if (achv.applyRareEffect) badges.push(`<span class="ake-ui-badge" data-tone="special">${t('badges.rareEffect')}</span>`);
+            if (achv.noObtainCanView === false) badges.push(`<span class="ake-ui-badge" data-tone="danger">${t('badges.hidden')}</span>`);
+            return badges.length ? `<div class="ake-ui-card__badges">${badges.join('')}</div>` : '';
         }
 
         function renderAchievementLevels(achv) {
@@ -226,15 +226,15 @@
                 const badgesHtml = renderBadges(achv, addedAchievementIds.has(achv.id));
                 const levelsHtml = renderAchievementLevels(achv);
                 html += `
-                    <div class="achievement-card">
-                        <div class="achievement-header">
-                            <span class="achievement-name">${achv.name}</span>
-                            ${badgesHtml}
+                    <article class="ake-ui-card" data-ake-component="card" data-card-kind="achievement" data-density="regular">
+                        <div class="ake-ui-card__content">
+                            <header class="ake-ui-card__header">
+                                <span class="ake-ui-card__title">${achv.name}</span>
+                                ${badgesHtml}
+                            </header>
+                            <div class="ake-ui-card__body">${levelsHtml}</div>
                         </div>
-                        <div class="achievement-levels">
-                            ${levelsHtml}
-                        </div>
-                    </div>
+                    </article>
                 `;
             });
             return html;
@@ -247,10 +247,10 @@
 
             if (groupKeys.length === 1 && groupKeys[0] === 'default') {
                 return `
-                    <div class="category-title">${t('detail.title', { name: data.categoryName || '' })}</div>
-                    <div class="achievement-group">
+                    <div class="ake-ui-detail" data-detail-kind="achievement"><h2 class="ake-ui-detail-title">${t('detail.title', { name: data.categoryName || '' })}</h2>
+                    <div class="ake-ui-card-grid" data-size="regular">
                         ${renderGroupAchievements(group.default, addedAchievementIds)}
-                    </div>
+                    </div></div>
                 `;
             } else {
                 let groupsHtml = '';
@@ -259,17 +259,16 @@
                     const groupName = key;
                     const achvMap = group[key];
                     groupsHtml += `
-                        <div class="group-section">
-                            <h3 class="group-title">${groupName}</h3>
-                            <div class="achievement-group">
+                        <div class="ake-ui-section">
+                            <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${groupName}</h3></div>
+                            <div class="ake-ui-card-grid" data-size="regular">
                                 ${renderGroupAchievements(achvMap, addedAchievementIds)}
                             </div>
                         </div>
                     `;
                 });
                 return `
-                    <div class="category-title">${t('detail.title', { name: data.categoryName || '' })}</div>
-                    ${groupsHtml}
+                    <div class="ake-ui-detail" data-detail-kind="achievement"><h2 class="ake-ui-detail-title">${t('detail.title', { name: data.categoryName || '' })}</h2>${groupsHtml}</div>
                 `;
             }
         }

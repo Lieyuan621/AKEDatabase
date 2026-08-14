@@ -403,7 +403,7 @@
     function renderDirectoryNode(target, directory) {
         if (!target) return;
         if (!directory.length) {
-            target.innerHTML = `<div class="buffv3-empty-inline">${escapeHtml(t('empty.noMatches', null, '没有匹配的 Buff'))}</div>`;
+            target.innerHTML = `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noMatches', null, '没有匹配的 Buff'))}</div>`;
             return;
         }
         const sectionCounts = directory.reduce((map, owner) => {
@@ -413,27 +413,27 @@
         let previousSection = '';
         target.innerHTML = directory.map(owner => {
             const sectionHeader = owner.sectionId !== previousSection
-                ? `<div class="buffv3-directory-heading"><span>${escapeHtml(owner.sectionName)}</span><span>${escapeHtml(t('list.sectionCount', { count: sectionCounts.get(owner.sectionId) }, `${sectionCounts.get(owner.sectionId)} 条`))}</span></div>`
+                ? `<div class="ake-ui-tree__section-header"><span>${escapeHtml(owner.sectionName)}</span><span>${escapeHtml(t('list.sectionCount', { count: sectionCounts.get(owner.sectionId) }, `${sectionCounts.get(owner.sectionId)} 条`))}</span></div>`
                 : '';
             previousSection = owner.sectionId;
             const ownerOpen = Boolean(state.query) || state.expandedOwners.has(owner.id);
             const items = ownerOpen ? owner.items.map(item => `
-                <button type="button" class="buffv3-buff-item${item.id === state.activeBuffId ? ' is-active' : ''}"
+                <button type="button" class="ake-ui-tree__item${item.id === state.activeBuffId ? ' is-active' : ''}"
                     data-buffv3-action="select-buff" data-buff-id="${escapeHtml(item.id)}"
                     aria-current="${item.id === state.activeBuffId ? 'true' : 'false'}" title="${escapeHtml(item.id)}">
-                    <span class="buffv3-buff-name">${escapeHtml(item.displayName)}</span>
-                    <span class="buffv3-buff-kind">BuffData</span>
+                    <span class="ake-ui-tree__item-title">${escapeHtml(item.displayName)}</span>
+                    <span class="ake-ui-tree__item-subtitle">BuffData</span>
                 </button>`).join('') : '';
             const icon = owner.icon
-                ? `<img class="buffv3-owner-icon" src="${escapeHtml(owner.icon)}" alt="">`
-                : `<span class="buffv3-owner-marker" aria-hidden="true"></span>`;
-            return `${sectionHeader}<section class="buffv3-owner${ownerOpen ? ' is-open' : ''}">
-                <button type="button" class="buffv3-owner-toggle" data-buffv3-action="toggle-owner"
+                ? `<img class="ake-ui-tree__group-icon" src="${escapeHtml(owner.icon)}" alt="">`
+                : `<span class="ake-ui-tree__group-marker" aria-hidden="true"></span>`;
+            return `${sectionHeader}<section class="ake-ui-tree__group${ownerOpen ? ' is-open' : ''}">
+                <button type="button" class="ake-ui-tree__group-toggle" data-buffv3-action="toggle-owner"
                     data-owner-id="${escapeHtml(owner.id)}" aria-expanded="${ownerOpen ? 'true' : 'false'}">
-                    <span class="buffv3-owner-name">${icon}<span>${escapeHtml(owner.name)}</span></span>
-                    <span class="buffv3-owner-count">${escapeHtml(owner.items.length)}</span>
+                    <span class="ake-ui-tree__group-label">${icon}<span>${escapeHtml(owner.name)}</span></span>
+                    <span class="ake-ui-tree__group-count">${escapeHtml(owner.items.length)}</span>
                 </button>
-                <div class="buffv3-buff-list">${items}</div>
+                <div class="ake-ui-tree__children">${items}</div>
             </section>`;
         }).join('');
     }
@@ -463,11 +463,11 @@
     }
 
     function loadingHtml(title, message) {
-        return `<div class="buffv3-state buffv3-state--loading" role="status"><span class="buffv3-spinner" aria-hidden="true"></span><div><h2>${escapeHtml(title)}</h2><p>${escapeHtml(message)}</p></div></div>`;
+        return `<div class="ake-ui-state" data-state="loading" role="status"><span class="ake-ui-spinner" aria-hidden="true"></span><div><h2>${escapeHtml(title)}</h2><p>${escapeHtml(message)}</p></div></div>`;
     }
 
     function errorHtml(title, message, retry) {
-        return `<div class="buffv3-state buffv3-state--error" role="alert"><div><h2>${escapeHtml(title)}</h2><p>${escapeHtml(message)}</p>${retry ? `<button type="button" class="buffv3-command-button" data-buffv3-action="retry">${escapeHtml(t('common.retry', null, '重试'))}</button>` : ''}</div></div>`;
+        return `<div class="ake-ui-state" data-state="error" role="alert"><div><h2>${escapeHtml(title)}</h2><p>${escapeHtml(message)}</p>${retry ? `<button type="button" class="buffv3-command-button" data-buffv3-action="retry">${escapeHtml(t('common.retry', null, '重试'))}</button>` : ''}</div></div>`;
     }
 
     async function fetchBuff(item) {
@@ -796,7 +796,7 @@
                 converted: key === 'attributes' && modifiers.isConvertedAttribute === true
             })).join('') + renderTags();
         const body = conversionNotice + content;
-        return `<section class="buffv3-section"><div class="buffv3-section-heading"><div><span class="buffv3-eyebrow">BuffData</span><h2>${escapeHtml(t('sections.effects', null, '战斗效果'))}</h2></div></div>${body || `<div class="buffv3-empty-panel">${escapeHtml(t('empty.noEffects', null, '没有可展示的战斗效果'))}</div>`}</section>`;
+        return `<section class="ake-ui-section"><header class="ake-ui-section__header"><div><span class="ake-ui-detail-eyebrow">BuffData</span><h2 class="ake-ui-section__title">${escapeHtml(t('sections.effects', null, '战斗效果'))}</h2></div></header>${body || `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noEffects', null, '没有可展示的战斗效果'))}</div>`}</section>`;
     }
 
     function eventChildrenMap() {
@@ -935,7 +935,7 @@
         const roots = seeds.filter(event => !seedIds.has(String(event.parentEventIndex)));
         const candidates = roots.length ? roots : seeds;
         const html = candidates.map(event => renderActionNode(event, children, new Set(), 0)).join('');
-        return html || `<div class="buffv3-empty-inline">${escapeHtml(t('empty.noVisibleActions', null, '没有可展示的战斗动作'))}</div>`;
+        return html || `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noVisibleActions', null, '没有可展示的战斗动作'))}</div>`;
     }
 
     function performanceToggle() {
@@ -955,7 +955,7 @@
 
     function renderEventsTab() {
         const groups = state.analysis.eventGroups;
-        if (!groups.length) return `<div class="buffv3-empty-panel">${escapeHtml(t('empty.noEvents', null, '没有事件动作'))}</div>`;
+        if (!groups.length) return `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noEvents', null, '没有事件动作'))}</div>`;
         const children = eventChildrenMap();
         return `<div class="buffv3-tab-toolbar">${performanceToggle()}</div><div class="buffv3-event-groups">${groups.map((group, index) => {
             const events = groupEvents(group);
@@ -974,7 +974,7 @@
 
     function renderTimelineTab() {
         const groups = [...state.analysis.timelineGroups].sort((a, b) => timelineRange(a).start - timelineRange(b).start);
-        if (!groups.length) return `<div class="buffv3-empty-panel">${escapeHtml(t('empty.noTimeline', null, '没有时间轴动作'))}</div>`;
+        if (!groups.length) return `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noTimeline', null, '没有时间轴动作'))}</div>`;
         const ranges = groups.map(timelineRange);
         const finiteEnd = Math.max(1, ...ranges.filter(range => !range.openEnded).map(range => range.end), ...ranges.map(range => range.start + 1));
         return `<div class="buffv3-tab-toolbar">${performanceToggle()}</div><div class="buffv3-timeline-axis"><span>0</span><span>${escapeHtml(t('units.frames', { value: finiteEnd }, `${finiteEnd} 帧`))}</span></div><div class="buffv3-timeline-groups">${groups.map((group, index) => {
@@ -1015,7 +1015,7 @@
 
     function renderLinksTab() {
         const links = normalizedLinks();
-        if (!links.length) return `<div class="buffv3-empty-panel">${escapeHtml(t('empty.noLinks', null, '当前 Buff 未直接引用其他 Buff'))}</div>`;
+        if (!links.length) return `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noLinks', null, '当前 Buff 未直接引用其他 Buff'))}</div>`;
         return `<div class="buffv3-link-note">${escapeHtml(t('header.linksScope', null, '仅展示当前 BuffData 内可确认的直接关联'))}</div><div class="buffv3-link-list">${links.map(link => {
             const id = linkId(link);
             const dynamic = link.dynamic === true;
@@ -1083,7 +1083,7 @@
             renderDependencies()
         ].join('');
         const warnings = state.analysis.warnings.length ? `<section class="buffv3-technical-block buffv3-technical-block--warning"><h3>${escapeHtml(t('sections.warnings', null, '解析提示'))}</h3><div class="buffv3-warning-list">${state.analysis.warnings.map(warning => `<div><code>${escapeHtml(warning?.code || 'INFO')}</code><span>${escapeHtml(warningText(warning))}</span></div>`).join('')}</div></section>` : '';
-        return content || warnings ? `${content}${warnings}` : `<div class="buffv3-empty-panel">${escapeHtml(t('empty.noTechnical', null, '没有额外技术参数'))}</div>`;
+        return content || warnings ? `${content}${warnings}` : `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noTechnical', null, '没有额外技术参数'))}</div>`;
     }
 
     function tabDefinitions() {
@@ -1104,13 +1104,13 @@
         const tabs = tabDefinitions();
         const renderers = { events: renderEventsTab, timeline: renderTimelineTab, links: renderLinksTab, technical: renderTechnicalTab };
         const logicTitle = t('sections.eventLogic', null, '触发与执行逻辑');
-        return `<section class="buffv3-section buffv3-logic-section"><div class="buffv3-section-heading"><div><span class="buffv3-eyebrow">ActionData</span><h2>${escapeHtml(logicTitle)}</h2></div></div><div class="buffv3-tabs" role="tablist" aria-label="${escapeHtml(logicTitle)}">${tabs.map(([id, key, fallback, count]) => `
-            <button id="buffv3Tab-${id}" type="button" role="tab" aria-selected="${state.activeTab === id ? 'true' : 'false'}" aria-controls="buffv3TabPanel" tabindex="${state.activeTab === id ? '0' : '-1'}" class="${state.activeTab === id ? 'is-active' : ''}" data-buffv3-action="switch-tab" data-tab="${id}"><span>${escapeHtml(t(key, null, fallback))}</span><small>${escapeHtml(count)}</small></button>`).join('')}</div><div class="buffv3-tab-panel" id="buffv3TabPanel" role="tabpanel" aria-labelledby="buffv3Tab-${state.activeTab}">${renderers[state.activeTab]?.() || renderEventsTab()}</div></section>`;
+        return `<section class="ake-ui-section buffv3-logic-section"><header class="ake-ui-section__header"><div><span class="ake-ui-detail-eyebrow">ActionData</span><h2 class="ake-ui-section__title">${escapeHtml(logicTitle)}</h2></div></header><div class="ake-ui-tabs" data-variant="segment" data-layout="equal" role="tablist" aria-label="${escapeHtml(logicTitle)}">${tabs.map(([id, key, fallback, count]) => `
+            <button id="buffv3Tab-${id}" type="button" role="tab" aria-selected="${state.activeTab === id ? 'true' : 'false'}" aria-controls="buffv3TabPanel" tabindex="${state.activeTab === id ? '0' : '-1'}" class="ake-ui-tabs__button${state.activeTab === id ? ' is-active' : ''}" data-buffv3-action="switch-tab" data-tab="${id}"><span>${escapeHtml(t(key, null, fallback))}</span><small>${escapeHtml(count)}</small></button>`).join('')}</div><div class="ake-ui-tabs__panel" id="buffv3TabPanel" role="tabpanel" aria-labelledby="buffv3Tab-${state.activeTab}">${renderers[state.activeTab]?.() || renderEventsTab()}</div></section>`;
     }
 
     function renderDetail() {
         if (!state.currentItem || !state.activeOwner) {
-            elements.detail.innerHTML = `<div class="buffv3-state" role="status"><div><h2>${escapeHtml(buffT('title', null, 'Buff'))}</h2><p>${escapeHtml(t('empty.select', null, '请选择 Buff'))}</p></div></div>`;
+            elements.detail.innerHTML = `<div class="ake-ui-state" data-state="empty" role="status"><div><h2>${escapeHtml(buffT('title', null, 'Buff'))}</h2><p>${escapeHtml(t('empty.select', null, '请选择 Buff'))}</p></div></div>`;
             return;
         }
         const item = state.currentItem;
@@ -1120,15 +1120,15 @@
         const buffIcon = identity.hasIcon === false ? '' : iconPath(configuredIcon);
         const ownerIcon = owner.icon ? `<img src="${escapeHtml(owner.icon)}" alt="">` : '';
         const metrics = coreMetrics();
-        elements.detail.innerHTML = `<div class="buffv3-detail-inner">
-            <header class="buffv3-detail-header">
-                <div class="buffv3-detail-heading${buffIcon ? '' : ' without-icon'}">${buffIcon ? `<img class="buffv3-detail-icon" src="${escapeHtml(buffIcon)}" alt="">` : ''}<div class="buffv3-detail-copy">
-                    <div class="buffv3-header-meta"><span class="buffv3-owner-chip">${ownerIcon}<span>${escapeHtml(owner.name)}</span></span><span>BuffData</span></div>
-                    <h1>${escapeHtml(item.displayName)}</h1><code>${escapeHtml(item.id)}</code>
-                </div></div>
-                <div class="buffv3-owner-hint"><strong>${escapeHtml(t('header.ownerHint', null, '归属提示'))}</strong><span>${escapeHtml(t('header.prefixNotice', null, '目录归属由 ID 前缀推断，不代表运行时来源。'))}</span></div>
+        elements.detail.innerHTML = `<div class="ake-ui-detail" data-detail-kind="buff">
+            <header class="ake-ui-detail-header" data-layout="showcase">
+                <div class="ake-ui-detail-identity">${buffIcon ? `<img class="ake-ui-detail-icon" src="${escapeHtml(buffIcon)}" alt="">` : ''}<div class="ake-ui-detail-copy">
+                    <div class="ake-ui-detail-meta"><span class="buffv3-owner-chip">${ownerIcon}<span>${escapeHtml(owner.name)}</span></span><span>BuffData</span></div>
+                    <h1 class="ake-ui-detail-title">${escapeHtml(item.displayName)}</h1><code class="ake-ui-detail-id">${escapeHtml(item.id)}</code>
+                </div>
+                </div><aside class="ake-ui-detail-aside"><strong class="ake-ui-detail-aside__title">${escapeHtml(t('header.ownerHint', null, '归属提示'))}</strong><span class="ake-ui-detail-aside__body">${escapeHtml(t('header.prefixNotice', null, '目录归属由 ID 前缀推断，不代表运行时来源。'))}</span></aside>
             </header>
-            <section class="buffv3-section"><div class="buffv3-section-heading"><div><span class="buffv3-eyebrow">Config</span><h2>${escapeHtml(t('sections.core', null, '核心指标'))}</h2></div></div><div class="buffv3-metric-grid">${metrics.join('') || `<div class="buffv3-empty-inline">${escapeHtml(t('empty.noCoreMetrics', null, '没有可展示的核心指标'))}</div>`}</div></section>
+            <section class="ake-ui-section"><header class="ake-ui-section__header"><div><span class="ake-ui-detail-eyebrow">Config</span><h2 class="ake-ui-section__title">${escapeHtml(t('sections.core', null, '核心指标'))}</h2></div></header><div class="buffv3-metric-grid">${metrics.join('') || `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noCoreMetrics', null, '没有可展示的核心指标'))}</div>`}</div></section>
             ${renderEffectsPanel()}
             ${renderTabs()}
         </div>`;

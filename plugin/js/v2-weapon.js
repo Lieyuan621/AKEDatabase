@@ -60,11 +60,11 @@
         for (let r = 1; r <= 6; r++) {
             if (!existR.has(r)) continue;
             const btn = document.createElement('span');
-            btn.className = `filter-btn ${selectedRarities.has(r) ? 'active' : ''}`;
+            btn.className = `ake-ui-filter__button ${selectedRarities.has(r) ? 'is-active' : ''}`;
             btn.textContent = commonT('rarityStars', { rarity: r });
             btn.addEventListener('click', () => {
                 selectedRarities.has(r) ? selectedRarities.delete(r) : selectedRarities.add(r);
-                btn.classList.toggle('active');
+                btn.classList.toggle('is-active');
                 renderWeaponList();
             });
             rc.appendChild(btn);
@@ -76,11 +76,11 @@
             const id = parseInt(tid, 10);
             if (!existT.has(id)) continue;
             const btn = document.createElement('span');
-            btn.className = `filter-btn ${selectedTypes.has(id) ? 'active' : ''}`;
+            btn.className = `ake-ui-filter__button ${selectedTypes.has(id) ? 'is-active' : ''}`;
             btn.textContent = getWeaponTypeName(id);
             btn.addEventListener('click', () => {
                 selectedTypes.has(id) ? selectedTypes.delete(id) : selectedTypes.add(id);
-                btn.classList.toggle('active');
+                btn.classList.toggle('is-active');
                 renderWeaponList();
             });
             tc.appendChild(btn);
@@ -96,9 +96,9 @@
         mobileContent.innerHTML = '';
         filtered.forEach(w => {
             const div = document.createElement('div');
-            div.className = `mobile-list-item ${w.weaponId === activeWeaponId ? 'active' : ''}`;
+            div.className = `ake-ui-directory__item ${w.weaponId === activeWeaponId ? 'is-active' : ''}`;
             window.AKEModuleOverview?.markVersionChange(div, w);
-            div.innerHTML = `<div class="item-name">${escapeHtml(w.name)}</div><div class="item-id">${escapeHtml(w.weaponId)}</div>`;
+            div.innerHTML = `<div class="ake-ui-directory__item-title">${escapeHtml(w.name)}</div><div class="ake-ui-directory__item-id">${escapeHtml(w.weaponId)}</div>`;
             div.addEventListener('click', () => {
                 activeWeaponId = w.weaponId;
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_weapon', w.weaponId);
@@ -108,8 +108,8 @@
             mobileContent.appendChild(div);
         });
     }
-    function openMobileList() { buildMobileList(); mobileOverlay.style.display = 'flex'; }
-    function closeMobileList() { mobileOverlay.style.display = 'none'; }
+    function openMobileList() { buildMobileList(); mobileOverlay.classList.add('is-open'); mobileOverlay.setAttribute('aria-hidden', 'false'); }
+    function closeMobileList() { mobileOverlay.classList.remove('is-open'); mobileOverlay.setAttribute('aria-hidden', 'true'); }
     if (mobileBtn) mobileBtn.addEventListener('click', openMobileList);
     if (mobileOverlay) mobileOverlay.addEventListener('click', e => { if (e.target === mobileOverlay) closeMobileList(); });
 
@@ -134,7 +134,7 @@
             group: item => ({ id: String(item.weaponType), name: getWeaponTypeName(item.weaponType, 'unknownType'), order: Number(item.weaponType) }),
             onReset: () => { activeWeaponId = null; },
             onSelect: item => { activeWeaponId = item.weaponId; renderWeaponList(); },
-            sidebarSelector: item => `.weapon-item[data-weapon-id="${CSS.escape(item.weaponId)}"]`,
+            sidebarSelector: item => `.ake-ui-directory__item[data-weapon-id="${CSS.escape(item.weaponId)}"]`,
             items: items.map(item => ({ ...item, id: item.weaponId, image: item.icon, fallback: t('overview.fallback') }))
         });
     }
@@ -147,49 +147,45 @@
         const filtered = filterWeapons(allWeapons);
         container.innerHTML = '';
         if (filtered.length === 0) {
-            container.innerHTML = `<div class="loader">${t('noMatches')}</div>`;
-            if (detailContainer) detailContainer.innerHTML = `<div class="loader">${t('select')}</div>`;
+            container.innerHTML = `<div class="ake-ui-state">${t('noMatches')}</div>`;
+            if (detailContainer) detailContainer.innerHTML = `<div class="ake-ui-state">${t('select')}</div>`;
             activeWeaponId = null;
             return;
         }
 
         filtered.forEach((w, index) => {
             const item = document.createElement('div');
-            item.className = `weapon-item ${w.weaponId === activeWeaponId ? 'active' : (!activeWeaponId && index === 0 && !window.AKEModuleOverview?.isActive('weapon') ? 'active' : '')}`;
+            item.className = `ake-ui-directory__item ${w.weaponId === activeWeaponId ? 'is-active' : (!activeWeaponId && index === 0 && !window.AKEModuleOverview?.isActive('weapon') ? 'is-active' : '')}`;
             window.AKEModuleOverview?.markVersionChange(item, w);
             item.dataset.weaponId = w.weaponId;
-
-            const rb = document.createElement('span');
-            rb.className = `rarity-bar rarity-${w.rarity}`;
-            rb.title = commonT('rarityLabel', { rarity: w.rarity });
+            item.dataset.akeRarity = String(w.rarity || 1);
 
             const icon = document.createElement('img');
-            icon.className = 'weapon-icon';
+            icon.className = 'ake-ui-directory__item-icon';
             icon.src = w.icon || '';
 
             const info = document.createElement('div');
-            info.className = 'weapon-info';
+            info.className = 'ake-ui-directory__item-copy';
             const nm = document.createElement('div');
-            nm.className = 'weapon-title';
+            nm.className = 'ake-ui-directory__item-title';
             nm.textContent = w.name;
+            const nameRow = document.createElement('div');
+            nameRow.className = 'weapon-name-row';
             const id = document.createElement('div');
-            id.className = 'weapon-id';
+            id.className = 'ake-ui-directory__item-id';
             id.textContent = w.weaponId;
-            info.appendChild(nm);
-            info.appendChild(id);
-
             const typeTag = document.createElement('span');
             typeTag.className = 'weapon-type-tag';
             typeTag.textContent = getWeaponTypeName(w.weaponType);
+            nameRow.append(nm, typeTag);
+            info.replaceChildren(nameRow, id);
 
-            item.appendChild(rb);
             item.appendChild(icon);
             item.appendChild(info);
-            item.appendChild(typeTag);
 
             item.addEventListener('click', () => {
-                document.querySelectorAll('.weapon-item').forEach(el => el.classList.remove('active'));
-                item.classList.add('active');
+                document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
+                item.classList.add('is-active');
                 activeWeaponId = w.weaponId;
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_weapon', w.weaponId);
                 loadWeaponDetail(w, detailContainer);
@@ -218,15 +214,15 @@
                 return;
             }
             activeWeaponId = filtered[0].weaponId;
-            const f = container.querySelector('.weapon-item');
-            if (f) f.classList.add('active');
+            const f = container.querySelector('.ake-ui-directory__item');
+            if (f) f.classList.add('is-active');
             if (window.__akeRouter) window.__akeRouter.updateUrl('v2_weapon', activeWeaponId);
             loadWeaponDetail(filtered[0], detailContainer);
         } else if (activeExists) {
             const aw = filtered.find(w => w.weaponId === activeWeaponId);
             if (aw) {
-                const ad = container.querySelector(`.weapon-item[data-weapon-id="${activeWeaponId}"]`);
-                if (ad) ad.classList.add('active');
+                const ad = container.querySelector(`.ake-ui-directory__item[data-weapon-id="${activeWeaponId}"]`);
+                if (ad) ad.classList.add('is-active');
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_weapon', activeWeaponId);
                 loadWeaponDetail(aw, detailContainer);
             }
@@ -277,7 +273,7 @@
         const skillPatch = data.skillpatchtable || {};
         if (skillIds.length === 0) return '';
 
-        let html = `<h3>${t('sections.skillData')}</h3><div class="skill-list">`;
+        let html = `<h3>${t('sections.skillData')}</h3><div class="ake-ui-card-grid" data-size="regular" data-columns="3">`;
         skillIds.forEach(skillId => {
             const skillData = skillPatch[skillId];
             if (!skillData || !skillData.SkillPatchDataBundle) return;
@@ -301,9 +297,9 @@
             });
 
             html += `
-                <div class="skill-item">
-                    <div class="skill-name">${escapeHtml(skillName)}</div>
-                    <div class="skill-levels">${levelRows.join('')}</div>
+                <div class="ake-ui-card" data-card-kind="weapon-skill" data-density="regular">
+                    <div class="ake-ui-card__title">${escapeHtml(skillName)}</div>
+                    <div class="ake-ui-card__body">${levelRows.join('')}</div>
                 </div>
             `;
         });
@@ -319,7 +315,7 @@
         const btData = btTable[templateId];
         if (!btData || !btData.list) return '';
 
-        let html = `<h3>${t('sections.breakthroughMaterials')}</h3><div class="break-grid">`;
+        let html = `<h3>${t('sections.breakthroughMaterials')}</h3><div class="ake-ui-card-grid" data-size="narrow">`;
         btData.list.forEach(bt => {
             const lv = bt.breakthroughShowLv;
             const gold = bt.breakthroughGold || 0;
@@ -348,10 +344,9 @@
             }
 
             html += `
-                <div class="break-card">
-                    <div class="break-card-title">${t('breakthroughLevel', { level: lv === 0 ? t('initial') : lv })}</div>
-                    ${costsHtml}
-                    ${boundsHtml}
+                <div class="ake-ui-card" data-card-kind="weapon-break" data-density="regular">
+                    <div class="ake-ui-card__title">${t('breakthroughLevel', { level: lv === 0 ? t('initial') : lv })}</div>
+                    <div class="ake-ui-card__body">${costsHtml}${boundsHtml}</div>
                 </div>
             `;
         });
@@ -367,7 +362,7 @@
         const ttData = ttTable[templateId];
         if (!ttData || !ttData.list) return '';
 
-        let html = `<h3>${t('sections.potentials')}</h3><div class="talent-grid">`;
+        let html = `<h3>${t('sections.potentials')}</h3><div class="ake-ui-card-grid" data-size="narrow">`;
         ttData.list.forEach(talent => {
             const lv = talent.talentLv;
             const bounds = talent.skillLevelExtraBounds || [];
@@ -378,9 +373,9 @@
                 }
             });
             html += `
-                <div class="talent-card">
-                    <div class="talent-lv">${t('potentialLevel', { level: lv })}</div>
-                    <div class="talent-info">${infoHtml || t('noExtraEffect')}</div>
+                <div class="ake-ui-card" data-card-kind="weapon-talent" data-density="regular">
+                    <div class="ake-ui-card__title">${t('potentialLevel', { level: lv })}</div>
+                    <div class="ake-ui-card__body">${infoHtml || t('noExtraEffect')}</div>
                 </div>
             `;
         });
@@ -424,8 +419,8 @@
         return `
             <div class="detail-atk">
                 <h3>${t('baseAttackRange', { max: upgradeData.list.length })}</h3>
-                <div class="atk-table-container">
-                    <table class="atk-table">
+                <div class="ake-ui-table-shell">
+                    <table class="ake-ui-table">
                         <thead><tr><th>${commonT('level')}</th><th>${commonT('attack')}</th></tr></thead>
                         <tbody>${rowsToRender.join('')}</tbody>
                     </table>
@@ -453,17 +448,18 @@
         const talentHtml = renderTalent(data);
 
         return `
-            <div class="detail-header">
-                <div class="detail-left">
-                    <div class="detail-left-top">
-                        <div class="detail-icon">
+            <article class="ake-ui-detail" data-detail-kind="weapon" data-accent="rarity" data-accent-value="${rarity}">
+            <div class="ake-ui-detail-header" data-layout="showcase">
+                <div class="ake-ui-detail-main">
+                    <div class="ake-ui-detail-identity">
+                        <div class="ake-ui-detail-icon">
                             <img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png">
                         </div>
-                        <div class="detail-text">
-                            <div class="detail-title-row">
-                                <span class="detail-title">${escapeHtml(name)}</span>
-                                <span class="detail-rarity rarity-${rarity}" title="${commonT('rarityLabel', { rarity })}"></span>
-                                <span class="detail-id">${escapeHtml(weapon.weaponId)}</span>
+                        <div class="ake-ui-detail-copy">
+                            <div class="ake-ui-detail-title-row">
+                                <span class="ake-ui-detail-title">${escapeHtml(name)}</span>
+                                <span class="ake-ui-badge" data-accent="rarity" data-accent-value="${rarity}" title="${commonT('rarityLabel', { rarity })}">${commonT('rarityLabel', { rarity })}</span>
+                                <span class="ake-ui-detail-id">${escapeHtml(weapon.weaponId)}</span>
                             </div>
                             <div class="detail-desc">${escapeHtml(desc)}</div>
                             ${decoDesc ? `<div class="detail-deco">${escapeHtml(decoDesc)}</div>` : ''}
@@ -471,8 +467,8 @@
                     </div>
                     ${atkHtml}
                 </div>
-                <div class="detail-right">
-                    <div class="detail-iconfull">
+                <div class="ake-ui-detail-visual">
+                    <div class="ake-ui-detail-visual-frame">
                         <img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/gachaweapon/${iconId}.png">
                     </div>
                 </div>
@@ -481,11 +477,12 @@
             ${breakHtml}
             ${talentHtml}
             ${weaponDesc ? `<h3>${t('sections.story')}</h3><div class="weapon-desc">${parseText(weaponDesc)}</div>` : ''}
+            </article>
         `;
     }
 
     async function loadWeaponDetail(weapon, container) {
-        container.innerHTML = `<div class="loader">${t('loading')}</div>`;
+        container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
         try {
             const data = await (window.akeFetch || fetch)(weapon.contentFile).then(r => r.json());
             currentWeaponData = data;
@@ -498,7 +495,7 @@
                 toggleBtn.addEventListener('click', e => {
                     e.preventDefault();
                     showAllWeaponLevels = !showAllWeaponLevels;
-                    const tbody = container.querySelector('.atk-table tbody');
+                    const tbody = container.querySelector('.ake-ui-table tbody');
                     if (tbody && currentWeaponData) {
                         container.innerHTML = renderDetail(currentWeaponData, currentWeapon);
                         window.AKEModuleOverview?.renderVersionDiff(container, currentWeaponData, currentWeaponData.__versionDiff?.baseline ? renderDetail(currentWeaponData.__versionDiff.baseline, currentWeapon) : '');
@@ -513,7 +510,8 @@
             }
         } catch (err) {
             const error = document.createElement('div');
-            error.className = 'error-message';
+            error.className = 'ake-ui-state';
+            error.dataset.state = 'error';
             error.textContent = t('loadFailed', { message: err.message });
             container.replaceChildren(error);
         }

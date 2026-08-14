@@ -1,16 +1,16 @@
 (function () {
     const roots = new Map();
     const searchSelectors = {
-        v3_cc: '.v2cc-search',
-        research: '.research-module .list-search',
-        v3_character: '.character-module .list-search',
-        v3_weapon: '.weapon-module .list-search-fixed',
-        v3_enemy: '.v2e-search',
-        v3_equip: '.v2eq-search',
-        v3_activity: '.activity-module .list-search',
-        v3_item: '.v2i-search',
-        v3_dungeon: '.v2d-search',
-        v3_achievement: '.achievement-module .list-search',
+        v3_cc: '[data-ake-module="cc"] .ake-ui-directory__search',
+        research: '[data-ake-module="research"] .ake-ui-directory__search',
+        v3_character: '[data-ake-module="character"] .ake-ui-directory__search',
+        v3_weapon: '[data-ake-module="weapon"] .ake-ui-directory__search',
+        v3_enemy: '[data-ake-module="enemy"] .ake-ui-directory__search',
+        v3_equip: '[data-ake-module="equip"] .ake-ui-directory__search',
+        v3_activity: '[data-ake-module="activity"] .ake-ui-directory__search',
+        v3_item: '[data-ake-module="item"] .ake-ui-directory__search',
+        v3_dungeon: '[data-ake-module="dungeon"] .ake-ui-directory__search',
+        v3_achievement: '[data-ake-module="achievement"] .ake-ui-directory__search',
         spawn: '.spawner-module .list-search'
     };
     function text(value, fallback) {
@@ -146,17 +146,19 @@
 
         container.innerHTML = '';
         const root = document.createElement('div');
-        root.className = 'ake-overview';
+        root.className = 'ake-ui-page';
 
         const header = document.createElement('header');
-        header.className = 'ake-overview__header';
+        header.className = 'ake-ui-page__header';
         const heading = document.createElement('div');
         const eyebrow = document.createElement('div');
-        eyebrow.className = 'ake-overview__eyebrow';
+        eyebrow.className = 'ake-ui-page__eyebrow';
         eyebrow.textContent = window.akeData?.t('overview.count', { count: items.length }, `${items.length} 条数据`) || `${items.length} 条数据`;
         const title = document.createElement('h1');
+        title.className = 'ake-ui-page__title';
         title.textContent = options.title;
         const description = document.createElement('p');
+        description.className = 'ake-ui-page__summary';
         description.textContent = options.description || window.akeData?.t('overview.hint', null, '选择卡片查看完整数据') || '选择卡片查看完整数据';
         heading.append(eyebrow, title, description);
         header.appendChild(heading);
@@ -166,27 +168,37 @@
             (a.order ?? 999) - (b.order ?? 999) || text(a.name).localeCompare(text(b.name), window.akeData?.getLanguage?.() === 'EN' ? 'en' : 'zh-CN'));
         groupList.forEach((group) => {
             const section = document.createElement('section');
-            section.className = 'ake-overview__section';
+            section.className = 'ake-ui-section';
+            const sectionHeader = document.createElement('header');
+            sectionHeader.className = 'ake-ui-section__header';
             const groupTitle = document.createElement('h2');
-            groupTitle.innerHTML = `<span></span><b></b>`;
+            groupTitle.className = 'ake-ui-section__title';
+            groupTitle.innerHTML = `<span></span>`;
             groupTitle.querySelector('span').textContent = group.name;
-            groupTitle.querySelector('b').textContent = group.items.length;
-            section.appendChild(groupTitle);
+            const groupCount = document.createElement('span');
+            groupCount.className = 'ake-ui-section__meta';
+            groupCount.textContent = group.items.length;
+            sectionHeader.append(groupTitle, groupCount);
+            section.appendChild(sectionHeader);
 
             const grid = document.createElement('div');
-            grid.className = 'ake-overview__grid';
+            grid.className = 'ake-ui-card-grid';
+            grid.dataset.size = 'regular';
             group.items.forEach((item) => {
                 const card = document.createElement('button');
                 card.type = 'button';
-                card.className = 'ake-overview__card';
-                if (item.changeType) {
-                    card.classList.add(`ake-overview__card--${item.changeType}`);
-                    if (item.changeType === 'modified') card.classList.add('ake-overview__card--changed');
-                }
-                if (Number(item.rarity) >= 1 && Number(item.rarity) <= 6) {
-                    card.classList.add(`ake-overview__card--rarity-${item.rarity}`);
-                }
-                if (item.outline) card.classList.add(`ake-overview__card--${item.outline}`);
+                card.className = 'ake-ui-card has-media';
+                card.dataset.akeComponent = 'card';
+                card.dataset.cardKind = 'overview';
+                window.AKEUI?.enhanceCard(card, {
+                    variant: 'entity',
+                    density: 'compact',
+                    layout: 'aligned',
+                    interactive: true,
+                    accent: Number(item.rarity) >= 1 && Number(item.rarity) <= 6
+                        ? { type: 'rarity', value: item.rarity }
+                        : item.outline ? { type: 'status', value: item.outline.replace(/^status-/, '') } : null
+                });
                 card.addEventListener('click', () => {
                     options.onSelect(item);
                     const selector = options.sidebarSelector?.(item);
@@ -197,7 +209,7 @@
                 });
 
                 const visual = document.createElement('div');
-                visual.className = 'ake-overview__visual';
+                visual.className = 'ake-ui-card__media';
                 if (item.image) {
                     const image = document.createElement('img');
                     image.src = item.image;
@@ -205,24 +217,29 @@
                     image.loading = 'lazy';
                     visual.appendChild(image);
                 } else {
-                    visual.classList.add('is-empty');
+                    visual.classList.add('is-placeholder');
                     visual.textContent = text(item.fallback, 'DATA');
                 }
 
                 const body = document.createElement('div');
-                body.className = 'ake-overview__body';
+                body.className = 'ake-ui-card__content';
                 const titleRow = document.createElement('div');
-                titleRow.className = 'ake-overview__title-row';
+                titleRow.className = 'ake-ui-card__header';
+                titleRow.appendChild(visual);
+                const heading = document.createElement('div');
+                heading.className = 'ake-ui-card__heading';
                 const cardTitle = document.createElement('h3');
+                cardTitle.className = 'ake-ui-card__title';
                 cardTitle.textContent = item.name;
-                titleRow.appendChild(cardTitle);
+                heading.appendChild(cardTitle);
+                titleRow.appendChild(heading);
                 if (item.icons?.length) {
                     const iconList = document.createElement('span');
-                    iconList.className = 'ake-overview__meta-icons';
+                    iconList.className = 'ake-ui-card__meta';
                     item.icons.forEach(icon => {
                         if (!icon?.src) return;
                         const image = document.createElement('img');
-                        image.className = 'ake-overview__meta-icon';
+                        image.className = 'ake-ui-meta-icon';
                         image.src = icon.src;
                         image.alt = icon.label || '';
                         image.title = icon.label || '';
@@ -232,13 +249,14 @@
                     titleRow.appendChild(iconList);
                 }
                 const id = document.createElement('div');
-                id.className = 'ake-overview__id';
+                id.className = 'ake-ui-card__id';
                 id.textContent = item.id;
                 const tags = document.createElement('div');
-                tags.className = 'ake-overview__tags';
+                tags.className = 'ake-ui-card__badges';
                 if (item.changeType) {
                     const changeTag = document.createElement('span');
-                    changeTag.className = `ake-overview__change-tag ake-overview__change-tag--${item.changeType}`;
+                    changeTag.className = 'ake-ui-badge';
+                    changeTag.dataset.tone = item.changeType;
                     changeTag.textContent = item.changeType === 'added'
                         ? (window.akeData?.t('versionDiff.added', null, '新增') || '新增')
                         : (window.akeData?.t('versionDiff.modified', null, '修改') || '修改');
@@ -246,11 +264,12 @@
                 }
                 (item.tags || []).filter(Boolean).forEach((tag) => {
                     const chip = document.createElement('span');
+                    chip.className = 'ake-ui-badge';
                     chip.textContent = tag;
                     tags.appendChild(chip);
                 });
                 body.append(titleRow, id, tags);
-                card.append(visual, body);
+                card.appendChild(body);
                 grid.appendChild(card);
             });
             section.appendChild(grid);
@@ -288,7 +307,7 @@
         container.classList.add('ake-module-search-row');
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = 'ake-module-home';
+        button.className = 'ake-ui-icon-button ake-module-home';
         button.title = window.akeData?.t('nav.home', null, '返回起始页') || '返回起始页';
         button.setAttribute('aria-label', button.title);
         button.innerHTML = '<span aria-hidden="true">⌂</span>';

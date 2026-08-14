@@ -203,7 +203,7 @@
                 .sort((a, b) => Number(a.sortId || 0) - Number(b.sortId || 0));
             countRoot.textContent = t('taskCount', { count: rows.length }, `${rows.length} 项`);
             if (!rows.length) {
-                tasksRoot.innerHTML = `<div class="misc-task-empty">${escape(t('noTasks', null, '没有匹配的任务'))}</div>`;
+                tasksRoot.innerHTML = `<div class="ake-ui-state" data-state="empty" data-density="compact">${escape(t('noTasks', null, '没有匹配的任务'))}</div>`;
                 return;
             }
             tasksRoot.innerHTML = rows.map(task => {
@@ -212,18 +212,18 @@
                 const release = labelTime(label.labelId || group.labelId, seasonRange);
                 const releaseState = stateFor(release);
                 const conditions = (task.conditionIds || []).map(id => ({ id, target: tables.conditions?.[id]?.progressToCompare }));
-                return `<article class="misc-task-card"${showHidden() ? ` data-task-id="${escape(task.taskId)}"` : ''}>
-                    <div class="misc-task-card__meta">
-                        <span class="misc-task-chip is-${releaseState}">${escape(stateLabel(releaseState))}</span>
-                        <span class="misc-task-chip">+${Number(task.addexp || 0).toLocaleString()} EXP</span>
+                return `<article class="ake-ui-card" data-card-kind="misc-task"${showHidden() ? ` data-task-id="${escape(task.taskId)}"` : ''}>
+                    <div class="ake-ui-card__badges">
+                        <span class="ake-ui-badge is-${releaseState}">${escape(stateLabel(releaseState))}</span>
+                        <span class="ake-ui-badge">+${Number(task.addexp || 0).toLocaleString()} EXP</span>
                     </div>
-                    <h4 class="misc-task-card__title">${context.parseText(formattedTaskName(task))}</h4>
-                    ${showHidden() ? `<div class="misc-task-card__description">${conditions.map(condition => `<span class="misc-condition" title="${escape(condition.id)}">${escape(t('conditionTarget', { value: Number(condition.target || 0).toLocaleString() }, `目标 ${Number(condition.target || 0).toLocaleString()}`))}</span>`).join('')}</div>` : ''}
-                    <div class="misc-task-card__footer">
+                    <h4 class="ake-ui-card__title">${context.parseText(formattedTaskName(task))}</h4>
+                    ${showHidden() ? `<div class="ake-ui-card__body">${conditions.map(condition => `<span class="misc-condition" title="${escape(condition.id)}">${escape(t('conditionTarget', { value: Number(condition.target || 0).toLocaleString() }, `目标 ${Number(condition.target || 0).toLocaleString()}`))}</span>`).join('')}</div>` : ''}
+                    <footer class="ake-ui-card__footer">
                         <span>${escape(text(label.name, t('taskCategory', null, '任务类别')))}</span>
                         <span>${escape(t('operationType', { type: task.opType }, `组合类型 ${task.opType}`))}</span>
                         ${task.defaultEnable ? '' : `<span>${escape(t('conditionGated', null, '条件启用'))}</span>`}
-                    </div>
+                    </footer>
                 </article>`;
             }).join('');
         }

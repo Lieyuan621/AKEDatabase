@@ -523,7 +523,7 @@
                         <td>${escapeHtml(level)}</td><td>${escapeHtml(costs.join(' + ') || t('channel.none', null, 'None'))}</td></tr>`;
                 }));
         return `<section class="akeshop-shop-section"><header><div><h2>${escapeHtml(t('channel.title', null, 'Regional Dispatch Levels'))}</h2></div><span>${escapeHtml(t('channel.count', { count: channels.length }, `${channels.length} dispatch points`))}</span></header>
-            <div class="akeshop-rot-scroll"><table class="akeshop-rot-table"><thead><tr><th>${escapeHtml(t('channel.point', null, 'Dispatch Point'))}</th><th>${escapeHtml(t('channel.level', null, 'Level'))}</th><th>${escapeHtml(t('channel.upgradeCost', null, 'Upgrade Cost'))}</th></tr></thead><tbody>${rows.join('')}</tbody></table></div></section>`;
+            <div class="ake-ui-table-shell"><table class="ake-ui-table"><thead><tr><th>${escapeHtml(t('channel.point', null, 'Dispatch Point'))}</th><th>${escapeHtml(t('channel.level', null, 'Level'))}</th><th>${escapeHtml(t('channel.upgradeCost', null, 'Upgrade Cost'))}</th></tr></thead><tbody>${rows.join('')}</tbody></table></div></section>`;
     }
 
     function matches(product) {
@@ -548,13 +548,13 @@
             null,
             changeType === 'added' ? '新增' : '修改'
         ) || (changeType === 'added' ? '新增' : '修改');
-        return `<span class="akeshop-change-tag akeshop-change-tag--${changeType}">${escapeHtml(label)}</span>`;
+        return `<span class="ake-ui-badge ake-ui-badge--corner" data-tone="${changeType}">${escapeHtml(label)}</span>`;
     }
 
     function changeTabBadge(changeType) {
         if (!changeType) return '';
         const label = changeType === 'added' ? '新' : '改';
-        return `<span class="akeshop-tab-badge akeshop-tab-badge--${changeType}">${label}</span>`;
+        return `<span class="ake-ui-badge" data-tone="${changeType}">${label}</span>`;
     }
 
     function compareGroups(a, b) {
@@ -575,17 +575,16 @@
             : changeType === 'modified'
             ? (window.akeData?.t('versionDiff.modified', null, '修改') || '修改')
             : '';
-        return `<button class="akeshop-group${active ? ' is-active' : ''}${changeType ? ` akeshop-group--${changeType}` : ''}" type="button" data-group-id="${escapeHtml(group.shopGroupId)}">
-            <span class="akeshop-group-mark" aria-hidden="true"></span>
-            <span class="akeshop-group-copy"><b>${escapeHtml(gameText(group.shopGroupName, group.shopGroupId))}</b><small>${escapeHtml(groupType(group))}</small></span>
-            <span class="akeshop-group-count">${productCount(group)}</span>
-            ${changeLabel ? `<span class="akeshop-group-change-tag akeshop-change-tag--${changeType}">${escapeHtml(changeLabel)}</span>` : ''}
+        return `<button class="ake-ui-directory__item${active ? ' is-active' : ''}" type="button" data-group-id="${escapeHtml(group.shopGroupId)}">
+            <span class="ake-ui-directory__item-copy"><b class="ake-ui-directory__item-title">${escapeHtml(gameText(group.shopGroupName, group.shopGroupId))}</b><small class="ake-ui-directory__item-subtitle">${escapeHtml(groupType(group))}</small></span>
+            <span class="ake-ui-directory__item-count">${productCount(group)}</span>
+            ${changeLabel ? `<span class="ake-ui-badge ake-ui-badge--corner" data-tone="${changeType}">${escapeHtml(changeLabel)}</span>` : ''}
         </button>`;
     }
 
     function renderGroupLists() {
         const visible = state.groups.filter(groupMatches).sort(compareGroups);
-        const html = visible.length ? visible.map(groupButton).join('') : `<div class="akeshop-empty">${escapeHtml(t('noMatches'))}</div>`;
+        const html = visible.length ? visible.map(groupButton).join('') : `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('noMatches'))}</div>`;
         list.innerHTML = html;
         mobileGroups.innerHTML = html;
     }
@@ -681,25 +680,21 @@
         if (product.recommendation?.name) badges.push(product.recommendation.name);
         if (product.hidden) badges.push(t('hidden'));
         if (product.pool) badges.push(t('weaponClaim'));
-        const rarityClass = product.rarity ? `akeshop-rarity-${product.rarity}` : '';
         const changeHtml = changeTag(product.changeType);
-        return `<article class="akeshop-product ${rarityClass}${product.hidden ? ' is-hidden' : ''}">
+        return `<article class="ake-ui-card has-media${product.hidden ? ' is-hidden' : ''}" data-ake-component="card" data-card-kind="shop-product" data-density="regular"${product.rarity ? ` data-accent="rarity" data-accent-value="${product.rarity}"` : ''}>
             ${changeHtml}
-            <div class="akeshop-product-head">
-                <div class="akeshop-product-icon">${icon ? `<img src="${escapeHtml(icon)}" alt="">` : '<span aria-hidden="true">◇</span>'}</div>
-                <div class="akeshop-product-title"><h3>${escapeHtml(product.name)}</h3><small class="akeshop-product-id">${escapeHtml(product.id)}</small></div>
-            </div>
-            ${badges.length ? `<div class="akeshop-badges">${badges.map(value => `<span>${escapeHtml(value)}</span>`).join('')}</div>` : ''}
-            ${product.kind === 'cash' ? cashPrice(product) : normalPrice(product)}
-            <div class="akeshop-product-body">
+            <div class="ake-ui-card__content">
+                <header class="ake-ui-card__header"><div class="ake-ui-card__media">${icon ? `<img src="${escapeHtml(icon)}" alt="">` : '<span class="is-placeholder" aria-hidden="true">◇</span>'}</div><div class="ake-ui-card__heading"><h3 class="ake-ui-card__title">${escapeHtml(product.name)}</h3><small class="ake-ui-card__id">${escapeHtml(product.id)}</small></div></header>
+                ${badges.length ? `<div class="ake-ui-card__badges">${badges.map(value => `<span class="ake-ui-badge">${escapeHtml(value)}</span>`).join('')}</div>` : ''}
+                ${product.kind === 'cash' ? cashPrice(product) : normalPrice(product)}
                 ${rewardRows(product.rewards)}
                 ${product.bonusRewards.length ? `<div class="akeshop-subtitle">${escapeHtml(t('bonusReward'))}</div>${rewardRows(product.bonusRewards, 'is-bonus')}` : ''}
                 ${product.monthlyRewards.length ? `<div class="akeshop-subtitle">${escapeHtml(t('monthlyReward'))}</div>${rewardRows(product.monthlyRewards, 'is-monthly')}` : ''}
                 ${product.pool ? renderPoolContent(product.pool, product.poolContent) : ''}
                 ${product.hint ? `<div class="akeshop-note">${parseGameText(product.hint)}</div>` : ''}
                 ${renderUnlockRequirements(product.goods, 'goods')}
+                <footer class="ake-ui-card__footer"><span>${escapeHtml(limitLabel(product))}</span>${renderChannelUnlocks(product)}</footer>
             </div>
-            <footer><span>${escapeHtml(limitLabel(product))}</span>${renderChannelUnlocks(product)}</footer>
         </article>`;
     }
 
@@ -712,8 +707,8 @@
                 <h3 class="akeshop-rotation-title">${escapeHtml(sectionTitle)}</h3>
                 <span class="akeshop-countdown-inline"><span class="akeshop-cd-label">${escapeHtml(t('rotation.refreshIn'))}</span> <strong class="${cdClass}">--:--:--</strong></span>
             </div>
-            <div class="akeshop-products">${products.map(renderProduct).join('')}</div>
-            ${hasNext ? `<h3 class="akeshop-rotation-title akeshop-rotation-next">${escapeHtml(t('rotation.nextBatch'))}</h3><div class="akeshop-products">${nextProducts.map(renderProduct).join('')}</div>` : ''}
+            <div class="ake-ui-card-grid" data-size="wide">${products.map(renderProduct).join('')}</div>
+            ${hasNext ? `<h3 class="akeshop-rotation-title akeshop-rotation-next">${escapeHtml(t('rotation.nextBatch'))}</h3><div class="ake-ui-card-grid" data-size="wide">${nextProducts.map(renderProduct).join('')}</div>` : ''}
         </div>`;
     }
 
@@ -837,8 +832,8 @@
         return `<div class="akeshop-rotation-full">
             <details class="akeshop-rotation-details" open>
                 <summary>${escapeHtml(t('rotation.fullTable'))}</summary>
-                <div class="akeshop-rot-scroll">
-                    <table class="akeshop-rot-table">
+                <div class="ake-ui-table-shell">
+                    <table class="ake-ui-table">
                         <thead><tr>${header1Html}</tr><tr>${header2Html}</tr></thead>
                         <tbody>${rows}</tbody>
                     </table>
@@ -850,7 +845,7 @@
     function renderDetail() {
         const group = state.groups.find(row => row.shopGroupId === state.activeGroupId);
         if (!group) {
-            content.innerHTML = `<div class="akeshop-empty">${escapeHtml(t('selectGroup'))}</div>`;
+            content.innerHTML = `<div class="ake-ui-state" data-state="empty">${escapeHtml(t('selectGroup'))}</div>`;
             return;
         }
         const ownMatch = `${group.shopGroupId} ${gameText(group.shopGroupName)} ${groupType(group)} ${conditionSearchText(group)}`.toLowerCase().includes(state.query);
@@ -877,10 +872,10 @@
         ${contextRows.length ? `<dl class="akeshop-context">${contextRows.map(row => `<div><dt>${escapeHtml(row.label)}</dt><dd>${escapeHtml(row.value)}</dd></div>`).join('')}</dl>` : ''}
         ${renderUnlockRequirements(group, 'group')}
         ${renderChannelTimeline(group)}
-        ${shops.length > 1 ? `<div class="akeshop-tabs" role="tablist">${shops.map(shop => `<button type="button" role="tab" aria-selected="${shop.id === state.activeShopId}" class="${shop.id === state.activeShopId ? 'is-active' : ''}" data-shop-id="${escapeHtml(shop.id)}"><span>${escapeHtml(shop.name)}</span><b>${shop.products.length}</b>${changeTabBadge(shop.changeType)}</button>`).join('')}</div>` : ''}
+        ${shops.length > 1 ? `<div class="ake-ui-tabs" data-variant="underline" role="tablist">${shops.map(shop => `<button type="button" role="tab" aria-selected="${shop.id === state.activeShopId}" class="ake-ui-tabs__button${shop.id === state.activeShopId ? ' is-active' : ''}" data-shop-id="${escapeHtml(shop.id)}"><span>${escapeHtml(shop.name)}</span><b>${shop.products.length}</b>${changeTabBadge(shop.changeType)}</button>`).join('')}</div>` : ''}
         ${activeShop && activeShop.kind === 'rotation'
             ? `<section class="akeshop-shop-section"><header><div><h2>${escapeHtml(activeShop.name)}</h2></div><span>${escapeHtml(t('goodsCount', { count: activeShop.products.length }))}</span></header>${rotationProductsHtml}</section>`
-            : activeShop ? `<section class="akeshop-shop-section"><header><div><h2>${escapeHtml(activeShop.name)}</h2><small class="akeshop-shop-id">${escapeHtml(activeShop.id)}</small></div><span>${escapeHtml(t('goodsCount', { count: activeShop.products.length }))}</span></header>${renderUnlockRequirements(activeShop.raw, 'shop')}<div class="akeshop-products">${activeShop.products.map(renderProduct).join('')}</div></section>` : `<div class="akeshop-empty">${escapeHtml(t('noGoods'))}</div>`}`;
+            : activeShop ? `<section class="akeshop-shop-section"><header><div><h2>${escapeHtml(activeShop.name)}</h2><small class="akeshop-shop-id">${escapeHtml(activeShop.id)}</small></div><span>${escapeHtml(t('goodsCount', { count: activeShop.products.length }))}</span></header>${renderUnlockRequirements(activeShop.raw, 'shop')}<div class="ake-ui-card-grid" data-size="wide">${activeShop.products.map(renderProduct).join('')}</div></section>` : `<div class="ake-ui-state" data-state="empty">${escapeHtml(t('noGoods'))}</div>`}`;
         if (activeShop?.kind === 'rotation') startCountdown(); else stopCountdown();
     }
 
@@ -969,7 +964,7 @@
             if (!state.activeGroupId) selectGroup('shop_pay_weapon', false);
         } catch (error) {
             console.error('Failed to load shop data', error);
-            content.innerHTML = `<div class="akeshop-error"><b>${escapeHtml(t('loadFailed'))}</b><span>${escapeHtml(error.message)}</span></div>`;
+            content.innerHTML = `<div class="ake-ui-state" data-state="error"><div><b>${escapeHtml(t('loadFailed'))}</b><span>${escapeHtml(error.message)}</span></div></div>`;
         }
     }
 
@@ -997,7 +992,7 @@
         overlay.setAttribute('aria-hidden', 'false');
     });
     overlay.addEventListener('click', event => {
-        if (event.target === overlay || event.target.closest('.akeshop-mobile-title button')) closeOverlay();
+        if (event.target === overlay || event.target.closest('.ake-ui-directory__mobile-header button')) closeOverlay();
     });
     window.addEventListener('globalConfigChanged', onConfigChanged);
     window.addEventListener('ake:module-activate', onModuleActivate);

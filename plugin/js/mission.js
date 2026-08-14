@@ -282,18 +282,18 @@
         const rows = filteredRows();
         elements.summary.textContent = `${rows.length} / ${state.rows.length} 个任务`;
         if (!rows.length) {
-            elements.list.innerHTML = '<div class="mission-list-empty">没有符合条件的任务</div>';
+            elements.list.innerHTML = '<div class="ake-ui-state" data-state="empty" data-density="compact">没有符合条件的任务</div>';
             return;
         }
         elements.list.innerHTML = rows.map(row => `
-            <button class="mission-list-item${row.id === state.selectedId ? ' active' : ''}"
+            <button class="ake-ui-directory__item${row.id === state.selectedId ? ' is-active' : ''}"
                 type="button" data-mission-id="${escapeHtml(row.id)}" data-view="${row.typeDef.view}" data-importance="${escapeHtml(row.importance ?? '')}">
-                <span class="mission-list-item__name">${escapeHtml(row.name)}</span>
-                <span class="mission-list-item__id">${escapeHtml(row.id)}</span>
-                <span class="mission-list-item__meta">
-                    <span class="mission-chip">${escapeHtml(row.typeDef.name)}</span>
-                    <span class="mission-chip">${row.questCount} 步</span>
-                    ${IMPORTANCE[row.importance] ? `<span class="mission-chip mission-importance mission-importance--${escapeHtml(row.importance)}">${IMPORTANCE[row.importance]}</span>` : ''}
+                <span class="ake-ui-directory__item-title">${escapeHtml(row.name)}</span>
+                <span class="ake-ui-directory__item-id">${escapeHtml(row.id)}</span>
+                <span class="ake-ui-directory__item-meta">
+                    <span class="ake-ui-badge">${escapeHtml(row.typeDef.name)}</span>
+                    <span class="ake-ui-badge">${row.questCount} 步</span>
+                    ${IMPORTANCE[row.importance] ? `<span class="ake-ui-badge" data-mission-importance="${escapeHtml(row.importance)}">${IMPORTANCE[row.importance]}</span>` : ''}
                 </span>
             </button>`).join('');
         elements.list.querySelectorAll('[data-mission-id]').forEach(button => button.addEventListener('click', () => selectMission(button.dataset.missionId)));
@@ -312,15 +312,15 @@
             const definition = typeDefinition(type);
             const rows = currentRows.filter(row => row.type === type);
             const objectives = rows.reduce((sum, row) => sum + row.objectiveCount, 0);
-            return `<button class="mission-type-card" type="button" data-overview-type="${type}">
-                <b>${escapeHtml(definition.name)}</b><strong>${rows.length}</strong><small>${objectives} 个目标 · ${definition.visible ? '列表可见' : '内部类型'}</small>
+            return `<button class="ake-ui-card is-interactive" data-card-kind="mission-type" type="button" data-overview-type="${type}">
+                <b class="ake-ui-card__title">${escapeHtml(definition.name)}</b><strong>${rows.length}</strong><small class="ake-ui-card__subtitle">${objectives} 个目标 · ${definition.visible ? '列表可见' : '内部类型'}</small>
             </button>`;
         }).join('');
-        elements.detail.innerHTML = `<div class="mission-overview">
-            <header class="mission-overview__header"><div><div class="mission-eyebrow">Mission Runtime Database</div><h1>任务总览</h1><p class="mission-subtitle">汇总任务定义、步骤、目标、奖励以及任务相关对话。选择左侧任务进入以台词为中心的详情。</p></div><div class="mission-overview__version">${escapeHtml(version)}</div></header>
-            <div class="mission-stat-grid"><div class="mission-stat"><b>${stats.missionCount}</b><span>任务</span></div><div class="mission-stat"><b>${stats.questCount}</b><span>Quest 步骤</span></div><div class="mission-stat"><b>${stats.objectiveCount}</b><span>任务目标</span></div><div class="mission-stat"><b>${stats.metaCount}</b><span>Meta 配置</span></div></div>
-            <section class="mission-overview-section"><h2><span></span>全部任务数据</h2><div class="mission-type-grid">${typeCards}</div></section>
-            <section class="mission-overview-section"><h2><span></span>数据说明</h2><div class="mission-description">总览直接读取轻量任务索引；只有打开具体任务时才加载对应运行数据与 Meta。任务步骤按 <code>prevQuestIdList</code> 还原顺序，普通剧情台词按 Dialog ID 聚合，SNS 对话按内容节点与选项分支还原。</div></section>
+        elements.detail.innerHTML = `<div class="ake-ui-page" data-ake-view="overview">
+            <header class="ake-ui-page__header"><div><div class="ake-ui-page__eyebrow">Mission Runtime Database</div><h2>任务总览</h2><p class="ake-ui-page__summary">汇总任务定义、步骤、目标、奖励以及任务相关对话。选择左侧任务进入以台词为中心的详情。</p></div><div class="ake-ui-page__status">${escapeHtml(version)}</div></header>
+            <div class="ake-ui-card-grid" data-size="compact"><div class="ake-ui-card" data-card-kind="mission-stat"><b>${stats.missionCount}</b><span>任务</span></div><div class="ake-ui-card" data-card-kind="mission-stat"><b>${stats.questCount}</b><span>Quest 步骤</span></div><div class="ake-ui-card" data-card-kind="mission-stat"><b>${stats.objectiveCount}</b><span>任务目标</span></div><div class="ake-ui-card" data-card-kind="mission-stat"><b>${stats.metaCount}</b><span>Meta 配置</span></div></div>
+            <section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">全部任务数据</h2></header><div class="ake-ui-card-grid" data-size="narrow">${typeCards}</div></section>
+            <section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">数据说明</h2></header><div class="mission-description">总览直接读取轻量任务索引；只有打开具体任务时才加载对应运行数据与 Meta。任务步骤按 <code>prevQuestIdList</code> 还原顺序，普通剧情台词按 Dialog ID 聚合，SNS 对话按内容节点与选项分支还原。</div></section>
         </div>`;
         elements.detail.querySelectorAll('[data-overview-type]').forEach(button => button.addEventListener('click', () => {
             state.type = button.dataset.overviewType;
@@ -332,7 +332,7 @@
     }
 
     function closeMobileList() {
-        root.classList.remove('mobile-list-open');
+        root.classList.remove('is-mobile-open');
     }
 
     async function selectMission(id, tab) {
@@ -344,11 +344,11 @@
         requestAnimationFrame(() => elements.list.querySelector(`[data-mission-id="${CSS.escape(id)}"]`)?.scrollIntoView({ block: 'nearest' }));
         closeMobileList();
         window.__akeRouter?.updateUrl('v3_mission', id);
-        elements.detail.innerHTML = '<div class="mission-loading"><span></span><p>正在读取任务详情…</p></div>';
+        elements.detail.innerHTML = '<div class="ake-ui-state" data-state="loading"><span class="ake-ui-spinner"></span><p>正在读取任务详情…</p></div>';
         try {
             await loadMission(row);
         } catch (error) {
-            if (state.selectedId === id) elements.detail.innerHTML = `<div class="mission-error">任务数据加载失败：${escapeHtml(error.message)}</div>`;
+            if (state.selectedId === id) elements.detail.innerHTML = `<div class="ake-ui-state" data-state="error">任务数据加载失败：${escapeHtml(error.message)}</div>`;
             return;
         }
         await loadMeta(row).catch(error => console.warn(`任务 ${id} 的 Meta 加载失败。`, error));
@@ -357,10 +357,10 @@
 
     function renderHero(row) {
         const mission = row.mission || {};
-        return `<header class="mission-hero">
-            <div><div class="mission-eyebrow">${escapeHtml(row.typeDef.enumName)} · ${escapeHtml(row.id)}</div><h1>${escapeHtml(row.name)}</h1><p class="mission-subtitle">${row.description ? richText(row.description) : '该任务没有可用描述。'}</p>
-                <div class="mission-hero__badges"><span class="mission-chip">${escapeHtml(row.typeDef.name)}</span><span class="mission-chip">${chapterName(row.chapter)}</span><span class="mission-chip mission-importance mission-importance--${escapeHtml(row.importance ?? '')}">重要度 ${IMPORTANCE[row.importance] ?? '未配置'}</span><span class="mission-chip">${row.questCount} Quest</span></div>
-            </div><div class="mission-hero__side"><div class="mission-version-note">${escapeHtml(row.mission.levelId || '未指定地图')}</div></div>
+        return `<header class="ake-ui-detail-header">
+            <div class="ake-ui-detail-copy"><div class="ake-ui-detail-eyebrow">${escapeHtml(row.typeDef.enumName)} · ${escapeHtml(row.id)}</div><h1 class="ake-ui-detail-title">${escapeHtml(row.name)}</h1><p class="ake-ui-detail-subtitle">${row.description ? richText(row.description) : '该任务没有可用描述。'}</p>
+                <div class="ake-ui-detail-badges"><span class="ake-ui-badge">${escapeHtml(row.typeDef.name)}</span><span class="ake-ui-badge">${chapterName(row.chapter)}</span><span class="ake-ui-badge" data-mission-importance="${escapeHtml(row.importance ?? '')}">重要度 ${IMPORTANCE[row.importance] ?? '未配置'}</span><span class="ake-ui-badge">${row.questCount} Quest</span></div>
+            </div><code class="ake-ui-detail-id">${escapeHtml(row.mission.levelId || '未指定地图')}</code>
         </header>`;
     }
 
@@ -368,10 +368,14 @@
         const tabs = [
             ['dialogue', '对话还原'], ['quests', '任务流程']
         ];
-        elements.detail.innerHTML = `<article class="mission-detail-page">${renderHero(row)}<nav class="mission-tabs">${tabs.map(([id, label]) => `<button class="mission-tab${state.activeTab === id ? ' active' : ''}" type="button" data-mission-tab="${id}">${label}</button>`).join('')}</nav><section class="mission-panel" id="missionPanel"><div class="mission-loading"><span></span><p>正在加载${tabs.find(tab => tab[0] === state.activeTab)?.[1] || '内容'}…</p></div></section></article>`;
+        elements.detail.innerHTML = `<article class="ake-ui-detail" data-detail-kind="mission">${renderHero(row)}<nav class="ake-ui-tabs" data-variant="pill" data-sticky="true" role="tablist">${tabs.map(([id, label]) => `<button class="ake-ui-tabs__button${state.activeTab === id ? ' is-active' : ''}" role="tab" aria-selected="${state.activeTab === id}" type="button" data-mission-tab="${id}">${label}</button>`).join('')}</nav><section class="ake-ui-tabs__panel" id="missionPanel" role="tabpanel"><div class="ake-ui-state" data-state="loading"><span class="ake-ui-spinner"></span><p>正在加载${tabs.find(tab => tab[0] === state.activeTab)?.[1] || '内容'}…</p></div></section></article>`;
         elements.detail.querySelectorAll('[data-mission-tab]').forEach(button => button.addEventListener('click', () => {
             state.activeTab = button.dataset.missionTab;
-            elements.detail.querySelectorAll('[data-mission-tab]').forEach(tab => tab.classList.toggle('active', tab === button));
+            elements.detail.querySelectorAll('[data-mission-tab]').forEach(tab => {
+                const isActive = tab === button;
+                tab.classList.toggle('is-active', isActive);
+                tab.setAttribute('aria-selected', String(isActive));
+            });
             renderActivePanel(row);
         }));
         renderActivePanel(row);
@@ -389,7 +393,7 @@
             ['领取方式', row.meta?.acceptMode?.mode ?? '缺少 Meta'], ['任务奖励', mission.rewardId || '无'],
             ['额外说明', extraInfo?.extraInfoDesc?.text || '无']
         ];
-        return `<div class="mission-info-grid">${cells.map(([label, value]) => `<div class="mission-info-cell"><span>${label}</span><b>${escapeHtml(value)}</b></div>`).join('')}</div>`;
+        return `<dl class="ake-ui-meta-grid">${cells.map(([label, value]) => `<div class="ake-ui-meta-grid__item"><dt>${label}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl>`;
     }
 
     function conditionSummary(objective) {
@@ -422,7 +426,7 @@
         panel.innerHTML = `${renderInfoGrid(row, auxiliary)}${row.mission.rewardId ? `<div class="mission-description"><b>任务完成奖励</b>${rewardHtml(row.mission.rewardId, auxiliary)}</div>` : ''}<div class="mission-quest-list">${quests.map((quest, questIndex) => {
             const override = textByKey(quest.descriptionOverride?.key, state.textTable, '');
             const summary = override || (quest.objectiveList || []).map(objectiveDescription).filter(Boolean).join(' / ') || '无显示目标';
-            return `<details class="mission-quest" ${questIndex < 3 ? 'open' : ''}><summary><span class="mission-quest__id">${escapeHtml(quest.questId)}</span><span class="mission-quest__desc">${richText(summary)}</span><span class="mission-chip">${QUEST_TYPES[quest.questType] || quest.questType}</span></summary><div class="mission-quest__body">
+            return `<details class="mission-quest" ${questIndex < 3 ? 'open' : ''}><summary><span class="mission-quest__id">${escapeHtml(quest.questId)}</span><span class="mission-quest__desc">${richText(summary)}</span><span class="ake-ui-badge">${QUEST_TYPES[quest.questType] || quest.questType}</span></summary><div class="mission-quest__body">
                 ${(quest.objectiveList || []).map((objective, index) => `<div class="mission-objective"><div class="mission-objective__index">${index + 1}</div><div><div class="mission-objective__text">${richText(objectiveDescription(objective))}</div><div class="mission-objective__meta">${escapeHtml(conditionSummary(objective))}</div></div></div>`).join('') || '<div class="mission-dialog-empty">该 Quest 没有 Objective</div>'}
                 ${quest.rewardId ? `<div><b>Quest 奖励</b>${rewardHtml(quest.rewardId, auxiliary)}</div>` : ''}
                 ${(quest.needItemIds || []).length ? `<div class="mission-objective__meta">需求物品：${escapeHtml(quest.needItemIds.join(', '))}</div>` : ''}
@@ -554,7 +558,7 @@
     }
 
     function renderDialogueLine(line) {
-        return `<div class="mission-dialog-line${line.avatar ? ' has-avatar' : ''}">${line.avatar ? `<img class="mission-dialog-line__avatar" src="${escapeHtml(line.avatar)}" alt="" loading="lazy">` : ''}<div class="mission-dialog-line__speaker">${escapeHtml(line.speaker)}</div><div class="mission-dialog-line__text">${line.text ? richText(line.text) : '<span class="mission-subtitle">（空台词）</span>'}${line.hint ? `<div class="mission-objective__meta">${richText(line.hint)}</div>` : ''}</div><div class="mission-dialog-line__id">${escapeHtml(line.id)}${line.audio ? ` · ${escapeHtml(line.audio)}` : ''}</div></div>`;
+        return `<div class="mission-dialog-line${line.avatar ? ' has-avatar' : ''}">${line.avatar ? `<img class="mission-dialog-line__avatar" src="${escapeHtml(line.avatar)}" alt="" loading="lazy">` : ''}<div class="mission-dialog-line__speaker">${escapeHtml(line.speaker)}</div><div class="mission-dialog-line__text">${line.text ? richText(line.text) : '<span class="ake-ui-muted">（空台词）</span>'}${line.hint ? `<div class="mission-objective__meta">${richText(line.hint)}</div>` : ''}</div><div class="mission-dialog-line__id">${escapeHtml(line.id)}${line.audio ? ` · ${escapeHtml(line.audio)}` : ''}</div></div>`;
     }
 
     function snsChoiceState(groupId) {
@@ -598,9 +602,9 @@
         const timeline = snsTimeline(group);
         const content = timeline.map(item => {
             if (item.kind === 'line') return renderDialogueLine(item.line);
-            return `<div class="mission-dialog-choice"><div class="mission-dialog-choice__label">选择任务选项</div><div class="mission-dialog-choice__buttons">${item.options.map(option => `<button class="mission-dialog-choice__button${option.id === item.selectedId ? ' selected' : ''}" type="button" data-sns-group="${escapeHtml(group.id)}" data-sns-content="${escapeHtml(item.contentId)}" data-sns-option="${escapeHtml(option.id)}" aria-pressed="${option.id === item.selectedId}">${richText(option.text || option.id)}</button>`).join('')}</div></div>`;
+            return `<div class="mission-dialog-choice"><div class="mission-dialog-choice__label">选择任务选项</div><div class="mission-dialog-choice__buttons">${item.options.map(option => `<button class="mission-dialog-choice__button${option.id === item.selectedId ? ' is-selected' : ''}" type="button" data-sns-group="${escapeHtml(group.id)}" data-sns-content="${escapeHtml(item.contentId)}" data-sns-option="${escapeHtml(option.id)}" aria-pressed="${option.id === item.selectedId}">${richText(option.text || option.id)}</button>`).join('')}</div></div>`;
         }).join('');
-        return `<section class="mission-dialog-group"><h2 class="mission-dialog-group__title"><span class="mission-chip">SNS 对话</span><code>${escapeHtml(group.id)}</code>${group.missing ? '<span class="mission-chip">表中缺失</span>' : ''}</h2>${content || '<div class="mission-dialog-empty">找到了对话引用，但没有对应台词。</div>'}</section>`;
+        return `<section class="mission-dialog-group"><h2 class="mission-dialog-group__title"><span class="ake-ui-badge">SNS 对话</span><code>${escapeHtml(group.id)}</code>${group.missing ? '<span class="ake-ui-badge">表中缺失</span>' : ''}</h2>${content || '<div class="mission-dialog-empty">找到了对话引用，但没有对应台词。</div>'}</section>`;
     }
 
     function renderDialogueGroup(group) {
@@ -608,12 +612,12 @@
         const summaries = (group.summaries || []).map(item => `<div class="mission-description">${richText(item.text)}</div>`).join('');
         const lines = group.lines.map(renderDialogueLine).join('');
         const options = group.options.map(option => `<div class="mission-dialog-option">选择：${richText(option.text || option.id)} <small>${escapeHtml(option.id)}</small></div>`).join('');
-        return `<section class="mission-dialog-group"><h2 class="mission-dialog-group__title"><span class="mission-chip">剧情对话</span><code>${escapeHtml(group.id)}</code>${group.missing ? '<span class="mission-chip">表中缺失</span>' : ''}</h2>${summaries}${lines || '<div class="mission-dialog-empty">找到了对话引用，但没有对应台词。</div>'}${options}</section>`;
+        return `<section class="mission-dialog-group"><h2 class="mission-dialog-group__title"><span class="ake-ui-badge">剧情对话</span><code>${escapeHtml(group.id)}</code>${group.missing ? '<span class="ake-ui-badge">表中缺失</span>' : ''}</h2>${summaries}${lines || '<div class="mission-dialog-empty">找到了对话引用，但没有对应台词。</div>'}${options}</section>`;
     }
 
     function renderDialogueContent(data, panel) {
         panel.innerHTML = data.groups.length || data.radio.length
-            ? `${data.groups.map(renderDialogueGroup).join('')}${data.radio.length ? `<section class="mission-dialog-group"><h2 class="mission-dialog-group__title"><span class="mission-chip">广播</span></h2>${data.radio.map(id => `<div class="mission-dialog-empty">${escapeHtml(id)}<br><small>运行时包含播放广播动作，当前 TableCfg 没有独立广播台词表。</small></div>`).join('')}</section>` : ''}`
+            ? `${data.groups.map(renderDialogueGroup).join('')}${data.radio.length ? `<section class="mission-dialog-group"><h2 class="mission-dialog-group__title"><span class="ake-ui-badge">广播</span></h2>${data.radio.map(id => `<div class="mission-dialog-empty">${escapeHtml(id)}<br><small>运行时包含播放广播动作，当前 TableCfg 没有独立广播台词表。</small></div>`).join('')}</section>` : ''}`
             : '<div class="mission-dialog-empty">没有找到与该任务关联的剧情对话、SNS 对话或广播。<br><small>任务流程和 Objective 仍可在“任务流程”中查看。</small></div>';
         panel.querySelectorAll('[data-sns-option]').forEach(button => button.addEventListener('click', () => {
             const group = data.groups.find(item => item.kind === 'sns' && item.id === button.dataset.snsGroup);
@@ -629,7 +633,7 @@
             tables = await ensureDialogue();
         } catch (error) {
             if (token !== state.renderToken) return;
-            panel.innerHTML = `<div class="mission-error">对话表加载失败：${escapeHtml(error.message)}</div>`;
+            panel.innerHTML = `<div class="ake-ui-state" data-state="error">对话表加载失败：${escapeHtml(error.message)}</div>`;
             return;
         }
         if (token !== state.renderToken || state.selectedId !== row.id || state.activeTab !== 'dialogue') return;
@@ -641,7 +645,7 @@
         const panel = document.getElementById('missionPanel');
         if (!panel) return;
         const token = ++state.renderToken;
-        panel.innerHTML = '<div class="mission-loading"><span></span><p>正在加载数据…</p></div>';
+        panel.innerHTML = '<div class="ake-ui-state" data-state="loading"><span class="ake-ui-spinner"></span><p>正在加载数据…</p></div>';
         if (state.activeTab === 'quests') renderQuestPanel(row, panel, token);
         else renderDialoguePanel(row, panel, token);
     }
@@ -687,7 +691,7 @@
         elements.chapter.addEventListener('change', () => { state.chapter = elements.chapter.value; renderList(); });
         elements.hidden.addEventListener('change', () => { state.showHidden = elements.hidden.checked; renderList(); });
         elements.home.addEventListener('click', renderOverview);
-        elements.mobile.addEventListener('click', () => root.classList.add('mobile-list-open'));
+        elements.mobile.addEventListener('click', () => root.classList.add('is-mobile-open'));
         elements.backdrop.addEventListener('click', closeMobileList);
     }
 
@@ -710,7 +714,7 @@
             enrichDialogueSearch();
         } catch (error) {
             console.error('任务模块初始化失败', error);
-            elements.detail.innerHTML = `<div class="mission-error"><b>任务模块加载失败</b><br>${escapeHtml(error.message)}<br><small>请通过 JSON 上传流程生成 public/Json/MissionRuntimeAsset/manifest.json。</small></div>`;
+            elements.detail.innerHTML = `<div class="ake-ui-state" data-state="error"><div><b>任务模块加载失败</b><br>${escapeHtml(error.message)}<br><small>请通过 JSON 上传流程生成 public/Json/MissionRuntimeAsset/manifest.json。</small></div></div>`;
             elements.summary.textContent = '加载失败';
         }
     }

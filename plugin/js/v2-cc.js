@@ -239,7 +239,7 @@
             group: item => ({ id: String(item.statusOrder ?? 3), name: t(statusNames[item.statusOrder] || 'statuses.permanent'), order: item.statusOrder ?? 3 }),
             onReset: () => { activeGameId = null; },
             onSelect: item => { activeGameId = item.gameId; renderGameList(); },
-            sidebarSelector: item => `.v2cc-item[data-game-id="${CSS.escape(item.gameId)}"]`,
+            sidebarSelector: item => `.ake-ui-directory__item[data-game-id="${CSS.escape(item.gameId)}"]`,
             items: items.map(item => ({ ...item, id: item.gameId, image: item.image, fallback: 'CC',
                 tags: [t('counts.indicatorGroups', { count: item.contractGroupCount || 0 }), t('counts.terms', { count: item.contractCount || 0 }), item.dungeonName] }))
         });
@@ -254,11 +254,11 @@
         mobileContent.innerHTML = '';
         filtered.forEach(game => {
             const div = document.createElement('div');
-            div.className = `v2cc-mobile-item ${game.gameId === activeGameId ? 'active' : ''}`;
+            div.className = `ake-ui-directory__item ${game.gameId === activeGameId ? 'is-active' : ''}`;
             window.AKEModuleOverview?.markVersionChange(div, game);
             div.innerHTML = `
-                <div class="v2cc-mobile-name">${escapeHtml(game.name || game.gameId)}</div>
-                <div class="v2cc-mobile-id">${escapeHtml(game.activityId)}</div>
+                <div class="ake-ui-directory__item-title">${escapeHtml(game.name || game.gameId)}</div>
+                <div class="ake-ui-directory__item-id">${escapeHtml(game.activityId)}</div>
             `;
             div.addEventListener('click', () => {
                 activeGameId = game.gameId;
@@ -272,11 +272,11 @@
 
     function openMobileList() {
         buildMobileList();
-        mobileOverlay.style.display = 'flex';
+        mobileOverlay.classList.add('is-open'); mobileOverlay.setAttribute('aria-hidden', 'false');
     }
 
     function closeMobileList() {
-        mobileOverlay.style.display = 'none';
+        mobileOverlay.classList.remove('is-open'); mobileOverlay.setAttribute('aria-hidden', 'true');
     }
 
     function renderGameList() {
@@ -288,33 +288,29 @@
         container.innerHTML = '';
 
         if (filtered.length === 0) {
-            container.innerHTML = `<div class="v2cc-loader">${t('noMatches')}</div>`;
-            if (detailContainer) detailContainer.innerHTML = `<div class="v2cc-loader">${t('select')}</div>`;
+            container.innerHTML = `<div class="ake-ui-state">${t('noMatches')}</div>`;
+            if (detailContainer) detailContainer.innerHTML = `<div class="ake-ui-state">${t('select')}</div>`;
             activeGameId = null;
             return;
         }
 
         filtered.forEach((game, index) => {
             const div = document.createElement('div');
-            div.className = `v2cc-item ${game.gameId === activeGameId ? 'active' : (!activeGameId && index === 0 && !window.AKEModuleOverview?.isActive('cc') ? 'active' : '')}`;
+            div.className = `ake-ui-directory__item ${game.gameId === activeGameId ? 'is-active' : (!activeGameId && index === 0 && !window.AKEModuleOverview?.isActive('cc') ? 'is-active' : '')}`;
             window.AKEModuleOverview?.markVersionChange(div, game);
             div.dataset.gameId = game.gameId;
 
             const icon = document.createElement('div');
-            icon.className = 'v2cc-item-icon';
-            icon.style.display = 'flex';
-            icon.style.alignItems = 'center';
-            icon.style.justifyContent = 'center';
-            icon.style.fontSize = '1.4rem';
+            icon.className = 'ake-ui-directory__item-icon is-symbol';
             icon.textContent = '⚔️';
 
             const info = document.createElement('div');
-            info.className = 'v2cc-item-info';
+            info.className = 'ake-ui-directory__item-copy';
             const nm = document.createElement('div');
-            nm.className = 'v2cc-item-name';
+            nm.className = 'ake-ui-directory__item-title';
             nm.textContent = game.name || game.gameId;
             const sub = document.createElement('div');
-            sub.className = 'v2cc-item-sub';
+            sub.className = 'ake-ui-directory__item-id';
             sub.textContent = game.activityId;
             info.appendChild(nm);
             info.appendChild(sub);
@@ -323,8 +319,8 @@
             div.appendChild(info);
 
             div.addEventListener('click', () => {
-                document.querySelectorAll('.v2cc-item').forEach(el => el.classList.remove('active'));
-                div.classList.add('active');
+                document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
+                div.classList.add('is-active');
                 activeGameId = game.gameId;
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_cc', game.gameId);
                 loadGameDetail(game, detailContainer);
@@ -354,22 +350,22 @@
             }
             activeGameId = filtered[0].gameId;
             if (window.__akeRouter) window.__akeRouter.updateUrl('v2_cc', activeGameId);
-            const f = container.querySelector('.v2cc-item');
-            if (f) f.classList.add('active');
+            const f = container.querySelector('.ake-ui-directory__item');
+            if (f) f.classList.add('is-active');
             loadGameDetail(filtered[0], detailContainer);
         } else if (activeExists) {
             const ag = filtered.find(g => g.gameId === activeGameId);
             if (ag) {
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_cc', activeGameId);
-                const ad = container.querySelector(`.v2cc-item[data-game-id="${activeGameId}"]`);
-                if (ad) ad.classList.add('active');
+                const ad = container.querySelector(`.ake-ui-directory__item[data-game-id="${activeGameId}"]`);
+                if (ad) ad.classList.add('is-active');
                 loadGameDetail(ag, detailContainer);
             }
         }
     }
 
     async function loadGameDetail(game, container) {
-        container.innerHTML = `<div class="v2cc-loader">${t('loading')}</div>`;
+        container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
         try {
             const data = await (window.akeFetch || fetch)(game.contentFile).then(r => r.json());
             currentData = data;
@@ -419,7 +415,7 @@
             bindTagEvents();
             updateSelectedSummary(data.cctagtable || {});
         } catch (err) {
-            container.innerHTML = `<div class="v2cc-error">${t('loadFailed', { message: escapeHtml(err.message) })}</div>`;
+            container.innerHTML = `<div class="ake-ui-state" data-state="error">${t('loadFailed', { message: escapeHtml(err.message) })}</div>`;
         }
     }
 
@@ -437,16 +433,16 @@
         if (!items.length) return '';
 
         return `
-            <details class="v2cc-section v2cc-activity-config">
+            <details class="ake-ui-section v2cc-activity-config">
                 <summary>${t('sections.activityConfiguration')}</summary>
-                <div class="v2cc-info-grid">
+                <dl class="ake-ui-meta-grid">
                     ${items.map(i => `
-                        <div class="v2cc-info-item">
-                            <div class="v2cc-info-label">${escapeHtml(i.l)}</div>
-                            <div class="v2cc-info-value">${escapeHtml(String(i.v))}</div>
+                        <div class="ake-ui-meta-grid__item">
+                            <dt>${escapeHtml(i.l)}</dt>
+                            <dd>${escapeHtml(String(i.v))}</dd>
                         </div>
                     `).join('')}
-                </div>
+                </dl>
             </details>
         `;
     }
@@ -495,8 +491,8 @@
         const allValueMaps = buildAllTagValueMaps(tagTable);
 
         return `
-            <div class="v2cc-section">
-                <h3>${t('sections.contractTerms')}</h3>
+            <div class="ake-ui-section">
+                <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.contractTerms')}</h3></div>
                 ${renderScorePanel(tagTable)}
                 <div class="v2cc-groups">
                     ${groupIds.map(gid => {
@@ -559,15 +555,19 @@
                                     }
 
                                     return `
-                                        <div class="v2cc-tag-card ${stateClass}" data-tag-id="${tid}">
-                                            <div class="v2cc-tag-header">
-                                                <div class="v2cc-tag-check">${isSelected ? '✓' : ''}</div>
-                                                ${icon ? `<img class="v2cc-tag-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/contingencycontract/buff/${icon}.png">` : ''}
-                                                <span class="v2cc-tag-name">${escapeHtml(name)}</span>
-                                                ${roman ? `<span class="v2cc-tag-roman">${escapeHtml(roman)}</span>` : ''}
-                                                <span class="v2cc-tag-score">+${score}</span>
+                                        <div class="ake-ui-card ${stateClass}" data-card-kind="cc-tag" data-tag-id="${tid}">
+                                            <div class="ake-ui-card__header" data-layout="split">
+                                                <div class="ake-ui-card__header-start">
+                                                    <div class="v2cc-tag-check">${isSelected ? '✓' : ''}</div>
+                                                    ${icon ? `<img class="v2cc-tag-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/contingencycontract/buff/${icon}.png">` : ''}
+                                                    <span class="ake-ui-card__title">${escapeHtml(name)}</span>
+                                                </div>
+                                                <div class="ake-ui-card__header-end">
+                                                    ${roman ? `<span class="v2cc-tag-roman">${escapeHtml(roman)}</span>` : ''}
+                                                    <span class="v2cc-tag-score">+${score}</span>
+                                                </div>
                                             </div>
-                                            ${desc ? `<div class="v2cc-tag-desc">${desc}</div>` : ''}
+                                            ${desc ? `<div class="ake-ui-card__body">${desc}</div>` : ''}
                                             ${terms.length ? `<div class="v2cc-tag-terms">${terms.map(renderTagTermEffect).join('')}</div>` : ''}
                                             ${badges ? `<div class="v2cc-tag-meta">${badges}</div>` : ''}
                                             ${lockReason}
@@ -619,13 +619,13 @@
         });
 
         return `
-            <div class="v2cc-section">
-                <h3>${t('sections.levelRewards')}</h3>
+            <div class="ake-ui-section">
+                <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.levelRewards')}</h3></div>
                 <div class="v2cc-levels">
                     ${levels.map(([, lv]) => {
                         const items = resolveRewardItems(lv.firstReward, rewardTable, itemTable);
                         return `
-                            <div class="v2cc-level-card">
+                            <div class="ake-ui-card" data-card-kind="cc-level" data-density="regular">
                                 <div class="v2cc-level-num">Lv.${lv.level}</div>
                                 <div class="v2cc-level-reward-list">
                                     ${items.length ? items.map(it => `
@@ -665,8 +665,8 @@
         }
 
         return `
-            <div class="v2cc-section">
-                <h3>${t('shop.title', { name: parseText(groupName) })}</h3>
+            <div class="ake-ui-section">
+                <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('shop.title', { name: parseText(groupName) })}</h3></div>
                 ${shopIds.map(sid => {
                     const shop = shopTable[sid];
                     if (!shop) return '';
@@ -675,12 +675,12 @@
                     const goods = goodsIds.map(gid => goodsTable[gid]).filter(Boolean);
 
                     return `
-                        <div class="v2cc-shop-card">
-                            <div class="v2cc-shop-header">
-                                <span class="v2cc-shop-name">${parseText(shopName)}</span>
-                                <span class="v2cc-shop-count">${t('shop.goodsCount', { count: goods.length })}</span>
+                        <div class="ake-ui-card" data-card-kind="cc-shop" data-density="regular">
+                            <div class="ake-ui-card__header">
+                                <span class="ake-ui-card__title">${parseText(shopName)}</span>
+                                <span class="ake-ui-badge">${t('shop.goodsCount', { count: goods.length })}</span>
                             </div>
-                            <table class="v2cc-shop-table">
+                            <table class="ake-ui-table">
                                 <thead>
                                     <tr>
                                         <th class="col-icon"></th>
@@ -741,9 +741,9 @@
         const itemTable = data.itemtable || {};
 
         return `
-            <div class="v2cc-section">
-                <h3>${t('sections.tasks')}</h3>
-                <div class="v2cc-task-groups">
+            <div class="ake-ui-section">
+                <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.tasks')}</h3></div>
+                <div class="ake-ui-list">
                     ${groups.map(([, tg]) => {
                         const tgId = tg.taskGroupId;
                         const tasks = Object.values(taskConfigMap)
@@ -751,24 +751,24 @@
                             .sort((a, b) => (a.sortId || 0) - (b.sortId || 0));
 
                         return `
-                            <div class="v2cc-task-group-card">
-                                <div class="v2cc-task-group-header">
-                                    ${tg.icon ? `<img class="v2cc-task-group-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/contingencycontract/${tg.icon}.png">` : ''}
-                                    <span class="v2cc-task-group-name">${tg.name?.text ? parseText(tg.name.text) : escapeHtml(tgId)}</span>
-                                    <span class="v2cc-task-group-badge">${t('tasks.count', { count: tasks.length })}</span>
-                                    ${tg.canUpdate ? `<span class="v2cc-task-group-badge update">${t('tasks.updatable')}</span>` : ''}
+                            <section class="ake-ui-section" data-variant="surface">
+                                <div class="ake-ui-section__header">
+                                    ${tg.icon ? `<img class="ake-ui-section__icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/contingencycontract/${tg.icon}.png" alt="">` : ''}
+                                    <span class="ake-ui-section__title">${tg.name?.text ? parseText(tg.name.text) : escapeHtml(tgId)}</span>
+                                    <span class="ake-ui-badge">${t('tasks.count', { count: tasks.length })}</span>
+                                    ${tg.canUpdate ? `<span class="ake-ui-badge" data-tone="added">${t('tasks.updatable')}</span>` : ''}
                                 </div>
                                 ${tasks.length ? `
-                                    <div class="v2cc-task-list">
+                                    <div class="ake-ui-card-grid" data-size="regular">
                                         ${tasks.map(task => {
                                             const desc = task.desc?.text ? parseText(task.desc.text) : '';
                                             const rewards = resolveRewardItems(task.rewardId, rewardTable, itemTable);
                                             return `
-                                                <div class="v2cc-task-item">
-                                                    <div class="v2cc-task-item-header">
-                                                        <span class="v2cc-task-item-id">${escapeHtml(task.taskId)}</span>
+                                                <div class="ake-ui-card" data-card-kind="cc-task" data-density="compact">
+                                                    <div class="ake-ui-card__header">
+                                                        <span class="ake-ui-card__id">${escapeHtml(task.taskId)}</span>
                                                     </div>
-                                                    ${desc ? `<div class="v2cc-task-item-desc">${desc}</div>` : ''}
+                                                    ${desc ? `<div class="ake-ui-card__body">${desc}</div>` : ''}
                                                     ${rewards.length ? `
                                                         <div class="v2cc-task-item-rewards">
                                                             <span class="v2cc-task-reward-label">${t('tasks.rewards')}</span>
@@ -786,7 +786,7 @@
                                         }).join('')}
                                     </div>
                                 ` : `<div class="v2cc-task-empty">${t('tasks.empty')}</div>`}
-                            </div>
+                            </section>
                         `;
                     }).join('')}
                 </div>
@@ -1220,12 +1220,12 @@
 
             const waveSpawners = parseDungeonWaves(dg);
 
-            html += `<div class="v2cc-dungeon-card">
-                <div class="v2cc-dungeon-header">
-                    <span class="v2cc-dungeon-name">${escapeHtml(name)}</span>
-                    <span class="v2cc-dungeon-lv">${t('dungeon.recommendedLevel', { label: commonT('level'), level: recommendLv })}</span>
+            html += `<div class="ake-ui-card" data-card-kind="cc-dungeon" data-density="regular">
+                <div class="ake-ui-card__header">
+                    <span class="ake-ui-card__title">${escapeHtml(name)}</span>
+                    <span class="ake-ui-badge">${t('dungeon.recommendedLevel', { label: commonT('level'), level: recommendLv })}</span>
                 </div>
-                ${desc ? `<div class="v2cc-dungeon-desc">${desc}</div>` : ''}
+                ${desc ? `<div class="ake-ui-card__body">${desc}</div>` : ''}
                 ${featureDesc ? `<div class="v2cc-dungeon-feature">${featureDesc}</div>` : ''}`;
 
             if (waveSpawners) {
@@ -1342,19 +1342,19 @@
         const groupCount = cct && cct.contractGroupMap ? Object.keys(cct.contractGroupMap).length : 0;
 
         let html = `
-            <div class="v2cc-detail-container">
-                <div class="v2cc-header">
-                    <div class="v2cc-header-icon">⚔️</div>
-                    <div class="v2cc-header-text">
-                        <div class="v2cc-title">${escapeHtml(title)}</div>
-                        ${getCurrentShowHidden() ? `<div class="v2cc-subtitle">${t('detail.subtitle', { activity: escapeHtml(game.activityId), groups: groupCount, terms: tagCount })}</div>` : ''}
+            <div class="ake-ui-detail" data-detail-kind="cc">
+                <div class="ake-ui-detail-header">
+                    <div class="ake-ui-detail-icon is-symbol">⚔️</div>
+                    <div class="ake-ui-detail-copy">
+                        <div class="ake-ui-detail-title">${escapeHtml(title)}</div>
+                        ${getCurrentShowHidden() ? `<div class="ake-ui-detail-subtitle">${t('detail.subtitle', { activity: escapeHtml(game.activityId), groups: groupCount, terms: tagCount })}</div>` : ''}
                     </div>
                 </div>
                 ${renderActivityInfo(acc)}
                 ${renderContractGroups(cct, tagTable)}
-                <div class="v2cc-section" id="v2ccSelectedSummary"></div>
-                ${currentDungeonData ? `<div class="v2cc-section"><h3>${t('sections.dungeonEnemies')}</h3>${renderDungeonSection(currentDungeonData)}</div>` : ''}
-                ${currentDungeonError ? `<div class="v2cc-section"><h3>${t('sections.dungeonEnemies')}</h3><div class="v2cc-error">${t('dungeon.loadFailed', { message: escapeHtml(currentDungeonError.message) })}</div></div>` : ''}
+                <div class="ake-ui-section" id="v2ccSelectedSummary"></div>
+                ${currentDungeonData ? `<div class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.dungeonEnemies')}</h3></div>${renderDungeonSection(currentDungeonData)}</div>` : ''}
+                ${currentDungeonError ? `<div class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.dungeonEnemies')}</h3></div><div class="ake-ui-state" data-state="error">${t('dungeon.loadFailed', { message: escapeHtml(currentDungeonError.message) })}</div></div>` : ''}
                 ${renderLevelRewards(data)}
                 ${renderShopSection(data)}
                 ${renderTaskGroups(data)}
@@ -1428,7 +1428,7 @@
 
     function refreshDungeonEnemyStats() {
         if (!currentDungeonData) return;
-        const enemyLists = document.querySelectorAll('.v2cc-dungeon-card .v2d-enemy-list');
+        const enemyLists = document.querySelectorAll('[data-card-kind="cc-dungeon"] .v2d-enemy-list');
         if (!enemyLists.length) return;
 
         const dungeons = currentDungeonData.dungeontable || {};
@@ -1445,7 +1445,7 @@
         });
 
         enemyLists.forEach(list => {
-            list.querySelectorAll('.v2d-enemy-card').forEach(card => {
+            list.querySelectorAll('[data-card-kind="enemy"]').forEach(card => {
                 const dg = dungeons[card.dataset.dungeonId] || dungeons[Object.keys(dungeons)[0]];
                 if (!dg) return;
                 const enemyId = card.dataset.enemyId;
@@ -1528,10 +1528,10 @@
                 container.innerHTML = ccTagDescs.map(d =>
                     `<div class="v2cc-cc-tag-line"><span class="v2cc-cc-tag-name">${parseText(d.tagName)}</span>${d.desc ? `<span class="v2cc-cc-tag-desc">${d.desc}</span>` : ''}</div>`
                 ).join('');
-                container.style.display = '';
+                container.hidden = false;
             } else {
                 container.innerHTML = '';
-                container.style.display = 'none';
+                container.hidden = true;
             }
         });
     }
@@ -1548,7 +1548,7 @@
         if (totalEl) totalEl.textContent = computeTotalScore(selectedTagIds, tagTable);
         if (countEl) countEl.textContent = t('score.selectedTerms', { count: selectedTagIds.size });
 
-        document.querySelectorAll('.v2cc-tag-card[data-tag-id]').forEach(card => {
+        document.querySelectorAll('[data-card-kind="cc-tag"][data-tag-id]').forEach(card => {
             const tid = card.dataset.tagId;
             const tag = allTags[tid];
             if (!tag) return;
@@ -1612,7 +1612,7 @@
         if (!cct) return;
         const allTags = getAllContractTags(cct);
 
-        document.querySelectorAll('.v2cc-tag-card[data-tag-id]').forEach(card => {
+        document.querySelectorAll('[data-card-kind="cc-tag"][data-tag-id]').forEach(card => {
             card.addEventListener('click', () => {
                 const tid = card.dataset.tagId;
                 if (selectedTagIds.has(tid)) {
@@ -1632,7 +1632,7 @@
                     const tag = allTags[tid];
                     if (!tag) return;
                     if (tag.conflictId) {
-                        document.querySelectorAll('.v2cc-tag-card[data-tag-id]').forEach(other => {
+                        document.querySelectorAll('[data-card-kind="cc-tag"][data-tag-id]').forEach(other => {
                             if (other === card) return;
                             const oTag = allTags[other.dataset.tagId];
                             if (oTag && oTag.conflictId === tag.conflictId) {
@@ -1641,7 +1641,7 @@
                         });
                     }
                     if (tag.lockIds && tag.lockIds.length > 0) {
-                        document.querySelectorAll('.v2cc-tag-card[data-tag-id]').forEach(other => {
+                        document.querySelectorAll('[data-card-kind="cc-tag"][data-tag-id]').forEach(other => {
                             if (other === card) return;
                             const oTag = allTags[other.dataset.tagId];
                             if (oTag && oTag.keyId && tag.lockIds.includes(oTag.keyId)) {

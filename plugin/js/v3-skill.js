@@ -981,7 +981,7 @@
     function renderDirectoryNode(target, directory) {
         if (!target) return;
         if (!directory.length) {
-            target.innerHTML = `<div class="combatv3-empty-inline">${escapeHtml(t('empty.noMatchingCombatData', null, '没有匹配的战斗数据'))}</div>`;
+            target.innerHTML = `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noMatchingCombatData', null, '没有匹配的战斗数据'))}</div>`;
             return;
         }
         const sectionCounts = directory.reduce((counts, entity) => {
@@ -991,18 +991,18 @@
         let previousSectionId = '';
         target.innerHTML = directory.map(character => {
             const sectionHeading = character.sectionId !== previousSectionId
-                ? `<div class="combatv3-directory-heading"><span>${escapeHtml(character.sectionName)}</span><span>${escapeHtml(t('counts.sectionEntities', { count: sectionCounts.get(character.sectionId) }, `${sectionCounts.get(character.sectionId)} 个`))}</span></div>`
+                ? `<div class="ake-ui-tree__section-header"><span>${escapeHtml(character.sectionName)}</span><span>${escapeHtml(t('counts.sectionEntities', { count: sectionCounts.get(character.sectionId) }, `${sectionCounts.get(character.sectionId)} 个`))}</span></div>`
                 : '';
             previousSectionId = character.sectionId;
             const characterOpen = Boolean(state.query) || state.expandedCharacters.has(character.id);
             const total = character.groups.reduce((sum, group) => sum + group.skills.length, 0);
             const renderSkillItems = group => group.skills.map(item => `
-                <button type="button" class="combatv3-skill-item${item.id === state.activeSkillId ? ' is-active' : ''}"
+                <button type="button" class="ake-ui-tree__item${item.id === state.activeSkillId ? ' is-active' : ''}"
                     data-combatv3-action="select-skill" data-skill-id="${escapeHtml(item.id)}"
                     data-character-id="${escapeHtml(character.id)}" data-group-id="${escapeHtml(group.id)}"
                     aria-current="${item.id === state.activeSkillId ? 'true' : 'false'}" title="${escapeHtml(item.id)}">
-                    <span class="combatv3-skill-name">${escapeHtml(item.displayName)}</span>
-                    <span class="combatv3-skill-kind">SkillData</span>
+                    <span class="ake-ui-tree__item-title">${escapeHtml(item.displayName)}</span>
+                    <span class="ake-ui-tree__item-subtitle">SkillData</span>
                 </button>`).join('');
             const groups = characterOpen ? (character.entityKind === 'enemy'
                 ? character.groups.map(renderSkillItems).join('')
@@ -1010,23 +1010,23 @@
                 const key = groupKey(character.id, group.id);
                 const groupOpen = Boolean(state.query) || state.expandedGroups.has(key);
                 const skills = groupOpen ? renderSkillItems(group) : '';
-                return `<section class="combatv3-character-group${groupOpen ? ' is-open' : ''}">
-                    <button type="button" class="combatv3-character-toggle" data-combatv3-action="toggle-group"
+                return `<section class="ake-ui-tree__group${groupOpen ? ' is-open' : ''}">
+                    <button type="button" class="ake-ui-tree__group-toggle" data-combatv3-action="toggle-group"
                         data-character-id="${escapeHtml(character.id)}" data-group-id="${escapeHtml(group.id)}"
                         aria-expanded="${groupOpen ? 'true' : 'false'}">
-                        <span class="combatv3-character-name">${group.icon ? `<img class="combatv3-group-icon" src="${escapeHtml(skillIconPath(group.icon))}" alt="">` : ''}<span>${escapeHtml(group.displayName)}</span></span>
-                        <span class="combatv3-character-count">${escapeHtml(group.skills.length)}</span>
+                        <span class="ake-ui-tree__group-label">${group.icon ? `<img class="ake-ui-tree__group-icon" data-size="small" src="${escapeHtml(skillIconPath(group.icon))}" alt="">` : ''}<span>${escapeHtml(group.displayName)}</span></span>
+                        <span class="ake-ui-tree__group-count">${escapeHtml(group.skills.length)}</span>
                     </button>
-                    <div class="combatv3-skill-list">${skills}</div>
+                    <div class="ake-ui-tree__children">${skills}</div>
                 </section>`;
             }).join('')) : '';
-            return `${sectionHeading}<section class="combatv3-character-group${characterOpen ? ' is-open' : ''}">
-                <button type="button" class="combatv3-character-toggle" data-combatv3-action="toggle-character"
+            return `${sectionHeading}<section class="ake-ui-tree__group${characterOpen ? ' is-open' : ''}">
+                <button type="button" class="ake-ui-tree__group-toggle" data-combatv3-action="toggle-character"
                     data-character-id="${escapeHtml(character.id)}" aria-expanded="${characterOpen ? 'true' : 'false'}">
-                    <span class="combatv3-character-name">${character.icon ? `<img class="combatv3-character-icon" src="${escapeHtml(character.icon)}" alt="">` : ''}<span>${escapeHtml(character.name)}</span></span>
-                    <span class="combatv3-character-count">${escapeHtml(total)}</span>
+                    <span class="ake-ui-tree__group-label">${character.icon ? `<img class="ake-ui-tree__group-icon" src="${escapeHtml(character.icon)}" alt="">` : ''}<span>${escapeHtml(character.name)}</span></span>
+                    <span class="ake-ui-tree__group-count">${escapeHtml(total)}</span>
                 </button>
-                <div class="combatv3-skill-list">${groups}</div>
+                <div class="ake-ui-tree__children">${groups}</div>
             </section>`;
         }).join('');
     }
@@ -1083,12 +1083,12 @@
     }
 
     function loadingHtml(title, message) {
-        return `<div class="combatv3-state combatv3-state--loading"><span class="combatv3-spinner" aria-hidden="true"></span><div>
+        return `<div class="ake-ui-state" data-state="loading"><span class="ake-ui-spinner" aria-hidden="true"></span><div>
             <h2>${escapeHtml(title)}</h2><p>${escapeHtml(message)}</p></div></div>`;
     }
 
     function errorHtml(title, message) {
-        return `<div class="combatv3-state combatv3-state--error"><div><h2>${escapeHtml(title)}</h2><p>${escapeHtml(message)}</p></div></div>`;
+        return `<div class="ake-ui-state" data-state="error"><div><h2>${escapeHtml(title)}</h2><p>${escapeHtml(message)}</p></div></div>`;
     }
 
     async function fetchSkill(item) {
@@ -1968,19 +1968,19 @@
             enumValueLabel('skillSpecifications', raw.skillSpecification),
             enumValueLabel('passiveSkillTypes', raw.passiveSkillType)
         ].filter(Boolean);
-        return `<header class="combatv3-detail-header">
-            <div class="combatv3-detail-heading${icon ? '' : ' without-icon'}">${icon ? `<img class="combatv3-detail-icon" src="${escapeHtml(icon)}" alt="">` : ''}<div class="combatv3-detail-copy">
-                <div class="combatv3-eyebrow">${escapeHtml(owner.character.name)}${isEnemy ? '' : ` · ${escapeHtml(owner.group.displayName)}`}</div>
-                <h1 class="combatv3-detail-title">${escapeHtml(title)}</h1>
-                <p class="combatv3-detail-subtitle">${escapeHtml(raw.skillId || owner.item.id)}</p></div></div>
-            <code class="combatv3-detail-id" title="${escapeHtml(owner.item.id)}">${escapeHtml(owner.item.id)}</code>
+        return `<header class="ake-ui-detail-header">
+            ${icon ? `<img class="ake-ui-detail-icon" src="${escapeHtml(icon)}" alt="">` : ''}<div class="ake-ui-detail-copy">
+                <div class="ake-ui-detail-eyebrow">${escapeHtml(owner.character.name)}${isEnemy ? '' : ` · ${escapeHtml(owner.group.displayName)}`}</div>
+                <h1 class="ake-ui-detail-title">${escapeHtml(title)}</h1>
+                <p class="ake-ui-detail-subtitle">${escapeHtml(raw.skillId || owner.item.id)}</p></div>
+            <code class="ake-ui-detail-id" title="${escapeHtml(owner.item.id)}">${escapeHtml(owner.item.id)}</code>
         </header>
         <div class="combatv3-context-row">
             <label class="combatv3-context-item"><span>${escapeHtml(t('metrics.level', null, '等级'))}</span><select id="combatv3LevelSelect"${levels.length <= 1 ? ' disabled' : ''}>${options}</select></label>
             <span class="combatv3-context-item"><span>${escapeHtml(entityLabel)}</span><strong>${escapeHtml(owner.character.name)}</strong></span>
             ${isEnemy ? '' : `<span class="combatv3-context-item"><span>${escapeHtml(t('directory.groupLabel', null, '技能组'))}</span><strong>${escapeHtml(owner.group.displayName)}</strong></span>`}
         </div>
-        ${tags.length ? `<div class="combatv3-tag-row">${tags.map((tag, index) => `<span class="combatv3-tag${index === 0 ? ' combatv3-tag--accent' : ''}">${escapeHtml(tag)}</span>`).join('')}</div>` : ''}`;
+        ${tags.length ? `<div class="ake-ui-detail-badges">${tags.map((tag, index) => `<span class="ake-ui-badge"${index === 0 ? ' data-tone="accent"' : ''}>${escapeHtml(tag)}</span>`).join('')}</div>` : ''}`;
     }
 
     function renderCore() {
@@ -1997,17 +1997,17 @@
                 ${metric.unit ? `<span class="combatv3-metric-unit">${escapeHtml(metric.unit)}</span>` : ''}</div>`).join('');
         const metricHtml = standardHtml || spatialHtml
             ? `${standardHtml}${spatialHtml}`
-            : `<div class="combatv3-empty-inline">${escapeHtml(t('empty.noCoreMetrics', null, '分析器未返回核心指标'))}</div>`;
+            : `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noCoreMetrics', null, '分析器未返回核心指标'))}</div>`;
         const patches = patchMetrics();
-        const patchHtml = patches.length ? `<section class="combatv3-section">
-            <header class="combatv3-section-header"><h3 class="combatv3-section-title">${escapeHtml(t('sections.skillLevelConfiguration', null, '技能等级配置'))}</h3></header>
+        const patchHtml = patches.length ? `<section class="ake-ui-section">
+            <header class="ake-ui-section__header"><h3 class="ake-ui-section__title">${escapeHtml(t('sections.skillLevelConfiguration', null, '技能等级配置'))}</h3></header>
             <div class="combatv3-metric-grid">${patches.map(([key, label, rawValue]) => {
                 const value = metricValue(key, rawValue);
                 return `<div class="combatv3-metric"><span class="combatv3-metric-label">${escapeHtml(label)}</span>
                     <strong class="combatv3-metric-value">${escapeHtml(value.value)}</strong>${value.unit ? `<span class="combatv3-metric-unit">${escapeHtml(value.unit)}</span>` : ''}</div>`;
             }).join('')}</div></section>` : '';
-        return `${patchHtml}<section class="combatv3-section"><header class="combatv3-section-header"><h2 class="combatv3-section-title">${escapeHtml(t('sections.coreMetrics', null, '核心指标'))}</h2>
-            <span class="combatv3-section-note">${escapeHtml(t('sectionNotes.keyCombatFields', null, '关键战斗字段'))}</span></header><div class="combatv3-metric-grid">${metricHtml}</div></section>`;
+        return `${patchHtml}<section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">${escapeHtml(t('sections.coreMetrics', null, '核心指标'))}</h2>
+            <span class="ake-ui-section__meta">${escapeHtml(t('sectionNotes.keyCombatFields', null, '关键战斗字段'))}</span></header><div class="combatv3-metric-grid">${metricHtml}</div></section>`;
     }
 
     function frameOf(item, names) {
@@ -2153,7 +2153,7 @@
     }
 
     function renderWindowStage(rows, emptyText) {
-        if (!rows.length) return `<div class="combatv3-empty-inline">${escapeHtml(emptyText)}</div>`;
+        if (!rows.length) return `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(emptyText)}</div>`;
         const max = timelineMax();
         const ruler = [0, 20, 40, 60, 80, 100].map(percent => `<span>${escapeHtml(Math.round(max * percent / 100))}</span>`).join('');
         const lanes = rows.map((item, index) => {
@@ -2178,8 +2178,8 @@
     }
 
     function renderWindows() {
-        return `<section class="combatv3-section"><header class="combatv3-section-header"><h2 class="combatv3-section-title">${escapeHtml(t('sections.keyWindows', null, '关键窗口'))}</h2>
-            <span class="combatv3-section-count">${escapeHtml(t('counts.items', { count: state.analysis.windows.length }, `${state.analysis.windows.length} 项`))}</span></header>
+        return `<section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">${escapeHtml(t('sections.keyWindows', null, '关键窗口'))}</h2>
+            <span class="ake-ui-section__meta">${escapeHtml(t('counts.items', { count: state.analysis.windows.length }, `${state.analysis.windows.length} 项`))}</span></header>
             ${renderWindowStage(state.analysis.windows, t('empty.noKeyWindows', null, '未识别到命中、取消、抗打断、无敌或续段窗口'))}</section>`;
     }
 
@@ -2222,10 +2222,10 @@
             <td>${escapeHtml(hit.poise.map(hitPoise).join(' / ') || '--')}</td>
             <td data-column="logic">${escapeHtml(hitResources(hit) || '--')}</td>
             <td data-column="note">${escapeHtml([hit.branchPath.join(' → '), hit.targetGroupKey].filter(Boolean).join(' · ') || '--')}</td></tr>`).join('');
-        return `<section class="combatv3-section"><header class="combatv3-section-header"><h2 class="combatv3-section-title">${escapeHtml(t('sections.hitLedger', null, '命中账本'))}</h2>
-            <span class="combatv3-section-count">${escapeHtml(t('counts.hits', { count: hits.length }, `${hits.length} 段`))}</span></header>
-            ${hits.length ? `<div class="combatv3-ledger-scroll"><table class="combatv3-ledger"><thead><tr><th>${escapeHtml(t('columns.hits.index', null, '#'))}</th><th>${escapeHtml(t('columns.hits.time', null, '时点'))}</th><th>${escapeHtml(t('columns.hits.type', null, '类型'))}</th><th>${escapeHtml(t('columns.hits.damage', null, '倍率/伤害'))}</th><th>${escapeHtml(t('columns.hits.poise', null, '破韧/失衡'))}</th><th>${escapeHtml(t('columns.hits.resource', null, '资源/异常'))}</th><th>${escapeHtml(t('columns.hits.note', null, '条件/目标'))}</th></tr></thead><tbody>${body}</tbody></table></div>`
-                : `<div class="combatv3-empty-inline">${escapeHtml(t('empty.noHits', null, '未识别到命中结算'))}</div>`}</section>`;
+        return `<section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">${escapeHtml(t('sections.hitLedger', null, '命中账本'))}</h2>
+            <span class="ake-ui-section__meta">${escapeHtml(t('counts.hits', { count: hits.length }, `${hits.length} 段`))}</span></header>
+            ${hits.length ? `<div class="ake-ui-table-shell"><table class="combatv3-ledger"><thead><tr><th>${escapeHtml(t('columns.hits.index', null, '#'))}</th><th>${escapeHtml(t('columns.hits.time', null, '时点'))}</th><th>${escapeHtml(t('columns.hits.type', null, '类型'))}</th><th>${escapeHtml(t('columns.hits.damage', null, '倍率/伤害'))}</th><th>${escapeHtml(t('columns.hits.poise', null, '破韧/失衡'))}</th><th>${escapeHtml(t('columns.hits.resource', null, '资源/异常'))}</th><th>${escapeHtml(t('columns.hits.note', null, '条件/目标'))}</th></tr></thead><tbody>${body}</tbody></table></div>`
+                : `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noHits', null, '未识别到命中结算'))}</div>`}</section>`;
     }
 
     function isPerformanceEvent(event) {
@@ -2246,11 +2246,11 @@
         const events = state.showPerformance ? state.analysis.events : state.analysis.events.filter(event => !isPerformanceEvent(event));
         state.timelineEvents = events;
         const rows = events.map((event, index) => ({ ...event, label: eventLabel(event, index) }));
-        return `<div class="combatv3-context-row"><button type="button" class="combatv3-segment-tab" data-combatv3-action="toggle-performance"
+        return `<div class="combatv3-context-row"><button type="button" class="ake-ui-segmented__button" data-combatv3-action="toggle-performance"
             aria-pressed="${state.showPerformance ? 'true' : 'false'}">${escapeHtml(state.showPerformance
                 ? t('buttons.showPerformance', null, '含表现事件')
                 : t('buttons.combatOnly', null, '仅战斗事件'))}</button>
-            <span class="combatv3-section-note">${escapeHtml(t('counts.filteredEvents', {
+            <span class="ake-ui-section__meta">${escapeHtml(t('counts.filteredEvents', {
                 visible: events.length,
                 total: state.analysis.events.length
             }, `${events.length} / ${state.analysis.events.length} 项`))}</span></div>
@@ -2269,7 +2269,7 @@
         const links = state.analysis.links;
         const branchEvents = state.analysis.events.filter(event => Array.isArray(event.branchPath) && event.branchPath.length);
         if (!links.length && !branchEvents.length) {
-            return `<div class="combatv3-empty-inline">${escapeHtml(t('empty.noLogic', null, '未识别到条件、跳转或后继动作'))}</div>`;
+            return `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noLogic', null, '未识别到条件、跳转或后继动作'))}</div>`;
         }
         const nodes = links.map((link, index) => {
             const title = firstValue(link, ['label', 'name', 'title', 'to', 'targetId', 'id', '__key'])
@@ -2309,17 +2309,17 @@
         const boards = blackboardRows();
         const warningHtml = warnings.length ? warnings.map(warning => `<div class="combatv3-note is-warning">${escapeHtml(warningText(warning))}</div>`).join('') : '';
         const boardHtml = boards.length ? `<dl class="combatv3-definition-list">${boards.map(([key, value]) => `<dt>${escapeHtml(key)}</dt><dd>${escapeHtml(formatValue(value))}</dd>`).join('')}</dl>`
-            : `<div class="combatv3-empty-inline">${escapeHtml(t('empty.noBlackboard', null, '没有解析后的黑板值'))}</div>`;
+            : `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noBlackboard', null, '没有解析后的黑板值'))}</div>`;
         const events = state.analysis.events;
-        const eventTable = events.length ? `<div class="combatv3-ledger-scroll"><table class="combatv3-data-table"><thead><tr><th>${escapeHtml(t('columns.events.index', null, '#'))}</th><th>${escapeHtml(t('columns.events.category', null, '分类'))}</th><th>${escapeHtml(t('columns.events.time', null, '时点'))}</th><th>${escapeHtml(t('columns.events.event', null, '事件'))}</th><th>${escapeHtml(t('columns.events.details', null, '详情'))}</th></tr></thead><tbody>
+        const eventTable = events.length ? `<div class="ake-ui-table-shell"><table class="ake-ui-table"><thead><tr><th>${escapeHtml(t('columns.events.index', null, '#'))}</th><th>${escapeHtml(t('columns.events.category', null, '分类'))}</th><th>${escapeHtml(t('columns.events.time', null, '时点'))}</th><th>${escapeHtml(t('columns.events.event', null, '事件'))}</th><th>${escapeHtml(t('columns.events.details', null, '详情'))}</th></tr></thead><tbody>
             ${events.map((event, index) => `<tr><td>${escapeHtml(index + 1)}</td><td>${escapeHtml(isPerformanceEvent(event)
                 ? t('enums.eventKinds.presentation', null, '表现')
                 : t('enums.eventKinds.combat', null, '战斗'))}</td>
                 <td>${escapeHtml(formatValue(firstValue(event, ['frame', 'startFrame', 'time'])))}</td><td>${escapeHtml(eventLabel(event, index))}</td>
                 <td data-column="note">${escapeHtml(compactTimelineDetail(firstValue(event, ['detail', 'details', 'description', 'note', 'condition'])))}</td></tr>`).join('')}</tbody></table></div>` : '';
-        return `${warningHtml}<section class="combatv3-section"><header class="combatv3-section-header"><h3 class="combatv3-section-title">${escapeHtml(t('sections.blackboardResolution', null, '黑板解析'))}</h3></header>${boardHtml}</section>
-            <section class="combatv3-section"><header class="combatv3-section-header"><h3 class="combatv3-section-title">${escapeHtml(t('sections.allEvents', null, '全部事件'))}</h3><span class="combatv3-section-count">${escapeHtml(t('counts.events', { count: events.length }, `${events.length} 个事件`))}</span></header>${eventTable || `<div class="combatv3-empty-inline">${escapeHtml(t('empty.noEvents', null, '没有事件'))}</div>`}</section>
-            <section class="combatv3-section"><details class="combatv3-raw"><summary>${escapeHtml(t('raw.analyzerOutput', null, '分析器输出'))}</summary><pre>${escapeHtml(safeJson(state.analysisSource))}</pre></details>
+        return `${warningHtml}<section class="ake-ui-section"><header class="ake-ui-section__header"><h3 class="ake-ui-section__title">${escapeHtml(t('sections.blackboardResolution', null, '黑板解析'))}</h3></header>${boardHtml}</section>
+            <section class="ake-ui-section"><header class="ake-ui-section__header"><h3 class="ake-ui-section__title">${escapeHtml(t('sections.allEvents', null, '全部事件'))}</h3><span class="ake-ui-section__meta">${escapeHtml(t('counts.events', { count: events.length }, `${events.length} 个事件`))}</span></header>${eventTable || `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noEvents', null, '没有事件'))}</div>`}</section>
+            <section class="ake-ui-section"><details class="combatv3-raw"><summary>${escapeHtml(t('raw.analyzerOutput', null, '分析器输出'))}</summary><pre>${escapeHtml(safeJson(state.analysisSource))}</pre></details>
             <details class="combatv3-raw"><summary>${escapeHtml(t('raw.currentPatch', null, '当前等级 SkillPatch'))}</summary><pre>${escapeHtml(safeJson(state.currentPatch))}</pre></details>
             <details class="combatv3-raw"><summary>${escapeHtml(t('raw.skillData', null, '原始 SkillData'))}</summary><pre>${escapeHtml(safeJson(state.currentData))}</pre></details></section>`;
     }
@@ -2331,10 +2331,10 @@
             ['debug', t('tabs.debug', null, '调试数据')]
         ];
         const content = state.activeTab === 'logic' ? renderLogic() : (state.activeTab === 'debug' ? renderDebug() : renderTimeline());
-        return `<section class="combatv3-section"><div class="combatv3-segment-tabs" role="tablist">${tabs.map(([id, label]) =>
-            `<button type="button" class="combatv3-segment-tab${state.activeTab === id ? ' is-active' : ''}" role="tab" data-combatv3-tab="${escapeHtml(id)}"
+        return `<section class="ake-ui-section"><div class="ake-ui-tabs" data-variant="segment" data-layout="equal" role="tablist">${tabs.map(([id, label]) =>
+            `<button type="button" class="ake-ui-tabs__button${state.activeTab === id ? ' is-active' : ''}" role="tab" data-combatv3-tab="${escapeHtml(id)}"
                 aria-selected="${state.activeTab === id ? 'true' : 'false'}">${escapeHtml(label)}</button>`).join('')}</div>
-            <div class="combatv3-section" role="tabpanel">${content}</div></section>`;
+            <div class="ake-ui-section" role="tabpanel">${content}</div></section>`;
     }
 
     function renderSourceWarning() {

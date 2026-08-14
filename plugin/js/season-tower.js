@@ -327,10 +327,10 @@
             return `<div class="st-config">
                 <div class="st-config-title"><code class="st-config-id">${escapeHtml(config.configId)}</code><span>${waves.length} 波 · ${total} 个敌人</span></div>
                 <div class="v2d-wave-map-row"><div class="v2d-wave-section"><div class="v2d-wave-detail">${waves.map((wave, waveIndex) => `<div class="v2d-wave-line${waveIndex === 0 ? ' active' : ''}" data-wave-idx="${waveIndex}"><span class="v2d-wave-num">第 ${escapeHtml(wave.waveId)} 波</span>${wave.repeatable ? '<span class="v2d-wave-repeat">可重复</span>' : ''}${wave.maxAlive ? `<span class="v2d-wave-alive">同时在场 ${wave.maxAlive}</span>` : ''}${wave.externallyControlled ? '<span class="v2d-wave-pause">外部控制</span>' : ''}: ${wave.enemies.map(enemy => `<span class="v2d-wave-enemy" data-wave-idx="${waveIndex}" data-enemy-id="${escapeHtml(enemy.id)}"><img class="v2d-wave-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${escapeHtml(enemy.templateId)}.png" alt=""><span class="v2d-wave-ename">${escapeHtml(text(data.enemyDisplay[data.enemies[enemy.id]?.templateId]?.name, enemy.id))}</span> ×${enemy.count} <span class="v2d-wave-lv">Lv.${enemy.level}</span></span>`).join(' ')}</div>`).join('')}</div></div>${mapHtml}</div>
-                <div class="v2d-enemy-list">${unique.map(enemy => renderEnemy(enemy.id, enemy.level, libraryBuffs[enemy.id] || [], scriptedBuffs, data)).join('')}</div>
+                <div class="ake-ui-card-grid" data-size="wide">${unique.map(enemy => renderEnemy(enemy.id, enemy.level, libraryBuffs[enemy.id] || [], scriptedBuffs, data)).join('')}</div>
             </div>`;
         }).join('');
-        const fallbackHtml = configs.length ? '' : `<div class="v2d-enemy-list">${fallbackEnemies.map(enemy => renderEnemy(enemy.id, enemy.level, [], [], data)).join('')}</div>`;
+        const fallbackHtml = configs.length ? '' : `<div class="ake-ui-card-grid" data-size="wide">${fallbackEnemies.map(enemy => renderEnemy(enemy.id, enemy.level, [], [], data)).join('')}</div>`;
         return configHtml || fallbackHtml;
     }
 
@@ -341,9 +341,9 @@
 
     function renderRanks(data) {
         const thresholds = data.constants.rankStarNum || [];
-        const standard = Object.entries(data.ranks).filter(([id]) => Number(id) > 0 && Number(id) < 6).map(([id, rank], index) => `<div class="st-rank"><span>${thresholds[index] ?? '?'}<small>★</small></span><div><b>${escapeHtml(text(rank.rankName, `评级 ${id}`))}</b><small>最终评级称号</small></div></div>`).join('');
+        const standard = Object.entries(data.ranks).filter(([id]) => Number(id) > 0 && Number(id) < 6).map(([id, rank], index) => `<div class="ake-ui-card" data-card-kind="tower-rank"><span class="st-rank-score">${thresholds[index] ?? '?'}<small>★</small></span><div class="ake-ui-card__content"><b class="ake-ui-card__title">${escapeHtml(text(rank.rankName, `评级 ${id}`))}</b><small class="ake-ui-card__subtitle">最终评级称号</small></div></div>`).join('');
         const glowing = data.ranks['6'];
-        return standard + (glowing ? `<div class="st-rank st-rank--glowing"><span>✦</span><div><b>${escapeHtml(text(glowing.rankName, '增辉称号'))}</b><small>增辉称号</small></div></div>` : '');
+        return standard + (glowing ? `<div class="ake-ui-card" data-card-kind="tower-rank" data-variant="glowing"><span class="st-rank-score">✦</span><div class="ake-ui-card__content"><b class="ake-ui-card__title">${escapeHtml(text(glowing.rankName, '增辉称号'))}</b><small class="ake-ui-card__subtitle">增辉称号</small></div></div>` : '');
     }
 
     function renderDifficulty(entry, data, options) {
@@ -380,16 +380,16 @@
         const sameSpecial = new Set(entries.map(entry => comparableText(entry.special))).size <= 1;
         const sharedFeature = sameFeature ? entries.find(entry => entry.feature)?.feature || '' : '';
         const sharedSpecial = sameSpecial ? entries.find(entry => entry.special)?.special || '' : '';
-        return `<article class="st-stage">
-            <header class="st-stage-head"><div><h3>${escapeHtml(text(group.gameGroupName, baseId))}</h3><code class="st-stage-id">${escapeHtml(baseId)}</code></div><strong>最高 3 ★</strong></header>
-            ${sharedFeature ? `<div class="st-feature st-feature--shared">${parseGameText(sharedFeature)}</div>` : ''}
+        return `<article class="ake-ui-card" data-card-kind="tower-stage" data-density="regular">
+            <header class="ake-ui-card__header"><div class="ake-ui-card__heading"><h3 class="ake-ui-card__title">${escapeHtml(text(group.gameGroupName, baseId))}</h3><code class="ake-ui-card__id">${escapeHtml(baseId)}</code></div><span class="ake-ui-badge">最高 3 ★</span></header>
+            <div class="ake-ui-card__body">${sharedFeature ? `<div class="st-feature st-feature--shared">${parseGameText(sharedFeature)}</div>` : ''}
             ${sharedSpecial ? `<div class="st-special st-special--shared"><b>特殊增益</b>${parseGameText(sharedSpecial)}</div>` : ''}
             <div>${entries.map(entry => renderDifficulty(entry, data, {
                 showFeature: !sameFeature,
                 showSpecial: !sameSpecial,
                 openCombat: expandHighestDifficulty && entry.star === highestStar,
                 isHighestDifficulty: entry.star === highestStar
-            })).join('')}</div>
+            })).join('')}</div></div>
         </article>`;
     }
 
@@ -398,33 +398,33 @@
         const open = status.key === 'active';
         return `<details class="st-week st-week--${status.key}" data-week-id="${escapeHtml(week.id)}"${open ? ' open' : ''}>
             <summary class="st-week-head"><div><h2>${escapeHtml(week.name)}</h2><small>轮换 ${index + 1} · ${week.groupIds.length} 个关卡 · 最高 ${week.groupIds.length * 3} 星</small></div><div class="st-week-time"><b class="st-week-status">${status.label}</b><span>${formatDate(week.openTime)}</span><i></i><span>${formatDate(week.closeTime)}</span></div></summary>
-            <div class="st-week-body"><div class="st-stage-grid">${week.groupIds.map(id => renderStage(id, data, open)).join('')}</div></div>
+            <div class="st-week-body"><div class="ake-ui-card-grid" data-size="full">${week.groupIds.map(id => renderStage(id, data, open)).join('')}</div></div>
         </details>`;
     }
 
     function renderIntro(data) {
         if (!data.introPages.length) return '';
-        return `<section class="st-section"><h2>玩法说明</h2><div class="st-intro-grid">${data.introPages.map(page => `<article class="st-intro-card"><b>${escapeHtml(text(page.title, `说明 ${page.pageIndex}`))}</b><div>${parseGameText(text(page.desc))}</div></article>`).join('')}</div></section>`;
+        return `<section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">玩法说明</h2></header><div class="ake-ui-card-grid" data-size="regular">${data.introPages.map(page => `<article class="ake-ui-card" data-card-kind="tower-intro" data-density="regular"><b class="ake-ui-card__title">${escapeHtml(text(page.title, `说明 ${page.pageIndex}`))}</b><div class="ake-ui-card__body">${parseGameText(text(page.desc))}</div></article>`).join('')}</div></section>`;
     }
 
     function renderSeason(season) {
         const status = seasonStatus(season);
         const data = season.data;
         activeData = data;
-        detail.innerHTML = `<div class="st-detail-header">
-            <img class="st-detail-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/activity/${escapeHtml(data.activity.tabImg || 'activity_tab_bg_seasontower')}.png" alt="">
-            <div class="st-detail-title"><h1>${escapeHtml(text(data.activity.name, '战争回响'))} · ${escapeHtml(season.name)}</h1><p>${escapeHtml(text(data.activity.desc, SERIES_ID))}</p><div class="st-period"><span class="st-status st-status--${status.key}">${status.label}</span><span>${formatDate(season.openTime)}</span><i></i><span>${formatDate(season.closeTime)}</span></div></div>
+        detail.innerHTML = `<div class="ake-ui-detail" data-detail-kind="tower"><div class="ake-ui-detail-header">
+            <img class="ake-ui-detail-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/activity/${escapeHtml(data.activity.tabImg || 'activity_tab_bg_seasontower')}.png" alt="">
+            <div class="ake-ui-detail-copy"><h1 class="ake-ui-detail-title">${escapeHtml(text(data.activity.name, '战争回响'))} · ${escapeHtml(season.name)}</h1><p class="ake-ui-detail-subtitle">${escapeHtml(text(data.activity.desc, SERIES_ID))}</p><div class="ake-ui-detail-meta"><span class="ake-ui-badge" data-accent="status" data-accent-value="${status.key}">${status.label}</span><span>${formatDate(season.openTime)}</span><span>${formatDate(season.closeTime)}</span></div></div>
         </div>
         ${renderIntro(data)}
-        <section class="st-section"><h2>最终评级与称号</h2><div class="st-rank-grid">${renderRanks(data)}</div></section>
-        <section class="st-section"><h2>轮换周期</h2>${season.weeks.map((week, index) => renderWeek(week, index, data)).join('')}</section>`;
+        <section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">最终评级与称号</h2></header><div class="ake-ui-card-grid" data-size="narrow">${renderRanks(data)}</div></section>
+        <section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">轮换周期</h2></header>${season.weeks.map((week, index) => renderWeek(week, index, data)).join('')}</section></div>`;
         loadOpenCombats(detail);
         detail.scrollTop = 0;
     }
 
     function seasonButton(season) {
         const status = seasonStatus(season);
-        return `<button class="st-season-item${season.id === activeSeasonId ? ' is-active' : ''}" type="button" data-season-id="${escapeHtml(season.id)}"><span>S${String(season.id).padStart(2, '0')}</span><div><b>${escapeHtml(season.name)}</b><small>${formatDate(season.openTime).split(' ')[0]} — ${formatDate(season.closeTime).split(' ')[0]}</small></div><i class="st-status-dot st-status-dot--${status.key}" title="${status.label}"></i></button>`;
+        return `<button class="ake-ui-directory__item" type="button" data-season-id="${escapeHtml(season.id)}" data-ake-status="${status.key}"${season.id === activeSeasonId ? ' aria-current="true"' : ''}><span class="ake-ui-directory__item-id">S${String(season.id).padStart(2, '0')}</span><span class="ake-ui-directory__item-copy"><b class="ake-ui-directory__item-title">${escapeHtml(season.name)}</b><small class="ake-ui-directory__item-subtitle">${formatDate(season.openTime).split(' ')[0]} — ${formatDate(season.closeTime).split(' ')[0]}</small></span><i class="st-status-dot st-status-dot--${status.key}" title="${status.label}"></i></button>`;
     }
 
     function renderLists() {
@@ -514,7 +514,7 @@
             if (deepId && !selectSeason(deepId, false)) window.__akeRouter?.onDeepLinkNotFound?.(deepId, false);
             if (!activeSeasonId) selectSeason((seasons.find(season => seasonStatus(season).key === 'active') || seasons[seasons.length - 1])?.id, false);
         } catch (error) {
-            detail.innerHTML = `<div class="st-error"><b>战争回响数据加载失败</b><span>${escapeHtml(error.message)}</span></div>`;
+            detail.innerHTML = `<div class="ake-ui-state" data-state="error"><div><b>战争回响数据加载失败</b><span>${escapeHtml(error.message)}</span></div></div>`;
         }
     }
 
@@ -578,7 +578,7 @@
         overlay.setAttribute('aria-hidden', 'false');
     });
     overlay.addEventListener('click', event => {
-        if (event.target === overlay || event.target.closest('.st-mobile-title button')) closeOverlay();
+        if (event.target === overlay || event.target.closest('.ake-ui-directory__mobile-header button')) closeOverlay();
     });
     window.addEventListener('globalConfigChanged', () => {
         const season = seasons.find(entry => entry.id === activeSeasonId);

@@ -366,7 +366,7 @@
         function appendCharacterMetaIcons(container, character) {
             getCharacterMetaIcons(character).forEach(icon => {
                 const image = document.createElement('img');
-                image.className = 'character-meta-icon';
+                image.className = 'ake-ui-meta-icon';
                 image.src = icon.src;
                 image.alt = icon.label;
                 image.title = icon.label;
@@ -410,7 +410,7 @@
             for (let r = 1; r <= 6; r++) {
                 if (existingRarities.has(r)) {
                     const btn = document.createElement('span');
-                    btn.className = `filter-btn ${selectedRarities.has(r) ? 'active' : ''}`;
+                    btn.className = `ake-ui-filter__button ${selectedRarities.has(r) ? 'is-active' : ''}`;
                     btn.dataset.rarity = r;
                     btn.textContent = t('rarityStars', { name: r });
                     btn.addEventListener('click', () => {
@@ -419,7 +419,7 @@
                         } else {
                             selectedRarities.add(r);
                         }
-                        btn.classList.toggle('active');
+                        btn.classList.toggle('is-active');
                         renderCharacterList();
                     });
                     rarityContainer.appendChild(btn);
@@ -432,7 +432,7 @@
             existingTypes.forEach(type => {
                 const btn = document.createElement('span');
                 const tName = getCharTypeName(type) || type;
-                btn.className = `filter-btn ${selectedCharTypes.has(type) ? 'active' : ''}`;
+                btn.className = `ake-ui-filter__button ${selectedCharTypes.has(type) ? 'is-active' : ''}`;
                 btn.dataset.type = type;
                 btn.textContent = tName;
                 btn.addEventListener('click', () => {
@@ -441,7 +441,7 @@
                     } else {
                         selectedCharTypes.add(type);
                     }
-                    btn.classList.toggle('active');
+                    btn.classList.toggle('is-active');
                     renderCharacterList();
                 });
                 typeContainer.appendChild(btn);
@@ -453,7 +453,7 @@
             existingProfessions.forEach(prof => {
                 const btn = document.createElement('span');
                 const pName = getProfessionName(prof) || prof;
-                btn.className = `filter-btn ${selectedProfessions.has(prof) ? 'active' : ''}`;
+                btn.className = `ake-ui-filter__button ${selectedProfessions.has(prof) ? 'is-active' : ''}`;
                 btn.dataset.profession = prof;
                 btn.textContent = pName;
                 btn.addEventListener('click', () => {
@@ -462,7 +462,7 @@
                     } else {
                         selectedProfessions.add(prof);
                     }
-                    btn.classList.toggle('active');
+                    btn.classList.toggle('is-active');
                     renderCharacterList();
                 });
                 profContainer.appendChild(btn);
@@ -474,7 +474,7 @@
             existingWeapons.forEach(weapon => {
                 const btn = document.createElement('span');
                 const wName = getWeaponName(weapon) || weapon;
-                btn.className = `filter-btn ${selectedWeaponTypes.has(weapon) ? 'active' : ''}`;
+                btn.className = `ake-ui-filter__button ${selectedWeaponTypes.has(weapon) ? 'is-active' : ''}`;
                 btn.dataset.weapon = weapon;
                 btn.textContent = wName;
                 btn.addEventListener('click', () => {
@@ -483,7 +483,7 @@
                     } else {
                         selectedWeaponTypes.add(weapon);
                     }
-                    btn.classList.toggle('active');
+                    btn.classList.toggle('is-active');
                     renderCharacterList();
                 });
                 weaponContainer.appendChild(btn);
@@ -499,20 +499,20 @@
             mobileContent.innerHTML = '';
             filtered.forEach(char => {
                 const item = document.createElement('div');
-                item.className = 'mobile-list-item';
+                item.className = 'ake-ui-directory__item';
                 window.AKEModuleOverview?.markVersionChange(item, char);
-                if (char.charId === activeCharId) item.classList.add('active');
+                if (char.charId === activeCharId) item.classList.add('is-active');
                 const nameRow = document.createElement('div');
                 nameRow.className = 'character-name-row';
                 const name = document.createElement('div');
-                name.className = 'item-name';
+                name.className = 'ake-ui-directory__item-title';
                 name.textContent = char.name;
                 const metaIcons = document.createElement('span');
-                metaIcons.className = 'character-meta-icons';
+                metaIcons.className = 'ake-ui-icon-list';
                 appendCharacterMetaIcons(metaIcons, char);
                 nameRow.append(name, metaIcons);
                 const id = document.createElement('div');
-                id.className = 'item-id';
+                id.className = 'ake-ui-directory__item-id';
                 id.textContent = char.charId;
                 item.append(nameRow, id);
                 item.addEventListener('click', () => {
@@ -527,11 +527,11 @@
 
         function openMobileList() {
             buildMobileList();
-            mobileOverlay.style.display = 'flex';
+            mobileOverlay.classList.add('is-open'); mobileOverlay.setAttribute('aria-hidden', 'false');
         }
 
         function closeMobileList() {
-            mobileOverlay.style.display = 'none';
+            mobileOverlay.classList.remove('is-open'); mobileOverlay.setAttribute('aria-hidden', 'true');
         }
 
         async function loadCharacterManifest(showHidden) {
@@ -555,7 +555,7 @@
                 group: char => ({ id: char.profession || 'unknown', name: char.profession || t('unknownProfession') }),
                 onReset: () => { activeCharId = null; },
                 onSelect: char => { activeCharId = char.charId; renderCharacterList(); },
-                sidebarSelector: char => `.character-item[data-char-id="${CSS.escape(char.charId)}"]`,
+                sidebarSelector: char => `.ake-ui-directory__item[data-char-id="${CSS.escape(char.charId)}"]`,
                 items: items.map(char => ({ ...char, id: char.charId, image: char.icon, fallback: t('overview.fallback'),
                     icons: getCharacterMetaIcons(char) }))
             });
@@ -570,51 +570,47 @@
 
             container.innerHTML = '';
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="loader">${t('noMatches')}</div>`;
-                if (detailContainer) detailContainer.innerHTML = `<div class="loader">${t('select')}</div>`;
+                container.innerHTML = `<div class="ake-ui-state">${t('noMatches')}</div>`;
+                if (detailContainer) detailContainer.innerHTML = `<div class="ake-ui-state">${t('select')}</div>`;
                 activeCharId = null;
                 return;
             }
 
             filtered.forEach((char, index) => {
                 const item = document.createElement('div');
-                item.className = `character-item ${char.charId === activeCharId ? 'active' : (index === 0 && !activeCharId && !window.AKEModuleOverview?.isActive('character') ? 'active' : '')}`;
+                item.className = `ake-ui-directory__item ${char.charId === activeCharId ? 'is-active' : (index === 0 && !activeCharId && !window.AKEModuleOverview?.isActive('character') ? 'is-active' : '')}`;
                 window.AKEModuleOverview?.markVersionChange(item, char);
                 item.dataset.charId = char.charId;
                 item.dataset.contentFile = char.contentFile;
-
-                const rarityBar = document.createElement('span');
-                rarityBar.className = `rarity-bar rarity-${char.rarity}`;
-                rarityBar.title = t('rarityLabel', { name: char.rarity });
+                item.dataset.akeRarity = String(char.rarity || 1);
 
                 const icon = document.createElement('img');
-                icon.className = 'character-icon';
+                icon.className = 'ake-ui-directory__item-icon';
                 icon.src = char.icon || '';
 
                 const textContainer = document.createElement('div');
-                textContainer.className = 'character-info';
+                textContainer.className = 'ake-ui-directory__item-copy';
                 const nameDiv = document.createElement('div');
-                nameDiv.className = 'character-name';
+                nameDiv.className = 'ake-ui-directory__item-title';
                 nameDiv.textContent = char.name;
                 const nameRow = document.createElement('div');
                 nameRow.className = 'character-name-row';
                 const metaIcons = document.createElement('span');
-                metaIcons.className = 'character-meta-icons';
+                metaIcons.className = 'ake-ui-icon-list';
                 appendCharacterMetaIcons(metaIcons, char);
                 nameRow.append(nameDiv, metaIcons);
                 const idDiv = document.createElement('div');
-                idDiv.className = 'character-id';
+                idDiv.className = 'ake-ui-directory__item-id';
                 idDiv.textContent = char.charId;
                 textContainer.appendChild(nameRow);
                 textContainer.appendChild(idDiv);
 
-                item.appendChild(rarityBar);
                 item.appendChild(icon);
                 item.appendChild(textContainer);
 
                 item.addEventListener('click', () => {
-                    document.querySelectorAll('.character-item').forEach(el => el.classList.remove('active'));
-                    item.classList.add('active');
+                    document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
+                    item.classList.add('is-active');
                     activeCharId = char.charId;
                     loadCharacterDetail(char, detailContainer);
                     if (window.__akeRouter) window.__akeRouter.updateUrl('v2_character', char.charId);
@@ -644,15 +640,15 @@
                     return;
                 }
                 activeCharId = filtered[0].charId;
-                const firstItem = container.querySelector('.character-item');
-                if (firstItem) firstItem.classList.add('active');
+                const firstItem = container.querySelector('.ake-ui-directory__item');
+                if (firstItem) firstItem.classList.add('is-active');
                 loadCharacterDetail(filtered[0], detailContainer);
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_character', filtered[0].charId);
             } else if (activeExists) {
                 const activeChar = filtered.find(c => c.charId === activeCharId);
                 if (activeChar) {
-                    const activeItem = container.querySelector(`.character-item[data-char-id="${activeCharId}"]`);
-                    if (activeItem) activeItem.classList.add('active');
+                    const activeItem = container.querySelector(`.ake-ui-directory__item[data-char-id="${activeCharId}"]`);
+                    if (activeItem) activeItem.classList.add('is-active');
                     loadCharacterDetail(activeChar, detailContainer);
                     if (window.__akeRouter) window.__akeRouter.updateUrl('v2_character', activeCharId);
                 }
@@ -660,7 +656,7 @@
         }
 
         async function loadCharacterDetail(character, container) {
-            container.innerHTML = `<div class="loader">${t('loading')}</div>`;
+            container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
             try {
                 const fileName = (character.contentFile || '').split('/').pop() || `${character.charId}.json`;
                 const contentFile = `/public/CH/v2_character/${fileName}`;
@@ -705,20 +701,20 @@
                     });
                 }
 
-                container.querySelectorAll('.section-header').forEach(header => {
+                container.querySelectorAll('.collapsible-section > .ake-ui-section__header').forEach(header => {
                     header.addEventListener('click', () => {
                         const indicator = header.querySelector('.collapse-indicator');
                         const content = header.nextElementSibling;
                         if (content && content.classList.contains('collapse-content')) {
-                            const isHidden = getComputedStyle(content).display === 'none';
-                            content.style.display = isHidden ? 'block' : 'none';
-                            indicator.textContent = isHidden ? '▼' : '▶';
+                            const isOpen = header.parentElement.classList.toggle('is-open');
+                            indicator.textContent = isOpen ? '▼' : '▶';
                         }
                     });
                 });
             } catch (err) {
                 const error = document.createElement('div');
-                error.className = 'error-message';
+                error.className = 'ake-ui-state';
+                error.dataset.state = 'error';
                 error.textContent = t('loadFailed', { name: err.message });
                 container.replaceChildren(error);
             }
@@ -1142,7 +1138,7 @@
         }
 
         function updateGrowthTable() {
-            const tbody = document.querySelector('.growth-table tbody');
+            const tbody = document.querySelector('.ake-ui-table tbody');
             if (!tbody || !currentCharData) return;
             const growth = currentCharData.growth || {};
             const attributes = GROWTH_ATTRIBUTES.map(attribute => attribute.id);
@@ -1184,7 +1180,7 @@
         }
 
         function updateSkillTable(skillKey) {
-            const skillItem = Array.from(document.querySelectorAll('.skill-item')).find(item => item.dataset.skillKey === skillKey);
+            const skillItem = Array.from(document.querySelectorAll('[data-card-kind="character-skill"]')).find(item => item.dataset.skillKey === skillKey);
             const skillContainer = skillItem?.querySelector('.skill-detail');
             if (!skillContainer || !currentCharData) return;
 
@@ -1254,7 +1250,7 @@
                 <div class="skill-toggle-container">
                     <button class="skill-toggle-btn" data-skill-key="${skillKey}">${isExpanded ? t('collapseExtraLevels') : t('expandAllLevels')}</button>
                 </div>
-                <table class="skill-table">
+                <table class="ake-ui-table">
                     <thead>${header}</thead>
                     <tbody>${rowsToRender.join('')}</tbody>
                 </table>
@@ -1303,31 +1299,31 @@
             const showHidden = getCurrentShowHidden();
 
             const basicHtml = `
-                <div class="detail-header">
-                    <div class="detail-left">
-                        <div class="detail-icon">
+                <div class="ake-ui-detail-header" data-layout="showcase">
+                    <div class="ake-ui-detail-identity">
+                        <div class="ake-ui-detail-icon">
                             <img src="${data.icon || ''}">
                         </div>
-                        <div class="detail-text">
-                            <div class="detail-title-row">
-                                <span class="detail-name">${data.name}</span>
-                                <span class="detail-rarity rarity-${data.rarity}" title="${t('rarityLabel', { name: data.rarity })}"></span>
+                        <div class="ake-ui-detail-copy">
+                            <div class="ake-ui-detail-title-row">
+                                <span class="ake-ui-detail-title">${data.name}</span>
+                                <span class="ake-ui-badge" data-accent="rarity" data-accent-value="${data.rarity}" title="${t('rarityLabel', { name: data.rarity })}">${t('rarityLabel', { name: data.rarity })}</span>
                             </div>
-                            <div class="detail-tags">
-                                ${(data.charBattleTag || []).map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            <div class="ake-ui-detail-badges">
+                                ${(data.charBattleTag || []).map(tag => `<span class="ake-ui-badge">${tag}</span>`).join('')}
                             </div>
-                            <div class="detail-meta">
-                                <div><span class="meta-label">${t('meta.profession')}</span> ${data.profession || '-'}</div>
-                                <div><span class="meta-label">${t('meta.weaponType')}</span> ${data.weapontype || '-'}</div>
-                                <div><span class="meta-label">${t('meta.mainAttribute')}</span> ${data.mainAttrType || '-'}</div>
-                                <div><span class="meta-label">${t('meta.subAttribute')}</span> ${data.subAttrType || '-'}</div>
-                                <div><span class="meta-label">${t('meta.voiceActor')}</span> ${(data.cvName || []).join(' / ')}</div>
+                            <div class="ake-ui-detail-meta">
+                                <div><span class="ake-ui-meta-label">${t('meta.profession')}</span> ${data.profession || '-'}</div>
+                                <div><span class="ake-ui-meta-label">${t('meta.weaponType')}</span> ${data.weapontype || '-'}</div>
+                                <div><span class="ake-ui-meta-label">${t('meta.mainAttribute')}</span> ${data.mainAttrType || '-'}</div>
+                                <div><span class="ake-ui-meta-label">${t('meta.subAttribute')}</span> ${data.subAttrType || '-'}</div>
+                                <div><span class="ake-ui-meta-label">${t('meta.voiceActor')}</span> ${(data.cvName || []).join(' / ')}</div>
                             </div>
                             <div class="detail-profile">${parseText(data.profile || '')}</div>
                             <div class="detail-feature">${parseText(data.feature || '')}</div>
                         </div>
                     </div>
-                    <div class="detail-pic">
+                    <div class="ake-ui-detail-visual">
                         <img src="${data.pic || ''}">
                     </div>
                 </div>
@@ -1368,13 +1364,13 @@
             }
 
             const growthHtml = `
-                <div class="section">
-                    <div class="section-header-row">
-                        <h3>${t('sections.attributeGrowth')}</h3>
+                <div class="ake-ui-section">
+                    <div class="ake-ui-section__header">
+                        <h3 class="ake-ui-section__title">${t('sections.attributeGrowth')}</h3>
                         ${charLevelsToShow ? `<button class="toggle-char-levels-btn">${showAllCharLevels ? t('collapseExtraLevels') : t('expandAllLevels')}</button>` : ''}
                     </div>
-                    <div class="growth-table-container">
-                        <table class="growth-table">
+                    <div class="ake-ui-table-shell">
+                        <table class="ake-ui-table">
                             <thead>
                                 <tr>
                                     <th>${t('level')}</th>
@@ -1396,9 +1392,9 @@
                 const costHtml = renderCostItemsHtml(talent.requiredItem, 0, itemInfoMap);
                 const costIconIds = (talent.requiredItem || []).map(it => it.id);
                 return `
-                    <div class="talent-item">
-                        <div class="talent-name">${talent.name} ${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
-                        <div class="talent-desc">${desc}</div>
+                    <div class="ake-ui-card" data-card-kind="character-talent" data-density="regular">
+                        <div class="ake-ui-card__title">${talent.name} ${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
+                        <div class="ake-ui-card__body">${desc}</div>
                     </div>
                 `;
             }).join('');
@@ -1410,18 +1406,18 @@
                 const costHtml = renderCostItemsHtml(pot.costItems, 0, itemInfoMap);
                 const costIconIds = (pot.costItems || []).map(it => it.id);
                 return `
-                    <div class="potential-item">
-                        <div class="potential-name">${pot.name} ${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
-                        <div class="potential-desc">${desc}</div>
+                    <div class="ake-ui-card" data-card-kind="character-potential" data-density="regular">
+                        <div class="ake-ui-card__title">${pot.name} ${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
+                        <div class="ake-ui-card__body">${desc}</div>
                     </div>
                 `;
             }).join('');
 
             const attrNodes = data.attributeNodes || [];
             const attrNodesHtml = `
-                <div class="section">
-                    <h3>${t('sections.attributeNodes')}</h3>
-                    <div class="attr-nodes-grid">
+                <div class="ake-ui-section">
+                    <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.attributeNodes')}</h3></div>
+                    <div class="ake-ui-card-grid" data-size="regular" data-columns="4">
                         ${attrNodes.map(node => {
                             const costHtml = renderCostItemsHtml(node.requiredItem, 0, itemInfoMap);
                             const costIconIds = (node.requiredItem || []).map(it => it.id);
@@ -1431,10 +1427,9 @@
                                     : '';
                                 return `<div class="attr-node-modifier">${mod.text}${modTypeTag}</div>`;
                             }).join('');
-                            return `<div class="attr-node-item">
-                                <div class="attr-node-title">${node.title} ${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
-                                <div class="attr-node-desc">${node.description}</div>
-                                ${modifierHtml}
+                            return `<div class="ake-ui-card" data-card-kind="character-attribute" data-density="regular">
+                                <div class="ake-ui-card__title">${node.title} ${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
+                                <div class="ake-ui-card__body">${node.description}${modifierHtml}</div>
                             </div>`;
                         }).join('')}
                     </div>
@@ -1520,7 +1515,7 @@
                             <div class="skill-toggle-container">
                                 <button class="skill-toggle-btn" data-skill-key="${group.skillKey}">${btnText}</button>
                             </div>
-                            <table class="skill-table">
+                            <table class="ake-ui-table">
                                 <thead>${header}</thead>
                                 <tbody>${skillRowsToRender.join('')}</tbody>
                             </table>
@@ -1554,24 +1549,22 @@
                 `).join('');
 
                 return `
-                    <div class="skill-item" data-skill-key="${group.skillKey}">
-                        <div class="skill-name">
+                    <div class="ake-ui-card" data-card-kind="character-skill" data-density="regular" data-skill-key="${group.skillKey}">
+                        <div class="ake-ui-card__title">
                             <img class="skill-icon" src="${group.icon}" alt="">
                             ${displayName} ${costBtnHtml(skCostHtml, ['item_gold', ...new Set(skCosts.flatMap(c => c.items.map(it => it.id)))], itemInfoMap)}
                         </div>
-                        <div class="skill-desc">${groupDesc}</div>
-                        ${conditionHtml ? `<div class="skill-conditions">${conditionHtml}</div>` : ''}
-                        ${skillTables}
+                        <div class="ake-ui-card__body">${groupDesc}${conditionHtml ? `<div class="skill-conditions">${conditionHtml}</div>` : ''}${skillTables}</div>
                     </div>
                 `;
             }).join('');
 
             const potentialPics = data.potentialpics || [];
             const potentialPicsHtml = potentialPics.length > 0 ? `
-                <div class="section collapsible-section">
-                    <h3 class="section-header">
+                <div class="ake-ui-section collapsible-section">
+                    <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">
                         <span class="collapse-indicator">▶</span> ${t('sections.potentialImages')}
-                    </h3>
+                    </h3></div>
                     <div class="collapse-content">
                         <div class="potential-pics">
                             ${potentialPics.map(src => `<img src="${src}">`).join('')}
@@ -1581,14 +1574,14 @@
             ` : '';
 
             const profileRecordsHtml = (data.profileRecord || []).map(rec => `
-                <div class="profile-record">
-                    <div class="profile-title">${rec.title}</div>
-                    <div class="profile-desc">${parseText(rec.desc)}</div>
+                <div class="ake-ui-card" data-card-kind="character-profile" data-density="regular">
+                    <div class="ake-ui-card__title">${rec.title}</div>
+                    <div class="ake-ui-card__body">${parseText(rec.desc)}</div>
                 </div>
             `).join('');
 
             const voiceHtml = (data.profileVoice || []).length ? `
-                <table class="voice-table">
+                <table class="ake-ui-table">
                     ${(data.profileVoice || []).map(v => `
                         <tr>
                             <td class="voice-title">${v.title}</td>
@@ -1600,13 +1593,13 @@
 
             const spaceshipSkills = data.spaceshipSkills || [];
             const spaceshipHtml = spaceshipSkills.length ? spaceshipSkills.map(slot => `
-                <div class="spaceship-skill-item">
-                    <div class="spaceship-skill-header">
+                <div class="ake-ui-card" data-card-kind="character-spaceship-skill" data-density="regular">
+                    <div class="ake-ui-card__header">
                         <img class="spaceship-icon" src="${slot.icon}" alt="">
-                        <span class="spaceship-skill-name">${slot.talentName}</span>
-                        <span class="spaceship-skill-room">${slot.roomTypeName}</span>
+                        <span class="ake-ui-card__title">${slot.talentName}</span>
+                        <span class="ake-ui-badge">${slot.roomTypeName}</span>
                     </div>
-                    <div class="spaceship-skill-levels">
+                    <div class="ake-ui-card__body">
                         ${slot.levels.map(lv => `
                             <div class="spaceship-skill-level">
                                 <span class="spaceship-skill-postfix">${lv.postfix}</span>
@@ -1621,46 +1614,49 @@
                 </div>
             `).join('') : `<p>${t('none')}</p>`;
 
-            return `
+            return `<article class="ake-ui-detail" data-detail-kind="character" data-accent="rarity" data-accent-value="${data.rarity}">
                 ${basicHtml}
                 ${growthHtml}
-                <div class="section">
-                    <h3>${t('sections.talents')}</h3>
-                    ${talentsHtml || `<p>${t('none')}</p>`}
-                </div>
-                <div class="section">
-                    <h3>${t('sections.potentials')}</h3>
-                    ${potentialsHtml || `<p>${t('none')}</p>`}
+                <div class="character-progression-grid">
+                    <div class="ake-ui-section character-talent-section">
+                        <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.talents')}</h3></div>
+                        <div class="ake-ui-card-grid" data-size="full">${talentsHtml || `<p>${t('none')}</p>`}</div>
+                    </div>
+                    <div class="ake-ui-section character-potential-section">
+                        <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.potentials')}</h3></div>
+                        <div class="ake-ui-card-grid" data-size="full">${potentialsHtml || `<p>${t('none')}</p>`}</div>
+                    </div>
                 </div>
                 ${attrNodesHtml}
-                <div class="section">
-                    <div class="section-header-row">
-                        <h3>${t('sections.skills')}</h3>
+                <div class="ake-ui-section">
+                    <div class="ake-ui-section__header">
+                        <h3 class="ake-ui-section__title">${t('sections.skills')}</h3>
                         ${skillLevelsToShow ? `<button class="global-skill-toggle-btn">${globalSkillExpand ? t('collapseAllSkillLevels') : t('expandAllSkillLevels')}</button>` : ''}
                     </div>
-                    ${skillsHtml || `<p>${t('none')}</p>`}
+                    <div class="ake-ui-card-grid" data-size="full">${skillsHtml || `<p>${t('none')}</p>`}</div>
                 </div>
-                <div class="section">
-                    <h3>${t('sections.logisticsSkills')}</h3>
-                    ${spaceshipHtml}
+                <div class="ake-ui-section">
+                    <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.logisticsSkills')}</h3></div>
+                    <div class="ake-ui-card-grid" data-size="regular">${spaceshipHtml}</div>
                 </div>
                 ${potentialPicsHtml}
-                <div class="section collapsible-section">
-                    <h3 class="section-header">
+                <div class="ake-ui-section collapsible-section">
+                    <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">
                         <span class="collapse-indicator">▶</span> ${t('sections.profile')}
-                    </h3>
+                    </h3></div>
                     <div class="collapse-content">
-                        ${profileRecordsHtml || `<p>${t('none')}</p>`}
+                        <div class="ake-ui-card-grid" data-size="full">${profileRecordsHtml || `<p>${t('none')}</p>`}</div>
                     </div>
                 </div>
-                <div class="section collapsible-section">
-                    <h3 class="section-header">
+                <div class="ake-ui-section collapsible-section">
+                    <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">
                         <span class="collapse-indicator">▶</span> ${t('sections.voiceRecords')}
-                    </h3>
+                    </h3></div>
                     <div class="collapse-content">
                         ${voiceHtml}
                     </div>
                 </div>
+                </article>
             `;
         }
 

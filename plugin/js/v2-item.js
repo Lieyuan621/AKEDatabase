@@ -69,11 +69,11 @@
             for (let r = 1; r <= 6; r++) {
                 if (!existR.has(r)) continue;
                 const btn = document.createElement('span');
-                btn.className = `v2i-filter-btn ${selectedRarities.has(r) ? 'active' : ''}`;
+                btn.className = `ake-ui-filter__button ${selectedRarities.has(r) ? 'is-active' : ''}`;
                 btn.textContent = commonT('rarityStars', { rarity: r });
                 btn.addEventListener('click', () => {
                     selectedRarities.has(r) ? selectedRarities.delete(r) : selectedRarities.add(r);
-                    btn.classList.toggle('active');
+                    btn.classList.toggle('is-active');
                     updateFilterSummary();
                     renderItemList();
                 });
@@ -95,11 +95,11 @@
             cc.innerHTML = '';
             ordered.forEach(cat => {
                 const btn = document.createElement('span');
-                btn.className = `v2i-filter-btn ${selectedCategories.has(cat.id) ? 'active' : ''}`;
+                btn.className = `ake-ui-filter__button ${selectedCategories.has(cat.id) ? 'is-active' : ''}`;
                 btn.textContent = cat.name;
                 btn.addEventListener('click', () => {
                     selectedCategories.has(cat.id) ? selectedCategories.delete(cat.id) : selectedCategories.add(cat.id);
-                    btn.classList.toggle('active');
+                    btn.classList.toggle('is-active');
                     updateFilterSummary();
                     renderItemList();
                 });
@@ -124,11 +124,11 @@
             mobileContent.innerHTML = '';
             filtered.forEach(item => {
                 const div = document.createElement('div');
-                div.className = `v2i-mobile-item ${item.itemId === activeItemId ? 'active' : ''}`;
+                div.className = `ake-ui-directory__item ${item.itemId === activeItemId ? 'is-active' : ''}`;
                 window.AKEModuleOverview?.markVersionChange(div, item);
                 div.innerHTML = `
-                    <div class="v2i-mobile-name">${item.name}</div>
-                    <div class="v2i-mobile-id">${item.itemId}</div>
+                    <div class="ake-ui-directory__item-title">${item.name}</div>
+                    <div class="ake-ui-directory__item-id">${item.itemId}</div>
                 `;
                 div.addEventListener('click', () => {
                     activeItemId = item.itemId;
@@ -142,11 +142,11 @@
 
         function openMobileList() {
             buildMobileList();
-            mobileOverlay.style.display = 'flex';
+            mobileOverlay.classList.add('is-open'); mobileOverlay.setAttribute('aria-hidden', 'false');
         }
 
         function closeMobileList() {
-            mobileOverlay.style.display = 'none';
+            mobileOverlay.classList.remove('is-open'); mobileOverlay.setAttribute('aria-hidden', 'true');
         }
 
         async function loadItemManifest(showHidden) {
@@ -170,7 +170,7 @@
                 group: item => ({ id: item.categoryId, name: item.categoryName || t('otherItems'), order: item.categoryOrder }),
                 onReset: () => { activeItemId = null; },
                 onSelect: item => { activeItemId = item.itemId; renderItemList(); },
-                sidebarSelector: item => `.v2i-item[data-item-id="${CSS.escape(item.itemId)}"]`,
+                sidebarSelector: item => `.ake-ui-directory__item[data-item-id="${CSS.escape(item.itemId)}"]`,
                 items: items.map(item => ({ ...item, id: item.itemId, image: item.icon, fallback: t('overview.fallback'), tags: [commonT('rarityStars', { rarity: item.rarity || 1 })] }))
             });
         }
@@ -184,44 +184,40 @@
             container.innerHTML = '';
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="v2i-loader">${t('noMatches')}</div>`;
-                if (detailContainer) detailContainer.innerHTML = `<div class="v2i-loader">${t('select')}</div>`;
+                container.innerHTML = `<div class="ake-ui-state">${t('noMatches')}</div>`;
+                if (detailContainer) detailContainer.innerHTML = `<div class="ake-ui-state">${t('select')}</div>`;
                 activeItemId = null;
                 return;
             }
 
             filtered.forEach((item, index) => {
                 const div = document.createElement('div');
-                div.className = `v2i-item ${item.itemId === activeItemId ? 'active' : (!activeItemId && index === 0 && !window.AKEModuleOverview?.isActive('item') ? 'active' : '')}`;
+                div.className = `ake-ui-directory__item ${item.itemId === activeItemId ? 'is-active' : (!activeItemId && index === 0 && !window.AKEModuleOverview?.isActive('item') ? 'is-active' : '')}`;
                 window.AKEModuleOverview?.markVersionChange(div, item);
                 div.dataset.itemId = item.itemId;
-
-                const rb = document.createElement('span');
-                rb.className = `v2i-rarity-bar rarity-${item.rarity}`;
-                rb.title = commonT('rarityLabel', { rarity: item.rarity });
+                div.dataset.akeRarity = String(item.rarity || 1);
 
                 const icon = document.createElement('img');
-                icon.className = 'v2i-item-icon';
+                icon.className = 'ake-ui-directory__item-icon';
                 icon.src = item.icon || '';
 
                 const info = document.createElement('div');
-                info.className = 'v2i-item-info';
+                info.className = 'ake-ui-directory__item-copy';
                 const nm = document.createElement('div');
-                nm.className = 'v2i-item-name';
+                nm.className = 'ake-ui-directory__item-title';
                 nm.textContent = item.name;
                 const id = document.createElement('div');
-                id.className = 'v2i-item-id';
+                id.className = 'ake-ui-directory__item-id';
                 id.textContent = item.itemId;
                 info.appendChild(nm);
                 info.appendChild(id);
 
-                div.appendChild(rb);
                 div.appendChild(icon);
                 div.appendChild(info);
 
                 div.addEventListener('click', () => {
-                    document.querySelectorAll('.v2i-item').forEach(el => el.classList.remove('active'));
-                    div.classList.add('active');
+                    document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
+                    div.classList.add('is-active');
                     activeItemId = item.itemId;
                     if (window.__akeRouter) window.__akeRouter.updateUrl('v2_item', item.itemId);
                     loadItemDetail(item, detailContainer);
@@ -251,28 +247,28 @@
                 }
                 activeItemId = filtered[0].itemId;
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_item', activeItemId);
-                const f = container.querySelector('.v2i-item');
-                if (f) f.classList.add('active');
+                const f = container.querySelector('.ake-ui-directory__item');
+                if (f) f.classList.add('is-active');
                 loadItemDetail(filtered[0], detailContainer);
             } else if (activeExists) {
                 const ai = filtered.find(i => i.itemId === activeItemId);
                 if (ai) {
                     if (window.__akeRouter) window.__akeRouter.updateUrl('v2_item', activeItemId);
-                    const ad = container.querySelector(`.v2i-item[data-item-id="${activeItemId}"]`);
-                    if (ad) ad.classList.add('active');
+                    const ad = container.querySelector(`.ake-ui-directory__item[data-item-id="${activeItemId}"]`);
+                    if (ad) ad.classList.add('is-active');
                     loadItemDetail(ai, detailContainer);
                 }
             }
         }
 
         async function loadItemDetail(item, container) {
-            container.innerHTML = `<div class="v2i-loader">${t('loading')}</div>`;
+            container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(item.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data, item);
                 window.AKEModuleOverview?.renderVersionDiff(container, data, data.__versionDiff?.baseline ? renderDetail(data.__versionDiff.baseline, item) : '');
             } catch (err) {
-                container.innerHTML = `<div class="v2i-error">${t('loadFailed', { message: err.message })}</div>`;
+                container.innerHTML = `<div class="ake-ui-state" data-state="error">${t('loadFailed', { message: err.message })}</div>`;
             }
         }
 
@@ -282,10 +278,10 @@
             if (!item || !detailContainer) return false;
 
             activeItemId = item.itemId;
-            document.querySelectorAll('.v2i-item').forEach(element => element.classList.remove('active'));
-            const sidebarItem = document.querySelector(`.v2i-item[data-item-id="${CSS.escape(item.itemId)}"]`);
+            document.querySelectorAll('.ake-ui-directory__item').forEach(element => element.classList.remove('is-active'));
+            const sidebarItem = document.querySelector(`.ake-ui-directory__item[data-item-id="${CSS.escape(item.itemId)}"]`);
             if (sidebarItem) {
-                sidebarItem.classList.add('active');
+                sidebarItem.classList.add('is-active');
                 sidebarItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
             }
             if (window.__akeRouter) window.__akeRouter.updateUrl('v2_item', item.itemId);
@@ -304,13 +300,12 @@
             if (ways.length === 0) return '';
 
             return `
-                <div class="v2i-section">
-                    <h3>${t('sections.obtainWays')}</h3>
-                    <div class="v2i-obtain-list">
+                <div class="ake-ui-section">
+                    <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.obtainWays')}</h3></div>
+                    <div class="ake-ui-card-grid" data-size="regular">
                         ${ways.map(w => `
-                            <div class="v2i-obtain-item">
-                                <img class="v2i-obtain-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemtips/${w.iconId}.png">
-                                <span class="v2i-obtain-desc">${parseText(w.desc?.text || w.id)}</span>
+                            <div class="ake-ui-card has-media" data-ake-component="card" data-card-kind="item-obtain" data-density="compact">
+                                <div class="ake-ui-card__content"><header class="ake-ui-card__header"><div class="ake-ui-card__media"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemtips/${w.iconId}.png" alt=""></div><div class="ake-ui-card__heading"><div class="ake-ui-card__body">${parseText(w.desc?.text || w.id)}</div></div></header></div>
                             </div>
                         `).join('')}
                     </div>
@@ -329,8 +324,8 @@
             if (!props.length) return '';
 
             return `
-                <div class="v2i-section">
-                    <h3>${t('sections.properties')}</h3>
+                <div class="ake-ui-section">
+                    <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.properties')}</h3></div>
                     <div class="v2i-props-grid">
                         ${props.map(p => `
                             <div class="v2i-prop-item">
@@ -411,18 +406,18 @@
             const useItem = data.useitemtable;
             const equipItem = data.equipitemtable;
             if (!useItem && !equipItem) return '';
-            let html = `<div class="v2i-section"><h3>${t('sections.useEffects')}</h3><div class="v2i-effect-list">`;
+            let html = `<div class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.useEffects')}</h3></div><div class="ake-ui-card-grid" data-size="regular">`;
             if (useItem?.itemUseDesc?.text) {
                 const desc = replaceEffectPlaceholders(useItem.itemUseDesc.text, useItem, equipItem);
-                html += `<div class="v2i-effect-card"><div class="v2i-effect-title">${t('effects.afterUse')}</div><div class="v2i-effect-desc">${parseText(desc)}</div>`;
-                if (useItem.duration > 0) html += `<div class="v2i-effect-meta">${t('effects.duration', { duration: valueTip(commonT('time.seconds', { count: useItem.duration }), useItem.duration, 'duration') })}</div>`;
+                html += `<div class="ake-ui-card" data-card-kind="item-effect" data-density="regular"><div class="ake-ui-card__title">${t('effects.afterUse')}</div><div class="ake-ui-card__body">${parseText(desc)}</div>`;
+                if (useItem.duration > 0) html += `<div class="ake-ui-card__meta">${t('effects.duration', { duration: valueTip(commonT('time.seconds', { count: useItem.duration }), useItem.duration, 'duration') })}</div>`;
                 html += '</div>';
             }
             if (equipItem) {
                 const descriptions = [equipItem.equipDesc?.text, equipItem.equipExtraDesc?.text].filter(Boolean);
-                html += `<div class="v2i-effect-card"><div class="v2i-effect-title">${t('effects.afterEquip')}</div>`;
+                html += `<div class="ake-ui-card" data-card-kind="item-effect" data-density="regular"><div class="ake-ui-card__title">${t('effects.afterEquip')}</div><div class="ake-ui-card__body">`;
                 descriptions.forEach(desc => {
-                    html += `<div class="v2i-effect-desc">${parseText(replaceEffectPlaceholders(desc, useItem, equipItem))}</div>`;
+                    html += `<div>${parseText(replaceEffectPlaceholders(desc, useItem, equipItem))}</div>`;
                 });
                 const meta = [];
                 if (equipItem.chargeCount !== undefined) meta.push(t('effects.useCount', { count: equipItem.chargeCount }));
@@ -430,7 +425,8 @@
                 if (equipItem.castTime > 0) meta.push(t('effects.castTime', { duration: commonT('time.seconds', { count: equipItem.castTime }) }));
                 if (equipItem.recoverUpperCount > 0) meta.push(t('effects.recoverCount', { count: equipItem.recoverUpperCount }));
                 if (equipItem.recoverTime > 0) meta.push(t('effects.recoveryInterval', { duration: commonT('time.seconds', { count: equipItem.recoverTime }) }));
-                if (meta.length) html += `<div class="v2i-effect-meta">${meta.join(' · ')}</div>`;
+                html += '</div>';
+                if (meta.length) html += `<div class="ake-ui-card__meta">${meta.join(' · ')}</div>`;
                 html += '</div>';
             }
             return html + '</div></div>';
@@ -466,12 +462,13 @@
                 return [[days, 'days'], [hours, 'hours'], [minutes, 'minutes'], [seconds, 'seconds']]
                     .filter(([value]) => value).map(([value, unit]) => commonT(`time.${unit}`, { count: value })).join('') || commonT('time.lessThanSecond');
             };
-            const renderGroup = (title, rows) => rows.length ? `<div class="v2i-craft-group"><h4>${title}</h4>${rows.map(recipe => `
-                <div class="v2i-craft-card">
-                    <div class="v2i-craft-head"><span class="v2i-craft-kind">${recipe.kind}</span>${recipe.name ? `<span>${recipe.name}</span>` : ''}${recipe.meta ? `<small>${recipe.meta}</small>` : ''}<small>${t('craft.duration', { duration: recipe.durationMs ? formatDuration(recipe.durationMs) : t('craft.notConfigured') })}</small></div>
-                    <div class="v2i-craft-flow"><div class="v2i-craft-side">${recipe.inputs.length ? recipe.inputs.map(entry => renderCraftItem(entry, itemTable, data.itemId)).join('') : `<span class="v2i-craft-empty">${t('craft.noMaterials')}</span>`}</div><span class="v2i-craft-arrow">→</span><div class="v2i-craft-side">${recipe.outputs.map(entry => renderCraftItem(entry, itemTable, data.itemId)).join('')}</div></div>
-                </div>`).join('')}</div>` : '';
-            return `<div class="v2i-section"><h3>${t('sections.craftingPaths')}</h3><div class="v2i-craft-groups">${renderGroup(t('craft.sources'), incoming)}${renderGroup(t('craft.uses'), outgoing)}</div></div>`;
+            const renderRecipe = recipe => `
+                <div class="ake-ui-card" data-card-kind="item-craft" data-density="regular">
+                    <div class="ake-ui-card__header"><span class="ake-ui-badge">${recipe.kind}</span>${recipe.name ? `<span class="ake-ui-card__title">${recipe.name}</span>` : ''}${recipe.meta ? `<small>${recipe.meta}</small>` : ''}${recipe.environment?.name ? `<span class="ake-ui-badge">${recipe.environment.name}</span>` : ''}<small>${t('craft.duration', { duration: recipe.durationMs ? formatDuration(recipe.durationMs) : t('craft.notConfigured') })}</small></div>
+                    <div class="ake-ui-card__body"><div class="v2i-craft-flow"><div class="v2i-craft-side">${recipe.inputs.length ? recipe.inputs.map(entry => renderCraftItem(entry, itemTable, data.itemId)).join('') : `<span class="v2i-craft-empty">${t('craft.noMaterials')}</span>`}</div><span class="v2i-craft-arrow">→</span><div class="v2i-craft-side">${recipe.outputs.map(entry => renderCraftItem(entry, itemTable, data.itemId)).join('')}</div></div></div>
+                </div>`;
+            const renderGroup = (title, rows) => rows.length ? `<div class="v2i-craft-group"><h4>${title}</h4>${rows.map(renderRecipe).join('')}</div>` : '';
+            return `<div class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.craftingPaths')}</h3></div><div class="v2i-craft-groups">${renderGroup(t('craft.sources'), incoming)}${renderGroup(t('craft.uses'), outgoing)}</div></div>`;
         }
 
         function renderExtraTables(data) {
@@ -481,9 +478,9 @@
             if (showHidden && data.weaponpotentialuptable) {
                 const wpns = data.weaponpotentialuptable.weaponIds || [];
                 if (wpns.length) {
-                    h += `<div class="v2i-section">
-                        <h3>${t('sections.applicableWeapons')}</h3>
-                        <div class="v2i-tags">${wpns.map(id => `<span class="v2i-tag">${id}</span>`).join('')}</div>
+                    h += `<div class="ake-ui-section">
+                        <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.applicableWeapons')}</h3></div>
+                        <div class="ake-ui-detail-badges">${wpns.map(id => `<span class="ake-ui-badge">${id}</span>`).join('')}</div>
                     </div>`;
                 }
             }
@@ -491,15 +488,15 @@
             if (showHidden && data.usableitemchesttable) {
                 const ch = data.usableitemchesttable;
                 const rwd = ch.rewardIdList || [];
-                h += `<div class="v2i-section"><h3>${t('sections.choiceBoxContents')}</h3>`;
+                h += `<div class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.choiceBoxContents')}</h3></div>`;
                 if (ch.selectedCount) h += `<div class="v2i-chest-meta">${t('choiceBox.selectableCount', { count: valueTip(ch.selectedCount, ch.selectedCount, 'selectedCount') })}</div>`;
-                if (rwd.length) h += `<div class="v2i-tags">${rwd.map(id => `<span class="v2i-tag">${id}</span>`).join('')}</div>`;
+                if (rwd.length) h += `<div class="ake-ui-detail-badges">${rwd.map(id => `<span class="ake-ui-badge">${id}</span>`).join('')}</div>`;
                 h += `</div>`;
             }
 
             if (data.itemiconcompositetable) {
                 const c = data.itemiconcompositetable;
-                h += `<div class="v2i-section"><h3>${t('sections.iconComposite')}</h3><div class="v2i-props-grid">`;
+                h += `<div class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.iconComposite')}</h3></div><div class="v2i-props-grid">`;
                 h += `<div class="v2i-prop-item"><span class="v2i-prop-label">${t('iconComposite.type')}</span><span class="v2i-prop-value">${valueTip(c.iconTransType, c.iconTransType, 'iconTransType')}</span></div>`;
                 if (c.showRarity !== undefined) h += `<div class="v2i-prop-item"><span class="v2i-prop-label">${t('iconComposite.showRarity')}</span><span class="v2i-prop-value">${valueTip(c.showRarity ? commonT('yes') : commonT('no'), c.showRarity, 'showRarity')}</span></div>`;
                 if (c.markIcon) h += `<div class="v2i-prop-item"><span class="v2i-prop-label">${t('iconComposite.markIcon')}</span><span class="v2i-prop-value">${c.markIcon}</span></div>`;
@@ -508,15 +505,15 @@
 
             if (data.itemshowingtypetable) {
                 const s = data.itemshowingtypetable;
-                h += `<div class="v2i-section">
-                    <h3>${t('sections.displayType')}</h3>
-                    <span class="v2i-tag">${s.name?.text || s.type}</span>
+                h += `<div class="ake-ui-section">
+                    <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.displayType')}</h3></div>
+                    <span class="ake-ui-badge">${s.name?.text || s.type}</span>
                 </div>`;
             }
 
             if (showHidden && data.wikientrydatatable) {
                 const w = data.wikientrydatatable;
-                h += `<div class="v2i-section"><h3>${t('sections.encyclopediaEntry')}</h3><div class="v2i-props-grid">`;
+                h += `<div class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.encyclopediaEntry')}</h3></div><div class="v2i-props-grid">`;
                 h += `<div class="v2i-prop-item"><span class="v2i-prop-label">${t('encyclopedia.entryId')}</span><span class="v2i-prop-value">${w.id}</span></div>`;
                 if (w.groupId) h += `<div class="v2i-prop-item"><span class="v2i-prop-label">${t('encyclopedia.group')}</span><span class="v2i-prop-value">${w.groupId}</span></div>`;
                 h += `</div></div>`;
@@ -538,18 +535,18 @@
             const showDeco = decoDesc && decoDesc !== desc;
 
             let html = `
-                <div class="v2i-detail-container">
-                    <div class="v2i-header">
-                        <div class="v2i-header-icon">
+                <div class="ake-ui-detail" data-detail-kind="item" data-accent="rarity" data-accent-value="${rarity}">
+                    <div class="ake-ui-detail-header">
+                        <div class="ake-ui-detail-icon">
                             <img src="${iconBig}">
                         </div>
-                        <div class="v2i-header-text">
-                            <div class="v2i-title-row">
-                                <span class="v2i-name">${name}</span>
-                                <span class="v2i-rarity-dot rarity-${rarity}" title="${commonT('rarityLabel', { rarity })}"></span>
-                                <span class="v2i-id">${data.itemId || item.itemId}</span>
+                        <div class="ake-ui-detail-copy">
+                            <div class="ake-ui-detail-title-row">
+                                <span class="ake-ui-detail-title">${name}</span>
+                                <span class="ake-ui-badge">${commonT('rarityLabel', { rarity })}</span>
+                                <span class="ake-ui-detail-id">${data.itemId || item.itemId}</span>
                             </div>
-                            <span class="v2i-type-tag">${typeName}</span>
+                            <span class="ake-ui-badge">${typeName}</span>
                         </div>
                     </div>
             `;

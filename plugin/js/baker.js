@@ -196,16 +196,16 @@
         const withMessages = state.rows.filter(row => row.dialogs.length).length;
         elements.summary.textContent = `${rows.length} / ${state.rows.length} 个会话 · ${withMessages} 个有记录`;
         if (!rows.length) {
-            elements.list.innerHTML = '<div class="baker-empty-contact">没有符合条件的会话</div>';
+            elements.list.innerHTML = '<div class="ake-ui-state" data-state="empty" data-density="compact">没有符合条件的会话</div>';
             return;
         }
         elements.list.innerHTML = rows.map(row => `
-            <button class="baker-contact${row.id === state.selectedId ? ' active' : ''}" type="button" data-baker-chat="${escapeHtml(row.id)}">
-                ${avatarHtml(row.chat, row.name)}
-                <span class="baker-contact__body">
-                    <span class="baker-contact__name">${escapeHtml(row.name)}</span>
-                    <span class="baker-contact__preview">${escapeHtml(row.preview)}</span>
-                    <span class="baker-contact__id">${escapeHtml(row.dialogLabel)}</span>
+            <button class="ake-ui-directory__item${row.id === state.selectedId ? ' is-active' : ''}" type="button" data-baker-chat="${escapeHtml(row.id)}"${row.id === state.selectedId ? ' aria-current="true"' : ''}>
+                ${avatarHtml(row.chat, row.name, 'ake-ui-directory__item-icon')}
+                <span class="ake-ui-directory__item-copy">
+                    <span class="ake-ui-directory__item-title">${escapeHtml(row.name)}</span>
+                    <span class="ake-ui-directory__item-subtitle">${escapeHtml(row.preview)}</span>
+                    <span class="ake-ui-directory__item-id">${escapeHtml(row.dialogLabel)}</span>
                 </span>
             </button>
         `).join('');
@@ -307,7 +307,7 @@
             const source = stickerUrl(resourceId);
             const label = option.optionDesc?.text || resourceId || id;
             const content = source ? `<img class="baker-option__emoji" src="${escapeHtml(source)}" alt="" loading="lazy">` : escapeHtml(label);
-            return `<button class="baker-option${source ? ' baker-option--emoji' : ''}${id === selectedId ? ' selected' : ''}" type="button" aria-label="${escapeHtml(label)}" title="${escapeHtml(label)}" data-baker-dialog="${escapeHtml(dialog.dialogId)}" data-baker-node="${escapeHtml(node.contentId)}" data-baker-option="${escapeHtml(id)}">${content}</button>`;
+            return `<button class="baker-option${source ? ' baker-option--emoji' : ''}${id === selectedId ? ' is-selected' : ''}" type="button" aria-label="${escapeHtml(label)}" title="${escapeHtml(label)}" data-baker-dialog="${escapeHtml(dialog.dialogId)}" data-baker-node="${escapeHtml(node.contentId)}" data-baker-option="${escapeHtml(id)}" aria-pressed="${id === selectedId}">${content}</button>`;
         }).join('')}</div>`;
     }
 
@@ -391,7 +391,7 @@
         state.selectedId = row.id;
         renderContacts();
         renderConversation();
-        root.classList.remove('mobile-open');
+        root.classList.remove('is-mobile-open');
         if (updateUrl) window.__akeRouter?.updateUrl('baker', row.id);
         return true;
     }
@@ -422,7 +422,7 @@
         const button = event.target.closest('[data-baker-type]');
         if (!button) return;
         state.type = button.dataset.bakerType;
-        elements.filters.querySelectorAll('[data-baker-type]').forEach(item => item.classList.toggle('active', item === button));
+        elements.filters.querySelectorAll('[data-baker-type]').forEach(item => item.classList.toggle('is-active', item === button));
         renderContacts();
     });
 
@@ -440,8 +440,8 @@
         elements.conversation.scrollTop = scrollTop;
     });
 
-    elements.mobile.addEventListener('click', () => root.classList.add('mobile-open'));
-    elements.backdrop.addEventListener('click', () => root.classList.remove('mobile-open'));
+    elements.mobile.addEventListener('click', () => root.classList.add('is-mobile-open'));
+    elements.backdrop.addEventListener('click', () => root.classList.remove('is-mobile-open'));
 
     loadData().then(() => {
         renderContacts();
@@ -458,6 +458,6 @@
         console.error('Baker 模块初始化失败', error);
         elements.summary.textContent = '读取失败';
         elements.list.innerHTML = '';
-        elements.conversation.innerHTML = `<div class="baker-error"><strong>Baker 数据加载失败</strong><span>${escapeHtml(error.message)}</span></div>`;
+        elements.conversation.innerHTML = `<div class="ake-ui-state" data-state="error"><div><strong>Baker 数据加载失败</strong><span>${escapeHtml(error.message)}</span></div></div>`;
     });
 })();

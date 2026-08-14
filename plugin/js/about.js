@@ -3,7 +3,7 @@
     const sponsorGrid = document.getElementById('sponsorGrid');
     if (!sponsorGrid) return;
 
-    document.querySelectorAll('.about-module [data-i18n-alt]').forEach(image => {
+    document.querySelectorAll('[data-ake-module="about"] [data-i18n-alt]').forEach(image => {
         const key = image.dataset.i18nAlt.replace(/^modules\.about\./, '');
         image.alt = t(key, null, image.alt);
     });
@@ -14,7 +14,7 @@
             if (!res.ok) throw new Error('无法加载赞助数据');
             let sponsors = await res.json();
             if (!Array.isArray(sponsors) || sponsors.length === 0) {
-                sponsorGrid.innerHTML = `<div class="sponsor-empty">${t('sponsor.empty')}</div>`;
+                sponsorGrid.innerHTML = `<div class="ake-ui-state" data-state="empty">${t('sponsor.empty')}</div>`;
                 return;
             }
             // 排序：priority 升序，priority 相同则按时间倒序（新在前）
@@ -28,7 +28,7 @@
             renderSponsors(sponsors);
         } catch (err) {
             console.error('加载赞助列表失败:', err);
-            sponsorGrid.innerHTML = `<div class="sponsor-empty">${t('sponsor.loadFailed')}</div>`;
+            sponsorGrid.innerHTML = `<div class="ake-ui-state" data-state="error">${t('sponsor.loadFailed')}</div>`;
         }
     }
 
@@ -36,7 +36,8 @@
         sponsorGrid.innerHTML = '';
         sponsors.forEach(s => {
             const card = document.createElement('div');
-            card.className = 'sponsor-card';
+            card.className = 'ake-ui-card';
+            card.dataset.cardKind = 'sponsor';
             const rarityClass = `rarity-${s.rarity || 1}`;
             card.innerHTML = `
                 <div class="sponsor-name">${escapeHtml(s.name)}</div>

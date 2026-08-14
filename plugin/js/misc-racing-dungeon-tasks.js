@@ -62,7 +62,7 @@
 
                 if (!section || !content || !meta) return;
                 if (!table) {
-                    content.innerHTML = '<section class="misc-empty-state" role="alert"><h3>数据接口不可用</h3><p>未找到 AKEV3 TableCfg 读取接口。</p></section>';
+                    content.innerHTML = '<section class="ake-ui-state" role="alert"><h3>数据接口不可用</h3><p>未找到 AKEV3 TableCfg 读取接口。</p></section>';
                     return;
                 }
 
@@ -88,7 +88,7 @@
                     const taskMap = taskConfigs?.[ACTIVITY_ID]?.TaskConfigMap;
                     if (!taskMap || !Object.keys(taskMap).length) {
                         const missing = !Object.keys(taskConfigs || {}).length;
-                        content.innerHTML = `<section class="misc-empty-state" role="${missing ? 'alert' : 'status'}"><h3>${missing ? '任务配置表不可用' : '本期没有奇境任务'}</h3><p>${missing ? '任务配置数据未能加载。' : '当前活动没有可展示的任务。'}</p></section>`;
+                        content.innerHTML = `<section class="ake-ui-state" role="${missing ? 'alert' : 'status'}"><h3>${missing ? '任务配置表不可用' : '本期没有奇境任务'}</h3><p>${missing ? '任务配置数据未能加载。' : '当前活动没有可展示的任务。'}</p></section>`;
                         meta.textContent = activity ? text(activity.name, '根脉奇境') : '根脉奇境';
                         return;
                     }
@@ -166,14 +166,14 @@
 
                     const milestoneMap = milestones?.[ACTIVITY_ID]?.milestoneMap || {};
                     const milestoneRows = Object.values(milestoneMap).sort((a, b) => (a.completeScore ?? 0) - (b.completeScore ?? 0));
-                    const milestoneHtml = milestoneRows.length ? `<section class="misc-milestone-section" aria-labelledby="racing-milestones"><h3 id="racing-milestones">根脉历程 <small>${escape(milestoneRows.length)} 档</small></h3><ol class="misc-milestone-track">${milestoneRows.map(node => `<li class="${node.isBig ? 'is-major' : ''}"><header><strong>${escape(Number(node.completeScore || 0).toLocaleString('zh-CN'))} 积分</strong></header>${showHidden ? `<p>${escape(node.unlockStageId || '未绑定阶段')}</p>` : ''}${rewardView(node.rewardId)}</li>`).join('')}</ol></section>` : `<section class="misc-empty-state" role="note"><h3>根脉历程不可用</h3><p>${Object.keys(milestones || {}).length ? '本活动没有里程碑记录。' : '里程碑配置未能加载。'}</p></section>`;
+                    const milestoneHtml = milestoneRows.length ? `<section class="ake-ui-section" data-section-kind="misc-milestone" aria-labelledby="racing-milestones"><header class="ake-ui-section__header"><h3 class="ake-ui-section__title" id="racing-milestones">根脉历程 <small>${escape(milestoneRows.length)} 档</small></h3></header><ol class="misc-milestone-track">${milestoneRows.map(node => `<li class="${node.isBig ? 'is-major' : ''}"><header><strong>${escape(Number(node.completeScore || 0).toLocaleString('zh-CN'))} 积分</strong></header>${showHidden ? `<p>${escape(node.unlockStageId || '未绑定阶段')}</p>` : ''}${rewardView(node.rewardId)}</li>`).join('')}</ol></section>` : `<section class="ake-ui-state" role="note"><h3>根脉历程不可用</h3><p>${Object.keys(milestones || {}).length ? '本活动没有里程碑记录。' : '里程碑配置未能加载。'}</p></section>`;
 
-                    content.innerHTML = `${warnings.length ? `<aside class="misc-data-warning" role="note"><h3>部分数据不可用</h3><ul>${warnings.map(warning => `<li>${escape(warning)}</li>`).join('')}</ul></aside>` : ''}${phases.map((phase, index) => `<section class="misc-task-group" aria-labelledby="racing-phase-${index}"><h3 id="racing-phase-${index}">阶段 ${escape(phase.sortId)} <small>${escape(phase.tasks.length)} 项 · ${escape(rangeState(phase.open, phase.close))}</small></h3><p class="misc-stage-time">${interval(phase.open, phase.close)}${showHidden && phase.stageId ? ` · <code>${escape(phase.stageId)}</code>` : ''}</p><div class="misc-task-list">${phase.tasks.map(task => `<article class="misc-task-card"><header>${showHidden ? `<span class="misc-task-order">${escape(task.sortId ?? '')}</span>` : ''}<h4>${rich(text(task.desc, showHidden ? task.taskId : '任务描述不可用'))}</h4></header>${conditionView(task)}<footer>${showHidden ? `<code>${escape(task.taskId)}</code>` : ''}${rewardView(task.rewardId)}</footer></article>`).join('')}</div></section>`).join('')}${milestoneHtml}`;
+                    content.innerHTML = `${warnings.length ? `<aside class="misc-data-warning" role="note"><h3>部分数据不可用</h3><ul>${warnings.map(warning => `<li>${escape(warning)}</li>`).join('')}</ul></aside>` : ''}${phases.map((phase, index) => `<section class="ake-ui-section" data-section-kind="misc-task-group" aria-labelledby="racing-phase-${index}"><header class="ake-ui-section__header"><h3 class="ake-ui-section__title" id="racing-phase-${index}">阶段 ${escape(phase.sortId)} <small>${escape(phase.tasks.length)} 项 · ${escape(rangeState(phase.open, phase.close))}</small></h3></header><p class="misc-stage-time">${interval(phase.open, phase.close)}${showHidden && phase.stageId ? ` · <code>${escape(phase.stageId)}</code>` : ''}</p><div class="ake-ui-card-grid" data-size="regular">${phase.tasks.map(task => `<article class="ake-ui-card" data-card-kind="misc-task"><header class="ake-ui-card__header">${showHidden ? `<span class="misc-task-order">${escape(task.sortId ?? '')}</span>` : ''}<h4 class="ake-ui-card__title">${rich(text(task.desc, showHidden ? task.taskId : '任务描述不可用'))}</h4></header>${conditionView(task)}<footer class="ake-ui-card__footer">${showHidden ? `<code>${escape(task.taskId)}</code>` : ''}${rewardView(task.rewardId)}</footer></article>`).join('')}</div></section>`).join('')}${milestoneHtml}`;
                 } catch (error) {
                     if (inactive()) return;
                     console.error('奇境任务加载失败', error);
                     meta.textContent = '根脉奇境';
-                    content.innerHTML = `<section class="misc-empty-state" role="alert"><h3>奇境任务加载失败</h3><p>${escape(error?.message || error)}</p></section>`;
+                    content.innerHTML = `<section class="ake-ui-state" role="alert"><h3>奇境任务加载失败</h3><p>${escape(error?.message || error)}</p></section>`;
                 }
             },
             destroy() {

@@ -1,15 +1,13 @@
 <script src="/plugin/js/v3-table-data.js"></script>
 <script src="/plugin/js/v3-skill-data.js"></script>
-<link rel="stylesheet" href="/theme/v3_skill.css">
-
-<div class="combatv3-module" id="combatv3Module">
-    <aside class="combatv3-sidebar" aria-label="战斗技能列表" data-i18n-aria-label="modules.combat.aria.sidebar">
-        <header class="combatv3-sidebar-header">
+<div class="ake-ui-directory" id="combatv3Module" data-ake-module="skill">
+    <aside class="ake-ui-directory__sidebar" aria-label="战斗技能列表" data-i18n-aria-label="modules.combat.aria.sidebar">
+        <header class="ake-ui-directory__sidebar-header">
             <h1 data-i18n="modules.combat.title">战斗</h1>
-            <div class="combatv3-list-meta" id="combatv3ListMeta" aria-live="polite" data-i18n="modules.combat.loading.directory">正在读取数据</div>
+            <div class="ake-ui-directory__meta" id="combatv3ListMeta" aria-live="polite" data-i18n="modules.combat.loading.directory">正在读取数据</div>
         </header>
 
-        <label class="combatv3-search" for="combatv3SearchInput">
+        <label class="ake-ui-directory__search" for="combatv3SearchInput">
             <span data-i18n="modules.combat.search.label">搜索</span>
             <input
                 id="combatv3SearchInput"
@@ -24,16 +22,16 @@
         </label>
 
         <nav
-            class="combatv3-group-list"
+            class="ake-ui-tree"
             id="combatv3GroupList"
             aria-label="角色、怪物与技能"
             data-i18n-aria-label="modules.combat.aria.directory"
         ></nav>
     </aside>
 
-    <main class="combatv3-detail" id="combatv3Detail" tabindex="-1" aria-live="polite">
-        <div class="combatv3-state combatv3-state--loading">
-            <span class="combatv3-spinner" aria-hidden="true"></span>
+    <main class="ake-ui-directory__content" id="combatv3Detail" tabindex="-1" aria-live="polite">
+        <div class="ake-ui-state" data-state="loading">
+            <span class="ake-ui-spinner" aria-hidden="true"></span>
             <div>
                 <h2 data-i18n="modules.combat.title">战斗</h2>
                 <p data-i18n="modules.combat.loading.skillData">正在读取技能数据</p>
@@ -42,7 +40,7 @@
     </main>
 
     <button
-        class="combatv3-mobile-list-button"
+        class="ake-ui-directory__mobile-button"
         id="combatv3MobileListButton"
         type="button"
         aria-controls="combatv3MobileOverlay"
@@ -51,21 +49,21 @@
     >技能列表</button>
 
     <div
-        class="combatv3-mobile-overlay"
+        class="ake-ui-directory__mobile-overlay"
         id="combatv3MobileOverlay"
         aria-hidden="true"
     >
         <section
-            class="combatv3-mobile-panel"
+            class="ake-ui-directory__mobile-panel"
             id="combatv3MobilePanel"
             role="dialog"
             aria-modal="true"
             aria-labelledby="combatv3MobileTitle"
         >
-            <header class="combatv3-mobile-header">
+            <header class="ake-ui-directory__mobile-header">
                 <strong id="combatv3MobileTitle" data-i18n="modules.combat.buttons.selectSkill">选择技能</strong>
                 <button
-                    class="combatv3-icon-button"
+                    class="ake-ui-icon-button"
                     id="combatv3MobileClose"
                     type="button"
                     aria-label="关闭技能列表"
@@ -74,7 +72,7 @@
                     data-i18n-title="modules.combat.buttons.close"
                 >×</button>
             </header>
-            <label class="combatv3-search combatv3-search--mobile" for="combatv3MobileSearchInput">
+            <label class="ake-ui-directory__search ake-ui-directory__search--mobile" for="combatv3MobileSearchInput">
                 <span data-i18n="modules.combat.search.label">搜索</span>
                 <input
                     id="combatv3MobileSearchInput"
@@ -88,7 +86,7 @@
                 >
             </label>
             <nav
-                class="combatv3-group-list combatv3-mobile-list"
+                class="ake-ui-tree ake-ui-directory__mobile-list"
                 id="combatv3MobileList"
                 aria-label="移动端角色、怪物与技能"
                 data-i18n-aria-label="modules.combat.aria.mobileDirectory"

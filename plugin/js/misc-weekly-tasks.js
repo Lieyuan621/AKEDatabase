@@ -115,20 +115,20 @@
             const totalScore = rows.reduce((sum, task) => sum + Number(task.score || 0), 0);
             countRoot.textContent = t('taskCount', { count: rows.length, score: totalScore }, `${rows.length} 项 · 可得 ${totalScore} 分`);
             if (!rows.length) {
-                tasksRoot.innerHTML = `<div class="misc-task-empty">${escape(t('noTasks', null, '该周没有任务配置'))}</div>`;
+                tasksRoot.innerHTML = `<div class="ake-ui-state" data-state="empty" data-density="compact">${escape(t('noTasks', null, '该周没有任务配置'))}</div>`;
                 return;
             }
             tasksRoot.innerHTML = rows.map(task => `
-                <article class="misc-task-card ${Number(task.score || 0) >= 5 ? 'is-featured' : ''}"${showHidden() ? ` data-task-id="${escape(task.taskId)}"` : ''}>
-                    <div class="misc-task-card__meta">
-                        <span class="misc-task-chip">${escape(t('points', { count: task.score }, `${task.score} 分`))}</span>
+                <article class="ake-ui-card ${Number(task.score || 0) >= 5 ? 'is-featured' : ''}" data-card-kind="misc-task"${showHidden() ? ` data-task-id="${escape(task.taskId)}"` : ''}>
+                    <div class="ake-ui-card__badges">
+                        <span class="ake-ui-badge">${escape(t('points', { count: task.score }, `${task.score} 分`))}</span>
                         ${showHidden() ? `<span>${escape(task.taskId)}</span>` : ''}
                     </div>
-                    <div class="misc-task-card__description">${taskDescription(task)}</div>
-                    <div class="misc-task-card__footer">
+                    <div class="ake-ui-card__body">${taskDescription(task)}</div>
+                    <footer class="ake-ui-card__footer">
                         <span>${escape(t('target', { value: displayTarget(task) }, `目标 ${displayTarget(task)}`))}</span>
                         ${showHidden() && task.jumpId ? `<code>${escape(task.jumpId)}</code>` : ''}
-                    </div>
+                    </footer>
                 </article>`).join('');
         }
 

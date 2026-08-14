@@ -1,15 +1,13 @@
 <script src="/plugin/js/v3-table-data.js"></script>
 <script src="/plugin/js/v3-buff-data.js"></script>
-<link rel="stylesheet" href="/theme/v3_buff.css">
-
-<div class="buffv3-module" id="buffv3Module">
-    <aside class="buffv3-sidebar" aria-label="Buff 目录" data-i18n-aria-label="modules.buff.v3.list.sidebarAria">
-        <header class="buffv3-sidebar-header">
+<div class="ake-ui-directory" id="buffv3Module" data-ake-module="buff">
+    <aside class="ake-ui-directory__sidebar" aria-label="Buff 目录" data-i18n-aria-label="modules.buff.v3.list.sidebarAria">
+        <header class="ake-ui-directory__sidebar-header">
             <h1 data-i18n="modules.buff.title">Buff</h1>
-            <div class="buffv3-list-meta" id="buffv3ListMeta" aria-live="polite" data-i18n="modules.buff.v3.common.loading">正在读取数据</div>
+            <div class="ake-ui-directory__meta" id="buffv3ListMeta" aria-live="polite" data-i18n="modules.buff.v3.common.loading">正在读取数据</div>
         </header>
 
-        <label class="buffv3-search" for="buffv3SearchInput">
+        <label class="ake-ui-directory__search" for="buffv3SearchInput">
             <span data-i18n="modules.buff.v3.list.searchAria">搜索 BuffData</span>
             <input
                 id="buffv3SearchInput"
@@ -24,16 +22,16 @@
         </label>
 
         <nav
-            class="buffv3-directory"
+            class="ake-ui-tree"
             id="buffv3Directory"
             aria-label="Buff 归属目录"
             data-i18n-aria-label="modules.buff.v3.list.directoryAria"
         ></nav>
     </aside>
 
-    <main class="buffv3-detail" id="buffv3Detail" tabindex="-1">
-        <div class="buffv3-state buffv3-state--loading" role="status">
-            <span class="buffv3-spinner" aria-hidden="true"></span>
+    <main class="ake-ui-directory__content" id="buffv3Detail" tabindex="-1">
+        <div class="ake-ui-state" data-state="loading" role="status">
+            <span class="ake-ui-spinner" aria-hidden="true"></span>
             <div>
                 <h2 data-i18n="modules.buff.title">Buff</h2>
                 <p data-i18n="modules.buff.v3.common.loading">正在读取数据</p>
@@ -42,7 +40,7 @@
     </main>
 
     <button
-        class="buffv3-mobile-list-button"
+        class="ake-ui-directory__mobile-button"
         id="buffv3MobileListButton"
         type="button"
         aria-controls="buffv3MobileOverlay"
@@ -50,18 +48,18 @@
         data-i18n="modules.buff.v3.buttons.openList"
     >Buff 目录</button>
 
-    <div class="buffv3-mobile-overlay" id="buffv3MobileOverlay" aria-hidden="true">
+    <div class="ake-ui-directory__mobile-overlay" id="buffv3MobileOverlay" aria-hidden="true">
         <section
-            class="buffv3-mobile-panel"
+            class="ake-ui-directory__mobile-panel"
             id="buffv3MobilePanel"
             role="dialog"
             aria-modal="true"
             aria-labelledby="buffv3MobileTitle"
         >
-            <header class="buffv3-mobile-header">
+            <header class="ake-ui-directory__mobile-header">
                 <strong id="buffv3MobileTitle" data-i18n="modules.buff.v3.buttons.selectBuff">选择 Buff</strong>
                 <button
-                    class="buffv3-icon-button"
+                    class="ake-ui-icon-button"
                     id="buffv3MobileClose"
                     type="button"
                     aria-label="关闭 Buff 目录"
@@ -70,7 +68,7 @@
                     data-i18n-title="modules.buff.v3.buttons.close"
                 >×</button>
             </header>
-            <label class="buffv3-search buffv3-search--mobile" for="buffv3MobileSearchInput">
+            <label class="ake-ui-directory__search ake-ui-directory__search--mobile" for="buffv3MobileSearchInput">
                 <span data-i18n="modules.buff.v3.list.searchAria">搜索 BuffData</span>
                 <input
                     id="buffv3MobileSearchInput"
@@ -84,7 +82,7 @@
                 >
             </label>
             <nav
-                class="buffv3-directory buffv3-mobile-directory"
+                class="ake-ui-tree ake-ui-directory__mobile-list"
                 id="buffv3MobileDirectory"
                 aria-label="移动端 Buff 归属目录"
                 data-i18n-aria-label="modules.buff.v3.list.mobileDirectoryAria"

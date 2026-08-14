@@ -14,6 +14,14 @@
         cc: 'v2_cc', activity: 'activity', achievement: 'achievement'
     };
 
+    // TextTable keys: stable, humidty, acid, and xiranite factory environments.
+    const FACTORY_ENVIRONMENT_TEXT_IDS = {
+        1: '4749896721646405651',
+        2: '2583412103900909986',
+        3: '8325730894015926297',
+        4: '3873336576577928485'
+    };
+
     const POINT_TOKEN_ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const POINT_TOKEN_MOD = 1n << 36n;
     const POINT_TOKEN_MULTIPLIER = 25214903917n;
@@ -583,27 +591,36 @@
 
     async function itemDetail(id, version) {
         const [items, types, jumps, composites, showing, useItems, equipItems, machineCrafts, machineCraftGroups,
-            manualCrafts, hubCrafts, buildings, equipFormulas, growFormulas, seedFormulas, spaceshipFormulas] = await Promise.all([
+            manualCrafts, hubCrafts, buildings, equipFormulas, growFormulas, seedFormulas, spaceshipFormulas,
+            factoryEnvironments, i18n] = await Promise.all([
             table('ItemTable', version), table('ItemTypeTable', version), table('SystemJumpTable', version), table('ItemIconCompositeTable', version), table('ItemShowingTypeTable', version),
             table('UseItemTable', version), table('EquipItemTable', version), table('FactoryMachineCraftTable', version), table('FactoryMachineCraftGroupTable', version),
             table('FactoryManualCraftTable', version), table('FactoryHubCraftTable', version), table('FactoryBuildingTable', version), table('EquipFormulaTable', version),
-            table('SpaceshipGrowCabinFormulaTable', version), table('SpaceshipGrowCabinSeedFormulaTable', version), table('SpaceshipManufactureFormulaTable', version)
+            table('SpaceshipGrowCabinFormulaTable', version), table('SpaceshipGrowCabinSeedFormulaTable', version), table('SpaceshipManufactureFormulaTable', version),
+            table('FactoryEnvDisplayTable', version), loadI18n()
         ]);
         const item = items[id] || {};
         const flattenGroups = rows => (rows || []).flatMap(row => row.group || []);
+        const factoryEnvironment = value => {
+            const gasEnv = Number(value || 0);
+            if (!gasEnv) return null;
+            const environmentId = Number(factoryEnvironments[String(gasEnv)]?.GenEnv || gasEnv);
+            const textId = FACTORY_ENVIRONMENT_TEXT_IDS[environmentId];
+            return { id: environmentId, name: (textId && i18n[textId]) || `gasEnv ${environmentId}` };
+        };
         const recipeRows = [];
-        const addRecipe = (recipeId, kind, name, inputs, outputs, meta, durationMs) => {
+        const addRecipe = (recipeId, kind, name, inputs, outputs, meta, durationMs, environment) => {
             const normalizedInputs = (inputs || []).filter(row => row?.id);
             const normalizedOutputs = (outputs || []).filter(row => row?.id);
             if (!normalizedInputs.some(row => row.id === id) && !normalizedOutputs.some(row => row.id === id)) return;
             recipeRows.push({ recipeId, kind, name, inputs: normalizedInputs, outputs: normalizedOutputs,
-                meta: meta || '', durationMs: durationMs || 0 });
+                meta: meta || '', durationMs: durationMs || 0, environment: environment || null });
         };
         Object.entries(machineCrafts).forEach(([recipeId, row]) => {
             const building = buildings[row.machineId] || {};
             const msPerRound = machineCraftGroups[row.formulaGroupId]?.msPerRound || 0;
             addRecipe(recipeId, itemT('recipeKinds.integratedIndustry'), text(row.formulaDesc, recipeId), flattenGroups(row.ingredients), flattenGroups(row.outcomes),
-                text(building.name, row.machineId), row.progressRound * msPerRound);
+                text(building.name, row.machineId), row.progressRound * msPerRound, factoryEnvironment(row.gasEnv));
         });
         Object.entries(manualCrafts).forEach(([recipeId, row]) => {
             addRecipe(recipeId, itemT('recipeKinds.manualCrafting'), text(row.name, recipeId), row.ingredients, row.outcomes, '');
