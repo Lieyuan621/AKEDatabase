@@ -528,23 +528,111 @@
         return node;
     }
 
+    function directoryItemMeta(entry) {
+        if (!isPresent(entry)) return null;
+        if (isNode(entry)) return entry;
+        if (typeof entry === 'object' && entry.src) {
+            const image = element('img', 'ake-ui-directory__item-meta-icon');
+            image.src = entry.src;
+            image.alt = entry.label || entry.alt || '';
+            image.title = entry.label || entry.title || '';
+            image.loading = 'lazy';
+            image.decoding = 'async';
+            if (entry.kind) image.dataset.kind = entry.kind;
+            return image;
+        }
+        const label = typeof entry === 'object' ? entry.label : entry;
+        if (!isPresent(label)) return null;
+        const tag = element('span', 'ake-ui-directory__item-tag', label);
+        if (typeof entry === 'object' && entry.kind) tag.dataset.kind = entry.kind;
+        return tag;
+    }
+
+    function setDirectoryItemActive(container, activeItem) {
+        if (!(container instanceof Element)) return activeItem;
+        container.querySelectorAll('.ake-ui-directory__item').forEach(item => {
+            const active = item === activeItem;
+            item.classList.toggle('is-active', active);
+            if (active) item.setAttribute('aria-current', 'true');
+            else item.removeAttribute('aria-current');
+        });
+        return activeItem;
+    }
+
     function directoryItem(options = {}) {
-        const node = element(options.element || 'button', 'ake-ui-directory__item');
+        const classes = ['ake-ui-directory__item'];
+        if (options.className) classes.push(options.className);
+        const node = element(options.element || 'button', classes.join(' '));
         if (node.tagName === 'BUTTON') node.type = 'button';
         applyCommonState(node, options);
-        if (options.active) node.classList.add('is-active');
-        if (options.icon?.src) {
-            const image = element('img', 'ake-ui-directory__item-icon');
+        applyAttributes(node, options.attributes);
+        if (options.active) {
+            node.classList.add('is-active');
+            node.setAttribute('aria-current', 'true');
+        }
+
+        if (options.background?.src) {
+            const background = element('img', options.background.className || 'ake-ui-directory__item-background');
+            background.src = options.background.src;
+            background.alt = options.background.alt || '';
+            background.loading = 'lazy';
+            background.decoding = 'async';
+            if (!background.alt) background.setAttribute('aria-hidden', 'true');
+            node.appendChild(background);
+        }
+
+        let icon = null;
+        if (isNode(options.icon)) {
+            icon = options.icon;
+        } else if (options.icon?.src) {
+            const iconClasses = ['ake-ui-directory__item-icon'];
+            if (options.icon.className) iconClasses.push(options.icon.className);
+            const image = element('img', iconClasses.join(' '));
             image.src = options.icon.src;
             image.alt = options.icon.alt || '';
-            node.appendChild(image);
+            image.loading = 'lazy';
+            image.decoding = 'async';
+            icon = image;
         }
+        if (icon) {
+            if (options.layout === 'entity') {
+                const media = element('span', 'ake-ui-directory__item-media');
+                media.appendChild(icon);
+                node.appendChild(media);
+            } else {
+                node.appendChild(icon);
+            }
+        }
+
         const copy = element('span', 'ake-ui-directory__item-copy');
-        if (isPresent(options.title)) copy.appendChild(element('strong', 'ake-ui-directory__item-title', options.title));
-        if (isPresent(options.subtitle)) copy.appendChild(element('small', 'ake-ui-directory__item-subtitle', options.subtitle));
+        if (options.layout === 'entity') {
+            const heading = element('span', 'ake-ui-directory__item-heading');
+            if (isPresent(options.title)) heading.appendChild(element('strong', 'ake-ui-directory__item-title', options.title));
+            (options.titleMeta || []).map(directoryItemMeta).filter(Boolean).forEach(item => heading.appendChild(item));
+            if (isPresent(options.count)) heading.appendChild(element('span', 'ake-ui-directory__item-count', options.count));
+            if (heading.childElementCount) copy.appendChild(heading);
+
+            const supporting = element('span', 'ake-ui-directory__item-supporting');
+            if (isPresent(options.id)) supporting.appendChild(element('small', 'ake-ui-directory__item-id', options.id));
+            else if (isPresent(options.subtitle)) supporting.appendChild(element('small', 'ake-ui-directory__item-subtitle', options.subtitle));
+            const meta = element('span', 'ake-ui-directory__item-meta');
+            (options.meta || []).map(directoryItemMeta).filter(Boolean).forEach(item => meta.appendChild(item));
+            if (meta.childElementCount) supporting.appendChild(meta);
+            if (supporting.childElementCount) copy.appendChild(supporting);
+        } else {
+            if (isPresent(options.title)) copy.appendChild(element('strong', 'ake-ui-directory__item-title', options.title));
+            if (isPresent(options.subtitle)) copy.appendChild(element('small', 'ake-ui-directory__item-subtitle', options.subtitle));
+        }
         if (copy.childElementCount) node.appendChild(copy);
-        if (isPresent(options.count)) node.appendChild(element('span', 'ake-ui-directory__item-count', options.count));
-        if (typeof options.onSelect === 'function' && !options.disabled) node.addEventListener('click', options.onSelect);
+        if (isPresent(options.trailing)) {
+            const tail = element('span', 'ake-ui-directory__item-tail');
+            appendContent(tail, options.trailing);
+            node.appendChild(tail);
+        }
+        if (options.layout !== 'entity' && isPresent(options.count)) node.appendChild(element('span', 'ake-ui-directory__item-count', options.count));
+        if (typeof options.onSelect === 'function' && !options.disabled) {
+            node.addEventListener('click', event => options.onSelect(event, node));
+        }
         return node;
     }
 
@@ -627,6 +715,7 @@
         card,
         stateView,
         directoryItem,
+        setDirectoryItemActive,
         detailHeader,
         directory
     });

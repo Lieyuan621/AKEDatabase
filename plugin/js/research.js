@@ -337,6 +337,21 @@
             if (toc) toc.innerHTML = '';
         }
 
+        function createResearchDirectoryItem(doc, options) {
+            options = options || {};
+            const item = window.AKEUI.directoryItem({
+                layout: 'entity',
+                title: doc.name,
+                subtitle: doc.summary || doc.id,
+                meta: [{ label: doc.category || '', kind: 'research-category' }],
+                active: options.active,
+                attributes: { 'data-doc-id': doc.id },
+                onSelect: options.onSelect
+            });
+            window.AKEModuleOverview?.markVersionChange(item, doc);
+            return item;
+        }
+
         function renderDocList() {
             const container = document.getElementById('researchList');
             const detailContainer = document.getElementById('researchDetail');
@@ -352,23 +367,15 @@
                 return;
             }
 
-            filtered.forEach(function(doc, index) {
-                const item = document.createElement('div');
-                item.className = 'ake-ui-directory__item' + (doc.id === activeDocId ? ' is-active' : '');
-                item.dataset.docId = doc.id;
-
-                const nameDiv = document.createElement('div');
-                nameDiv.className = 'ake-ui-directory__item-title';
-                nameDiv.textContent = doc.name;
-
-                item.appendChild(nameDiv);
-
-                item.addEventListener('click', function() {
-                    document.querySelectorAll('.ake-ui-directory__item').forEach(function(el) { el.classList.remove('is-active'); });
-                    item.classList.add('is-active');
-                    activeDocId = doc.id;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('research', doc.id);
-                    loadDocDetail(doc, detailContainer);
+            filtered.forEach(function(doc) {
+                const item = createResearchDirectoryItem(doc, {
+                    active: doc.id === activeDocId,
+                    onSelect: function() {
+                        window.AKEUI.setDirectoryItemActive(container, item);
+                        activeDocId = doc.id;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('research', doc.id);
+                        loadDocDetail(doc, detailContainer);
+                    }
                 });
 
                 container.appendChild(item);
@@ -395,7 +402,7 @@
                 const activeDoc = filtered.find(function(d) { return d.id === activeDocId; });
                 if (activeDoc) {
                     const activeItem = container.querySelector('.ake-ui-directory__item[data-doc-id="' + activeDocId + '"]');
-                    if (activeItem) activeItem.classList.add('is-active');
+                    if (activeItem) window.AKEUI.setDirectoryItemActive(container, activeItem);
                     if (window.__akeRouter) window.__akeRouter.updateUrl('research', activeDocId);
                     loadDocDetail(activeDoc, detailContainer);
                 }
@@ -512,17 +519,17 @@
                 return;
             }
             filtered.forEach(function(doc) {
-                const item = document.createElement('div');
-                item.className = 'ake-ui-directory__item' + (doc.id === activeDocId ? ' is-active' : '');
-                item.innerHTML = '<div class="ake-ui-directory__item-title">' + escapeHtml(doc.name) + '</div>';
-                item.addEventListener('click', function() {
-                    activeDocId = doc.id;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('research', doc.id);
-                    loadDocDetail(doc, document.getElementById('researchDetail'));
-                    closeMobileList();
-                    document.querySelectorAll('.ake-ui-directory__item').forEach(function(el) { el.classList.remove('is-active'); });
-                    var activeItem = document.querySelector('.ake-ui-directory__item[data-doc-id="' + doc.id + '"]');
-                    if (activeItem) activeItem.classList.add('is-active');
+                const item = createResearchDirectoryItem(doc, {
+                    active: doc.id === activeDocId,
+                    onSelect: function() {
+                        activeDocId = doc.id;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('research', doc.id);
+                        loadDocDetail(doc, document.getElementById('researchDetail'));
+                        closeMobileList();
+                        var desktopList = document.getElementById('researchList');
+                        var activeItem = desktopList && desktopList.querySelector('.ake-ui-directory__item[data-doc-id="' + CSS.escape(doc.id) + '"]');
+                        if (activeItem) window.AKEUI.setDirectoryItemActive(desktopList, activeItem);
+                    }
                 });
                 mobileContent.appendChild(item);
             });

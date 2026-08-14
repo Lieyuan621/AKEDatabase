@@ -123,17 +123,27 @@
         return modules.filter(isAvailable);
     }
 
+    function createModuleDirectoryItem(module) {
+        return window.AKEUI.directoryItem({
+            layout: 'entity',
+            title: translate(module.title),
+            id: module.id,
+            meta: module.hidden ? [{ label: '隐藏', kind: 'hidden' }] : [],
+            active: module.id === activeModuleId,
+            attributes: { 'data-misc-id': module.id }
+        });
+    }
+
     function renderModuleLists() {
         const visible = visibleModules();
         count.textContent = `${visible.length} 个模块`;
-        const html = visible.map(module => `
-            <button class="ake-ui-directory__item${module.id === activeModuleId ? ' is-active' : ''}" type="button" data-misc-id="${escapeHtml(module.id)}"${module.id === activeModuleId ? ' aria-current="page"' : ''}>
-                <span class="ake-ui-directory__item-copy"><strong class="ake-ui-directory__item-title">${escapeHtml(translate(module.title))}</strong>${module.hidden ? '<small class="ake-ui-directory__item-subtitle">隐藏</small>' : ''}</span>
-            </button>
-        `).join('');
-        const empty = '<div class="ake-ui-state" data-state="empty">没有可用模块</div>';
-        list.innerHTML = html || empty;
-        mobileList.innerHTML = html || empty;
+        if (!visible.length) {
+            list.innerHTML = '<div class="ake-ui-state" data-state="empty">没有可用模块</div>';
+            mobileList.innerHTML = '<div class="ake-ui-state" data-state="empty">没有可用模块</div>';
+            return;
+        }
+        list.replaceChildren(...visible.map(createModuleDirectoryItem));
+        mobileList.replaceChildren(...visible.map(createModuleDirectoryItem));
     }
 
     function decodeRoutePart(value) {

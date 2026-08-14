@@ -89,10 +89,6 @@
             }).join(', ');
         }
 
-        function computeVariantAttr(baseValue, modifiers, attrType) {
-            return window.AKEStats.computeAttrWithModifiers(baseValue, modifiers, attrType);
-        }
-
         async function loadEnemyBuffData(rawData) {
             const ids = new Set();
             Object.values(rawData.enemytable || {}).forEach(enemy => (enemy.bornBuffs || []).forEach(id => ids.add(id)));
@@ -392,11 +388,31 @@
             return `<span class="v2e-variant-template"><span class="v2e-tag-id">${variant.attrTemplateId}</span><span class="v2e-tooltip"><div class="v2e-tooltip-grid">${items}</div></span></span>`;
         }
 
-        function renderEnemyOverview(items, container) {
+        function getEnemyTypeName(enemy) {
             const typeNames = { 0: t('enemyTypes.normal'), 1: t('enemyTypes.elite'), 2: t('enemyTypes.boss'), 3: t('enemyTypes.special'), 4: t('enemyTypes.dangerous') };
+            return enemy.displayTypeName || typeNames[enemy.displayType] || t('enemyTypes.other');
+        }
+
+        function createEnemyDirectoryItem(enemy, options = {}) {
+            const item = window.AKEUI.directoryItem({
+                layout: 'entity',
+                title: enemy.name,
+                id: enemy.templateId,
+                icon: { src: enemy.icon || '', alt: '' },
+                meta: [{ label: getEnemyTypeName(enemy), kind: 'enemy-type' }],
+                accent: { type: 'rarity', value: enemy.rarity || 1 },
+                active: options.active,
+                attributes: { 'data-enemy-id': enemy.templateId },
+                onSelect: options.onSelect
+            });
+            window.AKEModuleOverview?.markVersionChange(item, enemy);
+            return item;
+        }
+
+        function renderEnemyOverview(items, container) {
             window.AKEModuleOverview.render(container, {
                 title: t('overview.title'), description: t('overview.description'),
-                group: item => ({ id: String(item.displayType ?? 'unknown'), name: item.displayTypeName || typeNames[item.displayType] || t('enemyTypes.other'), order: -(item.rarity || 1) }),
+                group: item => ({ id: String(item.displayType ?? 'unknown'), name: getEnemyTypeName(item), order: -(item.rarity || 1) }),
                 onReset: () => { activeEnemyId = null; },
                 onSelect: item => { activeEnemyId = item.templateId; renderEnemyList(); },
                 sidebarSelector: item => `.ake-ui-directory__item[data-enemy-id="${CSS.escape(item.templateId)}"]`,
@@ -421,36 +437,15 @@
             }
 
             filtered.forEach((enemy, index) => {
-                const item = document.createElement('div');
-                item.className = `ake-ui-directory__item ${enemy.templateId === activeEnemyId ? 'is-active' : (index === 0 && !activeEnemyId && !window.AKEModuleOverview?.isActive('enemy') ? 'is-active' : '')}`;
-                window.AKEModuleOverview?.markVersionChange(item, enemy);
-                item.dataset.enemyId = enemy.templateId;
-                item.dataset.akeRarity = String(enemy.rarity || 1);
-
-                const icon = document.createElement('img');
-                icon.className = 'ake-ui-directory__item-icon';
-                icon.src = enemy.icon || '';
-
-                const info = document.createElement('div');
-                info.className = 'ake-ui-directory__item-copy';
-                const nameDiv = document.createElement('div');
-                nameDiv.className = 'ake-ui-directory__item-title';
-                nameDiv.textContent = enemy.name;
-                const idDiv = document.createElement('div');
-                idDiv.className = 'ake-ui-directory__item-id';
-                idDiv.textContent = enemy.templateId;
-                info.appendChild(nameDiv);
-                info.appendChild(idDiv);
-
-                item.appendChild(icon);
-                item.appendChild(info);
-
-                item.addEventListener('click', () => {
-                    document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
-                    item.classList.add('is-active');
-                    activeEnemyId = enemy.templateId;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_enemy', enemy.templateId);
-                    loadEnemyDetail(enemy, detailContainer);
+                const item = createEnemyDirectoryItem(enemy, {
+                    active: enemy.templateId === activeEnemyId
+                        || (index === 0 && !activeEnemyId && !window.AKEModuleOverview?.isActive('enemy')),
+                    onSelect: () => {
+                        window.AKEUI.setDirectoryItemActive(container, item);
+                        activeEnemyId = enemy.templateId;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('v2_enemy', enemy.templateId);
+                        loadEnemyDetail(enemy, detailContainer);
+                    }
                 });
 
                 container.appendChild(item);
@@ -479,14 +474,14 @@
                 activeEnemyId = filtered[0].templateId;
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_enemy', activeEnemyId);
                 const firstItem = container.querySelector('.ake-ui-directory__item');
-                if (firstItem) firstItem.classList.add('is-active');
+                if (firstItem) window.AKEUI.setDirectoryItemActive(container, firstItem);
                 loadEnemyDetail(filtered[0], detailContainer);
             } else if (activeExists) {
                 const activeEnemy = filtered.find(e => e.templateId === activeEnemyId);
                 if (activeEnemy) {
                     if (window.__akeRouter) window.__akeRouter.updateUrl('v2_enemy', activeEnemyId);
                     const activeItem = container.querySelector(`.ake-ui-directory__item[data-enemy-id="${activeEnemyId}"]`);
-                    if (activeItem) activeItem.classList.add('is-active');
+                    if (activeItem) window.AKEUI.setDirectoryItemActive(container, activeItem);
                     loadEnemyDetail(activeEnemy, detailContainer);
                 }
             }
@@ -708,16 +703,17 @@
             const filtered = filterEnemiesBySearch(allEnemies);
             mobileContent.innerHTML = '';
             filtered.forEach(enemy => {
-                const item = document.createElement('div');
-                item.className = 'ake-ui-directory__item';
-                window.AKEModuleOverview?.markVersionChange(item, enemy);
-                if (enemy.templateId === activeEnemyId) item.classList.add('is-active');
-                item.innerHTML = `<div class="ake-ui-directory__item-title">${enemy.name}</div><div class="ake-ui-directory__item-id">${enemy.templateId}</div>`;
-                item.addEventListener('click', () => {
-                    activeEnemyId = enemy.templateId;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_enemy', enemy.templateId);
-                    loadEnemyDetail(enemy, document.getElementById('v2enemyDetail'));
-                    closeMobileList();
+                const item = createEnemyDirectoryItem(enemy, {
+                    active: enemy.templateId === activeEnemyId,
+                    onSelect: () => {
+                        activeEnemyId = enemy.templateId;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('v2_enemy', enemy.templateId);
+                        loadEnemyDetail(enemy, document.getElementById('v2enemyDetail'));
+                        closeMobileList();
+                        const desktopList = document.getElementById('v2enemyList');
+                        const activeItem = desktopList?.querySelector(`.ake-ui-directory__item[data-enemy-id="${CSS.escape(enemy.templateId)}"]`);
+                        if (activeItem) window.AKEUI.setDirectoryItemActive(desktopList, activeItem);
+                    }
                 });
                 mobileContent.appendChild(item);
             });

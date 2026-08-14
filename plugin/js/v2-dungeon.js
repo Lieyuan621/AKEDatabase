@@ -327,23 +327,37 @@
         const mobileOverlay = document.getElementById('v2dungeonMobileListOverlay');
         const mobileContent = document.getElementById('v2dungeonMobileListContent');
 
+        function createDungeonDirectoryItem(series, options = {}) {
+            const item = window.AKEUI.directoryItem({
+                layout: 'entity',
+                title: series.name,
+                id: series.templateId,
+                icon: { src: series.image || '', alt: '' },
+                meta: [{ label: series.gameCategoryName || '', kind: 'dungeon-category' }],
+                accent: { type: 'rarity', value: series.rarity || 1 },
+                active: options.active,
+                attributes: { 'data-series-id': series.templateId },
+                onSelect: options.onSelect
+            });
+            window.AKEModuleOverview?.markVersionChange(item, series);
+            return item;
+        }
+
         function buildMobileList() {
             const filtered = filterSeriesBySearch(allSeries);
             mobileContent.innerHTML = '';
             filtered.forEach(series => {
-                const item = document.createElement('div');
-                item.className = 'ake-ui-directory__item';
-                window.AKEModuleOverview?.markVersionChange(item, series);
-                if (series.templateId === activeSeriesId) item.classList.add('is-active');
-                item.innerHTML = `
-                    <div class="ake-ui-directory__item-title">${series.name}</div>
-                    <div class="ake-ui-directory__item-id">${series.templateId}</div>
-                `;
-                item.addEventListener('click', () => {
-                    activeSeriesId = series.templateId;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', series.templateId);
-                    loadSeriesDetail(series, document.getElementById('v2dungeonDetail'));
-                    closeMobileList();
+                const item = createDungeonDirectoryItem(series, {
+                    active: series.templateId === activeSeriesId,
+                    onSelect: () => {
+                        activeSeriesId = series.templateId;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', series.templateId);
+                        loadSeriesDetail(series, document.getElementById('v2dungeonDetail'));
+                        closeMobileList();
+                        const desktopList = document.getElementById('v2dungeonList');
+                        const activeItem = desktopList?.querySelector(`.ake-ui-directory__item[data-series-id="${CSS.escape(series.templateId)}"]`);
+                        if (activeItem) window.AKEUI.setDirectoryItemActive(desktopList, activeItem);
+                    }
                 });
                 mobileContent.appendChild(item);
             });
@@ -401,36 +415,18 @@
             }
 
             filtered.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = `ake-ui-directory__item ${item.templateId === activeSeriesId ? 'is-active' : (index === 0 && !activeSeriesId && !window.AKEModuleOverview?.isActive('dungeon') ? 'is-active' : '')}`;
-                window.AKEModuleOverview?.markVersionChange(div, item);
-                div.dataset.seriesId = item.templateId;
-                div.dataset.akeRarity = String(item.rarity || 1);
-
-                const infoDiv = document.createElement('div');
-                infoDiv.className = 'ake-ui-directory__item-copy';
-
-                const nameDiv = document.createElement('div');
-                nameDiv.className = 'ake-ui-directory__item-title';
-                nameDiv.textContent = item.name;
-
-                const idDiv = document.createElement('div');
-                idDiv.className = 'ake-ui-directory__item-id';
-                idDiv.textContent = item.templateId;
-
-                infoDiv.appendChild(nameDiv);
-                infoDiv.appendChild(idDiv);
-                div.appendChild(infoDiv);
-
-                div.addEventListener('click', () => {
-                    document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
-                    div.classList.add('is-active');
-                    activeSeriesId = item.templateId;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', item.templateId);
-                    loadSeriesDetail(item, detailContainer);
+                const node = createDungeonDirectoryItem(item, {
+                    active: item.templateId === activeSeriesId
+                        || (index === 0 && !activeSeriesId && !window.AKEModuleOverview?.isActive('dungeon')),
+                    onSelect: () => {
+                        window.AKEUI.setDirectoryItemActive(container, node);
+                        activeSeriesId = item.templateId;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', item.templateId);
+                        loadSeriesDetail(item, detailContainer);
+                    }
                 });
 
-                container.appendChild(div);
+                container.appendChild(node);
             });
 
             if (window.__deepLinkId) {
@@ -455,14 +451,14 @@
                 }
                 activeSeriesId = filtered[0].templateId;
                 const firstItem = container.querySelector('.ake-ui-directory__item');
-                if (firstItem) firstItem.classList.add('is-active');
+                if (firstItem) window.AKEUI.setDirectoryItemActive(container, firstItem);
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', activeSeriesId);
                 loadSeriesDetail(filtered[0], detailContainer);
             } else if (activeExists) {
                 const activeItem = filtered.find(s => s.templateId === activeSeriesId);
                 if (activeItem) {
                     const activeDiv = container.querySelector(`.ake-ui-directory__item[data-series-id="${activeSeriesId}"]`);
-                    if (activeDiv) activeDiv.classList.add('is-active');
+                    if (activeDiv) window.AKEUI.setDirectoryItemActive(container, activeDiv);
                     if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', activeSeriesId);
                     loadSeriesDetail(activeItem, detailContainer);
                 }

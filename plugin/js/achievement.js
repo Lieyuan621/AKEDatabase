@@ -12,23 +12,42 @@
         const mobileOverlay = document.getElementById('achievementMobileListOverlay');
         const mobileContent = document.getElementById('achievementMobileListContent');
 
+        function createAchievementDirectoryItem(category, options = {}) {
+            const item = window.AKEUI.directoryItem({
+                layout: 'entity',
+                title: category.name,
+                id: category.categoryId,
+                icon: { src: category.icon || '', alt: '' },
+                meta: [{
+                    label: t('overview.achievementCount', { count: category.achievementCount || 0 }),
+                    kind: 'achievement-count'
+                }],
+                active: options.active,
+                attributes: {
+                    'data-cat-id': category.categoryId,
+                    'data-content-file': category.contentFile
+                },
+                onSelect: options.onSelect
+            });
+            window.AKEModuleOverview?.markVersionChange(item, category);
+            return item;
+        }
+
         function buildMobileList() {
             const filtered = filterCategoriesBySearch(allCategories);
             mobileContent.innerHTML = '';
             filtered.forEach(cat => {
-                const item = document.createElement('div');
-                item.className = 'ake-ui-directory__item';
-                window.AKEModuleOverview?.markVersionChange(item, cat);
-                if (cat.categoryId === activeCategoryId) item.classList.add('is-active');
-                item.innerHTML = `
-                    <div class="ake-ui-directory__item-title">${cat.name}</div>
-                    <div class="ake-ui-directory__item-id">${cat.categoryId}</div>
-                `;
-                item.addEventListener('click', () => {
-                    activeCategoryId = cat.categoryId;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('achievement', cat.categoryId);
-                    loadCategoryDetail(cat, document.getElementById('achievementDetail'));
-                    closeMobileList();
+                const item = createAchievementDirectoryItem(cat, {
+                    active: cat.categoryId === activeCategoryId,
+                    onSelect: () => {
+                        activeCategoryId = cat.categoryId;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('achievement', cat.categoryId);
+                        loadCategoryDetail(cat, document.getElementById('achievementDetail'));
+                        closeMobileList();
+                        const desktopList = document.getElementById('categoryList');
+                        const activeItem = desktopList?.querySelector(`.ake-ui-directory__item[data-cat-id="${CSS.escape(cat.categoryId)}"]`);
+                        if (activeItem) window.AKEUI.setDirectoryItemActive(desktopList, activeItem);
+                    }
                 });
                 mobileContent.appendChild(item);
             });
@@ -103,24 +122,15 @@
             }
 
             filtered.forEach((cat, index) => {
-                const item = document.createElement('div');
-                item.className = `ake-ui-directory__item ${cat.categoryId === activeCategoryId ? 'is-active' : (index === 0 && !activeCategoryId && !window.AKEModuleOverview?.isActive('achievement') ? 'is-active' : '')}`;
-                window.AKEModuleOverview?.markVersionChange(item, cat);
-                item.dataset.catId = cat.categoryId;
-                item.dataset.contentFile = cat.contentFile;
-
-                const nameDiv = document.createElement('div');
-                nameDiv.className = 'ake-ui-directory__item-title';
-                nameDiv.textContent = cat.name;
-
-                item.appendChild(nameDiv);
-
-                item.addEventListener('click', () => {
-                    document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
-                    item.classList.add('is-active');
-                    activeCategoryId = cat.categoryId;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('achievement', cat.categoryId);
-                    loadCategoryDetail(cat, detailContainer);
+                const item = createAchievementDirectoryItem(cat, {
+                    active: cat.categoryId === activeCategoryId
+                        || (index === 0 && !activeCategoryId && !window.AKEModuleOverview?.isActive('achievement')),
+                    onSelect: () => {
+                        window.AKEUI.setDirectoryItemActive(container, item);
+                        activeCategoryId = cat.categoryId;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('achievement', cat.categoryId);
+                        loadCategoryDetail(cat, detailContainer);
+                    }
                 });
 
                 container.appendChild(item);
@@ -147,14 +157,14 @@
                 }
                 activeCategoryId = filtered[0].categoryId;
                 const firstItem = container.querySelector('.ake-ui-directory__item');
-                if (firstItem) firstItem.classList.add('is-active');
+                if (firstItem) window.AKEUI.setDirectoryItemActive(container, firstItem);
                 if (window.__akeRouter) window.__akeRouter.updateUrl('achievement', activeCategoryId);
                 loadCategoryDetail(filtered[0], detailContainer);
             } else if (activeExists) {
                 const activeCat = filtered.find(c => c.categoryId === activeCategoryId);
                 if (activeCat) {
                     const activeItem = container.querySelector(`.ake-ui-directory__item[data-cat-id="${activeCategoryId}"]`);
-                    if (activeItem) activeItem.classList.add('is-active');
+                    if (activeItem) window.AKEUI.setDirectoryItemActive(container, activeItem);
                     if (window.__akeRouter) window.__akeRouter.updateUrl('achievement', activeCategoryId);
                     loadCategoryDetail(activeCat, detailContainer);
                 }

@@ -120,24 +120,39 @@
         const mobileOverlay = document.getElementById('v2itemMobileListOverlay');
         const mobileContent = document.getElementById('v2itemMobileListContent');
 
+        function createItemDirectoryItem(item, options = {}) {
+            const node = window.AKEUI.directoryItem({
+                layout: 'entity',
+                title: item.name,
+                id: item.itemId,
+                icon: { src: item.icon || '', alt: '' },
+                meta: [{ label: getItemCategoryName(item), kind: 'item-category' }],
+                accent: { type: 'rarity', value: item.rarity || 1 },
+                active: options.active,
+                attributes: { 'data-item-id': item.itemId },
+                onSelect: options.onSelect
+            });
+            window.AKEModuleOverview?.markVersionChange(node, item);
+            return node;
+        }
+
         function buildMobileList() {
             const filtered = filterItems(allItems);
             mobileContent.innerHTML = '';
             filtered.forEach(item => {
-                const div = document.createElement('div');
-                div.className = `ake-ui-directory__item ${item.itemId === activeItemId ? 'is-active' : ''}`;
-                window.AKEModuleOverview?.markVersionChange(div, item);
-                div.innerHTML = `
-                    <div class="ake-ui-directory__item-title">${item.name}</div>
-                    <div class="ake-ui-directory__item-id">${item.itemId}</div>
-                `;
-                div.addEventListener('click', () => {
-                    activeItemId = item.itemId;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_item', item.itemId);
-                    loadItemDetail(item, document.getElementById('v2itemDetail'));
-                    closeMobileList();
+                const node = createItemDirectoryItem(item, {
+                    active: item.itemId === activeItemId,
+                    onSelect: () => {
+                        activeItemId = item.itemId;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('v2_item', item.itemId);
+                        loadItemDetail(item, document.getElementById('v2itemDetail'));
+                        closeMobileList();
+                        const desktopList = document.getElementById('v2itemList');
+                        const activeItem = desktopList?.querySelector(`.ake-ui-directory__item[data-item-id="${CSS.escape(item.itemId)}"]`);
+                        if (activeItem) window.AKEUI.setDirectoryItemActive(desktopList, activeItem);
+                    }
                 });
-                mobileContent.appendChild(div);
+                mobileContent.appendChild(node);
             });
         }
 
@@ -192,39 +207,18 @@
             }
 
             filtered.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = `ake-ui-directory__item ${item.itemId === activeItemId ? 'is-active' : (!activeItemId && index === 0 && !window.AKEModuleOverview?.isActive('item') ? 'is-active' : '')}`;
-                window.AKEModuleOverview?.markVersionChange(div, item);
-                div.dataset.itemId = item.itemId;
-                div.dataset.akeRarity = String(item.rarity || 1);
-
-                const icon = document.createElement('img');
-                icon.className = 'ake-ui-directory__item-icon';
-                icon.src = item.icon || '';
-
-                const info = document.createElement('div');
-                info.className = 'ake-ui-directory__item-copy';
-                const nm = document.createElement('div');
-                nm.className = 'ake-ui-directory__item-title';
-                nm.textContent = item.name;
-                const id = document.createElement('div');
-                id.className = 'ake-ui-directory__item-id';
-                id.textContent = item.itemId;
-                info.appendChild(nm);
-                info.appendChild(id);
-
-                div.appendChild(icon);
-                div.appendChild(info);
-
-                div.addEventListener('click', () => {
-                    document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
-                    div.classList.add('is-active');
-                    activeItemId = item.itemId;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_item', item.itemId);
-                    loadItemDetail(item, detailContainer);
+                const node = createItemDirectoryItem(item, {
+                    active: item.itemId === activeItemId
+                        || (!activeItemId && index === 0 && !window.AKEModuleOverview?.isActive('item')),
+                    onSelect: () => {
+                        window.AKEUI.setDirectoryItemActive(container, node);
+                        activeItemId = item.itemId;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('v2_item', item.itemId);
+                        loadItemDetail(item, detailContainer);
+                    }
                 });
 
-                container.appendChild(div);
+                container.appendChild(node);
             });
 
             if (window.__deepLinkId) {
@@ -249,14 +243,14 @@
                 activeItemId = filtered[0].itemId;
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_item', activeItemId);
                 const f = container.querySelector('.ake-ui-directory__item');
-                if (f) f.classList.add('is-active');
+                if (f) window.AKEUI.setDirectoryItemActive(container, f);
                 loadItemDetail(filtered[0], detailContainer);
             } else if (activeExists) {
                 const ai = filtered.find(i => i.itemId === activeItemId);
                 if (ai) {
                     if (window.__akeRouter) window.__akeRouter.updateUrl('v2_item', activeItemId);
                     const ad = container.querySelector(`.ake-ui-directory__item[data-item-id="${activeItemId}"]`);
-                    if (ad) ad.classList.add('is-active');
+                    if (ad) window.AKEUI.setDirectoryItemActive(container, ad);
                     loadItemDetail(ai, detailContainer);
                 }
             }
@@ -279,10 +273,10 @@
             if (!item || !detailContainer) return false;
 
             activeItemId = item.itemId;
-            document.querySelectorAll('.ake-ui-directory__item').forEach(element => element.classList.remove('is-active'));
-            const sidebarItem = document.querySelector(`.ake-ui-directory__item[data-item-id="${CSS.escape(item.itemId)}"]`);
+            const list = document.getElementById('v2itemList');
+            const sidebarItem = list?.querySelector(`.ake-ui-directory__item[data-item-id="${CSS.escape(item.itemId)}"]`);
             if (sidebarItem) {
-                sidebarItem.classList.add('is-active');
+                window.AKEUI.setDirectoryItemActive(list, sidebarItem);
                 sidebarItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
             }
             if (window.__akeRouter) window.__akeRouter.updateUrl('v2_item', item.itemId);
