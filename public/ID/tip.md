@@ -2,6 +2,25 @@ AKEData telah pindah ke domain www.akedata.wiki. Domain lama, akedata.top, kini 
 
 # Catatan Pembaruan Versi AKEData
 
+### v1.2.10-1
+
+#### Perbandingan versi Arsip
+
+- Saat menggunakan data Latest, Arsip dibandingkan dengan Hotfix terakhir dari versi gim sebelumnya. Arsip yang ditambahkan pada versi ini disematkan di bagian teratas dan ditandai secara global pada ikhtisar halaman awal, serta disematkan dan ditandai di dalam kategori direktorinya; entri baru dalam setiap grup juga ditampilkan lebih dahulu. Versi historis tetap tidak menampilkan penanda baru.
+
+### v1.2.10
+
+#### Arsip
+
+- Menambahkan modul Arsip publik baru. Halaman awal merangkum seluruh arsip serta mendukung direktori berdasarkan media dan kategori, pencarian teks lengkap, dan tautan langsung ke grup arsip.
+- Halaman detail menampilkan judul dan isi teks berformat, gambar arsip asli dari dalam gim, serta memungkinkan pergantian gambar yang berbeda menurut gender karakter utama.
+- Arsip audiovisual hanya menyediakan transkripsi teks per baris dan tidak memutar audio.
+
+#### Pengalaman dan stabilitas
+
+- Mendukung direktori desktop dan seluler, pemulihan status penelusuran, serta ekspor sebagai gambar panjang.
+- Menyempurnakan tampilan penanda penyamaran pada teks berformat dan penanganan gambar yang tidak tersedia.
+
 ### v1.2.9
 
 #### Serba-serbi dan pusat tugas

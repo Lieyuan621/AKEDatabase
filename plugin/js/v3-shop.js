@@ -12,6 +12,7 @@
     const search = document.getElementById('akeShopSearch');
     const mobileButton = document.getElementById('akeShopMobileButton');
     const overlay = document.getElementById('akeShopMobileOverlay');
+    const PACKAGE_VALUE_URL = 'https://ef.yituliu.cn/material-profit/package-value';
     const ROTATION_START = Date.parse('2026-01-22T00:00:00+08:00');
     const DAY_MS = 24 * 60 * 60 * 1000;
     const DAILY_REFRESH_OFFSET = 4 * 60 * 60 * 1000;
@@ -863,12 +864,15 @@
         const activeShop = shops.find(shop => shop.id === state.activeShopId);
         const contextRows = groupContext(group);
         const total = shops.reduce((sum, shop) => sum + shop.products.length, 0);
+        const packageValueLink = group.shopGroupId === 'shop_pay_gift_pack'
+            ? `<a class="akeshop-package-value-link" href="${PACKAGE_VALUE_URL}" target="_blank" rel="noopener noreferrer">${escapeHtml(t('packageValueLink', null, 'View package value on Endfield Yituliu'))}</a>`
+            : '';
         const rotationProductsHtml = activeShop?.kind === 'rotation'
             ? `<div id="akeShopCountdown">${renderRotationSection(activeShop.weekly, 'weekly', nextBatchWeekly())}${renderRotationSection(activeShop.daily, 'daily', nextBatchDaily())}${renderRotationCombinedTable()}</div>`
             : '';
         content.innerHTML = `<section class="akeshop-group-header">
             <div><span>${escapeHtml(groupType(group))}</span><h1>${escapeHtml(gameText(group.shopGroupName, group.shopGroupId))}</h1><small class="akeshop-group-id">${escapeHtml(group.shopGroupId)}</small></div>
-            <strong>${escapeHtml(t('goodsCount', { count: total }))}</strong>
+            <div class="akeshop-group-actions"><strong>${escapeHtml(t('goodsCount', { count: total }))}</strong>${packageValueLink}</div>
         </section>
         ${contextRows.length ? `<dl class="akeshop-context">${contextRows.map(row => `<div><dt>${escapeHtml(row.label)}</dt><dd>${escapeHtml(row.value)}</dd></div>`).join('')}</dl>` : ''}
         ${renderUnlockRequirements(group, 'group')}

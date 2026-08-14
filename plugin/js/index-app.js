@@ -148,11 +148,11 @@
             const closeTipModal = document.getElementById('closeTipModal');
 
             // 移动端模块菜单
-            const mobileMenuButton = document.getElementById('mobileMenuButton');
             const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
             const mobileMenuList = document.getElementById('mobileMenuList');
 
             function buildMobileMenu() {
+                if (!mobileMenuList) return false;
                 const visibleModules = filterModules(allModules);
                 const sorted = sortModulesByPriority(visibleModules);
                 mobileMenuList.innerHTML = '';
@@ -178,19 +178,19 @@
                     });
                     mobileMenuList.appendChild(item);
                 });
+                return true;
             }
 
             function openMobileMenu() {
-                buildMobileMenu();
+                if (!mobileMenuOverlay || !buildMobileMenu()) return;
                 mobileMenuOverlay.style.display = 'flex';
             }
 
             function closeMobileMenu() {
-                mobileMenuOverlay.style.display = 'none';
+                if (mobileMenuOverlay) mobileMenuOverlay.style.display = 'none';
             }
 
-            mobileMenuButton.addEventListener('click', openMobileMenu);
-            mobileMenuOverlay.addEventListener('click', (e) => {
+            mobileMenuOverlay?.addEventListener('click', (e) => {
                 if (e.target === mobileMenuOverlay) closeMobileMenu();
             });
 
@@ -206,9 +206,7 @@
                 mobileSettingsBtn.addEventListener('click', openSettings);
             }
             if (mobileExportBtn) {
-                mobileExportBtn.addEventListener('click', async () => {
-                    // 复制桌面端导出按钮的点击逻辑
-                    // 或者直接触发桌面端导出按钮的 click 事件
+                mobileExportBtn.addEventListener('click', () => {
                     document.getElementById('exportButton')?.click();
                 });
             }
@@ -396,6 +394,7 @@
                     if (code === current) option.selected = true;
                     modalLanguageSelect.appendChild(option);
                 });
+                window.AKESelect?.refresh(modalLanguageSelect);
             }
 
             function renderDataSourceSettings() {
@@ -420,6 +419,7 @@
                 });
                 modalDataVersionSelect.appendChild(group);
                 modalDataVersionSelect.value = dataState.selection;
+                window.AKESelect?.refresh(modalDataVersionSelect);
                 if (dataSourceStatus) {
                     const sourceText = dataState.debugLocal
                         ? tr('settings.dataSource.debugLocal', null, '调试模式已启用，强制使用当前本地服务器数据')
@@ -472,7 +472,13 @@
 
             function syncModuleNavigation(moduleId, loadResult) {
                 window.__akeRouter?.updateUrl(moduleId, loadResult.restored ? loadResult.routeId : null);
-                if (!loadResult.restored) window.AKEModuleOverview?.showRoot(moduleId);
+                if (!loadResult.restored) {
+                    if (moduleId === 'v3_archive' && loadResult.reused && window.__akeArchiveController?.showOverview) {
+                        window.__akeArchiveController.showOverview();
+                    } else if (moduleId !== 'v3_archive') {
+                        window.AKEModuleOverview?.showRoot(moduleId);
+                    }
+                }
             }
 
             function activateModuleStyles(moduleId) {
@@ -787,21 +793,30 @@
                 let html = '';
                 sorted.forEach(mod => {
                     const icon = String(mod.icon || '').trim();
-                    const hasIcon = Boolean(icon);
+                    const navIcon = config.language === 'CH' ? String(mod.navIcon || '').trim() : '';
+                    const textIcon = config.language === 'CH' ? '' : icon;
+                    const hasIcon = Boolean(navIcon || textIcon);
                     const title = translateModuleField(mod, 'title');
-                    const desc = translateModuleField(mod, 'description') || tr('common.noDescription');
-                    const iconHtml = hasIcon ? `<span class="module-icon" aria-hidden="true">${icon}</span>` : '';
+                    const iconHtml = navIcon
+                        ? `<img class="module-nav-icon" src="${navIcon}" alt="" aria-hidden="true" data-no-image-fallback>`
+                        : textIcon ? `<span class="module-icon" aria-hidden="true">${textIcon}</span>` : '';
                     const hiddenMarker = mod.hidden ? '<span class="module-hidden-marker" aria-hidden="true">🔒</span>' : '';
                     html += `
                         <div class="module-item" data-id="${mod.id}" data-has-icon="${hasIcon}">
                             <div class="module-title">
                                 ${iconHtml}<span class="module-name">${title}</span>${hiddenMarker}
                             </div>
-                            <div class="module-desc">${desc}</div>
                         </div>
                     `;
                 });
                 moduleListEl.innerHTML = html;
+                moduleListEl.querySelectorAll('.module-nav-icon').forEach(image => {
+                    image.addEventListener('error', () => {
+                        const item = image.closest('.module-item');
+                        image.remove();
+                        if (item) item.dataset.hasIcon = 'false';
+                    }, { once: true });
+                });
                 document.querySelectorAll('.module-item').forEach(item => {
                     if (item.dataset.hasIcon === 'true') {
                         item.title = item.querySelector('.module-title')?.textContent.trim() || '';
@@ -834,6 +849,7 @@
                 themeLink.href = themeUrl.href;
                 storage.set('akedata-theme', lowerTheme);
                 if (modalThemeSelect) modalThemeSelect.value = lowerTheme;
+                window.AKESelect?.refresh(modalThemeSelect);
             }
 
             function initTheme() {
@@ -866,6 +882,8 @@
                 renderDataSourceSettings();
                 if (modalLanguageSelect) modalLanguageSelect.value = config.language;
                 modalThemeSelect.value = config.theme;
+                window.AKESelect?.refresh(modalLanguageSelect);
+                window.AKESelect?.refresh(modalThemeSelect);
                 modalShowHiddenCheck.checked = config.showHidden;
                 const modalShowExportCheck = document.getElementById('modalShowExportCheck');
                 if (modalShowExportCheck) modalShowExportCheck.checked = config.showExportButton;
@@ -893,7 +911,7 @@
                 }
                 updateTokenStatus();
 
-                settingsModal.style.display = 'flex';
+                settingsModal.hidden = false;
             }
 
             function closeSettingsModal() {
@@ -949,7 +967,7 @@
                         const selection = modalDataVersionSelect.value || 'latest';
                         if (normalizedBase !== current.baseUrl || selection !== current.selection) {
                             window.akeDataSource.configure({ baseUrl: normalizedBase, selection }).then(() => location.reload());
-                            settingsModal.style.display = 'none';
+                            settingsModal.hidden = true;
                             return;
                         }
                     } catch (error) {
@@ -974,7 +992,7 @@
                 }
 
                 window.dispatchEvent(new CustomEvent('globalConfigChanged', { detail: { config } }));
-                settingsModal.style.display = 'none';
+                settingsModal.hidden = true;
                 if (requiresReload) location.reload();
             }
 
@@ -1075,17 +1093,19 @@
             function normalizeRichTextStyleTable(table) {
                 const result = {};
                 Object.entries(table || {}).forEach(([id, row]) => {
-                    const style = { color: [], image: [], scale: [] };
+                    const style = { color: [], image: [], scale: [], mark: [] };
                     (row.preDef || []).slice(0, 2).forEach((definition, index) => {
                         const color = String(definition).match(/<color=([^>]+)>/);
                         const image = String(definition).match(/<image="([^"]+)"\s+scale=([0-9.]+)>/);
+                        const mark = String(definition).match(/<mark=([^>]+)>/);
                         if (color) style.color[index] = color[1];
+                        if (mark) style.mark[index] = mark[1];
                         if (image) {
                             style.image[index] = normalizeTableImagePath(image[1]);
                             style.scale[index] = Number(image[2]);
                         }
                     });
-                    if (style.color.length || style.image.length || style.scale.length) result[id] = style;
+                    if (style.color.length || style.image.length || style.scale.length || style.mark.length) result[id] = style;
                 });
                 return result;
             }
@@ -1294,10 +1314,12 @@
                                                     const color = styleDef.color?.[1] ?? styleDef.color?.[0] ?? null;
                                                     const image = styleDef.image?.[1] ?? styleDef.image?.[0] ?? null;
                                                     const scale = styleDef.scale?.[1] ?? styleDef.scale?.[0] ?? 1;
+                                                    const mark = styleDef.mark?.[1] ?? styleDef.mark?.[0] ?? null;
+                                                    const textStyle = `${color ? `color: ${color};` : ''}${mark ? `background-color: ${mark};` : ''}`;
                                                     if (image) {
-                                                        tagResult = `<span class="textstyle-icon-text"><img src="${resolveRichTextImageUrl(image)}" style="transform: scale(${scale});" alt=""><span style="${color ? `color: ${color};` : ''}">${renderedInner}</span></span>`;
+                                                        tagResult = `<span class="textstyle-icon-text"><img src="${resolveRichTextImageUrl(image)}" style="transform: scale(${scale});" alt=""><span style="${textStyle}">${renderedInner}</span></span>`;
                                                     } else {
-                                                        tagResult = color ? `<span style="color: ${color};">${renderedInner}</span>` : renderedInner;
+                                                        tagResult = textStyle ? `<span style="${textStyle}">${renderedInner}</span>` : renderedInner;
                                                     }
                                                 }
                                             } else {
@@ -1312,13 +1334,15 @@
                                                             const color = styleDef.color?.[1] ?? styleDef.color?.[0] ?? null;
                                                             const image = styleDef.image?.[1] ?? styleDef.image?.[0] ?? null;
                                                             const scale = styleDef.scale?.[1] ?? styleDef.scale?.[0] ?? 1;
+                                                            const mark = styleDef.mark?.[1] ?? styleDef.mark?.[0] ?? null;
+                                                            const textStyle = `${color ? `color: ${color};` : ''}${mark ? `background-color: ${mark};` : ''}`;
                                                             if (image) {
                                                                 tagResult = `<span class="textstyle-icon-text">
                                                                     <img src="${resolveRichTextImageUrl(image)}" style="transform: scale(${scale});" alt="">
-                                                                    <span class="tag-hyperlink" data-tag-id="${tagName}" style="${color ? `color: ${color};` : ''}">${renderedInner}</span>
+                                                                    <span class="tag-hyperlink" data-tag-id="${tagName}" style="${textStyle}">${renderedInner}</span>
                                                                 </span>`;
-                                                            } else if (color) {
-                                                                tagResult = `<span class="tag-hyperlink" data-tag-id="${tagName}" style="color: ${color};">${renderedInner}</span>`;
+                                                            } else if (textStyle) {
+                                                                tagResult = `<span class="tag-hyperlink" data-tag-id="${tagName}" style="${textStyle}">${renderedInner}</span>`;
                                                             } else {
                                                                 tagResult = `<span class="tag-hyperlink" data-tag-id="${tagName}">${renderedInner}</span>`;
                                                             }
@@ -1607,7 +1631,10 @@
                     resetDataSourceBtn.addEventListener('click', () => {
                         const current = window.akeDataSource?.getState?.();
                         if (modalDataBaseUrl && current) modalDataBaseUrl.value = current.defaultBaseUrl;
-                        if (modalDataVersionSelect) modalDataVersionSelect.value = 'latest';
+                        if (modalDataVersionSelect) {
+                            modalDataVersionSelect.value = 'latest';
+                            window.AKESelect?.refresh(modalDataVersionSelect);
+                        }
                     });
                 }
 
@@ -1730,9 +1757,9 @@
                                 // 移除左侧栏和内部列
                                 const globalSidebar = clonedDoc.querySelector('.sidebar');
                                 if (globalSidebar) globalSidebar.remove();
-                                const leftColumns = clonedDoc.querySelectorAll('.left-column, .weapon-list, .v2e-left, .v2d-left, .v2cc-left, .v2eq-left, .v2i-left, .st-sidebar, .mission-sidebar, .research-toc');
+                                const leftColumns = clonedDoc.querySelectorAll('.left-column, .weapon-list, .v2e-left, .v2d-left, .v2cc-left, .v2eq-left, .v2i-left, .st-sidebar, .mission-sidebar, .research-toc, .akearchive-sidebar');
                                 leftColumns.forEach(col => col.remove());
-                                const mobileBtns = clonedDoc.querySelectorAll('.mobile-list-btn, .st-mobile-button, .toc-toggle-btn, [class*="-mobile-btn"], [class*="-mobile-list-button"], [class*="-mobile-overlay"]');
+                                const mobileBtns = clonedDoc.querySelectorAll('.mobile-list-btn, .st-mobile-button, .toc-toggle-btn, .akearchive-mobile-button, [class*="-mobile-btn"], [class*="-mobile-list-button"], [class*="-mobile-overlay"]');
                                 mobileBtns.forEach(btn => btn.remove());
                                 const weaponList = clonedDoc.querySelector('.weapon-list');
                                 if (weaponList) weaponList.remove();
@@ -1750,7 +1777,7 @@
                                     mainContent.style.overflow = 'visible';
                                     mainContent.style.padding = '0';
                                 }
-                                const v2Modules = clonedDoc.querySelectorAll('.character-module, .weapon-module, .v2e-module, .v2d-module, .dungeon-module, .v2cc-module, .v2eq-module, .v2i-module, .activity-module, .achievement-module, .research-module, .st-module, .mission-module');
+                                const v2Modules = clonedDoc.querySelectorAll('.character-module, .weapon-module, .v2e-module, .v2d-module, .dungeon-module, .v2cc-module, .v2eq-module, .v2i-module, .activity-module, .achievement-module, .research-module, .st-module, .mission-module, .akearchive-module');
                                 v2Modules.forEach(m => {
                                     m.style.display = 'block';
                                     m.style.height = 'auto';
@@ -1758,7 +1785,7 @@
                                     m.style.overflow = 'visible';
                                 });
 
-                                const detailAreas = clonedDoc.querySelectorAll('.weapon-detail, .character-detail, .v2e-detail, .v2d-detail, .v2cc-detail, .v2eq-detail, .v2i-detail, .activity-detail, .achievement-detail, .research-detail, .st-content, .mission-detail');
+                                const detailAreas = clonedDoc.querySelectorAll('.weapon-detail, .character-detail, .v2e-detail, .v2d-detail, .v2cc-detail, .v2eq-detail, .v2i-detail, .activity-detail, .achievement-detail, .research-detail, .st-content, .mission-detail, .akearchive-content');
                                 detailAreas.forEach(detail => {
                                     detail.style.width = '100%';
                                     detail.style.maxWidth = 'none';

@@ -1,0 +1,696 @@
+/* Shared modal shell. Theme files provide the color variables. */
+.app-modal {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 11000;
+    padding: 24px;
+    align-items: center;
+    justify-content: center;
+    background: var(--dialog-backdrop, rgba(22, 31, 42, 0.46));
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.app-modal[hidden] {
+    display: none;
+}
+
+.app-dialog {
+    display: flex;
+    flex-direction: column;
+    width: min(700px, 100%);
+    max-height: min(820px, calc(100vh - 48px));
+    overflow: hidden;
+    border: 1px solid var(--dialog-border, #cbd5df);
+    border-radius: 12px;
+    background: var(--dialog-surface, #ffffff);
+    box-shadow: var(--dialog-shadow, 0 22px 60px rgba(18, 31, 45, 0.28));
+    color: var(--dialog-text, #1e2b3c);
+    animation: appDialogIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-dialog--announcement {
+    max-height: min(760px, calc(100vh - 48px));
+}
+
+@keyframes appDialogIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.app-dialog-header {
+    display: flex;
+    flex: 0 0 60px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px 0 24px;
+    border-bottom: 1px solid var(--dialog-border, #d9e0e8);
+    background: var(--dialog-header, #f7f9fb);
+}
+
+.app-dialog-title {
+    min-width: 0;
+    margin: 0;
+    color: var(--dialog-title, var(--dialog-text, #1e2b3c));
+    font-size: 1.12rem;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+.app-dialog-close {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    place-items: center;
+    background: transparent;
+    color: var(--dialog-muted, #68798b);
+    cursor: pointer;
+    transition:
+        background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-dialog-close svg,
+.app-icon-button svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.app-dialog-close:hover {
+    background: var(--dialog-close-hover, #e8eef5);
+    color: var(--dialog-title, var(--dialog-text, #1e2b3c));
+    transform: rotate(4deg);
+}
+
+.app-dialog-close:focus-visible,
+.app-dialog button:focus-visible {
+    outline: 2px solid var(--dialog-focus, var(--accent-color, #202226));
+    outline-offset: 2px;
+}
+
+.app-dialog-body {
+    min-height: 0;
+    padding: 0 24px 24px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+}
+
+/* Shared dialog form controls. Add these classes to controls in any app dialog. */
+.app-section {
+    padding: 22px 0;
+    border-top: 1px solid var(--control-section-border, var(--dialog-border, #d9e0e8));
+}
+
+.app-section:first-child {
+    border-top: 0;
+}
+
+.app-section-title {
+    display: flex;
+    margin: 0 0 16px;
+    align-items: center;
+    gap: 9px;
+    color: var(--control-section-title, var(--dialog-muted, #68798b));
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+.app-section-icon {
+    width: 17px;
+    height: 17px;
+    flex: 0 0 17px;
+    fill: none;
+    stroke: var(--control-accent, currentColor);
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.mobile-settings-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.app-field {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr) auto;
+    min-height: 40px;
+    margin: 12px 0;
+    align-items: center;
+    gap: 12px;
+}
+
+.app-field-label {
+    min-width: 0;
+    color: var(--control-label, var(--dialog-text, #1e2b3c));
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.app-input,
+.app-select {
+    width: 100%;
+    min-width: 0;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid var(--control-border, var(--dialog-border, #cbd5df));
+    border-radius: 10px;
+    background: var(--control-surface, var(--dialog-surface, #ffffff));
+    color: var(--control-text, var(--dialog-text, #1e2b3c));
+    font: inherit;
+    box-shadow: var(--control-input-shadow, inset 0 1px 1px rgba(18, 31, 45, 0.04));
+    font-size: 0.875rem;
+    transition:
+        border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-select {
+    appearance: none;
+    padding-right: 36px;
+    background-image:
+        linear-gradient(45deg, transparent 50%, var(--control-select-arrow, #52677e) 50%),
+        linear-gradient(135deg, var(--control-select-arrow, #52677e) 50%, transparent 50%);
+    background-repeat: no-repeat;
+    background-position:
+        calc(100% - 17px) 50%,
+        calc(100% - 13px) 50%;
+    background-size: 4px 4px, 4px 4px;
+}
+
+.app-input::placeholder {
+    color: var(--control-placeholder, var(--dialog-muted, #68798b));
+    opacity: 1;
+}
+
+.app-input:hover,
+.app-select:hover {
+    border-color: var(--control-border-hover, var(--dialog-focus, #202226));
+    background: var(--control-surface-hover, var(--control-surface, #ffffff));
+}
+
+.app-input:focus,
+.app-select:focus {
+    border-color: var(--dialog-focus, var(--accent-color, #202226));
+    box-shadow: 0 0 0 3px var(--control-focus-ring, rgba(20, 22, 25, 0.12));
+    outline: 0;
+}
+
+.app-input:focus-visible,
+.app-toggle:focus-visible,
+.app-button:focus-visible,
+.app-icon-button:focus-visible {
+    outline: 2px solid var(--dialog-focus, var(--accent-color, #202226));
+    outline-offset: 2px;
+}
+
+.app-select option {
+    background: var(--control-surface, var(--dialog-surface, #ffffff));
+    color: var(--control-text, var(--dialog-text, #1e2b3c));
+}
+
+.app-custom-select {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+}
+
+.app-select--native {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    clip-path: inset(50%) !important;
+    border: 0 !important;
+    white-space: nowrap !important;
+}
+
+.app-custom-select__trigger {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    height: 40px;
+    padding: 0 12px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border: 1px solid var(--control-border, var(--dialog-border, #cbd5df));
+    border-radius: 10px;
+    background: var(--control-surface, var(--dialog-surface, #ffffff));
+    color: var(--control-text, var(--dialog-text, #1e2b3c));
+    box-shadow: var(--control-input-shadow, inset 0 1px 1px rgba(18, 31, 45, 0.04));
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.875rem;
+    text-align: left;
+    transition:
+        border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-custom-select__trigger:hover,
+.app-custom-select.is-open .app-custom-select__trigger {
+    border-color: var(--control-border-hover, var(--dialog-focus, #202226));
+    background: var(--control-surface-hover, var(--control-surface, #ffffff));
+}
+
+.app-custom-select.is-open .app-custom-select__trigger {
+    border-color: var(--dialog-focus, var(--accent-color, #202226));
+    box-shadow: 0 0 0 3px var(--control-focus-ring, rgba(20, 22, 25, 0.12));
+}
+
+.app-custom-select__value {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.app-custom-select__trigger svg {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+    fill: none;
+    stroke: var(--control-select-arrow, currentColor);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-custom-select.is-open .app-custom-select__trigger svg {
+    transform: rotate(180deg);
+}
+
+.app-custom-select__menu {
+    position: fixed;
+    z-index: 12000;
+    padding: 6px;
+    overflow: hidden;
+    box-sizing: border-box;
+    border: 1px solid var(--control-border, var(--dialog-border, #cbd5df));
+    border-radius: 12px;
+    background: var(--dialog-surface, #ffffff);
+    box-shadow: var(--control-menu-shadow, 0 14px 36px rgba(20, 22, 25, 0.2));
+    color: var(--control-text, var(--dialog-text, #1e2b3c));
+    transform-origin: top center;
+    animation: appSelectMenuIn 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-custom-select__list {
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: 7px;
+    overscroll-behavior: contain;
+    scrollbar-color: var(--control-border-hover, #9ca6b2) transparent;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+}
+
+.app-custom-select__list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.app-custom-select__list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.app-custom-select__list::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background: var(--control-border-hover, #9ca6b2);
+    background-clip: padding-box;
+}
+
+.app-custom-select__menu.opens-above {
+    transform-origin: bottom center;
+    animation-name: appSelectMenuInAbove;
+}
+
+.app-custom-select__menu[hidden] {
+    display: none;
+}
+
+.app-custom-select__connector {
+    position: fixed;
+    z-index: 12001;
+    width: 16px;
+    height: 8px;
+    pointer-events: none;
+}
+
+.app-custom-select__connector[hidden] {
+    display: none;
+}
+
+.app-custom-select__connector::before,
+.app-custom-select__connector::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    width: 0;
+    height: 0;
+    transform: translateX(-50%);
+}
+
+.app-custom-select__connector.opens-below::before {
+    top: 0;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid var(--control-border, var(--dialog-border, #cbd5df));
+    border-left: 8px solid transparent;
+}
+
+.app-custom-select__connector.opens-below::after {
+    top: 2px;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid var(--dialog-surface, #ffffff);
+    border-left: 7px solid transparent;
+}
+
+.app-custom-select__connector.opens-above::before {
+    bottom: 0;
+    border-top: 8px solid var(--control-border, var(--dialog-border, #cbd5df));
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+}
+
+.app-custom-select__connector.opens-above::after {
+    bottom: 2px;
+    border-top: 7px solid var(--dialog-surface, #ffffff);
+    border-right: 7px solid transparent;
+    border-left: 7px solid transparent;
+}
+
+@keyframes appSelectMenuIn {
+    from { opacity: 0; transform: translateY(-5px) scale(0.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes appSelectMenuInAbove {
+    from { opacity: 0; transform: translateY(5px) scale(0.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.app-custom-select__group {
+    padding: 9px 10px 5px;
+    color: var(--control-muted, var(--dialog-muted, #68798b));
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.app-custom-select__option {
+    position: relative;
+    display: flex;
+    width: 100%;
+    min-height: 36px;
+    padding: 8px 34px 8px 10px;
+    align-items: center;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--control-text, var(--dialog-text, #1e2b3c));
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.84rem;
+    text-align: left;
+    transition:
+        background-color 0.16s cubic-bezier(0.4, 0, 0.2, 1),
+        color 0.16s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-custom-select__option:hover,
+.app-custom-select__option.is-active {
+    background: var(--control-row-hover, #eceeef);
+}
+
+.app-custom-select__option.is-selected {
+    background: var(--control-selected-surface, var(--control-row-surface, #f5f6f7));
+    color: var(--control-selected-text, var(--control-text, #202226));
+    font-weight: 700;
+}
+
+.app-custom-select__option.is-selected::after {
+    content: "";
+    position: absolute;
+    right: 13px;
+    width: 8px;
+    height: 4px;
+    border-bottom: 2px solid currentColor;
+    border-left: 2px solid currentColor;
+    transform: rotate(-45deg) translateY(-1px);
+}
+
+.app-custom-select__option:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+.app-custom-select.is-disabled .app-custom-select__trigger {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+.app-toggle {
+    appearance: none;
+    position: relative;
+    width: 42px;
+    height: 24px;
+    justify-self: end;
+    border: 1px solid var(--control-toggle-border, var(--control-border, #aebdca));
+    border-radius: 12px;
+    background: var(--control-toggle-bg, #cbd5df);
+    cursor: pointer;
+    box-shadow: var(--control-toggle-inset, inset 0 1px 2px rgba(18, 31, 45, 0.12));
+    transition:
+        background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-toggle::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--control-toggle-thumb, #ffffff);
+    box-shadow: var(--control-toggle-shadow, 0 1px 3px rgba(18, 31, 45, 0.24));
+    transition:
+        transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-toggle:checked {
+    border-color: var(--control-toggle-checked, var(--dialog-focus, #202226));
+    background: var(--control-toggle-checked, var(--dialog-focus, #202226));
+    box-shadow: var(--control-toggle-inset, inset 0 1px 2px rgba(18, 31, 45, 0.12));
+}
+
+.app-toggle:checked::before {
+    background: var(--control-toggle-thumb-checked, var(--control-toggle-thumb, #ffffff));
+    transform: translateX(18px);
+}
+
+.app-field--toggle {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 7px 10px;
+    border: 1px solid var(--control-row-border, transparent);
+    border-radius: 10px;
+    background: var(--control-row-surface, transparent);
+    transition:
+        background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-field--toggle:hover {
+    background: var(--control-row-hover, var(--control-row-surface, transparent));
+    border-color: var(--control-row-border-hover, var(--control-row-border, transparent));
+}
+
+.app-input:disabled,
+.app-select:disabled,
+.app-toggle:disabled,
+.app-button:disabled,
+.app-icon-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+.app-field--hint {
+    display: block;
+    min-height: 0;
+    margin: -2px 0 10px;
+}
+
+.app-field--hint p,
+.app-help,
+.app-status {
+    margin: 0;
+    color: var(--control-muted, var(--dialog-muted, #68798b));
+    font-size: 0.8rem;
+    line-height: 1.55;
+}
+
+.app-status:empty {
+    display: none;
+}
+
+.app-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.app-actions--section-break {
+    padding-bottom: 18px;
+}
+
+.app-button,
+.app-icon-button {
+    display: inline-flex;
+    height: 40px;
+    padding: 0 16px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    font: inherit;
+    box-shadow: var(--control-button-shadow, 0 2px 5px rgba(18, 31, 45, 0.1));
+    font-size: 0.84rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    transition:
+        border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-button--primary {
+    border-color: var(--control-primary, var(--dialog-focus, #202226));
+    background: var(--control-primary, var(--dialog-focus, #202226));
+    color: var(--control-primary-text, #ffffff);
+}
+
+.app-button--primary:hover {
+    border-color: var(--control-primary-hover, var(--control-primary, #266786));
+    background: var(--control-primary-hover, var(--control-primary, #266786));
+    box-shadow: var(--control-button-shadow-hover, 0 4px 10px rgba(18, 31, 45, 0.16));
+    transform: translateY(-1px);
+}
+
+.app-button--secondary,
+.app-icon-button {
+    border-color: var(--control-secondary-border, var(--control-border, #d1d2d5));
+    background: var(--control-secondary-bg, #f1f1f2);
+    color: var(--control-secondary-text, var(--control-label, #34373d));
+}
+
+.app-button--secondary:hover,
+.app-icon-button:hover {
+    background: var(--control-secondary-hover, #e5e5e7);
+    border-color: var(--control-border-hover, var(--dialog-focus, #202226));
+    transform: translateY(-1px);
+}
+
+.app-button:active,
+.app-icon-button:active {
+    box-shadow: none;
+    transform: translateY(0) scale(0.98);
+}
+
+.app-icon-button {
+    width: 40px;
+    padding: 0;
+    font-size: 1.1rem;
+}
+
+.app-section--standalone-action .app-help {
+    margin-top: 10px;
+}
+
+.app-meta {
+    padding: 14px 0 0;
+    border-top: 1px solid var(--control-section-border, var(--dialog-border, #d9e0e8));
+    color: var(--control-muted, var(--dialog-muted, #68798b));
+}
+
+.app-meta p {
+    margin: 4px 0;
+    font-size: 0.78rem;
+    line-height: 1.45;
+}
+
+.app-dialog--announcement .app-dialog-body {
+    padding-top: 22px;
+}
+
+@media (max-width: 640px) {
+    .app-modal {
+        padding: 12px;
+    }
+
+    .app-dialog,
+    .app-dialog--announcement {
+        max-height: calc(100dvh - 24px);
+    }
+
+    .app-dialog-header {
+        flex-basis: 54px;
+        padding-left: 16px;
+    }
+
+    .app-dialog-body {
+        padding: 0 16px 18px;
+    }
+
+    .app-dialog--announcement .app-dialog-body {
+        padding-top: 18px;
+    }
+
+    .app-field {
+        grid-template-columns: minmax(0, 1fr);
+        margin: 14px 0;
+        gap: 7px;
+    }
+
+    .app-field--toggle {
+        grid-template-columns: minmax(0, 1fr) auto;
+        margin: 8px 0;
+    }
+
+    .app-field--action {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .app-field--action .app-field-label {
+        grid-column: 1 / -1;
+    }
+}

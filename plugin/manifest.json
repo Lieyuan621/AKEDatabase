@@ -13,6 +13,7 @@
         "description": "modules.settings.description",
         "priority": 9999,
         "icon": "⚙️",
+        "navIcon": "/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/mainhud/setting_tab_setting.png",
         "contentFile": "plugin/settings.html"
     },
     {
@@ -70,6 +71,7 @@
         "description": "modules.character.description",
         "priority": 7,
         "icon": "👤",
+        "navIcon": "/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/mainhud/btn_character.png",
         "contentFile": "/plugin/v3_character.html",
         "hidden": false
     },
@@ -128,6 +130,7 @@
         "description": "modules.equip.description",
         "priority": 10,
         "icon": "🛡️",
+        "navIcon": "/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/mainhud/btn_equip.png",
         "contentFile": "/plugin/v3_equip.html",
         "hidden": false
     },
@@ -157,6 +160,7 @@
         "description": "modules.item.description",
         "priority": 20,
         "icon": "📦",
+        "navIcon": "/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/mainhud/btn_backpack.png",
         "contentFile": "/plugin/v3_item.html",
         "hidden": false
     },
@@ -166,6 +170,7 @@
         "description": "modules.shop.description",
         "priority": 19,
         "icon": "🛒",
+        "navIcon": "/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/mainhud/btn_mall.png",
         "contentFile": "/plugin/v3_shop.html",
         "hidden": false
     },
@@ -213,6 +218,7 @@
         "description": "modules.dungeon.description",
         "priority": 21,
         "icon": "⚔️",
+        "navIcon": "/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/mainhud/btn_dungeon.png",
         "contentFile": "/plugin/v3_dungeon.html",
         "hidden": false
     },
@@ -222,7 +228,17 @@
         "description": "modules.research.description",
         "priority": 25,
         "icon": "📚",
+        "navIcon": "/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/mainhud/btn_techtree.png",
         "contentFile": "/plugin/research.html"
+    },
+    {
+        "id": "v3_archive",
+        "title": "modules.archive.title",
+        "description": "modules.archive.description",
+        "priority": 24.5,
+        "icon": "🗃️",
+        "contentFile": "/plugin/v3_archive.html",
+        "hidden": false
     },
     {
         "id": "about",
@@ -248,6 +264,7 @@
         "description": "查看活动信息",
         "priority": 11,
         "icon": "🎉",
+        "navIcon": "/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/mainhud/btn_activity.png",
         "contentFile": "/plugin/v3_activity.html"
     },
     {
@@ -301,6 +318,7 @@
         "description": "查看战争回响数据",
         "priority": 2,
         "icon": "✦",
+        "navIcon": "/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/mainhud/btn_week_raid.png",
         "contentFile": "/plugin/season_tower.html"
     },
     {

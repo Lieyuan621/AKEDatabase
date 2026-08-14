@@ -37,6 +37,7 @@
         baker: 'bakerConversation',
         season_tower: 'seasonTowerDetail',
         v3_mission: 'missionDetail',
+        v3_archive: 'akeArchiveContent',
         misc: 'miscContent'
     });
     const MODULE_SCROLL_ROOT_IDS = Object.freeze({
@@ -54,6 +55,7 @@
         baker: 'bakerContactList',
         season_tower: 'seasonTowerList',
         v3_mission: 'missionList',
+        v3_archive: 'akeArchiveDirectory',
         misc: 'miscModuleList'
     });
 

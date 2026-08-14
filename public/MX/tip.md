@@ -2,6 +2,28 @@ AKEData se ha trasladado al dominio www.akedata.wiki. El dominio anterior, akeda
 
 # Registro de actualizaciones de AKEData
 
+### v1.2.10-1
+
+#### Comparación de versiones de la Biblioteca de archivos
+
+- Al usar los datos Latest, la Biblioteca de archivos se compara con el Hotfix final de la versión anterior del juego. Los archivos añadidos en esta versión aparecen fijados en la parte superior y marcados globalmente en la vista inicial, así como fijados y marcados dentro de su categoría en el directorio; las entradas nuevas de cada grupo también se muestran primero. Las versiones históricas fijas no muestran indicadores de contenido nuevo.
+
+### v1.2.10
+
+#### Biblioteca de archivos
+
+- Se añadió la Biblioteca de archivos como módulo público para consultar los archivos, documentos y registros incluidos en el juego.
+- La página inicial ofrece una vista general de todos los archivos, un directorio por soporte y categoría, búsqueda de texto completo y enlaces directos a cada grupo de archivos.
+#### Contenido de los archivos
+
+- Los detalles muestran títulos y textos con formato enriquecido, además de las imágenes originales del juego. Cuando un documento incluye variantes del protagonista, es posible alternar entre las imágenes de la protagonista femenina y el protagonista masculino.
+- Los archivos audiovisuales muestran únicamente una transcripción línea por línea; esta versión no solicita ni reproduce audio.
+
+#### Navegación y visualización
+
+- Se añadieron directorios adaptados a escritorio y móvil, restauración del estado de navegación al volver al módulo y compatibilidad con la exportación como imagen larga.
+- El texto enriquecido ahora representa correctamente las marcas de ocultación. Los iconos que no puedan cargarse usan la imagen de ausencia predeterminada, y las imágenes de contenido no disponibles muestran un aviso claro.
+
 ### v1.2.9
 
 #### Miscelánea y centro de tareas

@@ -9,6 +9,7 @@
 
     function useFallback(image) {
         if (!(image instanceof HTMLImageElement)) return false;
+        if (image.hasAttribute('data-no-image-fallback')) return false;
 
         const assignedUrl = image.src;
         const currentUrl = image.currentSrc || assignedUrl;
@@ -28,6 +29,7 @@
     }
 
     function handleImageError(event) {
+        if (event.target?.dataset?.akeImageFallback === 'defer') return;
         if (!useFallback(event.target)) return;
         event.preventDefault();
         event.stopImmediatePropagation();
@@ -39,7 +41,9 @@
         image.addEventListener('error', handleImageError, true);
 
         const source = image.currentSrc || image.getAttribute('src');
-        if (source && image.complete && image.naturalWidth === 0) useFallback(image);
+        if (source && image.complete && image.naturalWidth === 0 && image.dataset.akeImageFallback !== 'defer') {
+            useFallback(image);
+        }
     }
 
     function observeImages(root) {

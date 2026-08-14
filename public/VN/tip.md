@@ -2,6 +2,25 @@ AKEData đã chuyển sang tên miền www.akedata.wiki. Tên miền cũ akedata
 
 # Nhật ký cập nhật phiên bản AKEData
 
+### v1.2.10-1
+
+#### So sánh phiên bản Kho lưu trữ
+
+- Khi sử dụng dữ liệu Latest, Kho lưu trữ được so sánh với bản Hotfix cuối cùng của phiên bản trò chơi trước. Hồ sơ mới trong phiên bản này được ghim lên đầu và đánh dấu trên toàn bộ trang tổng quan ban đầu, đồng thời được ghim và đánh dấu trong từng danh mục của thư mục; các mục mới trong mỗi nhóm cũng được ưu tiên hiển thị trước. Phiên bản lịch sử cố định không hiển thị dấu mới.
+
+### v1.2.10
+
+#### Kho lưu trữ
+
+- Thêm mô-đun Kho lưu trữ công khai mới. Trang bắt đầu tổng hợp toàn bộ hồ sơ lưu trữ, hỗ trợ danh mục theo loại phương tiện và phân loại, tìm kiếm toàn văn và liên kết sâu đến từng nhóm hồ sơ.
+- Trang chi tiết hiển thị tiêu đề và nội dung văn bản có định dạng, ảnh lưu trữ gốc trong trò chơi, đồng thời cho phép chuyển đổi các ảnh khác nhau theo giới tính của nhân vật chính.
+- Hồ sơ nghe nhìn chỉ cung cấp bản chép lời theo từng câu và không hỗ trợ phát âm thanh.
+
+#### Trải nghiệm và độ ổn định
+
+- Hỗ trợ danh mục trên máy tính và thiết bị di động, khôi phục trạng thái duyệt và xuất thành ảnh dài.
+- Cải thiện cách hiển thị dấu che nội dung trong văn bản có định dạng và xử lý khi thiếu ảnh.
+
 ### v1.2.9
 
 #### Tiện ích và trung tâm nhiệm vụ

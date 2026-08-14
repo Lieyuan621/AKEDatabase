@@ -2,6 +2,25 @@ AKEData ist auf die Domain www.akedata.wiki umgezogen. Die bisherige Domain aked
 
 # AKEData-Versionsprotokoll
 
+### v1.2.10-1
+
+#### Versionsvergleich im Archiv
+
+- Nur bei Verwendung der `Latest`-Daten vergleicht das Archiv mit dem letzten Hotfix der vorherigen Spielversion. In der aktuellen Version hinzugefügte Archive werden sowohl in der globalen Übersicht der Startseite als auch innerhalb der Verzeichniskategorien oben angeheftet und markiert; neue Einträge innerhalb einer Gruppe erscheinen ebenfalls zuerst. Bei fest ausgewählten historischen Versionen werden keine Neu-Markierungen angezeigt.
+
+### v1.2.10
+
+#### Archiv
+
+- Das neue öffentliche Modul „Archiv“ wurde hinzugefügt. Die Startseite fasst alle Archive zusammen und unterstützt Verzeichnisse nach Medium und Kategorie, Volltextsuche sowie Direktlinks zu Archivgruppen.
+- Die Detailansicht zeigt formatierte Titel und Texte sowie die originalen Archivbilder aus dem Spiel. Außerdem lassen sich Bilder umschalten, die sich je nach Geschlecht der Hauptfigur unterscheiden.
+- Für audiovisuelle Archive wird ausschließlich eine zeilenweise Texttranskription angezeigt; eine Audiowiedergabe ist nicht enthalten.
+
+#### Bedienung und Stabilität
+
+- Verzeichnisse für Desktop- und Mobilgeräte, die Wiederherstellung des Ansichtsstatus und der Export als langes Bild werden unterstützt.
+- Die Darstellung von Verdeckungsmarkierungen in formatierten Texten und die Behandlung fehlender Bilder wurden verbessert.
+
 ### v1.2.9
 
 #### Verschiedenes und Aufgabenzentrale
