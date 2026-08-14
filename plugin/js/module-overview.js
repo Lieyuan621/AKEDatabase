@@ -1,5 +1,6 @@
 (function () {
     const roots = new Map();
+    const homeIconHtml = '<span class="ake-module-home__icon" aria-hidden="true">&#8962;</span>';
     const searchSelectors = {
         v3_cc: '[data-ake-module="cc"] .ake-ui-directory__search',
         research: '[data-ake-module="research"] .ake-ui-directory__search',
@@ -9,8 +10,14 @@
         v3_equip: '[data-ake-module="equip"] .ake-ui-directory__search',
         v3_activity: '[data-ake-module="activity"] .ake-ui-directory__search',
         v3_item: '[data-ake-module="item"] .ake-ui-directory__search',
+        v3_shop: '[data-ake-module="shop"] .ake-ui-directory__search',
         v3_dungeon: '[data-ake-module="dungeon"] .ake-ui-directory__search',
         v3_achievement: '[data-ake-module="achievement"] .ake-ui-directory__search',
+        v3_archive: '[data-ake-module="archive"] > .ake-ui-directory__sidebar .ake-ui-directory__search:not(.ake-ui-directory__search--mobile)',
+        v3_mission: '[data-ake-module="mission"] .ake-ui-directory__search',
+        v3_skill: '[data-ake-module="skill"] > .ake-ui-directory__sidebar .ake-ui-directory__search',
+        v3_buff: '[data-ake-module="buff"] > .ake-ui-directory__sidebar .ake-ui-directory__search',
+        baker: '[data-ake-module="baker"] .ake-ui-directory__search',
         spawn: '.spawner-module .list-search'
     };
     function text(value, fallback) {
@@ -299,18 +306,48 @@
         return false;
     }
 
+    function normalizeSearchContainer(container) {
+        if (!(container instanceof HTMLLabelElement)) return container;
+        const replacement = document.createElement('div');
+        Array.from(container.attributes).forEach(attribute => {
+            if (attribute.name !== 'for') replacement.setAttribute(attribute.name, attribute.value);
+        });
+        while (container.firstChild) replacement.appendChild(container.firstChild);
+        container.replaceWith(replacement);
+
+        const input = replacement.querySelector('input');
+        if (input && !input.hasAttribute('aria-label') && input.placeholder) {
+            input.setAttribute('aria-label', input.placeholder);
+        }
+        replacement.addEventListener('click', event => {
+            if (event.target === replacement) input?.focus();
+        });
+        return replacement;
+    }
+
     function installHomeButton() {
         const match = Object.entries(searchSelectors).find(([, selector]) => document.querySelector(selector));
         const module = match?.[0];
-        const container = match ? document.querySelector(match[1]) : null;
+        let container = match ? document.querySelector(match[1]) : null;
+        if (container) container = normalizeSearchContainer(container);
         if (!container || container.querySelector('.ake-module-home')) return;
         container.classList.add('ake-module-search-row');
+        container.querySelector(':scope > .ake-ui-directory__search-icon')?.remove();
+
+        const existingButton = container.closest('.ake-ui-directory__sidebar')
+            ?.querySelector('#akeArchiveHome, #missionHomeButton');
+        if (existingButton) {
+            existingButton.classList.add('ake-module-home');
+            container.prepend(existingButton);
+            return;
+        }
+
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'ake-ui-icon-button ake-module-home';
         button.title = window.akeData?.t('nav.home', null, '返回起始页') || '返回起始页';
         button.setAttribute('aria-label', button.title);
-        button.innerHTML = '<span aria-hidden="true">⌂</span>';
+        button.innerHTML = homeIconHtml;
         button.addEventListener('click', () => {
             window.__akeRouter?.updateUrl(module);
             if (showRoot(module)) return;

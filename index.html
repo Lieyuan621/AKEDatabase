@@ -70,11 +70,11 @@
                     </h4>
                     <div class="app-field">
                         <label class="app-field-label" for="modalLanguageSelect" data-i18n="settings.language">settings.language</label>
-                        <select class="app-select" id="modalLanguageSelect"></select>
+                        <select class="ake-ui-control ake-ui-control--select" id="modalLanguageSelect"></select>
                     </div>
                     <div class="app-field">
                         <label class="app-field-label" for="modalThemeSelect" data-i18n="settings.theme">settings.theme</label>
-                        <select class="app-select" id="modalThemeSelect">
+                        <select class="ake-ui-control ake-ui-control--select" id="modalThemeSelect">
                             <option value="light" data-i18n="settings.themes.light">settings.themes.light</option>
                             <option value="yellow" data-i18n="settings.themes.yellow">settings.themes.yellow</option>
                             <option value="dark" data-i18n="settings.themes.dark">settings.themes.dark</option>
@@ -82,19 +82,19 @@
                     </div>
                     <div class="app-field app-field--toggle">
                         <label class="app-field-label" for="modalShowHiddenCheck" data-i18n="settings.showHidden">settings.showHidden</label>
-                        <input class="app-toggle" type="checkbox" id="modalShowHiddenCheck">
+                        <input class="ake-ui-switch" type="checkbox" id="modalShowHiddenCheck">
                     </div>
                     <div class="app-field app-field--toggle">
                         <label class="app-field-label" for="modalShowExportCheck" data-i18n="settings.showExport">settings.showExport</label>
-                        <input class="app-toggle" type="checkbox" id="modalShowExportCheck">
+                        <input class="ake-ui-switch" type="checkbox" id="modalShowExportCheck">
                     </div>
                     <div class="app-field app-field--toggle">
                         <label class="app-field-label" for="modalShowVersionChanges" data-i18n="settings.showVersionChanges">settings.showVersionChanges</label>
-                        <input class="app-toggle" type="checkbox" id="modalShowVersionChanges">
+                        <input class="ake-ui-switch" type="checkbox" id="modalShowVersionChanges">
                     </div>
                     <div class="app-field app-field--toggle">
                         <label class="app-field-label" for="modalKeepUrlSync" data-i18n="settings.keepUrlSync">settings.keepUrlSync</label>
-                        <input class="app-toggle" type="checkbox" id="modalKeepUrlSync">
+                        <input class="ake-ui-switch" type="checkbox" id="modalKeepUrlSync">
                     </div>
                 </div>
 
@@ -105,12 +105,12 @@
                     </h4>
                     <div class="app-field">
                         <label class="app-field-label" for="modalDataVersionSelect" data-i18n="settings.dataSource.version">Data version:</label>
-                        <select class="app-select" id="modalDataVersionSelect"></select>
+                        <select class="ake-ui-control ake-ui-control--select" id="modalDataVersionSelect"></select>
                     </div>
                     <div class="app-field">
                         <label class="app-field-label" for="modalDataBaseUrl" data-i18n="settings.dataSource.baseUrl">Request origin:</label>
-                        <input class="app-input" type="url" id="modalDataBaseUrl" placeholder="https://data.akedata.wiki">
-                        <button class="app-icon-button" id="resetDataSourceBtn" type="button" title="Restore production data source" data-i18n-title="settings.dataSource.reset" aria-label="Restore production data source">
+                        <input class="ake-ui-control" type="url" id="modalDataBaseUrl" placeholder="https://data.akedata.wiki">
+                        <button class="ake-ui-button ake-ui-button--secondary ake-ui-button--icon" id="resetDataSourceBtn" type="button" title="Restore production data source" data-i18n-title="settings.dataSource.reset" aria-label="Restore production data source">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
                         </button>
                     </div>
@@ -125,32 +125,32 @@
                     </h4>
                     <div class="app-field app-field--toggle">
                         <label class="app-field-label" for="modalLevelsEnabled" data-i18n="settings.levels.enabled">settings.levels.enabled</label>
-                        <input class="app-toggle" type="checkbox" id="modalLevelsEnabled">
+                        <input class="ake-ui-switch" type="checkbox" id="modalLevelsEnabled">
                     </div>
                     <div class="app-field app-field--hint">
                         <p data-i18n="settings.levels.hint">settings.levels.hint</p>
                     </div>
                     <div class="app-field">
                         <label class="app-field-label" for="modalCharacterLevels" data-i18n="settings.levels.character">settings.levels.character</label>
-                        <input class="app-input" type="text" id="modalCharacterLevels" data-i18n-placeholder="settings.levels.levelPlaceholder">
+                        <input class="ake-ui-control" type="text" id="modalCharacterLevels" data-i18n-placeholder="settings.levels.levelPlaceholder">
                     </div>
                     <div class="app-field">
                         <label class="app-field-label" for="modalWeaponLevels" data-i18n="settings.levels.weapon">settings.levels.weapon</label>
-                        <input class="app-input" type="text" id="modalWeaponLevels" data-i18n-placeholder="settings.levels.levelPlaceholder">
+                        <input class="ake-ui-control" type="text" id="modalWeaponLevels" data-i18n-placeholder="settings.levels.levelPlaceholder">
                     </div>
                     <div class="app-field">
                         <label class="app-field-label" for="modalEnemyLevels" data-i18n="settings.levels.enemy">settings.levels.enemy</label>
-                        <input class="app-input" type="text" id="modalEnemyLevels" data-i18n-placeholder="settings.levels.levelPlaceholder">
+                        <input class="ake-ui-control" type="text" id="modalEnemyLevels" data-i18n-placeholder="settings.levels.levelPlaceholder">
                     </div>
                     <div class="app-field">
                         <label class="app-field-label" for="modalSkillLevels" data-i18n="settings.levels.skill">settings.levels.skill</label>
-                        <input class="app-input" type="text" id="modalSkillLevels" data-i18n-placeholder="settings.levels.skillPlaceholder">
+                        <input class="ake-ui-control" type="text" id="modalSkillLevels" data-i18n-placeholder="settings.levels.skillPlaceholder">
                     </div>
                 </div>
 
                 <!-- 恢复默认按钮 -->
                 <div class="app-actions app-actions--section-break">
-                    <button class="app-button app-button--secondary" id="resetSettingsBtn" type="button" data-i18n="settings.reset">settings.reset</button>
+                    <button class="ake-ui-button ake-ui-button--secondary" id="resetSettingsBtn" type="button" data-i18n="settings.reset">settings.reset</button>
                 </div>
 
                 <!-- 访问令牌区域 -->
@@ -164,17 +164,17 @@
                     </div>
                     <div class="app-field app-field--action">
                         <label class="app-field-label" for="modalTokenInput" data-i18n="settings.tokens.label">settings.tokens.label</label>
-                        <input class="app-input" type="text" id="modalTokenInput" data-i18n-placeholder="settings.tokens.placeholder">
-                        <button class="app-button app-button--primary" id="tokenSubmitBtn" type="button" data-i18n="settings.tokens.submit">settings.tokens.submit</button>
+                        <input class="ake-ui-control" type="text" id="modalTokenInput" data-i18n-placeholder="settings.tokens.placeholder">
+                        <button class="ake-ui-button ake-ui-button--primary" id="tokenSubmitBtn" type="button" data-i18n="settings.tokens.submit">settings.tokens.submit</button>
                     </div>
                     <div class="app-actions">
-                        <button class="app-button app-button--secondary" id="tokenClearAllBtn" type="button" data-i18n="settings.tokens.clear">settings.tokens.clear</button>
+                        <button class="ake-ui-button ake-ui-button--secondary" id="tokenClearAllBtn" type="button" data-i18n="settings.tokens.clear">settings.tokens.clear</button>
                     </div>
                     <div class="app-status" id="tokenStatus"></div>
                 </div>
 
                 <div class="app-section app-section--standalone-action">
-                    <button class="app-button app-button--primary" id="forceRefreshCacheBtn" type="button" data-i18n="settings.cache.forceRefresh">强制刷新网页缓存</button>
+                    <button class="ake-ui-button ake-ui-button--primary" id="forceRefreshCacheBtn" type="button" data-i18n="settings.cache.forceRefresh">强制刷新网页缓存</button>
                     <p class="app-help" data-i18n="settings.cache.description">由于服务器数据存在延迟，若您显示的页面中没有最新的数据，可以点击此按钮获取最新数据</p>
                 </div>
 
@@ -324,7 +324,6 @@
                 await loadScript('/plugin/js/ake-image-fallback.js');
                 await loadScript('/plugin/js/index-parse-fallback.js');
                 await loadScript('/plugin/js/i18n.js');
-                await loadScript('/plugin/js/app-select.js');
                 await loadScript('/plugin/js/ake-ui.js');
                 await loadScript('/plugin/js/toast.js');
                 await loadScript('/plugin/js/ake-data-source.js');

@@ -41,12 +41,14 @@
     const elements = {
         summary: document.getElementById('bakerContactSummary'),
         search: document.getElementById('bakerSearchInput'),
+        filterPanel: document.getElementById('bakerFilterBar'),
         filters: document.getElementById('bakerTypeFilter'),
         list: document.getElementById('bakerContactList'),
         conversation: document.getElementById('bakerConversation'),
         mobile: document.getElementById('bakerMobileButton'),
         backdrop: document.getElementById('bakerMobileBackdrop')
     };
+    window.AKEUI?.updateFilterPanel(elements.filterPanel, { expanded: true, summary: '筛选' });
 
     function escapeHtml(value) {
         return String(value ?? '').replace(/[&<>"']/g, character => ({
@@ -422,7 +424,14 @@
         const button = event.target.closest('[data-baker-type]');
         if (!button) return;
         state.type = button.dataset.bakerType;
-        elements.filters.querySelectorAll('[data-baker-type]').forEach(item => item.classList.toggle('is-active', item === button));
+        elements.filters.querySelectorAll('[data-baker-type]').forEach(item => {
+            const active = item === button;
+            item.classList.toggle('is-active', active);
+            item.setAttribute('aria-pressed', String(active));
+        });
+        window.AKEUI?.updateFilterPanel(elements.filterPanel, {
+            summary: state.type === 'all' ? '筛选' : '筛选 (1)'
+        });
         renderContacts();
     });
 

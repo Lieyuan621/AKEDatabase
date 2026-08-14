@@ -68,14 +68,14 @@
             rc.innerHTML = '';
             for (let r = 1; r <= 6; r++) {
                 if (!existR.has(r)) continue;
-                const btn = document.createElement('span');
-                btn.className = `ake-ui-filter__button ${selectedRarities.has(r) ? 'is-active' : ''}`;
-                btn.textContent = commonT('rarityStars', { rarity: r });
-                btn.addEventListener('click', () => {
-                    selectedRarities.has(r) ? selectedRarities.delete(r) : selectedRarities.add(r);
-                    btn.classList.toggle('is-active');
-                    updateFilterSummary();
-                    renderItemList();
+                const btn = window.AKEUI.filterButton({
+                    label: commonT('rarityStars', { rarity: r }),
+                    pressed: selectedRarities.has(r),
+                    onChange: pressed => {
+                        pressed ? selectedRarities.add(r) : selectedRarities.delete(r);
+                        updateFilterSummary();
+                        renderItemList();
+                    }
                 });
                 rc.appendChild(btn);
             }
@@ -94,14 +94,14 @@
 
             cc.innerHTML = '';
             ordered.forEach(cat => {
-                const btn = document.createElement('span');
-                btn.className = `ake-ui-filter__button ${selectedCategories.has(cat.id) ? 'is-active' : ''}`;
-                btn.textContent = cat.name;
-                btn.addEventListener('click', () => {
-                    selectedCategories.has(cat.id) ? selectedCategories.delete(cat.id) : selectedCategories.add(cat.id);
-                    btn.classList.toggle('is-active');
-                    updateFilterSummary();
-                    renderItemList();
+                const btn = window.AKEUI.filterButton({
+                    label: cat.name,
+                    pressed: selectedCategories.has(cat.id),
+                    onChange: pressed => {
+                        pressed ? selectedCategories.add(cat.id) : selectedCategories.delete(cat.id);
+                        updateFilterSummary();
+                        renderItemList();
+                    }
                 });
                 cc.appendChild(btn);
             });
@@ -109,10 +109,11 @@
         }
 
         function updateFilterSummary() {
-            const summary = document.getElementById('v2itemFilterSummary');
-            if (!summary) return;
+            const filterPanel = document.getElementById('v2itemFilterBar');
             const count = selectedRarities.size + selectedCategories.size;
-            summary.textContent = count ? commonT('filterCount', { count }) : commonT('filter');
+            window.AKEUI?.updateFilterPanel(filterPanel, {
+                summary: count ? commonT('filterCount', { count }) : commonT('filter')
+            });
         }
 
         const mobileBtn = document.getElementById('v2itemMobileListBtn');
@@ -580,14 +581,6 @@
             await loadMaps();
 
             if (mobileBtn) mobileBtn.addEventListener('click', openMobileList);
-            document.getElementById('v2itemFilterToggle')?.addEventListener('click', (event) => {
-                const button = event.currentTarget;
-                const content = document.getElementById('v2itemFilterContent');
-                if (!content) return;
-                const expanded = button.getAttribute('aria-expanded') === 'true';
-                button.setAttribute('aria-expanded', String(!expanded));
-                content.hidden = expanded;
-            });
             if (mobileOverlay) mobileOverlay.addEventListener('click', (e) => {
                 if (e.target === mobileOverlay) closeMobileList();
             });

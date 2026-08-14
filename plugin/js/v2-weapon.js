@@ -54,18 +54,27 @@
         const rc = document.getElementById('v2wpnRarityFilter');
         const tc = document.getElementById('v2wpnTypeFilter');
         if (!rc || !tc) return;
+        const filterPanel = rc.closest('.ake-ui-filter');
+        const updateFilterSummary = () => {
+            const count = selectedRarities.size + selectedTypes.size;
+            window.AKEUI?.updateFilterPanel(filterPanel, {
+                expanded: true,
+                summary: count ? commonT('filterCount', { count }) : commonT('filter')
+            });
+        };
 
         const existR = new Set(allWeapons.map(w => w.rarity));
         rc.innerHTML = '';
         for (let r = 1; r <= 6; r++) {
             if (!existR.has(r)) continue;
-            const btn = document.createElement('span');
-            btn.className = `ake-ui-filter__button ${selectedRarities.has(r) ? 'is-active' : ''}`;
-            btn.textContent = commonT('rarityStars', { rarity: r });
-            btn.addEventListener('click', () => {
-                selectedRarities.has(r) ? selectedRarities.delete(r) : selectedRarities.add(r);
-                btn.classList.toggle('is-active');
-                renderWeaponList();
+            const btn = window.AKEUI.filterButton({
+                label: commonT('rarityStars', { rarity: r }),
+                pressed: selectedRarities.has(r),
+                onChange: pressed => {
+                    pressed ? selectedRarities.add(r) : selectedRarities.delete(r);
+                    updateFilterSummary();
+                    renderWeaponList();
+                }
             });
             rc.appendChild(btn);
         }
@@ -75,16 +84,18 @@
         for (const [tid] of Object.entries(WEAPON_TYPE_KEY_MAP)) {
             const id = parseInt(tid, 10);
             if (!existT.has(id)) continue;
-            const btn = document.createElement('span');
-            btn.className = `ake-ui-filter__button ${selectedTypes.has(id) ? 'is-active' : ''}`;
-            btn.textContent = getWeaponTypeName(id);
-            btn.addEventListener('click', () => {
-                selectedTypes.has(id) ? selectedTypes.delete(id) : selectedTypes.add(id);
-                btn.classList.toggle('is-active');
-                renderWeaponList();
+            const btn = window.AKEUI.filterButton({
+                label: getWeaponTypeName(id),
+                pressed: selectedTypes.has(id),
+                onChange: pressed => {
+                    pressed ? selectedTypes.add(id) : selectedTypes.delete(id);
+                    updateFilterSummary();
+                    renderWeaponList();
+                }
             });
             tc.appendChild(btn);
         }
+        updateFilterSummary();
     }
 
     const mobileBtn = document.getElementById('v2wpnMobileListBtn');

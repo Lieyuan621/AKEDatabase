@@ -50,6 +50,7 @@
 
     const elements = {
         search: document.getElementById('missionSearchInput'),
+        filterPanel: document.getElementById('missionFilterBar'),
         type: document.getElementById('missionTypeFilter'),
         chapter: document.getElementById('missionChapterFilter'),
         hidden: document.getElementById('missionHiddenToggle'),
@@ -60,6 +61,14 @@
         mobile: document.getElementById('missionMobileListButton'),
         backdrop: document.getElementById('missionMobileBackdrop')
     };
+
+    function updateFilterSummary() {
+        const count = Number(state.type !== 'all') + Number(state.chapter !== 'all') + Number(state.showHidden);
+        window.AKEUI?.updateFilterPanel(elements.filterPanel, {
+            expanded: true,
+            summary: count ? `筛选 (${count})` : '筛选'
+        });
+    }
 
     function escapeHtml(value) {
         return String(value ?? '').replace(/[&<>"']/g, char => ({
@@ -276,6 +285,7 @@
             return `<option value="${type}">${escapeHtml(definition.name)} (${count})</option>`;
         }).join('');
         elements.type.value = state.type;
+        window.AKEUI?.refreshSelect(elements.type);
     }
 
     function renderList() {
@@ -687,9 +697,9 @@
     function installEvents() {
         elements.hidden.checked = state.showHidden;
         elements.search.addEventListener('input', () => { state.search = elements.search.value; renderList(); });
-        elements.type.addEventListener('change', () => { state.type = elements.type.value; renderList(); });
-        elements.chapter.addEventListener('change', () => { state.chapter = elements.chapter.value; renderList(); });
-        elements.hidden.addEventListener('change', () => { state.showHidden = elements.hidden.checked; renderList(); });
+        elements.type.addEventListener('change', () => { state.type = elements.type.value; updateFilterSummary(); renderList(); });
+        elements.chapter.addEventListener('change', () => { state.chapter = elements.chapter.value; updateFilterSummary(); renderList(); });
+        elements.hidden.addEventListener('change', () => { state.showHidden = elements.hidden.checked; updateFilterSummary(); renderList(); });
         elements.home.addEventListener('click', renderOverview);
         elements.mobile.addEventListener('click', () => root.classList.add('is-mobile-open'));
         elements.backdrop.addEventListener('click', closeMobileList);
@@ -701,6 +711,7 @@
             await loadCore();
             renderTypeOptions();
             installEvents();
+            updateFilterSummary();
             const deepId = window.__deepLinkId;
             window.__deepLinkId = null;
             if (deepId) {

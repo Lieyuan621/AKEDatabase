@@ -1,5 +1,6 @@
 (function() {
         const t = window.akeI18n.scope('modules.character');
+        const commonT = window.akeI18n.scope('common');
         let allCharacters = [];
         let rawAllCharacters = [];
         let activeCharId = null;
@@ -398,29 +399,36 @@
 
         // 生成筛选按钮
         function generateFilterButtons() {
+            const filterPanel = document.getElementById('v2charFilterBar');
             const rarityContainer = document.getElementById('v2charRarityFilter');
             const typeContainer = document.getElementById('v2charTypeFilter');
             const profContainer = document.getElementById('v2charProfessionFilter');
             const weaponContainer = document.getElementById('v2charWeaponFilter');
             if (!rarityContainer || !typeContainer || !profContainer || !weaponContainer) return;
 
+            const updateFilterSummary = () => {
+                const count = selectedRarities.size + selectedCharTypes.size
+                    + selectedProfessions.size + selectedWeaponTypes.size;
+                window.AKEUI?.updateFilterPanel(filterPanel, {
+                    expanded: true,
+                    summary: count ? commonT('filterCount', { count }) : commonT('filter')
+                });
+            };
+
             // 稀有度按钮
             const existingRarities = new Set(allCharacters.map(c => c.rarity));
             rarityContainer.innerHTML = '';
             for (let r = 1; r <= 6; r++) {
                 if (existingRarities.has(r)) {
-                    const btn = document.createElement('span');
-                    btn.className = `ake-ui-filter__button ${selectedRarities.has(r) ? 'is-active' : ''}`;
-                    btn.dataset.rarity = r;
-                    btn.textContent = t('rarityStars', { name: r });
-                    btn.addEventListener('click', () => {
-                        if (selectedRarities.has(r)) {
-                            selectedRarities.delete(r);
-                        } else {
-                            selectedRarities.add(r);
+                    const btn = window.AKEUI.filterButton({
+                        label: t('rarityStars', { name: r }),
+                        pressed: selectedRarities.has(r),
+                        attributes: { 'data-rarity': r },
+                        onChange: pressed => {
+                            pressed ? selectedRarities.add(r) : selectedRarities.delete(r);
+                            updateFilterSummary();
+                            renderCharacterList();
                         }
-                        btn.classList.toggle('is-active');
-                        renderCharacterList();
                     });
                     rarityContainer.appendChild(btn);
                 }
@@ -430,19 +438,16 @@
             const existingTypes = new Set(allCharacters.map(c => c.charType).filter(t => t));
             typeContainer.innerHTML = '';
             existingTypes.forEach(type => {
-                const btn = document.createElement('span');
                 const tName = getCharTypeName(type) || type;
-                btn.className = `ake-ui-filter__button ${selectedCharTypes.has(type) ? 'is-active' : ''}`;
-                btn.dataset.type = type;
-                btn.textContent = tName;
-                btn.addEventListener('click', () => {
-                    if (selectedCharTypes.has(type)) {
-                        selectedCharTypes.delete(type);
-                    } else {
-                        selectedCharTypes.add(type);
+                const btn = window.AKEUI.filterButton({
+                    label: tName,
+                    pressed: selectedCharTypes.has(type),
+                    attributes: { 'data-type': type },
+                    onChange: pressed => {
+                        pressed ? selectedCharTypes.add(type) : selectedCharTypes.delete(type);
+                        updateFilterSummary();
+                        renderCharacterList();
                     }
-                    btn.classList.toggle('is-active');
-                    renderCharacterList();
                 });
                 typeContainer.appendChild(btn);
             });
@@ -451,19 +456,16 @@
             const existingProfessions = new Set(allCharacters.map(c => c.profession).filter(p => p));
             profContainer.innerHTML = '';
             existingProfessions.forEach(prof => {
-                const btn = document.createElement('span');
                 const pName = getProfessionName(prof) || prof;
-                btn.className = `ake-ui-filter__button ${selectedProfessions.has(prof) ? 'is-active' : ''}`;
-                btn.dataset.profession = prof;
-                btn.textContent = pName;
-                btn.addEventListener('click', () => {
-                    if (selectedProfessions.has(prof)) {
-                        selectedProfessions.delete(prof);
-                    } else {
-                        selectedProfessions.add(prof);
+                const btn = window.AKEUI.filterButton({
+                    label: pName,
+                    pressed: selectedProfessions.has(prof),
+                    attributes: { 'data-profession': prof },
+                    onChange: pressed => {
+                        pressed ? selectedProfessions.add(prof) : selectedProfessions.delete(prof);
+                        updateFilterSummary();
+                        renderCharacterList();
                     }
-                    btn.classList.toggle('is-active');
-                    renderCharacterList();
                 });
                 profContainer.appendChild(btn);
             });
@@ -472,22 +474,20 @@
             const existingWeapons = new Set(allCharacters.map(c => c.weapontype).filter(w => w));
             weaponContainer.innerHTML = '';
             existingWeapons.forEach(weapon => {
-                const btn = document.createElement('span');
                 const wName = getWeaponName(weapon) || weapon;
-                btn.className = `ake-ui-filter__button ${selectedWeaponTypes.has(weapon) ? 'is-active' : ''}`;
-                btn.dataset.weapon = weapon;
-                btn.textContent = wName;
-                btn.addEventListener('click', () => {
-                    if (selectedWeaponTypes.has(weapon)) {
-                        selectedWeaponTypes.delete(weapon);
-                    } else {
-                        selectedWeaponTypes.add(weapon);
+                const btn = window.AKEUI.filterButton({
+                    label: wName,
+                    pressed: selectedWeaponTypes.has(weapon),
+                    attributes: { 'data-weapon': weapon },
+                    onChange: pressed => {
+                        pressed ? selectedWeaponTypes.add(weapon) : selectedWeaponTypes.delete(weapon);
+                        updateFilterSummary();
+                        renderCharacterList();
                     }
-                    btn.classList.toggle('is-active');
-                    renderCharacterList();
                 });
                 weaponContainer.appendChild(btn);
             });
+            updateFilterSummary();
         }
 
         const mobileBtn = document.getElementById('v2charMobileListBtn');

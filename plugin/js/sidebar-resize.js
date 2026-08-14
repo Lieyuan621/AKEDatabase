@@ -105,7 +105,7 @@
             '.ake-ui-directory__item-copy',
             '.ake-ui-directory__list',
             '.ake-ui-directory__sidebar-header, .ake-ui-directory__search, .ake-ui-directory__meta, .ake-ui-filter',
-            { minWidth: 96, compactThreshold: 180 }
+            { minWidth: 255, compactThreshold: 180 }
         ),
         layout: 'grid'
     });

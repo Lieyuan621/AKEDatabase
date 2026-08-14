@@ -69,6 +69,15 @@
             });
         }
 
+        function updateFilterSummary() {
+            const filterPanel = document.getElementById('activityFilterBar');
+            const count = selectedTagIds.size + (selectedStatus ? 1 : 0);
+            window.AKEUI?.updateFilterPanel(filterPanel, {
+                expanded: true,
+                summary: count ? commonT('filterCount', { count }) : commonT('filter')
+            });
+        }
+
         function generateTypeButtons() {
             const container = document.getElementById('activityTypeFilter');
             if (!container) return;
@@ -78,22 +87,20 @@
             }));
             container.innerHTML = '';
             tags.forEach(tag => {
-                const btn = document.createElement('span');
-                btn.className = `ake-ui-filter__button ${selectedTagIds.has(tag.tagId) ? 'is-active' : ''}`;
-                btn.dataset.tagId = tag.tagId;
-                btn.textContent = tag.name || tag.tagId;
-                btn.addEventListener('click', () => {
-                    if (selectedTagIds.has(tag.tagId)) {
-                        selectedTagIds.delete(tag.tagId);
-                    } else {
-                        selectedTagIds.add(tag.tagId);
+                const btn = window.AKEUI.filterButton({
+                    label: tag.name || tag.tagId,
+                    pressed: selectedTagIds.has(tag.tagId),
+                    attributes: { 'data-tag-id': tag.tagId },
+                    onChange: pressed => {
+                        pressed ? selectedTagIds.add(tag.tagId) : selectedTagIds.delete(tag.tagId);
+                        updateFilterSummary();
+                        renderActivityList();
+                        if (mobileOverlay?.classList.contains('is-open')) buildMobileList();
                     }
-                    btn.classList.toggle('is-active');
-                    renderActivityList();
-                    if (mobileOverlay?.classList.contains('is-open')) buildMobileList();
                 });
                 container.appendChild(btn);
             });
+            updateFilterSummary();
         }
 
         function generateStatusButtons() {
@@ -108,18 +115,20 @@
             ];
             container.innerHTML = '';
             statuses.forEach(s => {
-                const btn = document.createElement('span');
-                btn.className = `ake-ui-filter__button ${selectedStatus === s.value ? 'is-active' : ''}`;
-                btn.textContent = s.label;
-                btn.addEventListener('click', () => {
-                    selectedStatus = s.value;
-                    renderActivityList();
-                    document.querySelectorAll('#activityStatusFilter .ake-ui-filter__button').forEach(b => b.classList.remove('is-active'));
-                    btn.classList.add('is-active');
-                    if (mobileOverlay?.classList.contains('is-open')) buildMobileList();
+                const btn = window.AKEUI.filterButton({
+                    label: s.label,
+                    pressed: selectedStatus === s.value,
+                    mode: 'single',
+                    onChange: () => {
+                        selectedStatus = s.value;
+                        updateFilterSummary();
+                        renderActivityList();
+                        if (mobileOverlay?.classList.contains('is-open')) buildMobileList();
+                    }
                 });
                 container.appendChild(btn);
             });
+            updateFilterSummary();
         }
 
         async function loadActivityManifest(showHidden) {
