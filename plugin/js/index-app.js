@@ -754,12 +754,17 @@
                 let html = '';
                 sorted.forEach(mod => {
                     const icon = String(mod.icon || '').trim();
-                    const navIcon = config.language === 'CH' ? String(mod.navIcon || '').trim() : '';
-                    const textIcon = config.language === 'CH' ? '' : icon;
+                    const navIcon = String(mod.navIcon || '').trim();
+                    const textIcon = navIcon ? '' : icon;
+                    const configuredScale = Number(mod.navIconScale);
+                    const navIconScale = Number.isFinite(configuredScale)
+                        ? Math.min(1.25, Math.max(0.75, configuredScale))
+                        : 1;
+                    const navIconStyle = navIconScale === 1 ? '' : ` style="--ake-icon-scale:${navIconScale}"`;
                     const hasIcon = Boolean(navIcon || textIcon);
                     const title = translateModuleField(mod, 'title');
                     const iconHtml = navIcon
-                        ? `<img class="module-nav-icon" src="${navIcon}" alt="" aria-hidden="true" data-no-image-fallback>`
+                        ? `<img class="module-nav-icon" src="${navIcon}" alt="" aria-hidden="true" data-no-image-fallback${navIconStyle}>`
                         : textIcon ? `<span class="module-icon" aria-hidden="true">${textIcon}</span>` : '';
                     const hiddenMarker = mod.hidden ? '<span class="module-hidden-marker" aria-hidden="true">🔒</span>' : '';
                     html += `

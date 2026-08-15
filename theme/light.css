@@ -136,6 +136,8 @@
     object-fit: contain;
     filter: brightness(0) saturate(100%);
     opacity: 0.72;
+    transform: scale(var(--ake-icon-scale, 1));
+    transform-origin: center;
 }.sidebar .module-item:hover .module-title,
 .sidebar .module-item.active .module-title {
     color: #252a31;
@@ -195,8 +197,7 @@
 }.settings-button:active,
 .export-button:active {
     background-color: #ffffff;
-}.sidebar-tool-icon,
-.sidebar-tool-symbol {
+}.sidebar-tool-icon {
     width: 19px;
     height: 19px;
     flex: 0 0 19px;
@@ -204,11 +205,8 @@
     object-fit: contain;
     filter: brightness(0) saturate(100%);
     opacity: 0.72;
-}.sidebar-tool-symbol {
-    display: grid;
-    place-items: center;
-    font-size: 1rem;
-    line-height: 1;
+    transform: scale(var(--ake-icon-scale, 1));
+    transform-origin: center;
 }.sidebar-tool-label {
     min-width: 0;
     overflow: hidden;
@@ -626,14 +624,15 @@
     stroke-width: 1.7;
     stroke-linecap: round;
     stroke-linejoin: round;
-}.mobile-settings-btn svg {
-    width: 20px;
-    height: 20px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+}.mobile-tool-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    transform: scale(var(--ake-icon-scale, 1));
+    transform-origin: center;
+}.sidebar-tool-icon[data-optical-scale="large"],
+.mobile-tool-icon[data-optical-scale="large"] {
+    --ake-icon-scale: 1.15;
 }.app-field {
     display: grid;
     grid-template-columns: 150px minmax(0, 1fr) auto;
@@ -5972,7 +5971,7 @@ body { background-color: var(--ake-shell-page); color: var(--text-color); }
 .sidebar .module-title { color: var(--ake-shell-nav-text); }
 .sidebar .module-item:hover .module-title { color: var(--ake-shell-nav-hover-text); }
 .sidebar .module-item.active .module-title { color: var(--ake-shell-nav-active-text); }
-.sidebar .module-nav-icon, .sidebar-tool-icon { filter: var(--ake-shell-nav-icon-filter); }
+.sidebar .module-nav-icon, .sidebar-tool-icon, .mobile-tool-icon { filter: var(--ake-shell-nav-icon-filter); }
 .sidebar .module-item.active .module-nav-icon { filter: var(--ake-shell-nav-active-icon-filter); }
 .module-title .tag { color: var(--tag-text); background: var(--tag-bg); }
 .priority-tag { color: var(--tag-text); border-color: var(--ake-shell-priority-border); background: var(--tag-bg); }
