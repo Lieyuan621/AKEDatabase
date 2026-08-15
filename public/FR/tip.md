@@ -2,6 +2,18 @@ AKEData a été transféré vers le domaine www.akedata.wiki. L'ancien domaine a
 
 # Journal des mises à jour d'AKEData
 
+### v1.2.11
+
+#### Navigation secondaire et interface commune
+
+- La navigation secondaire des principaux modules de consultation a été reconstruite afin d'unifier la structure des éléments, les états actifs, les compteurs, les marqueurs de changement de version, la recherche, les filtres et les interactions sur ordinateur et mobile.
+- Une couche d'interface commune regroupe les boutons, champs, sélecteurs, interrupteurs, filtres, cartes, états et tableaux, réduisant les différences visuelles et fonctionnelles entre les modules.
+
+#### Réglages et affichage
+
+- Les fenêtres des réglages globaux et des annonces du site ont été repensées avec une organisation plus claire et un rendu cohérent pour les thèmes clair, sombre et confort visuel.
+- Les états de chargement, de contenu vide et d'erreur ont été harmonisés. Les en-têtes et le contenu des tableaux communs sont désormais centrés par défaut.
+
 ### v1.2.10-1
 
 #### Comparaison des versions de la Bibliothèque d'archives

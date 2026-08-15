@@ -2,6 +2,18 @@ O AKEData foi transferido para o domínio www.akedata.wiki. O domínio anterior,
 
 # Registro de atualizações do AKEData
 
+### v1.2.11
+
+#### Navegação secundária e interface compartilhada
+
+- A navegação secundária dos principais módulos de consulta foi refeita, unificando a estrutura dos itens, estados ativos, contagens, marcações de mudanças de versão, pesquisa, filtros e interação em computadores e dispositivos móveis.
+- Foi criada uma camada de interface compartilhada para botões, campos, seletores, interruptores, filtros, cartões, estados e tabelas, reduzindo diferenças visuais e de uso entre os módulos.
+
+#### Configurações e exibição
+
+- As janelas de configurações globais e de anúncios do site foram redesenhadas, com melhor organização e aparência consistente nos temas claro, escuro e de conforto visual.
+- Os estados de carregamento, conteúdo vazio e erro foram unificados. Cabeçalhos e conteúdos das tabelas compartilhadas agora ficam centralizados por padrão.
+
 ### v1.2.10-1
 
 #### Comparação de versões do Arquivo

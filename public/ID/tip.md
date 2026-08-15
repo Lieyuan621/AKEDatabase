@@ -2,6 +2,18 @@ AKEData telah pindah ke domain www.akedata.wiki. Domain lama, akedata.top, kini 
 
 # Catatan Pembaruan Versi AKEData
 
+### v1.2.11
+
+#### Navigasi tingkat kedua dan antarmuka bersama
+
+- Navigasi tingkat kedua pada modul pencarian utama dibangun ulang dengan struktur item, status aktif, jumlah, penanda perubahan versi, pencarian, filter, serta interaksi desktop dan seluler yang konsisten.
+- Lapisan antarmuka bersama diperkenalkan untuk tombol, kolom input, pemilih, sakelar, filter, kartu, tampilan status, dan tabel, sehingga mengurangi perbedaan tampilan dan penggunaan antar modul.
+
+#### Pengaturan dan tampilan
+
+- Dialog pengaturan global dan pengumuman situs didesain ulang dengan pengelompokan yang lebih jelas serta tampilan yang konsisten pada tema terang, gelap, dan nyaman untuk mata.
+- Status memuat, konten kosong, dan kesalahan diseragamkan. Judul dan isi tabel bersama kini rata tengah secara bawaan.
+
 ### v1.2.10-1
 
 #### Perbandingan versi Arsip
