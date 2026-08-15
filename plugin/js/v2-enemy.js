@@ -89,10 +89,6 @@
             }).join(', ');
         }
 
-        function computeVariantAttr(baseValue, modifiers, attrType) {
-            return window.AKEStats.computeAttrWithModifiers(baseValue, modifiers, attrType);
-        }
-
         async function loadEnemyBuffData(rawData) {
             const ids = new Set();
             Object.values(rawData.enemytable || {}).forEach(enemy => (enemy.bornBuffs || []).forEach(id => ids.add(id)));
@@ -331,7 +327,7 @@
             META_FIELDS.forEach(key => {
                 const val = data[key];
                 if (val !== undefined && val !== null && val !== '') {
-                    html += `<div class="v2e-meta-item"><span class="v2e-meta-label">${getMetaLabel(key)}</span><span class="v2e-meta-value">${val}</span></div>`;
+                    html += `<div class="v2e-meta-item"><span class="ake-ui-meta-label">${getMetaLabel(key)}</span><span class="v2e-meta-value">${val}</span></div>`;
                 }
             });
             html += '</div>';
@@ -340,13 +336,13 @@
 
         function renderSkillDesc(arr) {
             if (!Array.isArray(arr) || arr.length === 0) return '';
-            return `<div class="v2e-skill-list">${arr.map(s => `<div class="v2e-skill-item">${parseText(s)}</div>`).join('')}</div>`;
+            return `<div class="ake-ui-card-grid" data-size="regular">${arr.map(s => `<div class="ake-ui-card" data-card-kind="enemy-skill" data-density="compact"><div class="ake-ui-card__body">${parseText(s)}</div></div>`).join('')}</div>`;
         }
 
         function renderDistributionTags(data) {
             const entries = Object.values(data.distributionInfo || {});
             if (!entries.length) return '';
-            return entries.map(d => d.areaName?.text ? `<span class="v2e-dist-tag">${d.areaName.text}</span>` : '').join('');
+            return entries.map(d => d.areaName?.text ? `<span class="ake-ui-badge">${d.areaName.text}</span>` : '').join('');
         }
 
         function renderVariantDiff(variant, baseSnapshot) {
@@ -392,14 +388,34 @@
             return `<span class="v2e-variant-template"><span class="v2e-tag-id">${variant.attrTemplateId}</span><span class="v2e-tooltip"><div class="v2e-tooltip-grid">${items}</div></span></span>`;
         }
 
-        function renderEnemyOverview(items, container) {
+        function getEnemyTypeName(enemy) {
             const typeNames = { 0: t('enemyTypes.normal'), 1: t('enemyTypes.elite'), 2: t('enemyTypes.boss'), 3: t('enemyTypes.special'), 4: t('enemyTypes.dangerous') };
+            return enemy.displayTypeName || typeNames[enemy.displayType] || t('enemyTypes.other');
+        }
+
+        function createEnemyDirectoryItem(enemy, options = {}) {
+            const item = window.AKEUI.directoryItem({
+                layout: 'entity',
+                title: enemy.name,
+                id: enemy.templateId,
+                icon: { src: enemy.icon || '', alt: '' },
+                meta: [{ label: getEnemyTypeName(enemy), kind: 'enemy-type' }],
+                accent: { type: 'rarity', value: enemy.rarity || 1 },
+                active: options.active,
+                attributes: { 'data-enemy-id': enemy.templateId },
+                onSelect: options.onSelect
+            });
+            window.AKEModuleOverview?.markVersionChange(item, enemy);
+            return item;
+        }
+
+        function renderEnemyOverview(items, container) {
             window.AKEModuleOverview.render(container, {
                 title: t('overview.title'), description: t('overview.description'),
-                group: item => ({ id: String(item.displayType ?? 'unknown'), name: item.displayTypeName || typeNames[item.displayType] || t('enemyTypes.other'), order: -(item.rarity || 1) }),
+                group: item => ({ id: String(item.displayType ?? 'unknown'), name: getEnemyTypeName(item), order: -(item.rarity || 1) }),
                 onReset: () => { activeEnemyId = null; },
                 onSelect: item => { activeEnemyId = item.templateId; renderEnemyList(); },
-                sidebarSelector: item => `.v2e-item[data-enemy-id="${CSS.escape(item.templateId)}"]`,
+                sidebarSelector: item => `.ake-ui-directory__item[data-enemy-id="${CSS.escape(item.templateId)}"]`,
                 items: items.slice().sort((a, b) => (b.rarity || 1) - (a.rarity || 1) || (a.priority || 999) - (b.priority || 999)).map(item => ({ ...item, id: item.templateId, image: item.icon, fallback: t('overview.fallback'),
                     tags: item.variantCount ? [t('overview.variantCount', { count: item.variantCount })] : [] }))
             });
@@ -414,47 +430,22 @@
             container.innerHTML = '';
 
             if (!filtered.length) {
-                container.innerHTML = `<div class="v2e-loader">${t('noMatches')}</div>`;
-                if (detailContainer) detailContainer.innerHTML = `<div class="v2e-loader">${t('select')}</div>`;
+                container.innerHTML = `<div class="ake-ui-state">${t('noMatches')}</div>`;
+                if (detailContainer) detailContainer.innerHTML = `<div class="ake-ui-state">${t('select')}</div>`;
                 activeEnemyId = null;
                 return;
             }
 
             filtered.forEach((enemy, index) => {
-                const item = document.createElement('div');
-                item.className = `v2e-item ${enemy.templateId === activeEnemyId ? 'active' : (index === 0 && !activeEnemyId && !window.AKEModuleOverview?.isActive('enemy') ? 'active' : '')}`;
-                window.AKEModuleOverview?.markVersionChange(item, enemy);
-                item.dataset.enemyId = enemy.templateId;
-
-                const rarityBar = document.createElement('span');
-                rarityBar.className = `v2e-rarity-bar rarity-${enemy.rarity}`;
-                rarityBar.title = commonT('rarityLabel', { rarity: enemy.rarity });
-
-                const icon = document.createElement('img');
-                icon.className = 'v2e-item-icon';
-                icon.src = enemy.icon || '';
-
-                const info = document.createElement('div');
-                info.className = 'v2e-item-info';
-                const nameDiv = document.createElement('div');
-                nameDiv.className = 'v2e-item-name';
-                nameDiv.textContent = enemy.name;
-                const idDiv = document.createElement('div');
-                idDiv.className = 'v2e-item-id';
-                idDiv.textContent = enemy.templateId;
-                info.appendChild(nameDiv);
-                info.appendChild(idDiv);
-
-                item.appendChild(rarityBar);
-                item.appendChild(icon);
-                item.appendChild(info);
-
-                item.addEventListener('click', () => {
-                    document.querySelectorAll('.v2e-item').forEach(el => el.classList.remove('active'));
-                    item.classList.add('active');
-                    activeEnemyId = enemy.templateId;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_enemy', enemy.templateId);
-                    loadEnemyDetail(enemy, detailContainer);
+                const item = createEnemyDirectoryItem(enemy, {
+                    active: enemy.templateId === activeEnemyId
+                        || (index === 0 && !activeEnemyId && !window.AKEModuleOverview?.isActive('enemy')),
+                    onSelect: () => {
+                        window.AKEUI.setDirectoryItemActive(container, item);
+                        activeEnemyId = enemy.templateId;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('v2_enemy', enemy.templateId);
+                        loadEnemyDetail(enemy, detailContainer);
+                    }
                 });
 
                 container.appendChild(item);
@@ -482,22 +473,22 @@
                 }
                 activeEnemyId = filtered[0].templateId;
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_enemy', activeEnemyId);
-                const firstItem = container.querySelector('.v2e-item');
-                if (firstItem) firstItem.classList.add('active');
+                const firstItem = container.querySelector('.ake-ui-directory__item');
+                if (firstItem) window.AKEUI.setDirectoryItemActive(container, firstItem);
                 loadEnemyDetail(filtered[0], detailContainer);
             } else if (activeExists) {
                 const activeEnemy = filtered.find(e => e.templateId === activeEnemyId);
                 if (activeEnemy) {
                     if (window.__akeRouter) window.__akeRouter.updateUrl('v2_enemy', activeEnemyId);
-                    const activeItem = container.querySelector(`.v2e-item[data-enemy-id="${activeEnemyId}"]`);
-                    if (activeItem) activeItem.classList.add('active');
+                    const activeItem = container.querySelector(`.ake-ui-directory__item[data-enemy-id="${activeEnemyId}"]`);
+                    if (activeItem) window.AKEUI.setDirectoryItemActive(container, activeItem);
                     loadEnemyDetail(activeEnemy, detailContainer);
                 }
             }
         }
 
         async function loadEnemyDetail(enemy, container) {
-            container.innerHTML = `<div class="v2e-loader">${t('loading')}</div>`;
+            container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
             try {
                 const rawData = await (window.akeFetch || fetch)(enemy.contentFile).then(r => r.json());
                 await loadEnemyBuffData(rawData);
@@ -539,7 +530,8 @@
             } catch (err) {
                 container.textContent = '';
                 const error = document.createElement('div');
-                error.className = 'v2e-error';
+                error.className = 'ake-ui-state';
+                error.dataset.state = 'error';
                 error.textContent = t('loadFailed', { message: err.message });
                 container.appendChild(error);
             }
@@ -585,7 +577,7 @@
         }
 
         function updateVariantTable(variant, idx) {
-            const container = document.querySelector(`.v2e-variant[data-variant-index="${idx}"] .v2e-table-wrap`);
+            const container = document.querySelector(`[data-card-kind="enemy-variant"][data-variant-index="${idx}"] .ake-ui-table-shell`);
             if (!container) return;
 
             const allRows = buildVariantRows(variant);
@@ -593,7 +585,7 @@
             const rowsToRender = showAll ? allRows : filterRows(allRows);
 
             container.innerHTML = `
-                <table class="v2e-table">
+                <table class="ake-ui-table">
                     <thead><tr><th>${commonT('level')}</th><th>${t('columns.maxHp')}</th><th>${commonT('attack')}</th><th>${t('columns.defense')}</th></tr></thead>
                     <tbody>${rowsToRender}</tbody>
                 </table>
@@ -628,24 +620,20 @@
                     ? variant.enemyId
                     : t('variantFallback', { number: idx + 1 });
                 const toggleButton = enemyLevelsToShow ? `
-                    <div style="text-align:right; margin-top:4px;">
+                    <div class="ake-ui-card__actions">
                         <button class="v2e-toggle-btn" data-variant="${idx}">${showAll ? commonT('collapseExtraLevels') : commonT('expandAllLevels')}</button>
                     </div>
                 ` : '';
 
                 return `
-                    <div class="v2e-variant" data-variant-index="${idx}">
-                        <div class="v2e-variant-title">${variantId}${titleExtra}</div>
-                        ${modifierHtml}
-                        ${buffHtml}
-                        ${flagsHtml}
-                        ${diffHtml}
-                        <div class="v2e-table-wrap">
-                            <table class="v2e-table">
+                    <div class="ake-ui-card" data-card-kind="enemy-variant" data-density="regular" data-variant-index="${idx}">
+                        <div class="ake-ui-card__title">${variantId}${titleExtra}</div>
+                        <div class="ake-ui-card__body">${modifierHtml}${buffHtml}${flagsHtml}${diffHtml}<div class="ake-ui-table-shell">
+                            <table class="ake-ui-table">
                                 <thead><tr><th>${commonT('level')}</th><th>${t('columns.maxHp')}</th><th>${commonT('attack')}</th><th>${t('columns.defense')}</th></tr></thead>
                                 <tbody>${rowsToRender}</tbody>
                             </table>
-                        </div>
+                        </div></div>
                         ${toggleButton}
                     </div>
                 `;
@@ -655,19 +643,19 @@
         function renderDetail(data, enemy) {
             const rarity = data.rarity || enemy.rarity || 1;
             const headerHtml = `
-                <div class="v2e-header">
-                    <div class="v2e-header-left">
-                        <div class="v2e-header-icon">
+                <div class="ake-ui-detail-header" data-layout="showcase">
+                    <div class="ake-ui-detail-identity">
+                        <div class="ake-ui-detail-icon">
                             <img src="${data.icon || ''}">
                         </div>
-                        <div class="v2e-header-text">
-                            <div class="v2e-title-row">
-                                <span class="v2e-name">${data.name}</span>
-                                <span class="v2e-rarity-dot rarity-${rarity}" title="${commonT('rarityLabel', { rarity })}"></span>
-                                <span class="v2e-id">${enemy.templateId}</span>
+                        <div class="ake-ui-detail-copy">
+                            <div class="ake-ui-detail-title-row">
+                                <span class="ake-ui-detail-title">${data.name}</span>
+                                <span class="ake-ui-badge" data-accent="rarity" data-accent-value="${rarity}" title="${commonT('rarityLabel', { rarity })}">${commonT('rarityLabel', { rarity })}</span>
+                                <span class="ake-ui-detail-id">${enemy.templateId}</span>
                             </div>
-                            <div class="v2e-tags">
-                                ${data.enemyTag ? `<span class="v2e-tag">${data.enemyTag}</span>` : ''}
+                            <div class="ake-ui-detail-badges">
+                                ${data.enemyTag ? `<span class="ake-ui-badge">${data.enemyTag}</span>` : ''}
                                 ${renderDistributionTags(data)}
                             </div>
                             <div class="v2e-meta">${renderMeta(data)}</div>
@@ -675,7 +663,7 @@
                             ${data.skillDescriptions ? renderSkillDesc(data.skillDescriptions) : ''}
                         </div>
                     </div>
-                    <div class="v2e-pic">
+                    <div class="ake-ui-detail-visual">
                         <img src="${data.iconbig || data.icon || ''}">
                     </div>
                 </div>
@@ -683,26 +671,27 @@
 
             const showHidden = getCurrentShowHidden();
             const poiseBuffHtml = showHidden && data.poiseKnotBuffList.length > 0 ? `
-                <div class="v2e-section">
-                    <h3>${t('sections.poiseBreakBuffs')}</h3>
+                <div class="ake-ui-section">
+                    <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.poiseBreakBuffs')}</h3></div>
                     <div class="v2e-buffs">${data.poiseKnotBuffList.map(b => `<span class="v2e-buff-tag">${b}</span>`).join('')}</div>
                 </div>
             ` : (!showHidden && data.poiseKnotBuffModifiersStr ? `
-                <div class="v2e-section">
-                    <h3>${t('sections.poiseBreakBuffs')}</h3>
+                <div class="ake-ui-section">
+                    <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.poiseBreakBuffs')}</h3></div>
                     <div class="v2e-variant-modifier"><b>buff加成</b> ${data.poiseKnotBuffModifiersStr}</div>
                 </div>
             ` : '');
 
             const variantsHtml = renderVariants(data.variants, data.baseSnapshot);
 
-            return `
+            return `<article class="ake-ui-detail" data-detail-kind="enemy" data-accent="rarity" data-accent-value="${rarity}">
                 ${headerHtml}
                 ${poiseBuffHtml}
-                <div class="v2e-section">
-                    <h3>${t('sections.variantAttributes')}</h3>
+                <div class="ake-ui-section">
+                    <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.variantAttributes')}</h3></div>
                     ${variantsHtml}
                 </div>
+                </article>
             `;
         }
 
@@ -714,16 +703,17 @@
             const filtered = filterEnemiesBySearch(allEnemies);
             mobileContent.innerHTML = '';
             filtered.forEach(enemy => {
-                const item = document.createElement('div');
-                item.className = 'v2e-mobile-item';
-                window.AKEModuleOverview?.markVersionChange(item, enemy);
-                if (enemy.templateId === activeEnemyId) item.classList.add('active');
-                item.innerHTML = `<div class="v2e-mobile-name">${enemy.name}</div><div class="v2e-mobile-id">${enemy.templateId}</div>`;
-                item.addEventListener('click', () => {
-                    activeEnemyId = enemy.templateId;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_enemy', enemy.templateId);
-                    loadEnemyDetail(enemy, document.getElementById('v2enemyDetail'));
-                    closeMobileList();
+                const item = createEnemyDirectoryItem(enemy, {
+                    active: enemy.templateId === activeEnemyId,
+                    onSelect: () => {
+                        activeEnemyId = enemy.templateId;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('v2_enemy', enemy.templateId);
+                        loadEnemyDetail(enemy, document.getElementById('v2enemyDetail'));
+                        closeMobileList();
+                        const desktopList = document.getElementById('v2enemyList');
+                        const activeItem = desktopList?.querySelector(`.ake-ui-directory__item[data-enemy-id="${CSS.escape(enemy.templateId)}"]`);
+                        if (activeItem) window.AKEUI.setDirectoryItemActive(desktopList, activeItem);
+                    }
                 });
                 mobileContent.appendChild(item);
             });
@@ -731,11 +721,11 @@
 
         function openMobileList() {
             buildMobileList();
-            mobileOverlay.style.display = 'flex';
+            mobileOverlay.classList.add('is-open'); mobileOverlay.setAttribute('aria-hidden', 'false');
         }
 
         function closeMobileList() {
-            mobileOverlay.style.display = 'none';
+            mobileOverlay.classList.remove('is-open'); mobileOverlay.setAttribute('aria-hidden', 'true');
         }
 
         async function refreshModule() {

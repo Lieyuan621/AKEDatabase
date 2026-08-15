@@ -62,7 +62,7 @@
 
                 if (!section || !content || !meta) return;
                 if (!table) {
-                    content.innerHTML = '<section class="misc-empty-state" role="alert"><h3>数据接口不可用</h3><p>未找到 AKEV3 TableCfg 读取接口。</p></section>';
+                    content.innerHTML = '<section class="ake-ui-state" role="alert"><h3>数据接口不可用</h3><p>未找到 AKEV3 TableCfg 读取接口。</p></section>';
                     return;
                 }
 
@@ -84,7 +84,7 @@
                     const taskMap = taskConfigs?.[ACTIVITY_ID]?.TaskConfigMap;
                     if (!taskMap || !Object.keys(taskMap).length) {
                         const missing = !Object.keys(taskConfigs || {}).length;
-                        content.innerHTML = `<section class="misc-empty-state" role="${missing ? 'alert' : 'status'}"><h3>${missing ? '任务配置表不可用' : '本期没有完成度任务'}</h3><p>${missing ? '任务配置数据未能加载。' : '当前活动没有可展示的任务。'}</p></section>`;
+                        content.innerHTML = `<section class="ake-ui-state" role="${missing ? 'alert' : 'status'}"><h3>${missing ? '任务配置表不可用' : '本期没有完成度任务'}</h3><p>${missing ? '任务配置数据未能加载。' : '当前活动没有可展示的任务。'}</p></section>`;
                         meta.textContent = activity ? text(activity.name, '炽燃！竞技大会！') : '炽燃！竞技大会！';
                         return;
                     }
@@ -164,10 +164,10 @@
                         const stage = stageByDungeon.get(id);
                         const hardId = `${id}_hard`;
                         const hasHard = stage?.hardIds.includes(hardId) || Boolean(dungeons?.[hardId]);
-                        return `<li><article class="misc-event-card"><header><span class="misc-task-order">${escape(index + 1)}</span><div><h4>${escape(dungeonName(id, index))}</h4>${showHidden ? `<code>${escape(id)}</code>` : ''}</div></header><dl><div><dt>开放阶段</dt><dd>${stage ? `阶段 ${escape(stage.sortId)}` : '未知'}</dd></div><div><dt>阶段状态</dt><dd>${stage ? escape(rangeState(stage.open, stage.close)) : '时间未知'}</dd></div><div><dt>全功率模式</dt><dd>${hasHard ? '有' : '未找到配置'}</dd></div></dl>${stage?.open ? `<p><time datetime="${escape(stage.open.toISOString())}">${escape(formatTime(stage.open))}</time> 开放</p>` : ''}</article></li>`;
+                        return `<li><article class="ake-ui-card" data-card-kind="misc-event"><header class="ake-ui-card__header"><span class="misc-task-order">${escape(index + 1)}</span><div><h4 class="ake-ui-card__title">${escape(dungeonName(id, index))}</h4>${showHidden ? `<code>${escape(id)}</code>` : ''}</div></header><dl><div><dt>开放阶段</dt><dd>${stage ? `阶段 ${escape(stage.sortId)}` : '未知'}</dd></div><div><dt>阶段状态</dt><dd>${stage ? escape(rangeState(stage.open, stage.close)) : '时间未知'}</dd></div><div><dt>全功率模式</dt><dd>${hasHard ? '有' : '未找到配置'}</dd></div></dl>${stage?.open ? `<p><time datetime="${escape(stage.open.toISOString())}">${escape(formatTime(stage.open))}</time> 开放</p>` : ''}</article></li>`;
                     }).join('');
 
-                    const thresholdHtml = completionTasks.length ? `<section class="misc-completion-section" aria-labelledby="takestwo-thresholds"><h3 id="takestwo-thresholds">完成度奖励节点</h3><ol class="misc-completion-track">${completionTasks.map(task => `<li><article class="misc-task-card"><header>${showHidden ? `<span class="misc-task-order">${escape(task.sortId ?? '')}</span>` : ''}<div><h4>${rich(text(task.desc, showHidden ? task.taskId : '任务描述不可用'))}</h4>${showHidden ? `<p>${task.target ? `完成 ${escape(task.target)} / ${escape(normalDungeonIds.length)} 个普通关卡` : '完成目标未能解析'}</p>` : ''}</div></header>${showHidden ? (task.condition ? `<ul class="misc-condition-list"><li><span>不同普通关卡完成数</span><strong>目标 ${escape(task.target)}</strong><small>条件类型 ${escape(task.condition.conditionType)}</small></li></ul>` : `<p class="misc-condition-missing">条件配置不可用：${(task.completeConditionId || []).map(id => `<code>${escape(id)}</code>`).join('、')}</p>`) : ''}<footer>${showHidden ? `<code>${escape(task.taskId)}</code>` : ''}${rewardView(task.rewardId)}</footer></article></li>`).join('')}</ol></section>` : '<section class="misc-empty-state" role="status"><h3>没有完成度奖励节点</h3><p>活动任务配置为空。</p></section>';
+                    const thresholdHtml = completionTasks.length ? `<section class="ake-ui-section" data-section-kind="misc-completion" aria-labelledby="takestwo-thresholds"><header class="ake-ui-section__header"><h3 class="ake-ui-section__title" id="takestwo-thresholds">完成度奖励节点</h3></header><ol class="misc-completion-track">${completionTasks.map(task => `<li><article class="ake-ui-card" data-card-kind="misc-task"><header class="ake-ui-card__header">${showHidden ? `<span class="misc-task-order">${escape(task.sortId ?? '')}</span>` : ''}<div><h4 class="ake-ui-card__title">${rich(text(task.desc, showHidden ? task.taskId : '任务描述不可用'))}</h4>${showHidden ? `<p>${task.target ? `完成 ${escape(task.target)} / ${escape(normalDungeonIds.length)} 个普通关卡` : '完成目标未能解析'}</p>` : ''}</div></header>${showHidden ? (task.condition ? `<ul class="misc-condition-list"><li><span>不同普通关卡完成数</span><strong>目标 ${escape(task.target)}</strong><small>条件类型 ${escape(task.condition.conditionType)}</small></li></ul>` : `<p class="misc-condition-missing">条件配置不可用：${(task.completeConditionId || []).map(id => `<code>${escape(id)}</code>`).join('、')}</p>`) : ''}<footer class="ake-ui-card__footer">${showHidden ? `<code>${escape(task.taskId)}</code>` : ''}${rewardView(task.rewardId)}</footer></article></li>`).join('')}</ol></section>` : '<section class="ake-ui-state" role="status"><h3>没有完成度奖励节点</h3><p>活动任务配置为空。</p></section>';
 
                     const stagesHtml = showHidden && stageDetails.length ? `<details class="misc-stage-details"><summary>查看 ${escape(stageDetails.length)} 个开放阶段</summary><ol>${stageDetails.map(stage => `<li><strong>阶段 ${escape(stage.sortId)}</strong> <code>${escape(stage.stageId)}</code><span>${escape(stage.normalIds.length)} 个普通关卡${stage.hardIds.length ? `，${escape(stage.hardIds.length)} 个全功率关卡` : ''}</span><small>${interval(stage.open, stage.close)}</small></li>`).join('')}</ol></details>` : '';
                     content.innerHTML = `${warnings.length ? `<aside class="misc-data-warning" role="note"><h3>部分数据不可用</h3><ul>${warnings.map(warning => `<li>${escape(warning)}</li>`).join('')}</ul></aside>` : ''}<section class="misc-event-section" aria-labelledby="takestwo-events"><h3 id="takestwo-events">赛事项目 <small>${escape(normalDungeonIds.length)} 项</small></h3><ol class="misc-event-grid">${eventGrid}</ol>${stagesHtml}</section>${thresholdHtml}`;
@@ -175,7 +175,7 @@
                     if (inactive()) return;
                     console.error('竞技大会完成度任务加载失败', error);
                     meta.textContent = '炽燃！竞技大会！';
-                    content.innerHTML = `<section class="misc-empty-state" role="alert"><h3>竞技大会完成度加载失败</h3><p>${escape(error?.message || error)}</p></section>`;
+                    content.innerHTML = `<section class="ake-ui-state" role="alert"><h3>竞技大会完成度加载失败</h3><p>${escape(error?.message || error)}</p></section>`;
                 }
             },
             destroy() {

@@ -1,8 +1,7 @@
 <!-- plugin/about.html -->
-<link rel="stylesheet" href="/theme/about.css"> <!-- 可选，若需要专用样式可创建，若无则使用默认 -->
 
-<div class="about-module">
-    <div class="about-content">
+<div class="ake-ui-page" data-ake-module="about">
+    <article class="ake-ui-page__content">
         <h2 data-i18n="modules.about.introduction.title">modules.about.introduction.title</h2>
         <p data-i18n="modules.about.introduction.aiNotice">modules.about.introduction.aiNotice</p>
         <p data-i18n="modules.about.introduction.summary">modules.about.introduction.summary</p>
@@ -46,7 +45,7 @@
 
         <!-- 赞助支持 -->
         <h3 data-i18n="modules.about.sponsor.title">modules.about.sponsor.title</h3>
-        <div class="sponsor-section">
+        <section class="ake-ui-section">
             <div class="sponsor-intro">
                 <p data-i18n="modules.about.sponsor.description">modules.about.sponsor.description</p>
                 <p data-i18n="modules.about.sponsor.alipayNotice">modules.about.sponsor.alipayNotice</p>
@@ -64,10 +63,10 @@
             <div class="sponsor-list">
                 <h4 data-i18n="modules.about.sponsor.thanks">modules.about.sponsor.thanks</h4>
                 <div id="sponsorGrid" class="sponsor-grid">
-                    <div class="loader" data-i18n="modules.about.sponsor.loading">modules.about.sponsor.loading</div>
+                    <div class="ake-ui-state" data-state="loading" data-i18n="modules.about.sponsor.loading">modules.about.sponsor.loading</div>
                 </div>
             </div>
-        </div>
+        </section>
 
         <h3 data-i18n="modules.about.contact.title">modules.about.contact.title</h3>
         <p data-i18n="modules.about.contact.description">modules.about.contact.description</p>
@@ -75,7 +74,7 @@
         <p><span data-i18n="modules.about.contact.feedbackGroupLabel">modules.about.contact.feedbackGroupLabel</span>1091817282<span data-i18n="modules.about.contact.feedbackGroupPurpose">modules.about.contact.feedbackGroupPurpose</span></p>
         <p><span data-i18n="modules.about.contact.repositoryLabel">modules.about.contact.repositoryLabel</span><a href="https://github.com/nagiyume/akedatabase" target="_blank" rel="noopener" class="text-blue-600 hover:underline" _istranslated="1">GitHub</a></p>
         <p data-i18n="modules.about.contact.version">modules.about.contact.version</p>
-    </div>
+    </article>
 </div>
 
 

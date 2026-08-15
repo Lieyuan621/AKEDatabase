@@ -12,8 +12,6 @@
             };
             const moduleHtmlCache = new Map();
             const scriptSourceCache = new Map();
-            const stylesheetCache = new Map();
-            const moduleStyleKeys = new Map();
             const moduleViewCache = new Map();
             const pluginVersionStorageKey = 'akedata-plugin-versions';
             const jsVersionStorageKey = 'akedata-js-versions';
@@ -45,17 +43,16 @@
                     <img src="/public/images/index/main.jpg"
                          alt="home.heroImageAlt"
                          data-i18n-alt="home.heroImageAlt"
-                         class="home-image"
-                         style="max-width: 80%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                    <p style="margin-top: 20px; color: var(--text-color, #1e2b3c); font-size: 1.2rem;" data-i18n="home.title">home.title</p>
-                    <div id="homeUpdateCountdown" style="margin-top:8px;color:#7f8c9f;font-size:.9rem;" data-i18n="version.loading">version.loading</div>
-                    <div style="margin-top: 30px; color:#a3b6cc; font-size:1rem;">
+                         class="home-image">
+                    <p class="welcome-home__title" data-i18n="home.title">home.title</p>
+                    <div class="welcome-home__countdown" id="homeUpdateCountdown" data-i18n="version.loading">version.loading</div>
+                    <div class="welcome-home__notes">
                         <span data-i18n="home.precisionNote">home.precisionNote</span><br>
                         <span data-i18n="home.disclaimer">home.disclaimer</span><br>
                         <span data-i18n="home.settingsHint">home.settingsHint</span>
                     </div>
-                    <div style="margin-top: 20px; font-size:.85rem;">
-                        <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank" rel="noopener noreferrer" style="color:#7f8c9f;">浙ICP备2026014728号-1</a>
+                    <div class="welcome-home__registration">
+                        <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank" rel="noopener noreferrer">浙ICP备2026014728号-1</a>
                     </div>
                 </div>
             `;
@@ -63,7 +60,7 @@
             function showHomePage(checkTip = true) {
                 stashMountedModule();
                 moduleLoadGeneration++;
-                activateModuleStyles(null);
+                activateModuleScope(null);
                 setContent(HOME_CONTENT);
                 renderVersionInfo();
                 document.getElementById('homeTipButton')?.addEventListener('click', showTip);
@@ -76,7 +73,7 @@
             function show404Page(isHidden) {
                 stashMountedModule();
                 moduleLoadGeneration++;
-                activateModuleStyles(null);
+                activateModuleScope(null);
                 const hiddenHint = isHidden ? `
                     <div class="not-found-hint">
                         <p data-i18n="errors.hiddenContentHint">errors.hiddenContentHint</p>
@@ -394,7 +391,7 @@
                     if (code === current) option.selected = true;
                     modalLanguageSelect.appendChild(option);
                 });
-                window.AKESelect?.refresh(modalLanguageSelect);
+                window.AKEUI?.refreshSelect(modalLanguageSelect);
             }
 
             function renderDataSourceSettings() {
@@ -419,7 +416,7 @@
                 });
                 modalDataVersionSelect.appendChild(group);
                 modalDataVersionSelect.value = dataState.selection;
-                window.AKESelect?.refresh(modalDataVersionSelect);
+                window.AKEUI?.refreshSelect(modalDataVersionSelect);
                 if (dataSourceStatus) {
                     const sourceText = dataState.debugLocal
                         ? tr('settings.dataSource.debugLocal', null, '调试模式已启用，强制使用当前本地服务器数据')
@@ -481,11 +478,14 @@
                 }
             }
 
-            function activateModuleStyles(moduleId) {
-                const activeKeys = moduleId ? moduleStyleKeys.get(moduleId) || new Set() : new Set();
-                stylesheetCache.forEach((promise, key) => {
-                    promise.then(link => { link.disabled = !activeKeys.has(key); }).catch(() => {});
-                });
+            function activateModuleScope(moduleId) {
+                if (moduleId) {
+                    contentArea.dataset.akeModule = moduleId;
+                    document.body.dataset.akeModule = moduleId;
+                } else {
+                    delete contentArea.dataset.akeModule;
+                    delete document.body.dataset.akeModule;
+                }
             }
 
             function formatUpdatedAt(value) {
@@ -607,42 +607,6 @@
                 return response;
             }
 
-            async function ensureStylesheet(href) {
-                const key = canonicalResourceUrl(href);
-                if (stylesheetCache.has(key)) return stylesheetCache.get(key);
-                const promise = (async () => {
-                    const version = await window.akeVersionReady;
-                    const url = new URL(href, window.location.href);
-                    if (version && url.origin === window.location.origin) url.searchParams.set('v', version.appversion);
-                    if (window.__akeForceRefreshTimestamp) url.searchParams.set('t', window.__akeForceRefreshTimestamp);
-                    const existing = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
-                        .find(link => canonicalResourceUrl(link.href) === key);
-                    if (existing) {
-                        existing.disabled = false;
-                        return existing;
-                    }
-                    const response = await (window.akeFetch || fetch)(url.href);
-                    if (!response.ok) throw new Error(`无法加载样式：${href} (HTTP ${response.status})`);
-                    await response.text();
-                    return new Promise((resolve, reject) => {
-                        const link = document.createElement('link');
-                        link.rel = 'stylesheet';
-                        link.href = url.href;
-                        link.dataset.akeModuleStyle = 'true';
-                        link.onload = () => resolve(link);
-                        link.onerror = () => reject(new Error(`无法加载样式：${href}`));
-                        document.head.appendChild(link);
-                    });
-                })();
-                stylesheetCache.set(key, promise);
-                try {
-                    return await promise;
-                } catch (error) {
-                    stylesheetCache.delete(key);
-                    throw error;
-                }
-            }
-
             function getScriptSource(src) {
                 const pathKey = resourcePathKey(src);
                 const currentVersion = configuredJsVersions[pathKey] || bootstrapVersion.appversion || '';
@@ -688,7 +652,7 @@
                     return false;
                 }
                 if (!module || !module.contentFile) {
-                    setContent(`<div class="error-message">${tr('errors.moduleContentMissing')}</div>`);
+                    setContent(`<div class="ake-ui-state" data-state="error">${tr('errors.moduleContentMissing')}</div>`);
                     return false;
                 }
                 if (module.token && !isModuleUnlocked(module)) {
@@ -698,11 +662,11 @@
                 if (mountedModuleId === module.id) return { restored: false, reused: true };
                 if (mountedModuleId !== module.id) stashMountedModule();
                 if (moduleViewCache.has(module.id)) {
-                    activateModuleStyles(module.id);
+                    activateModuleScope(module.id);
                     const state = restoreStashedModule(module.id);
                     return { restored: true, routeId: state?.routeId || null };
                 }
-                setContent(`<div class="loader">${tr('common.loadingModule')}<br><small>${firstLoadTextTableHint()}</small></div>`);
+                setContent(`<div class="ake-ui-state">${tr('common.loadingModule')}<br><small>${firstLoadTextTableHint()}</small></div>`);
                 try {
                     const currentVersion = configuredPluginVersions[module.id] || bootstrapVersion.appversion || '';
                     const cacheKey = `${module.id}|${canonicalResourceUrl(module.contentFile)}|${currentVersion}`;
@@ -727,13 +691,10 @@
                     const template = document.createElement('template');
                     template.innerHTML = html;
                     window.akeDataSource?.rewriteDomAssets?.(template.content);
-                    const styles = Array.from(template.content.querySelectorAll('link[rel="stylesheet"][href]'));
-                    const styleKeys = new Set(styles.map(link => canonicalResourceUrl(link.getAttribute('href'))));
-                    moduleStyleKeys.set(module.id, styleKeys);
-                    styles.forEach(link => link.remove());
-                    await Promise.all(styles.map(link => ensureStylesheet(link.getAttribute('href'))));
-                    if (generation !== moduleLoadGeneration) return false;
-                    activateModuleStyles(module.id);
+                    if (template.content.querySelector('link[rel="stylesheet"], style')) {
+                        throw new Error(`模块 ${module.id} 必须使用 AKEUI 共享主题模板，不能加载独立样式。`);
+                    }
+                    activateModuleScope(module.id);
                     contentArea.replaceChildren(template.content.cloneNode(true));
                     const scripts = Array.from(contentArea.querySelectorAll('script'));
                     for (const oldScript of scripts) {
@@ -748,7 +709,7 @@
                     return { restored: false, reused: false };
                 } catch (err) {
                     if (generation !== moduleLoadGeneration) return false;
-                    setContent(`<div class="error-message">${tr('errors.moduleLoad', { message: err.message })}</div>`);
+                    setContent(`<div class="ake-ui-state" data-state="error">${tr('errors.moduleLoad', { message: err.message })}</div>`);
                     return false;
                 }
             }
@@ -786,7 +747,7 @@
 
             function renderModuleList(modulesArray) {
                 if (!modulesArray || modulesArray.length === 0) {
-                    moduleListEl.innerHTML = `<div style="padding:20px; color:#999; text-align:center;">${tr('nav.noVisibleModules')}</div>`;
+                    moduleListEl.innerHTML = `<div class="ake-ui-state" data-state="empty" data-density="compact">${tr('nav.noVisibleModules')}</div>`;
                     return;
                 }
                 const sorted = sortModulesByPriority(modulesArray);
@@ -843,13 +804,22 @@
                 const requestedTheme = String(themeName || '').toLowerCase();
                 const lowerTheme = ['light', 'yellow', 'dark'].includes(requestedTheme) ? requestedTheme : 'light';
                 config.theme = lowerTheme;
+                if (lowerTheme === 'light') {
+                    themeLink.removeAttribute('href');
+                    themeLink.disabled = true;
+                    storage.set('akedata-theme', lowerTheme);
+                    if (modalThemeSelect) modalThemeSelect.value = lowerTheme;
+                    window.AKEUI?.refreshSelect(modalThemeSelect);
+                    return;
+                }
                 const themeUrl = new URL(`theme/${lowerTheme}.css`, window.location.href);
                 if (window.akeVersion) themeUrl.searchParams.set('v', window.akeVersion.appversion);
                 if (window.__akeForceRefreshTimestamp) themeUrl.searchParams.set('t', window.__akeForceRefreshTimestamp);
+                themeLink.disabled = false;
                 themeLink.href = themeUrl.href;
                 storage.set('akedata-theme', lowerTheme);
                 if (modalThemeSelect) modalThemeSelect.value = lowerTheme;
-                window.AKESelect?.refresh(modalThemeSelect);
+                window.AKEUI?.refreshSelect(modalThemeSelect);
             }
 
             function initTheme() {
@@ -882,8 +852,8 @@
                 renderDataSourceSettings();
                 if (modalLanguageSelect) modalLanguageSelect.value = config.language;
                 modalThemeSelect.value = config.theme;
-                window.AKESelect?.refresh(modalLanguageSelect);
-                window.AKESelect?.refresh(modalThemeSelect);
+                window.AKEUI?.refreshSelect(modalLanguageSelect);
+                window.AKEUI?.refreshSelect(modalThemeSelect);
                 modalShowHiddenCheck.checked = config.showHidden;
                 const modalShowExportCheck = document.getElementById('modalShowExportCheck');
                 if (modalShowExportCheck) modalShowExportCheck.checked = config.showExportButton;
@@ -1013,7 +983,7 @@
                         }))
                         .filter(m => !m.disabled);
                 } catch (err) {
-                    moduleListEl.innerHTML = `<div style="color:#b0003a; padding:20px; text-align:center;">${tr('errors.moduleManifestRead')}</div>`;
+                    moduleListEl.innerHTML = `<div class="ake-ui-state" data-state="error" data-density="compact">${tr('errors.moduleManifestRead')}</div>`;
                     return [];
                 }
             }
@@ -1633,7 +1603,7 @@
                         if (modalDataBaseUrl && current) modalDataBaseUrl.value = current.defaultBaseUrl;
                         if (modalDataVersionSelect) {
                             modalDataVersionSelect.value = 'latest';
-                            window.AKESelect?.refresh(modalDataVersionSelect);
+                            window.AKEUI?.refreshSelect(modalDataVersionSelect);
                         }
                     });
                 }
@@ -1719,15 +1689,9 @@
 
                     // 获取文件名（优先使用详情标题）
                     let title = tr('home.exportFallback');
-                    const moduleTitleSelectors = {
-                        v3_weapon: ['.detail-title'], v3_character: ['.detail-name'], v3_enemy: ['.v2e-name'],
-                        v3_equip: ['.v2eq-name'], v3_item: ['.v2i-name'], v3_activity: ['.detail-name'],
-                        v3_achievement: ['.category-title'], v3_dungeon: ['.v2d-series-title'], v3_cc: ['.v2cc-title'],
-                        season_tower: ['.st-detail-title h1'], research: ['.article-content h1', '.article-content h2'],
-                        about: ['.about-content h2'], v3_mission: ['.mission-hero h1']
-                    };
-                    const possibleSelectors = moduleTitleSelectors[activeModuleId] || [
-                        '.detail-title', '.detail-name', '.category-title', '.v2e-name', '.v2d-series-title', '.v2cc-title'
+                    const possibleSelectors = [
+                        '.ake-ui-detail-title', '.ake-ui-page__header h2', '.ake-ui-card__title',
+                        '.ake-ui-section__title', '.article-content h1', '.article-content h2'
                     ];
                     for (const sel of possibleSelectors) {
                         const el = contentArea.querySelector(sel);
@@ -1757,12 +1721,10 @@
                                 // 移除左侧栏和内部列
                                 const globalSidebar = clonedDoc.querySelector('.sidebar');
                                 if (globalSidebar) globalSidebar.remove();
-                                const leftColumns = clonedDoc.querySelectorAll('.left-column, .weapon-list, .v2e-left, .v2d-left, .v2cc-left, .v2eq-left, .v2i-left, .st-sidebar, .mission-sidebar, .research-toc, .akearchive-sidebar');
+                                const leftColumns = clonedDoc.querySelectorAll('.ake-ui-directory__sidebar, .left-column, .weapon-list');
                                 leftColumns.forEach(col => col.remove());
-                                const mobileBtns = clonedDoc.querySelectorAll('.mobile-list-btn, .st-mobile-button, .toc-toggle-btn, .akearchive-mobile-button, [class*="-mobile-btn"], [class*="-mobile-list-button"], [class*="-mobile-overlay"]');
+                                const mobileBtns = clonedDoc.querySelectorAll('.ake-ui-directory__mobile-button, .ake-ui-directory__mobile-overlay, .ake-ui-toc__toggle, .mobile-list-btn, [class*="-mobile-btn"], [class*="-mobile-list-button"]');
                                 mobileBtns.forEach(btn => btn.remove());
-                                const weaponList = clonedDoc.querySelector('.weapon-list');
-                                if (weaponList) weaponList.remove();
                             
                                 // 调整布局
                                 const app = clonedDoc.querySelector('.app');
@@ -1777,15 +1739,15 @@
                                     mainContent.style.overflow = 'visible';
                                     mainContent.style.padding = '0';
                                 }
-                                const v2Modules = clonedDoc.querySelectorAll('.character-module, .weapon-module, .v2e-module, .v2d-module, .dungeon-module, .v2cc-module, .v2eq-module, .v2i-module, .activity-module, .achievement-module, .research-module, .st-module, .mission-module, .akearchive-module');
-                                v2Modules.forEach(m => {
+                                const moduleViews = clonedDoc.querySelectorAll('.ake-ui-directory, .character-module, .weapon-module, .dungeon-module');
+                                moduleViews.forEach(m => {
                                     m.style.display = 'block';
                                     m.style.height = 'auto';
                                     m.style.minHeight = '0';
                                     m.style.overflow = 'visible';
                                 });
 
-                                const detailAreas = clonedDoc.querySelectorAll('.weapon-detail, .character-detail, .v2e-detail, .v2d-detail, .v2cc-detail, .v2eq-detail, .v2i-detail, .activity-detail, .achievement-detail, .research-detail, .st-content, .mission-detail, .akearchive-content');
+                                const detailAreas = clonedDoc.querySelectorAll('.ake-ui-directory__content, .weapon-detail, .character-detail');
                                 detailAreas.forEach(detail => {
                                     detail.style.width = '100%';
                                     detail.style.maxWidth = 'none';

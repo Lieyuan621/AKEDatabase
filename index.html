@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="app.title">AKEData · 终末地数据库</title>
     <link rel="icon" type="image/png" href="https://data.akedata.wiki/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/charremoteicon/icon_chr_0013_aglina.png">
-    <link rel="stylesheet" id="dialog-style">
+    <link rel="stylesheet" id="base-style">
     <link rel="stylesheet" id="theme-style">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
@@ -27,7 +27,7 @@
                 </span>
             </div>
             <div class="module-list" id="moduleListContainer">
-                <div style="color:#7f8c9f; text-align:center; padding:20px;" data-i18n="nav.loadingModules">加载模块清单...</div>
+                <div class="ake-ui-state" data-state="loading" data-density="compact" data-i18n="nav.loadingModules">加载模块清单...</div>
             </div>
             <div class="sidebar-footer">
                 <div class="settings-button" id="settingsButton" title="全局设置" data-i18n-title="settings.title">
@@ -70,11 +70,11 @@
                     </h4>
                     <div class="app-field">
                         <label class="app-field-label" for="modalLanguageSelect" data-i18n="settings.language">settings.language</label>
-                        <select class="app-select" id="modalLanguageSelect"></select>
+                        <select class="ake-ui-control ake-ui-control--select" id="modalLanguageSelect"></select>
                     </div>
                     <div class="app-field">
                         <label class="app-field-label" for="modalThemeSelect" data-i18n="settings.theme">settings.theme</label>
-                        <select class="app-select" id="modalThemeSelect">
+                        <select class="ake-ui-control ake-ui-control--select" id="modalThemeSelect">
                             <option value="light" data-i18n="settings.themes.light">settings.themes.light</option>
                             <option value="yellow" data-i18n="settings.themes.yellow">settings.themes.yellow</option>
                             <option value="dark" data-i18n="settings.themes.dark">settings.themes.dark</option>
@@ -82,19 +82,19 @@
                     </div>
                     <div class="app-field app-field--toggle">
                         <label class="app-field-label" for="modalShowHiddenCheck" data-i18n="settings.showHidden">settings.showHidden</label>
-                        <input class="app-toggle" type="checkbox" id="modalShowHiddenCheck">
+                        <input class="ake-ui-switch" type="checkbox" id="modalShowHiddenCheck">
                     </div>
                     <div class="app-field app-field--toggle">
                         <label class="app-field-label" for="modalShowExportCheck" data-i18n="settings.showExport">settings.showExport</label>
-                        <input class="app-toggle" type="checkbox" id="modalShowExportCheck">
+                        <input class="ake-ui-switch" type="checkbox" id="modalShowExportCheck">
                     </div>
                     <div class="app-field app-field--toggle">
                         <label class="app-field-label" for="modalShowVersionChanges" data-i18n="settings.showVersionChanges">settings.showVersionChanges</label>
-                        <input class="app-toggle" type="checkbox" id="modalShowVersionChanges">
+                        <input class="ake-ui-switch" type="checkbox" id="modalShowVersionChanges">
                     </div>
                     <div class="app-field app-field--toggle">
                         <label class="app-field-label" for="modalKeepUrlSync" data-i18n="settings.keepUrlSync">settings.keepUrlSync</label>
-                        <input class="app-toggle" type="checkbox" id="modalKeepUrlSync">
+                        <input class="ake-ui-switch" type="checkbox" id="modalKeepUrlSync">
                     </div>
                 </div>
 
@@ -105,12 +105,12 @@
                     </h4>
                     <div class="app-field">
                         <label class="app-field-label" for="modalDataVersionSelect" data-i18n="settings.dataSource.version">Data version:</label>
-                        <select class="app-select" id="modalDataVersionSelect"></select>
+                        <select class="ake-ui-control ake-ui-control--select" id="modalDataVersionSelect"></select>
                     </div>
                     <div class="app-field">
                         <label class="app-field-label" for="modalDataBaseUrl" data-i18n="settings.dataSource.baseUrl">Request origin:</label>
-                        <input class="app-input" type="url" id="modalDataBaseUrl" placeholder="https://data.akedata.wiki">
-                        <button class="app-icon-button" id="resetDataSourceBtn" type="button" title="Restore production data source" data-i18n-title="settings.dataSource.reset" aria-label="Restore production data source">
+                        <input class="ake-ui-control" type="url" id="modalDataBaseUrl" placeholder="https://data.akedata.wiki">
+                        <button class="ake-ui-button ake-ui-button--secondary ake-ui-button--icon" id="resetDataSourceBtn" type="button" title="Restore production data source" data-i18n-title="settings.dataSource.reset" aria-label="Restore production data source">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
                         </button>
                     </div>
@@ -125,32 +125,32 @@
                     </h4>
                     <div class="app-field app-field--toggle">
                         <label class="app-field-label" for="modalLevelsEnabled" data-i18n="settings.levels.enabled">settings.levels.enabled</label>
-                        <input class="app-toggle" type="checkbox" id="modalLevelsEnabled">
+                        <input class="ake-ui-switch" type="checkbox" id="modalLevelsEnabled">
                     </div>
                     <div class="app-field app-field--hint">
                         <p data-i18n="settings.levels.hint">settings.levels.hint</p>
                     </div>
                     <div class="app-field">
                         <label class="app-field-label" for="modalCharacterLevels" data-i18n="settings.levels.character">settings.levels.character</label>
-                        <input class="app-input" type="text" id="modalCharacterLevels" data-i18n-placeholder="settings.levels.levelPlaceholder">
+                        <input class="ake-ui-control" type="text" id="modalCharacterLevels" data-i18n-placeholder="settings.levels.levelPlaceholder">
                     </div>
                     <div class="app-field">
                         <label class="app-field-label" for="modalWeaponLevels" data-i18n="settings.levels.weapon">settings.levels.weapon</label>
-                        <input class="app-input" type="text" id="modalWeaponLevels" data-i18n-placeholder="settings.levels.levelPlaceholder">
+                        <input class="ake-ui-control" type="text" id="modalWeaponLevels" data-i18n-placeholder="settings.levels.levelPlaceholder">
                     </div>
                     <div class="app-field">
                         <label class="app-field-label" for="modalEnemyLevels" data-i18n="settings.levels.enemy">settings.levels.enemy</label>
-                        <input class="app-input" type="text" id="modalEnemyLevels" data-i18n-placeholder="settings.levels.levelPlaceholder">
+                        <input class="ake-ui-control" type="text" id="modalEnemyLevels" data-i18n-placeholder="settings.levels.levelPlaceholder">
                     </div>
                     <div class="app-field">
                         <label class="app-field-label" for="modalSkillLevels" data-i18n="settings.levels.skill">settings.levels.skill</label>
-                        <input class="app-input" type="text" id="modalSkillLevels" data-i18n-placeholder="settings.levels.skillPlaceholder">
+                        <input class="ake-ui-control" type="text" id="modalSkillLevels" data-i18n-placeholder="settings.levels.skillPlaceholder">
                     </div>
                 </div>
 
                 <!-- 恢复默认按钮 -->
                 <div class="app-actions app-actions--section-break">
-                    <button class="app-button app-button--secondary" id="resetSettingsBtn" type="button" data-i18n="settings.reset">settings.reset</button>
+                    <button class="ake-ui-button ake-ui-button--secondary" id="resetSettingsBtn" type="button" data-i18n="settings.reset">settings.reset</button>
                 </div>
 
                 <!-- 访问令牌区域 -->
@@ -164,17 +164,17 @@
                     </div>
                     <div class="app-field app-field--action">
                         <label class="app-field-label" for="modalTokenInput" data-i18n="settings.tokens.label">settings.tokens.label</label>
-                        <input class="app-input" type="text" id="modalTokenInput" data-i18n-placeholder="settings.tokens.placeholder">
-                        <button class="app-button app-button--primary" id="tokenSubmitBtn" type="button" data-i18n="settings.tokens.submit">settings.tokens.submit</button>
+                        <input class="ake-ui-control" type="text" id="modalTokenInput" data-i18n-placeholder="settings.tokens.placeholder">
+                        <button class="ake-ui-button ake-ui-button--primary" id="tokenSubmitBtn" type="button" data-i18n="settings.tokens.submit">settings.tokens.submit</button>
                     </div>
                     <div class="app-actions">
-                        <button class="app-button app-button--secondary" id="tokenClearAllBtn" type="button" data-i18n="settings.tokens.clear">settings.tokens.clear</button>
+                        <button class="ake-ui-button ake-ui-button--secondary" id="tokenClearAllBtn" type="button" data-i18n="settings.tokens.clear">settings.tokens.clear</button>
                     </div>
                     <div class="app-status" id="tokenStatus"></div>
                 </div>
 
                 <div class="app-section app-section--standalone-action">
-                    <button class="app-button app-button--primary" id="forceRefreshCacheBtn" type="button" data-i18n="settings.cache.forceRefresh">强制刷新网页缓存</button>
+                    <button class="ake-ui-button ake-ui-button--primary" id="forceRefreshCacheBtn" type="button" data-i18n="settings.cache.forceRefresh">强制刷新网页缓存</button>
                     <p class="app-help" data-i18n="settings.cache.description">由于服务器数据存在延迟，若您显示的页面中没有最新的数据，可以点击此按钮获取最新数据</p>
                 </div>
 
@@ -207,56 +207,7 @@
         </div>
     </div>
 
-    <div id="toast-container" style="position:fixed;top:20px;right:20px;z-index:10000;display:flex;flex-direction:column;gap:8px;pointer-events:none;"></div>
-    <style>
-        .data-load-progress{position:fixed;top:10px;left:50%;transform:translate(-50%,-8px);width:min(460px,calc(100vw - 32px));padding:9px 12px 8px;border:1px solid var(--border-color,#d9e0e8);border-radius:10px;background:color-mix(in srgb,var(--module-bg,#fff) 94%,transparent);box-shadow:0 6px 22px rgba(20,35,55,.16);z-index:12000;opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease;box-sizing:border-box;backdrop-filter:blur(8px)}
-        .data-load-progress.visible{opacity:1;transform:translate(-50%,0)}
-        .data-load-progress-track{height:5px;overflow:hidden;border-radius:999px;background:var(--border-color,#d9e0e8)}
-        .data-load-progress-bar{height:100%;width:0;border-radius:inherit;background:var(--accent-color,#1e6f9f);transition:width .15s ease}
-        .data-load-progress.indeterminate .data-load-progress-bar{width:38%;animation:dataProgressIndeterminate 1.1s ease-in-out infinite}
-        .data-load-progress-text{margin-top:5px;color:var(--desc-color,#5b6f86);font-size:12px;line-height:1.2;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-        .data-load-progress-file{margin-top:3px;color:var(--text-color,#1e2b3c);font-family:Consolas,"Cascadia Mono",monospace;font-size:11px;line-height:1.2;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-        .data-load-progress.compact{padding:8px 10px}
-        .data-load-progress.compact .data-load-progress-file{display:none}
-        @keyframes dataProgressIndeterminate{0%{transform:translateX(-120%)}50%{transform:translateX(85%)}100%{transform:translateX(265%)}}
-        .toast{padding:12px 20px;border-radius:8px;color:#fff;font-size:0.9rem;box-shadow:0 4px 12px rgba(0,0,0,0.15);opacity:0;transform:translateX(40px);animation:toastIn .3s forwards;pointer-events:auto;max-width:360px;word-break:break-all}
-        .toast.toast-out{animation:toastOut .4s forwards}
-        .toast-error{background:#b0003a}
-        .toast-warning{background:#e6a817;color:#1e1e1e}
-        .toast-info{background:#2d7fc1}
-        @keyframes toastIn{to{opacity:1;transform:translateX(0)}}
-        @keyframes toastOut{to{opacity:0;transform:translateX(40px)}}
-        .not-found-page{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;padding:40px 20px}
-        .not-found-code{font-size:6rem;font-weight:800;color:var(--text-color,#1e2b3c);opacity:.15;line-height:1;margin-bottom:8px}
-        .not-found-title{font-size:1.6rem;font-weight:700;color:var(--text-color,#1e2b3c);margin-bottom:12px}
-        .not-found-desc{font-size:1rem;color:#7f8c9f;margin-bottom:28px}
-        .not-found-hint{background:var(--card-bg,#f5f7fa);border:1px solid var(--border-color,#ddd);border-radius:10px;padding:16px 24px;margin-bottom:24px;max-width:480px;text-align:left;font-size:0.9rem;color:var(--text-color,#333);line-height:1.7}
-        .not-found-hint p{margin:4px 0}
-        .not-found-home-btn{background:var(--button-bg,#e0e8f0);border:1px solid var(--border-color,#ccc);border-radius:30px;padding:10px 28px;font-size:0.95rem;cursor:pointer;color:var(--text-color,#333);transition:background .2s}
-        .not-found-home-btn:hover{background:var(--hover-bg,#d0d8e0)}
-        .welcome-home{position:relative}
-        .home-tip-button{position:absolute;top:20px;right:24px;padding:8px 16px;border:1px solid var(--border-color,#cbd5e1);border-radius:999px;background:var(--button-bg,#e0e8f0);color:var(--text-color,#1e2b3c);font-size:.9rem;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.08);transition:background-color .2s,transform .2s}
-        .home-tip-button:hover{background:var(--hover-bg,#d2dceb);transform:translateY(-1px)}
-        .raw-value-popover{position:fixed;display:none;box-sizing:border-box;width:max-content;max-width:min(420px,calc(100vw - 20px));padding:10px 12px;border:1px solid var(--border-color,#d9e0e8);border-radius:10px;background:var(--tooltip-bg,var(--module-bg,#fff));color:var(--tooltip-text,var(--text-color,#1e2b3c));box-shadow:0 8px 28px rgba(20,35,55,.22);font-size:.82rem;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;z-index:13000;pointer-events:auto}
-        .raw-value-popover.visible{display:block}
-        @media(max-width:600px){.raw-value-popover{max-width:calc(100vw - 20px);font-size:.78rem}}
-        .home-tip-button:focus-visible{outline:2px solid var(--accent-color,#1e6f9f);outline-offset:2px}
-        @media (max-width:999px){.home-tip-button{top:12px;right:12px;padding:7px 13px;font-size:.82rem}}
-        .tip-modal-body{font-size:1rem;line-height:1.8;overflow-wrap:anywhere}
-        .tip-modal-body p{margin:0 0 12px}
-        .tip-modal-body p:last-child{margin-bottom:0}
-        .tip-modal-body h1,.tip-modal-body h2,.tip-modal-body h3{margin:20px 0 10px}
-        .tip-modal-body ul,.tip-modal-body ol{margin:0 0 12px;padding-left:24px}
-        .tip-modal-body a{color:var(--accent-color,#1e6f9f)}
-        .tip-modal-body code{padding:.12em .38em;border:1px solid var(--border-color,#d9e0e8);border-radius:5px;background:var(--card-bg,#f5f7fa);font-family:Consolas,"Cascadia Mono",monospace;font-size:.9em}
-        .tip-modal-body pre{margin:0 0 12px;padding:12px 14px;overflow:auto;border:1px solid var(--border-color,#d9e0e8);border-radius:8px;background:var(--card-bg,#f5f7fa);line-height:1.55}
-        .tip-modal-body pre code{padding:0;border:0;background:transparent;font-size:.85rem;white-space:pre}
-        .tip-modal-body blockquote{margin:0 0 12px;padding:2px 0 2px 14px;border-left:3px solid var(--accent-color,#1e6f9f);color:var(--desc-color,#5b6f86)}
-        .tip-modal-body hr{margin:18px 0;border:0;border-top:1px solid var(--border-color,#d9e0e8)}
-        .pre-release-watermark{position:fixed;inset:0;z-index:2147483646;pointer-events:none;user-select:none;background-repeat:repeat;background-position:center;background-size:340px 180px}
-        @media(max-width:600px){.pre-release-watermark{background-size:280px 148px}}
-        :root:not(.ake-show-hidden) [class$="-id"],:root:not(.ake-show-hidden) [class*="-id "],:root:not(.ake-show-hidden) [class$="__id"],:root:not(.ake-show-hidden) [class*="__id "]{display:none!important}
-    </style>
+    <div id="toast-container"></div>
 
     <script>
         (async function bootstrap() {
@@ -339,8 +290,8 @@
                 return url.href;
             };
             const resourceCache = refreshTimestamp ? 'no-store' : 'force-cache';
-            const dialogLink = document.getElementById('dialog-style');
-            if (dialogLink) dialogLink.href = resourceUrl('/theme/dialog.css');
+            const baseLink = document.getElementById('base-style');
+            if (baseLink) baseLink.href = resourceUrl('/theme/light.css');
             const themeLink = document.getElementById('theme-style');
             if (themeLink) {
                 const themeUrl = resourceUrl('/theme/light.css');
@@ -351,7 +302,7 @@
                 } catch (error) {
                     console.warn('无法预加载默认主题样式。', error);
                 }
-                themeLink.href = themeUrl;
+                themeLink.removeAttribute('href');
             }
             const loadScript = async src => {
                 const key = resourceKey(src);
@@ -373,7 +324,7 @@
                 await loadScript('/plugin/js/ake-image-fallback.js');
                 await loadScript('/plugin/js/index-parse-fallback.js');
                 await loadScript('/plugin/js/i18n.js');
-                await loadScript('/plugin/js/app-select.js');
+                await loadScript('/plugin/js/ake-ui.js');
                 await loadScript('/plugin/js/toast.js');
                 await loadScript('/plugin/js/ake-data-source.js');
                 await loadScript('/plugin/js/ake-cache.js');

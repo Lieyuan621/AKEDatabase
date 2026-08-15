@@ -55,20 +55,19 @@
             ? `<div class="v2d-enemy-desc">${options.descriptionHtml}</div>`
             : '';
         return `
-            <div class="v2d-enemy-card"${dataAttributes(options.dataAttributes)}>
-                <div class="v2d-enemy-header">
-                    <img class="v2d-enemy-icon" src="${escapeHtml(options.iconSrc || '')}" alt="">
-                    <div class="v2d-enemy-title">
-                        <span class="v2d-enemy-name">${escapeHtml(options.name)}</span>
-                        ${nickname ? `<span class="v2d-enemy-nick">${escapeHtml(nickname)}</span>` : ''}
-                    </div>
-                    <span class="v2d-enemy-level">Lv.${escapeHtml(options.level)}</span>
+            <div class="ake-ui-card has-media" data-ake-component="card" data-card-kind="enemy" data-density="regular"${dataAttributes(options.dataAttributes)}>
+                <div class="ake-ui-card__content">
+                    <header class="ake-ui-card__header">
+                        <div class="ake-ui-card__media"><img src="${escapeHtml(options.iconSrc || '')}" alt=""></div>
+                        <div class="ake-ui-card__heading"><strong class="ake-ui-card__title">${escapeHtml(options.name)}</strong>${nickname ? `<span class="ake-ui-card__subtitle">${escapeHtml(nickname)}</span>` : ''}</div>
+                        <span class="ake-ui-badge">Lv.${escapeHtml(options.level)}</span>
+                    </header>
+                    ${description}
+                    ${options.extraHtml || ''}
+                    ${flags.length ? `<div class="ake-ui-card__badges">${flags.join('')}</div>` : ''}
+                    ${renderStats(options.statState, options.formatStatValue)}
+                    ${renderChangedStats(options.statState, options)}
                 </div>
-                ${description}
-                ${options.extraHtml || ''}
-                ${flags.length ? `<div class="v2d-enemy-flags">${flags.join('')}</div>` : ''}
-                ${renderStats(options.statState, options.formatStatValue)}
-                ${renderChangedStats(options.statState, options)}
             </div>
         `;
     }

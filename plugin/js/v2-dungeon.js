@@ -327,23 +327,37 @@
         const mobileOverlay = document.getElementById('v2dungeonMobileListOverlay');
         const mobileContent = document.getElementById('v2dungeonMobileListContent');
 
+        function createDungeonDirectoryItem(series, options = {}) {
+            const item = window.AKEUI.directoryItem({
+                layout: 'entity',
+                title: series.name,
+                id: series.templateId,
+                icon: { src: series.image || '', alt: '' },
+                meta: [{ label: series.gameCategoryName || '', kind: 'dungeon-category' }],
+                accent: { type: 'rarity', value: series.rarity || 1 },
+                active: options.active,
+                attributes: { 'data-series-id': series.templateId },
+                onSelect: options.onSelect
+            });
+            window.AKEModuleOverview?.markVersionChange(item, series);
+            return item;
+        }
+
         function buildMobileList() {
             const filtered = filterSeriesBySearch(allSeries);
             mobileContent.innerHTML = '';
             filtered.forEach(series => {
-                const item = document.createElement('div');
-                item.className = 'v2d-mobile-item';
-                window.AKEModuleOverview?.markVersionChange(item, series);
-                if (series.templateId === activeSeriesId) item.classList.add('active');
-                item.innerHTML = `
-                    <div class="v2d-mobile-name">${series.name}</div>
-                    <div class="v2d-mobile-id">${series.templateId}</div>
-                `;
-                item.addEventListener('click', () => {
-                    activeSeriesId = series.templateId;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', series.templateId);
-                    loadSeriesDetail(series, document.getElementById('v2dungeonDetail'));
-                    closeMobileList();
+                const item = createDungeonDirectoryItem(series, {
+                    active: series.templateId === activeSeriesId,
+                    onSelect: () => {
+                        activeSeriesId = series.templateId;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', series.templateId);
+                        loadSeriesDetail(series, document.getElementById('v2dungeonDetail'));
+                        closeMobileList();
+                        const desktopList = document.getElementById('v2dungeonList');
+                        const activeItem = desktopList?.querySelector(`.ake-ui-directory__item[data-series-id="${CSS.escape(series.templateId)}"]`);
+                        if (activeItem) window.AKEUI.setDirectoryItemActive(desktopList, activeItem);
+                    }
                 });
                 mobileContent.appendChild(item);
             });
@@ -351,11 +365,11 @@
 
         function openMobileList() {
             buildMobileList();
-            mobileOverlay.style.display = 'flex';
+            mobileOverlay.classList.add('is-open'); mobileOverlay.setAttribute('aria-hidden', 'false');
         }
 
         function closeMobileList() {
-            mobileOverlay.style.display = 'none';
+            mobileOverlay.classList.remove('is-open'); mobileOverlay.setAttribute('aria-hidden', 'true');
         }
 
         async function loadSeriesManifest(showHidden) {
@@ -379,7 +393,7 @@
                 group: item => ({ id: item.gameCategory || 'other', name: item.gameCategoryName || t('categories.other'), order: item.categoryOrder }),
                 onReset: () => { activeSeriesId = null; },
                 onSelect: item => { activeSeriesId = item.templateId; renderSeriesList(); },
-                sidebarSelector: item => `.v2d-item[data-series-id="${CSS.escape(item.templateId)}"]`,
+                sidebarSelector: item => `.ake-ui-directory__item[data-series-id="${CSS.escape(item.templateId)}"]`,
                 items: items.map(item => ({ ...item, id: item.templateId, image: item.image, fallback: t('overview.fallback'),
                     tags: [t('overview.stageCount', { count: item.dungeonCount || 0 }), commonT('rarityLabel', { rarity: item.rarity || 1 })] }))
             });
@@ -394,47 +408,25 @@
             container.innerHTML = '';
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="v2d-loader">${t('noMatches')}</div>`;
-                if (detailContainer) detailContainer.innerHTML = `<div class="v2d-loader">${t('select')}</div>`;
+                container.innerHTML = `<div class="ake-ui-state">${t('noMatches')}</div>`;
+                if (detailContainer) detailContainer.innerHTML = `<div class="ake-ui-state">${t('select')}</div>`;
                 activeSeriesId = null;
                 return;
             }
 
             filtered.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = `v2d-item ${item.templateId === activeSeriesId ? 'active' : (index === 0 && !activeSeriesId && !window.AKEModuleOverview?.isActive('dungeon') ? 'active' : '')}`;
-                window.AKEModuleOverview?.markVersionChange(div, item);
-                div.dataset.seriesId = item.templateId;
-
-                const rarityBar = document.createElement('span');
-                rarityBar.className = `v2d-rarity-bar rarity-${item.rarity || 1}`;
-                rarityBar.title = commonT('rarityLabel', { rarity: item.rarity || 1 });
-
-                const infoDiv = document.createElement('div');
-                infoDiv.className = 'v2d-item-info';
-
-                const nameDiv = document.createElement('div');
-                nameDiv.className = 'v2d-item-name';
-                nameDiv.textContent = item.name;
-
-                const idDiv = document.createElement('div');
-                idDiv.className = 'v2d-item-id';
-                idDiv.textContent = item.templateId;
-
-                infoDiv.appendChild(nameDiv);
-                infoDiv.appendChild(idDiv);
-                div.appendChild(rarityBar);
-                div.appendChild(infoDiv);
-
-                div.addEventListener('click', () => {
-                    document.querySelectorAll('.v2d-item').forEach(el => el.classList.remove('active'));
-                    div.classList.add('active');
-                    activeSeriesId = item.templateId;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', item.templateId);
-                    loadSeriesDetail(item, detailContainer);
+                const node = createDungeonDirectoryItem(item, {
+                    active: item.templateId === activeSeriesId
+                        || (index === 0 && !activeSeriesId && !window.AKEModuleOverview?.isActive('dungeon')),
+                    onSelect: () => {
+                        window.AKEUI.setDirectoryItemActive(container, node);
+                        activeSeriesId = item.templateId;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', item.templateId);
+                        loadSeriesDetail(item, detailContainer);
+                    }
                 });
 
-                container.appendChild(div);
+                container.appendChild(node);
             });
 
             if (window.__deepLinkId) {
@@ -458,15 +450,15 @@
                     return;
                 }
                 activeSeriesId = filtered[0].templateId;
-                const firstItem = container.querySelector('.v2d-item');
-                if (firstItem) firstItem.classList.add('active');
+                const firstItem = container.querySelector('.ake-ui-directory__item');
+                if (firstItem) window.AKEUI.setDirectoryItemActive(container, firstItem);
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', activeSeriesId);
                 loadSeriesDetail(filtered[0], detailContainer);
             } else if (activeExists) {
                 const activeItem = filtered.find(s => s.templateId === activeSeriesId);
                 if (activeItem) {
-                    const activeDiv = container.querySelector(`.v2d-item[data-series-id="${activeSeriesId}"]`);
-                    if (activeDiv) activeDiv.classList.add('active');
+                    const activeDiv = container.querySelector(`.ake-ui-directory__item[data-series-id="${activeSeriesId}"]`);
+                    if (activeDiv) window.AKEUI.setDirectoryItemActive(container, activeDiv);
                     if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', activeSeriesId);
                     loadSeriesDetail(activeItem, detailContainer);
                 }
@@ -474,7 +466,7 @@
         }
 
         async function loadSeriesDetail(seriesItem, container) {
-            container.innerHTML = `<div class="v2d-loader">${t('loading')}</div>`;
+            container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(seriesItem.contentFile).then(r => r.json());
                 await window.AKECombatData?.enrichDungeonScripts(data);
@@ -483,7 +475,7 @@
                 container.innerHTML = renderDetail(data, seriesItem);
                 window.AKEModuleOverview?.renderVersionDiff(container, data, data.__versionDiff?.baseline ? renderDetail(data.__versionDiff.baseline, seriesItem) : '');
             } catch (err) {
-                container.innerHTML = `<div class="v2d-error">${t('loadFailed', { message: err.message })}</div>`;
+                container.innerHTML = `<div class="ake-ui-state" data-state="error">${t('loadFailed', { message: err.message })}</div>`;
             }
         }
 
@@ -789,21 +781,21 @@
             const dungeonIconHtml = dungeonIconSrc ? `<img class="v2d-card-icon" src="${dungeonIconSrc}">` : '';
 
             return `
-                <div class="v2d-card">
+                <div class="ake-ui-card" data-card-kind="dungeon" data-density="regular">
                     ${cardBgHtml}
-                    <div class="v2d-card-header">
+                    <div class="ake-ui-card__header">
                         ${dungeonIconHtml}
-                        <h4 class="v2d-card-name">${name}</h4>
+                        <h4 class="ake-ui-card__title">${name}</h4>
                         ${level ? `<span class="v2d-card-level">${level}</span>` : ''}
-                        <span class="v2d-card-id">${dungeonId}</span>
+                        <span class="ake-ui-card__id">${dungeonId}</span>
                     </div>
-                    ${desc ? `<div class="v2d-card-desc">${desc}</div>` : ''}
+                    ${desc ? `<div class="ake-ui-card__body">${desc}</div>` : ''}
                     ${featureDesc ? `<div class="v2d-card-feature">${featureDesc}</div>` : ''}
                     ${goalsHtml}
-                    <div class="v2d-card-meta">
-                        ${costStamina > 0 ? `<div><span class="v2d-meta-label">${t('meta.staminaCost')}</span> ${costStamina}</div>` : ''}
-                        ${recommendLv ? `<div><span class="v2d-meta-label">${t('meta.recommendedLevel')}</span> ${recommendLv}</div>` : ''}
-                        ${categoryLabel ? `<div><span class="v2d-meta-label">${t('meta.category')}</span> ${categoryLabel}</div>` : ''}
+                    <div class="ake-ui-card__meta">
+                        ${costStamina > 0 ? `<div><span class="ake-ui-meta-label">${t('meta.staminaCost')}</span> ${costStamina}</div>` : ''}
+                        ${recommendLv ? `<div><span class="ake-ui-meta-label">${t('meta.recommendedLevel')}</span> ${recommendLv}</div>` : ''}
+                        ${categoryLabel ? `<div><span class="ake-ui-meta-label">${t('meta.category')}</span> ${categoryLabel}</div>` : ''}
                     </div>
                     ${waveSummaryHtml}
                     ${rewardsHtml}
@@ -824,16 +816,16 @@
             const dungeons = data.dungeontable || {};
             const dungeonIds = Object.keys(dungeons);
             if (dungeonIds.length === 0) {
-                return `<div class="v2d-error">${t('noData')}</div>`;
+                return `<div class="ake-ui-state" data-state="error">${t('noData')}</div>`;
             }
 
             const includeIds = data.dungeonseriestable?.includeDungeonIds || dungeonIds;
             const orderedIds = includeIds.filter(id => dungeons[id]);
 
             let metaHtml = '';
-            if (categoryLabel) metaHtml += `<span class="v2d-series-tag">${categoryLabel}</span>`;
-            if (staminaText) metaHtml += `<span class="v2d-series-tag">${t('stamina', { value: staminaText })}</span>`;
-            if (metaHtml) metaHtml = `<div class="v2d-series-meta">${metaHtml}</div>`;
+            if (categoryLabel) metaHtml += `<span class="ake-ui-badge">${categoryLabel}</span>`;
+            if (staminaText) metaHtml += `<span class="ake-ui-badge">${t('stamina', { value: staminaText })}</span>`;
+            if (metaHtml) metaHtml = `<div class="ake-ui-detail-badges">${metaHtml}</div>`;
 
             const bgSrc = picPath ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/dungeon/${picPath}_bg.png` : '';
             const bgImg = bgSrc ? `<img class="v2d-series-bg" src="${bgSrc}">` : '';
@@ -846,12 +838,12 @@
                 dungeonsHtml += renderDungeonCard(id, dungeons[id]);
             });
 
-            return `
+            return `<article class="ake-ui-detail" data-detail-kind="dungeon">
                 <div class="v2d-series-banner">
                     ${bgImg}
                     <div class="v2d-series-header">
-                        <h2 class="v2d-series-title">${seriesName}</h2>
-                        <span class="v2d-series-id">${data.dungeonSeriesId || seriesItem.templateId}</span>
+                        <h2 class="ake-ui-detail-title">${seriesName}</h2>
+                        <span class="ake-ui-detail-id">${data.dungeonSeriesId || seriesItem.templateId}</span>
                     </div>
                     ${roleImgHtml}
                 </div>
@@ -860,6 +852,7 @@
                 <div class="v2d-dungeons">
                     ${dungeonsHtml}
                 </div>
+                </article>
             `;
         }
 
@@ -925,16 +918,16 @@
 
             document.addEventListener('click', (e) => {
                 const wl = e.target.closest('.v2d-wave-line');
-                if (wl) { const b = wl.closest('.v2d-card'); if (b && wl.dataset.waveIdx !== undefined) switchWave(wl.dataset.waveIdx, b); return; }
+                if (wl) { const b = wl.closest('[data-card-kind="dungeon"]'); if (b && wl.dataset.waveIdx !== undefined) switchWave(wl.dataset.waveIdx, b); return; }
                 const we = e.target.closest('.v2d-wave-enemy');
-                if (we) { const b = we.closest('.v2d-card'); if (b && we.dataset.waveIdx !== undefined) switchWave(we.dataset.waveIdx, b); return; }
+                if (we) { const b = we.closest('[data-card-kind="dungeon"]'); if (b && we.dataset.waveIdx !== undefined) switchWave(we.dataset.waveIdx, b); return; }
             });
 
             document.addEventListener('mouseover', (e) => {
                 const spot = e.target.closest('.v2d-map-spot');
                 if (spot) {
                     const map = spot.closest('.v2d-spawn-map');
-                    const card = spot.closest('.v2d-card');
+                    const card = spot.closest('[data-card-kind="dungeon"]');
                     if (!map) return;
                     adjustTipPosition(spot, map);
                     const gk = spot.dataset.group, tg = spot.dataset.targetGroup, wi = spot.dataset.wave;
@@ -954,7 +947,7 @@
                 }
                 const we = e.target.closest('.v2d-wave-enemy');
                 if (we) {
-                    const card = we.closest('.v2d-card');
+                    const card = we.closest('[data-card-kind="dungeon"]');
                     if (!card) return;
                     const map = card.querySelector('.v2d-spawn-map');
                     if (!map) return;
@@ -978,7 +971,7 @@
                 const spot = e.target.closest('.v2d-map-spot');
                 const we = e.target.closest('.v2d-wave-enemy');
                 if (!spot && !we) return;
-                const card = (spot || we)?.closest('.v2d-card');
+                const card = (spot || we)?.closest('[data-card-kind="dungeon"]');
                 if (card) clearHL(card);
             });
 

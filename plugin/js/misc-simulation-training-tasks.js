@@ -61,7 +61,7 @@
 
                 if (!section || !content || !meta) return;
                 if (!table) {
-                    content.innerHTML = '<section class="misc-empty-state" role="alert"><h3>数据接口不可用</h3><p>未找到 AKEV3 TableCfg 读取接口。</p></section>';
+                    content.innerHTML = '<section class="ake-ui-state" role="alert"><h3>数据接口不可用</h3><p>未找到 AKEV3 TableCfg 读取接口。</p></section>';
                     return;
                 }
 
@@ -81,7 +81,7 @@
                     const taskMap = taskConfigs?.[ACTIVITY_ID]?.TaskConfigMap;
                     if (!taskMap || !Object.keys(taskMap).length) {
                         const missing = !Object.keys(taskConfigs || {}).length;
-                        content.innerHTML = `<section class="misc-empty-state" role="${missing ? 'alert' : 'status'}"><h3>${missing ? '任务配置表不可用' : '本期没有演武集算任务'}</h3><p>${missing ? '任务配置数据未能加载。' : '当前活动没有可展示的任务。'}</p></section>`;
+                        content.innerHTML = `<section class="ake-ui-state" role="${missing ? 'alert' : 'status'}"><h3>${missing ? '任务配置表不可用' : '本期没有演武集算任务'}</h3><p>${missing ? '任务配置数据未能加载。' : '当前活动没有可展示的任务。'}</p></section>`;
                         meta.textContent = activity ? text(activity.name, '演武集算') : '演武集算';
                         return;
                     }
@@ -148,12 +148,12 @@
                         grouped.get(name).push(task);
                     });
                     const order = ['单局收益', '累计收益', '奖励演算', '自由演算', '数据溢出', '累计伤害'];
-                    content.innerHTML = `${warnings.length ? `<aside class="misc-data-warning" role="note"><h3>部分数据不可用</h3><ul>${warnings.map(warning => `<li>${escape(warning)}</li>`).join('')}</ul></aside>` : ''}${order.filter(name => grouped.has(name)).map(name => `<section class="misc-task-group" aria-labelledby="simulation-${escape(name)}"><h3 id="simulation-${escape(name)}">${escape(name)} <small>${escape(grouped.get(name).length)} 项</small></h3><div class="misc-task-list">${grouped.get(name).map(task => `<article class="misc-task-card"><header>${showHidden ? `<span class="misc-task-order">${escape(task.sortId ?? '')}</span>` : ''}<h4>${rich(text(task.desc, showHidden ? task.taskId : '任务描述不可用'))}</h4></header>${conditionView(task)}<footer>${showHidden ? `<code>${escape(task.taskId)}</code>` : ''}${rewardView(task.rewardId)}</footer></article>`).join('')}</div></section>`).join('')}`;
+                    content.innerHTML = `${warnings.length ? `<aside class="misc-data-warning" role="note"><h3>部分数据不可用</h3><ul>${warnings.map(warning => `<li>${escape(warning)}</li>`).join('')}</ul></aside>` : ''}${order.filter(name => grouped.has(name)).map(name => `<section class="ake-ui-section" data-section-kind="misc-task-group" aria-labelledby="simulation-${escape(name)}"><header class="ake-ui-section__header"><h3 class="ake-ui-section__title" id="simulation-${escape(name)}">${escape(name)} <small>${escape(grouped.get(name).length)} 项</small></h3></header><div class="ake-ui-card-grid" data-size="regular">${grouped.get(name).map(task => `<article class="ake-ui-card" data-card-kind="misc-task"><header class="ake-ui-card__header">${showHidden ? `<span class="misc-task-order">${escape(task.sortId ?? '')}</span>` : ''}<h4 class="ake-ui-card__title">${rich(text(task.desc, showHidden ? task.taskId : '任务描述不可用'))}</h4></header>${conditionView(task)}<footer class="ake-ui-card__footer">${showHidden ? `<code>${escape(task.taskId)}</code>` : ''}${rewardView(task.rewardId)}</footer></article>`).join('')}</div></section>`).join('')}`;
                 } catch (error) {
                     if (inactive()) return;
                     console.error('演武集算任务加载失败', error);
                     meta.textContent = '演武集算';
-                    content.innerHTML = `<section class="misc-empty-state" role="alert"><h3>演武集算任务加载失败</h3><p>${escape(error?.message || error)}</p></section>`;
+                    content.innerHTML = `<section class="ake-ui-state" role="alert"><h3>演武集算任务加载失败</h3><p>${escape(error?.message || error)}</p></section>`;
                 }
             },
             destroy() {

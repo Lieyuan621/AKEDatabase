@@ -2,6 +2,18 @@ AKEData đã chuyển sang tên miền www.akedata.wiki. Tên miền cũ akedata
 
 # Nhật ký cập nhật phiên bản AKEData
 
+### v1.2.11
+
+#### Điều hướng cấp hai và giao diện dùng chung
+
+- Điều hướng cấp hai của các mô-đun tra cứu chính đã được xây dựng lại, thống nhất cấu trúc mục, trạng thái đang chọn, số lượng, dấu thay đổi phiên bản, tìm kiếm, bộ lọc và thao tác trên máy tính lẫn thiết bị di động.
+- Bổ sung lớp giao diện dùng chung cho nút, ô nhập, danh sách chọn, công tắc, bộ lọc, thẻ, trạng thái và bảng, giúp giảm khác biệt về hiển thị và thao tác giữa các mô-đun.
+
+#### Cài đặt và hiển thị
+
+- Thiết kế lại cửa sổ cài đặt chung và thông báo trang web, sắp xếp thông tin rõ ràng hơn và thống nhất giao diện sáng, tối cùng chế độ dịu mắt.
+- Thống nhất trạng thái đang tải, không có nội dung và lỗi. Tiêu đề cùng nội dung của bảng dùng chung nay được căn giữa theo mặc định.
+
 ### v1.2.10-1
 
 #### So sánh phiên bản Kho lưu trữ

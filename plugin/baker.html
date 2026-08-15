@@ -1,30 +1,31 @@
 <script src="/plugin/js/v3-table-data.js"></script>
-<link rel="stylesheet" href="/theme/baker.css">
-<div class="baker-module" id="bakerModule">
-    <aside class="baker-sidebar" id="bakerSidebar">
-        <header class="baker-brand">
-            <div class="baker-brand__mark" aria-hidden="true">B</div>
+<script src="/plugin/js/module-overview.js"></script>
+<div class="ake-ui-directory" id="bakerModule" data-ake-module="baker">
+    <aside class="ake-ui-directory__sidebar" id="bakerSidebar">
+        <header class="ake-ui-directory__sidebar-header">
             <div>
                 <h1>Baker</h1>
-                <p id="bakerContactSummary">正在读取联系人</p>
+                <small id="bakerContactSummary">正在读取联系人</small>
             </div>
         </header>
-        <label class="baker-search">
-            <span aria-hidden="true">⌕</span>
+        <label class="ake-ui-directory__search">
+            <span class="ake-ui-directory__search-icon" aria-hidden="true"></span>
             <input id="bakerSearchInput" type="search" autocomplete="off" placeholder="搜索联系人、群聊或消息">
         </label>
-        <div class="baker-segments" id="bakerTypeFilter" role="group" aria-label="会话类型">
-            <button type="button" class="active" data-baker-type="all">全部</button>
-            <button type="button" data-baker-type="3">干员</button>
-            <button type="button" data-baker-type="1">联系人</button>
-            <button type="button" data-baker-type="2">群聊</button>
+        <div class="ake-ui-filter" id="bakerFilterBar">
+            <div class="ake-ui-filter__options" id="bakerTypeFilter" role="group" aria-label="会话类型">
+                <button type="button" class="ake-ui-filter__button is-active" data-baker-type="all" aria-pressed="true">全部</button>
+                <button type="button" class="ake-ui-filter__button" data-baker-type="3" aria-pressed="false">干员</button>
+                <button type="button" class="ake-ui-filter__button" data-baker-type="1" aria-pressed="false">联系人</button>
+                <button type="button" class="ake-ui-filter__button" data-baker-type="2" aria-pressed="false">群聊</button>
+            </div>
         </div>
-        <div class="baker-contact-list" id="bakerContactList"></div>
+        <div class="ake-ui-directory__list" id="bakerContactList"></div>
     </aside>
-    <main class="baker-conversation" id="bakerConversation">
-        <div class="baker-loading"><span></span><b>正在建立 Baker 会话索引</b></div>
+    <main class="ake-ui-directory__content" id="bakerConversation">
+        <div class="ake-ui-state" data-state="loading"><span class="ake-ui-spinner"></span><b>正在建立 Baker 会话索引</b></div>
     </main>
-    <button class="baker-mobile-button" id="bakerMobileButton" type="button" aria-label="打开联系人列表">联系人</button>
-    <button class="baker-mobile-backdrop" id="bakerMobileBackdrop" type="button" aria-label="关闭联系人列表"></button>
+    <button class="ake-ui-directory__mobile-button" id="bakerMobileButton" type="button" aria-label="打开联系人列表">联系人</button>
+    <button class="ake-ui-directory__mobile-overlay" id="bakerMobileBackdrop" type="button" aria-label="关闭联系人列表"></button>
 </div>
 <script src="/plugin/js/baker.js"></script>

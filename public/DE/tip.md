@@ -2,6 +2,18 @@ AKEData ist auf die Domain www.akedata.wiki umgezogen. Die bisherige Domain aked
 
 # AKEData-Versionsprotokoll
 
+### v1.2.11
+
+#### Sekundärnavigation und gemeinsame Oberfläche
+
+- Die Sekundärnavigation der wichtigsten Abfragemodule wurde neu aufgebaut. Struktur, aktive Zustände, Zähler, Versionsänderungsmarkierungen, Suche, Filter sowie Desktop- und Mobilbedienung sind nun vereinheitlicht.
+- Eine gemeinsame Oberflächenschicht für Schaltflächen, Eingaben, Auswahllisten, Schalter, Filter, Karten, Statusansichten und Tabellen reduziert Darstellungs- und Bedienungsunterschiede zwischen Modulen.
+
+#### Einstellungen und Darstellung
+
+- Die Dialoge für globale Einstellungen und Website-Ankündigungen wurden mit klarerer Gliederung und konsistenter Darstellung in hellem, dunklem und augenschonendem Design neu gestaltet.
+- Lade-, Leer- und Fehlerzustände wurden vereinheitlicht. Überschriften und Inhalte gemeinsamer Tabellen sind jetzt standardmäßig zentriert.
+
 ### v1.2.10-1
 
 #### Versionsvergleich im Archiv

@@ -50,89 +50,64 @@
         };
     }
 
-    registerModules(['weapon', 'v2_weapon', 'v3_weapon'], '.weapon-module > .weapon-list', 260,
+    registerModules(['weapon', 'v2_weapon'], '.weapon-module > .weapon-list', 260,
         iconCompact('.weapon-item', '.weapon-icon', '.weapon-title', '.list-items', '.list-search-fixed, .filter-bar'));
     registerModules(['character'], '.character-module > .left-column', 260,
         iconCompact('.character-item', '.character-icon', '.character-name', '.character-list', '.list-search, .filter-bar'));
-    registerModules(['v2_character', 'v3_character'], '.character-module > .left-column', 260, {
+    registerModules(['v2_character'], '.character-module > .left-column', 260, {
         ...iconCompact('.character-item', '.character-icon', '.character-name', '.character-list', '.list-search, .filter-bar'),
         mediaQuery: '(min-width: 769px)'
     });
     registerModules(['enemy'], '.enemy-module > .left-column', 260, { minWidth: 144 });
-    registerModules(['v2_enemy', 'v3_enemy'], '.v2e-module > .v2e-left', 260,
+    registerModules(['v2_enemy'], '.v2e-module > .v2e-left', 260,
         iconCompact('.v2e-item', '.v2e-item-icon', '.v2e-item-name', '.v2e-list', '.v2e-search'));
     registerModules(['equip'], '.equip-module > .left-column', 260, { minWidth: 144 });
-    registerModules(['v2_equip', 'v3_equip'], '.v2eq-module > .v2eq-left', 260,
+    registerModules(['v2_equip'], '.v2eq-module > .v2eq-left', 260,
         iconCompact('.v2eq-item', '.v2eq-item-icon', '.v2eq-item-name', '.v2eq-list', '.v2eq-search'));
     registerModules(['item'], '.item-module > .left-column', 260, { minWidth: 144 });
-    registerModules(['v2_item', 'v3_item'], '.v2i-module > .v2i-left', 260,
+    registerModules(['v2_item'], '.v2i-module > .v2i-left', 260,
         iconCompact('.v2i-item', '.v2i-item-icon', '.v2i-item-name', '.v2i-list', '.v2i-search, .v2i-filter-bar'));
     registerModules(['dungeon'], '.dungeon-module > .left-column', 240, {
         minWidth: 128,
         compactThreshold: 180
     });
-    registerModules(['v2_dungeon', 'v3_dungeon'], '.v2d-module > .v2d-left', 260, {
+    registerModules(['v2_dungeon'], '.v2d-module > .v2d-left', 260, {
         minWidth: 128,
         compactThreshold: 180,
         compactListSelector: '.v2d-list'
     });
-    registerModules(['achievement', 'v3_achievement'], '.achievement-module > .left-column', 220, {
+    registerModules(['achievement'], '.achievement-module > .left-column', 220, {
         minWidth: 120,
         compactThreshold: 160,
         compactListSelector: '.category-list'
     });
-    registerModules(['activity', 'v3_activity'], '.activity-module > .left-column', 260, {
+    registerModules(['activity'], '.activity-module > .left-column', 260, {
         minWidth: 144,
         compactThreshold: 180,
         compactListSelector: '.activity-list'
     });
-    registerModules(['v2_cc', 'v3_cc'], '.v2cc-module > .v2cc-left', 260, {
+    registerModules(['v2_cc'], '.v2cc-module > .v2cc-left', 260, {
         ...iconCompact('.v2cc-item', '.v2cc-item-icon', '.v2cc-item-name', '.v2cc-list', '.v2cc-search', {
             minWidth: 80,
             compactThreshold: 150
         }),
         mediaQuery: '(min-width: 769px)'
     });
-    registerModules(['research'], '.research-module > .left-column', 260, {
-        minWidth: 120,
-        compactThreshold: 160,
-        compactListSelector: '.research-list',
-        mediaQuery: '(min-width: 769px)'
-    });
-    registerModules(['v3_shop'], '.akeshop-module > .akeshop-sidebar', 282, {
-        minWidth: 144,
-        compactThreshold: 180,
-        compactListSelector: '.akeshop-group-list'
-    });
-    registerModules(['season_tower'], '.st-module > .st-sidebar', 260, {
-        minWidth: 136,
-        compactThreshold: 180,
-        compactListSelector: '.st-season-list'
-    });
-    registerModules(['v3_mission'], '.mission-module > .mission-sidebar', 292, {
-        minWidth: 160,
-        compactThreshold: 200,
-        compactListSelector: '.mission-list'
-    });
-    registerModules(['v3_archive'], '#akeArchiveSidebar', 292, {
-        minWidth: 160,
-        compactThreshold: 200,
-        compactListSelector: '#akeArchiveDirectory',
-        layout: 'grid',
-        mediaQuery: '(min-width: 1000px)'
-    });
-    registerModules(['misc'], '.misc-module > .misc-sidebar', 264, {
-        minWidth: 180,
-        maxWidth: 420,
+    registerModules([
+        'v3_weapon', 'v3_character', 'v3_enemy', 'v3_equip', 'v3_item',
+        'v3_shop', 'v3_achievement', 'v3_dungeon', 'research', 'v3_archive',
+        'v3_activity', 'v3_mission', 'misc', 'baker', 'v3_cc', 'season_tower',
+        'v3_skill', 'v3_buff'
+    ], '.ake-ui-directory > .ake-ui-directory__sidebar', 280, {
+        ...iconCompact(
+            '.ake-ui-directory__item',
+            '.ake-ui-directory__item-icon',
+            '.ake-ui-directory__item-copy',
+            '.ake-ui-directory__list',
+            '.ake-ui-directory__sidebar-header, .ake-ui-directory__search, .ake-ui-directory__meta, .ake-ui-filter',
+            { minWidth: 255, compactThreshold: 180 }
+        ),
         layout: 'grid'
-    });
-    registerModules(['baker'], '.baker-module > .baker-sidebar', 318, {
-        ...iconCompact('.baker-contact', '.baker-avatar', '.baker-contact__name', '.baker-contact-list', '.baker-brand > div:last-child, .baker-search', {
-            minWidth: 96,
-            compactThreshold: 180
-        }),
-        layout: 'grid',
-        mediaQuery: '(min-width: 761px)'
     });
     registerModules(['buff'], '.buff-module > .left-column', 350, {
         minWidth: 144
@@ -157,19 +132,23 @@
             .ake-resizable-sidebar.ake-resizable-sidebar--active { overflow: visible !important; }
             .ake-resizable-sidebar.ake-sidebar-compact .ake-sidebar-compact-hidden { display: none !important; }
             .ake-resizable-sidebar.ake-sidebar-compact .ake-sidebar-icon-list { padding: 6px !important; }
+            .ake-resizable-sidebar.ake-sidebar-compact .ake-ui-directory__item:has(> .ake-ui-directory__item-icon),
             .ake-resizable-sidebar.ake-sidebar-compact .ake-sidebar-icon-item {
                 width: 100%;
-                min-height: 60px;
+                height: 58px;
+                min-height: 58px;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
                 gap: 0 !important;
-                padding: 6px !important;
+                padding: 4px !important;
                 overflow: hidden;
             }
+            .ake-resizable-sidebar.ake-sidebar-compact .ake-ui-directory__item:has(> .ake-ui-directory__item-icon) > :not(.ake-ui-directory__item-icon),
             .ake-resizable-sidebar.ake-sidebar-compact .ake-sidebar-icon-item > :not(.ake-sidebar-item-icon) {
                 display: none !important;
             }
+            .ake-resizable-sidebar.ake-sidebar-compact .ake-ui-directory__item > .ake-ui-directory__item-icon,
             .ake-resizable-sidebar.ake-sidebar-compact .ake-sidebar-item-icon {
                 width: 48px !important;
                 height: 48px !important;
@@ -178,28 +157,8 @@
                 margin: 0 !important;
                 object-fit: contain;
             }
-            .baker-sidebar.ake-sidebar-compact .baker-brand {
-                justify-content: center;
-                padding: 12px 0 8px;
-            }
-            .baker-sidebar.ake-sidebar-compact .baker-segments {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 4px;
-                margin: 0 6px 8px;
-            }
-            .baker-sidebar.ake-sidebar-compact .baker-segments button {
-                min-width: 0;
-                padding: 5px 2px;
-                font-size: 0.65rem;
-            }
             .ake-resizable-sidebar.ake-sidebar-compact .v2d-item-id,
-            .ake-resizable-sidebar.ake-sidebar-compact .activity-id,
-            .ake-resizable-sidebar.ake-sidebar-compact .akeshop-group-copy small,
-            .ake-resizable-sidebar.ake-sidebar-compact .akeshop-group-count,
-            .ake-resizable-sidebar.ake-sidebar-compact .st-sidebar-head small,
-            .ake-resizable-sidebar.ake-sidebar-compact .st-season-item small,
-            .ake-resizable-sidebar.ake-sidebar-compact .mission-list-item__id,
-            .ake-resizable-sidebar.ake-sidebar-compact .mission-list-item__meta {
+            .ake-resizable-sidebar.ake-sidebar-compact .activity-id {
                 display: none !important;
             }
             .ake-sidebar-resize-handle {
@@ -367,8 +326,9 @@
                     ? item.querySelector(config.compactLabelSelector)
                     : null;
                 const hasIcon = hasUsableIcon(icon);
-                item.classList.toggle('ake-sidebar-icon-item', hasIcon);
-                icon?.classList.toggle('ake-sidebar-item-icon', hasIcon);
+                const usesAkeUiTemplate = item.classList.contains('ake-ui-directory__item');
+                item.classList.toggle('ake-sidebar-icon-item', hasIcon && !usesAkeUiTemplate);
+                icon?.classList.toggle('ake-sidebar-item-icon', hasIcon && !usesAkeUiTemplate);
                 if (hasIcon && label?.textContent.trim() && !item.hasAttribute('title')) {
                     item.title = label.textContent.trim();
                 }

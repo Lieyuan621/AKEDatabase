@@ -2,6 +2,18 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.2.11
+
+#### Secondary navigation and shared interface
+
+- Rebuilt secondary navigation across the main query modules with consistent item layouts, active states, counts, version-change markers, search, filters, and desktop/mobile interactions.
+- Introduced a shared interface layer for buttons, inputs, selects, switches, filters, cards, states, and tables, reducing visual and behavioral differences between modules.
+
+#### Settings and presentation
+
+- Redesigned the global settings and site announcement dialogs with clearer grouping and consistent light, dark, and eye-comfort themes.
+- Standardized loading, empty, and error states. Shared table headers and body content are now centered by default.
+
 ### v1.2.10-1
 
 #### Archive version comparison

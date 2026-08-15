@@ -1,26 +1,24 @@
 <!-- plugin/research.html -->
-<link rel="stylesheet" href="/theme/research.css">
-<link rel="stylesheet" href="/theme/module-overview.css">
 <script src="/plugin/js/module-overview.js"></script>
 
-<div class="research-module">
-    <div class="left-column">
-        <div class="list-search">
-            <input type="text" id="researchSearchInput" data-i18n-placeholder="modules.research.search" class="search-input">
-        </div>
-        <div class="research-list" id="researchList"></div>
-    </div>
-    <div class="research-detail" id="researchDetail">
-        <div class="loader" data-i18n="modules.research.loading">modules.research.loading</div>
-    </div>
-    <div class="research-toc" id="researchToc"></div>
-    <div class="toc-toggle-btn" id="tocToggleBtn" data-i18n="modules.research.index">modules.research.index</div>
-    <div class="mobile-list-btn" id="researchMobileListBtn" data-i18n="common.mobileList">common.mobileList</div>
-    <div id="researchMobileListOverlay" class="mobile-list-overlay">
-        <div class="mobile-list-container">
-            <div class="mobile-list-header" data-i18n="modules.research.select">modules.research.select</div>
-            <div class="mobile-list-content" id="researchMobileListContent"></div>
-        </div>
+<div class="ake-ui-directory" data-ake-module="research">
+    <aside class="ake-ui-directory__sidebar">
+        <label class="ake-ui-directory__search">
+            <input type="text" id="researchSearchInput" data-i18n-placeholder="modules.research.search" class="ake-ui-input">
+        </label>
+        <div class="ake-ui-directory__list" id="researchList"></div>
+    </aside>
+    <main class="ake-ui-directory__content" id="researchDetail">
+        <div class="ake-ui-state" data-state="loading" data-i18n="modules.research.loading">modules.research.loading</div>
+    </main>
+    <div class="ake-ui-toc" id="researchToc"></div>
+    <button class="ake-ui-toc__toggle" id="tocToggleBtn" type="button" data-i18n="modules.research.index">modules.research.index</button>
+    <button class="ake-ui-directory__mobile-button" id="researchMobileListBtn" type="button" data-i18n="common.mobileList">common.mobileList</button>
+    <div id="researchMobileListOverlay" class="ake-ui-directory__mobile-overlay" aria-hidden="true">
+        <section class="ake-ui-directory__mobile-panel">
+            <header class="ake-ui-directory__mobile-header" data-i18n="modules.research.select">modules.research.select</header>
+            <div class="ake-ui-directory__mobile-list" id="researchMobileListContent"></div>
+        </section>
     </div>
 </div>
 

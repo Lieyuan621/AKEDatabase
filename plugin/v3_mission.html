@@ -1,32 +1,47 @@
-<link rel="stylesheet" href="/theme/mission.css?missionStyle=3">
-<div class="mission-module" id="missionModule">
-    <aside class="mission-sidebar" id="missionSidebar" aria-label="任务列表">
-        <div class="mission-sidebar__header">
-            <button class="mission-home-button" id="missionHomeButton" type="button" title="任务总览" aria-label="任务总览">⌂</button>
-            <label class="mission-search">
-                <span aria-hidden="true">⌕</span>
+<script src="/plugin/js/module-overview.js"></script>
+<div class="ake-ui-directory" id="missionModule" data-ake-module="mission">
+    <aside class="ake-ui-directory__sidebar" id="missionSidebar" aria-label="任务列表">
+        <header class="ake-ui-directory__sidebar-header">
+            <button class="ake-ui-icon-button" id="missionHomeButton" type="button" title="任务总览" aria-label="任务总览"><span class="ake-module-home__icon" aria-hidden="true">&#8962;</span></button>
+            <label class="ake-ui-directory__search">
+                <span class="ake-ui-directory__search-icon" aria-hidden="true"></span>
                 <input id="missionSearchInput" type="search" autocomplete="off" placeholder="搜索任务名称、ID、目标或对话">
             </label>
+        </header>
+        <div class="ake-ui-filter" id="missionFilterBar">
+            <div class="ake-ui-filter__group">
+                <span class="ake-ui-filter__label">任务类型</span>
+                <div class="ake-ui-filter__options">
+                    <select class="ake-ui-control ake-ui-control--select" id="missionTypeFilter" aria-label="任务类型"><option value="all">全部类型</option></select>
+                </div>
+            </div>
+            <div class="ake-ui-filter__group">
+                <span class="ake-ui-filter__label">任务章节</span>
+                <div class="ake-ui-filter__options">
+                    <select class="ake-ui-control ake-ui-control--select" id="missionChapterFilter" aria-label="任务章节">
+                        <option value="all">全部章节</option>
+                        <option value="1">第一章</option>
+                        <option value="2">第二章</option>
+                        <option value="0">未分章</option>
+                    </select>
+                </div>
+            </div>
+            <div class="ake-ui-filter__group">
+                <span class="ake-ui-filter__label">显示范围</span>
+                <div class="ake-ui-filter__options">
+                    <label class="ake-ui-toggle"><input id="missionHiddenToggle" type="checkbox"> 内部任务</label>
+                </div>
+            </div>
         </div>
-        <div class="mission-filters">
-            <select id="missionTypeFilter" aria-label="任务类型"><option value="all">全部类型</option></select>
-            <select id="missionChapterFilter" aria-label="任务章节">
-                <option value="all">全部章节</option>
-                <option value="1">第一章</option>
-                <option value="2">第二章</option>
-                <option value="0">未分章</option>
-            </select>
-            <label class="mission-hidden-toggle"><input id="missionHiddenToggle" type="checkbox"> 内部任务</label>
-        </div>
-        <div class="mission-list-summary" id="missionListSummary">读取任务数据…</div>
-        <div class="mission-list" id="missionList"></div>
+        <div class="ake-ui-directory__meta" id="missionListSummary">读取任务数据…</div>
+        <div class="ake-ui-directory__list" id="missionList"></div>
     </aside>
 
-    <main class="mission-detail" id="missionDetail">
-        <div class="mission-loading"><span></span><p>正在建立任务索引…</p></div>
+    <main class="ake-ui-directory__content" id="missionDetail">
+        <div class="ake-ui-state" data-state="loading"><span class="ake-ui-spinner"></span><p>正在建立任务索引…</p></div>
     </main>
 
-    <button class="mission-mobile-list-button" id="missionMobileListButton" type="button">任务列表</button>
-    <button class="mission-mobile-backdrop" id="missionMobileBackdrop" type="button" aria-label="关闭任务列表"></button>
+    <button class="ake-ui-directory__mobile-button" id="missionMobileListButton" type="button">任务列表</button>
+    <button class="ake-ui-directory__mobile-overlay" id="missionMobileBackdrop" type="button" aria-label="关闭任务列表"></button>
 </div>
 <script src="/plugin/js/mission.js?missionModule=5"></script>
