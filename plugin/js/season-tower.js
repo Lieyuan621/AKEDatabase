@@ -424,13 +424,22 @@
 
     function seasonButton(season) {
         const status = seasonStatus(season);
-        return `<button class="ake-ui-directory__item" type="button" data-season-id="${escapeHtml(season.id)}" data-ake-status="${status.key}"${season.id === activeSeasonId ? ' aria-current="true"' : ''}><span class="ake-ui-directory__item-id">S${String(season.id).padStart(2, '0')}</span><span class="ake-ui-directory__item-copy"><b class="ake-ui-directory__item-title">${escapeHtml(season.name)}</b><small class="ake-ui-directory__item-subtitle">${formatDate(season.openTime).split(' ')[0]} — ${formatDate(season.closeTime).split(' ')[0]}</small></span><i class="st-status-dot st-status-dot--${status.key}" title="${status.label}"></i></button>`;
+        const seasonCode = `S${String(season.id).padStart(2, '0')}`;
+        return window.AKEUI.directoryItem({
+            layout: 'entity',
+            title: season.name,
+            subtitle: `${formatDate(season.openTime).split(' ')[0]} - ${formatDate(season.closeTime).split(' ')[0]}`,
+            icon: window.AKEUI.element('span', 'ake-ui-directory__item-icon is-symbol', seasonCode),
+            meta: [{ label: status.label, kind: `status-${status.key}` }],
+            accent: { type: 'status', value: status.key },
+            active: season.id === activeSeasonId,
+            attributes: { 'data-season-id': season.id }
+        });
     }
 
     function renderLists() {
-        const html = seasons.map(seasonButton).join('');
-        list.innerHTML = html;
-        mobileList.innerHTML = html;
+        list.replaceChildren(...seasons.map(seasonButton));
+        mobileList.replaceChildren(...seasons.map(seasonButton));
     }
 
     function selectSeason(id, updateUrl) {

@@ -1,4 +1,5 @@
 <script src="/plugin/js/v3-table-data.js"></script>
+<script src="/plugin/js/module-overview.js"></script>
 <div class="ake-ui-directory" id="akeArchiveModule" data-ake-module="archive">
     <aside class="ake-ui-directory__sidebar" id="akeArchiveSidebar" data-i18n-aria-label="modules.archive.directory.title" aria-label="档案目录">
         <header class="ake-ui-directory__sidebar-header">
@@ -14,11 +15,11 @@
                 title="全部档案"
                 data-i18n-aria-label="modules.archive.directory.all"
                 data-i18n-title="modules.archive.directory.all"
-            >&#8962;</button>
+            ><span class="ake-module-home__icon" aria-hidden="true">&#8962;</span></button>
         </header>
 
         <label class="ake-ui-directory__search" for="akeArchiveSearch">
-            <span aria-hidden="true">&#8981;</span>
+            <span class="ake-ui-directory__search-icon" aria-hidden="true"></span>
             <input
                 id="akeArchiveSearch"
                 type="search"
@@ -79,7 +80,7 @@
                 >&times;</button>
             </header>
             <label class="ake-ui-directory__search ake-ui-directory__search--mobile" for="akeArchiveMobileSearch">
-                <span aria-hidden="true">&#8981;</span>
+                <span class="ake-ui-directory__search-icon" aria-hidden="true"></span>
                 <input
                     id="akeArchiveMobileSearch"
                     type="search"

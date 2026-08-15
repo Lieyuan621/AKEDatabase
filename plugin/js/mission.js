@@ -18,7 +18,11 @@
         11: { name: '活动任务', enumName: 'Activity', view: 'activity' },
         12: { name: '待开放主线', enumName: 'TBCMain', view: 'main' }
     };
-    const IMPORTANCE = { 1: '高', 2: '中', 3: '低' };
+    const TYPE_IDS_BY_ENUM = Object.fromEntries(
+        Object.entries(TYPE_DEFS).map(([id, definition]) => [definition.enumName, Number(id)])
+    );
+    const IMPORTANCE = { 1: '高', 2: '中', 3: '低', High: '高', Mid: '中', Low: '低' };
+    const IMPORTANCE_LEVEL = { 1: '1', 2: '2', 3: '3', High: '1', Mid: '2', Low: '3' };
     const QUEST_TYPES = { 0: '普通', 1: '阻断', 2: '可选' };
     const TABLE_NAMES = {
         auxiliary: ['RewardTable', 'ItemTable', 'LevelDescTable', 'CharacterTable', 'MissionExtraInfoTable'],
@@ -50,6 +54,7 @@
 
     const elements = {
         search: document.getElementById('missionSearchInput'),
+        filterPanel: document.getElementById('missionFilterBar'),
         type: document.getElementById('missionTypeFilter'),
         chapter: document.getElementById('missionChapterFilter'),
         hidden: document.getElementById('missionHiddenToggle'),
@@ -60,6 +65,14 @@
         mobile: document.getElementById('missionMobileListButton'),
         backdrop: document.getElementById('missionMobileBackdrop')
     };
+
+    function updateFilterSummary() {
+        const count = Number(state.type !== 'all') + Number(state.chapter !== 'all') + Number(state.showHidden);
+        window.AKEUI?.updateFilterPanel(elements.filterPanel, {
+            expanded: true,
+            summary: count ? `筛选 (${count})` : '筛选'
+        });
+    }
 
     function escapeHtml(value) {
         return String(value ?? '').replace(/[&<>"']/g, char => ({
@@ -95,6 +108,12 @@
             visible: config.isVisible !== undefined ? Boolean(config.isVisible) : type !== 4 && type !== 8,
             priority: Number(config.typePriority ?? 0)
         };
+    }
+
+    function missionTypeId(value) {
+        const numeric = Number(value);
+        if (Number.isFinite(numeric)) return numeric;
+        return TYPE_IDS_BY_ENUM[String(value || '')] ?? -1;
     }
 
     function chapterName(value) {
@@ -144,14 +163,14 @@
     }
 
     function buildSearchText(entry, name) {
-        return [entry.id, name, entry.missionName?.key, typeDefinition(Number(entry.missionType)).name]
+        return [entry.id, name, entry.missionName?.key, typeDefinition(missionTypeId(entry.missionType)).name]
             .filter(Boolean).join('\n').toLowerCase();
     }
 
     function createRow(entry) {
         const nameKey = entry.missionName?.key;
         const name = textByKey(nameKey, state.textTable, nameKey || entry.id);
-        const type = Number(entry.missionType ?? -1);
+        const type = missionTypeId(entry.missionType);
         return {
             id: entry.id, entry, mission: null, meta: null, name, description: '', type,
             typeDef: typeDefinition(type),
@@ -165,7 +184,9 @@
 
     function rebuildRows() {
         state.rows = Array.from(state.missionEntries.values()).map(createRow).sort((a, b) =>
-            b.typeDef.priority - a.typeDef.priority || Number(IMPORTANCE[a.importance] ? a.importance : 99) - Number(IMPORTANCE[b.importance] ? b.importance : 99) || naturalCompare(a.id, b.id)
+            b.typeDef.priority - a.typeDef.priority
+            || Number(IMPORTANCE_LEVEL[a.importance] || 99) - Number(IMPORTANCE_LEVEL[b.importance] || 99)
+            || naturalCompare(a.id, b.id)
         );
     }
 
@@ -276,6 +297,34 @@
             return `<option value="${type}">${escapeHtml(definition.name)} (${count})</option>`;
         }).join('');
         elements.type.value = state.type;
+        window.AKEUI?.refreshSelect(elements.type);
+    }
+
+    function createMissionDirectoryItem(row) {
+        const importanceLevel = IMPORTANCE_LEVEL[row.importance];
+        return window.AKEUI.directoryItem({
+            layout: 'entity',
+            title: row.name,
+            id: row.id,
+            meta: [
+                { label: row.typeDef.name, kind: 'mission-type' },
+                { label: `${row.questCount} 步`, kind: 'mission-steps' },
+                importanceLevel
+                    ? { label: IMPORTANCE[row.importance], kind: `mission-importance-${importanceLevel}` }
+                    : null
+            ].filter(Boolean),
+            accent: {
+                type: 'mission',
+                value: importanceLevel ? `importance-${importanceLevel}` : row.typeDef.view
+            },
+            active: row.id === state.selectedId,
+            attributes: {
+                'data-mission-id': row.id,
+                'data-view': row.typeDef.view,
+                'data-importance': row.importance ?? ''
+            },
+            onSelect: () => selectMission(row.id)
+        });
     }
 
     function renderList() {
@@ -285,18 +334,7 @@
             elements.list.innerHTML = '<div class="ake-ui-state" data-state="empty" data-density="compact">没有符合条件的任务</div>';
             return;
         }
-        elements.list.innerHTML = rows.map(row => `
-            <button class="ake-ui-directory__item${row.id === state.selectedId ? ' is-active' : ''}"
-                type="button" data-mission-id="${escapeHtml(row.id)}" data-view="${row.typeDef.view}" data-importance="${escapeHtml(row.importance ?? '')}">
-                <span class="ake-ui-directory__item-title">${escapeHtml(row.name)}</span>
-                <span class="ake-ui-directory__item-id">${escapeHtml(row.id)}</span>
-                <span class="ake-ui-directory__item-meta">
-                    <span class="ake-ui-badge">${escapeHtml(row.typeDef.name)}</span>
-                    <span class="ake-ui-badge">${row.questCount} 步</span>
-                    ${IMPORTANCE[row.importance] ? `<span class="ake-ui-badge" data-mission-importance="${escapeHtml(row.importance)}">${IMPORTANCE[row.importance]}</span>` : ''}
-                </span>
-            </button>`).join('');
-        elements.list.querySelectorAll('[data-mission-id]').forEach(button => button.addEventListener('click', () => selectMission(button.dataset.missionId)));
+        elements.list.replaceChildren(...rows.map(createMissionDirectoryItem));
     }
 
     function renderOverview() {
@@ -359,7 +397,7 @@
         const mission = row.mission || {};
         return `<header class="ake-ui-detail-header">
             <div class="ake-ui-detail-copy"><div class="ake-ui-detail-eyebrow">${escapeHtml(row.typeDef.enumName)} · ${escapeHtml(row.id)}</div><h1 class="ake-ui-detail-title">${escapeHtml(row.name)}</h1><p class="ake-ui-detail-subtitle">${row.description ? richText(row.description) : '该任务没有可用描述。'}</p>
-                <div class="ake-ui-detail-badges"><span class="ake-ui-badge">${escapeHtml(row.typeDef.name)}</span><span class="ake-ui-badge">${chapterName(row.chapter)}</span><span class="ake-ui-badge" data-mission-importance="${escapeHtml(row.importance ?? '')}">重要度 ${IMPORTANCE[row.importance] ?? '未配置'}</span><span class="ake-ui-badge">${row.questCount} Quest</span></div>
+                <div class="ake-ui-detail-badges"><span class="ake-ui-badge">${escapeHtml(row.typeDef.name)}</span><span class="ake-ui-badge">${chapterName(row.chapter)}</span><span class="ake-ui-badge">重要度 ${IMPORTANCE[row.importance] ?? '未配置'}</span><span class="ake-ui-badge">${row.questCount} Quest</span></div>
             </div><code class="ake-ui-detail-id">${escapeHtml(row.mission.levelId || '未指定地图')}</code>
         </header>`;
     }
@@ -687,9 +725,9 @@
     function installEvents() {
         elements.hidden.checked = state.showHidden;
         elements.search.addEventListener('input', () => { state.search = elements.search.value; renderList(); });
-        elements.type.addEventListener('change', () => { state.type = elements.type.value; renderList(); });
-        elements.chapter.addEventListener('change', () => { state.chapter = elements.chapter.value; renderList(); });
-        elements.hidden.addEventListener('change', () => { state.showHidden = elements.hidden.checked; renderList(); });
+        elements.type.addEventListener('change', () => { state.type = elements.type.value; updateFilterSummary(); renderList(); });
+        elements.chapter.addEventListener('change', () => { state.chapter = elements.chapter.value; updateFilterSummary(); renderList(); });
+        elements.hidden.addEventListener('change', () => { state.showHidden = elements.hidden.checked; updateFilterSummary(); renderList(); });
         elements.home.addEventListener('click', renderOverview);
         elements.mobile.addEventListener('click', () => root.classList.add('is-mobile-open'));
         elements.backdrop.addEventListener('click', closeMobileList);
@@ -701,6 +739,7 @@
             await loadCore();
             renderTypeOptions();
             installEvents();
+            updateFilterSummary();
             const deepId = window.__deepLinkId;
             window.__deepLinkId = null;
             if (deepId) {

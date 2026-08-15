@@ -1,5 +1,6 @@
 (function() {
         const t = window.akeI18n.scope('modules.character');
+        const commonT = window.akeI18n.scope('common');
         let allCharacters = [];
         let rawAllCharacters = [];
         let activeCharId = null;
@@ -70,11 +71,6 @@
         });
         const SKILL_GROUP_ORDER = { 0: 0, 1: 1, 2: 3, 3: 2 };
         const HIDDEN_KEYWORDS = ['atb', 'scale', 'usp', 'duration', 'poise', '_', 'count', 'layer', 'prob'];
-
-        function getCurrentLanguage() {
-            const lang = window.akeData?.getLanguage?.() || 'CH';
-            return lang === 'CN' ? 'CH' : lang;
-        }
 
         function getCurrentShowHidden() {
             return window.akeData?.getConfig().showHidden ?? false;
@@ -165,135 +161,6 @@
             });
         }
 
-        function replaceV2Placeholders(desc, objWithBlackboard) {
-            if (!desc || !desc.includes('{')) return desc;
-            const lookup = {};
-            function normalizePlaceholderValue(value) {
-                if (!value || typeof value !== 'object') return value;
-                for (const key of ['value', 'valueFloat', 'valueDouble', 'valueInt', 'floatValue', 'paramValue', 'attrValue']) {
-                    if (value[key] !== undefined && value[key] !== value) return normalizePlaceholderValue(value[key]);
-                }
-                return value;
-            }
-            function traverse(o) {
-                if (!o || typeof o !== 'object') return;
-                if (Array.isArray(o)) {
-                    o.forEach(traverse);
-                } else {
-                    if (o.key !== undefined && (o.value !== undefined || o.valueStr !== undefined)) {
-                        let v = o.valueStr !== undefined && o.valueStr !== "" ? o.valueStr : o.value;
-                        lookup[o.key.toLowerCase()] = normalizePlaceholderValue(v);
-                    }
-                    if (o.bbKey !== undefined && (o.floatValue !== undefined || o.stringValue !== undefined)) {
-                        let v = o.stringValue !== undefined && o.stringValue !== "" ? o.stringValue : o.floatValue;
-                        lookup[o.bbKey.toLowerCase()] = normalizePlaceholderValue(v);
-                    }
-                    if (o.paramType !== undefined && o.paramValue !== undefined) {
-                        const ptName = paramTypeMap[o.paramType];
-                        if (ptName) {
-                            lookup[ptName.toLowerCase()] = normalizePlaceholderValue(o.paramValue);
-                        }
-                    }
-                    if (o.attrType !== undefined && o.attrValue !== undefined) {
-                        const atName = attrEnMap[o.attrType];
-                        if (atName) {
-                            lookup[atName.toLowerCase()] = normalizePlaceholderValue(o.attrValue);
-                        }
-                    }
-                    if (o.modifyAttributeType !== undefined && o.attrValue !== undefined) {
-                        const atModName = attrEnMap[o.modifyAttributeType];
-                        if (atModName) {
-                            lookup[atModName.toLowerCase()] = normalizePlaceholderValue(o.attrValue);
-                        }
-                    }
-                    Object.values(o).forEach(traverse);
-                }
-            }
-            traverse(objWithBlackboard);
-
-            return desc.replace(/\{([^}]+)\}/g, (match, fullExpr) => {
-                const parts = fullExpr.split(':');
-                const expr = parts[0].trim();
-                const format = parts[1] ? parts[1].trim() : '';
-
-                const exactKey = expr.toLowerCase();
-                let finalValue;
-
-                if (lookup[exactKey] !== undefined) {
-                    finalValue = lookup[exactKey];
-                } else {
-                    let evalExpr = expr.replace(/[a-zA-Z_][a-zA-Z0-9_]*/g, (varName) => {
-                        const lowerVar = varName.toLowerCase();
-                        if (lookup[lowerVar] !== undefined) {
-                            let val = lookup[lowerVar];
-                            return (typeof val === 'number' && val < 0) ? '(' + val + ')' : val;
-                        }
-                        return varName;
-                    });
-                    
-                    try {
-                        // eslint-disable-next-line no-new-func
-                        finalValue = new Function('return ' + evalExpr)();
-                    } catch (e) {
-                        return match;
-                    }
-                }
-
-                if (typeof finalValue === 'number') {
-                    const formatted = formatPlaceholderValue(finalValue, format);
-                    const varNames = expr.match(/[a-zA-Z_][a-zA-Z0-9_]*/g) || [];
-                    const bindings = Object.fromEntries(varNames.filter(name => lookup[name.toLowerCase()] !== undefined).map(name => [name, lookup[name.toLowerCase()]]));
-                    const changed = !(varNames.length === 1 && expr.toLowerCase() === varNames[0].toLowerCase());
-                    const rawValue = varNames.length === 1 ? bindings[varNames[0]] : Object.entries(bindings).map(([key, value]) => `${key}=${value}`).join(', ');
-                    const substituted = expr.replace(/[a-zA-Z_][a-zA-Z0-9_]*/g, name => `(${bindings[name] ?? name})`);
-                    return window.renderRawValueTip ? window.renderRawValueTip(formatted, {
-                        rawValue: rawValue || finalValue, value: finalValue, changed, expression: expr,
-                        formula: changed ? `${substituted} = ${finalValue}` : undefined,
-                        bindings
-                    }) : formatted;
-                } else if (typeof finalValue === 'string') {
-                    if (/^0(?:\.(0+))?%$/.test(format) && !finalValue.includes('%')) {
-                        let num = parseFloat(finalValue);
-                        if (!isNaN(num)) return formatPlaceholderValue(num, format);
-                    }
-                }
-
-                return finalValue !== undefined ? String(finalValue) : match;
-            });
-        }
-
-        function replaceTalentPlaceholders(desc, dataList) {
-            if (!desc || !desc.includes('{') || !dataList || !dataList.length) return desc || '';
-            return desc.replace(/\{(\d+),(\d+)(?::([^}]+))?\}/g, (match, dataIdx, valIdx, format) => {
-                const di = parseInt(dataIdx, 10);
-                const vi = parseInt(valIdx, 10);
-                const item = dataList[di];
-                if (!item) return match;
-
-                let finalValue;
-                const bb = item.attachBuff?.blackboard;
-                if (bb && bb[vi] !== undefined) {
-                    finalValue = bb[vi].value;
-                }
-                if (finalValue === undefined && vi === 0) {
-                    if (item.skillBbModifier?.floatValue !== undefined && item.skillBbModifier.floatValue !== 0) {
-                        finalValue = item.skillBbModifier.floatValue;
-                    } else if (item.skillParamModifier?.paramValue !== undefined && item.skillParamModifier.paramValue !== 0) {
-                        finalValue = item.skillParamModifier.paramValue;
-                    } else if (item.attrModifier?.attrValue !== undefined && item.attrModifier.attrValue !== 0) {
-                        finalValue = item.attrModifier.attrValue;
-                    }
-                }
-                if (finalValue === undefined) finalValue = 0;
-
-                if (typeof finalValue === 'number') {
-                    const formatted = formatPlaceholderValue(finalValue, format);
-                    return window.renderRawValueTip ? window.renderRawValueTip(formatted, finalValue, `${dataIdx},${valIdx}`) : formatted;
-                }
-                return String(finalValue);
-            });
-        }
-
         async function loadMaps() {
             try {
                 const data = await window.akeLoadMaps();
@@ -363,16 +230,23 @@
             return icons;
         }
 
-        function appendCharacterMetaIcons(container, character) {
-            getCharacterMetaIcons(character).forEach(icon => {
-                const image = document.createElement('img');
-                image.className = 'ake-ui-meta-icon';
-                image.src = icon.src;
-                image.alt = icon.label;
-                image.title = icon.label;
-                image.dataset.kind = icon.kind;
-                container.appendChild(image);
+        function createCharacterDirectoryItem(character, options = {}) {
+            const item = window.AKEUI.directoryItem({
+                layout: 'entity',
+                title: character.name,
+                id: character.charId,
+                icon: { src: character.icon || '', alt: '' },
+                meta: getCharacterMetaIcons(character),
+                accent: { type: 'rarity', value: character.rarity || 1 },
+                active: options.active,
+                attributes: {
+                    'data-char-id': character.charId,
+                    'data-content-file': character.contentFile
+                },
+                onSelect: options.onSelect
             });
+            window.AKEModuleOverview?.markVersionChange(item, character);
+            return item;
         }
 
         function filterCharacters(chars) {
@@ -398,29 +272,36 @@
 
         // 生成筛选按钮
         function generateFilterButtons() {
+            const filterPanel = document.getElementById('v2charFilterBar');
             const rarityContainer = document.getElementById('v2charRarityFilter');
             const typeContainer = document.getElementById('v2charTypeFilter');
             const profContainer = document.getElementById('v2charProfessionFilter');
             const weaponContainer = document.getElementById('v2charWeaponFilter');
             if (!rarityContainer || !typeContainer || !profContainer || !weaponContainer) return;
 
+            const updateFilterSummary = () => {
+                const count = selectedRarities.size + selectedCharTypes.size
+                    + selectedProfessions.size + selectedWeaponTypes.size;
+                window.AKEUI?.updateFilterPanel(filterPanel, {
+                    expanded: true,
+                    summary: count ? commonT('filterCount', { count }) : commonT('filter')
+                });
+            };
+
             // 稀有度按钮
             const existingRarities = new Set(allCharacters.map(c => c.rarity));
             rarityContainer.innerHTML = '';
             for (let r = 1; r <= 6; r++) {
                 if (existingRarities.has(r)) {
-                    const btn = document.createElement('span');
-                    btn.className = `ake-ui-filter__button ${selectedRarities.has(r) ? 'is-active' : ''}`;
-                    btn.dataset.rarity = r;
-                    btn.textContent = t('rarityStars', { name: r });
-                    btn.addEventListener('click', () => {
-                        if (selectedRarities.has(r)) {
-                            selectedRarities.delete(r);
-                        } else {
-                            selectedRarities.add(r);
+                    const btn = window.AKEUI.filterButton({
+                        label: t('rarityStars', { name: r }),
+                        pressed: selectedRarities.has(r),
+                        attributes: { 'data-rarity': r },
+                        onChange: pressed => {
+                            pressed ? selectedRarities.add(r) : selectedRarities.delete(r);
+                            updateFilterSummary();
+                            renderCharacterList();
                         }
-                        btn.classList.toggle('is-active');
-                        renderCharacterList();
                     });
                     rarityContainer.appendChild(btn);
                 }
@@ -430,19 +311,16 @@
             const existingTypes = new Set(allCharacters.map(c => c.charType).filter(t => t));
             typeContainer.innerHTML = '';
             existingTypes.forEach(type => {
-                const btn = document.createElement('span');
                 const tName = getCharTypeName(type) || type;
-                btn.className = `ake-ui-filter__button ${selectedCharTypes.has(type) ? 'is-active' : ''}`;
-                btn.dataset.type = type;
-                btn.textContent = tName;
-                btn.addEventListener('click', () => {
-                    if (selectedCharTypes.has(type)) {
-                        selectedCharTypes.delete(type);
-                    } else {
-                        selectedCharTypes.add(type);
+                const btn = window.AKEUI.filterButton({
+                    label: tName,
+                    pressed: selectedCharTypes.has(type),
+                    attributes: { 'data-type': type },
+                    onChange: pressed => {
+                        pressed ? selectedCharTypes.add(type) : selectedCharTypes.delete(type);
+                        updateFilterSummary();
+                        renderCharacterList();
                     }
-                    btn.classList.toggle('is-active');
-                    renderCharacterList();
                 });
                 typeContainer.appendChild(btn);
             });
@@ -451,19 +329,16 @@
             const existingProfessions = new Set(allCharacters.map(c => c.profession).filter(p => p));
             profContainer.innerHTML = '';
             existingProfessions.forEach(prof => {
-                const btn = document.createElement('span');
                 const pName = getProfessionName(prof) || prof;
-                btn.className = `ake-ui-filter__button ${selectedProfessions.has(prof) ? 'is-active' : ''}`;
-                btn.dataset.profession = prof;
-                btn.textContent = pName;
-                btn.addEventListener('click', () => {
-                    if (selectedProfessions.has(prof)) {
-                        selectedProfessions.delete(prof);
-                    } else {
-                        selectedProfessions.add(prof);
+                const btn = window.AKEUI.filterButton({
+                    label: pName,
+                    pressed: selectedProfessions.has(prof),
+                    attributes: { 'data-profession': prof },
+                    onChange: pressed => {
+                        pressed ? selectedProfessions.add(prof) : selectedProfessions.delete(prof);
+                        updateFilterSummary();
+                        renderCharacterList();
                     }
-                    btn.classList.toggle('is-active');
-                    renderCharacterList();
                 });
                 profContainer.appendChild(btn);
             });
@@ -472,22 +347,20 @@
             const existingWeapons = new Set(allCharacters.map(c => c.weapontype).filter(w => w));
             weaponContainer.innerHTML = '';
             existingWeapons.forEach(weapon => {
-                const btn = document.createElement('span');
                 const wName = getWeaponName(weapon) || weapon;
-                btn.className = `ake-ui-filter__button ${selectedWeaponTypes.has(weapon) ? 'is-active' : ''}`;
-                btn.dataset.weapon = weapon;
-                btn.textContent = wName;
-                btn.addEventListener('click', () => {
-                    if (selectedWeaponTypes.has(weapon)) {
-                        selectedWeaponTypes.delete(weapon);
-                    } else {
-                        selectedWeaponTypes.add(weapon);
+                const btn = window.AKEUI.filterButton({
+                    label: wName,
+                    pressed: selectedWeaponTypes.has(weapon),
+                    attributes: { 'data-weapon': weapon },
+                    onChange: pressed => {
+                        pressed ? selectedWeaponTypes.add(weapon) : selectedWeaponTypes.delete(weapon);
+                        updateFilterSummary();
+                        renderCharacterList();
                     }
-                    btn.classList.toggle('is-active');
-                    renderCharacterList();
                 });
                 weaponContainer.appendChild(btn);
             });
+            updateFilterSummary();
         }
 
         const mobileBtn = document.getElementById('v2charMobileListBtn');
@@ -498,28 +371,17 @@
             const filtered = filterCharacters(allCharacters);
             mobileContent.innerHTML = '';
             filtered.forEach(char => {
-                const item = document.createElement('div');
-                item.className = 'ake-ui-directory__item';
-                window.AKEModuleOverview?.markVersionChange(item, char);
-                if (char.charId === activeCharId) item.classList.add('is-active');
-                const nameRow = document.createElement('div');
-                nameRow.className = 'character-name-row';
-                const name = document.createElement('div');
-                name.className = 'ake-ui-directory__item-title';
-                name.textContent = char.name;
-                const metaIcons = document.createElement('span');
-                metaIcons.className = 'ake-ui-icon-list';
-                appendCharacterMetaIcons(metaIcons, char);
-                nameRow.append(name, metaIcons);
-                const id = document.createElement('div');
-                id.className = 'ake-ui-directory__item-id';
-                id.textContent = char.charId;
-                item.append(nameRow, id);
-                item.addEventListener('click', () => {
-                    activeCharId = char.charId;
-                    loadCharacterDetail(char, document.getElementById('v2characterDetail'));
-                    closeMobileList();
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_character', char.charId);
+                const item = createCharacterDirectoryItem(char, {
+                    active: char.charId === activeCharId,
+                    onSelect: () => {
+                        activeCharId = char.charId;
+                        loadCharacterDetail(char, document.getElementById('v2characterDetail'));
+                        closeMobileList();
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('v2_character', char.charId);
+                        const desktopList = document.getElementById('v2characterList');
+                        const activeItem = desktopList?.querySelector(`.ake-ui-directory__item[data-char-id="${CSS.escape(char.charId)}"]`);
+                        if (activeItem) window.AKEUI.setDirectoryItemActive(desktopList, activeItem);
+                    }
                 });
                 mobileContent.appendChild(item);
             });
@@ -577,43 +439,15 @@
             }
 
             filtered.forEach((char, index) => {
-                const item = document.createElement('div');
-                item.className = `ake-ui-directory__item ${char.charId === activeCharId ? 'is-active' : (index === 0 && !activeCharId && !window.AKEModuleOverview?.isActive('character') ? 'is-active' : '')}`;
-                window.AKEModuleOverview?.markVersionChange(item, char);
-                item.dataset.charId = char.charId;
-                item.dataset.contentFile = char.contentFile;
-                item.dataset.akeRarity = String(char.rarity || 1);
-
-                const icon = document.createElement('img');
-                icon.className = 'ake-ui-directory__item-icon';
-                icon.src = char.icon || '';
-
-                const textContainer = document.createElement('div');
-                textContainer.className = 'ake-ui-directory__item-copy';
-                const nameDiv = document.createElement('div');
-                nameDiv.className = 'ake-ui-directory__item-title';
-                nameDiv.textContent = char.name;
-                const nameRow = document.createElement('div');
-                nameRow.className = 'character-name-row';
-                const metaIcons = document.createElement('span');
-                metaIcons.className = 'ake-ui-icon-list';
-                appendCharacterMetaIcons(metaIcons, char);
-                nameRow.append(nameDiv, metaIcons);
-                const idDiv = document.createElement('div');
-                idDiv.className = 'ake-ui-directory__item-id';
-                idDiv.textContent = char.charId;
-                textContainer.appendChild(nameRow);
-                textContainer.appendChild(idDiv);
-
-                item.appendChild(icon);
-                item.appendChild(textContainer);
-
-                item.addEventListener('click', () => {
-                    document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
-                    item.classList.add('is-active');
-                    activeCharId = char.charId;
-                    loadCharacterDetail(char, detailContainer);
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_character', char.charId);
+                const item = createCharacterDirectoryItem(char, {
+                    active: char.charId === activeCharId
+                        || (index === 0 && !activeCharId && !window.AKEModuleOverview?.isActive('character')),
+                    onSelect: () => {
+                        window.AKEUI.setDirectoryItemActive(container, item);
+                        activeCharId = char.charId;
+                        loadCharacterDetail(char, detailContainer);
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('v2_character', char.charId);
+                    }
                 });
 
                 container.appendChild(item);
@@ -641,14 +475,14 @@
                 }
                 activeCharId = filtered[0].charId;
                 const firstItem = container.querySelector('.ake-ui-directory__item');
-                if (firstItem) firstItem.classList.add('is-active');
+                if (firstItem) window.AKEUI.setDirectoryItemActive(container, firstItem);
                 loadCharacterDetail(filtered[0], detailContainer);
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_character', filtered[0].charId);
             } else if (activeExists) {
                 const activeChar = filtered.find(c => c.charId === activeCharId);
                 if (activeChar) {
                     const activeItem = container.querySelector(`.ake-ui-directory__item[data-char-id="${activeCharId}"]`);
-                    if (activeItem) activeItem.classList.add('is-active');
+                    if (activeItem) window.AKEUI.setDirectoryItemActive(container, activeItem);
                     loadCharacterDetail(activeChar, detailContainer);
                     if (window.__akeRouter) window.__akeRouter.updateUrl('v2_character', activeCharId);
                 }

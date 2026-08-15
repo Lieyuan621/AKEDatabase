@@ -83,11 +83,6 @@
         return window.akeData?.getConfig?.().showHidden === true;
     }
 
-    function idText(value, className) {
-        return showIds() && value ? `<small class="${className || ''}">${escapeHtml(value)}</small>` : '';
-    }
-
-
     function renderPoolContent(pool, poolContent) {
         if (!poolContent || !poolContent.list?.length) return '';
         const groups = new Map();
@@ -567,7 +562,7 @@
         return aRank - bRank || a.sourceOrder - b.sourceOrder;
     }
 
-    function groupButton(group) {
+    function groupDirectoryItem(group) {
         const active = group.shopGroupId === state.activeGroupId;
         const changeType = state.changes.groups[group.shopGroupId];
         const changeLabel = changeType === 'added'
@@ -575,18 +570,27 @@
             : changeType === 'modified'
             ? (window.akeData?.t('versionDiff.modified', null, '修改') || '修改')
             : '';
-        return `<button class="ake-ui-directory__item${active ? ' is-active' : ''}" type="button" data-group-id="${escapeHtml(group.shopGroupId)}">
-            <span class="ake-ui-directory__item-copy"><b class="ake-ui-directory__item-title">${escapeHtml(gameText(group.shopGroupName, group.shopGroupId))}</b><small class="ake-ui-directory__item-subtitle">${escapeHtml(groupType(group))}</small></span>
-            <span class="ake-ui-directory__item-count">${productCount(group)}</span>
-            ${changeLabel ? `<span class="ake-ui-badge ake-ui-badge--corner" data-tone="${changeType}">${escapeHtml(changeLabel)}</span>` : ''}
-        </button>`;
+        return window.AKEUI.directoryItem({
+            layout: 'entity',
+            title: gameText(group.shopGroupName, group.shopGroupId),
+            subtitle: groupType(group),
+            count: productCount(group),
+            change: changeType ? { type: changeType, label: changeLabel } : null,
+            active,
+            attributes: { 'data-group-id': group.shopGroupId }
+        });
     }
 
     function renderGroupLists() {
         const visible = state.groups.filter(groupMatches).sort(compareGroups);
-        const html = visible.length ? visible.map(groupButton).join('') : `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('noMatches'))}</div>`;
-        list.innerHTML = html;
-        mobileGroups.innerHTML = html;
+        if (!visible.length) {
+            const empty = `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('noMatches'))}</div>`;
+            list.innerHTML = empty;
+            mobileGroups.innerHTML = empty;
+            return;
+        }
+        list.replaceChildren(...visible.map(groupDirectoryItem));
+        mobileGroups.replaceChildren(...visible.map(groupDirectoryItem));
     }
 
     function rewardRows(items, className) {

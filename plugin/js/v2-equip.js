@@ -86,27 +86,38 @@
             );
         }
 
+        function createEquipDirectoryItem(suit, options = {}) {
+            const item = window.AKEUI.directoryItem({
+                layout: 'entity',
+                title: suit.name,
+                id: suit.suitID,
+                icon: { src: suit.icon || '', alt: '' },
+                accent: { type: 'rarity', value: suit.rarity || 1 },
+                active: options.active,
+                attributes: { 'data-suit-id': suit.suitID },
+                onSelect: options.onSelect
+            });
+            window.AKEModuleOverview?.markVersionChange(item, suit);
+            return item;
+        }
+
         function buildMobileList() {
             const filtered = filterSuits(allSuits);
             mobileContent.innerHTML = '';
             filtered.forEach(suit => {
-                const div = document.createElement('div');
-                div.className = `ake-ui-directory__item ${suit.suitID === activeSuitId ? 'is-active' : ''}`;
-                window.AKEModuleOverview?.markVersionChange(div, suit);
-                div.innerHTML = `
-                    <div class="ake-ui-directory__item-title">${escapeHtml(suit.name)}</div>
-                    <div class="ake-ui-directory__item-id">${escapeHtml(suit.suitID)}</div>
-                `;
-                div.addEventListener('click', () => {
-                    activeSuitId = suit.suitID;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_equip', suit.suitID);
-                    loadSuitDetail(suit, document.getElementById('v2equipDetail'));
-                    closeMobileList();
-                    document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
-                    const ai = document.querySelector(`.ake-ui-directory__item[data-suit-id="${suit.suitID}"]`);
-                    if (ai) ai.classList.add('is-active');
+                const item = createEquipDirectoryItem(suit, {
+                    active: suit.suitID === activeSuitId,
+                    onSelect: () => {
+                        activeSuitId = suit.suitID;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('v2_equip', suit.suitID);
+                        loadSuitDetail(suit, document.getElementById('v2equipDetail'));
+                        closeMobileList();
+                        const desktopList = document.getElementById('v2equipList');
+                        const activeItem = desktopList?.querySelector(`.ake-ui-directory__item[data-suit-id="${suit.suitID}"]`);
+                        if (activeItem) window.AKEUI.setDirectoryItemActive(desktopList, activeItem);
+                    }
                 });
-                mobileContent.appendChild(div);
+                mobileContent.appendChild(item);
             });
         }
 
@@ -172,39 +183,18 @@
             }
 
             filtered.forEach((suit, index) => {
-                const div = document.createElement('div');
-                div.className = `ake-ui-directory__item ${suit.suitID === activeSuitId ? 'is-active' : (!activeSuitId && index === 0 && !window.AKEModuleOverview?.isActive('equip') ? 'is-active' : '')}`;
-                window.AKEModuleOverview?.markVersionChange(div, suit);
-                div.dataset.suitId = suit.suitID;
-                div.dataset.akeRarity = String(suit.rarity || 1);
-
-                const icon = document.createElement('img');
-                icon.className = 'ake-ui-directory__item-icon';
-                icon.src = suit.icon || '';
-
-                const info = document.createElement('div');
-                info.className = 'ake-ui-directory__item-copy';
-                const nm = document.createElement('div');
-                nm.className = 'ake-ui-directory__item-title';
-                nm.textContent = suit.name;
-                const id = document.createElement('div');
-                id.className = 'ake-ui-directory__item-id';
-                id.textContent = suit.suitID;
-                info.appendChild(nm);
-                info.appendChild(id);
-
-                div.appendChild(icon);
-                div.appendChild(info);
-
-                div.addEventListener('click', () => {
-                    document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
-                    div.classList.add('is-active');
-                    activeSuitId = suit.suitID;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_equip', suit.suitID);
-                    loadSuitDetail(suit, detailContainer);
+                const item = createEquipDirectoryItem(suit, {
+                    active: suit.suitID === activeSuitId
+                        || (!activeSuitId && index === 0 && !window.AKEModuleOverview?.isActive('equip')),
+                    onSelect: () => {
+                        window.AKEUI.setDirectoryItemActive(container, item);
+                        activeSuitId = suit.suitID;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('v2_equip', suit.suitID);
+                        loadSuitDetail(suit, detailContainer);
+                    }
                 });
 
-                container.appendChild(div);
+                container.appendChild(item);
             });
 
             if (window.__deepLinkId) {
@@ -230,14 +220,14 @@
                 activeSuitId = filtered[0].suitID;
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_equip', activeSuitId);
                 const f = container.querySelector('.ake-ui-directory__item');
-                if (f) f.classList.add('is-active');
+                if (f) window.AKEUI.setDirectoryItemActive(container, f);
                 loadSuitDetail(filtered[0], detailContainer);
             } else if (activeExists) {
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_equip', activeSuitId);
                 const ai = filtered.find(s => s.suitID === activeSuitId);
                 if (ai) {
                     const ad = container.querySelector(`.ake-ui-directory__item[data-suit-id="${activeSuitId}"]`);
-                    if (ad) ad.classList.add('is-active');
+                    if (ad) window.AKEUI.setDirectoryItemActive(container, ad);
                     loadSuitDetail(ai, detailContainer);
                 }
             }

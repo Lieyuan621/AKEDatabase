@@ -41,12 +41,14 @@
     const elements = {
         summary: document.getElementById('bakerContactSummary'),
         search: document.getElementById('bakerSearchInput'),
+        filterPanel: document.getElementById('bakerFilterBar'),
         filters: document.getElementById('bakerTypeFilter'),
         list: document.getElementById('bakerContactList'),
         conversation: document.getElementById('bakerConversation'),
         mobile: document.getElementById('bakerMobileButton'),
         backdrop: document.getElementById('bakerMobileBackdrop')
     };
+    window.AKEUI?.updateFilterPanel(elements.filterPanel, { expanded: true, summary: '筛选' });
 
     function escapeHtml(value) {
         return String(value ?? '').replace(/[&<>"']/g, character => ({
@@ -191,6 +193,24 @@
         );
     }
 
+    function createContactDirectoryItem(row) {
+        const url = avatarUrl(row.chat);
+        const initial = Array.from(String(row.name || '?').trim())[0] || '?';
+        const icon = url
+            ? { src: url, alt: '', className: 'baker-avatar' }
+            : window.AKEUI.element('span', 'ake-ui-directory__item-icon baker-avatar baker-avatar--placeholder', initial);
+        return window.AKEUI.directoryItem({
+            layout: 'entity',
+            title: row.name,
+            subtitle: row.preview,
+            icon,
+            titleMeta: [{ label: chatType(row.chat).label, kind: 'baker-type' }],
+            meta: [{ label: row.dialogLabel, kind: 'baker-dialog' }],
+            active: row.id === state.selectedId,
+            attributes: { 'data-baker-chat': row.id }
+        });
+    }
+
     function renderContacts() {
         const rows = filteredRows();
         const withMessages = state.rows.filter(row => row.dialogs.length).length;
@@ -199,16 +219,7 @@
             elements.list.innerHTML = '<div class="ake-ui-state" data-state="empty" data-density="compact">没有符合条件的会话</div>';
             return;
         }
-        elements.list.innerHTML = rows.map(row => `
-            <button class="ake-ui-directory__item${row.id === state.selectedId ? ' is-active' : ''}" type="button" data-baker-chat="${escapeHtml(row.id)}"${row.id === state.selectedId ? ' aria-current="true"' : ''}>
-                ${avatarHtml(row.chat, row.name, 'ake-ui-directory__item-icon')}
-                <span class="ake-ui-directory__item-copy">
-                    <span class="ake-ui-directory__item-title">${escapeHtml(row.name)}</span>
-                    <span class="ake-ui-directory__item-subtitle">${escapeHtml(row.preview)}</span>
-                    <span class="ake-ui-directory__item-id">${escapeHtml(row.dialogLabel)}</span>
-                </span>
-            </button>
-        `).join('');
+        elements.list.replaceChildren(...rows.map(createContactDirectoryItem));
     }
 
     function speakerInfo(speakerId, selectedRow) {
@@ -422,7 +433,14 @@
         const button = event.target.closest('[data-baker-type]');
         if (!button) return;
         state.type = button.dataset.bakerType;
-        elements.filters.querySelectorAll('[data-baker-type]').forEach(item => item.classList.toggle('is-active', item === button));
+        elements.filters.querySelectorAll('[data-baker-type]').forEach(item => {
+            const active = item === button;
+            item.classList.toggle('is-active', active);
+            item.setAttribute('aria-pressed', String(active));
+        });
+        window.AKEUI?.updateFilterPanel(elements.filterPanel, {
+            summary: state.type === 'all' ? '筛选' : '筛选 (1)'
+        });
         renderContacts();
     });
 

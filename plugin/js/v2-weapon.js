@@ -54,18 +54,27 @@
         const rc = document.getElementById('v2wpnRarityFilter');
         const tc = document.getElementById('v2wpnTypeFilter');
         if (!rc || !tc) return;
+        const filterPanel = rc.closest('.ake-ui-filter');
+        const updateFilterSummary = () => {
+            const count = selectedRarities.size + selectedTypes.size;
+            window.AKEUI?.updateFilterPanel(filterPanel, {
+                expanded: true,
+                summary: count ? commonT('filterCount', { count }) : commonT('filter')
+            });
+        };
 
         const existR = new Set(allWeapons.map(w => w.rarity));
         rc.innerHTML = '';
         for (let r = 1; r <= 6; r++) {
             if (!existR.has(r)) continue;
-            const btn = document.createElement('span');
-            btn.className = `ake-ui-filter__button ${selectedRarities.has(r) ? 'is-active' : ''}`;
-            btn.textContent = commonT('rarityStars', { rarity: r });
-            btn.addEventListener('click', () => {
-                selectedRarities.has(r) ? selectedRarities.delete(r) : selectedRarities.add(r);
-                btn.classList.toggle('is-active');
-                renderWeaponList();
+            const btn = window.AKEUI.filterButton({
+                label: commonT('rarityStars', { rarity: r }),
+                pressed: selectedRarities.has(r),
+                onChange: pressed => {
+                    pressed ? selectedRarities.add(r) : selectedRarities.delete(r);
+                    updateFilterSummary();
+                    renderWeaponList();
+                }
             });
             rc.appendChild(btn);
         }
@@ -75,37 +84,57 @@
         for (const [tid] of Object.entries(WEAPON_TYPE_KEY_MAP)) {
             const id = parseInt(tid, 10);
             if (!existT.has(id)) continue;
-            const btn = document.createElement('span');
-            btn.className = `ake-ui-filter__button ${selectedTypes.has(id) ? 'is-active' : ''}`;
-            btn.textContent = getWeaponTypeName(id);
-            btn.addEventListener('click', () => {
-                selectedTypes.has(id) ? selectedTypes.delete(id) : selectedTypes.add(id);
-                btn.classList.toggle('is-active');
-                renderWeaponList();
+            const btn = window.AKEUI.filterButton({
+                label: getWeaponTypeName(id),
+                pressed: selectedTypes.has(id),
+                onChange: pressed => {
+                    pressed ? selectedTypes.add(id) : selectedTypes.delete(id);
+                    updateFilterSummary();
+                    renderWeaponList();
+                }
             });
             tc.appendChild(btn);
         }
+        updateFilterSummary();
     }
 
     const mobileBtn = document.getElementById('v2wpnMobileListBtn');
     const mobileOverlay = document.getElementById('v2wpnMobileListOverlay');
     const mobileContent = document.getElementById('v2wpnMobileListContent');
 
+    function createWeaponDirectoryItem(weapon, options = {}) {
+        const item = window.AKEUI.directoryItem({
+            layout: 'entity',
+            title: weapon.name,
+            id: weapon.weaponId,
+            icon: { src: weapon.icon || '', alt: '' },
+            meta: [{ label: getWeaponTypeName(weapon.weaponType), kind: 'weapon-type' }],
+            accent: { type: 'rarity', value: weapon.rarity || 1 },
+            active: options.active,
+            attributes: { 'data-weapon-id': weapon.weaponId },
+            onSelect: options.onSelect
+        });
+        window.AKEModuleOverview?.markVersionChange(item, weapon);
+        return item;
+    }
+
     function buildMobileList() {
         const filtered = filterWeapons(allWeapons);
         mobileContent.innerHTML = '';
         filtered.forEach(w => {
-            const div = document.createElement('div');
-            div.className = `ake-ui-directory__item ${w.weaponId === activeWeaponId ? 'is-active' : ''}`;
-            window.AKEModuleOverview?.markVersionChange(div, w);
-            div.innerHTML = `<div class="ake-ui-directory__item-title">${escapeHtml(w.name)}</div><div class="ake-ui-directory__item-id">${escapeHtml(w.weaponId)}</div>`;
-            div.addEventListener('click', () => {
-                activeWeaponId = w.weaponId;
-                if (window.__akeRouter) window.__akeRouter.updateUrl('v2_weapon', w.weaponId);
-                loadWeaponDetail(w, document.getElementById('v2wpnDetail'));
-                closeMobileList();
+            const item = createWeaponDirectoryItem(w, {
+                active: w.weaponId === activeWeaponId,
+                onSelect: () => {
+                    activeWeaponId = w.weaponId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_weapon', w.weaponId);
+                    loadWeaponDetail(w, document.getElementById('v2wpnDetail'));
+                    closeMobileList();
+                    const desktopList = document.getElementById('v2wpnList');
+                    const activeItem = desktopList?.querySelector(`.ake-ui-directory__item[data-weapon-id="${CSS.escape(w.weaponId)}"]`);
+                    if (activeItem) window.AKEUI.setDirectoryItemActive(desktopList, activeItem);
+                }
             });
-            mobileContent.appendChild(div);
+            mobileContent.appendChild(item);
         });
     }
     function openMobileList() { buildMobileList(); mobileOverlay.classList.add('is-open'); mobileOverlay.setAttribute('aria-hidden', 'false'); }
@@ -154,41 +183,15 @@
         }
 
         filtered.forEach((w, index) => {
-            const item = document.createElement('div');
-            item.className = `ake-ui-directory__item ${w.weaponId === activeWeaponId ? 'is-active' : (!activeWeaponId && index === 0 && !window.AKEModuleOverview?.isActive('weapon') ? 'is-active' : '')}`;
-            window.AKEModuleOverview?.markVersionChange(item, w);
-            item.dataset.weaponId = w.weaponId;
-            item.dataset.akeRarity = String(w.rarity || 1);
-
-            const icon = document.createElement('img');
-            icon.className = 'ake-ui-directory__item-icon';
-            icon.src = w.icon || '';
-
-            const info = document.createElement('div');
-            info.className = 'ake-ui-directory__item-copy';
-            const nm = document.createElement('div');
-            nm.className = 'ake-ui-directory__item-title';
-            nm.textContent = w.name;
-            const nameRow = document.createElement('div');
-            nameRow.className = 'weapon-name-row';
-            const id = document.createElement('div');
-            id.className = 'ake-ui-directory__item-id';
-            id.textContent = w.weaponId;
-            const typeTag = document.createElement('span');
-            typeTag.className = 'weapon-type-tag';
-            typeTag.textContent = getWeaponTypeName(w.weaponType);
-            nameRow.append(nm, typeTag);
-            info.replaceChildren(nameRow, id);
-
-            item.appendChild(icon);
-            item.appendChild(info);
-
-            item.addEventListener('click', () => {
-                document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
-                item.classList.add('is-active');
-                activeWeaponId = w.weaponId;
-                if (window.__akeRouter) window.__akeRouter.updateUrl('v2_weapon', w.weaponId);
-                loadWeaponDetail(w, detailContainer);
+            const item = createWeaponDirectoryItem(w, {
+                active: w.weaponId === activeWeaponId
+                    || (!activeWeaponId && index === 0 && !window.AKEModuleOverview?.isActive('weapon')),
+                onSelect: () => {
+                    window.AKEUI.setDirectoryItemActive(container, item);
+                    activeWeaponId = w.weaponId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_weapon', w.weaponId);
+                    loadWeaponDetail(w, detailContainer);
+                }
             });
             container.appendChild(item);
         });
@@ -215,14 +218,14 @@
             }
             activeWeaponId = filtered[0].weaponId;
             const f = container.querySelector('.ake-ui-directory__item');
-            if (f) f.classList.add('is-active');
+            if (f) window.AKEUI.setDirectoryItemActive(container, f);
             if (window.__akeRouter) window.__akeRouter.updateUrl('v2_weapon', activeWeaponId);
             loadWeaponDetail(filtered[0], detailContainer);
         } else if (activeExists) {
             const aw = filtered.find(w => w.weaponId === activeWeaponId);
             if (aw) {
                 const ad = container.querySelector(`.ake-ui-directory__item[data-weapon-id="${activeWeaponId}"]`);
-                if (ad) ad.classList.add('is-active');
+                if (ad) window.AKEUI.setDirectoryItemActive(container, ad);
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_weapon', activeWeaponId);
                 loadWeaponDetail(aw, detailContainer);
             }

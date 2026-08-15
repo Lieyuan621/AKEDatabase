@@ -126,10 +126,6 @@
         return assetUrl('prts', page?.icon);
     }
 
-    function categoryIcon(category) {
-        return assetUrl('prts', category?.tabIcon);
-    }
-
     function groupIcon(group) {
         const icon = String(group?.icon || '');
         return icon ? assetUrl('prts/icon', icon) : '/icon_default_missing.png';
@@ -386,6 +382,60 @@
         return records.reduce((sum, record) => sum + record.items.length, 0);
     }
 
+    function directoryRichText(html) {
+        const node = document.createElement('span');
+        node.innerHTML = html;
+        return node;
+    }
+
+    function createArchiveHomeItem() {
+        return window.AKEUI.directoryItem({
+            layout: 'entity',
+            title: t('directory.all', null, '全部档案'),
+            subtitle: t('overview.subtitle', null, '浏览全部档案与收录内容'),
+            icon: { src: pageIcon(state.pages[0]), alt: '' },
+            count: state.itemMap.size,
+            active: !state.activeGroupId,
+            attributes: { 'data-akearchive-action': 'show-overview' }
+        });
+    }
+
+    function createArchiveGroupItem(record, page) {
+        const group = record.group;
+        const secondary = gameText(group.subName) || gameText(page?.name, page?.pageType || '');
+        const changeInfo = groupVersionInfo(group.firstLvId);
+        return window.AKEUI.directoryItem({
+            layout: 'entity',
+            title: directoryRichText(gameHtml(gameText(group.name, group.firstLvId))),
+            subtitle: directoryRichText(gameHtml(secondary)),
+            icon: { src: groupIcon(group), alt: '' },
+            count: record.items.length,
+            change: changeInfo.hasAddition
+                ? { type: 'added', label: t('changes.added', null, '新增') }
+                : null,
+            active: group.firstLvId === state.activeGroupId,
+            attributes: {
+                'data-akearchive-action': 'open-group',
+                'data-group-id': group.firstLvId
+            }
+        });
+    }
+
+    function createArchiveDirectorySection(heading, count) {
+        const section = document.createElement('section');
+        section.className = 'akearchive-directory-section';
+        if (heading) {
+            const title = document.createElement('div');
+            title.className = 'akearchive-directory-heading';
+            title.append(directoryRichText(heading), window.AKEUI.element('span', '', count));
+            section.appendChild(title);
+        }
+        const list = document.createElement('div');
+        list.className = 'akearchive-directory-list';
+        section.appendChild(list);
+        return { section, list };
+    }
+
     function renderDirectoryNode(node, records, includeHome) {
         if (!node) return;
         const grouped = new Map();
@@ -394,43 +444,32 @@
             if (!grouped.has(categoryId)) grouped.set(categoryId, []);
             grouped.get(categoryId).push(record);
         });
-        const homeSection = includeHome ? `<section class="akearchive-directory-section">
-            <div class="akearchive-directory-list">
-                <button type="button" class="ake-ui-directory__item${state.activeGroupId ? '' : ' is-active'}" data-akearchive-action="show-overview" aria-current="${state.activeGroupId ? 'false' : 'page'}">
-                    ${imageTag(pageIcon(state.pages[0]), 'ake-ui-directory__item-icon', '', ' aria-hidden="true"')}
-                    <span class="ake-ui-directory__item-copy"><strong class="ake-ui-directory__item-title">${escapeHtml(t('directory.all', null, '全部档案'))}</strong><small class="ake-ui-directory__item-subtitle">${escapeHtml(t('overview.subtitle', null, '浏览全部档案与收录内容'))}</small></span>
-                    <span class="ake-ui-directory__item-count">${escapeHtml(state.itemMap.size)}</span>
-                </button>
-            </div>
-        </section>` : '';
-        const sections = state.categories.map(category => {
+        const fragment = document.createDocumentFragment();
+        if (includeHome) {
+            const home = createArchiveDirectorySection('', 0);
+            home.list.appendChild(createArchiveHomeItem());
+            fragment.appendChild(home.section);
+        }
+        state.categories.forEach(category => {
             const rows = [...(grouped.get(category.categoryId) || [])].sort((a, b) =>
                 groupChangeRank(a.group.firstLvId) - groupChangeRank(b.group.firstLvId));
-            if (!rows.length) return '';
+            if (!rows.length) return;
             const page = pageForCategory(category.categoryId);
             const entryCount = groupEntryCount(rows);
-            const items = rows.map(record => {
-                const group = record.group;
-                const icon = groupIconTag(group);
-                const secondary = gameText(group.subName) || gameText(page?.name, page?.pageType || '');
-                const changeInfo = groupVersionInfo(group.firstLvId);
-                return `<button type="button" class="ake-ui-directory__item${group.firstLvId === state.activeGroupId ? ' is-active' : ''}"
-                    data-akearchive-action="open-group" data-group-id="${escapeHtml(group.firstLvId)}"
-                    aria-current="${group.firstLvId === state.activeGroupId ? 'page' : 'false'}">
-                    ${icon}
-                    <span class="ake-ui-directory__item-copy"><strong class="ake-ui-directory__item-title">${gameHtml(gameText(group.name, group.firstLvId))}</strong><small class="ake-ui-directory__item-subtitle">${gameHtml(secondary)}</small></span>
-                    <span class="ake-ui-directory__item-tail">${groupChangeTag(changeInfo, true)}<span class="ake-ui-directory__item-count">${escapeHtml(record.items.length)}</span></span>
-                </button>`;
-            }).join('');
-            return `<section class="akearchive-directory-section">
-                <div class="akearchive-directory-heading"><span>${gameHtml(gameText(category.name, category.categoryId))}</span><span>${escapeHtml(entryCount)}</span></div>
-                <div class="akearchive-directory-list">${items}</div>
-            </section>`;
-        }).join('');
-        const empty = !records.length
-            ? `<div class="ake-ui-state" data-state="empty"><div><p>${escapeHtml(t('empty.search', null, '没有匹配的档案'))}</p></div></div>`
-            : '';
-        node.innerHTML = `${homeSection}${sections}${empty}`;
+            const result = createArchiveDirectorySection(
+                gameHtml(gameText(category.name, category.categoryId)),
+                entryCount
+            );
+            result.list.append(...rows.map(record => createArchiveGroupItem(record, page)));
+            fragment.appendChild(result.section);
+        });
+        if (!records.length) {
+            const empty = window.AKEUI.element('div', 'ake-ui-state');
+            empty.dataset.state = 'empty';
+            empty.appendChild(window.AKEUI.element('p', '', t('empty.search', null, '没有匹配的档案')));
+            fragment.appendChild(empty);
+        }
+        node.replaceChildren(fragment);
     }
 
     function renderDirectories() {

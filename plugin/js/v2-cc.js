@@ -249,24 +249,41 @@
     const mobileOverlay = document.getElementById('v2ccMobileListOverlay');
     const mobileContent = document.getElementById('v2ccMobileListContent');
 
+    function createGameDirectoryItem(game, options = {}) {
+        const icon = game.image
+            ? { src: game.image, alt: '' }
+            : window.AKEUI.element('span', 'ake-ui-directory__item-icon is-symbol', 'CC');
+        const item = window.AKEUI.directoryItem({
+            layout: 'entity',
+            title: game.name || game.gameId,
+            id: game.activityId || game.gameId,
+            icon,
+            meta: [{ label: game.dungeonName || '', kind: 'cc-dungeon' }],
+            active: options.active,
+            attributes: { 'data-game-id': game.gameId },
+            onSelect: options.onSelect
+        });
+        window.AKEModuleOverview?.markVersionChange(item, game);
+        return item;
+    }
+
     function buildMobileList() {
         const filtered = filterGames(allGames);
         mobileContent.innerHTML = '';
         filtered.forEach(game => {
-            const div = document.createElement('div');
-            div.className = `ake-ui-directory__item ${game.gameId === activeGameId ? 'is-active' : ''}`;
-            window.AKEModuleOverview?.markVersionChange(div, game);
-            div.innerHTML = `
-                <div class="ake-ui-directory__item-title">${escapeHtml(game.name || game.gameId)}</div>
-                <div class="ake-ui-directory__item-id">${escapeHtml(game.activityId)}</div>
-            `;
-            div.addEventListener('click', () => {
-                activeGameId = game.gameId;
-                if (window.__akeRouter) window.__akeRouter.updateUrl('v2_cc', game.gameId);
-                loadGameDetail(game, document.getElementById('v2ccDetail'));
-                closeMobileList();
+            const item = createGameDirectoryItem(game, {
+                active: game.gameId === activeGameId,
+                onSelect: () => {
+                    activeGameId = game.gameId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_cc', game.gameId);
+                    loadGameDetail(game, document.getElementById('v2ccDetail'));
+                    closeMobileList();
+                    const desktopList = document.getElementById('v2ccList');
+                    const activeItem = desktopList?.querySelector(`.ake-ui-directory__item[data-game-id="${CSS.escape(game.gameId)}"]`);
+                    if (activeItem) window.AKEUI.setDirectoryItemActive(desktopList, activeItem);
+                }
             });
-            mobileContent.appendChild(div);
+            mobileContent.appendChild(item);
         });
     }
 
@@ -295,38 +312,18 @@
         }
 
         filtered.forEach((game, index) => {
-            const div = document.createElement('div');
-            div.className = `ake-ui-directory__item ${game.gameId === activeGameId ? 'is-active' : (!activeGameId && index === 0 && !window.AKEModuleOverview?.isActive('cc') ? 'is-active' : '')}`;
-            window.AKEModuleOverview?.markVersionChange(div, game);
-            div.dataset.gameId = game.gameId;
-
-            const icon = document.createElement('div');
-            icon.className = 'ake-ui-directory__item-icon is-symbol';
-            icon.textContent = '⚔️';
-
-            const info = document.createElement('div');
-            info.className = 'ake-ui-directory__item-copy';
-            const nm = document.createElement('div');
-            nm.className = 'ake-ui-directory__item-title';
-            nm.textContent = game.name || game.gameId;
-            const sub = document.createElement('div');
-            sub.className = 'ake-ui-directory__item-id';
-            sub.textContent = game.activityId;
-            info.appendChild(nm);
-            info.appendChild(sub);
-
-            div.appendChild(icon);
-            div.appendChild(info);
-
-            div.addEventListener('click', () => {
-                document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
-                div.classList.add('is-active');
-                activeGameId = game.gameId;
-                if (window.__akeRouter) window.__akeRouter.updateUrl('v2_cc', game.gameId);
-                loadGameDetail(game, detailContainer);
+            const item = createGameDirectoryItem(game, {
+                active: game.gameId === activeGameId
+                    || (!activeGameId && index === 0 && !window.AKEModuleOverview?.isActive('cc')),
+                onSelect: () => {
+                    window.AKEUI.setDirectoryItemActive(container, item);
+                    activeGameId = game.gameId;
+                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_cc', game.gameId);
+                    loadGameDetail(game, detailContainer);
+                }
             });
 
-            container.appendChild(div);
+            container.appendChild(item);
         });
 
         if (window.__deepLinkId) {
@@ -351,14 +348,14 @@
             activeGameId = filtered[0].gameId;
             if (window.__akeRouter) window.__akeRouter.updateUrl('v2_cc', activeGameId);
             const f = container.querySelector('.ake-ui-directory__item');
-            if (f) f.classList.add('is-active');
+            if (f) window.AKEUI.setDirectoryItemActive(container, f);
             loadGameDetail(filtered[0], detailContainer);
         } else if (activeExists) {
             const ag = filtered.find(g => g.gameId === activeGameId);
             if (ag) {
                 if (window.__akeRouter) window.__akeRouter.updateUrl('v2_cc', activeGameId);
                 const ad = container.querySelector(`.ake-ui-directory__item[data-game-id="${activeGameId}"]`);
-                if (ad) ad.classList.add('is-active');
+                if (ad) window.AKEUI.setDirectoryItemActive(container, ad);
                 loadGameDetail(ag, detailContainer);
             }
         }
@@ -1732,25 +1729,6 @@
             });
             spawnerBody.querySelectorAll('.v2d-wave-enemy').forEach(e => {
                 e.classList.remove('enemy-highlight', 'enemy-target-highlight');
-            });
-        }
-
-        function highlightGroup(spawnerBody, groupKey, targetGroup, map) {
-            if (!spawnerBody || !map) return;
-            map.querySelectorAll('.v2cc-map-spot').forEach(s => {
-                if (s.dataset.group === groupKey) s.classList.add('group-highlight');
-                if (targetGroup && s.dataset.group === targetGroup) s.classList.add('target-highlight');
-            });
-            const activeWave = map.querySelector('.v2cc-map-spot[data-wave]:not([style*="display:none"])');
-            const wi = activeWave ? activeWave.dataset.wave : null;
-            spawnerBody.querySelectorAll('.v2d-wave-enemy').forEach(e => {
-                if (wi !== null && e.dataset.waveIdx !== wi) return;
-                const line = e.closest('.v2d-wave-line');
-                if (!line) return;
-                const spots = map.querySelectorAll(`.v2cc-map-spot[data-wave="${wi}"][data-group="${groupKey}"]`);
-                if (spots.length && e.dataset.enemyId === spots[0].dataset.group) {
-                    e.classList.add('enemy-highlight');
-                }
             });
         }
 

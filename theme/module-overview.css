@@ -60,8 +60,9 @@
 .ake-version-diff__truncated { margin: 10px 2px 2px; color: var(--text-secondary); font-size: .78rem; }
 .ake-module-search-row { display: flex !important; align-items: center; gap: 8px; }
 .ake-module-search-row > input { min-width: 0; flex: 1; }
-.ake-module-home { width: 36px; height: 36px; flex: 0 0 36px; display: grid; place-items: center; padding: 0; border: 1px solid var(--border-color); border-radius: 10px; background: var(--card-bg); color: var(--accent-color); font: 700 1.2rem/1 sans-serif; cursor: pointer; transition: background .18s, transform .18s; }
+.ake-module-home { width: 36px; height: 36px; flex: 0 0 36px; display: grid; place-items: center; padding: 0; border: 1px solid var(--border-color); border-radius: 10px; background: var(--card-bg); color: var(--desc-color); font: 700 1.2rem/1 sans-serif; cursor: pointer; transition: background .18s, transform .18s; }
+.ake-module-home__icon { width: 18px; display: block; color: inherit; font-family: "Segoe UI Symbol", "Noto Sans Symbols 2", sans-serif; font-size: 18px !important; font-weight: 700 !important; line-height: 1; text-align: center; }
 .ake-module-home:hover { background: var(--hover-bg); transform: translateY(-1px); }
-.ake-module-home:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 2px; }
+.ake-module-home:focus-visible { outline: 2px solid color-mix(in srgb, var(--text-color) 58%, var(--border-color)); outline-offset: 2px; }
 @media (max-width: 999px) { .ake-overview { padding: 15px; } .ake-overview__header { padding: 19px; } .ake-overview__grid { grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); } .ake-overview__card { grid-template-columns: 62px minmax(0, 1fr); } }
 @media (max-width: 520px) { .ake-overview__grid { grid-template-columns: 1fr; } }

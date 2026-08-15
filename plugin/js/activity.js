@@ -69,6 +69,15 @@
             });
         }
 
+        function updateFilterSummary() {
+            const filterPanel = document.getElementById('activityFilterBar');
+            const count = selectedTagIds.size + (selectedStatus ? 1 : 0);
+            window.AKEUI?.updateFilterPanel(filterPanel, {
+                expanded: true,
+                summary: count ? commonT('filterCount', { count }) : commonT('filter')
+            });
+        }
+
         function generateTypeButtons() {
             const container = document.getElementById('activityTypeFilter');
             if (!container) return;
@@ -78,22 +87,20 @@
             }));
             container.innerHTML = '';
             tags.forEach(tag => {
-                const btn = document.createElement('span');
-                btn.className = `ake-ui-filter__button ${selectedTagIds.has(tag.tagId) ? 'is-active' : ''}`;
-                btn.dataset.tagId = tag.tagId;
-                btn.textContent = tag.name || tag.tagId;
-                btn.addEventListener('click', () => {
-                    if (selectedTagIds.has(tag.tagId)) {
-                        selectedTagIds.delete(tag.tagId);
-                    } else {
-                        selectedTagIds.add(tag.tagId);
+                const btn = window.AKEUI.filterButton({
+                    label: tag.name || tag.tagId,
+                    pressed: selectedTagIds.has(tag.tagId),
+                    attributes: { 'data-tag-id': tag.tagId },
+                    onChange: pressed => {
+                        pressed ? selectedTagIds.add(tag.tagId) : selectedTagIds.delete(tag.tagId);
+                        updateFilterSummary();
+                        renderActivityList();
+                        if (mobileOverlay?.classList.contains('is-open')) buildMobileList();
                     }
-                    btn.classList.toggle('is-active');
-                    renderActivityList();
-                    if (mobileOverlay?.classList.contains('is-open')) buildMobileList();
                 });
                 container.appendChild(btn);
             });
+            updateFilterSummary();
         }
 
         function generateStatusButtons() {
@@ -108,18 +115,20 @@
             ];
             container.innerHTML = '';
             statuses.forEach(s => {
-                const btn = document.createElement('span');
-                btn.className = `ake-ui-filter__button ${selectedStatus === s.value ? 'is-active' : ''}`;
-                btn.textContent = s.label;
-                btn.addEventListener('click', () => {
-                    selectedStatus = s.value;
-                    renderActivityList();
-                    document.querySelectorAll('#activityStatusFilter .ake-ui-filter__button').forEach(b => b.classList.remove('is-active'));
-                    btn.classList.add('is-active');
-                    if (mobileOverlay?.classList.contains('is-open')) buildMobileList();
+                const btn = window.AKEUI.filterButton({
+                    label: s.label,
+                    pressed: selectedStatus === s.value,
+                    mode: 'single',
+                    onChange: () => {
+                        selectedStatus = s.value;
+                        updateFilterSummary();
+                        renderActivityList();
+                        if (mobileOverlay?.classList.contains('is-open')) buildMobileList();
+                    }
                 });
                 container.appendChild(btn);
             });
+            updateFilterSummary();
         }
 
         async function loadActivityManifest(showHidden) {
@@ -323,6 +332,31 @@
             });
         }
 
+        function createActivityDirectoryItem(activity, options = {}) {
+            const status = getActivityStatus(activity.openTime, activity.closeTime);
+            const statusKey = status.class.replace('status-', '');
+            const item = window.AKEUI.directoryItem({
+                layout: 'entity',
+                title: activity.name,
+                id: activity.activityId,
+                background: activity.tabImg ? {
+                    src: activity.tabImg,
+                    alt: '',
+                    className: 'activity-item__background'
+                } : null,
+                meta: [{ label: status.text, kind: `status-${statusKey}` }],
+                accent: { type: 'status', value: statusKey },
+                active: options.active,
+                attributes: {
+                    'data-activity-id': activity.activityId,
+                    'data-content-file': activity.contentFile
+                },
+                onSelect: options.onSelect
+            });
+            window.AKEModuleOverview?.markVersionChange(item, activity);
+            return item;
+        }
+
         function renderActivityList() {
             const container = document.getElementById('activityList');
             const detailContainer = document.getElementById('activityDetail');
@@ -338,51 +372,15 @@
             }
 
             filtered.forEach((act, index) => {
-                const item = document.createElement('div');
-                item.className = `ake-ui-directory__item ${act.activityId === activeActivityId ? 'is-active' : (index === 0 && !activeActivityId && !window.AKEModuleOverview?.isActive('activity') ? 'is-active' : '')}`;
-                window.AKEModuleOverview?.markVersionChange(item, act);
-                item.dataset.activityId = act.activityId;
-                item.dataset.akeStatus = getActivityStatus(act.openTime, act.closeTime).class.replace('status-', '');
-                item.dataset.contentFile = act.contentFile;
-
-                if (act.tabImg) {
-                    const backgroundImage = document.createElement('img');
-                    backgroundImage.className = 'activity-item__background';
-                    backgroundImage.src = act.tabImg;
-                    backgroundImage.alt = '';
-                    backgroundImage.setAttribute('aria-hidden', 'true');
-                    backgroundImage.loading = 'lazy';
-                    backgroundImage.decoding = 'async';
-                    item.appendChild(backgroundImage);
-                }
-
-                const infoDiv = document.createElement('div');
-                infoDiv.className = 'ake-ui-directory__item-copy';
-                const nameSpan = document.createElement('div');
-                nameSpan.className = 'ake-ui-directory__item-title';
-                nameSpan.textContent = act.name;
-                const idSpan = document.createElement('div');
-                idSpan.className = 'ake-ui-directory__item-id';
-                idSpan.textContent = act.activityId;
-                infoDiv.appendChild(nameSpan);
-                infoDiv.appendChild(idSpan);
-
-                const status = getActivityStatus(act.openTime, act.closeTime);
-                const statusSpan = document.createElement('span');
-                statusSpan.className = 'ake-ui-badge';
-                statusSpan.dataset.accent = 'status';
-                statusSpan.dataset.accentValue = status.class.replace('status-', '');
-                statusSpan.textContent = status.text;
-
-                item.appendChild(infoDiv);
-                item.appendChild(statusSpan);
-
-                item.addEventListener('click', () => {
-                    document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
-                    item.classList.add('is-active');
-                    activeActivityId = act.activityId;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('activity', act.activityId);
-                    loadActivityDetail(act, detailContainer);
+                const item = createActivityDirectoryItem(act, {
+                    active: act.activityId === activeActivityId
+                        || (index === 0 && !activeActivityId && !window.AKEModuleOverview?.isActive('activity')),
+                    onSelect: () => {
+                        window.AKEUI.setDirectoryItemActive(container, item);
+                        activeActivityId = act.activityId;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('activity', act.activityId);
+                        loadActivityDetail(act, detailContainer);
+                    }
                 });
 
                 container.appendChild(item);
@@ -409,14 +407,14 @@
                 }
                 activeActivityId = filtered[0].activityId;
                 const firstItem = container.querySelector('.ake-ui-directory__item');
-                if (firstItem) firstItem.classList.add('is-active');
+                if (firstItem) window.AKEUI.setDirectoryItemActive(container, firstItem);
                 if (window.__akeRouter) window.__akeRouter.updateUrl('activity', activeActivityId);
                 loadActivityDetail(filtered[0], detailContainer);
             } else if (activeExists) {
                 const activeAct = filtered.find(a => a.activityId === activeActivityId);
                 if (activeAct) {
                     const activeItem = container.querySelector(`.ake-ui-directory__item[data-activity-id="${activeActivityId}"]`);
-                    if (activeItem) activeItem.classList.add('is-active');
+                    if (activeItem) window.AKEUI.setDirectoryItemActive(container, activeItem);
                     if (window.__akeRouter) window.__akeRouter.updateUrl('activity', activeActivityId);
                     loadActivityDetail(activeAct, detailContainer);
                 }
@@ -552,22 +550,17 @@
             const filtered = filterActivities(allActivities);
             mobileContent.innerHTML = '';
             filtered.forEach(act => {
-                const item = document.createElement('div');
-                item.className = 'ake-ui-directory__item';
-                window.AKEModuleOverview?.markVersionChange(item, act);
-                if (act.activityId === activeActivityId) item.classList.add('is-active');
-                item.innerHTML = `
-                    <div class="ake-ui-directory__item-title">${act.name}</div>
-                    <div class="ake-ui-directory__item-id">${act.activityId}</div>
-                `;
-                item.addEventListener('click', () => {
-                    activeActivityId = act.activityId;
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('activity', act.activityId);
-                    loadActivityDetail(act, document.getElementById('activityDetail'));
-                    closeMobileList();
-                    document.querySelectorAll('.ake-ui-directory__item').forEach(el => el.classList.remove('is-active'));
-                    const activeItem = document.querySelector(`.ake-ui-directory__item[data-activity-id="${act.activityId}"]`);
-                    if (activeItem) activeItem.classList.add('is-active');
+                const item = createActivityDirectoryItem(act, {
+                    active: act.activityId === activeActivityId,
+                    onSelect: () => {
+                        activeActivityId = act.activityId;
+                        if (window.__akeRouter) window.__akeRouter.updateUrl('activity', act.activityId);
+                        loadActivityDetail(act, document.getElementById('activityDetail'));
+                        closeMobileList();
+                        const desktopList = document.getElementById('activityList');
+                        const activeItem = desktopList?.querySelector(`.ake-ui-directory__item[data-activity-id="${act.activityId}"]`);
+                        if (activeItem) window.AKEUI.setDirectoryItemActive(desktopList, activeItem);
+                    }
                 });
                 mobileContent.appendChild(item);
             });
