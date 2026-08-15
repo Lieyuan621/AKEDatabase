@@ -172,9 +172,9 @@
                     ].filter(Boolean);
                     const offsetPct = (0.3 * 100 / (2 * halfX)).toFixed(2);
                     const stackStyle = stackIdx > 0 ? `margin-left:${stackIdx * offsetPct}%;margin-top:-${stackIdx * offsetPct}%;z-index:${10 - stackIdx};` : 'z-index:10;';
-                    mapSpotsHtml += `<div class="v2d-map-spot" data-wave="${wi}" data-group="${g.groupKey}" data-target-group="${targetGroupKey}" style="left:${pct.left}%;top:${pct.top}%;${vis}${stackStyle}">
+                    mapSpotsHtml += `<div class="v2d-map-spot" data-ake-popover-anchor data-wave="${wi}" data-group="${g.groupKey}" data-target-group="${targetGroupKey}" style="left:${pct.left}%;top:${pct.top}%;${vis}${stackStyle}">
                         <img class="v2d-map-spot-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${spawn.templateId}.png">
-                        <div class="v2d-map-tip">${tipLines.map(l => `<div>${l}</div>`).join('')}</div>
+                        <div class="v2d-map-tip ake-ui-popover" data-placement="top">${tipLines.map(l => `<div>${l}</div>`).join('')}</div>
                     </div>`;
                 });
             });
@@ -609,10 +609,10 @@
                     });
                     if (rows.length === 0) return `<span class="v2d-buff-tag">${id}</span>`;
                     const tipHtml = rows.map(r => `<div>${r}</div>`).join('');
-                    return `<span class="v2d-buff-tag v2d-has-tip">${id}<span class="v2d-buff-tip">${tipHtml}</span></span>`;
+                    return `<span class="v2d-buff-tag v2d-has-tip ake-ui-popover-anchor">${id}<span class="v2d-buff-tip ake-ui-popover" data-placement="top">${tipHtml}</span></span>`;
                 }).join('')}</div>` : '';
 
-            const scriptBuffTagsHtml = showHidden && (scriptedBuffs || []).length ? `<div class="v2d-enemy-buffs">${scriptedBuffs.map(row => `<span class="v2d-buff-tag v2d-script-buff v2d-has-tip">${escH(row.buffId)}<small>脚本</small><span class="v2d-buff-tip"><div>条件性脚本 Buff · LevelScript ${escH(row.scriptId)}</div></span></span>`).join('')}</div>` : '';
+            const scriptBuffTagsHtml = showHidden && (scriptedBuffs || []).length ? `<div class="v2d-enemy-buffs">${scriptedBuffs.map(row => `<span class="v2d-buff-tag v2d-script-buff v2d-has-tip ake-ui-popover-anchor">${escH(row.buffId)}<small>脚本</small><span class="v2d-buff-tip ake-ui-popover" data-placement="top"><div>条件性脚本 Buff · LevelScript ${escH(row.scriptId)}</div></span></span>`).join('')}</div>` : '';
             const statState = window.AKEEnemyRenderer.calculateStats({
                 attrData,
                 level: enemyLevel,
@@ -896,12 +896,8 @@
                 if (!tip) return;
                 const mapRect = map.getBoundingClientRect();
                 const spotRect = spot.getBoundingClientRect();
-                const spotCenterX = spotRect.left + spotRect.width / 2 - mapRect.left;
                 const spotTop = spotRect.top - mapRect.top;
-                tip.classList.remove('tip-below', 'tip-left', 'tip-right');
-                if (spotTop < 60) tip.classList.add('tip-below');
-                if (spotCenterX > mapRect.width * 0.7) tip.classList.add('tip-left');
-                else if (spotCenterX < mapRect.width * 0.3) tip.classList.add('tip-right');
+                tip.dataset.placement = spotTop < 60 ? 'bottom' : 'top';
             }
 
             function switchWave(wi, body) {

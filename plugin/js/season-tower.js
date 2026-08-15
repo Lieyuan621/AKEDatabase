@@ -187,7 +187,7 @@
             const tips = [source, ...values];
             const label = `${escapeHtml(row.buffId)}${row.conditional ? '<small>脚本</small>' : ''}`;
             return tips.length
-                ? `<span class="v2d-buff-tag${row.conditional ? ' v2d-script-buff' : ''} v2d-has-tip">${label}<span class="v2d-buff-tip">${tips.map(value => `<div>${value}</div>`).join('')}</span></span>`
+                ? `<span class="v2d-buff-tag${row.conditional ? ' v2d-script-buff' : ''} v2d-has-tip ake-ui-popover-anchor">${label}<span class="v2d-buff-tip ake-ui-popover" data-placement="top">${tips.map(value => `<div>${value}</div>`).join('')}</span></span>`
                 : `<span class="v2d-buff-tag">${label}</span>`;
         }).join('')}</div>`;
     }
@@ -296,9 +296,9 @@
                 ].filter(Boolean);
                 const offset = (0.3 * 100 / (halfX * 2)).toFixed(2);
                 const stackStyle = stackIndex ? `margin-left:${stackIndex * offset}%;margin-top:-${stackIndex * offset}%;z-index:${10 - stackIndex};` : 'z-index:10;';
-                spots += `<div class="v2d-map-spot" data-wave="${waveIndex}" data-group="${escapeHtml(group.key)}" data-target-group="${escapeHtml(group.targetKey)}" data-enemy-id="${escapeHtml(spawn.id)}" style="left:${point.left}%;top:${point.top}%;${waveIndex ? 'display:none;' : ''}${stackStyle}">
+                spots += `<div class="v2d-map-spot" data-ake-popover-anchor data-wave="${waveIndex}" data-group="${escapeHtml(group.key)}" data-target-group="${escapeHtml(group.targetKey)}" data-enemy-id="${escapeHtml(spawn.id)}" style="left:${point.left}%;top:${point.top}%;${waveIndex ? 'display:none;' : ''}${stackStyle}">
                     <img class="v2d-map-spot-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${escapeHtml(spawn.templateId)}.png" alt="">
-                    <div class="v2d-map-tip"><div><b>${escapeHtml(enemyName)} ×${spawn.count} Lv.${spawn.level}</b></div>${details.map(detail => `<div>${escapeHtml(detail)}</div>`).join('')}</div>
+                    <div class="v2d-map-tip ake-ui-popover" data-placement="top"><div><b>${escapeHtml(enemyName)} ×${spawn.count} Lv.${spawn.level}</b></div>${details.map(detail => `<div>${escapeHtml(detail)}</div>`).join('')}</div>
                 </div>`;
             }));
         });
@@ -487,12 +487,8 @@
         if (!map || !tip) return;
         const mapRect = map.getBoundingClientRect();
         const spotRect = spot.getBoundingClientRect();
-        const centerX = spotRect.left + spotRect.width / 2 - mapRect.left;
         const top = spotRect.top - mapRect.top;
-        tip.classList.remove('tip-below', 'tip-left', 'tip-right');
-        if (top < 60) tip.classList.add('tip-below');
-        if (centerX > mapRect.width * .7) tip.classList.add('tip-left');
-        else if (centerX < mapRect.width * .3) tip.classList.add('tip-right');
+        tip.dataset.placement = top < 60 ? 'bottom' : 'top';
     }
 
     async function load() {

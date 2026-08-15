@@ -715,11 +715,88 @@
         return { root, sidebar, list, content };
     }
 
+    const popoverFrames = new WeakMap();
+
+    function getPopoverTrigger(anchor) {
+        return anchor.querySelector?.(':scope > [data-ake-popover-trigger]') || anchor;
+    }
+
+    function positionPopoverArrow(popover, anchor) {
+        if (!(popover instanceof HTMLElement) || !(anchor instanceof HTMLElement)) return;
+        const popoverRect = popover.getBoundingClientRect();
+        if (!popoverRect.width || !popoverRect.height) return;
+        const anchorRect = getPopoverTrigger(anchor).getBoundingClientRect();
+        const edgeInset = 14;
+        const arrowLeft = Math.max(
+            edgeInset,
+            Math.min(anchorRect.left + anchorRect.width / 2 - popoverRect.left, popoverRect.width - edgeInset)
+        );
+        popover.style.setProperty('--ake-ui-popover-arrow-left', `${Math.round(arrowLeft)}px`);
+    }
+
+    function positionAnchoredPopover(anchor, popover = null) {
+        if (!(anchor instanceof HTMLElement)) return;
+        const target = popover || Array.from(anchor.children).find(child => child.classList?.contains('ake-ui-popover'));
+        if (!(target instanceof HTMLElement) || target.dataset.position === 'manual') return;
+
+        target.style.setProperty('--ake-ui-popover-shift-x', '0px');
+        const popoverRect = target.getBoundingClientRect();
+        if (!popoverRect.width || !popoverRect.height) return;
+
+        const viewportInset = 10;
+        const anchorRect = anchor.getBoundingClientRect();
+        const triggerRect = getPopoverTrigger(anchor).getBoundingClientRect();
+        let shiftX = triggerRect.left + triggerRect.width / 2 - (anchorRect.left + anchorRect.width / 2);
+        if (popoverRect.left + shiftX < viewportInset) shiftX += viewportInset - (popoverRect.left + shiftX);
+        if (popoverRect.right + shiftX > window.innerWidth - viewportInset) {
+            shiftX -= popoverRect.right + shiftX - (window.innerWidth - viewportInset);
+        }
+        target.style.setProperty('--ake-ui-popover-shift-x', `${Math.round(shiftX)}px`);
+
+        const shiftedLeft = popoverRect.left + shiftX;
+        const edgeInset = 14;
+        const arrowLeft = Math.max(
+            edgeInset,
+            Math.min(triggerRect.left + triggerRect.width / 2 - shiftedLeft, popoverRect.width - edgeInset)
+        );
+        target.style.setProperty('--ake-ui-popover-arrow-left', `${Math.round(arrowLeft)}px`);
+    }
+
+    function scheduleAnchoredPopover(anchor) {
+        if (!(anchor instanceof HTMLElement)) return;
+        const currentFrame = popoverFrames.get(anchor);
+        if (currentFrame) cancelAnimationFrame(currentFrame);
+        const frame = requestAnimationFrame(() => {
+            popoverFrames.delete(anchor);
+            positionAnchoredPopover(anchor);
+        });
+        popoverFrames.set(anchor, frame);
+    }
+
+    function repositionVisiblePopovers() {
+        document.querySelectorAll('.ake-ui-popover-anchor, [data-ake-popover-anchor]').forEach(anchor => {
+            const popover = Array.from(anchor.children).find(child => child.classList?.contains('ake-ui-popover'));
+            if (popover?.getClientRects().length) positionAnchoredPopover(anchor, popover);
+        });
+    }
+
     document.addEventListener('click', event => {
         if (!openSelectInstance) return;
         if (openSelectInstance.shell.contains(event.target) || openSelectInstance.menu.contains(event.target)) return;
         openSelectInstance.close();
     });
+    document.addEventListener('pointerover', event => {
+        const anchor = event.target.closest?.('.ake-ui-popover-anchor, [data-ake-popover-anchor]');
+        if (anchor && !anchor.contains(event.relatedTarget)) scheduleAnchoredPopover(anchor);
+    });
+    document.addEventListener('focusin', event => {
+        const anchor = event.target.closest?.('.ake-ui-popover-anchor, [data-ake-popover-anchor]');
+        if (anchor) scheduleAnchoredPopover(anchor);
+    });
+    document.addEventListener('click', event => {
+        const anchor = event.target.closest?.('.ake-ui-popover-anchor, [data-ake-popover-anchor]');
+        if (anchor) scheduleAnchoredPopover(anchor);
+    }, true);
     new MutationObserver(records => {
         records.forEach(record => Array.from(record.addedNodes).forEach(node => {
             if (node instanceof Element) {
@@ -729,7 +806,10 @@
         }));
         if (openSelectInstance && openSelectInstance.trigger.offsetParent === null) openSelectInstance.close();
     }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
-    window.addEventListener('resize', () => openSelectInstance?.positionMenu());
+    window.addEventListener('resize', () => {
+        openSelectInstance?.positionMenu();
+        repositionVisiblePopovers();
+    });
     window.addEventListener('scroll', () => openSelectInstance?.positionMenu(), true);
 
     window.AKEUI = Object.freeze({
@@ -749,7 +829,9 @@
         directoryItem,
         setDirectoryItemActive,
         detailHeader,
-        directory
+        directory,
+        positionAnchoredPopover,
+        positionPopoverArrow
     });
 
     enhanceSelects();
