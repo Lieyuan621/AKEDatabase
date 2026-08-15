@@ -73,7 +73,6 @@
             const filterPanel = document.getElementById('activityFilterBar');
             const count = selectedTagIds.size + (selectedStatus ? 1 : 0);
             window.AKEUI?.updateFilterPanel(filterPanel, {
-                expanded: true,
                 summary: count ? commonT('filterCount', { count }) : commonT('filter')
             });
         }
@@ -307,7 +306,7 @@
 
             viewport.appendChild(canvas);
             section.appendChild(viewport);
-            container.querySelector('.ake-ui-page__header')?.after(section);
+            container.querySelector('.ake-overview-heading[data-level="page"]')?.after(section);
             requestAnimationFrame(() => {
                 const todayOffset = (now - rangeStart) / TIMELINE_DAY_MS;
                 if (todayOffset >= 0) viewport.scrollLeft = Math.max(0, todayOffset * TIMELINE_DAY_WIDTH - viewport.clientWidth * 0.3);
@@ -318,6 +317,7 @@
             const statusOrder = { 'status-active': 0, 'status-upcoming': 1, 'status-closed': 2, 'status-permanent': 3 };
             window.AKEModuleOverview.render(container, {
                 title: t('overview.title'), description: t('overview.description'),
+                variant: 'landscape',
                 group: item => { const status = getActivityStatus(item.openTime, item.closeTime); return { id: status.class, name: status.text, order: statusOrder[status.class] }; },
                 onReset: () => { activeActivityId = null; },
                 afterRender: () => renderActivityTimeline(items, container),
@@ -422,7 +422,7 @@
         }
 
         async function loadActivityDetail(activity, container) {
-            container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
+            container.innerHTML = `<div class="ake-ui-state" data-state="loading">${t('loading')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(activity.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data, activity);

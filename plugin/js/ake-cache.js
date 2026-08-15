@@ -7,10 +7,14 @@
     const pendingRequests = new Map();
     const memoryResponses = new Map();
     const progressRequests = new Map();
+    const PROGRESS_SHOW_DELAY = 320;
+    const PROGRESS_MIN_VISIBLE = 320;
     const PROGRESS_DETAILS_DELAY = 3000;
     let progressSequence = 0;
+    let progressShowTimer = null;
     let progressHideTimer = null;
     let progressDetailsTimer = null;
+    let progressShownAt = 0;
     let forceProgressDetails = false;
     let progressNotice = '';
 
@@ -22,12 +26,68 @@
         return `${value >= 100 || unit === 0 ? value.toFixed(0) : value.toFixed(1)} ${units[unit]}`;
     }
 
-    function renderProgress() {
-        const root = document.getElementById('dataLoadProgress');
-        const bar = document.getElementById('dataLoadProgressBar');
-        const text = document.getElementById('dataLoadProgressText');
-        const file = document.getElementById('dataLoadProgressFile');
-        if (!root || !bar || !text || !file) return;
+    function translate(key, params, fallback) {
+        return window.akeI18n?.t?.(key, params, fallback) || fallback;
+    }
+
+    const INLINE_PROGRESS_SELECTOR = '[data-ake-cache-progress]';
+
+    function getForegroundLoadingState() {
+        const states = Array.from(document.querySelectorAll(
+            '#contentArea .ake-ui-state[data-state="loading"]:not([data-visibility="assistive"])'
+        )).filter(state => state.getClientRects().length > 0);
+        return states.reduce((best, state) => {
+            const rect = state.getBoundingClientRect();
+            const priority = (state.dataset.layout === 'page' ? 2e9 : 0)
+                + (state.parentElement?.classList.contains('ake-ui-directory__content') ? 1e9 : 0)
+                + Math.min(rect.width * rect.height, 1e8);
+            return !best || priority > best.priority ? { state, priority } : best;
+        }, null)?.state || null;
+    }
+
+    function getInlineProgressElements(host) {
+        let root = host.querySelector(`:scope > ${INLINE_PROGRESS_SELECTOR}`);
+        if (!root) {
+            root = document.createElement('div');
+            root.className = 'ake-ui-state__progress';
+            root.dataset.akeCacheProgress = '';
+            root.setAttribute('role', 'progressbar');
+            root.setAttribute('aria-label', translate('common.dataLoadProgress', null, 'Data loading progress'));
+            root.setAttribute('aria-valuemin', '0');
+            root.setAttribute('aria-valuemax', '100');
+
+            const track = document.createElement('div');
+            track.className = 'data-load-progress-track';
+            const bar = document.createElement('div');
+            bar.className = 'data-load-progress-bar';
+            track.appendChild(bar);
+
+            const text = document.createElement('div');
+            text.className = 'data-load-progress-text';
+            const file = document.createElement('div');
+            file.className = 'data-load-progress-file';
+            root.append(track, text, file);
+            host.appendChild(root);
+        }
+        return {
+            root,
+            bar: root.querySelector('.data-load-progress-bar'),
+            text: root.querySelector('.data-load-progress-text'),
+            file: root.querySelector('.data-load-progress-file')
+        };
+    }
+
+    function clearInlineProgress(except = null) {
+        document.querySelectorAll(INLINE_PROGRESS_SELECTOR).forEach(node => {
+            if (node !== except) node.remove();
+        });
+    }
+
+    function isProgressVisible() {
+        return Boolean(document.querySelector(INLINE_PROGRESS_SELECTOR));
+    }
+
+    function renderProgress(forceVisible = false) {
         const requests = Array.from(progressRequests.values());
         const showDetails = window.akeData?.getConfig?.().showHidden === true || forceProgressDetails;
         const active = requests.filter(request => !request.done);
@@ -39,23 +99,35 @@
             ? 100
             : (totalBytes > 0 && !hasUnknown ? Math.min(99, Math.round(loadedBytes / totalBytes * 100)) : 0);
         const current = active[active.length - 1] || requests[requests.length - 1];
-        const sourceNames = { memory: '内存缓存', indexeddb: 'IndexedDB', network: '网络', cache: '缓存查询' };
+        const sourceNames = { memory: 'Memory', indexeddb: 'IndexedDB', network: 'Network', cache: 'Cache' };
+        const loadingText = progressNotice || translate('common.loadingData', null, 'Loading data...');
 
-        root.hidden = false;
-        root.classList.add('visible');
+        const foregroundState = getForegroundLoadingState();
+        const existingInline = foregroundState?.querySelector(`:scope > ${INLINE_PROGRESS_SELECTOR}`);
+        if (!foregroundState) {
+            clearInlineProgress();
+            return;
+        }
+        if (!forceVisible && !progressShownAt && !existingInline) return;
+
+        const elements = getInlineProgressElements(foregroundState);
+        clearInlineProgress(elements.root);
+
+        const { root, bar, text, file } = elements;
+        root.setAttribute('aria-label', translate('common.dataLoadProgress', null, 'Data loading progress'));
         root.classList.toggle('compact', !showDetails);
         root.classList.toggle('indeterminate', active.length > 0 && (hasUnknown || totalBytes === 0));
         if (active.length > 0 && (hasUnknown || totalBytes === 0)) root.removeAttribute('aria-valuenow');
         else root.setAttribute('aria-valuenow', String(percent));
         bar.style.width = `${percent}%`;
         if (active.length === 0 && failed) {
-            text.textContent = `${failed} 个数据文件加载失败`;
+            text.textContent = translate('errors.load', { message: `${failed} / ${requests.length}` }, `Load failed: ${failed} / ${requests.length}`);
         } else if (active.length === 0) {
-            text.textContent = `数据加载完成 · ${formatBytes(loadedBytes)}`;
+            text.textContent = `100% · ${formatBytes(loadedBytes)}`;
         } else if (!hasUnknown && totalBytes > 0) {
-            text.textContent = `${progressNotice || '正在加载数据'} · ${percent}% · ${formatBytes(loadedBytes)} / ${formatBytes(totalBytes)}`;
+            text.textContent = `${loadingText} · ${percent}% · ${formatBytes(loadedBytes)} / ${formatBytes(totalBytes)}`;
         } else {
-            text.textContent = `${progressNotice || '正在加载数据'} · 已加载 ${formatBytes(loadedBytes)} · 总大小计算中`;
+            text.textContent = `${loadingText} · ${formatBytes(loadedBytes)}`;
         }
         if (current) {
             const size = current.loaded ? ` · ${formatBytes(current.loaded)}${current.total ? ` / ${formatBytes(current.total)}` : ''}` : '';
@@ -74,8 +146,19 @@
         }
         const hasActiveRequest = Array.from(progressRequests.values()).some(request => !request.done);
         if (!hasActiveRequest) {
+            const progressVisible = isProgressVisible();
             progressRequests.clear();
             forceProgressDetails = false;
+            if (progressShowTimer) clearTimeout(progressShowTimer);
+            if (!progressVisible) {
+                progressShownAt = 0;
+                progressShowTimer = setTimeout(() => {
+                    progressShowTimer = null;
+                    if (!Array.from(progressRequests.values()).some(request => !request.done)) return;
+                    progressShownAt = performance.now();
+                    renderProgress(true);
+                }, PROGRESS_SHOW_DELAY);
+            }
             if (progressDetailsTimer) clearTimeout(progressDetailsTimer);
             progressDetailsTimer = setTimeout(() => {
                 progressDetailsTimer = null;
@@ -86,7 +169,7 @@
         }
         const id = ++progressSequence;
         progressRequests.set(id, { url, source, loaded: 0, total: 0, done: false });
-        renderProgress();
+        if (isProgressVisible()) renderProgress();
         return id;
     }
 
@@ -112,22 +195,42 @@
         request.done = true;
         request.error = Boolean(error);
         if (request.total) request.loaded = request.total;
-        renderProgress();
+        const hasError = Boolean(error) || Array.from(progressRequests.values()).some(item => item.error);
+        if (isProgressVisible()) {
+            renderProgress();
+        } else if (hasError) {
+            if (progressShowTimer) {
+                clearTimeout(progressShowTimer);
+                progressShowTimer = null;
+            }
+            progressShownAt = performance.now();
+            renderProgress(true);
+        }
         if (Array.from(progressRequests.values()).every(item => item.done)) {
+            if (progressShowTimer) {
+                clearTimeout(progressShowTimer);
+                progressShowTimer = null;
+            }
             if (progressDetailsTimer) {
                 clearTimeout(progressDetailsTimer);
                 progressDetailsTimer = null;
             }
-            progressHideTimer = setTimeout(() => {
-                const root = document.getElementById('dataLoadProgress');
-                if (root) {
-                    root.classList.remove('visible', 'indeterminate');
-                    setTimeout(() => { if (!root.classList.contains('visible')) root.hidden = true; }, 200);
-                }
+            if (!isProgressVisible()) {
                 progressRequests.clear();
                 forceProgressDetails = false;
+                progressShownAt = 0;
+                return;
+            }
+            const visibleFor = progressShownAt ? performance.now() - progressShownAt : PROGRESS_MIN_VISIBLE;
+            const baseDelay = hasError ? 1400 : 450;
+            const hideDelay = Math.max(baseDelay, PROGRESS_MIN_VISIBLE - visibleFor);
+            progressHideTimer = setTimeout(() => {
+                clearInlineProgress();
+                progressRequests.clear();
+                forceProgressDetails = false;
+                progressShownAt = 0;
                 progressHideTimer = null;
-            }, error || Array.from(progressRequests.values()).some(item => item.error) ? 1400 : 450);
+            }, hideDelay);
         }
     }
 
@@ -433,6 +536,7 @@
     window.akeFetch = async function (resource, init) {
         const version = await versionPromise;
         await window.akeDataSource?.ready;
+        const trackProgress = init?.akeProgress !== false;
         const request = new Request(resource, init);
         const url = normalizeUrl(request);
         const resourceType = window.akeDataSource?.classify(request)?.type || 'other';
@@ -474,7 +578,7 @@
         const key = `${cacheVersion}|${canonicalUrl}`;
 
         if (!forceRefresh && memoryResponses.has(key)) {
-            const progressId = beginProgress(canonicalUrl, 'memory');
+            const progressId = trackProgress ? beginProgress(canonicalUrl, 'memory') : null;
             const record = memoryResponses.get(key);
             setProgressSource(progressId, 'memory');
             updateProgress(progressId, record.body.size, record.body.size);
@@ -488,7 +592,7 @@
             return responseFromRecord(result.record);
         }
 
-        const progressId = beginProgress(canonicalUrl, 'cache');
+        const progressId = trackProgress ? beginProgress(canonicalUrl, 'cache') : null;
         if (!pendingRequests.has(key)) {
             const loadPromise = (async () => {
                 const { db } = await databasePromise;

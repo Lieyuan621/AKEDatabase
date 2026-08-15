@@ -385,7 +385,7 @@
                 const valueHtml = window.renderRawValueTip ? window.renderRawValueTip(val, variant.fullAttrDetails?.[key] || val) : val;
                 return `<div class="v2e-tooltip-item"><span class="v2e-tooltip-label">${getMetaLabel(key)}</span><span class="v2e-tooltip-value">${valueHtml}</span></div>`;
             }).join('');
-            return `<span class="v2e-variant-template"><span class="v2e-tag-id">${variant.attrTemplateId}</span><span class="v2e-tooltip"><div class="v2e-tooltip-grid">${items}</div></span></span>`;
+            return `<span class="v2e-variant-template ake-ui-popover-anchor"><span class="v2e-tag-id" data-ake-popover-trigger>${variant.attrTemplateId}</span><span class="v2e-tooltip ake-ui-popover" data-placement="top"><div class="v2e-tooltip-grid">${items}</div></span></span>`;
         }
 
         function getEnemyTypeName(enemy) {
@@ -412,6 +412,7 @@
         function renderEnemyOverview(items, container) {
             window.AKEModuleOverview.render(container, {
                 title: t('overview.title'), description: t('overview.description'),
+                tagsLayout: 'overlay',
                 group: item => ({ id: String(item.displayType ?? 'unknown'), name: getEnemyTypeName(item), order: -(item.rarity || 1) }),
                 onReset: () => { activeEnemyId = null; },
                 onSelect: item => { activeEnemyId = item.templateId; renderEnemyList(); },
@@ -488,7 +489,7 @@
         }
 
         async function loadEnemyDetail(enemy, container) {
-            container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
+            container.innerHTML = `<div class="ake-ui-state" data-state="loading">${t('loading')}</div>`;
             try {
                 const rawData = await (window.akeFetch || fetch)(enemy.contentFile).then(r => r.json());
                 await loadEnemyBuffData(rawData);

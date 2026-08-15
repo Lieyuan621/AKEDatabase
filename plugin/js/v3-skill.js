@@ -1082,8 +1082,8 @@
         return patchesFor(skillId).find(patch => Number(patch.level) === Number(level)) || null;
     }
 
-    function loadingHtml(title, message) {
-        return `<div class="ake-ui-state" data-state="loading"><span class="ake-ui-spinner" aria-hidden="true"></span><div>
+    function loadingHtml(title, message, page = false) {
+        return `<div class="ake-ui-state" data-state="loading"${page ? ' data-layout="page"' : ''}><div>
             <h2>${escapeHtml(title)}</h2><p>${escapeHtml(message)}</p></div></div>`;
     }
 
@@ -2454,7 +2454,7 @@
         const preserve = options?.preserve === true;
         const token = ++state.loadToken;
         if (!preserve) elements.detail.innerHTML = loadingHtml(MODULE_TITLE(),
-            t('loading.buildingDirectory', null, '正在建立角色与技能目录'));
+            t('loading.buildingDirectory', null, '正在建立角色与技能目录'), true);
         try {
             if (window.configLoaded) await window.configLoaded;
             const [manifest, characters, growth, patches, enemyDisplay, enemies, potentialTalents] = await Promise.all([

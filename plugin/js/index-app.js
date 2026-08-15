@@ -116,6 +116,7 @@
             };
 
             let allModules = [];
+            let modulesReady = false;
             let activeModuleId = null;
 
             const moduleListEl = document.getElementById('moduleListContainer');
@@ -652,7 +653,11 @@
                     return false;
                 }
                 if (!module || !module.contentFile) {
-                    setContent(`<div class="ake-ui-state" data-state="error">${tr('errors.moduleContentMissing')}</div>`);
+                    window.AKEUI.setState(contentArea, {
+                        state: 'error',
+                        layout: 'page',
+                        message: tr('errors.moduleContentMissing')
+                    });
                     return false;
                 }
                 if (module.token && !isModuleUnlocked(module)) {
@@ -666,7 +671,12 @@
                     const state = restoreStashedModule(module.id);
                     return { restored: true, routeId: state?.routeId || null };
                 }
-                setContent(`<div class="ake-ui-state">${tr('common.loadingModule')}<br><small>${firstLoadTextTableHint()}</small></div>`);
+                window.AKEUI.setState(contentArea, {
+                    state: 'loading',
+                    layout: 'page',
+                    title: tr('common.loadingModule'),
+                    message: firstLoadTextTableHint()
+                });
                 try {
                     const currentVersion = configuredPluginVersions[module.id] || bootstrapVersion.appversion || '';
                     const cacheKey = `${module.id}|${canonicalResourceUrl(module.contentFile)}|${currentVersion}`;
@@ -709,7 +719,11 @@
                     return { restored: false, reused: false };
                 } catch (err) {
                     if (generation !== moduleLoadGeneration) return false;
-                    setContent(`<div class="ake-ui-state" data-state="error">${tr('errors.moduleLoad', { message: err.message })}</div>`);
+                    window.AKEUI.setState(contentArea, {
+                        state: 'error',
+                        layout: 'page',
+                        message: tr('errors.moduleLoad', { message: err.message })
+                    });
                     return false;
                 }
             }
@@ -732,6 +746,7 @@
             }
 
             function applyFilterAndRender() {
+                if (!modulesReady) return;
                 const visibleModules = filterModules(allModules);
                 renderModuleList(visibleModules);
                 if (activeModuleId) {
@@ -754,12 +769,17 @@
                 let html = '';
                 sorted.forEach(mod => {
                     const icon = String(mod.icon || '').trim();
-                    const navIcon = config.language === 'CH' ? String(mod.navIcon || '').trim() : '';
-                    const textIcon = config.language === 'CH' ? '' : icon;
+                    const navIcon = String(mod.navIcon || '').trim();
+                    const textIcon = navIcon ? '' : icon;
+                    const configuredScale = Number(mod.navIconScale);
+                    const navIconScale = Number.isFinite(configuredScale)
+                        ? Math.min(1.25, Math.max(0.75, configuredScale))
+                        : 1;
+                    const navIconStyle = navIconScale === 1 ? '' : ` style="--ake-icon-scale:${navIconScale}"`;
                     const hasIcon = Boolean(navIcon || textIcon);
                     const title = translateModuleField(mod, 'title');
                     const iconHtml = navIcon
-                        ? `<img class="module-nav-icon" src="${navIcon}" alt="" aria-hidden="true" data-no-image-fallback>`
+                        ? `<img class="module-nav-icon" src="${navIcon}" alt="" aria-hidden="true" data-no-image-fallback${navIconStyle}>`
                         : textIcon ? `<span class="module-icon" aria-hidden="true">${textIcon}</span>` : '';
                     const hiddenMarker = mod.hidden ? '<span class="module-hidden-marker" aria-hidden="true">🔒</span>' : '';
                     html += `
@@ -969,9 +989,9 @@
             async function loadModulesFromManifest() {
                 try {
                     const response = await (window.akeFetch || fetch)('plugin/manifest.json');
-                    if (!response.ok) return [];
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
                     const manifest = await response.json();
-                    if (!Array.isArray(manifest)) return [];
+                    if (!Array.isArray(manifest)) throw new Error('Invalid module manifest');
                     return manifest
                         .filter(m => m.id && m.title && m.contentFile)
                         .map(m => ({
@@ -983,8 +1003,12 @@
                         }))
                         .filter(m => !m.disabled);
                 } catch (err) {
-                    moduleListEl.innerHTML = `<div class="ake-ui-state" data-state="error" data-density="compact">${tr('errors.moduleManifestRead')}</div>`;
-                    return [];
+                    window.AKEUI.setState(moduleListEl, {
+                        state: 'error',
+                        density: 'compact',
+                        message: tr('errors.moduleManifestRead').replace(/<br\s*\/?>/gi, '\n')
+                    });
+                    return null;
                 }
             }
 
@@ -1166,7 +1190,9 @@
             };
 
             const rawValueTooltip = document.createElement('div');
-            rawValueTooltip.className = 'raw-value-popover';
+            rawValueTooltip.className = 'raw-value-popover ake-ui-popover';
+            rawValueTooltip.dataset.position = 'manual';
+            rawValueTooltip.dataset.placement = 'bottom';
             rawValueTooltip.setAttribute('role', 'tooltip');
             rawValueTooltip.setAttribute('aria-hidden', 'true');
             document.body.appendChild(rawValueTooltip);
@@ -1187,16 +1213,20 @@
                 }
                 const anchorRect = rawValueAnchor.getBoundingClientRect();
                 const tooltipRect = rawValueTooltip.getBoundingClientRect();
-                const gap = 8;
+                const gap = 10;
                 const margin = 10;
                 let left = anchorRect.left + anchorRect.width / 2 - tooltipRect.width / 2;
                 left = Math.max(margin, Math.min(left, window.innerWidth - tooltipRect.width - margin));
                 let top = anchorRect.bottom + gap;
+                let placement = 'bottom';
                 if (top + tooltipRect.height > window.innerHeight - margin && anchorRect.top >= tooltipRect.height + gap + margin) {
                     top = anchorRect.top - tooltipRect.height - gap;
+                    placement = 'top';
                 }
                 rawValueTooltip.style.left = `${Math.round(left)}px`;
                 rawValueTooltip.style.top = `${Math.max(margin, Math.round(top))}px`;
+                rawValueTooltip.dataset.placement = placement;
+                window.AKEUI?.positionPopoverArrow(rawValueTooltip, rawValueAnchor);
             }
 
             function openRawValueTip(anchor) {
@@ -1356,37 +1386,137 @@
                 return result;
             };
 
-            // 双层浮窗管理
+            // 富文本词条浮窗链
             let activeTooltipLevel = 0;
-            let anchor1 = null;
-            let anchor2 = null;
+            let hyperlinkTooltipPinned = false;
+            let hyperlinkTooltipCloseTimer = 0;
+            let hyperlinkTooltipPositionFrame = 0;
+            const hyperlinkTooltipStack = [tooltip1, tooltip2].map(element => ({
+                element,
+                anchor: null
+            }));
 
-            function closeTooltip(level) {
-                if (level === 1) {
-                    tooltip1.style.display = 'none';
-                    anchor1 = null;
-                    if (activeTooltipLevel === 1) {
-                        activeTooltipLevel = 0;
-                    } else if (activeTooltipLevel === 2) {
-                        tooltip2.style.display = 'none';
-                        anchor2 = null;
-                        activeTooltipLevel = 0;
-                    }
-                } else if (level === 2) {
-                    tooltip2.style.display = 'none';
-                    anchor2 = null;
-                    if (activeTooltipLevel === 2) {
-                        activeTooltipLevel = 1;
-                    }
+            function cancelHyperlinkTooltipClose() {
+                if (!hyperlinkTooltipCloseTimer) return;
+                clearTimeout(hyperlinkTooltipCloseTimer);
+                hyperlinkTooltipCloseTimer = 0;
+            }
+
+            function scheduleHyperlinkTooltipClose() {
+                cancelHyperlinkTooltipClose();
+                hyperlinkTooltipCloseTimer = window.setTimeout(() => {
+                    hyperlinkTooltipCloseTimer = 0;
+                    if (hyperlinkTooltipPinned) return;
+                    if (hyperlinkTooltipStack.some(({ element }) => element.matches(':hover'))
+                        || document.querySelector('.tag-hyperlink:hover')) return;
+                    closeAllTooltips();
+                }, 220);
+            }
+
+            function isInHyperlinkTooltip(node) {
+                return node instanceof Node
+                    && hyperlinkTooltipStack.some(({ element }) => element.contains(node));
+            }
+
+            function getHyperlinkTooltipLevel(node) {
+                if (!node) return 0;
+                const index = hyperlinkTooltipStack.findIndex(({ element }) => element.contains(node));
+                return index + 1;
+            }
+
+            function bindHyperlinkTooltip(element) {
+                if (element.dataset.hyperlinkTooltipBound === 'true') return;
+                element.dataset.hyperlinkTooltipBound = 'true';
+                element.addEventListener('pointerenter', cancelHyperlinkTooltipClose);
+                element.addEventListener('pointerleave', event => {
+                    const relatedTarget = event.relatedTarget;
+                    if (isInHyperlinkTooltip(relatedTarget)
+                        || relatedTarget?.closest?.('.tag-hyperlink')) return;
+                    scheduleHyperlinkTooltipClose();
+                });
+            }
+
+            function ensureHyperlinkTooltip(level) {
+                while (hyperlinkTooltipStack.length < level) {
+                    const nextLevel = hyperlinkTooltipStack.length + 1;
+                    const element = document.createElement('div');
+                    element.id = `hyperlink-tooltip-${nextLevel}`;
+                    element.className = 'hyperlink-tooltip ake-ui-popover';
+                    element.dataset.position = 'manual';
+                    element.dataset.placement = 'bottom';
+                    document.body.appendChild(element);
+                    hyperlinkTooltipStack.push({ element, anchor: null });
+                    bindHyperlinkTooltip(element);
                 }
+                return hyperlinkTooltipStack[level - 1];
+            }
+
+            function closeTooltipsFrom(level) {
+                const startIndex = Math.max(0, level - 1);
+                for (let index = startIndex; index < hyperlinkTooltipStack.length; index++) {
+                    const entry = hyperlinkTooltipStack[index];
+                    entry.element.style.display = 'none';
+                    entry.anchor = null;
+                }
+
+                const retainedLength = Math.max(2, startIndex);
+                if (hyperlinkTooltipStack.length > retainedLength) {
+                    hyperlinkTooltipStack.splice(retainedLength).forEach(({ element }) => element.remove());
+                }
+                activeTooltipLevel = Math.min(activeTooltipLevel, startIndex);
             }
 
             function closeAllTooltips() {
-                tooltip1.style.display = 'none';
-                tooltip2.style.display = 'none';
-                anchor1 = null;
-                anchor2 = null;
-                activeTooltipLevel = 0;
+                cancelHyperlinkTooltipClose();
+                closeTooltipsFrom(1);
+            }
+
+            function positionHyperlinkTooltip(level, avoidDetailNav = false) {
+                const entry = hyperlinkTooltipStack[level - 1];
+                if (!entry) return;
+                const { element: tooltip, anchor: anchorElement } = entry;
+                if (!anchorElement?.isConnected || tooltip.style.display === 'none') {
+                    if (anchorElement && !anchorElement.isConnected) closeTooltipsFrom(level);
+                    return;
+                }
+                const rect = anchorElement.getBoundingClientRect();
+                const scrollX = window.scrollX || window.pageXOffset;
+                const scrollY = window.scrollY || window.pageYOffset;
+                const tooltipRect = tooltip.getBoundingClientRect();
+                const viewportMargin = 10;
+                const gap = 10;
+                let left = rect.left + scrollX + rect.width / 2 - tooltipRect.width / 2;
+                left = Math.max(scrollX + viewportMargin, Math.min(left, scrollX + window.innerWidth - tooltipRect.width - viewportMargin));
+                let top = rect.bottom + gap;
+                let placement = 'bottom';
+                const detailNavRect = document.querySelector('.character-detail-nav')?.getBoundingClientRect();
+                const overlapsDetailNav = avoidDetailNav
+                    && detailNavRect
+                    && detailNavRect.bottom > 0
+                    && detailNavRect.top < window.innerHeight
+                    && top < detailNavRect.bottom
+                    && top + tooltipRect.height > detailNavRect.top;
+                const hasRoomAbove = rect.top - tooltipRect.height - gap >= viewportMargin;
+                if ((overlapsDetailNav || top + tooltipRect.height > window.innerHeight - viewportMargin) && hasRoomAbove) {
+                    top = rect.top - tooltipRect.height - gap;
+                    placement = 'top';
+                } else if (overlapsDetailNav) {
+                    top = detailNavRect.bottom + gap;
+                }
+                tooltip.style.left = `${Math.round(left)}px`;
+                tooltip.style.top = `${Math.round(top + scrollY)}px`;
+                tooltip.dataset.placement = placement;
+                window.AKEUI?.positionPopoverArrow(tooltip, anchorElement);
+            }
+
+            function scheduleHyperlinkTooltipPosition() {
+                if (hyperlinkTooltipPositionFrame) return;
+                hyperlinkTooltipPositionFrame = requestAnimationFrame(() => {
+                    hyperlinkTooltipPositionFrame = 0;
+                    for (let level = 1; level <= activeTooltipLevel; level++) {
+                        positionHyperlinkTooltip(level);
+                    }
+                });
             }
 
             function showTooltip(level, anchorElement, hyperDef) {
@@ -1403,54 +1533,63 @@
                     <div class="tooltip-name">${iconHtml}${name}</div>
                     <div class="tooltip-desc">${desc}</div>
                 `;
-                const tooltip = level === 1 ? tooltip1 : tooltip2;
+                closeTooltipsFrom(level);
+                const entry = ensureHyperlinkTooltip(level);
+                const tooltip = entry.element;
                 tooltip.innerHTML = content;
-                const rect = anchorElement.getBoundingClientRect();
-                const scrollX = window.scrollX || window.pageXOffset;
-                const scrollY = window.scrollY || window.pageYOffset;
-                tooltip.style.left = (rect.left + scrollX) + 'px';
-                tooltip.style.top = (rect.bottom + scrollY + 5) + 'px';
                 tooltip.style.display = 'block';
-                if (level === 1) {
-                    anchor1 = anchorElement;
-                    activeTooltipLevel = 1;
-                } else {
-                    anchor2 = anchorElement;
-                    activeTooltipLevel = 2;
-                }
+                entry.anchor = anchorElement;
+                activeTooltipLevel = level;
+                positionHyperlinkTooltip(level, true);
             }
+
+            function openHyperlinkTooltip(hyperlink, pinned = false) {
+                const tagId = hyperlink.dataset.tagId;
+                if (!tagId) return false;
+                const hyperDef = window.hyperlinkConfig?.[tagId];
+                if (!hyperDef) return false;
+                const parentLevel = getHyperlinkTooltipLevel(hyperlink);
+
+                cancelHyperlinkTooltipClose();
+                if (parentLevel > 0) {
+                    showTooltip(parentLevel + 1, hyperlink, hyperDef);
+                } else {
+                    if (!pinned && hyperlinkTooltipPinned) return false;
+                    showTooltip(1, hyperlink, hyperDef);
+                }
+                if (pinned) hyperlinkTooltipPinned = true;
+                return true;
+            }
+
+            document.addEventListener('pointerover', event => {
+                const hyperlink = event.target.closest?.('.tag-hyperlink');
+                if (!hyperlink || hyperlink.contains(event.relatedTarget)) return;
+                openHyperlinkTooltip(hyperlink);
+            });
+
+            document.addEventListener('pointerout', event => {
+                const hyperlink = event.target.closest?.('.tag-hyperlink');
+                if (!hyperlink || hyperlink.contains(event.relatedTarget)) return;
+                if (isInHyperlinkTooltip(event.relatedTarget)) return;
+                scheduleHyperlinkTooltipClose();
+            });
+
+            hyperlinkTooltipStack.forEach(({ element }) => bindHyperlinkTooltip(element));
+            window.addEventListener('scroll', scheduleHyperlinkTooltipPosition, true);
+            window.addEventListener('resize', scheduleHyperlinkTooltipPosition);
 
             document.addEventListener('click', (e) => {
                 const target = e.target;
                 const hyperlink = target.closest('.tag-hyperlink');
-                const inTooltip1 = tooltip1.contains(target);
-                const inTooltip2 = tooltip2.contains(target);
-                if (!hyperlink && (inTooltip1 || inTooltip2)) return;
                 if (hyperlink) {
                     e.preventDefault();
-                    const tagId = hyperlink.dataset.tagId;
-                    if (!tagId) return;
-                    const hyperDef = window.hyperlinkConfig?.[tagId];
-                    if (!hyperDef) return;
-                    if (inTooltip2) {
-                        showTooltip(2, hyperlink, hyperDef);
-                    } else if (inTooltip1) {
-                        showTooltip(2, hyperlink, hyperDef);
-                    } else {
-                        closeAllTooltips();
-                        showTooltip(1, hyperlink, hyperDef);
-                    }
+                    openHyperlinkTooltip(hyperlink, true);
                     return;
                 }
-                if (inTooltip2) return;
-                if (inTooltip1) {
-                    if (activeTooltipLevel === 2) closeTooltip(2);
-                    return;
-                }
+                if (isInHyperlinkTooltip(target)) return;
+                hyperlinkTooltipPinned = false;
                 closeAllTooltips();
             });
-
-            tooltip2.addEventListener('click', (e) => e.stopPropagation());
 
             function updateExportButtonVisibility() {
                 const exportBtn = document.getElementById('exportButton');
@@ -1515,8 +1654,11 @@
                     } catch (e) {}
                 }
 
-                allModules = await loadModulesFromManifest();
+                const loadedModules = await loadModulesFromManifest();
+                allModules = loadedModules || [];
+                modulesReady = Boolean(loadedModules);
                 applyFilterAndRender();
+                void window.__akeRevealNavigationShell?.();
 
                 const savedKeepUrlSync = storage.get('akedata-keepUrlSync');
                 if (savedKeepUrlSync !== null) {
@@ -1848,7 +1990,15 @@
                 getUnlockedTokens: () => [...config.unlockedTokens]
             };
             brandHome.addEventListener('click', showHomePage);
-            initApp();
+            initApp().catch(error => {
+                void window.__akeRevealNavigationShell?.({ waitForImages: false });
+                window.AKEUI?.setState(contentArea, {
+                    state: 'error',
+                    layout: 'page',
+                    message: tr('errors.startup', { message: error.message }, `Startup failed: ${error.message}`)
+                });
+                console.error('应用初始化失败。', error);
+            });
         })();
 
         var _hmt = _hmt || [];

@@ -236,6 +236,7 @@
         const statusNames = ['statuses.active', 'statuses.upcoming', 'statuses.ended', 'statuses.permanent'];
         window.AKEModuleOverview.render(container, {
             title: t('overview.title'), description: t('overview.description'),
+            variant: 'landscape',
             group: item => ({ id: String(item.statusOrder ?? 3), name: t(statusNames[item.statusOrder] || 'statuses.permanent'), order: item.statusOrder ?? 3 }),
             onReset: () => { activeGameId = null; },
             onSelect: item => { activeGameId = item.gameId; renderGameList(); },
@@ -362,7 +363,7 @@
     }
 
     async function loadGameDetail(game, container) {
-        container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
+        container.innerHTML = `<div class="ake-ui-state" data-state="loading">${t('loading')}</div>`;
         try {
             const data = await (window.akeFetch || fetch)(game.contentFile).then(r => r.json());
             currentData = data;
@@ -963,7 +964,7 @@
             const cls = isCcTag ? 'v2d-buff-tag v2d-has-tip cc-tag-buff' : 'v2d-buff-tag v2d-has-tip';
             if (rows.length === 0) return `<span class="${isCcTag ? 'v2d-buff-tag cc-tag-buff' : 'v2d-buff-tag'}">${escapeHtml(id)}</span>`;
             const tipHtml = rows.map(r => `<div>${r}</div>`).join('');
-            return `<span class="${cls}">${escapeHtml(id)}<span class="v2d-buff-tip">${tipHtml}</span></span>`;
+            return `<span class="${cls} ake-ui-popover-anchor">${escapeHtml(id)}<span class="v2d-buff-tip ake-ui-popover" data-placement="top">${tipHtml}</span></span>`;
         }).join('')}</div>`;
     }
 
@@ -1002,7 +1003,7 @@
                 ['buff加成', libraryBuffModifiers],
                 ['副本加成', scriptModifiers]
             ]);
-        const scriptBuffTagsHtml = showHidden && (scriptedBuffs || []).length ? `<div class="v2d-enemy-buffs">${scriptedBuffs.map(row => `<span class="v2d-buff-tag v2d-script-buff v2d-has-tip">${escapeHtml(row.buffId)}<small>脚本</small><span class="v2d-buff-tip"><div>条件性脚本 Buff · LevelScript ${escapeHtml(row.scriptId)}</div></span></span>`).join('')}</div>` : '';
+        const scriptBuffTagsHtml = showHidden && (scriptedBuffs || []).length ? `<div class="v2d-enemy-buffs">${scriptedBuffs.map(row => `<span class="v2d-buff-tag v2d-script-buff v2d-has-tip ake-ui-popover-anchor">${escapeHtml(row.buffId)}<small>脚本</small><span class="v2d-buff-tip ake-ui-popover" data-placement="top"><div>条件性脚本 Buff · LevelScript ${escapeHtml(row.scriptId)}</div></span></span>`).join('')}</div>` : '';
 
         const statState = window.AKEEnemyRenderer.calculateStats({
             attrData,
@@ -1182,9 +1183,9 @@
                     ? `margin-left:${stackIdx * offsetPct}%;margin-top:-${stackIdx * offsetPct}%;z-index:${10 - stackIdx};`
                     : 'z-index:10;';
 
-                mapSpotsHtml += `<div class="v2cc-map-spot" data-wave="${wi}" data-group="${g.groupKey}" data-target-group="${targetGroupKey}" style="left:${pct.left}%;top:${pct.top}%;${vis}${stackStyle}">
+                mapSpotsHtml += `<div class="v2cc-map-spot" data-ake-popover-anchor data-wave="${wi}" data-group="${g.groupKey}" data-target-group="${targetGroupKey}" style="left:${pct.left}%;top:${pct.top}%;${vis}${stackStyle}">
                     <img class="v2cc-map-spot-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${spawn.templateId}.png">
-                    <div class="v2cc-map-tip">${tipLines.map(l => `<div>${l}</div>`).join('')}</div>
+                    <div class="v2cc-map-tip ake-ui-popover" data-placement="top">${tipLines.map(l => `<div>${l}</div>`).join('')}</div>
                 </div>`;
             });
         });
@@ -1702,13 +1703,8 @@
             if (!tip) return;
             const mapRect = map.getBoundingClientRect();
             const spotRect = spot.getBoundingClientRect();
-            const spotCenterX = spotRect.left + spotRect.width / 2 - mapRect.left;
             const spotTop = spotRect.top - mapRect.top;
-
-            tip.classList.remove('tip-below', 'tip-left', 'tip-right');
-            if (spotTop < 60) tip.classList.add('tip-below');
-            if (spotCenterX > mapRect.width * 0.7) tip.classList.add('tip-left');
-            else if (spotCenterX < mapRect.width * 0.3) tip.classList.add('tip-right');
+            tip.dataset.placement = spotTop < 60 ? 'bottom' : 'top';
         }
 
         function switchWave(wi, spawnerBody) {

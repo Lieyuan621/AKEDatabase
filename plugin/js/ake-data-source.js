@@ -265,6 +265,9 @@
         if (!(element instanceof Element)) return;
         if (element.hasAttribute('data-database-src')) {
             const source = element.getAttribute('data-database-src');
+            if (element instanceof HTMLImageElement) {
+                element.setAttribute('data-ake-image-pending', '');
+            }
             element.removeAttribute('data-database-src');
             element.setAttribute('src', resolveImageUrl(source));
         }
@@ -295,6 +298,10 @@
 
     function observeDomAssets() {
         if (assetObserver || !document.documentElement || typeof MutationObserver === 'undefined') return;
+        document.addEventListener('load', event => {
+            if (!(event.target instanceof HTMLImageElement) || !event.target.hasAttribute('data-ake-image-pending')) return;
+            event.target.removeAttribute('data-ake-image-pending');
+        }, true);
         assetObserver = new MutationObserver(records => {
             records.forEach(record => {
                 if (record.type === 'attributes') rewriteElementAssets(record.target);
