@@ -187,7 +187,7 @@
                 onReset: () => { activeItemId = null; },
                 onSelect: item => { activeItemId = item.itemId; renderItemList(); },
                 sidebarSelector: item => `.ake-ui-directory__item[data-item-id="${CSS.escape(item.itemId)}"]`,
-                items: items.map(item => ({ ...item, id: item.itemId, image: item.icon, fallback: t('overview.fallback'), tags: [commonT('rarityStars', { rarity: item.rarity || 1 })] }))
+                items: items.map(item => ({ ...item, id: item.itemId, image: item.icon, fallback: t('overview.fallback') }))
             });
         }
 

@@ -563,7 +563,7 @@
             const image = element('img', 'ake-ui-directory__item-meta-icon');
             image.src = entry.src;
             image.alt = entry.label || entry.alt || '';
-            image.title = entry.label || entry.title || '';
+            if (entry.tooltip !== false) image.title = entry.label || entry.title || '';
             image.loading = 'lazy';
             image.decoding = 'async';
             if (entry.kind) image.dataset.kind = entry.kind;

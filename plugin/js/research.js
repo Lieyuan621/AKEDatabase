@@ -327,6 +327,7 @@
         function renderResearchOverview(items, container) {
             window.AKEModuleOverview.render(container, {
                 title: t('overview.title'), description: t('overview.description'),
+                variant: 'text',
                 group: function (item) { return { id: item.category || 'research-topic', name: item.category || t('topics.general'), order: item.categoryOrder }; },
                 onReset: function () { activeDocId = null; },
                 onSelect: function (item) { activeDocId = item.id; renderDocList(); },

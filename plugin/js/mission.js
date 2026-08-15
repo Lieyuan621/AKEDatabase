@@ -69,7 +69,6 @@
     function updateFilterSummary() {
         const count = Number(state.type !== 'all') + Number(state.chapter !== 'all') + Number(state.showHidden);
         window.AKEUI?.updateFilterPanel(elements.filterPanel, {
-            expanded: true,
             summary: count ? `筛选 (${count})` : '筛选'
         });
     }

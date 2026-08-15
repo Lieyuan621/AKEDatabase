@@ -48,7 +48,7 @@
         mobile: document.getElementById('bakerMobileButton'),
         backdrop: document.getElementById('bakerMobileBackdrop')
     };
-    window.AKEUI?.updateFilterPanel(elements.filterPanel, { expanded: true, summary: '筛选' });
+    window.AKEUI?.updateFilterPanel(elements.filterPanel, { summary: '筛选' });
 
     function escapeHtml(value) {
         return String(value ?? '').replace(/[&<>"']/g, character => ({

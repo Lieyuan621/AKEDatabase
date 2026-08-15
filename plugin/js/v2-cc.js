@@ -236,6 +236,7 @@
         const statusNames = ['statuses.active', 'statuses.upcoming', 'statuses.ended', 'statuses.permanent'];
         window.AKEModuleOverview.render(container, {
             title: t('overview.title'), description: t('overview.description'),
+            variant: 'landscape',
             group: item => ({ id: String(item.statusOrder ?? 3), name: t(statusNames[item.statusOrder] || 'statuses.permanent'), order: item.statusOrder ?? 3 }),
             onReset: () => { activeGameId = null; },
             onSelect: item => { activeGameId = item.gameId; renderGameList(); },

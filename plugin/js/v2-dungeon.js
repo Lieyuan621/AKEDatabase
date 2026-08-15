@@ -390,6 +390,7 @@
         function renderDungeonOverview(items, container) {
             window.AKEModuleOverview.render(container, {
                 title: t('overview.title'), description: t('overview.description'),
+                variant: 'landscape',
                 group: item => ({ id: item.gameCategory || 'other', name: item.gameCategoryName || t('categories.other'), order: item.categoryOrder }),
                 onReset: () => { activeSeriesId = null; },
                 onSelect: item => { activeSeriesId = item.templateId; renderSeriesList(); },

@@ -24,6 +24,71 @@
         return value === undefined || value === null || value === '' ? (fallback || '') : String(value);
     }
 
+    function createCardMedia(item) {
+        const visual = document.createElement('div');
+        visual.className = 'ake-ui-card__media';
+        const sources = [item.image, item.imageFallback].filter((source, index, values) => source && values.indexOf(source) === index);
+        const showPlaceholder = () => {
+            visual.replaceChildren();
+            visual.classList.add('is-placeholder');
+            visual.classList.remove('uses-fallback');
+            visual.textContent = text(item.fallback, 'DATA');
+        };
+        if (!sources.length) {
+            showPlaceholder();
+            return visual;
+        }
+
+        const image = document.createElement('img');
+        image.alt = '';
+        image.loading = 'lazy';
+        image.decoding = 'async';
+        let sourceIndex = 0;
+        image.addEventListener('error', () => {
+            if (sourceIndex >= sources.length) {
+                showPlaceholder();
+                return;
+            }
+            visual.classList.toggle('uses-fallback', sourceIndex > 0);
+            image.src = sources[sourceIndex];
+            sourceIndex += 1;
+        });
+        visual.appendChild(image);
+        image.src = sources[sourceIndex];
+        sourceIndex += 1;
+        return visual;
+    }
+
+    function createOverviewHeading(options = {}) {
+        const level = options.level === 'page' ? 'page' : 'group';
+        const header = document.createElement('header');
+        header.className = 'ake-overview-heading';
+        header.dataset.level = level;
+        if (options.tone) header.dataset.tone = options.tone;
+
+        const main = document.createElement('div');
+        main.className = 'ake-overview-heading__main';
+        const title = document.createElement(level === 'page' ? 'h1' : 'h2');
+        title.className = 'ake-overview-heading__title';
+        title.textContent = text(options.title);
+        main.appendChild(title);
+        if (options.meta !== undefined && options.meta !== null && options.meta !== '') {
+            const meta = document.createElement('span');
+            meta.className = 'ake-overview-heading__meta';
+            meta.textContent = text(options.meta);
+            main.appendChild(meta);
+        }
+        header.appendChild(main);
+
+        if (options.description !== undefined && options.description !== null && options.description !== '') {
+            const description = document.createElement('p');
+            description.className = 'ake-overview-heading__description';
+            description.textContent = text(options.description);
+            header.appendChild(description);
+        }
+        return header;
+    }
+
     function markVersionChange(element, item) {
         if (!element || !item?.changeType) return;
         const label = item.changeType === 'added'
@@ -141,6 +206,7 @@
         if (!container) return;
         roots.set(container.id, { container, options });
         const items = options.items || [];
+        const overviewVariant = text(options.variant, 'icon');
         const groups = new Map();
         items.forEach((item) => {
             const baseVersion = String(item.changeBaseVersion || '').split('@')[0];
@@ -154,49 +220,40 @@
         container.innerHTML = '';
         const root = document.createElement('div');
         root.className = 'ake-ui-page';
+        root.dataset.overviewVariant = overviewVariant;
 
-        const header = document.createElement('header');
-        header.className = 'ake-ui-page__header';
-        const heading = document.createElement('div');
-        const eyebrow = document.createElement('div');
-        eyebrow.className = 'ake-ui-page__eyebrow';
-        eyebrow.textContent = window.akeData?.t('overview.count', { count: items.length }, `${items.length} 条数据`) || `${items.length} 条数据`;
-        const title = document.createElement('h1');
-        title.className = 'ake-ui-page__title';
-        title.textContent = options.title;
-        const description = document.createElement('p');
-        description.className = 'ake-ui-page__summary';
-        description.textContent = options.description || window.akeData?.t('overview.hint', null, '选择卡片查看完整数据') || '选择卡片查看完整数据';
-        heading.append(eyebrow, title, description);
-        header.appendChild(heading);
-        root.appendChild(header);
+        root.appendChild(createOverviewHeading({
+            level: 'page',
+            title: options.title,
+            meta: window.akeData?.t('overview.count', { count: items.length }, `${items.length} 条数据`) || `${items.length} 条数据`,
+            description: options.description || window.akeData?.t('overview.hint', null, '选择卡片查看完整数据') || '选择卡片查看完整数据'
+        }));
 
         const groupList = Array.from(groups.values()).sort((a, b) =>
             (a.order ?? 999) - (b.order ?? 999) || text(a.name).localeCompare(text(b.name), window.akeData?.getLanguage?.() === 'EN' ? 'en' : 'zh-CN'));
         groupList.forEach((group) => {
             const section = document.createElement('section');
             section.className = 'ake-ui-section';
-            const sectionHeader = document.createElement('header');
-            sectionHeader.className = 'ake-ui-section__header';
-            const groupTitle = document.createElement('h2');
-            groupTitle.className = 'ake-ui-section__title';
-            groupTitle.innerHTML = `<span></span>`;
-            groupTitle.querySelector('span').textContent = group.name;
-            const groupCount = document.createElement('span');
-            groupCount.className = 'ake-ui-section__meta';
-            groupCount.textContent = group.items.length;
-            sectionHeader.append(groupTitle, groupCount);
-            section.appendChild(sectionHeader);
+            section.appendChild(createOverviewHeading({
+                level: 'group',
+                title: group.name,
+                meta: group.items.length,
+                tone: group.id === '__version_diff__' ? 'version' : ''
+            }));
 
             const grid = document.createElement('div');
             grid.className = 'ake-ui-card-grid';
-            grid.dataset.size = 'regular';
+            grid.dataset.overviewVariant = overviewVariant;
             group.items.forEach((item) => {
                 const card = document.createElement('button');
                 card.type = 'button';
-                card.className = 'ake-ui-card has-media';
+                card.className = `ake-ui-card${overviewVariant === 'text' ? '' : ' has-media'}`;
                 card.dataset.akeComponent = 'card';
                 card.dataset.cardKind = 'overview';
+                card.dataset.overviewVariant = overviewVariant;
+                const tagsLayout = text(options.tagsLayout);
+                if (tagsLayout) card.dataset.tagsLayout = tagsLayout;
+                card.setAttribute('aria-label', item.id ? `${text(item.name)} · ${text(item.id)}` : text(item.name));
                 window.AKEUI?.enhanceCard(card, {
                     variant: 'entity',
                     density: 'compact',
@@ -215,29 +272,19 @@
                     });
                 });
 
-                const visual = document.createElement('div');
-                visual.className = 'ake-ui-card__media';
-                if (item.image) {
-                    const image = document.createElement('img');
-                    image.src = item.image;
-                    image.alt = '';
-                    image.loading = 'lazy';
-                    visual.appendChild(image);
-                } else {
-                    visual.classList.add('is-placeholder');
-                    visual.textContent = text(item.fallback, 'DATA');
-                }
+                const visual = overviewVariant === 'text' ? null : createCardMedia(item);
 
                 const body = document.createElement('div');
                 body.className = 'ake-ui-card__content';
                 const titleRow = document.createElement('div');
                 titleRow.className = 'ake-ui-card__header';
-                titleRow.appendChild(visual);
+                if (visual) titleRow.appendChild(visual);
                 const heading = document.createElement('div');
                 heading.className = 'ake-ui-card__heading';
                 const cardTitle = document.createElement('h3');
                 cardTitle.className = 'ake-ui-card__title';
                 cardTitle.textContent = item.name;
+                cardTitle.title = item.name;
                 heading.appendChild(cardTitle);
                 titleRow.appendChild(heading);
                 if (item.icons?.length) {
@@ -249,7 +296,7 @@
                         image.className = 'ake-ui-meta-icon';
                         image.src = icon.src;
                         image.alt = icon.label || '';
-                        image.title = icon.label || '';
+                        if (icon.tooltip !== false) image.title = icon.label || '';
                         if (icon.kind) image.dataset.kind = icon.kind;
                         iconList.appendChild(image);
                     });
@@ -262,7 +309,7 @@
                 tags.className = 'ake-ui-card__badges';
                 if (item.changeType) {
                     const changeTag = document.createElement('span');
-                    changeTag.className = 'ake-ui-badge';
+                    changeTag.className = 'ake-ui-badge ake-ui-badge--change';
                     changeTag.dataset.tone = item.changeType;
                     changeTag.textContent = item.changeType === 'added'
                         ? (window.akeData?.t('versionDiff.added', null, '新增') || '新增')

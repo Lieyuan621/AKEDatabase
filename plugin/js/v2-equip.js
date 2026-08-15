@@ -158,12 +158,13 @@
         function renderEquipOverview(items, container) {
             window.AKEModuleOverview.render(container, {
                 title: t('overview.title'), description: t('overview.description'),
+                tagsLayout: 'overlay',
                 group: item => ({ id: item.isIndependentGroup ? 'independent' : 'suit', name: item.isIndependentGroup ? t('independentEquipment') : t('equipmentSets'), order: item.isIndependentGroup ? 1 : 0 }),
                 onReset: () => { activeSuitId = null; },
                 onSelect: item => { activeSuitId = item.suitID; renderSuitList(); },
                 sidebarSelector: item => `.ake-ui-directory__item[data-suit-id="${CSS.escape(item.suitID)}"]`,
                 items: items.map(item => ({ ...item, id: item.suitID, image: item.icon, fallback: t('overview.fallback'),
-                    tags: [t('overview.highestRarity', { rarity: item.rarity || 1 }), t('overview.equipmentCount', { count: item.equipCount || 0 })] }))
+                    tags: [t('overview.equipmentCount', { count: item.equipCount || 0 })] }))
             });
         }
 

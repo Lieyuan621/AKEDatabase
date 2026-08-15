@@ -58,7 +58,6 @@
         const updateFilterSummary = () => {
             const count = selectedRarities.size + selectedTypes.size;
             window.AKEUI?.updateFilterPanel(filterPanel, {
-                expanded: true,
                 summary: count ? commonT('filterCount', { count }) : commonT('filter')
             });
         };

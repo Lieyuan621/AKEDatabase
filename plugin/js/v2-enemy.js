@@ -412,6 +412,7 @@
         function renderEnemyOverview(items, container) {
             window.AKEModuleOverview.render(container, {
                 title: t('overview.title'), description: t('overview.description'),
+                tagsLayout: 'overlay',
                 group: item => ({ id: String(item.displayType ?? 'unknown'), name: getEnemyTypeName(item), order: -(item.rarity || 1) }),
                 onReset: () => { activeEnemyId = null; },
                 onSelect: item => { activeEnemyId = item.templateId; renderEnemyList(); },

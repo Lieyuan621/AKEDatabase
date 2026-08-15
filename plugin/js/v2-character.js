@@ -30,6 +30,7 @@
 
         const CHARACTER_META_ICON_BASE = '/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/elementicon/';
         const CHARACTER_PROFESSION_ICON_BASE = '/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/charprofessionicon/';
+        const CHARACTER_PORTRAIT_BASE = '/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/charicon/';
         const CHAR_TYPE_ICON_MAP = {
             Physical: 'physical', Fire: 'fire', Pulse: 'pulse', Cryst: 'cold', Natural: 'nature'
         };
@@ -217,14 +218,16 @@
                 icons.push({
                     src: `${CHARACTER_META_ICON_BASE}icon_charattrtype_${charTypeIcon}.png`,
                     label: character.charType || getCharTypeName(charTypeId) || charTypeId,
-                    kind: `element-${charTypeIcon}`
+                    kind: `element-${charTypeIcon}`,
+                    tooltip: false
                 });
             }
             if (professionIcon) {
                 icons.push({
                     src: `${CHARACTER_PROFESSION_ICON_BASE}icon_profession_${professionIcon}.png`,
                     label: character.profession || getProfessionName(professionId) || professionId,
-                    kind: 'profession'
+                    kind: 'profession',
+                    tooltip: false
                 });
             }
             return icons;
@@ -283,7 +286,6 @@
                 const count = selectedRarities.size + selectedCharTypes.size
                     + selectedProfessions.size + selectedWeaponTypes.size;
                 window.AKEUI?.updateFilterPanel(filterPanel, {
-                    expanded: true,
                     summary: count ? commonT('filterCount', { count }) : commonT('filter')
                 });
             };
@@ -414,11 +416,14 @@
         function renderCharacterOverview(items, container) {
             window.AKEModuleOverview.render(container, {
                 title: t('overview.title'), description: t('overview.description'),
+                variant: 'character',
                 group: char => ({ id: char.profession || 'unknown', name: char.profession || t('unknownProfession') }),
                 onReset: () => { activeCharId = null; },
                 onSelect: char => { activeCharId = char.charId; renderCharacterList(); },
                 sidebarSelector: char => `.ake-ui-directory__item[data-char-id="${CSS.escape(char.charId)}"]`,
-                items: items.map(char => ({ ...char, id: char.charId, image: char.icon, fallback: t('overview.fallback'),
+                items: items.map(char => ({ ...char, id: char.charId,
+                    image: `${CHARACTER_PORTRAIT_BASE}icon_${encodeURIComponent(char.charId)}.png`, imageFallback: char.icon,
+                    fallback: t('overview.fallback'),
                     icons: getCharacterMetaIcons(char) }))
             });
         }
