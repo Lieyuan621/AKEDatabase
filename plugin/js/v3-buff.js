@@ -463,7 +463,7 @@
     }
 
     function loadingHtml(title, message) {
-        return `<div class="ake-ui-state" data-state="loading" role="status"><span class="ake-ui-spinner" aria-hidden="true"></span><div><h2>${escapeHtml(title)}</h2><p>${escapeHtml(message)}</p></div></div>`;
+        return `<div class="ake-ui-state" data-state="loading" role="status"><div><h2>${escapeHtml(title)}</h2><p>${escapeHtml(message)}</p></div></div>`;
     }
 
     function errorHtml(title, message, retry) {

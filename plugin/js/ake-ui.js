@@ -519,12 +519,40 @@
         const node = element('div', 'ake-ui-state');
         node.dataset.state = options.state || 'empty';
         if (options.density) node.dataset.density = options.density;
-        node.setAttribute('role', options.state === 'error' ? 'alert' : 'status');
-        if (options.state === 'loading' && options.spinner !== false) node.appendChild(element('span', 'ake-ui-spinner'));
+        if (options.layout) node.dataset.layout = options.layout;
+        if (options.indicator === false || options.spinner === false) node.dataset.indicator = 'none';
         if (options.icon) appendContent(node, options.icon);
         if (isPresent(options.title)) node.appendChild(element('strong', 'ake-ui-state__title', options.title));
         if (isPresent(options.message)) node.appendChild(element('p', 'ake-ui-state__message', options.message));
         if (isPresent(options.action)) appendContent(node, options.action);
+        enhanceState(node);
+        return node;
+    }
+
+    function enhanceState(node) {
+        if (!(node instanceof Element) || !node.classList.contains('ake-ui-state')) return node;
+        const state = node.dataset.state || (node.getAttribute('role') === 'alert' ? 'error' : 'empty');
+        node.dataset.state = state;
+        node.setAttribute('role', state === 'error' ? 'alert' : 'status');
+        if (state === 'loading') {
+            node.setAttribute('aria-live', 'polite');
+            node.setAttribute('aria-busy', 'true');
+        } else {
+            node.removeAttribute('aria-live');
+            node.removeAttribute('aria-busy');
+        }
+        return node;
+    }
+
+    function enhanceStates(root = document) {
+        if (root.matches?.('.ake-ui-state')) enhanceState(root);
+        root.querySelectorAll?.('.ake-ui-state').forEach(enhanceState);
+    }
+
+    function setState(target, options = {}) {
+        if (!(target instanceof Element)) return null;
+        const node = stateView(options);
+        target.replaceChildren(node);
         return node;
     }
 
@@ -694,7 +722,10 @@
     });
     new MutationObserver(records => {
         records.forEach(record => Array.from(record.addedNodes).forEach(node => {
-            if (node instanceof Element) enhanceSelects(node);
+            if (node instanceof Element) {
+                enhanceSelects(node);
+                enhanceStates(node);
+            }
         }));
         if (openSelectInstance && openSelectInstance.trigger.offsetParent === null) openSelectInstance.close();
     }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
@@ -714,6 +745,7 @@
         section,
         card,
         stateView,
+        setState,
         directoryItem,
         setDirectoryItemActive,
         detailHeader,
@@ -721,4 +753,5 @@
     });
 
     enhanceSelects();
+    enhanceStates();
 })();

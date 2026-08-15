@@ -478,7 +478,7 @@
                     '</div>';
                 return;
             }
-            container.innerHTML = '<div class="ake-ui-state">' + escapeHtml(t('document.loading')) + '</div>';
+            container.innerHTML = '<div class="ake-ui-state" data-state="loading">' + escapeHtml(t('document.loading')) + '</div>';
             try {
                 const res = await (window.akeFetch || fetch)(doc.contentFile);
                 if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -554,8 +554,8 @@
             var list = document.getElementById('researchList');
             var detail = document.getElementById('researchDetail');
             if (!list || !detail) return;
-            list.innerHTML = '<div class="ake-ui-state">' + escapeHtml(t('loading')) + '</div>';
-            if (!activeDocId) detail.innerHTML = '<div class="ake-ui-state">' + escapeHtml(commonT('loadingData')) + '</div>';
+            list.innerHTML = '<div class="ake-ui-state" data-state="loading" data-density="compact">' + escapeHtml(t('loading')) + '</div>';
+            if (!activeDocId) detail.innerHTML = '<div class="ake-ui-state" data-state="loading" data-layout="page">' + escapeHtml(commonT('loadingData')) + '</div>';
             var showHidden = (window.akeData && window.akeData.getConfig) ? window.akeData.getConfig().showHidden : false;
             var docs = await loadResearchManifest(showHidden);
             allDocs = docs;

@@ -1,35 +1,29 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="ake-styles-pending">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="app.title">AKEData · 终末地数据库</title>
     <link rel="icon" type="image/png" href="https://data.akedata.wiki/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/charremoteicon/icon_chr_0013_aglina.png">
+    <style>html.ake-styles-pending body { visibility: hidden; }</style>
     <link rel="stylesheet" id="base-style">
     <link rel="stylesheet" id="theme-style">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
-    <div id="dataLoadProgress" class="data-load-progress" role="progressbar" aria-label="数据加载进度" data-i18n-aria-label="common.dataLoadProgress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden>
-        <div class="data-load-progress-track">
-            <div id="dataLoadProgressBar" class="data-load-progress-bar"></div>
-        </div>
-        <div id="dataLoadProgressText" class="data-load-progress-text" aria-live="polite" data-i18n="common.loadingData">正在加载数据...</div>
-        <div id="dataLoadProgressFile" class="data-load-progress-file"></div>
-    </div>
     <div class="app">
         <div class="sidebar">
-            <div class="brand" id="brandHome" title="返回起始页" data-i18n-title="nav.home">
+            <div class="brand" id="brandHome" title="返回起始页" data-i18n-title="nav.home" data-ake-shell-part hidden>
                 <span class="brand-mark" aria-hidden="true"></span>
                 <span class="brand-copy">
                     <strong class="brand-name">AKEData</strong>
                     <span class="brand-badge">Wiki</span>
                 </span>
             </div>
-            <div class="module-list" id="moduleListContainer">
-                <div class="ake-ui-state" data-state="loading" data-density="compact" data-i18n="nav.loadingModules">加载模块清单...</div>
+            <div class="module-list" id="moduleListContainer" data-ake-shell-part hidden>
+                <div class="ake-ui-state" data-state="loading" data-density="compact" data-indicator="none" data-visibility="assistive" data-i18n="nav.loadingModules">加载模块清单...</div>
             </div>
-            <div class="sidebar-footer">
+            <div class="sidebar-footer" data-ake-shell-part hidden>
                 <div class="settings-button" id="settingsButton" title="全局设置" data-i18n-title="settings.title">
                     <img class="sidebar-tool-icon" data-database-src="/public/images/assets/beyond/arts/ui/sprites/watch/watchnew/ui_main_menu_option_btn.png" alt="" aria-hidden="true" data-no-image-fallback>
                     <span class="sidebar-tool-label" data-i18n="settings.title">全局设置</span>
@@ -41,7 +35,7 @@
             </div>
         </div>
 
-        <div class="mobile-bottom-bar">
+        <div class="mobile-bottom-bar" data-ake-shell-part hidden>
             <div class="mobile-menu-btn" id="mobileMenuBtn">☰</div>
             <div class="mobile-settings-btn" id="mobileSettingsBtn" aria-label="全局设置" data-i18n-aria-label="settings.title">
                 <img class="mobile-tool-icon" data-database-src="/public/images/assets/beyond/arts/ui/sprites/watch/watchnew/ui_main_menu_option_btn.png" alt="" aria-hidden="true" data-no-image-fallback>
@@ -52,7 +46,11 @@
         </div>
 
         <div class="main-content">
-            <div class="content-area" id="contentArea"></div>
+            <div class="content-area" id="contentArea">
+                <div class="ake-ui-state" data-state="loading" data-layout="page">
+                    <strong class="ake-ui-state__title" data-i18n="common.loadingData">正在加载数据...</strong>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -213,6 +211,64 @@
 
     <script>
         (async function bootstrap() {
+            let styleGateTimer = null;
+            const releaseStyleGate = () => {
+                document.documentElement.classList.remove('ake-styles-pending');
+                if (styleGateTimer) {
+                    clearTimeout(styleGateTimer);
+                    styleGateTimer = null;
+                }
+            };
+            styleGateTimer = setTimeout(releaseStyleGate, 3000);
+
+            let shellRevealPromise = null;
+            let shellRevealTimer = null;
+            let shellObserver = null;
+            const revealNavigationShell = (options = {}) => {
+                if (shellRevealPromise) return shellRevealPromise;
+                if (shellRevealTimer) {
+                    clearTimeout(shellRevealTimer);
+                    shellRevealTimer = null;
+                }
+                shellObserver?.disconnect();
+                const parts = Array.from(document.querySelectorAll('[data-ake-shell-part]'));
+                shellRevealPromise = (async () => {
+                    if (options.waitForImages !== false) {
+                        const images = parts.flatMap(part => Array.from(part.querySelectorAll('img')));
+                        const pendingImages = images.filter(image => !image.complete).map(image => new Promise(resolve => {
+                            image.addEventListener('load', resolve, { once: true });
+                            image.addEventListener('error', resolve, { once: true });
+                        }));
+                        if (pendingImages.length) {
+                            await Promise.race([
+                                Promise.all(pendingImages),
+                                new Promise(resolve => setTimeout(resolve, 450))
+                            ]);
+                        }
+                    }
+                    parts.forEach(part => {
+                        part.hidden = false;
+                        part.classList.add('ake-shell-enter');
+                        const finishEntry = () => part.classList.remove('ake-shell-enter');
+                        part.addEventListener('animationend', finishEntry, { once: true });
+                        setTimeout(finishEntry, 240);
+                    });
+                })();
+                return shellRevealPromise;
+            };
+            window.__akeRevealNavigationShell = revealNavigationShell;
+
+            const moduleList = document.getElementById('moduleListContainer');
+            const navigationIsReady = () => Boolean(moduleList?.querySelector(
+                '.module-item, .ake-ui-state[data-state="empty"], .ake-ui-state[data-state="error"]'
+            ));
+            shellObserver = new MutationObserver(() => {
+                if (navigationIsReady()) void revealNavigationShell();
+            });
+            if (moduleList) shellObserver.observe(moduleList, { childList: true, subtree: true });
+            if (navigationIsReady()) void revealNavigationShell();
+            shellRevealTimer = setTimeout(() => void revealNavigationShell({ waitForImages: false }), 5000);
+
             let version = null;
             try {
                 const response = await fetch(`/version.json?t=${Date.now()}`, { cache: 'no-store' });
@@ -293,7 +349,13 @@
             };
             const resourceCache = refreshTimestamp ? 'no-store' : 'force-cache';
             const baseLink = document.getElementById('base-style');
-            if (baseLink) baseLink.href = resourceUrl('/theme/light.css');
+            if (baseLink) {
+                baseLink.addEventListener('load', releaseStyleGate, { once: true });
+                baseLink.addEventListener('error', releaseStyleGate, { once: true });
+                baseLink.href = resourceUrl('/theme/light.css');
+            } else {
+                releaseStyleGate();
+            }
             const themeLink = document.getElementById('theme-style');
             if (themeLink) {
                 const themeUrl = resourceUrl('/theme/light.css');
@@ -335,8 +397,21 @@
                 await loadScript('/plugin/js/v3-table-data.js');
                 await loadScript('/plugin/js/index-app.js');
             } catch (error) {
+                releaseStyleGate();
+                void revealNavigationShell({ waitForImages: false });
                 const content = document.getElementById('contentArea');
-                if (content) content.innerHTML = `<div class="error-message">${window.akeI18n?.t('errors.startup', { message: error.message }, `Startup failed: ${error.message}`) || error.message}</div>`;
+                if (content) {
+                    const state = document.createElement('div');
+                    state.className = 'ake-ui-state';
+                    state.dataset.state = 'error';
+                    state.dataset.layout = 'page';
+                    state.setAttribute('role', 'alert');
+                    const message = document.createElement('p');
+                    message.className = 'ake-ui-state__message';
+                    message.textContent = window.akeI18n?.t('errors.startup', { message: error.message }, `Startup failed: ${error.message}`) || error.message;
+                    state.appendChild(message);
+                    content.replaceChildren(state);
+                }
             }
         })();
     </script>

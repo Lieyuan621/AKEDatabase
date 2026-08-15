@@ -488,7 +488,7 @@
         }
 
         async function loadEnemyDetail(enemy, container) {
-            container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
+            container.innerHTML = `<div class="ake-ui-state" data-state="loading">${t('loading')}</div>`;
             try {
                 const rawData = await (window.akeFetch || fetch)(enemy.contentFile).then(r => r.json());
                 await loadEnemyBuffData(rawData);

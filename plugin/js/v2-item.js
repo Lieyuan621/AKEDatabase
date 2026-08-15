@@ -257,7 +257,7 @@
         }
 
         async function loadItemDetail(item, container) {
-            container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
+            container.innerHTML = `<div class="ake-ui-state" data-state="loading">${t('loading')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(item.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data, item);

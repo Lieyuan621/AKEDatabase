@@ -859,8 +859,7 @@
     }
 
     function loadingHtml() {
-        return `<div class="ake-ui-state" data-state="loading" role="status">
-            <span class="ake-ui-spinner" aria-hidden="true"></span>
+        return `<div class="ake-ui-state" data-state="loading" data-layout="page" role="status">
             <div><h2>${escapeHtml(t('title', null, '档案库'))}</h2><p>${escapeHtml(t('loading.archive', null, '正在读取档案库数据'))}</p></div>
         </div>`;
     }

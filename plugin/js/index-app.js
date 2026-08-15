@@ -116,6 +116,7 @@
             };
 
             let allModules = [];
+            let modulesReady = false;
             let activeModuleId = null;
 
             const moduleListEl = document.getElementById('moduleListContainer');
@@ -652,7 +653,11 @@
                     return false;
                 }
                 if (!module || !module.contentFile) {
-                    setContent(`<div class="ake-ui-state" data-state="error">${tr('errors.moduleContentMissing')}</div>`);
+                    window.AKEUI.setState(contentArea, {
+                        state: 'error',
+                        layout: 'page',
+                        message: tr('errors.moduleContentMissing')
+                    });
                     return false;
                 }
                 if (module.token && !isModuleUnlocked(module)) {
@@ -666,7 +671,12 @@
                     const state = restoreStashedModule(module.id);
                     return { restored: true, routeId: state?.routeId || null };
                 }
-                setContent(`<div class="ake-ui-state">${tr('common.loadingModule')}<br><small>${firstLoadTextTableHint()}</small></div>`);
+                window.AKEUI.setState(contentArea, {
+                    state: 'loading',
+                    layout: 'page',
+                    title: tr('common.loadingModule'),
+                    message: firstLoadTextTableHint()
+                });
                 try {
                     const currentVersion = configuredPluginVersions[module.id] || bootstrapVersion.appversion || '';
                     const cacheKey = `${module.id}|${canonicalResourceUrl(module.contentFile)}|${currentVersion}`;
@@ -709,7 +719,11 @@
                     return { restored: false, reused: false };
                 } catch (err) {
                     if (generation !== moduleLoadGeneration) return false;
-                    setContent(`<div class="ake-ui-state" data-state="error">${tr('errors.moduleLoad', { message: err.message })}</div>`);
+                    window.AKEUI.setState(contentArea, {
+                        state: 'error',
+                        layout: 'page',
+                        message: tr('errors.moduleLoad', { message: err.message })
+                    });
                     return false;
                 }
             }
@@ -732,6 +746,7 @@
             }
 
             function applyFilterAndRender() {
+                if (!modulesReady) return;
                 const visibleModules = filterModules(allModules);
                 renderModuleList(visibleModules);
                 if (activeModuleId) {
@@ -974,9 +989,9 @@
             async function loadModulesFromManifest() {
                 try {
                     const response = await (window.akeFetch || fetch)('plugin/manifest.json');
-                    if (!response.ok) return [];
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
                     const manifest = await response.json();
-                    if (!Array.isArray(manifest)) return [];
+                    if (!Array.isArray(manifest)) throw new Error('Invalid module manifest');
                     return manifest
                         .filter(m => m.id && m.title && m.contentFile)
                         .map(m => ({
@@ -988,8 +1003,12 @@
                         }))
                         .filter(m => !m.disabled);
                 } catch (err) {
-                    moduleListEl.innerHTML = `<div class="ake-ui-state" data-state="error" data-density="compact">${tr('errors.moduleManifestRead')}</div>`;
-                    return [];
+                    window.AKEUI.setState(moduleListEl, {
+                        state: 'error',
+                        density: 'compact',
+                        message: tr('errors.moduleManifestRead').replace(/<br\s*\/?>/gi, '\n')
+                    });
+                    return null;
                 }
             }
 
@@ -1520,8 +1539,11 @@
                     } catch (e) {}
                 }
 
-                allModules = await loadModulesFromManifest();
+                const loadedModules = await loadModulesFromManifest();
+                allModules = loadedModules || [];
+                modulesReady = Boolean(loadedModules);
                 applyFilterAndRender();
+                void window.__akeRevealNavigationShell?.();
 
                 const savedKeepUrlSync = storage.get('akedata-keepUrlSync');
                 if (savedKeepUrlSync !== null) {
@@ -1853,7 +1875,15 @@
                 getUnlockedTokens: () => [...config.unlockedTokens]
             };
             brandHome.addEventListener('click', showHomePage);
-            initApp();
+            initApp().catch(error => {
+                void window.__akeRevealNavigationShell?.({ waitForImages: false });
+                window.AKEUI?.setState(contentArea, {
+                    state: 'error',
+                    layout: 'page',
+                    message: tr('errors.startup', { message: error.message }, `Startup failed: ${error.message}`)
+                });
+                console.error('应用初始化失败。', error);
+            });
         })();
 
         var _hmt = _hmt || [];

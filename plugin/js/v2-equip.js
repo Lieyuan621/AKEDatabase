@@ -619,7 +619,7 @@
 
         async function loadSuitDetail(suit, container) {
             const generation = ++detailRequestGeneration;
-            container.innerHTML = `<div class="ake-ui-state">${t('loadingSet')}</div>`;
+            container.innerHTML = `<div class="ake-ui-state" data-state="loading">${t('loadingSet')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(suit.contentFile).then(r => r.json());
                 if (generation !== detailRequestGeneration || activeSuitId !== suit.suitID) return;

@@ -490,7 +490,7 @@
         }
 
         async function loadCharacterDetail(character, container) {
-            container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
+            container.innerHTML = `<div class="ake-ui-state" data-state="loading">${t('loading')}</div>`;
             try {
                 const fileName = (character.contentFile || '').split('/').pop() || `${character.charId}.json`;
                 const contentFile = `/public/CH/v2_character/${fileName}`;
