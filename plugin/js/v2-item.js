@@ -431,12 +431,18 @@
             const item = itemTable[entry.id] || {};
             const name = item.name?.text || commonT('unknown');
             const iconId = item.iconId || entry.id;
-            const currentClass = entry.id === currentId ? ' is-current' : '';
-            const title = getCurrentShowHidden() ? ` title="${entry.id}"` : '';
-            return `<a class="v2i-craft-item${currentClass}" href="/?plugin=v3_item&id=${encodeURIComponent(entry.id)}" data-item-id="${entry.id}"${title}>
-                <img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png">
-                <span class="v2i-craft-item-name">${name}</span><strong>×${entry.count ?? 1}</strong>
-            </a>`;
+            return window.AKEUI.materialItem({
+                element: 'a',
+                className: `v2i-craft-item${entry.id === currentId ? ' is-current' : ''}`,
+                icon: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png`,
+                name,
+                count: entry.count ?? 1,
+                attributes: {
+                    href: `/?plugin=v3_item&id=${encodeURIComponent(entry.id)}`,
+                    'data-item-id': entry.id,
+                    title: getCurrentShowHidden() ? entry.id : null
+                }
+            })?.outerHTML || '';
         }
 
         function renderCraftRecipes(data) {
@@ -528,22 +534,19 @@
             const desc = it.desc?.text || '';
             const decoDesc = it.decoDesc?.text || '';
             const showDeco = decoDesc && decoDesc !== desc;
+            const detailHeader = window.AKEUI.detailHeader({
+                icon: { src: iconBig },
+                title: name,
+                id: data.itemId || item.itemId,
+                badges: [
+                    commonT('rarityLabel', { rarity }),
+                    typeName
+                ]
+            });
 
             let html = `
                 <div class="ake-ui-detail" data-detail-kind="item" data-accent="rarity" data-accent-value="${rarity}">
-                    <div class="ake-ui-detail-header">
-                        <div class="ake-ui-detail-icon">
-                            <img src="${iconBig}">
-                        </div>
-                        <div class="ake-ui-detail-copy">
-                            <div class="ake-ui-detail-title-row">
-                                <span class="ake-ui-detail-title">${name}</span>
-                                <span class="ake-ui-badge">${commonT('rarityLabel', { rarity })}</span>
-                                <span class="ake-ui-detail-id">${data.itemId || item.itemId}</span>
-                            </div>
-                            <span class="ake-ui-badge">${typeName}</span>
-                        </div>
-                    </div>
+                    ${detailHeader?.outerHTML || ''}
             `;
 
             if (desc) html += `<div class="v2i-desc">${parseText(desc)}</div>`;

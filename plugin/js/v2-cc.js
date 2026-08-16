@@ -595,6 +595,23 @@
         });
     }
 
+    function rewardMaterialItem(item) {
+        return {
+            icon: item.iconId
+                ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${item.iconId}.png`
+                : '',
+            name: item.name,
+            count: item.count
+        };
+    }
+
+    function rewardMaterialList(items, className) {
+        return window.AKEUI.materialItems(
+            items.map(item => rewardMaterialItem(item)),
+            `ake-ui-material__items ${className}`
+        );
+    }
+
     function renderLevelRewards(data) {
         const lt = data.contingencycontractleveltable;
         if (!lt || !lt.levelMap || !Object.keys(lt.levelMap).length) return '';
@@ -616,28 +633,25 @@
             }
         });
 
+        const rewardRows = levels.map(([, lv]) => {
+            const items = resolveRewardItems(lv.firstReward, rewardTable, itemTable);
+            const content = rewardMaterialList(items, 'v2cc-level-reward-list')
+                || window.AKEUI.element('span', 'v2cc-reward-empty', lv.firstReward || '-');
+            return window.AKEUI.progressionRow({
+                kind: 'cc-level-reward',
+                stage: `Lv.${lv.level}`,
+                content
+            });
+        });
+        const rewardList = window.AKEUI.progressionList({
+            className: 'v2cc-levels',
+            rows: rewardRows
+        });
+
         return `
             <div class="ake-ui-section">
                 <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.levelRewards')}</h3></div>
-                <div class="v2cc-levels">
-                    ${levels.map(([, lv]) => {
-                        const items = resolveRewardItems(lv.firstReward, rewardTable, itemTable);
-                        return `
-                            <div class="ake-ui-card" data-card-kind="cc-level" data-density="regular">
-                                <div class="v2cc-level-num">Lv.${lv.level}</div>
-                                <div class="v2cc-level-reward-list">
-                                    ${items.length ? items.map(it => `
-                                        <div class="v2cc-reward-item">
-                                            <img class="v2cc-reward-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${it.iconId}.png">
-                                            <span class="v2cc-reward-name">${escapeHtml(it.name)}</span>
-                                            <span class="v2cc-reward-count">×${it.count}</span>
-                                        </div>
-                                    `).join('') : `<span class="v2cc-reward-empty">${escapeHtml(lv.firstReward || '-')}</span>`}
-                                </div>
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
+                ${rewardList.outerHTML}
                 ${descs.length ? `<div class="v2cc-level-desc">${descs.join('<br>')}</div>` : ''}
             </div>
         `;
@@ -761,6 +775,7 @@
                                         ${tasks.map(task => {
                                             const desc = task.desc?.text ? parseText(task.desc.text) : '';
                                             const rewards = resolveRewardItems(task.rewardId, rewardTable, itemTable);
+                                            const rewardList = rewardMaterialList(rewards, 'v2cc-task-rewards');
                                             return `
                                                 <div class="ake-ui-card" data-card-kind="cc-task" data-density="compact">
                                                     <div class="ake-ui-card__header">
@@ -770,13 +785,7 @@
                                                     ${rewards.length ? `
                                                         <div class="v2cc-task-item-rewards">
                                                             <span class="v2cc-task-reward-label">${t('tasks.rewards')}</span>
-                                                            ${rewards.map(r => `
-                                                                <span class="v2cc-task-reward">
-                                                                    ${r.iconId ? `<img class="v2cc-task-reward-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${r.iconId}.png">` : ''}
-                                                                    <span class="v2cc-task-reward-name">${escapeHtml(r.name)}</span>
-                                                                    <span class="v2cc-task-reward-count">×${r.count}</span>
-                                                                </span>
-                                                            `).join('')}
+                                                            ${rewardList?.outerHTML || ''}
                                                         </div>
                                                     ` : ''}
                                                 </div>
@@ -1339,15 +1348,16 @@
         const tagCount = Object.keys(tagTable).length;
         const groupCount = cct && cct.contractGroupMap ? Object.keys(cct.contractGroupMap).length : 0;
 
+        const detailHeader = window.AKEUI.detailHeader({
+            title,
+            subtitle: getCurrentShowHidden()
+                ? t('detail.subtitle', { activity: game.activityId, groups: groupCount, terms: tagCount })
+                : ''
+        });
+
         let html = `
             <div class="ake-ui-detail" data-detail-kind="cc">
-                <div class="ake-ui-detail-header">
-                    <div class="ake-ui-detail-icon is-symbol">⚔️</div>
-                    <div class="ake-ui-detail-copy">
-                        <div class="ake-ui-detail-title">${escapeHtml(title)}</div>
-                        ${getCurrentShowHidden() ? `<div class="ake-ui-detail-subtitle">${t('detail.subtitle', { activity: escapeHtml(game.activityId), groups: groupCount, terms: tagCount })}</div>` : ''}
-                    </div>
-                </div>
+                ${detailHeader?.outerHTML || ''}
                 ${renderActivityInfo(acc)}
                 ${renderContractGroups(cct, tagTable)}
                 <div class="ake-ui-section" id="v2ccSelectedSummary"></div>

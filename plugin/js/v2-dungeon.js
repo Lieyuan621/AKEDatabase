@@ -486,17 +486,28 @@
             const bundles = reward?.[bundleKey] || [];
             if (bundles.length === 0) return '';
 
-            return bundles.map(bundle => {
+            const list = window.AKEUI.element('span', 'ake-ui-material__items v2d-reward-items');
+            bundles.forEach(bundle => {
                 const item = itemTable?.[bundle.id];
                 const name = item?.name?.text || bundle.id;
                 const rarity = item?.rarity || 0;
-                const iconId = item?.iconId || '';
-                const iconSrc = iconId ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png` : '';
-                const iconHtml = iconSrc ? `<img class="v2d-reward-icon" src="${iconSrc}">` : '';
-                const rarityDot = rarity > 0 ? `<span class="v2d-reward-rarity r-${rarity}"></span>` : '';
-                const countHtml = bundle.count > 0 ? ` ×${bundle.count}` : '';
-                return `<span class="v2d-reward-item">${iconHtml}${rarityDot}${name}${countHtml}</span>`;
-            }).join('');
+                const iconId = item?.iconId || bundle.id;
+                const rewardItem = window.AKEUI.materialItem({
+                    className: 'v2d-reward-item',
+                    icon: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png`,
+                    name,
+                    count: bundle.count > 0 ? bundle.count : null,
+                    attributes: rarity > 0 ? { 'data-rarity': rarity } : null
+                });
+                if (!rewardItem) return;
+                if (rarity > 0) {
+                    const rarityDot = window.AKEUI.element('span', `v2d-reward-rarity r-${rarity}`);
+                    const nameNode = rewardItem.querySelector('.ake-ui-material__item-name');
+                    rewardItem.insertBefore(rarityDot, nameNode || null);
+                }
+                list.appendChild(rewardItem);
+            });
+            return list.childElementCount ? list.outerHTML : '';
         }
 
         function getEnemyStatsAtLevel(attrTemplateData, enemyLevel, modifiers) {

@@ -151,6 +151,23 @@
     opacity: 0.72;
     transform: scale(var(--ake-icon-scale, 1));
     transform-origin: center;
+}.sidebar .module-hidden-marker {
+    width: 15px;
+    height: 15px;
+    display: inline-grid;
+    place-items: center;
+    margin-inline-start: auto;
+    flex: 0 0 15px;
+    color: currentColor;
+    opacity: .62;
+}.sidebar .module-hidden-marker svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }.sidebar .module-item:hover .module-title,
 .sidebar .module-item.active .module-title {
     color: #252a31;
@@ -1038,118 +1055,164 @@
 /* Source files retained only when a disabled module still references them. */
 
 /* Source: theme/v2_weapon.css */
-@scope (body[data-ake-module="v3_weapon"]) {.detail-desc,
-.detail-deco {
-    border: 1px solid var(--border-color, #d9e0e8);
-    border-radius: 8px;
-    padding: 12px;
-    margin: 10px 0;
-    background: var(--module-bg, #f8fafd);
-    line-height: 1.6;
-    color: var(--desc-color, #5b6f86);
-}/* 攻击力表格容器 */
+@scope (body[data-ake-module="v3_weapon"]) {
+.ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(230px, 320px);
+    align-items: start;
+    gap: clamp(24px, 4vw, 56px);
+}
+.ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-identity {
+    gap: 16px;
+}
+.ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-icon img {
+    width: 96px;
+    height: 96px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    transform: scale(1.1);
+}
+.ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-visual {
+    width: 100%;
+    max-width: 320px;
+    align-self: start;
+    justify-self: center;
+}
+.ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-visual-frame {
+    width: 100%;
+    height: clamp(320px, 38vw, 440px);
+    min-height: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+}
+.ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-visual-frame img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: clamp(320px, 38vw, 440px);
+    padding: 0;
+    object-fit: contain;
+}
+/* 攻击力表格容器 */
 .detail-atk {
     min-height: 0;
     display: flex;
     flex-direction: column;
-}.detail-atk h3 {
-    font-size: 1.2rem;
-    margin-bottom: 8px;
-    color: var(--text-color, #1e2b3c);
-    flex-shrink: 0;
 }/* 技能列表 */
-:is(.ake-ui-card[data-card-kind="weapon-skill"], .ake-ui-card[data-card-kind="character-skill"]) {
-    flex: 1 1 calc(33.333% - 20px);
-    min-width: 280px;
-    background: var(--module-bg, #f8fafd);
-    border-radius: 12px;
-    padding: 16px;
-    border: 1px solid var(--border-color, #e2e7f0);
-    box-sizing: border-box;
-}.skill-level-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 5px 0;
-    border-bottom: 1px dashed var(--border-color, #d9e0e8);
-}.skill-level {
-    font-weight: 600;
+.weapon-skill-table {
+    width: 100%;
+    min-width: 0;
+    table-layout: auto;
+}.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table-shell {
+    max-height: none;
+    overflow: visible;
+}.weapon-skill-table th,
+.weapon-skill-table td {
+    padding: 12px 14px;
+    vertical-align: top;
+}.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table th {
+    position: static;
+    top: auto;
+}.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table th:first-child {
+    width: 76px;
+    min-width: 76px;
+    text-align: center;
+    overflow-wrap: normal;
+    white-space: nowrap;
+    word-break: normal;
+}.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table :is(th, td):nth-child(2),
+.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table :is(th, td):nth-child(3) {
+    width: 1%;
+}.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table tbody :is(td:nth-child(2), td:nth-child(3)) {
+    text-align: center;
+    vertical-align: middle;
+}.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table thead :is(th:nth-child(2), th:nth-child(3)) {
+    white-space: nowrap;
+}.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table tbody th {
     color: var(--text-color, #1e2b3c);
-    min-width: 50px;
-}.skill-desc {
-    flex: 1;
-    color: var(--desc-color, #5b6f86);
-    line-height: 1.6;
+    font-size: .78rem;
+    font-variant-numeric: tabular-nums;
+}.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table tbody td {
+    color: var(--text-color, #1e2b3c);
+    font-size: .76rem;
+    line-height: 1.65;
+    text-align: start;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}.weapon-skill-rank-copy {
+    min-width: 0;
+    overflow-wrap: anywhere;
 }/* 武器背景故事 */
 .weapon-desc {
-    margin-top: 30px;
+    margin-top: 0;
     background: var(--module-bg, #f8fafd);
     border-radius: 12px;
     padding: 16px;
     border: 1px solid var(--border-color, #e2e7f0);
+    font-size: .8rem;
     line-height: 1.8;
     color: var(--text-color, #1e2b3c);
-}/* 突破 */
-.ake-ui-card[data-card-kind="weapon-break"] {
-    background: var(--module-bg, #f8fafd);
-    border-radius: 10px;
-    padding: 14px;
-    border: 1px solid var(--border-color, #e2e7f0);
-}.break-cost-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 3px 0;
-    font-size: 0.85rem;
-}.break-cost-row img {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
-    border-radius: 3px;
-    flex-shrink: 0;
-}.break-cost-row .bc-name {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: var(--desc-color, #5b6f86);
-}.break-cost-row .bc-cnt {
-    font-weight: bold;
-    flex-shrink: 0;
-    color: var(--text-color, #1e2b3c);
-}.break-skill-bounds {
-    margin-top: 8px;
-    font-size: 0.8rem;
-    color: var(--desc-color, #5b6f86);
-}.break-skill-bounds span {
-    margin-right: 10px;
-}/* 潜能 */
-.ake-ui-card[data-card-kind="weapon-talent"] {
-    background: var(--module-bg, #f8fafd);
-    border-radius: 10px;
-    padding: 12px;
-    border: 1px solid var(--border-color, #e2e7f0);
+}.weapon-breakthrough-table {
+    min-width: calc(112px + var(--weapon-stage-count) * 174px);
+    table-layout: fixed;
+}.weapon-breakthrough-table th,
+.weapon-breakthrough-table td {
+    padding: 10px 12px;
     text-align: center;
-}/* 等级切换按钮 */
-.toggle-weapon-levels-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 4px;
-}.toggle-weapon-levels-btn {
-    background: var(--button-bg, #e0e8f0);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 4px 12px;
-    cursor: pointer;
+    vertical-align: middle;
+}.weapon-breakthrough-table th:first-child {
+    width: 112px;
+    text-align: start;
+}.weapon-breakthrough-table tbody th {
+    color: var(--text-color, #1e2b3c);
+    font-size: .76rem;
+}.weapon-breakthrough-table tbody td {
+    color: var(--desc-color, #5b6f86);
+    font-size: .78rem;
+}.weapon-breakthrough-material-row th,
+.weapon-breakthrough-material-row td {
+    background: var(--ake-ui-surface-muted, var(--module-bg, #f8fafd));
+}.weapon-breakthrough-material-row .ake-ui-material {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}.weapon-breakthrough-material-row .ake-ui-material__trigger {
+    white-space: nowrap;
+}.weapon-breakthrough-material-row .ake-ui-material__icons {
+    justify-content: center;
 }
 
 /* 响应式 */
-@media (max-width: 1200px) {:is(.ake-ui-card[data-card-kind="weapon-skill"], .ake-ui-card[data-card-kind="character-skill"]) {
-        flex: 1 1 calc(50% - 20px);
+@media (max-width: 800px) {
+    .ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table :is(th, td):nth-child(2),
+    .ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table :is(th, td):nth-child(3) {
+        width: auto;
+    }
+    .ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table thead :is(th:nth-child(2), th:nth-child(3)) {
+        white-space: normal;
+    }
+    .ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+    }
+    .ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-visual {
+        max-width: 280px;
+    }
+    .ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-visual-frame {
+        height: 260px;
+    }
+    .ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-visual-frame img {
+        max-height: 260px;
     }
 }
-@media (max-width: 800px) {:is(.ake-ui-card[data-card-kind="weapon-skill"], .ake-ui-card[data-card-kind="character-skill"]) {
-        flex: 1 1 100%;
+@media (max-width: 560px) {
+    .ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-icon img {
+        width: 76px;
+        height: 76px;
     }
 }
 }
@@ -1180,122 +1243,97 @@
     margin-top: 15px;
 }.collapsible-section.is-open > .collapse-content {
     display: block;
-}/* ========== 消耗材料按钮（原内联样式） ========== */
-.cost-wrap {
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
-}.cost-btn {
-    display: inline-block;
-    margin-left: 4px;
-    padding: 1px 8px;
-    font-size: 0.72rem;
-    background: var(--button-bg, #e0e8f0);
-    border: 1px solid var(--border-color, #ccc);
-    border-radius: 10px;
-    cursor: pointer;
-    color: var(--text-color, #333);
-}.cost-btn:hover {
-    background: var(--hover-bg, #d0d8e0);
-}.cost-tip {
-    display: none;
-    white-space: nowrap;
-    pointer-events: auto;
-}.cost-wrap:hover .cost-tip,
-.cost-tip.pinned {
-    display: block;
-}.cost-section-title {
-    font-size: 0.72rem;
-    color: var(--text-color-secondary, #888);
-    margin: 4px 0 2px;
-    font-weight: bold;
-}.cost-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 3px 0;
-    font-size: 0.8rem;
-}.cost-item img {
-    width: 16px;
-    height: 16px;
-    object-fit: contain;
-    flex-shrink: 0;
-}.cost-item .ci-name {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}.cost-item .ci-cnt {
-    font-weight: bold;
-    flex-shrink: 0;
-}.sk-cost-row {
-    display: flex;
-    align-items: center;
-    gap: 4px 12px;
-    padding: 2px 0;
-    font-size: 0.8rem;
-    white-space: nowrap;
-}.sk-cost-row .cost-section-title {
-    margin: 0;
-    flex-shrink: 0;
-}.sk-cost-row .ci-ri {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-}.sk-cost-row .ci-ri img {
-    width: 16px;
-    height: 16px;
-    object-fit: contain;
-}.cost-btn-icons {
-    display: inline-flex;
-    align-items: center;
-    gap: 2px;
-    margin-left: 4px;
-    vertical-align: middle;
-}.cost-btn-icons img {
-    width: 18px;
-    height: 18px;
-    object-fit: contain;
 }
 }
 
 /* Source: theme/v2_enemy.css */
-@scope (body[data-ake-module="v3_enemy"]) {/* ===== 属性网格 ===== */
+@scope (body[data-ake-module="v3_enemy"]) {/* ===== 详情头部 ===== */
+.ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 360px);
+    align-items: start;
+    gap: clamp(24px, 4vw, 52px);
+    margin-bottom: 20px;
+}.ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-hero .ake-ui-detail-identity {
+    display: block;
+}.ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-hero .ake-ui-detail-title-row {
+    margin-bottom: 8px;
+}.ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-hero .ake-ui-detail-badges {
+    margin-bottom: 4px;
+}.ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-visual {
+    width: 100%;
+    max-width: 320px;
+    align-self: center;
+    justify-self: center;
+}.ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-visual > img {
+    width: 100%;
+    min-height: 0;
+    max-height: 320px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    object-fit: contain;
+}/* ===== 属性网格 ===== */
 .v2e-meta {
-    border: 1px solid var(--border-color, #d9e0e8);
-    border-radius: 8px;
-    padding: 12px;
-    margin: 10px 0;
-    background: var(--module-bg, #f8fafd);
-}.v2e-meta-grid {
+    margin: 18px 0 0;
+}.v2e-meta-groups {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 8px 16px;
-}.v2e-meta-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 4px 0;
-    border-bottom: 1px dotted var(--border-color, #e2e7f0);
-}.v2e-meta-value {
-    color: var(--desc-color, #5b6f86);
+    gap: 18px;
+}.v2e-meta-group {
+    min-width: 0;
+}.v2e-meta-group__title {
+    margin: 0 0 4px;
+    color: var(--text-color);
+    font-size: .78rem;
+    font-weight: 700;
+    line-height: 1.4;
+}.v2e-meta-group .v2e-meta-grid {
+    --ake-ui-meta-columns: 3;
+    gap: 0 18px;
+}.v2e-meta-grid .ake-ui-meta-grid__item {
+    min-height: 38px;
+    padding: 8px 0;
+    border: 0;
+    border-bottom: var(--ake-ui-border);
+    border-radius: 0;
+    background: transparent;
+}.v2e-meta-grid .ake-ui-meta-grid__item dt {
+    font-size: .72rem;
+}.v2e-meta-grid .ake-ui-meta-grid__item dd {
     font-variant-numeric: tabular-nums;
-    text-align: right;
-    white-space: nowrap;
 }/* ===== 描述 / 技能描述 ===== */
 .v2e-desc {
-    border: 1px solid var(--border-color, #d9e0e8);
-    border-radius: 8px;
-    padding: 12px;
-    margin: 10px 0;
-    background: var(--module-bg, #f8fafd);
+    margin-top: 14px;
+}.v2e-hero-traits {
+    margin-top: 24px;
+}.v2e-hero-traits__title {
+    margin: 0 0 6px;
+    color: var(--text-color);
+    font-size: .82rem;
+    font-weight: 700;
+    line-height: 1.4;
+}.v2e-trait-list {
+    display: grid;
+    gap: 0;
+}.v2e-trait-item {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 12px;
+    padding: 10px 0;
+    align-items: start;
+    border-bottom: var(--ake-ui-border);
+}.v2e-trait-item:first-child {
+    padding-top: 2px;
+}.v2e-trait-index {
+    color: var(--accent-color);
+    font-family: Consolas, monospace;
+    font-size: .7rem;
+    font-weight: 700;
+    line-height: 1.75;
+}.v2e-trait-copy {
+    color: var(--desc-color);
     line-height: 1.6;
-}.ake-ui-card[data-card-kind="enemy-skill"] {
-    background: var(--module-bg, #f8fafd);
-    border-radius: 8px;
-    padding: 8px 12px;
-    margin-bottom: 6px;
-    border: 1px solid var(--border-color, #e2e7f0);
 }/* ===== 变种 ===== */
 .ake-ui-card[data-card-kind="enemy-variant"] {
     background: var(--module-bg, #f8fafd);
@@ -1303,11 +1341,9 @@
     padding: 16px;
     margin-bottom: 20px;
     border: 1px solid var(--border-color, #e2e7f0);
-}.v2e-variant-title {
-    font-weight: 600;
-    font-size: 1.2rem;
+}.v2e-variant-header {
+    align-items: center;
     margin-bottom: 8px;
-    color: var(--text-color, #1e2b3c);
 }.v2e-variant-template {
     position: relative;
     display: inline-block;
@@ -1315,27 +1351,14 @@
     vertical-align: middle;
     margin-left: 6px;
 }.v2e-tag-id {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: normal;
-    color: var(--tag-text, #2c4b6e);
-    background: var(--tag-bg, #e0e8f2);
-    padding: 1px 8px;
-    border-radius: 10px;
-    line-height: 1.6;
+    cursor: pointer;
 }.v2e-tag-id:hover {
-    background: var(--accent-color, #1e6f9f);
-    color: #fff;
+    border-color: var(--accent-color);
+    background: var(--ake-ui-surface-muted);
 }.v2e-tooltip {
-    display: none;
     min-width: 320px;
     max-width: 480px;
-    pointer-events: none;
     font-size: 0.85rem;
-}.v2e-variant-template:hover .v2e-tooltip,
-.v2e-tooltip.pinned {
-    display: block;
-    pointer-events: auto;
 }.v2e-tooltip-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1346,11 +1369,18 @@
     padding: 2px 0;
     border-bottom: 1px dotted var(--border-color, #e2e7f0);
 }.v2e-tooltip-label { font-weight: 600; white-space: nowrap; margin-right: 6px; }.v2e-tooltip-value { color: var(--desc-color, #5b6f86); text-align: right; font-variant-numeric: tabular-nums; }.v2e-variant-modifier {
-    color: var(--accent-color, #1e6f9f);
-    margin-bottom: 12px;
-    font-style: italic;
-    font-size: 0.88rem;
-    word-break: break-all;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 4px 0 8px;
+    color: var(--desc-color, #5b6f86);
+    font-size: 0.78rem;
+    font-style: normal;
+    line-height: 1.5;
+}.v2e-variant-modifier__value {
+    min-width: 0;
+    overflow-wrap: anywhere;
 }.v2e-modifier-type-tag {
     display: inline-block;
     background: #e8f5e9;
@@ -1361,62 +1391,137 @@
     font-style: normal;
     vertical-align: middle;
 }/* ===== 变种标志 / Buff ===== */
-.v2e-flags { display: flex; gap: 8px; margin: 4px 0; }.v2e-flag { font-size: 0.82rem; padding: 2px 8px; border-radius: 10px; }.v2e-flag.danger { background: #ffe0e0; color: #b00020; }.v2e-flag.big-effect { background: #e0f0ff; color: #1e6f9f; }.v2e-flag.big-headbar { background: #e0ffe0; color: #2e7d32; }.v2e-buffs { margin: 4px 0 8px; display: flex; flex-wrap: wrap; gap: 4px; }.v2e-buff-tag {
-    background: var(--tag-bg, #e8e0f2);
-    color: #6b4b8e;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 0.78rem;
+.v2e-flags,
+.v2e-buffs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 4px 0 8px;
 }/* ===== 变种差异 ===== */
 .v2e-diff {
-    margin: 6px 0 10px;
-    padding: 8px 12px;
+    margin: 4px 0 8px;
+    padding: 7px 10px;
     background: var(--module-bg, #f8fafd);
     border: 1px dashed var(--border-color, #d9e0e8);
     border-radius: 8px;
-    font-size: 0.88rem;
-}.v2e-diff-item { display: flex; gap: 6px; align-items: baseline; padding: 2px 0; }.v2e-diff-label { font-weight: 600; color: var(--text-color, #1e2b3c); white-space: nowrap; }.v2e-diff-val { color: var(--accent-color, #1e6f9f); }.v2e-diff-val.neg { color: #b00020; }/* ===== 展开按钮 ===== */
-.v2e-toggle-btn {
-    background: var(--button-bg, #e0e8f0);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 4px 12px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    color: var(--text-color, #333);
-}.v2e-toggle-btn:hover {
-    background: var(--hover-bg, #d0d8e0);
+    font-size: 0.76rem;
+    line-height: 1.45;
+}.v2e-diff > strong { display: block; margin-bottom: 2px; }.v2e-diff-item { display: flex; gap: 5px; align-items: baseline; padding: 1px 0; }.v2e-diff-label { font-weight: 600; color: var(--text-color, #1e2b3c); white-space: nowrap; }.v2e-diff-val { color: var(--accent-color, #1e6f9f); }.v2e-diff-val.neg { color: #b00020; }
+@media (max-width: 800px) {
+    .ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-hero {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+    }
+    .ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-visual {
+        width: min(100%, 280px);
+    }
+    .ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-visual > img {
+        max-height: 260px;
+    }
+    .v2e-meta-group .v2e-meta-grid {
+        --ake-ui-meta-columns: 2;
+    }
+}
+
+@media (max-width: 560px) {
+    .v2e-meta-group .v2e-meta-grid {
+        --ake-ui-meta-columns: 1;
+    }
 }
 }
 
 /* Source: theme/v2_equip.css */
-@scope (body[data-ake-module="v3_equip"]) {.v2eq-skill-desc {
-    border: 1px solid var(--border-color, #d9e0e8);
-    border-radius: 8px;
-    padding: 12px;
-    background: var(--module-bg, #f8fafd);
+@scope (body[data-ake-module="v3_equip"]) {.ake-ui-detail[data-detail-kind="equipment"] {
+    padding: clamp(16px, 2vw, 28px);
+}.ake-ui-directory__content:has(> .ake-ui-detail[data-detail-kind="equipment"]) {
+    padding: 0;
+}.ake-ui-detail[data-detail-kind="equipment"] .equipment-detail-hero {
+    align-items: center;
+    margin: 0;
+    padding: 4px 0 20px;
+    border-bottom: var(--ake-ui-border);
+}.ake-ui-detail[data-detail-kind="equipment"] .equipment-detail-hero .ake-ui-detail-media {
+    width: 96px;
+    height: 96px;
+    flex-basis: 96px;
+    border: 0;
+    background: transparent;
+}.ake-ui-detail[data-detail-kind="equipment"] .equipment-detail-hero .ake-ui-detail-media img {
+    padding: 4px;
+}.ake-ui-detail[data-detail-kind="equipment"] .equipment-detail-hero .ake-ui-detail-title-row {
+    margin-bottom: 4px;
+}.ake-ui-detail[data-detail-kind="equipment"] > .v2eq-section {
+    margin-top: 28px;
+}.v2eq-skill-list {
+    display: grid;
+    gap: 0;
+}.v2eq-skill-desc {
+    padding: 8px 0 8px 12px;
+    border-inline-start: 2px solid var(--accent-color);
+    border-bottom: var(--ake-ui-border);
     line-height: 1.6;
     color: var(--text-color, #1e2b3c);
     white-space: pre-wrap;
-    margin-bottom: 16px;
+}.v2eq-skill-desc:last-child {
+    border-bottom: 0;
+}.v2eq-enhance-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 0 24px;
+}.v2eq-enhance-item {
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: var(--ake-ui-border);
 }.ake-ui-card[data-card-kind="equipment"] {
+    min-width: 0;
+    container-type: inline-size;
     background: var(--module-bg, #f8fafd);
-    border-radius: 12px;
-    padding: 16px;
+    border-radius: 8px;
+    padding: 14px;
     border: 1px solid var(--border-color, #e2e7f0);
     box-sizing: border-box;
 }.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header {
-    display: flex;
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
     align-items: center;
-    gap: 10px;
+    gap: 8px 14px;
     margin-bottom: 12px;
 }.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header-actions {
+    min-width: 0;
+    grid-column: 1 / -1;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    gap: 8px;
+    margin: 2px 0 0;
+    padding-top: 8px;
+    border-top: var(--ake-ui-border);
+}.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header-actions > .ake-ui-popover-anchor {
+    min-width: 0;
+    min-height: 28px;
+    display: inline-flex;
+    align-items: center;
     gap: 4px;
-    margin-left: auto;
-    flex-shrink: 0;
+    border: var(--ake-ui-border);
+    border-radius: var(--ake-ui-radius-sm);
+    background: var(--ake-ui-surface);
+    transition: border-color .15s ease, background-color .15s ease;
+}.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header-actions > .ake-ui-popover-anchor:hover,
+.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header-actions > .ake-ui-popover-anchor:has(.ake-ui-popover__trigger[aria-expanded="true"]) {
+    border-color: var(--accent-color);
+    background: var(--ake-ui-surface-hover);
+}.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header-actions .ake-ui-popover__trigger {
+    min-height: 26px;
+    padding: 3px 8px;
+    border: 0;
+    background: transparent;
+}.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header-actions .ake-ui-material__icons {
+    padding-inline-end: 7px;
 }.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__media img {
     width: 48px;
     height: 48px;
@@ -1425,71 +1530,112 @@
     background: var(--icon-bg, #eef3fa);
     flex-shrink: 0;
 }.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__heading {
-    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 2px;
-}.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
+}.ake-ui-card[data-card-kind="equipment"][data-ake-change] .ake-ui-card__heading {
+    padding-inline-end: 48px;
 }.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__title {
+    margin: 0;
+    overflow-wrap: anywhere;
     font-weight: 600;
     color: var(--text-color, #1e2b3c);
-    font-size: 1rem;
+    font-size: .92rem;
 }.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__id {
-    font-size: 0.75rem;
+    overflow-wrap: anywhere;
+    font-size: 0.68rem;
     color: var(--desc-color, #5b6f86);
 }.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__content {
+    min-width: 0;
     color: var(--desc-color, #5b6f86);
-    font-size: 0.9rem;
-    overflow-x: auto;
+    font-size: .8rem;
+    overflow: visible;
 }.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__badges {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: flex-start;
     margin-bottom: 8px;
     color: var(--text-color, #1e2b3c);
     font-weight: 500;
     flex-wrap: wrap;
     gap: 4px;
-}.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__badges .ake-ui-badge {
-    background: var(--tag-bg, #e0e8f2);
-    padding: 1px 8px;
-    border-radius: 10px;
-    font-size: 0.8rem;
-}.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__badges .ake-ui-badge:last-child {
-    background: #e8f0e0;
-    padding: 1px 8px;
-    border-radius: 10px;
-    font-size: 0.8rem;
-    color: #4b6b2e;
 }.v2eq-mainstat {
+    min-width: 0;
     display: flex;
+    align-items: baseline;
     justify-content: space-between;
-    padding: 4px 0;
-    border-bottom: 1px dashed var(--border-color, #d9e0e8);
-    margin-bottom: 4px;
+    gap: 12px;
+    padding: 7px 0;
+    border-top: var(--ake-ui-border);
+    border-bottom: var(--ake-ui-border);
+    margin-bottom: 8px;
     font-weight: 500;
 }.v2eq-mainstat-desc {
+    min-width: 0;
+    overflow-wrap: anywhere;
     color: var(--text-color, #1e2b3c);
 }.v2eq-mainstat-value {
     color: var(--accent-color, #1e6f9f);
+    font-weight: 650;
+    white-space: nowrap;
 }.v2eq-mainstat-modifier {
     font-size: 0.75rem;
     color: #999;
     margin-left: 4px;
-}.ake-ui-table .v2eq-value-cell {
-    font-family: monospace;
-    white-space: nowrap;
-}.v2eq-deco-desc {
-    border-left: 3px solid var(--accent-color, #1e6f9f);
-    padding-left: 12px;
-    margin-top: 8px;
+}.v2eq-substats {
+    display: grid;
+    gap: 0;
+}.v2eq-substat {
+    min-width: 0;
+    padding: 8px 0;
+    border-bottom: var(--ake-ui-border);
+}.v2eq-substat-heading {
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 6px;
+    margin-bottom: 6px;
+    color: var(--text-color, #1e2b3c);
+    font-weight: 600;
+}.v2eq-substat-heading > span:first-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}.v2eq-substat-values {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 68px), 1fr));
+    gap: 6px;
+    margin: 0;
+}.v2eq-substat-stage {
+    min-width: 0;
+    padding: 5px 7px;
+    border-radius: 4px;
+    background: var(--ake-ui-surface-muted);
+}.v2eq-substat-stage dt {
+    margin: 0 0 2px;
     color: var(--desc-color, #5b6f86);
-    font-style: italic;
-    line-height: 1.5;
-    font-size: 0.85rem;
+    font-size: .62rem;
+    line-height: 1.2;
+}.v2eq-substat-stage dd {
+    min-width: 0;
+    margin: 0;
+    overflow-wrap: anywhere;
+    color: var(--text-color, #1e2b3c);
+    font-family: Consolas, monospace;
+    font-size: .72rem;
+    font-weight: 600;
+    line-height: 1.35;
+}.v2eq-deco-desc {
+    min-width: 0;
+    padding: 8px 0 0;
+    margin-top: 0;
+    overflow-wrap: anywhere;
+    color: var(--desc-color, #5b6f86);
+    font-style: normal;
+    line-height: 1.55;
+    font-size: .74rem;
     white-space: pre-wrap;
 }.v2eq-oem-link {
     appearance: none;
@@ -1509,9 +1655,13 @@
     cursor: wait;
 }.v2eq-enhance-label {
     color: var(--desc-color, #5b6f86);
+    font-size: .74rem;
     font-weight: 500;
 }.v2eq-enhance-value {
     color: var(--text-color, #1e2b3c);
+    font-size: .9rem;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
 }
 
 .v2eq-enhance-tip {
@@ -1519,118 +1669,49 @@
     margin-bottom: 6px;
     color: var(--desc-color, #5b6f86);
 }.v2eq-blackboard-params {
-    margin-top: 8px;
-    font-size: 0.85rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 3px 10px;
+    margin-top: 6px;
+    padding-top: 6px;
+    color: var(--desc-color, #5b6f86);
+    font-size: 0.72rem;
+    line-height: 1.45;
 }.v2eq-blackboard-label {
     color: var(--desc-color, #5b6f86);
+    font-weight: 500;
 }.v2eq-blackboard-item {
-    margin-right: 12px;
-}.ake-ui-card[data-card-kind="equipment-cost"] {
-    margin-top: 12px;
-    padding: 8px;
-    background: var(--module-bg, #f8fafd);
-    border-radius: 8px;
-    border: 1px solid var(--border-color, #e2e7f0);
-}.v2eq-enhance-cost-domain {
-    font-weight: 600;
-    margin-bottom: 4px;
-}.v2eq-cost-wrap {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    vertical-align: middle;
-}.v2eq-default-component {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-    flex: 0 0 auto;
-}.v2eq-cost-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    margin-left: 0;
-    padding: 2px 8px;
-    font-size: 0.72rem;
-    background: var(--button-bg, #e0e8f0);
-    border: 1px solid var(--border-color, #ccc);
-    border-radius: 10px;
-    cursor: pointer;
-    color: var(--text-color, #333);
-    white-space: nowrap;
-}.v2eq-cost-btn:hover {
-    background: var(--hover-bg, #d0d8e0);
-}.v2eq-cost-tip {
-    display: none;
-    white-space: nowrap;
-    pointer-events: auto;
-    min-width: 180px;
-}.v2eq-cost-wrap:hover .v2eq-cost-tip,
-.v2eq-cost-tip.pinned {
-    display: block;
-}.v2eq-cost-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 3px 0;
-    font-size: 0.8rem;
-}.v2eq-cost-item img {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
-    flex-shrink: 0;
-    border-radius: 3px;
-}.v2eq-cost-item .v2eq-ci-name {
-    flex: 1;
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}.v2eq-cost-item .v2eq-ci-cnt {
-    font-weight: bold;
-    flex-shrink: 0;
-}.v2eq-cost-chain + .v2eq-cost-chain {
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid var(--border-color, #e2e7f0);
-}.v2eq-cost-chain-title {
-    margin-bottom: 3px;
-    color: var(--text-secondary, #667085);
-    font-size: 0.72rem;
-    font-weight: 600;
-}.v2eq-cost-chain-default .v2eq-cost-chain-title {
+    overflow-wrap: anywhere;
+}.v2eq-material-row--default .ake-ui-material__row-label {
     color: var(--accent-color, #2878c8);
-}.v2eq-guarantee-wrap {
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
-}.v2eq-guarantee-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 2px 8px;
-    font-size: 0.72rem;
-    background: var(--button-bg, #e0e8f0);
-    border: 1px solid var(--border-color, #ccc);
-    border-radius: 10px;
-    cursor: pointer;
-    color: var(--text-color, #333);
-    white-space: nowrap;
-}.v2eq-guarantee-btn:hover {
-    background: var(--hover-bg, #d0d8e0);
 }.v2eq-guarantee-tip {
-    display: none;
-    pointer-events: auto;
     min-width: 200px;
-}.v2eq-guarantee-wrap:hover .v2eq-guarantee-tip,
-.v2eq-guarantee-tip.pinned {
-    display: block;
-}.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header-actions {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
+}.v2eq-enhance-progression {
+    margin-top: 12px;
+}.v2eq-enhance-materials {
+    display: grid;
     gap: 4px;
-    margin-left: auto;
-    flex-shrink: 0;
+}.v2eq-enhance-material-line {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(5.5em, auto) minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+}
+@media (max-width: 560px) {
+    .ake-ui-detail[data-detail-kind="equipment"] .equipment-detail-hero {
+        align-items: flex-start;
+    }
+    .ake-ui-detail[data-detail-kind="equipment"] .equipment-detail-hero .ake-ui-detail-media {
+        width: 76px;
+        height: 76px;
+        flex-basis: 76px;
+    }
+    .ake-ui-detail[data-detail-kind="equipment"] > .v2eq-section {
+        margin-top: 22px;
+    }
 }
 }
 
@@ -1696,7 +1777,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-}.v2i-craft-item {
+}.v2i-craft-item.ake-ui-material__item {
     display: grid;
     grid-template-columns: 36px minmax(60px, 1fr) auto;
     align-items: center;
@@ -1711,13 +1792,14 @@
 }.v2i-craft-item:hover,
 .v2i-craft-item.is-current {
     border-color: var(--accent-color, #1e6f9f);
-}.v2i-craft-item img {
+}.v2i-craft-item .ake-ui-material__item-icon {
     width: 36px;
     height: 36px;
+    flex-basis: 36px;
     object-fit: contain;
-}.v2i-craft-item-name {
+}.v2i-craft-item .ake-ui-material__item-name {
     overflow-wrap: anywhere;
-}.v2i-craft-item strong,
+}.v2i-craft-item .ake-ui-material__item-count,
 .v2i-craft-arrow {
     color: var(--accent-color, #1e6f9f);
 }.v2i-craft-empty {
@@ -2073,22 +2155,21 @@
 }.v2d-rewards-content {
     color: var(--desc-color, #5b6f86);
     line-height: 1.5;
+}.v2d-reward-items {
+    gap: 4px 8px;
 }.v2d-reward-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
     margin: 2px 8px 2px 0;
     padding: 2px 8px;
     background: var(--module-bg, #f8fafd);
     border-radius: 6px;
     border: 1px solid var(--border-color, #e2e7f0);
     font-size: 0.88rem;
-}.v2d-reward-icon {
+}.v2d-reward-item .ake-ui-material__item-icon {
     width: 20px;
     height: 20px;
+    flex-basis: 20px;
     object-fit: contain;
     border-radius: 3px;
-    flex-shrink: 0;
 }.v2d-reward-rarity {
     display: inline-block;
     width: 8px;
@@ -3916,44 +3997,13 @@
     display: inline-block;
 }.v2cc-tag-badge.key .badge-dot { background: #27ae60; }.v2cc-tag-badge.lock .badge-dot { background: #e74c3c; }.v2cc-tag-badge.conflict .badge-dot { background: #e67e22; }/* Level rewards */
 .v2cc-levels {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}.ake-ui-card[data-card-kind="cc-level"] {
-    background: var(--sidebar-bg, #f2f4f8);
-    border-radius: 10px;
-    padding: 12px 16px;
-    border: 1px solid var(--border-color, #e5e9f0);
-    text-align: center;
-    min-width: 100px;
-}.v2cc-level-num {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--accent-color, #1e6f9f);
-    margin-bottom: 6px;
+    max-width: 100%;
 }.v2cc-level-reward-list {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}.v2cc-reward-item {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.75rem;
-}.v2cc-reward-icon {
-    width: 18px;
-    height: 18px;
-    border-radius: 3px;
-    object-fit: contain;
-    flex-shrink: 0;
-}.v2cc-reward-name {
-    color: var(--text-color, #1e2b3c);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}.v2cc-reward-count {
-    color: var(--desc-color, #5b6f86);
-    white-space: nowrap;
+    gap: 4px 12px;
+}.v2cc-level-reward-list .ake-ui-material__item-icon {
+    width: 22px;
+    height: 22px;
+    flex-basis: 22px;
 }.v2cc-reward-empty {
     font-size: 0.72rem;
     color: var(--desc-color, #5b6f86);
@@ -4087,22 +4137,13 @@
     font-size: 0.72rem;
     color: var(--desc-color, #5b6f86);
     font-weight: 600;
-}.v2cc-task-reward {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.75rem;
-}.v2cc-task-reward-icon {
+}.v2cc-task-rewards {
+    flex: 1 1 240px;
+}.v2cc-task-rewards .ake-ui-material__item-icon {
     width: 18px;
     height: 18px;
+    flex-basis: 18px;
     border-radius: 3px;
-    object-fit: contain;
-    flex-shrink: 0;
-}.v2cc-task-reward-name {
-    color: var(--text-color, #1e2b3c);
-}.v2cc-task-reward-count {
-    color: var(--desc-color, #5b6f86);
-    white-space: nowrap;
 }.v2cc-task-empty {
     font-size: 0.82rem;
     color: var(--desc-color, #5b6f86);
@@ -6031,6 +6072,32 @@ body { background-color: var(--ake-shell-page); color: var(--text-color); }
 .ake-ui-directory__mobile-list { padding: 10px; }
 .ake-ui-icon-button { width: 36px; height: 36px; display: inline-grid; place-items: center; flex: 0 0 36px; padding: 0; color: inherit; border: var(--ake-ui-border); border-radius: var(--ake-ui-radius-sm); background: var(--ake-ui-surface); font: inherit; cursor: pointer; }
 .ake-ui-icon-button:hover { background: var(--ake-ui-surface-hover); }
+.ake-ui-disclosure-button {
+    min-height: 28px;
+    padding: 4px 9px;
+    color: var(--desc-color);
+    border: var(--ake-ui-border);
+    border-radius: var(--ake-ui-radius-sm);
+    background: transparent;
+    font: inherit;
+    font-size: .7rem;
+    font-weight: 650;
+    line-height: 1.35;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: border-color .16s ease, background-color .16s ease, color .16s ease;
+}
+.ake-ui-disclosure-button:hover,
+.ake-ui-disclosure-button[aria-expanded="true"] {
+    color: var(--text-color);
+    border-color: var(--accent-color);
+    background: var(--ake-ui-surface-hover);
+}
+.ake-ui-disclosure-button:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+.ake-ui-disclosure-button:disabled { opacity: .55; cursor: default; }
 
 .ake-ui-popover-anchor { position: relative; }
 .ake-ui-popover {
@@ -6076,6 +6143,181 @@ body { background-color: var(--ake-shell-page); color: var(--text-color); }
     top: -5px;
     border-top: var(--ake-ui-border);
     border-left: var(--ake-ui-border);
+}
+.ake-ui-popover__trigger {
+    min-height: 24px;
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 7px;
+    color: var(--desc-color);
+    border: var(--ake-ui-border);
+    border-radius: var(--ake-ui-radius-sm);
+    background: transparent;
+    font: inherit;
+    font-size: .72rem;
+    line-height: 1.35;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.ake-ui-popover__trigger:hover,
+.ake-ui-popover__trigger[aria-expanded="true"] {
+    color: var(--text-color);
+    border-color: var(--accent-color);
+    background: var(--ake-ui-surface-hover);
+}
+.ake-ui-popover__trigger:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+.ake-ui-popover__panel {
+    display: none;
+    pointer-events: auto;
+}
+.ake-ui-popover-anchor:hover > .ake-ui-popover__panel,
+.ake-ui-popover__panel.pinned { display: block; }
+
+.ake-ui-material {
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    vertical-align: middle;
+}
+.ake-ui-material__icons {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+}
+.ake-ui-material__icons .ake-ui-material__item-name,
+.ake-ui-material__icons .ake-ui-material__item-count { display: none; }
+.ake-ui-material__icons .ake-ui-material__item-icon {
+    width: 18px;
+    height: 18px;
+}
+.ake-ui-material__popover {
+    white-space: nowrap;
+}
+.ake-ui-material__row {
+    display: grid;
+    grid-template-columns: 5.25em minmax(0, 1fr);
+    align-items: start;
+    gap: 6px;
+    padding: 2px 0;
+    font-size: .8rem;
+}
+.ake-ui-material__row-label {
+    color: var(--desc-color);
+    font-size: .72rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.ake-ui-material__items {
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+}
+.ake-ui-material__items--stacked {
+    display: grid;
+    gap: 0;
+}
+.ake-ui-material__item {
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 0;
+    font-size: .8rem;
+}
+.ake-ui-material__item-icon {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+    object-fit: contain;
+}
+.ake-ui-material__items--stacked .ake-ui-material__item { gap: 6px; padding: 3px 0; }
+.ake-ui-material__items--stacked .ake-ui-material__item-name {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ake-ui-material__item-count {
+    flex-shrink: 0;
+    font-weight: 700;
+}
+
+.ake-ui-progression {
+    min-width: 0;
+    overflow: visible;
+    border: var(--ake-ui-border);
+    border-radius: var(--ake-ui-radius);
+    background: var(--ake-ui-surface);
+}
+.ake-ui-progression__row {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 10px;
+    padding: 11px 14px;
+}
+.ake-ui-progression__row + .ake-ui-progression__row { border-top: var(--ake-ui-border); }
+.ake-ui-progression__stage {
+    padding-top: 2px;
+    color: var(--accent-color);
+    font-size: .7rem;
+    font-weight: 750;
+    line-height: 1.35;
+    text-align: center;
+    white-space: nowrap;
+}
+.ake-ui-progression__copy,
+.ake-ui-progression__content { min-width: 0; }
+.ake-ui-progression__title {
+    color: var(--text-color);
+    font-size: .8rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+.ake-ui-progression__description {
+    margin-top: 5px;
+    color: var(--text-color);
+    font-size: .76rem;
+    line-height: 1.5;
+}
+.ake-ui-progression__action {
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    align-self: start;
+}
+.ake-ui-progression__action:empty { display: none; }
+.ake-ui-progression__stats {
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 20px;
+}
+.ake-ui-progression__stat {
+    min-width: 96px;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    color: var(--desc-color);
+    font-size: .76rem;
+    line-height: 1.4;
+}
+.ake-ui-progression__stat strong {
+    color: var(--text-color);
+    font-size: .82rem;
+    font-variant-numeric: tabular-nums;
 }
 
 .ake-ui-page { min-width: 0; max-width: 1120px; margin: 0 auto; padding: 20px; }
@@ -6257,6 +6499,21 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
 .ake-ui-detail-title { margin: 0; overflow-wrap: anywhere; color: var(--text-color); font-size: 1.5rem; font-weight: 650; line-height: 1.25; }
 .ake-ui-detail-id { color: var(--desc-color); font-family: Consolas, monospace; font-size: .78rem; font-weight: 400; }
 .ake-ui-detail-subtitle { margin: 0; color: var(--desc-color); line-height: 1.55; }
+.ake-ui-detail-summary {
+    margin-top: 14px;
+    padding-inline-start: 12px;
+    border-inline-start: 2px solid var(--ake-ui-detail-accent, var(--accent-color));
+}
+.ake-ui-detail-summary > div {
+    margin: 0;
+    color: var(--desc-color);
+    font-size: .78rem;
+    line-height: 1.65;
+}
+.ake-ui-detail-summary > div + div {
+    margin-top: 6px;
+    color: var(--text-color);
+}
 .ake-ui-detail-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-bottom: 6px; color: var(--desc-color); font-size: .7rem; }
 .ake-ui-meta-label { color: var(--text-color); font-weight: 700; }
 .ake-ui-detail-copy > :is(h1, h2) { margin: 0; overflow-wrap: anywhere; color: var(--text-color); font-size: 1.5rem; line-height: 1.25; }
@@ -6407,6 +6664,15 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
 .ake-ui-badge[data-tone="danger"] { color: #fff; border-color: var(--error-text); background: var(--error-text); }
 .ake-ui-badge[data-tone="accent"] { color: #fff; border-color: var(--accent-color); background: var(--accent-color); }
 .ake-ui-badge[data-tone="special"] { color: #fff; border-color: var(--ake-rarity-4); background: var(--ake-rarity-4); }
+.ake-ui-badge[data-tone="muted"] { color: var(--text-color); border-color: transparent; background: var(--ake-ui-surface-muted); }
+.ake-ui-badge--technical {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    color: var(--desc-color);
+    background: var(--ake-ui-surface-muted);
+    font-family: Consolas, monospace;
+    font-weight: 500;
+}
 .ake-ui-badge[data-accent="rarity"] { color: #fff; border-color: var(--ake-ui-badge-accent); background: var(--ake-ui-badge-accent); }
 .ake-ui-badge[data-accent="rarity"][data-accent-value="1"] { --ake-ui-badge-accent: var(--ake-rarity-1); }
 .ake-ui-badge[data-accent="rarity"][data-accent-value="2"] { --ake-ui-badge-accent: var(--ake-rarity-2); }
@@ -6563,6 +6829,7 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
     margin: 0;
     padding: 0 9px 6px;
 }
+.ake-ui-card[data-card-kind="overview"] .ake-ui-card__id { display: none; }
 .ake-ui-card:is([data-overview-variant="icon"], [data-overview-variant="landscape"]) .ake-ui-card__badges {
     padding: 0 9px 9px;
 }
@@ -6684,6 +6951,27 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
 .ake-ui-section__meta { flex: 0 0 auto; color: var(--desc-color); font-size: .68rem; text-align: end; }
 .ake-ui-section__body { min-width: 0; color: var(--text-color); line-height: 1.55; }
 .ake-ui-section[data-variant="surface"] { padding: var(--ake-ui-space-3); border: var(--ake-ui-border); border-radius: var(--ake-ui-radius); background: var(--ake-ui-surface); }
+.ake-ui-detail .ake-ui-section__header {
+    position: relative;
+    align-items: center;
+    min-height: 30px;
+    margin-bottom: 12px;
+    padding: 0 0 8px 10px;
+    border-bottom: var(--ake-ui-border);
+}
+.ake-ui-detail .ake-ui-section__header::before {
+    position: absolute;
+    top: 3px;
+    bottom: 9px;
+    inset-inline-start: 0;
+    width: 3px;
+    background: var(--ake-ui-detail-accent, var(--accent-color));
+    content: '';
+}
+.ake-ui-detail .ake-ui-section__header .ake-ui-section__title {
+    font-size: .98rem;
+    font-weight: 700;
+}
 
 /* Character detail structure */
 .ake-ui-detail[data-detail-kind="character"] {
@@ -6788,21 +7076,6 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
     font-size: .82rem;
     font-weight: 750;
 }
-.character-detail-summary {
-    margin-top: 14px;
-    padding-inline-start: 12px;
-    border-inline-start: 2px solid var(--ake-ui-detail-accent, var(--accent-color));
-}
-.character-detail-summary > div {
-    margin: 0;
-    color: var(--desc-color);
-    font-size: .78rem;
-    line-height: 1.65;
-}
-.character-detail-summary > div + div {
-    margin-top: 6px;
-    color: var(--text-color);
-}
 .ake-ui-detail[data-detail-kind="character"] .character-detail-art {
     min-height: 0;
     align-self: end;
@@ -6868,27 +7141,6 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
 .ake-ui-detail[data-detail-kind="character"] .character-progression-grid {
     gap: 20px;
 }
-.ake-ui-detail[data-detail-kind="character"] .ake-ui-section__header {
-    position: relative;
-    align-items: center;
-    min-height: 30px;
-    margin-bottom: 12px;
-    padding: 0 0 8px 10px;
-    border-bottom: var(--ake-ui-border);
-}
-.ake-ui-detail[data-detail-kind="character"] .ake-ui-section__header::before {
-    position: absolute;
-    top: 3px;
-    bottom: 9px;
-    left: 0;
-    width: 3px;
-    background: var(--ake-ui-detail-accent, var(--accent-color));
-    content: '';
-}
-.ake-ui-detail[data-detail-kind="character"] .ake-ui-section__header .ake-ui-section__title {
-    font-size: .98rem;
-    font-weight: 700;
-}
 .ake-ui-detail[data-detail-kind="character"] .collapsible-section > .ake-ui-section__header {
     min-height: 30px;
     gap: var(--ake-ui-space-3);
@@ -6909,47 +7161,19 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
     min-width: 0;
 }
 .ake-ui-detail[data-detail-kind="character"] .character-progression-grid .ake-ui-card { width: 100%; }
-.ake-ui-detail[data-detail-kind="character"] .character-attribute-grid {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+.ake-ui-detail[data-detail-kind="character"] .character-attribute-groups {
+    min-width: 0;
+    display: grid;
+    gap: 16px;
 }
-.ake-ui-detail[data-detail-kind="character"] :is(
-    .skill-toggle-btn,
-    .toggle-char-levels-btn,
-    .global-skill-toggle-btn
-) {
-    min-height: 28px;
-    padding: 4px 9px;
-    border: var(--ake-ui-border);
-    border-radius: var(--ake-ui-radius-sm);
-    color: var(--desc-color);
-    background: transparent;
-    font: inherit;
-    font-size: .7rem;
-    font-weight: 650;
-    cursor: pointer;
-    transition: border-color .16s ease, background-color .16s ease, color .16s ease;
-}
-.ake-ui-detail[data-detail-kind="character"] :is(
-    .skill-toggle-btn,
-    .toggle-char-levels-btn,
-    .global-skill-toggle-btn
-):hover {
+.ake-ui-detail[data-detail-kind="character"] .character-attribute-group-title {
+    margin: 0 2px 7px;
     color: var(--text-color);
-    border-color: var(--accent-color);
-    background: var(--ake-ui-surface-hover);
-}
-.ake-ui-detail[data-detail-kind="character"] :is(
-    .skill-toggle-btn,
-    .toggle-char-levels-btn,
-    .global-skill-toggle-btn
-):focus-visible {
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
+    font-size: .82rem;
+    font-weight: 700;
 }
 .ake-ui-detail[data-detail-kind="character"] :is(
     [data-card-kind="character-talent"],
-    [data-card-kind="character-potential"],
-    [data-card-kind="character-attribute"],
     [data-card-kind="character-skill"],
     [data-card-kind="character-spaceship-skill"]
 ) {
@@ -6959,11 +7183,7 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
     border-radius: var(--ake-ui-radius);
     background: var(--ake-ui-surface);
 }
-.ake-ui-detail[data-detail-kind="character"] :is(
-    [data-card-kind="character-talent"],
-    [data-card-kind="character-potential"],
-    [data-card-kind="character-attribute"]
-) .ake-ui-card__header {
+.ake-ui-detail[data-detail-kind="character"] [data-card-kind="character-talent"] .ake-ui-card__header {
     align-items: center;
     margin-bottom: 8px;
     padding-bottom: 8px;
@@ -6978,26 +7198,20 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
     gap: 4px;
 }
 .character-card-cost:empty { display: none; }
-.character-card-cost .cost-btn,
-.character-card-cost .cost-btn-icons { margin-inline-start: 0; }
-.ake-ui-detail[data-detail-kind="character"] .cost-btn {
-    padding: 2px 7px;
-    border: var(--ake-ui-border);
-    border-radius: var(--ake-ui-radius-sm);
-    color: var(--desc-color);
-    background: transparent;
-}
-.ake-ui-detail[data-detail-kind="character"] .cost-btn:hover {
-    color: var(--text-color);
-    border-color: var(--accent-color);
-    background: var(--ake-ui-surface-hover);
-}
+.character-card-cost .ake-ui-material { margin-inline-start: 0; }
 .ake-ui-detail[data-detail-kind="character"] .character-talent-header {
     display: grid;
-    grid-template-columns: 36px minmax(0, 1fr);
+    grid-template-columns: 36px minmax(0, 1fr) auto;
     gap: 8px;
     margin-bottom: 0;
     padding-bottom: 10px;
+}
+.ake-ui-detail[data-detail-kind="character"] .character-talent-header:not(:has(.character-talent-icon)) {
+    grid-template-columns: minmax(0, 1fr) auto;
+}
+.ake-ui-detail[data-detail-kind="character"] .character-talent-header > .character-card-cost {
+    align-self: center;
+    justify-self: end;
 }
 .ake-ui-detail[data-detail-kind="character"] .character-talent-icon {
     margin: 0;
@@ -7025,26 +7239,11 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
     text-align: center;
     white-space: nowrap;
 }
-.ake-ui-detail[data-detail-kind="character"] .character-talent-level-content {
-    min-width: 0;
-}
-.ake-ui-detail[data-detail-kind="character"] .character-talent-level-content > .character-card-cost {
-    float: right;
-    margin: -2px 0 5px 12px;
-}
 .ake-ui-detail[data-detail-kind="character"] .character-talent-level-desc {
     min-width: 0;
     color: var(--text-color);
     font-size: .78rem;
     line-height: 1.55;
-}
-.ake-ui-detail[data-detail-kind="character"] .attr-node-modifier {
-    margin-top: 8px;
-    padding-top: 7px;
-    border-top: 1px dashed var(--border-color);
-    color: var(--text-color);
-    font-size: .76rem;
-    font-weight: 650;
 }
 .ake-ui-detail[data-detail-kind="character"] .attr-node-modifier-tag {
     display: inline-block;
@@ -7131,7 +7330,10 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
     border-radius: 0;
     background: transparent;
 }
-.ake-ui-detail[data-detail-kind="character"] .skill-detail .ake-ui-table-shell { max-height: 420px; }
+.ake-ui-detail[data-detail-kind="character"] .skill-detail .ake-ui-table-shell {
+    max-height: 420px;
+    overflow: auto;
+}
 .ake-ui-detail[data-detail-kind="character"] .character-matrix-table {
     width: max-content;
     min-width: 100%;
@@ -7421,14 +7623,31 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
     .character-detail-nav { gap: 15px; margin-inline: -2px; }
     .ake-ui-detail[data-detail-kind="character"] :is(
         [data-card-kind="character-talent"],
-        [data-card-kind="character-potential"],
-        [data-card-kind="character-attribute"],
         [data-card-kind="character-skill"]
     ) .ake-ui-card__header {
         flex-wrap: wrap;
     }
     .character-card-cost {
         flex: 1 1 100%;
+        justify-content: flex-start;
+    }
+    .ake-ui-detail[data-detail-kind="character"] .character-talent-header {
+        grid-template-columns: 36px minmax(0, 1fr);
+    }
+    .ake-ui-detail[data-detail-kind="character"] .character-talent-header:not(:has(.character-talent-icon)) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .ake-ui-detail[data-detail-kind="character"] .character-talent-header > .character-card-cost {
+        grid-column: 1 / -1;
+        justify-self: start;
+    }
+    .ake-ui-progression__row {
+        grid-template-columns: 44px minmax(0, 1fr);
+        gap: 8px;
+        padding: 10px 11px;
+    }
+    .ake-ui-progression__action {
+        grid-column: 2;
         justify-content: flex-start;
     }
     .ake-ui-detail[data-detail-kind="character"] [data-card-kind="character-spaceship-skill"] .ake-ui-card__header {
@@ -7636,9 +7855,18 @@ body[data-ake-module="v3_mission"] .ake-ui-directory__item[data-layout="entity"]
 .ake-ui-directory__item[data-layout="entity"][data-ake-change] .ake-ui-directory__item-heading {
     padding-inline-end: 40px;
 }
-.ake-ui-directory__item[data-layout="entity"][data-ake-change="added"] { --ake-item-change-color: var(--ake-change-added); }
-.ake-ui-directory__item[data-layout="entity"][data-ake-change="modified"] { --ake-item-change-color: var(--ake-change-modified); }
-.ake-ui-directory__item[data-layout="entity"][data-ake-change]::after {
+:is(
+    .ake-ui-directory__item[data-layout="entity"],
+    .ake-ui-card[data-card-kind="equipment"]
+)[data-ake-change="added"] { --ake-item-change-color: var(--ake-change-added); }
+:is(
+    .ake-ui-directory__item[data-layout="entity"],
+    .ake-ui-card[data-card-kind="equipment"]
+)[data-ake-change="modified"] { --ake-item-change-color: var(--ake-change-modified); }
+:is(
+    .ake-ui-directory__item[data-layout="entity"],
+    .ake-ui-card[data-card-kind="equipment"]
+)[data-ake-change]::after {
     position: absolute;
     z-index: 2;
     top: 0;
@@ -7658,6 +7886,12 @@ body[data-ake-module="v3_mission"] .ake-ui-directory__item[data-layout="entity"]
     line-height: 1.25;
     letter-spacing: 0;
     text-align: end;
+}
+.ake-ui-card[data-card-kind="equipment"][data-ake-change]::after {
+    max-width: 60px;
+    padding: 5px 8px 5px 18px;
+    font-size: 11px;
+    line-height: 1.3;
 }
 .ake-ui-page[data-ake-module="hidden-example"] { min-height: 300px; display: flex; align-items: center; justify-content: center; text-align: center; }
 .ake-ui-page[data-ake-module="hidden-example"] .ake-ui-state__title { font-size: 4rem; font-weight: 300; }

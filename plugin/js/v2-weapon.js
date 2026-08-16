@@ -269,44 +269,99 @@
         });
     }
 
-    function renderSkills(data, itemTable) {
+    function renderSkills(data) {
         const basicTable = data.weaponbasictable || {};
         const skillIds = basicTable.weaponSkillList || [];
         const skillPatch = data.skillpatchtable || {};
         if (skillIds.length === 0) return '';
 
-        let html = `<h3>${t('sections.skillData')}</h3><div class="ake-ui-card-grid" data-size="regular" data-columns="3">`;
-        skillIds.forEach(skillId => {
-            const skillData = skillPatch[skillId];
-            if (!skillData || !skillData.SkillPatchDataBundle) return;
-            const bundle = skillData.SkillPatchDataBundle;
-            const skillName = bundle[0]?.skillName?.text || skillId;
+        const skills = skillIds.map(skillId => {
+            const bundle = skillPatch[skillId]?.SkillPatchDataBundle || [];
+            if (!bundle.length) return null;
+            return {
+                name: bundle[0]?.skillName?.text || skillId,
+                bundle
+            };
+        }).filter(Boolean);
+        if (!skills.length) return '';
 
-            const levelRows = [];
-            bundle.forEach(skill => {
-                const bb = skill.blackboard || [];
-                const valueMap = {};
-                bb.forEach(b => { valueMap[b.key] = b.value; });
-                const desc = skill.description?.text || '';
-                let processed = replacePlaceholders(desc, valueMap);
-                processed = parseText(processed);
-                levelRows.push(`
-                    <div class="skill-level-row">
-                        <span class="skill-level">${t('levelAbbreviation', { level: skill.level })}</span>
-                        <span class="skill-desc">${processed}</span>
-                    </div>
-                `);
-            });
+        const dataRanks = Array.from(new Set(skills.flatMap(skill => skill.bundle
+            .map(rank => Number(rank.level))
+            .filter(Number.isFinite)))).sort((a, b) => a - b);
+        const rankCount = Math.max(...skills.map(skill => skill.bundle.length));
+        const ranks = dataRanks.length
+            ? dataRanks
+            : Array.from({ length: rankCount }, (_, index) => index + 1);
+        const rankRows = ranks.map((rankLevel, rankIndex) => `
+            <tr>
+                <th scope="row">${rankLevel}</th>
+                ${skills.map(skill => {
+                    const rank = dataRanks.length
+                        ? skill.bundle.find(entry => Number(entry.level) === rankLevel)
+                        : skill.bundle[rankIndex];
+                    if (!rank) return '<td>-</td>';
+                    const valueMap = {};
+                    (rank.blackboard || []).forEach(entry => { valueMap[entry.key] = entry.value; });
+                    const description = rank.description?.text || '';
+                    const processed = parseText(replacePlaceholders(description, valueMap));
+                    return `<td><div class="weapon-skill-rank-copy">${processed || '-'}</div></td>`;
+                }).join('')}
+            </tr>
+        `).join('');
 
-            html += `
-                <div class="ake-ui-card" data-card-kind="weapon-skill" data-density="regular">
-                    <div class="ake-ui-card__title">${escapeHtml(skillName)}</div>
-                    <div class="ake-ui-card__body">${levelRows.join('')}</div>
+        return `
+            <section class="ake-ui-section weapon-skill-section">
+                <div class="ake-ui-section__header">
+                    <h3 class="ake-ui-section__title">${t('sections.skillData')}</h3>
                 </div>
-            `;
+                <div class="ake-ui-table-shell weapon-skill-table-shell">
+                    <table class="ake-ui-table weapon-skill-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Rank</th>
+                                ${skills.map(skill => `<th scope="col">${escapeHtml(skill.name)}</th>`).join('')}
+                            </tr>
+                        </thead>
+                        <tbody>${rankRows}</tbody>
+                    </table>
+                </div>
+            </section>
+        `;
+    }
+
+    function weaponMaterialItem(item, itemTable, overrides = {}) {
+        const itemData = itemTable[item.id] || {};
+        return {
+            icon: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${itemData.iconId || item.id}.png`,
+            name: overrides.name || itemData.name?.text || item.id,
+            count: overrides.count ?? item.count,
+            description: itemData.desc?.text || ''
+        };
+    }
+
+    function weaponMaterialPopover(costs, itemTable) {
+        const items = costs.map(cost => weaponMaterialItem(cost, itemTable, cost.overrides));
+        const icons = [...new Set(items.map(item => item.icon))].map(icon => ({ icon }));
+        return window.AKEUI.materialPopover({
+            label: t('sections.breakthroughMaterials'),
+            placement: 'top',
+            items,
+            icons
         });
-        html += '</div>';
-        return html;
+    }
+
+    function weaponSkillLabel(index) {
+        const marker = '__AKE_SKILL_BOUND__';
+        return t('skillLevelBounds', {
+            skill: index,
+            lower: marker,
+            upper: marker
+        }).split(marker)[0].replace(/[：:\s]+$/, '');
+    }
+
+    function weaponBreakthroughLabel() {
+        const marker = '__AKE_BREAKTHROUGH_LEVEL__';
+        return t('breakthroughLevel', { level: marker }).replace(marker, '').trim();
     }
 
     function renderBreakthrough(data, itemTable) {
@@ -315,74 +370,80 @@
 
         const templateId = data.weaponbasictable?.breakthroughTemplateId;
         const btData = btTable[templateId];
-        if (!btData || !btData.list) return '';
+        if (!btData?.list?.length) return '';
 
-        let html = `<h3>${t('sections.breakthroughMaterials')}</h3><div class="ake-ui-card-grid" data-size="narrow">`;
-        btData.list.forEach(bt => {
+        const upgradeTemplateId = data.weaponbasictable?.levelTemplateId;
+        const upgradeLevels = data.weaponupgradetemplatetable?.[upgradeTemplateId]?.list || [];
+        const maxLevelEntry = upgradeLevels[upgradeLevels.length - 1];
+        const maxLevel = data.weaponbasictable?.maxLv || maxLevelEntry?.weaponLv || upgradeLevels.length;
+
+        const stages = btData.list.map((bt, index) => {
             const lv = bt.breakthroughShowLv;
             const gold = bt.breakthroughGold || 0;
             const items = bt.breakItemList || [];
             const bounds = bt.skillLevelBounds || [];
+            const startLevel = index === 0 ? 1 : Math.min(index * 20, maxLevel);
+            const endLevel = index === btData.list.length - 1
+                ? maxLevel
+                : Math.min((index + 1) * 20, maxLevel);
 
-            let costsHtml = '';
+            const costs = [];
             if (gold > 0) {
-                costsHtml += `<div class="break-cost-row"><span class="bc-name">${t('gold')}</span><span class="bc-cnt">${gold.toLocaleString()}</span></div>`;
+                costs.push({
+                    id: 'item_gold',
+                    count: gold.toLocaleString(),
+                    overrides: { name: t('gold') }
+                });
             }
             items.forEach(it => {
-                if (it.count <= 0) return;
-                const iData = itemTable[it.id];
-                const iName = iData?.name?.text || it.id;
-                const iIcon = iData?.iconId || it.id;
-                costsHtml += `<div class="break-cost-row"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iIcon}.png"><span class="bc-name">${escapeHtml(iName)}</span><span class="bc-cnt">×${it.count}</span></div>`;
+                if (it.count > 0) costs.push(it);
             });
-
-            let boundsHtml = '';
-            if (bounds.length > 0) {
-                boundsHtml = '<div class="break-skill-bounds">';
-                bounds.forEach((b, i) => {
-                    boundsHtml += `<span>${t('skillLevelBounds', { skill: i + 1, lower: b.lowerBound, upper: b.upperBound })}</span>`;
-                });
-                boundsHtml += '</div>';
-            }
-
-            html += `
-                <div class="ake-ui-card" data-card-kind="weapon-break" data-density="regular">
-                    <div class="ake-ui-card__title">${t('breakthroughLevel', { level: lv === 0 ? t('initial') : lv })}</div>
-                    <div class="ake-ui-card__body">${costsHtml}${boundsHtml}</div>
-                </div>
-            `;
+            return {
+                title: lv === 0 ? t('initial') : t('breakthroughLevel', { level: lv }),
+                levelRange: `${startLevel}-${endLevel}`,
+                bounds,
+                material: weaponMaterialPopover(costs, itemTable)
+            };
         });
-        html += '</div>';
-        return html;
-    }
+        const skillCount = Math.max(0, ...stages.map(stage => stage.bounds.length));
+        const skillRows = Array.from({ length: skillCount }, (_, index) => `
+            <tr>
+                <th scope="row">${escapeHtml(weaponSkillLabel(index + 1))}</th>
+                ${stages.map(stage => {
+                    const bound = stage.bounds[index];
+                    return `<td>${bound ? `${bound.lowerBound}-${bound.upperBound}` : '-'}</td>`;
+                }).join('')}
+            </tr>
+        `).join('');
 
-    function renderTalent(data) {
-        const ttTable = data.weapontalenttemplatetable;
-        if (!ttTable) return '';
-
-        const templateId = data.weaponbasictable?.talentTemplateId;
-        const ttData = ttTable[templateId];
-        if (!ttData || !ttData.list) return '';
-
-        let html = `<h3>${t('sections.potentials')}</h3><div class="ake-ui-card-grid" data-size="narrow">`;
-        ttData.list.forEach(talent => {
-            const lv = talent.talentLv;
-            const bounds = talent.skillLevelExtraBounds || [];
-            let infoHtml = '';
-            bounds.forEach((b, i) => {
-                if (b.upperBound > 0) {
-                    infoHtml += `<div>${t('skillUpperBound', { skill: i + 1, upper: b.upperBound })}</div>`;
-                }
-            });
-            html += `
-                <div class="ake-ui-card" data-card-kind="weapon-talent" data-density="regular">
-                    <div class="ake-ui-card__title">${t('potentialLevel', { level: lv })}</div>
-                    <div class="ake-ui-card__body">${infoHtml || t('noExtraEffect')}</div>
+        return `
+            <section class="ake-ui-section weapon-breakthrough-section">
+                <div class="ake-ui-section__header">
+                    <h3 class="ake-ui-section__title">${t('sections.breakthroughMaterials')}</h3>
                 </div>
-            `;
-        });
-        html += '</div>';
-        return html;
+                <div class="ake-ui-table-shell weapon-breakthrough-table-shell">
+                    <table class="ake-ui-table weapon-breakthrough-table" style="--weapon-stage-count: ${stages.length}">
+                        <thead>
+                            <tr>
+                                <th scope="col">${escapeHtml(weaponBreakthroughLabel())}</th>
+                                ${stages.map(stage => `<th scope="col">${escapeHtml(stage.title)}</th>`).join('')}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">${commonT('level')}</th>
+                                ${stages.map(stage => `<td>${stage.levelRange}</td>`).join('')}
+                            </tr>
+                            ${skillRows}
+                            <tr class="weapon-breakthrough-material-row">
+                                <th scope="row">${t('sections.breakthroughMaterials')}</th>
+                                ${stages.map(stage => `<td>${stage.material?.outerHTML || '-'}</td>`).join('')}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        `;
     }
 
     function renderAtkTable(data) {
@@ -412,22 +473,25 @@
             }
         }
 
-        const toggleHtml = weaponLevelsToShow ? `
-            <div class="toggle-weapon-levels-container">
-                <button class="toggle-weapon-levels-btn">${showAllWeaponLevels ? commonT('collapseExtraLevels') : commonT('expandAllLevels')}</button>
-            </div>
-        ` : '';
+        const toggle = weaponLevelsToShow ? window.AKEUI.disclosureButton({
+            className: 'toggle-weapon-levels-btn',
+            expanded: showAllWeaponLevels,
+            expandLabel: commonT('expandAllLevels'),
+            collapseLabel: commonT('collapseExtraLevels')
+        }) : null;
 
         return `
-            <div class="detail-atk">
-                <h3>${t('baseAttackRange', { max: upgradeData.list.length })}</h3>
+            <div class="ake-ui-section detail-atk">
+                <div class="ake-ui-section__header">
+                    <h3 class="ake-ui-section__title">${t('baseAttackRange', { max: upgradeData.list.length })}</h3>
+                    ${toggle?.outerHTML || ''}
+                </div>
                 <div class="ake-ui-table-shell">
                     <table class="ake-ui-table">
                         <thead><tr><th>${commonT('level')}</th><th>${commonT('attack')}</th></tr></thead>
                         <tbody>${rowsToRender.join('')}</tbody>
                     </table>
                 </div>
-                ${toggleHtml}
             </div>
         `;
     }
@@ -440,47 +504,67 @@
         const name = weaponItem.name?.text || weapon.name;
         const desc = weaponItem.desc?.text || '';
         const decoDesc = weaponItem.decoDesc?.text || '';
-        const rarity = basicTable.rarity || weapon.rarity;
-        const weaponType = basicTable.weaponType || weapon.weaponType;
         const weaponDesc = basicTable.weaponDesc?.text || '';
         const iconId = weaponItem.iconId || weapon.weaponId;
         const atkHtml = renderAtkTable(data);
-        const skillHtml = renderSkills(data, itemTable);
+        const skillHtml = renderSkills(data);
         const breakHtml = renderBreakthrough(data, itemTable);
-        const talentHtml = renderTalent(data);
+        const storyHtml = weaponDesc ? `
+            <section class="ake-ui-section weapon-story-section">
+                <div class="ake-ui-section__header">
+                    <h3 class="ake-ui-section__title">${t('sections.story')}</h3>
+                </div>
+                <div class="weapon-desc">${parseText(weaponDesc)}</div>
+            </section>
+        ` : '';
+        const headerContent = (desc || decoDesc) ? window.AKEUI.fragment(`
+            <div class="ake-ui-detail-summary">
+                ${desc ? `<div>${escapeHtml(desc)}</div>` : ''}
+                ${decoDesc ? `<div>${escapeHtml(decoDesc)}</div>` : ''}
+            </div>
+        `) : null;
+        const detailHeader = window.AKEUI.detailHeader({
+            layout: 'showcase',
+            className: 'weapon-detail-hero',
+            icon: {
+                src: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png`
+            },
+            title: name,
+            content: headerContent,
+            mainAfter: window.AKEUI.fragment(atkHtml),
+            visual: {
+                src: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/gachaweapon/${iconId}.png`,
+                frame: true
+            }
+        });
 
         return `
-            <article class="ake-ui-detail" data-detail-kind="weapon" data-accent="rarity" data-accent-value="${rarity}">
-            <div class="ake-ui-detail-header" data-layout="showcase">
-                <div class="ake-ui-detail-main">
-                    <div class="ake-ui-detail-identity">
-                        <div class="ake-ui-detail-icon">
-                            <img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png">
-                        </div>
-                        <div class="ake-ui-detail-copy">
-                            <div class="ake-ui-detail-title-row">
-                                <span class="ake-ui-detail-title">${escapeHtml(name)}</span>
-                                <span class="ake-ui-badge" data-accent="rarity" data-accent-value="${rarity}" title="${commonT('rarityLabel', { rarity })}">${commonT('rarityLabel', { rarity })}</span>
-                                <span class="ake-ui-detail-id">${escapeHtml(weapon.weaponId)}</span>
-                            </div>
-                            <div class="detail-desc">${escapeHtml(desc)}</div>
-                            ${decoDesc ? `<div class="detail-deco">${escapeHtml(decoDesc)}</div>` : ''}
-                        </div>
-                    </div>
-                    ${atkHtml}
-                </div>
-                <div class="ake-ui-detail-visual">
-                    <div class="ake-ui-detail-visual-frame">
-                        <img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/gachaweapon/${iconId}.png">
-                    </div>
-                </div>
-            </div>
+            <article class="ake-ui-detail" data-detail-kind="weapon">
+            ${detailHeader?.outerHTML || ''}
             ${skillHtml}
             ${breakHtml}
-            ${talentHtml}
-            ${weaponDesc ? `<h3>${t('sections.story')}</h3><div class="weapon-desc">${parseText(weaponDesc)}</div>` : ''}
+            ${storyHtml}
             </article>
         `;
+    }
+
+    function bindWeaponLevelToggle(container) {
+        const toggle = container.querySelector('.toggle-weapon-levels-btn');
+        if (!toggle) return;
+        toggle.addEventListener('click', event => {
+            event.preventDefault();
+            if (!currentWeaponData || !currentWeapon) return;
+            showAllWeaponLevels = !showAllWeaponLevels;
+            container.innerHTML = renderDetail(currentWeaponData, currentWeapon);
+            window.AKEModuleOverview?.renderVersionDiff(
+                container,
+                currentWeaponData,
+                currentWeaponData.__versionDiff?.baseline
+                    ? renderDetail(currentWeaponData.__versionDiff.baseline, currentWeapon)
+                    : ''
+            );
+            bindWeaponLevelToggle(container);
+        });
     }
 
     async function loadWeaponDetail(weapon, container) {
@@ -491,25 +575,7 @@
             currentWeapon = weapon;
             container.innerHTML = renderDetail(data, weapon);
             window.AKEModuleOverview?.renderVersionDiff(container, data, data.__versionDiff?.baseline ? renderDetail(data.__versionDiff.baseline, weapon) : '');
-
-            const toggleBtn = container.querySelector('.toggle-weapon-levels-btn');
-            if (toggleBtn) {
-                toggleBtn.addEventListener('click', e => {
-                    e.preventDefault();
-                    showAllWeaponLevels = !showAllWeaponLevels;
-                    const tbody = container.querySelector('.ake-ui-table tbody');
-                    if (tbody && currentWeaponData) {
-                        container.innerHTML = renderDetail(currentWeaponData, currentWeapon);
-                        window.AKEModuleOverview?.renderVersionDiff(container, currentWeaponData, currentWeaponData.__versionDiff?.baseline ? renderDetail(currentWeaponData.__versionDiff.baseline, currentWeapon) : '');
-                        const newBtn = container.querySelector('.toggle-weapon-levels-btn');
-                        if (newBtn) newBtn.addEventListener('click', ev => {
-                            ev.preventDefault();
-                            showAllWeaponLevels = !showAllWeaponLevels;
-                            loadWeaponDetail(currentWeapon, container);
-                        });
-                    }
-                });
-            }
+            bindWeaponLevelToggle(container);
         } catch (err) {
             const error = document.createElement('div');
             error.className = 'ake-ui-state';
