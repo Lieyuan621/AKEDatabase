@@ -11,6 +11,7 @@
     let openSelectInstance = null;
     let selectSequence = 0;
     let filterPanelSequence = 0;
+    let popoverSequence = 0;
 
     function appendContent(parent, value) {
         if (!isPresent(value)) return;
@@ -26,6 +27,12 @@
         if (className) node.className = className;
         appendContent(node, content);
         return node;
+    }
+
+    function fragment(markup) {
+        const template = document.createElement('template');
+        template.innerHTML = markup || '';
+        return template.content;
     }
 
     function applyCommonState(node, options) {
@@ -367,9 +374,12 @@
         if (!isPresent(data)) return null;
         const definition = typeof data === 'object' ? data : { label: data };
         if (!isPresent(definition.label)) return null;
-        const node = element('span', 'ake-ui-badge', definition.label);
+        const classes = ['ake-ui-badge'];
+        if (definition.className) classes.push(...String(definition.className).split(/\s+/).filter(Boolean));
+        const node = element('span', classes.join(' '), definition.label);
         if (definition.tone) node.dataset.tone = definition.tone;
         if (definition.title) node.title = definition.title;
+        applyAttributes(node, definition.attributes);
         return node;
     }
 
@@ -664,38 +674,137 @@
         return node;
     }
 
+    function setDisclosureButtonExpanded(button, expanded) {
+        if (!(button instanceof HTMLButtonElement)) return button;
+        const isExpanded = Boolean(expanded);
+        button.setAttribute('aria-expanded', String(isExpanded));
+        const label = isExpanded ? button.dataset.collapseLabel : button.dataset.expandLabel;
+        if (isPresent(label)) button.textContent = label;
+        return button;
+    }
+
+    function disclosureButton(options = {}) {
+        const classes = ['ake-ui-disclosure-button'];
+        if (options.className) classes.push(...String(options.className).split(/\s+/).filter(Boolean));
+        const button = element('button', classes.join(' '));
+        button.type = 'button';
+        if (isPresent(options.expandLabel || options.label)) button.dataset.expandLabel = options.expandLabel || options.label;
+        if (isPresent(options.collapseLabel || options.label)) button.dataset.collapseLabel = options.collapseLabel || options.label;
+        setDisclosureButtonExpanded(button, options.expanded);
+        applyAttributes(button, options.attributes);
+        if (options.disabled) {
+            button.disabled = true;
+            button.setAttribute('aria-disabled', 'true');
+        }
+        if (typeof options.onToggle === 'function' && !options.disabled) {
+            button.addEventListener('click', event => {
+                const nextExpanded = button.getAttribute('aria-expanded') !== 'true';
+                options.onToggle(nextExpanded, event, button);
+            });
+        }
+        return button;
+    }
+
     function detailHeader(options = {}) {
-        const header = element('header', 'ake-ui-detail-header');
+        const headerClasses = ['ake-ui-detail-header'];
+        if (options.className) headerClasses.push(...String(options.className).split(/\s+/).filter(Boolean));
+        const header = element(options.element || 'header', headerClasses.join(' '));
+        if (options.layout) header.dataset.layout = options.layout;
+        applyAttributes(header, options.attributes);
+
+        let media = null;
         if (options.icon?.src || isNode(options.icon)) {
-            const media = element('div', 'ake-ui-detail-media');
+            const mediaClass = options.iconClassName
+                || (options.layout === 'showcase' ? 'ake-ui-detail-icon' : 'ake-ui-detail-media');
+            media = element('div', mediaClass);
             if (isNode(options.icon)) {
                 media.appendChild(options.icon);
             } else {
                 const image = element('img');
                 image.src = options.icon.src;
                 image.alt = options.icon.alt || '';
+                applyAttributes(image, options.icon.attributes);
                 media.appendChild(image);
             }
-            header.appendChild(media);
         }
-        const hasCopy = isPresent(options.title) || isPresent(options.id) || isPresent(options.subtitle) || hasItems(options.badges) || hasItems(options.meta);
+
+        const hasCopy = isPresent(options.title)
+            || isPresent(options.id)
+            || isPresent(options.eyebrow)
+            || isPresent(options.beforeTitle)
+            || isPresent(options.subtitle)
+            || isPresent(options.content)
+            || hasItems(options.badges)
+            || hasItems(options.meta);
+        let copy = null;
         if (hasCopy) {
-            const copy = element('div', 'ake-ui-detail-copy');
+            copy = element('div', 'ake-ui-detail-copy');
+            if (isPresent(options.beforeTitle)) appendContent(copy, options.beforeTitle);
+            if (isPresent(options.eyebrow)) copy.appendChild(element('div', 'ake-ui-detail-eyebrow', options.eyebrow));
             if (isPresent(options.title) || isPresent(options.id) || hasItems(options.badges)) {
                 const titleRow = element('div', 'ake-ui-detail-title-row');
-                if (isPresent(options.title)) titleRow.appendChild(element('h2', 'ake-ui-detail-title', options.title));
-                if (isPresent(options.id)) titleRow.appendChild(element('small', 'ake-ui-detail-id', options.id));
+                if (isPresent(options.title)) {
+                    const title = element(options.titleElement || 'h2', 'ake-ui-detail-title', options.title);
+                    applyAttributes(title, options.titleAttributes);
+                    titleRow.appendChild(title);
+                }
                 (options.badges || []).forEach(item => {
                     const badgeNode = badge(item);
                     if (badgeNode) titleRow.appendChild(badgeNode);
                 });
+                if (isPresent(options.id)) titleRow.appendChild(element('small', 'ake-ui-detail-id', options.id));
                 if (titleRow.childElementCount) copy.appendChild(titleRow);
             }
             if (isPresent(options.subtitle)) copy.appendChild(element('p', 'ake-ui-detail-subtitle', options.subtitle));
             const meta = metaGrid(options.meta, options.metaOptions);
             if (meta) copy.appendChild(meta);
-            if (copy.childElementCount) header.appendChild(copy);
+            if (isPresent(options.content)) appendContent(copy, options.content);
         }
+
+        const useIdentity = options.layout === 'showcase' || isPresent(options.visual) || isPresent(options.mainAfter);
+        const identity = useIdentity ? element('div', 'ake-ui-detail-identity') : null;
+        const primary = identity || header;
+        if (media) primary.appendChild(media);
+        if (copy?.childElementCount) primary.appendChild(copy);
+
+        if (identity?.childElementCount) {
+            if (isPresent(options.mainAfter)) {
+                const main = element('div', 'ake-ui-detail-main');
+                main.appendChild(identity);
+                appendContent(main, options.mainAfter);
+                header.appendChild(main);
+            } else {
+                header.appendChild(identity);
+            }
+        }
+
+        if (isPresent(options.visual)) {
+            const definition = isNode(options.visual) ? { content: options.visual } : options.visual;
+            const visualClasses = ['ake-ui-detail-visual'];
+            if (definition.className) visualClasses.push(...String(definition.className).split(/\s+/).filter(Boolean));
+            const visual = element(definition.element || 'div', visualClasses.join(' '));
+            applyAttributes(visual, definition.attributes);
+            let visualContent = definition.content;
+            if (!isPresent(visualContent) && definition.src) {
+                const image = element('img');
+                image.src = definition.src;
+                image.alt = definition.alt || '';
+                applyAttributes(image, definition.imageAttributes);
+                visualContent = image;
+            }
+            if (isPresent(visualContent)) {
+                if (definition.frame) {
+                    const frame = element('div', 'ake-ui-detail-visual-frame');
+                    appendContent(frame, visualContent);
+                    visual.appendChild(frame);
+                } else {
+                    appendContent(visual, visualContent);
+                }
+            }
+            if (visual.childNodes.length) header.appendChild(visual);
+        }
+        if (isPresent(options.after)) appendContent(header, options.after);
+
         return header.childElementCount ? header : null;
     }
 
@@ -713,6 +822,157 @@
         if (isPresent(options.content)) appendContent(content, options.content);
         root.appendChild(content);
         return { root, sidebar, list, content };
+    }
+
+    function popover(options = {}) {
+        if (!isPresent(options.content)) return null;
+
+        const rootClasses = ['ake-ui-popover-anchor'];
+        if (options.className) rootClasses.push(...String(options.className).split(/\s+/).filter(Boolean));
+        const root = element(options.element || 'span', rootClasses.join(' '));
+
+        const triggerClasses = ['ake-ui-popover__trigger'];
+        if (options.triggerClassName) triggerClasses.push(...String(options.triggerClassName).split(/\s+/).filter(Boolean));
+        const triggerContent = isPresent(options.trigger) ? options.trigger : options.label;
+        const trigger = element(options.triggerElement || 'button', triggerClasses.join(' '), triggerContent);
+        if (trigger instanceof HTMLButtonElement) trigger.type = 'button';
+        trigger.setAttribute('data-ake-popover-trigger', '');
+        trigger.setAttribute('data-ake-popover-pin', '');
+        trigger.setAttribute('aria-expanded', 'false');
+        if (options.ariaLabel) trigger.setAttribute('aria-label', options.ariaLabel);
+        applyAttributes(trigger, options.triggerAttributes);
+
+        const panelClasses = ['ake-ui-popover', 'ake-ui-popover__panel'];
+        if (options.panelClassName) panelClasses.push(...String(options.panelClassName).split(/\s+/).filter(Boolean));
+        const panel = element(options.panelElement || 'span', panelClasses.join(' '), options.content);
+        panel.id = `akeUiPopover-${++popoverSequence}`;
+        panel.dataset.placement = options.placement || 'top';
+        panel.setAttribute('data-ake-popover-pinnable', '');
+        panel.setAttribute('role', options.role || 'tooltip');
+        applyAttributes(panel, options.panelAttributes);
+        trigger.setAttribute('aria-describedby', panel.id);
+
+        root.appendChild(trigger);
+        if (isPresent(options.afterTrigger)) appendContent(root, options.afterTrigger);
+        root.appendChild(panel);
+        return root;
+    }
+
+    function materialItem(data = {}) {
+        if (!data || (!isPresent(data.name) && !isPresent(data.icon))) return null;
+        const classes = ['ake-ui-material__item'];
+        if (data.className) classes.push(...String(data.className).split(/\s+/).filter(Boolean));
+        const item = element(data.element || 'span', classes.join(' '));
+        applyAttributes(item, data.attributes);
+        if (isPresent(data.description)) item.title = String(data.description);
+        if (isPresent(data.icon)) {
+            const image = element('img', 'ake-ui-material__item-icon');
+            image.src = data.icon;
+            image.alt = '';
+            image.loading = 'lazy';
+            image.decoding = 'async';
+            item.appendChild(image);
+        }
+        if (isPresent(data.name)) item.appendChild(element('span', 'ake-ui-material__item-name', data.name));
+        if (isPresent(data.count)) item.appendChild(element('strong', 'ake-ui-material__item-count', `×${data.count}`));
+        return item;
+    }
+
+    function materialItems(items, className = 'ake-ui-material__items') {
+        const list = element('span', className);
+        (items || []).forEach(data => {
+            const item = materialItem(data);
+            if (item) list.appendChild(item);
+        });
+        return list.childElementCount ? list : null;
+    }
+
+    function materialPopover(options = {}) {
+        const rows = (options.rows || []).filter(row => row && hasItems(row.items));
+        const directItems = (options.items || []).filter(Boolean);
+        if (!rows.length && !directItems.length) return null;
+
+        const icons = materialItems(options.icons || [], 'ake-ui-material__icons');
+        const content = document.createDocumentFragment();
+
+        rows.forEach(rowData => {
+            const row = element('span', 'ake-ui-material__row');
+            if (rowData.className) row.classList.add(...String(rowData.className).split(/\s+/).filter(Boolean));
+            if (isPresent(rowData.label)) row.appendChild(element('span', 'ake-ui-material__row-label', rowData.label));
+            const items = materialItems(rowData.items);
+            if (items) row.appendChild(items);
+            if (row.childElementCount) content.appendChild(row);
+        });
+        if (directItems.length) {
+            const items = materialItems(directItems, 'ake-ui-material__items ake-ui-material__items--stacked');
+            if (items) content.appendChild(items);
+        }
+        return popover({
+            label: options.label,
+            placement: options.placement,
+            className: ['ake-ui-material', options.className || ''].filter(Boolean).join(' '),
+            triggerClassName: 'ake-ui-material__trigger',
+            panelClassName: 'ake-ui-material__popover',
+            content,
+            afterTrigger: icons
+        });
+    }
+
+    function progressionStat(options = {}) {
+        if (!isPresent(options.content) && !isPresent(options.label) && !isPresent(options.value)) return null;
+        const stat = element('span', 'ake-ui-progression__stat');
+        if (isPresent(options.content)) {
+            appendContent(stat, options.content);
+        } else {
+            if (isPresent(options.label)) stat.appendChild(element('span', null, options.label));
+            if (isPresent(options.value)) stat.appendChild(element('strong', null, options.value));
+        }
+        if (isPresent(options.meta)) appendContent(stat, options.meta);
+        return stat;
+    }
+
+    function progressionRow(options = {}) {
+        const row = element(options.element || 'div', 'ake-ui-progression__row');
+        if (options.className) row.classList.add(...String(options.className).split(/\s+/).filter(Boolean));
+        if (options.kind) row.dataset.progressionKind = options.kind;
+        applyAttributes(row, options.attributes);
+
+        if (isPresent(options.stage)) row.appendChild(element('div', 'ake-ui-progression__stage', options.stage));
+
+        let content = null;
+        if (hasItems(options.stats)) {
+            content = element('div', 'ake-ui-progression__stats');
+            options.stats.forEach(definition => {
+                const stat = isNode(definition) ? definition : progressionStat(definition);
+                if (stat) content.appendChild(stat);
+            });
+        } else if (isPresent(options.content)) {
+            content = element('div', 'ake-ui-progression__content');
+            appendContent(content, options.content);
+        } else if (isPresent(options.title) || isPresent(options.description)) {
+            content = element('div', 'ake-ui-progression__copy');
+            if (isPresent(options.title)) content.appendChild(element('div', 'ake-ui-progression__title', options.title));
+            if (isPresent(options.description)) content.appendChild(element('div', 'ake-ui-progression__description', options.description));
+        }
+        if (content) row.appendChild(content);
+
+        if (isPresent(options.action)) {
+            const action = element('div', 'ake-ui-progression__action');
+            appendContent(action, options.action);
+            row.appendChild(action);
+        }
+        return row;
+    }
+
+    function progressionList(options = {}) {
+        const list = element(options.element || 'div', 'ake-ui-progression');
+        if (options.className) list.classList.add(...String(options.className).split(/\s+/).filter(Boolean));
+        (options.rows || []).forEach(definition => {
+            const row = isNode(definition) ? definition : progressionRow(definition);
+            if (row) list.appendChild(row);
+        });
+        if (!list.childElementCount && isPresent(options.empty)) appendContent(list, options.empty);
+        return list;
     }
 
     const popoverFrames = new WeakMap();
@@ -780,10 +1040,35 @@
         });
     }
 
+    function closePinnedPopovers(except = null) {
+        document.querySelectorAll('[data-ake-popover-pinnable].pinned').forEach(popover => {
+            if (popover === except) return;
+            popover.classList.remove('pinned');
+            const anchor = popover.closest('.ake-ui-popover-anchor, [data-ake-popover-anchor]');
+            getPopoverTrigger(anchor)?.setAttribute('aria-expanded', 'false');
+        });
+    }
+
     document.addEventListener('click', event => {
         if (!openSelectInstance) return;
         if (openSelectInstance.shell.contains(event.target) || openSelectInstance.menu.contains(event.target)) return;
         openSelectInstance.close();
+    });
+    document.addEventListener('click', event => {
+        const trigger = event.target.closest?.('[data-ake-popover-pin]');
+        if (trigger) {
+            const anchor = trigger.closest('.ake-ui-popover-anchor, [data-ake-popover-anchor]');
+            const popover = anchor && Array.from(anchor.children).find(child => child.matches?.('[data-ake-popover-pinnable]'));
+            if (!popover) return;
+            const willPin = !popover.classList.contains('pinned');
+            closePinnedPopovers(popover);
+            popover.classList.toggle('pinned', willPin);
+            trigger.setAttribute('aria-expanded', String(willPin));
+            if (willPin) scheduleAnchoredPopover(anchor);
+            return;
+        }
+        if (event.target.closest?.('[data-ake-popover-pinnable].pinned')) return;
+        closePinnedPopovers();
     });
     document.addEventListener('pointerover', event => {
         const anchor = event.target.closest?.('.ake-ui-popover-anchor, [data-ake-popover-anchor]');
@@ -815,6 +1100,7 @@
     window.AKEUI = Object.freeze({
         isPresent,
         element,
+        fragment,
         filterButton,
         updateFilterPanel,
         refreshSelect,
@@ -829,7 +1115,16 @@
         directoryItem,
         setDirectoryItemActive,
         detailHeader,
+        disclosureButton,
+        setDisclosureButtonExpanded,
         directory,
+        popover,
+        materialItem,
+        materialItems,
+        materialPopover,
+        progressionStat,
+        progressionRow,
+        progressionList,
         positionAnchoredPopover,
         positionPopoverArrow
     });

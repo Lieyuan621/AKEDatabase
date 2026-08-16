@@ -283,41 +283,52 @@
             </table>`;
         }
 
-        function renderFormulaBtn(itemId, formulaData, formulaChainData, itemTable) {
+        function equipMaterialItem(itemId, count, itemTable) {
+            if (!itemId) return null;
+            const item = itemTable[itemId] || {};
+            return {
+                icon: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${item.iconId || itemId}.png`,
+                name: item.name?.text || itemId,
+                count: Number(count || 0).toLocaleString(),
+                description: item.desc?.text || ''
+            };
+        }
+
+        function renderFormulaBtn(formulaData, formulaChainData, itemTable) {
             const chains = formulaChainData?.chainList || [];
             if (!formulaData || chains.length === 0) return '';
 
-            function renderCostItem(costItemId, count, prefix) {
-                if (!costItemId) return '';
-                const item = itemTable[costItemId] || {};
-                const name = item.name?.text || costItemId;
-                const iconId = item.iconId || costItemId;
-                return `<div class="v2eq-cost-item"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png"><span class="v2eq-ci-name">${escapeHtml(name)}</span><span class="v2eq-ci-cnt">${prefix}${Number(count || 0).toLocaleString()}</span></div>`;
-            }
-
-            const tipHtml = chains.map(chain => {
-                const costItems = chain.costItemId || [];
-                const costNums = chain.costItemNum || [];
-                let costsHtml = renderCostItem(chain.costGoldId, chain.costGoldNum, '');
-                costItems.forEach((costItemId, index) => {
-                    costsHtml += renderCostItem(costItemId, costNums[index], '×');
+            const getChainItems = chain => {
+                const items = [];
+                const gold = equipMaterialItem(chain.costGoldId, chain.costGoldNum, itemTable);
+                if (gold) items.push(gold);
+                (chain.costItemId || []).forEach((costItemId, index) => {
+                    const item = equipMaterialItem(costItemId, (chain.costItemNum || [])[index], itemTable);
+                    if (item) items.push(item);
                 });
-                const chainClass = chain.isDefault ? ' v2eq-cost-chain-default' : '';
+                return items;
+            };
+            const rows = chains.map(chain => {
                 const chainId = getCurrentShowHidden() ? ` · #${escapeHtml(String(chain.chainId ?? ''))}` : '';
-                return `<div class="v2eq-cost-chain${chainClass}"><div class="v2eq-cost-chain-title" title="isDefault: ${chain.isDefault === true}">${escapeHtml(formulaData.level || '')}${chainId}</div>${costsHtml}</div>`;
-            }).join('');
+                return {
+                    label: `${formulaData.level || t('craftingCost')}${chainId}`,
+                    className: chain.isDefault ? 'v2eq-material-row--default' : '',
+                    items: getChainItems(chain)
+                };
+            });
 
             const defaultChain = chains.find(chain => chain.isDefault === true) || chains[0];
-            const componentId = defaultChain?.costItemId?.[0];
-            const component = itemTable[componentId] || {};
-            const componentTitle = component.name?.text || (getCurrentShowHidden() ? componentId : '');
-            const componentIcon = componentId
-                ? `<img class="v2eq-default-component" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escapeHtml(component.iconId || componentId)}.png" alt="" title="${escapeHtml(componentTitle)}">`
-                : '';
-            return `<span class="v2eq-cost-wrap ake-ui-popover-anchor">${componentIcon}<span class="v2eq-cost-btn" data-ake-popover-trigger onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-cost-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">${t('craftingCost')}</span><span class="v2eq-cost-tip ake-ui-popover" data-placement="bottom">${tipHtml}</span></span>`;
+            const icons = [...new Set(getChainItems(defaultChain).map(item => item.icon))].map(icon => ({ icon }));
+            return window.AKEUI.materialPopover({
+                label: t('craftingCost'),
+                placement: 'bottom',
+                className: 'v2eq-material-popover',
+                rows,
+                icons
+            })?.outerHTML || '';
         }
 
-        function renderGuaranteeBtn(itemId, displayAttrModifiers, guaranteeRules, enhanceConst) {
+        function renderGuaranteeBtn(displayAttrModifiers, guaranteeRules, enhanceConst) {
             if (!guaranteeRules || Object.keys(guaranteeRules).length === 0) return '';
 
             const subStats = (displayAttrModifiers || []).filter(m => m.attrIndex > 0 && m.enhanceGuaranteeTimesRuleId && m.enhancedAttrValues && m.enhancedAttrValues.length > 0);
@@ -343,7 +354,14 @@
                 <tbody>${rows}</tbody>
             </table>`;
 
-            return `<span class="v2eq-guarantee-wrap ake-ui-popover-anchor"><span class="v2eq-guarantee-btn" data-ake-popover-trigger onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-guarantee-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">${t('enhancementGuarantee')}</span><span class="v2eq-guarantee-tip ake-ui-popover" data-placement="bottom">${tipHtml}</span></span>`;
+            return window.AKEUI.popover({
+                label: t('enhancementGuarantee'),
+                placement: 'bottom',
+                className: 'v2eq-guarantee-popover',
+                panelClassName: 'v2eq-guarantee-tip',
+                panelElement: 'div',
+                content: window.AKEUI.fragment(tipHtml)
+            })?.outerHTML || '';
         }
 
         function renderAcquisition(acquisition) {
@@ -398,8 +416,8 @@
                 decoHtml = `<div class="v2eq-deco-desc">${parseText(decoDesc)}</div>`;
             }
 
-            const formulaBtnHtml = renderFormulaBtn(itemId, formulaData, formulaChainData, itemTable);
-            const guaranteeBtnHtml = renderGuaranteeBtn(itemId, equipData.displayAttrModifiers, guaranteeRules, enhanceConst);
+            const formulaBtnHtml = renderFormulaBtn(formulaData, formulaChainData, itemTable);
+            const guaranteeBtnHtml = renderGuaranteeBtn(equipData.displayAttrModifiers, guaranteeRules, enhanceConst);
             const hasActions = formulaBtnHtml || guaranteeBtnHtml;
             const addedLabel = window.akeData?.t('versionDiff.added', null, '新增') || '新增';
 
@@ -596,21 +614,33 @@
             const enhanceCost = data.equipenhancecosttable;
             const showHidden = getCurrentShowHidden();
             if (enhanceCost && showHidden) {
-                for (const [domainId, cost] of Object.entries(enhanceCost)) {
+                const itemTable = data.itemtable || {};
+                const rows = Object.entries(enhanceCost).map(([domainId, cost]) => {
                     const dName = getDomainName(cost.domainId || domainId);
-                    html += `<div class="ake-ui-card" data-card-kind="equipment-cost">`;
-                    html += `<div class="v2eq-enhance-cost-domain">${escapeHtml(dName)}</div>`;
-                    html += `<div class="v2eq-enhance-item">
-                        <span class="v2eq-enhance-label">${t('materialsConsumed')}</span>
-                        <span class="v2eq-enhance-value">${escapeHtml(cost.consumeItemId)} ×${cost.consumeItemCnt}</span>
-                    </div>`;
-                    if (cost.returnbackItemId) {
-                        html += `<div class="v2eq-enhance-item">
-                            <span class="v2eq-enhance-label">${t('materialsReturned')}</span>
-                            <span class="v2eq-enhance-value">${escapeHtml(cost.returnbackItemId)} ×${cost.returnbackItemCnt}</span>
-                        </div>`;
-                    }
-                    html += `</div>`;
+                    const content = window.AKEUI.element('div', 'v2eq-enhance-materials');
+                    const appendMaterialLine = (label, itemId, count) => {
+                        const material = equipMaterialItem(itemId, count, itemTable);
+                        if (!material) return;
+                        const line = window.AKEUI.element('div', 'v2eq-enhance-material-line');
+                        line.appendChild(window.AKEUI.element('span', 'v2eq-enhance-label', label));
+                        const items = window.AKEUI.materialItems([material]);
+                        if (items) line.appendChild(items);
+                        content.appendChild(line);
+                    };
+                    appendMaterialLine(t('materialsConsumed'), cost.consumeItemId, cost.consumeItemCnt);
+                    appendMaterialLine(t('materialsReturned'), cost.returnbackItemId, cost.returnbackItemCnt);
+                    if (!content.childElementCount) return null;
+                    return window.AKEUI.progressionRow({
+                        kind: 'equipment-enhancement',
+                        stage: dName || domainId,
+                        content
+                    });
+                }).filter(Boolean);
+                if (rows.length) {
+                    html += window.AKEUI.progressionList({
+                        className: 'v2eq-enhance-progression',
+                        rows
+                    }).outerHTML;
                 }
             }
 
@@ -636,22 +666,17 @@
             const suitTable = data.equipsuittable;
             const suitName = suitTable?.list?.[0]?.suitName?.text || suit.name;
             const packHtml = renderPackSection(data);
+            const detailHeader = window.AKEUI.detailHeader({
+                icon: { src: suit.icon || '' },
+                title: suitName,
+                id: suit.suitID,
+                badges: [commonT('rarityLabel', { rarity: suit.rarity })],
+                content: packHtml ? window.AKEUI.fragment(packHtml) : null
+            });
 
             let html = `
                 <div class="ake-ui-detail" data-detail-kind="equipment" data-accent="rarity" data-accent-value="${suit.rarity}">
-                    <div class="ake-ui-detail-header">
-                        <div class="ake-ui-detail-icon">
-                            <img src="${suit.icon || ''}">
-                        </div>
-                        <div class="ake-ui-detail-copy">
-                            <div class="ake-ui-detail-title-row">
-                                <span class="ake-ui-detail-title">${escapeHtml(suitName)}</span>
-                                <span class="ake-ui-badge">${commonT('rarityLabel', { rarity: suit.rarity })}</span>
-                                <span class="ake-ui-detail-id">${escapeHtml(suit.suitID)}</span>
-                            </div>
-                            ${packHtml}
-                        </div>
-                    </div>
+                    ${detailHeader?.outerHTML || ''}
             `;
 
             html += renderSkillSection(data);

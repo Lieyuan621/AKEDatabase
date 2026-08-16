@@ -1120,14 +1120,16 @@
         const buffIcon = identity.hasIcon === false ? '' : iconPath(configuredIcon);
         const ownerIcon = owner.icon ? `<img src="${escapeHtml(owner.icon)}" alt="">` : '';
         const metrics = coreMetrics();
+        const detailHeader = window.AKEUI.detailHeader({
+            layout: 'showcase',
+            icon: buffIcon ? { src: buffIcon } : null,
+            beforeTitle: window.AKEUI.fragment(`<div class="ake-ui-detail-meta"><span class="buffv3-owner-chip">${ownerIcon}<span>${escapeHtml(owner.name)}</span></span><span>BuffData</span></div>`),
+            title: item.displayName,
+            id: item.id,
+            after: window.AKEUI.fragment(`<aside class="ake-ui-detail-aside"><strong class="ake-ui-detail-aside__title">${escapeHtml(t('header.ownerHint', null, '归属提示'))}</strong><span class="ake-ui-detail-aside__body">${escapeHtml(t('header.prefixNotice', null, '目录归属由 ID 前缀推断，不代表运行时来源。'))}</span></aside>`)
+        });
         elements.detail.innerHTML = `<div class="ake-ui-detail" data-detail-kind="buff">
-            <header class="ake-ui-detail-header" data-layout="showcase">
-                <div class="ake-ui-detail-identity">${buffIcon ? `<img class="ake-ui-detail-icon" src="${escapeHtml(buffIcon)}" alt="">` : ''}<div class="ake-ui-detail-copy">
-                    <div class="ake-ui-detail-meta"><span class="buffv3-owner-chip">${ownerIcon}<span>${escapeHtml(owner.name)}</span></span><span>BuffData</span></div>
-                    <h1 class="ake-ui-detail-title">${escapeHtml(item.displayName)}</h1><code class="ake-ui-detail-id">${escapeHtml(item.id)}</code>
-                </div>
-                </div><aside class="ake-ui-detail-aside"><strong class="ake-ui-detail-aside__title">${escapeHtml(t('header.ownerHint', null, '归属提示'))}</strong><span class="ake-ui-detail-aside__body">${escapeHtml(t('header.prefixNotice', null, '目录归属由 ID 前缀推断，不代表运行时来源。'))}</span></aside>
-            </header>
+            ${detailHeader?.outerHTML || ''}
             <section class="ake-ui-section"><header class="ake-ui-section__header"><div><span class="ake-ui-detail-eyebrow">Config</span><h2 class="ake-ui-section__title">${escapeHtml(t('sections.core', null, '核心指标'))}</h2></div></header><div class="buffv3-metric-grid">${metrics.join('') || `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noCoreMetrics', null, '没有可展示的核心指标'))}</div>`}</div></section>
             ${renderEffectsPanel()}
             ${renderTabs()}

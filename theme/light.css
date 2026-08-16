@@ -1055,118 +1055,164 @@
 /* Source files retained only when a disabled module still references them. */
 
 /* Source: theme/v2_weapon.css */
-@scope (body[data-ake-module="v3_weapon"]) {.detail-desc,
-.detail-deco {
-    border: 1px solid var(--border-color, #d9e0e8);
-    border-radius: 8px;
-    padding: 12px;
-    margin: 10px 0;
-    background: var(--module-bg, #f8fafd);
-    line-height: 1.6;
-    color: var(--desc-color, #5b6f86);
-}/* 攻击力表格容器 */
+@scope (body[data-ake-module="v3_weapon"]) {
+.ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(230px, 320px);
+    align-items: start;
+    gap: clamp(24px, 4vw, 56px);
+}
+.ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-identity {
+    gap: 16px;
+}
+.ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-icon img {
+    width: 96px;
+    height: 96px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    transform: scale(1.1);
+}
+.ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-visual {
+    width: 100%;
+    max-width: 320px;
+    align-self: start;
+    justify-self: center;
+}
+.ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-visual-frame {
+    width: 100%;
+    height: clamp(320px, 38vw, 440px);
+    min-height: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+}
+.ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-visual-frame img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: clamp(320px, 38vw, 440px);
+    padding: 0;
+    object-fit: contain;
+}
+/* 攻击力表格容器 */
 .detail-atk {
     min-height: 0;
     display: flex;
     flex-direction: column;
-}.detail-atk h3 {
-    font-size: 1.2rem;
-    margin-bottom: 8px;
-    color: var(--text-color, #1e2b3c);
-    flex-shrink: 0;
 }/* 技能列表 */
-:is(.ake-ui-card[data-card-kind="weapon-skill"], .ake-ui-card[data-card-kind="character-skill"]) {
-    flex: 1 1 calc(33.333% - 20px);
-    min-width: 280px;
-    background: var(--module-bg, #f8fafd);
-    border-radius: 12px;
-    padding: 16px;
-    border: 1px solid var(--border-color, #e2e7f0);
-    box-sizing: border-box;
-}.skill-level-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 5px 0;
-    border-bottom: 1px dashed var(--border-color, #d9e0e8);
-}.skill-level {
-    font-weight: 600;
+.weapon-skill-table {
+    width: 100%;
+    min-width: 0;
+    table-layout: auto;
+}.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table-shell {
+    max-height: none;
+    overflow: visible;
+}.weapon-skill-table th,
+.weapon-skill-table td {
+    padding: 12px 14px;
+    vertical-align: top;
+}.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table th {
+    position: static;
+    top: auto;
+}.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table th:first-child {
+    width: 76px;
+    min-width: 76px;
+    text-align: center;
+    overflow-wrap: normal;
+    white-space: nowrap;
+    word-break: normal;
+}.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table :is(th, td):nth-child(2),
+.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table :is(th, td):nth-child(3) {
+    width: 1%;
+}.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table tbody :is(td:nth-child(2), td:nth-child(3)) {
+    text-align: center;
+    vertical-align: middle;
+}.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table thead :is(th:nth-child(2), th:nth-child(3)) {
+    white-space: nowrap;
+}.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table tbody th {
     color: var(--text-color, #1e2b3c);
-    min-width: 50px;
-}.skill-desc {
-    flex: 1;
-    color: var(--desc-color, #5b6f86);
-    line-height: 1.6;
+    font-size: .78rem;
+    font-variant-numeric: tabular-nums;
+}.ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table tbody td {
+    color: var(--text-color, #1e2b3c);
+    font-size: .76rem;
+    line-height: 1.65;
+    text-align: start;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}.weapon-skill-rank-copy {
+    min-width: 0;
+    overflow-wrap: anywhere;
 }/* 武器背景故事 */
 .weapon-desc {
-    margin-top: 30px;
+    margin-top: 0;
     background: var(--module-bg, #f8fafd);
     border-radius: 12px;
     padding: 16px;
     border: 1px solid var(--border-color, #e2e7f0);
+    font-size: .8rem;
     line-height: 1.8;
     color: var(--text-color, #1e2b3c);
-}/* 突破 */
-.ake-ui-card[data-card-kind="weapon-break"] {
-    background: var(--module-bg, #f8fafd);
-    border-radius: 10px;
-    padding: 14px;
-    border: 1px solid var(--border-color, #e2e7f0);
-}.break-cost-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 3px 0;
-    font-size: 0.85rem;
-}.break-cost-row img {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
-    border-radius: 3px;
-    flex-shrink: 0;
-}.break-cost-row .bc-name {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: var(--desc-color, #5b6f86);
-}.break-cost-row .bc-cnt {
-    font-weight: bold;
-    flex-shrink: 0;
-    color: var(--text-color, #1e2b3c);
-}.break-skill-bounds {
-    margin-top: 8px;
-    font-size: 0.8rem;
-    color: var(--desc-color, #5b6f86);
-}.break-skill-bounds span {
-    margin-right: 10px;
-}/* 潜能 */
-.ake-ui-card[data-card-kind="weapon-talent"] {
-    background: var(--module-bg, #f8fafd);
-    border-radius: 10px;
-    padding: 12px;
-    border: 1px solid var(--border-color, #e2e7f0);
+}.weapon-breakthrough-table {
+    min-width: calc(112px + var(--weapon-stage-count) * 174px);
+    table-layout: fixed;
+}.weapon-breakthrough-table th,
+.weapon-breakthrough-table td {
+    padding: 10px 12px;
     text-align: center;
-}/* 等级切换按钮 */
-.toggle-weapon-levels-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 4px;
-}.toggle-weapon-levels-btn {
-    background: var(--button-bg, #e0e8f0);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 4px 12px;
-    cursor: pointer;
+    vertical-align: middle;
+}.weapon-breakthrough-table th:first-child {
+    width: 112px;
+    text-align: start;
+}.weapon-breakthrough-table tbody th {
+    color: var(--text-color, #1e2b3c);
+    font-size: .76rem;
+}.weapon-breakthrough-table tbody td {
+    color: var(--desc-color, #5b6f86);
+    font-size: .78rem;
+}.weapon-breakthrough-material-row th,
+.weapon-breakthrough-material-row td {
+    background: var(--ake-ui-surface-muted, var(--module-bg, #f8fafd));
+}.weapon-breakthrough-material-row .ake-ui-material {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}.weapon-breakthrough-material-row .ake-ui-material__trigger {
+    white-space: nowrap;
+}.weapon-breakthrough-material-row .ake-ui-material__icons {
+    justify-content: center;
 }
 
 /* 响应式 */
-@media (max-width: 1200px) {:is(.ake-ui-card[data-card-kind="weapon-skill"], .ake-ui-card[data-card-kind="character-skill"]) {
-        flex: 1 1 calc(50% - 20px);
+@media (max-width: 800px) {
+    .ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table :is(th, td):nth-child(2),
+    .ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table :is(th, td):nth-child(3) {
+        width: auto;
+    }
+    .ake-ui-detail[data-detail-kind="weapon"] .weapon-skill-table thead :is(th:nth-child(2), th:nth-child(3)) {
+        white-space: normal;
+    }
+    .ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+    }
+    .ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-visual {
+        max-width: 280px;
+    }
+    .ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-visual-frame {
+        height: 260px;
+    }
+    .ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-visual-frame img {
+        max-height: 260px;
     }
 }
-@media (max-width: 800px) {:is(.ake-ui-card[data-card-kind="weapon-skill"], .ake-ui-card[data-card-kind="character-skill"]) {
-        flex: 1 1 100%;
+@media (max-width: 560px) {
+    .ake-ui-detail[data-detail-kind="weapon"] .weapon-detail-hero .ake-ui-detail-icon img {
+        width: 76px;
+        height: 76px;
     }
 }
 }
@@ -1197,115 +1243,15 @@
     margin-top: 15px;
 }.collapsible-section.is-open > .collapse-content {
     display: block;
-}/* ========== 消耗材料按钮（原内联样式） ========== */
-.cost-wrap {
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
-}.cost-btn {
-    display: inline-block;
-    margin-left: 4px;
-    padding: 1px 8px;
-    font-size: 0.72rem;
-    background: var(--button-bg, #e0e8f0);
-    border: 1px solid var(--border-color, #ccc);
-    border-radius: 10px;
-    cursor: pointer;
-    color: var(--text-color, #333);
-}.cost-btn:hover {
-    background: var(--hover-bg, #d0d8e0);
-}.cost-tip {
-    display: none;
-    white-space: nowrap;
-    pointer-events: auto;
-}.cost-wrap:hover .cost-tip,
-.cost-tip.pinned {
-    display: block;
-}.cost-section-title {
-    font-size: 0.72rem;
-    color: var(--text-color-secondary, #888);
-    margin: 4px 0 2px;
-    font-weight: bold;
-}.cost-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 3px 0;
-    font-size: 0.8rem;
-}.cost-item img {
-    width: 16px;
-    height: 16px;
-    object-fit: contain;
-    flex-shrink: 0;
-}.cost-item .ci-name {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}.cost-item .ci-cnt {
-    font-weight: bold;
-    flex-shrink: 0;
-}.sk-cost-row {
-    display: grid;
-    grid-template-columns: 5.25em minmax(0, 1fr);
-    align-items: start;
-    gap: 6px;
-    padding: 2px 0;
-    font-size: 0.8rem;
-}.sk-cost-row .cost-section-title {
-    margin: 0;
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-}.sk-cost-items {
-    min-width: 0;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 4px 8px;
-}.sk-cost-row .ci-ri {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-}.sk-cost-row .ci-ri img {
-    width: 16px;
-    height: 16px;
-    object-fit: contain;
-}.cost-btn-icons {
-    display: inline-flex;
-    align-items: center;
-    gap: 2px;
-    margin-left: 4px;
-    vertical-align: middle;
-}.cost-btn-icons img {
-    width: 18px;
-    height: 18px;
-    object-fit: contain;
 }
 }
 
 /* Source: theme/v2_enemy.css */
 @scope (body[data-ake-module="v3_enemy"]) {/* ===== 属性网格 ===== */
 .v2e-meta {
-    border: 1px solid var(--border-color, #d9e0e8);
-    border-radius: 8px;
-    padding: 12px;
     margin: 10px 0;
-    background: var(--module-bg, #f8fafd);
 }.v2e-meta-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 8px 16px;
-}.v2e-meta-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 4px 0;
-    border-bottom: 1px dotted var(--border-color, #e2e7f0);
-}.v2e-meta-value {
-    color: var(--desc-color, #5b6f86);
-    font-variant-numeric: tabular-nums;
-    text-align: right;
-    white-space: nowrap;
+    --ake-ui-meta-columns: 3;
 }/* ===== 描述 / 技能描述 ===== */
 .v2e-desc {
     border: 1px solid var(--border-color, #d9e0e8);
@@ -1340,10 +1286,12 @@
     margin-left: 6px;
 }.v2e-tag-id {
     display: inline-block;
+    min-height: 0;
     font-size: 0.75rem;
     font-weight: normal;
     color: var(--tag-text, #2c4b6e);
     background: var(--tag-bg, #e0e8f2);
+    border: 0;
     padding: 1px 8px;
     border-radius: 10px;
     line-height: 1.6;
@@ -1351,15 +1299,9 @@
     background: var(--accent-color, #1e6f9f);
     color: #fff;
 }.v2e-tooltip {
-    display: none;
     min-width: 320px;
     max-width: 480px;
-    pointer-events: none;
     font-size: 0.85rem;
-}.v2e-variant-template:hover .v2e-tooltip,
-.v2e-tooltip.pinned {
-    display: block;
-    pointer-events: auto;
 }.v2e-tooltip-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1399,18 +1341,7 @@
     border: 1px dashed var(--border-color, #d9e0e8);
     border-radius: 8px;
     font-size: 0.88rem;
-}.v2e-diff-item { display: flex; gap: 6px; align-items: baseline; padding: 2px 0; }.v2e-diff-label { font-weight: 600; color: var(--text-color, #1e2b3c); white-space: nowrap; }.v2e-diff-val { color: var(--accent-color, #1e6f9f); }.v2e-diff-val.neg { color: #b00020; }/* ===== 展开按钮 ===== */
-.v2e-toggle-btn {
-    background: var(--button-bg, #e0e8f0);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 4px 12px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    color: var(--text-color, #333);
-}.v2e-toggle-btn:hover {
-    background: var(--hover-bg, #d0d8e0);
-}
+}.v2e-diff-item { display: flex; gap: 6px; align-items: baseline; padding: 2px 0; }.v2e-diff-label { font-weight: 600; color: var(--text-color, #1e2b3c); white-space: nowrap; }.v2e-diff-val { color: var(--accent-color, #1e6f9f); }.v2e-diff-val.neg { color: #b00020; }
 }
 
 /* Source: theme/v2_equip.css */
@@ -1549,105 +1480,21 @@
     color: var(--desc-color, #5b6f86);
 }.v2eq-blackboard-item {
     margin-right: 12px;
-}.ake-ui-card[data-card-kind="equipment-cost"] {
-    margin-top: 12px;
-    padding: 8px;
-    background: var(--module-bg, #f8fafd);
-    border-radius: 8px;
-    border: 1px solid var(--border-color, #e2e7f0);
-}.v2eq-enhance-cost-domain {
-    font-weight: 600;
-    margin-bottom: 4px;
-}.v2eq-cost-wrap {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    vertical-align: middle;
-}.v2eq-default-component {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-    flex: 0 0 auto;
-}.v2eq-cost-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    margin-left: 0;
-    padding: 2px 8px;
-    font-size: 0.72rem;
-    background: var(--button-bg, #e0e8f0);
-    border: 1px solid var(--border-color, #ccc);
-    border-radius: 10px;
-    cursor: pointer;
-    color: var(--text-color, #333);
-    white-space: nowrap;
-}.v2eq-cost-btn:hover {
-    background: var(--hover-bg, #d0d8e0);
-}.v2eq-cost-tip {
-    display: none;
-    white-space: nowrap;
-    pointer-events: auto;
-    min-width: 180px;
-}.v2eq-cost-wrap:hover .v2eq-cost-tip,
-.v2eq-cost-tip.pinned {
-    display: block;
-}.v2eq-cost-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 3px 0;
-    font-size: 0.8rem;
-}.v2eq-cost-item img {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
-    flex-shrink: 0;
-    border-radius: 3px;
-}.v2eq-cost-item .v2eq-ci-name {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}.v2eq-cost-item .v2eq-ci-cnt {
-    font-weight: bold;
-    flex-shrink: 0;
-}.v2eq-cost-chain + .v2eq-cost-chain {
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid var(--border-color, #e2e7f0);
-}.v2eq-cost-chain-title {
-    margin-bottom: 3px;
-    color: var(--text-secondary, #667085);
-    font-size: 0.72rem;
-    font-weight: 600;
-}.v2eq-cost-chain-default .v2eq-cost-chain-title {
+}.v2eq-material-row--default .ake-ui-material__row-label {
     color: var(--accent-color, #2878c8);
-}.v2eq-guarantee-wrap {
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
-}.v2eq-guarantee-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 2px 8px;
-    font-size: 0.72rem;
-    background: var(--button-bg, #e0e8f0);
-    border: 1px solid var(--border-color, #ccc);
-    border-radius: 10px;
-    cursor: pointer;
-    color: var(--text-color, #333);
-    white-space: nowrap;
-}.v2eq-guarantee-btn:hover {
-    background: var(--hover-bg, #d0d8e0);
 }.v2eq-guarantee-tip {
-    display: none;
-    pointer-events: auto;
     min-width: 200px;
-}.v2eq-guarantee-wrap:hover .v2eq-guarantee-tip,
-.v2eq-guarantee-tip.pinned {
-    display: block;
+}.v2eq-enhance-progression {
+    margin-top: 12px;
+}.v2eq-enhance-materials {
+    display: grid;
+    gap: 4px;
+}.v2eq-enhance-material-line {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(5.5em, auto) minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
 }.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header-actions {
     display: flex;
     align-items: center;
@@ -1720,7 +1567,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-}.v2i-craft-item {
+}.v2i-craft-item.ake-ui-material__item {
     display: grid;
     grid-template-columns: 36px minmax(60px, 1fr) auto;
     align-items: center;
@@ -1735,13 +1582,14 @@
 }.v2i-craft-item:hover,
 .v2i-craft-item.is-current {
     border-color: var(--accent-color, #1e6f9f);
-}.v2i-craft-item img {
+}.v2i-craft-item .ake-ui-material__item-icon {
     width: 36px;
     height: 36px;
+    flex-basis: 36px;
     object-fit: contain;
-}.v2i-craft-item-name {
+}.v2i-craft-item .ake-ui-material__item-name {
     overflow-wrap: anywhere;
-}.v2i-craft-item strong,
+}.v2i-craft-item .ake-ui-material__item-count,
 .v2i-craft-arrow {
     color: var(--accent-color, #1e6f9f);
 }.v2i-craft-empty {
@@ -2097,22 +1945,21 @@
 }.v2d-rewards-content {
     color: var(--desc-color, #5b6f86);
     line-height: 1.5;
+}.v2d-reward-items {
+    gap: 4px 8px;
 }.v2d-reward-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
     margin: 2px 8px 2px 0;
     padding: 2px 8px;
     background: var(--module-bg, #f8fafd);
     border-radius: 6px;
     border: 1px solid var(--border-color, #e2e7f0);
     font-size: 0.88rem;
-}.v2d-reward-icon {
+}.v2d-reward-item .ake-ui-material__item-icon {
     width: 20px;
     height: 20px;
+    flex-basis: 20px;
     object-fit: contain;
     border-radius: 3px;
-    flex-shrink: 0;
 }.v2d-reward-rarity {
     display: inline-block;
     width: 8px;
@@ -3940,44 +3787,13 @@
     display: inline-block;
 }.v2cc-tag-badge.key .badge-dot { background: #27ae60; }.v2cc-tag-badge.lock .badge-dot { background: #e74c3c; }.v2cc-tag-badge.conflict .badge-dot { background: #e67e22; }/* Level rewards */
 .v2cc-levels {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}.ake-ui-card[data-card-kind="cc-level"] {
-    background: var(--sidebar-bg, #f2f4f8);
-    border-radius: 10px;
-    padding: 12px 16px;
-    border: 1px solid var(--border-color, #e5e9f0);
-    text-align: center;
-    min-width: 100px;
-}.v2cc-level-num {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--accent-color, #1e6f9f);
-    margin-bottom: 6px;
+    max-width: 100%;
 }.v2cc-level-reward-list {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}.v2cc-reward-item {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.75rem;
-}.v2cc-reward-icon {
-    width: 18px;
-    height: 18px;
-    border-radius: 3px;
-    object-fit: contain;
-    flex-shrink: 0;
-}.v2cc-reward-name {
-    color: var(--text-color, #1e2b3c);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}.v2cc-reward-count {
-    color: var(--desc-color, #5b6f86);
-    white-space: nowrap;
+    gap: 4px 12px;
+}.v2cc-level-reward-list .ake-ui-material__item-icon {
+    width: 22px;
+    height: 22px;
+    flex-basis: 22px;
 }.v2cc-reward-empty {
     font-size: 0.72rem;
     color: var(--desc-color, #5b6f86);
@@ -4111,22 +3927,13 @@
     font-size: 0.72rem;
     color: var(--desc-color, #5b6f86);
     font-weight: 600;
-}.v2cc-task-reward {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.75rem;
-}.v2cc-task-reward-icon {
+}.v2cc-task-rewards {
+    flex: 1 1 240px;
+}.v2cc-task-rewards .ake-ui-material__item-icon {
     width: 18px;
     height: 18px;
+    flex-basis: 18px;
     border-radius: 3px;
-    object-fit: contain;
-    flex-shrink: 0;
-}.v2cc-task-reward-name {
-    color: var(--text-color, #1e2b3c);
-}.v2cc-task-reward-count {
-    color: var(--desc-color, #5b6f86);
-    white-space: nowrap;
 }.v2cc-task-empty {
     font-size: 0.82rem;
     color: var(--desc-color, #5b6f86);
@@ -6055,6 +5862,32 @@ body { background-color: var(--ake-shell-page); color: var(--text-color); }
 .ake-ui-directory__mobile-list { padding: 10px; }
 .ake-ui-icon-button { width: 36px; height: 36px; display: inline-grid; place-items: center; flex: 0 0 36px; padding: 0; color: inherit; border: var(--ake-ui-border); border-radius: var(--ake-ui-radius-sm); background: var(--ake-ui-surface); font: inherit; cursor: pointer; }
 .ake-ui-icon-button:hover { background: var(--ake-ui-surface-hover); }
+.ake-ui-disclosure-button {
+    min-height: 28px;
+    padding: 4px 9px;
+    color: var(--desc-color);
+    border: var(--ake-ui-border);
+    border-radius: var(--ake-ui-radius-sm);
+    background: transparent;
+    font: inherit;
+    font-size: .7rem;
+    font-weight: 650;
+    line-height: 1.35;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: border-color .16s ease, background-color .16s ease, color .16s ease;
+}
+.ake-ui-disclosure-button:hover,
+.ake-ui-disclosure-button[aria-expanded="true"] {
+    color: var(--text-color);
+    border-color: var(--accent-color);
+    background: var(--ake-ui-surface-hover);
+}
+.ake-ui-disclosure-button:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+.ake-ui-disclosure-button:disabled { opacity: .55; cursor: default; }
 
 .ake-ui-popover-anchor { position: relative; }
 .ake-ui-popover {
@@ -6100,6 +5933,181 @@ body { background-color: var(--ake-shell-page); color: var(--text-color); }
     top: -5px;
     border-top: var(--ake-ui-border);
     border-left: var(--ake-ui-border);
+}
+.ake-ui-popover__trigger {
+    min-height: 24px;
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 7px;
+    color: var(--desc-color);
+    border: var(--ake-ui-border);
+    border-radius: var(--ake-ui-radius-sm);
+    background: transparent;
+    font: inherit;
+    font-size: .72rem;
+    line-height: 1.35;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.ake-ui-popover__trigger:hover,
+.ake-ui-popover__trigger[aria-expanded="true"] {
+    color: var(--text-color);
+    border-color: var(--accent-color);
+    background: var(--ake-ui-surface-hover);
+}
+.ake-ui-popover__trigger:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+.ake-ui-popover__panel {
+    display: none;
+    pointer-events: auto;
+}
+.ake-ui-popover-anchor:hover > .ake-ui-popover__panel,
+.ake-ui-popover__panel.pinned { display: block; }
+
+.ake-ui-material {
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    vertical-align: middle;
+}
+.ake-ui-material__icons {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+}
+.ake-ui-material__icons .ake-ui-material__item-name,
+.ake-ui-material__icons .ake-ui-material__item-count { display: none; }
+.ake-ui-material__icons .ake-ui-material__item-icon {
+    width: 18px;
+    height: 18px;
+}
+.ake-ui-material__popover {
+    white-space: nowrap;
+}
+.ake-ui-material__row {
+    display: grid;
+    grid-template-columns: 5.25em minmax(0, 1fr);
+    align-items: start;
+    gap: 6px;
+    padding: 2px 0;
+    font-size: .8rem;
+}
+.ake-ui-material__row-label {
+    color: var(--desc-color);
+    font-size: .72rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.ake-ui-material__items {
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+}
+.ake-ui-material__items--stacked {
+    display: grid;
+    gap: 0;
+}
+.ake-ui-material__item {
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 0;
+    font-size: .8rem;
+}
+.ake-ui-material__item-icon {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+    object-fit: contain;
+}
+.ake-ui-material__items--stacked .ake-ui-material__item { gap: 6px; padding: 3px 0; }
+.ake-ui-material__items--stacked .ake-ui-material__item-name {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ake-ui-material__item-count {
+    flex-shrink: 0;
+    font-weight: 700;
+}
+
+.ake-ui-progression {
+    min-width: 0;
+    overflow: visible;
+    border: var(--ake-ui-border);
+    border-radius: var(--ake-ui-radius);
+    background: var(--ake-ui-surface);
+}
+.ake-ui-progression__row {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 10px;
+    padding: 11px 14px;
+}
+.ake-ui-progression__row + .ake-ui-progression__row { border-top: var(--ake-ui-border); }
+.ake-ui-progression__stage {
+    padding-top: 2px;
+    color: var(--accent-color);
+    font-size: .7rem;
+    font-weight: 750;
+    line-height: 1.35;
+    text-align: center;
+    white-space: nowrap;
+}
+.ake-ui-progression__copy,
+.ake-ui-progression__content { min-width: 0; }
+.ake-ui-progression__title {
+    color: var(--text-color);
+    font-size: .8rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+.ake-ui-progression__description {
+    margin-top: 5px;
+    color: var(--text-color);
+    font-size: .76rem;
+    line-height: 1.5;
+}
+.ake-ui-progression__action {
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    align-self: start;
+}
+.ake-ui-progression__action:empty { display: none; }
+.ake-ui-progression__stats {
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 20px;
+}
+.ake-ui-progression__stat {
+    min-width: 96px;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    color: var(--desc-color);
+    font-size: .76rem;
+    line-height: 1.4;
+}
+.ake-ui-progression__stat strong {
+    color: var(--text-color);
+    font-size: .82rem;
+    font-variant-numeric: tabular-nums;
 }
 
 .ake-ui-page { min-width: 0; max-width: 1120px; margin: 0 auto; padding: 20px; }
@@ -6281,6 +6289,21 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
 .ake-ui-detail-title { margin: 0; overflow-wrap: anywhere; color: var(--text-color); font-size: 1.5rem; font-weight: 650; line-height: 1.25; }
 .ake-ui-detail-id { color: var(--desc-color); font-family: Consolas, monospace; font-size: .78rem; font-weight: 400; }
 .ake-ui-detail-subtitle { margin: 0; color: var(--desc-color); line-height: 1.55; }
+.ake-ui-detail-summary {
+    margin-top: 14px;
+    padding-inline-start: 12px;
+    border-inline-start: 2px solid var(--ake-ui-detail-accent, var(--accent-color));
+}
+.ake-ui-detail-summary > div {
+    margin: 0;
+    color: var(--desc-color);
+    font-size: .78rem;
+    line-height: 1.65;
+}
+.ake-ui-detail-summary > div + div {
+    margin-top: 6px;
+    color: var(--text-color);
+}
 .ake-ui-detail-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-bottom: 6px; color: var(--desc-color); font-size: .7rem; }
 .ake-ui-meta-label { color: var(--text-color); font-weight: 700; }
 .ake-ui-detail-copy > :is(h1, h2) { margin: 0; overflow-wrap: anywhere; color: var(--text-color); font-size: 1.5rem; line-height: 1.25; }
@@ -6709,6 +6732,27 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
 .ake-ui-section__meta { flex: 0 0 auto; color: var(--desc-color); font-size: .68rem; text-align: end; }
 .ake-ui-section__body { min-width: 0; color: var(--text-color); line-height: 1.55; }
 .ake-ui-section[data-variant="surface"] { padding: var(--ake-ui-space-3); border: var(--ake-ui-border); border-radius: var(--ake-ui-radius); background: var(--ake-ui-surface); }
+.ake-ui-detail .ake-ui-section__header {
+    position: relative;
+    align-items: center;
+    min-height: 30px;
+    margin-bottom: 12px;
+    padding: 0 0 8px 10px;
+    border-bottom: var(--ake-ui-border);
+}
+.ake-ui-detail .ake-ui-section__header::before {
+    position: absolute;
+    top: 3px;
+    bottom: 9px;
+    inset-inline-start: 0;
+    width: 3px;
+    background: var(--ake-ui-detail-accent, var(--accent-color));
+    content: '';
+}
+.ake-ui-detail .ake-ui-section__header .ake-ui-section__title {
+    font-size: .98rem;
+    font-weight: 700;
+}
 
 /* Character detail structure */
 .ake-ui-detail[data-detail-kind="character"] {
@@ -6813,21 +6857,6 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
     font-size: .82rem;
     font-weight: 750;
 }
-.character-detail-summary {
-    margin-top: 14px;
-    padding-inline-start: 12px;
-    border-inline-start: 2px solid var(--ake-ui-detail-accent, var(--accent-color));
-}
-.character-detail-summary > div {
-    margin: 0;
-    color: var(--desc-color);
-    font-size: .78rem;
-    line-height: 1.65;
-}
-.character-detail-summary > div + div {
-    margin-top: 6px;
-    color: var(--text-color);
-}
 .ake-ui-detail[data-detail-kind="character"] .character-detail-art {
     min-height: 0;
     align-self: end;
@@ -6893,27 +6922,6 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
 .ake-ui-detail[data-detail-kind="character"] .character-progression-grid {
     gap: 20px;
 }
-.ake-ui-detail[data-detail-kind="character"] .ake-ui-section__header {
-    position: relative;
-    align-items: center;
-    min-height: 30px;
-    margin-bottom: 12px;
-    padding: 0 0 8px 10px;
-    border-bottom: var(--ake-ui-border);
-}
-.ake-ui-detail[data-detail-kind="character"] .ake-ui-section__header::before {
-    position: absolute;
-    top: 3px;
-    bottom: 9px;
-    left: 0;
-    width: 3px;
-    background: var(--ake-ui-detail-accent, var(--accent-color));
-    content: '';
-}
-.ake-ui-detail[data-detail-kind="character"] .ake-ui-section__header .ake-ui-section__title {
-    font-size: .98rem;
-    font-weight: 700;
-}
 .ake-ui-detail[data-detail-kind="character"] .collapsible-section > .ake-ui-section__header {
     min-height: 30px;
     gap: var(--ake-ui-space-3);
@@ -6934,49 +6942,6 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
     min-width: 0;
 }
 .ake-ui-detail[data-detail-kind="character"] .character-progression-grid .ake-ui-card { width: 100%; }
-.ake-ui-detail[data-detail-kind="character"] .character-progression-list {
-    min-width: 0;
-    overflow: visible;
-    border: var(--ake-ui-border);
-    border-radius: var(--ake-ui-radius);
-    background: var(--ake-ui-surface);
-}
-.ake-ui-detail[data-detail-kind="character"] .character-progression-row {
-    min-width: 0;
-    display: grid;
-    grid-template-columns: 44px minmax(0, 1fr) auto;
-    align-items: start;
-    gap: 10px;
-    padding: 11px 14px;
-}
-.ake-ui-detail[data-detail-kind="character"] .character-progression-row + .character-progression-row {
-    border-top: var(--ake-ui-border);
-}
-.ake-ui-detail[data-detail-kind="character"] .character-progression-stage {
-    padding-top: 2px;
-    color: var(--accent-color);
-    font-size: .7rem;
-    font-weight: 750;
-    line-height: 1.35;
-    text-align: center;
-    white-space: nowrap;
-}
-.ake-ui-detail[data-detail-kind="character"] .character-progression-copy { min-width: 0; }
-.ake-ui-detail[data-detail-kind="character"] .character-progression-title {
-    color: var(--text-color);
-    font-size: .8rem;
-    font-weight: 700;
-    line-height: 1.4;
-}
-.ake-ui-detail[data-detail-kind="character"] .character-progression-desc {
-    margin-top: 5px;
-    color: var(--text-color);
-    font-size: .76rem;
-    line-height: 1.5;
-}
-.ake-ui-detail[data-detail-kind="character"] .character-progression-row > .character-card-cost {
-    align-self: start;
-}
 .ake-ui-detail[data-detail-kind="character"] .character-attribute-groups {
     min-width: 0;
     display: grid;
@@ -6987,61 +6952,6 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
     color: var(--text-color);
     font-size: .82rem;
     font-weight: 700;
-}
-.ake-ui-detail[data-detail-kind="character"] .character-progression-stats {
-    min-width: 0;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 6px 20px;
-}
-.ake-ui-detail[data-detail-kind="character"] .character-progression-stat {
-    min-width: 96px;
-    display: inline-flex;
-    align-items: baseline;
-    gap: 6px;
-    color: var(--desc-color);
-    font-size: .76rem;
-    line-height: 1.4;
-}
-.ake-ui-detail[data-detail-kind="character"] .character-progression-stat strong {
-    color: var(--text-color);
-    font-size: .82rem;
-    font-variant-numeric: tabular-nums;
-}
-.ake-ui-detail[data-detail-kind="character"] :is(
-    .skill-toggle-btn,
-    .toggle-char-levels-btn,
-    .global-skill-toggle-btn
-) {
-    min-height: 28px;
-    padding: 4px 9px;
-    border: var(--ake-ui-border);
-    border-radius: var(--ake-ui-radius-sm);
-    color: var(--desc-color);
-    background: transparent;
-    font: inherit;
-    font-size: .7rem;
-    font-weight: 650;
-    cursor: pointer;
-    transition: border-color .16s ease, background-color .16s ease, color .16s ease;
-}
-.ake-ui-detail[data-detail-kind="character"] :is(
-    .skill-toggle-btn,
-    .toggle-char-levels-btn,
-    .global-skill-toggle-btn
-):hover {
-    color: var(--text-color);
-    border-color: var(--accent-color);
-    background: var(--ake-ui-surface-hover);
-}
-.ake-ui-detail[data-detail-kind="character"] :is(
-    .skill-toggle-btn,
-    .toggle-char-levels-btn,
-    .global-skill-toggle-btn
-):focus-visible {
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
 }
 .ake-ui-detail[data-detail-kind="character"] :is(
     [data-card-kind="character-talent"],
@@ -7069,20 +6979,7 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
     gap: 4px;
 }
 .character-card-cost:empty { display: none; }
-.character-card-cost .cost-btn,
-.character-card-cost .cost-btn-icons { margin-inline-start: 0; }
-.ake-ui-detail[data-detail-kind="character"] .cost-btn {
-    padding: 2px 7px;
-    border: var(--ake-ui-border);
-    border-radius: var(--ake-ui-radius-sm);
-    color: var(--desc-color);
-    background: transparent;
-}
-.ake-ui-detail[data-detail-kind="character"] .cost-btn:hover {
-    color: var(--text-color);
-    border-color: var(--accent-color);
-    background: var(--ake-ui-surface-hover);
-}
+.character-card-cost .ake-ui-material { margin-inline-start: 0; }
 .ake-ui-detail[data-detail-kind="character"] .character-talent-header {
     display: grid;
     grid-template-columns: 36px minmax(0, 1fr) auto;
@@ -7525,12 +7422,12 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
         grid-column: 1 / -1;
         justify-self: start;
     }
-    .ake-ui-detail[data-detail-kind="character"] .character-progression-row {
+    .ake-ui-progression__row {
         grid-template-columns: 44px minmax(0, 1fr);
         gap: 8px;
         padding: 10px 11px;
     }
-    .ake-ui-detail[data-detail-kind="character"] .character-progression-row > .character-card-cost {
+    .ake-ui-progression__action {
         grid-column: 2;
         justify-content: flex-start;
     }

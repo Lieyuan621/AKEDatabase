@@ -394,11 +394,19 @@
 
     function renderHero(row) {
         const mission = row.mission || {};
-        return `<header class="ake-ui-detail-header">
-            <div class="ake-ui-detail-copy"><div class="ake-ui-detail-eyebrow">${escapeHtml(row.typeDef.enumName)} · ${escapeHtml(row.id)}</div><h1 class="ake-ui-detail-title">${escapeHtml(row.name)}</h1><p class="ake-ui-detail-subtitle">${row.description ? richText(row.description) : '该任务没有可用描述。'}</p>
-                <div class="ake-ui-detail-badges"><span class="ake-ui-badge">${escapeHtml(row.typeDef.name)}</span><span class="ake-ui-badge">${chapterName(row.chapter)}</span><span class="ake-ui-badge">重要度 ${IMPORTANCE[row.importance] ?? '未配置'}</span><span class="ake-ui-badge">${row.questCount} Quest</span></div>
-            </div><code class="ake-ui-detail-id">${escapeHtml(row.mission.levelId || '未指定地图')}</code>
-        </header>`;
+        const mapId = mission.levelId || '未指定地图';
+        const mapCode = window.AKEUI.element('code', 'ake-ui-detail-id', mapId);
+        mapCode.title = mapId;
+        const header = window.AKEUI.detailHeader({
+            eyebrow: `${row.typeDef.enumName} · ${row.id}`,
+            title: row.name,
+            subtitle: row.description
+                ? window.AKEUI.fragment(richText(row.description))
+                : '该任务没有可用描述。',
+            content: window.AKEUI.fragment(`<div class="ake-ui-detail-badges"><span class="ake-ui-badge">${escapeHtml(row.typeDef.name)}</span><span class="ake-ui-badge">${chapterName(row.chapter)}</span><span class="ake-ui-badge">重要度 ${IMPORTANCE[row.importance] ?? '未配置'}</span><span class="ake-ui-badge">${row.questCount} Quest</span></div>`),
+            after: mapCode
+        });
+        return header?.outerHTML || '';
     }
 
     function renderSelectedMission(row) {

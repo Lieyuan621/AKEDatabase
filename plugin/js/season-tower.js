@@ -411,10 +411,15 @@
         const status = seasonStatus(season);
         const data = season.data;
         activeData = data;
-        detail.innerHTML = `<div class="ake-ui-detail" data-detail-kind="tower"><div class="ake-ui-detail-header">
-            <img class="ake-ui-detail-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/activity/${escapeHtml(data.activity.tabImg || 'activity_tab_bg_seasontower')}.png" alt="">
-            <div class="ake-ui-detail-copy"><h1 class="ake-ui-detail-title">${escapeHtml(text(data.activity.name, '战争回响'))} · ${escapeHtml(season.name)}</h1><p class="ake-ui-detail-subtitle">${escapeHtml(text(data.activity.desc, SERIES_ID))}</p><div class="ake-ui-detail-meta"><span class="ake-ui-badge" data-accent="status" data-accent-value="${status.key}">${status.label}</span><span>${formatDate(season.openTime)}</span><span>${formatDate(season.closeTime)}</span></div></div>
-        </div>
+        const detailHeader = window.AKEUI.detailHeader({
+            icon: {
+                src: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/activity/${data.activity.tabImg || 'activity_tab_bg_seasontower'}.png`
+            },
+            title: `${text(data.activity.name, '战争回响')} · ${season.name}`,
+            subtitle: text(data.activity.desc, SERIES_ID),
+            content: window.AKEUI.fragment(`<div class="ake-ui-detail-meta"><span class="ake-ui-badge" data-accent="status" data-accent-value="${status.key}">${status.label}</span><span>${formatDate(season.openTime)}</span><span>${formatDate(season.closeTime)}</span></div>`)
+        });
+        detail.innerHTML = `<div class="ake-ui-detail" data-detail-kind="tower">${detailHeader?.outerHTML || ''}
         ${renderIntro(data)}
         <section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">最终评级与称号</h2></header><div class="ake-ui-card-grid" data-size="narrow">${renderRanks(data)}</div></section>
         <section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">轮换周期</h2></header>${season.weeks.map((week, index) => renderWeek(week, index, data)).join('')}</section></div>`;

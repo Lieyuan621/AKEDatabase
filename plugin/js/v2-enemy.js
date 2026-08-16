@@ -323,15 +323,17 @@
         }
 
         function renderMeta(data) {
-            let html = '<div class="v2e-meta-grid">';
+            const items = [];
             META_FIELDS.forEach(key => {
                 const val = data[key];
                 if (val !== undefined && val !== null && val !== '') {
-                    html += `<div class="v2e-meta-item"><span class="ake-ui-meta-label">${getMetaLabel(key)}</span><span class="v2e-meta-value">${val}</span></div>`;
+                    items.push({ label: getMetaLabel(key), value: val });
                 }
             });
-            html += '</div>';
-            return html;
+            const grid = window.AKEUI.metaGrid(items);
+            if (!grid) return '';
+            grid.classList.add('v2e-meta-grid');
+            return grid.outerHTML;
         }
 
         function renderSkillDesc(arr) {
@@ -380,12 +382,27 @@
             if (!fa) return '';
             const fields = META_FIELDS.filter(key => fa[key] !== undefined && fa[key] !== null);
             if (!fields.length) return '';
-            const items = fields.map(key => {
+
+            const grid = window.AKEUI.element('span', 'v2e-tooltip-grid');
+            fields.forEach(key => {
                 const val = fa[key];
                 const valueHtml = window.renderRawValueTip ? window.renderRawValueTip(val, variant.fullAttrDetails?.[key] || val) : val;
-                return `<div class="v2e-tooltip-item"><span class="v2e-tooltip-label">${getMetaLabel(key)}</span><span class="v2e-tooltip-value">${valueHtml}</span></div>`;
-            }).join('');
-            return `<span class="v2e-variant-template ake-ui-popover-anchor"><span class="v2e-tag-id" data-ake-popover-trigger>${variant.attrTemplateId}</span><span class="v2e-tooltip ake-ui-popover" data-placement="top"><div class="v2e-tooltip-grid">${items}</div></span></span>`;
+                const item = window.AKEUI.element('span', 'v2e-tooltip-item');
+                item.appendChild(window.AKEUI.element('span', 'v2e-tooltip-label', getMetaLabel(key)));
+                const value = window.AKEUI.element('span', 'v2e-tooltip-value');
+                value.appendChild(window.AKEUI.fragment(String(valueHtml)));
+                item.appendChild(value);
+                grid.appendChild(item);
+            });
+
+            return window.AKEUI.popover({
+                label: variant.attrTemplateId,
+                placement: 'top',
+                className: 'v2e-variant-template',
+                triggerClassName: 'v2e-tag-id',
+                panelClassName: 'v2e-tooltip',
+                content: grid
+            })?.outerHTML || '';
         }
 
         function getEnemyTypeName(enemy) {
@@ -514,20 +531,10 @@
                         if (isNaN(vi)) return;
                         variantExpandStates[vi] = !variantExpandStates[vi];
                         updateVariantTable(data.variants[vi], vi);
-                        btn.textContent = variantExpandStates[vi] ? commonT('collapseExtraLevels') : commonT('expandAllLevels');
+                        window.AKEUI.setDisclosureButtonExpanded(btn, variantExpandStates[vi]);
                     });
                 });
 
-                container.querySelectorAll('.v2e-variant-template').forEach(el => {
-                    el.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const tip = el.querySelector('.v2e-tooltip');
-                        if (!tip) return;
-                        const wasPinned = tip.classList.contains('pinned');
-                        container.querySelectorAll('.v2e-tooltip.pinned').forEach(t => t.classList.remove('pinned'));
-                        if (!wasPinned) tip.classList.add('pinned');
-                    });
-                });
             } catch (err) {
                 container.textContent = '';
                 const error = document.createElement('div');
@@ -620,11 +627,16 @@
                 const variantId = showHidden && variant.enemyId
                     ? variant.enemyId
                     : t('variantFallback', { number: idx + 1 });
-                const toggleButton = enemyLevelsToShow ? `
-                    <div class="ake-ui-card__actions">
-                        <button class="v2e-toggle-btn" data-variant="${idx}">${showAll ? commonT('collapseExtraLevels') : commonT('expandAllLevels')}</button>
-                    </div>
-                ` : '';
+                const toggle = enemyLevelsToShow ? window.AKEUI.disclosureButton({
+                    className: 'v2e-toggle-btn',
+                    expanded: showAll,
+                    expandLabel: commonT('expandAllLevels'),
+                    collapseLabel: commonT('collapseExtraLevels'),
+                    attributes: { 'data-variant': idx }
+                }) : null;
+                const toggleButton = toggle
+                    ? `<div class="ake-ui-card__actions">${toggle.outerHTML}</div>`
+                    : '';
 
                 return `
                     <div class="ake-ui-card" data-card-kind="enemy-variant" data-density="regular" data-variant-index="${idx}">
@@ -643,32 +655,31 @@
 
         function renderDetail(data, enemy) {
             const rarity = data.rarity || enemy.rarity || 1;
-            const headerHtml = `
-                <div class="ake-ui-detail-header" data-layout="showcase">
-                    <div class="ake-ui-detail-identity">
-                        <div class="ake-ui-detail-icon">
-                            <img src="${data.icon || ''}">
-                        </div>
-                        <div class="ake-ui-detail-copy">
-                            <div class="ake-ui-detail-title-row">
-                                <span class="ake-ui-detail-title">${data.name}</span>
-                                <span class="ake-ui-badge" data-accent="rarity" data-accent-value="${rarity}" title="${commonT('rarityLabel', { rarity })}">${commonT('rarityLabel', { rarity })}</span>
-                                <span class="ake-ui-detail-id">${enemy.templateId}</span>
-                            </div>
-                            <div class="ake-ui-detail-badges">
-                                ${data.enemyTag ? `<span class="ake-ui-badge">${data.enemyTag}</span>` : ''}
-                                ${renderDistributionTags(data)}
-                            </div>
-                            <div class="v2e-meta">${renderMeta(data)}</div>
-                            ${data.description ? `<div class="v2e-desc">${parseText(data.description)}</div>` : ''}
-                            ${data.skillDescriptions ? renderSkillDesc(data.skillDescriptions) : ''}
-                        </div>
-                    </div>
-                    <div class="ake-ui-detail-visual">
-                        <img src="${data.iconbig || data.icon || ''}">
-                    </div>
+            const headerContent = window.AKEUI.fragment(`
+                <div class="ake-ui-detail-badges">
+                    ${data.enemyTag ? `<span class="ake-ui-badge">${data.enemyTag}</span>` : ''}
+                    ${renderDistributionTags(data)}
                 </div>
-            `;
+                <div class="v2e-meta">${renderMeta(data)}</div>
+                ${data.description ? `<div class="v2e-desc">${parseText(data.description)}</div>` : ''}
+                ${data.skillDescriptions ? renderSkillDesc(data.skillDescriptions) : ''}
+            `);
+            const detailHeader = window.AKEUI.detailHeader({
+                layout: 'showcase',
+                icon: { src: data.icon || '' },
+                title: data.name,
+                id: enemy.templateId,
+                badges: [{
+                    label: commonT('rarityLabel', { rarity }),
+                    title: commonT('rarityLabel', { rarity }),
+                    attributes: {
+                        'data-accent': 'rarity',
+                        'data-accent-value': rarity
+                    }
+                }],
+                content: headerContent,
+                visual: { src: data.iconbig || data.icon || '' }
+            });
 
             const showHidden = getCurrentShowHidden();
             const poiseBuffHtml = showHidden && data.poiseKnotBuffList.length > 0 ? `
@@ -686,7 +697,7 @@
             const variantsHtml = renderVariants(data.variants, data.baseSnapshot);
 
             return `<article class="ake-ui-detail" data-detail-kind="enemy" data-accent="rarity" data-accent-value="${rarity}">
-                ${headerHtml}
+                ${detailHeader?.outerHTML || ''}
                 ${poiseBuffHtml}
                 <div class="ake-ui-section">
                     <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.variantAttributes')}</h3></div>

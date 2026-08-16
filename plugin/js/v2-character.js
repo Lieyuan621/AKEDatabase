@@ -518,6 +518,7 @@
                         e.preventDefault();
                         globalSkillExpand = !globalSkillExpand;
                         if (globalSkillExpand) skillExpandMap = {};
+                        window.AKEUI.setDisclosureButtonExpanded(globalSkillBtn, globalSkillExpand);
                         updateAllSkillTables();
                     });
                 }
@@ -528,9 +529,12 @@
                         e.preventDefault();
                         const skillKey = btn.dataset.skillKey;
                         if (!skillKey) return;
+                        const wasGlobalExpanded = globalSkillExpand;
                         if (globalSkillExpand) globalSkillExpand = false;
                         skillExpandMap[skillKey] = !skillExpandMap[skillKey];
-                        updateSkillTable(skillKey);
+                        window.AKEUI.setDisclosureButtonExpanded(globalSkillBtn, false);
+                        if (wasGlobalExpanded) updateAllSkillTables();
+                        else updateSkillTable(skillKey);
                     });
                 });
 
@@ -1089,7 +1093,7 @@
             table.querySelector('tbody').innerHTML = matrix.rows;
 
             const btn = document.querySelector('.toggle-char-levels-btn');
-            if (btn) btn.textContent = showAllCharLevels ? t('collapseExtraLevels') : t('expandAllLevels');
+            window.AKEUI.setDisclosureButtonExpanded(btn, showAllCharLevels);
         }
 
         function renderSkillMatrix(skillDetail, isExpanded) {
@@ -1161,12 +1165,15 @@
                 skillContainer.innerHTML = '';
                 return;
             }
+            const toggle = skillLevelsToShow ? window.AKEUI.disclosureButton({
+                className: 'skill-toggle-btn',
+                expanded: isExpanded,
+                expandLabel: t('expandAllLevels'),
+                collapseLabel: t('collapseExtraLevels'),
+                attributes: { 'data-skill-key': skillKey }
+            }) : null;
             const tableHtml = `
-                ${skillLevelsToShow ? `
-                    <div class="skill-toggle-container">
-                        <button class="skill-toggle-btn" type="button" data-skill-key="${skillKey}">${isExpanded ? t('collapseExtraLevels') : t('expandAllLevels')}</button>
-                    </div>
-                ` : ''}
+                ${toggle ? `<div class="skill-toggle-container">${toggle.outerHTML}</div>` : ''}
                 ${matrixHtml}
             `;
             skillContainer.innerHTML = tableHtml;
@@ -1175,9 +1182,13 @@
             if (newBtn) {
                 newBtn.addEventListener('click', (e) => {
                     e.preventDefault();
+                    const wasGlobalExpanded = globalSkillExpand;
                     if (globalSkillExpand) globalSkillExpand = false;
                     skillExpandMap[skillKey] = !skillExpandMap[skillKey];
-                    updateSkillTable(skillKey);
+                    const globalButton = document.querySelector('.global-skill-toggle-btn');
+                    window.AKEUI.setDisclosureButtonExpanded(globalButton, false);
+                    if (wasGlobalExpanded) updateAllSkillTables();
+                    else updateSkillTable(skillKey);
                 });
             }
         }
@@ -1191,30 +1202,36 @@
             return String(value || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }
 
-        function renderCostItemsHtml(items, goldCost, itemInfoMap) {
-            const parts = [...(items || [])];
-            if (goldCost && goldCost > 0 && !parts.some(it => it.id === 'item_gold')) {
-                parts.push({ id: 'item_gold', count: goldCost });
-            }
-            if (parts.length === 0) return '';
-            return parts.map(it => {
-                const info = itemInfoMap?.[it.id] || {};
-                return `<div class="cost-item" title="${escapeAttribute(info.description)}"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${info.iconId || it.id}.png"><span class="ci-name">${info.name || it.id}</span><span class="ci-cnt">×${it.count}</span></div>`;
-            }).join('');
+        function materialItem(item, itemInfoMap) {
+            const info = itemInfoMap?.[item.id] || {};
+            return {
+                icon: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${info.iconId || item.id}.png`,
+                name: info.name || item.id,
+                count: item.count,
+                description: info.description
+            };
         }
 
-        function renderLevelCostRow(label, items, itemInfoMap) {
-            const itemHtml = (items || []).map(it => {
-                const info = itemInfoMap?.[it.id] || {};
-                return `<span class="ci-ri" title="${escapeAttribute(info.description)}"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${info.iconId || it.id}.png">${info.name || it.id} ×${it.count}</span>`;
-            }).join('');
-            return itemHtml ? `<div class="sk-cost-row"><span class="cost-section-title">${label}</span><span class="sk-cost-items">${itemHtml}</span></div>` : '';
+        function materialPopover(options, itemInfoMap) {
+            const rows = (options.rows || []).map(row => ({
+                label: row.label,
+                items: (row.items || []).map(item => materialItem(item, itemInfoMap))
+            }));
+            const items = (options.items || []).map(item => materialItem(item, itemInfoMap));
+            const icons = [...new Set(options.iconIds || [])].map(id => ({
+                icon: materialItem({ id }, itemInfoMap).icon
+            }));
+            return window.AKEUI.materialPopover({
+                label: t('developmentCost'),
+                placement: options.placement || 'top',
+                rows,
+                items,
+                icons
+            });
         }
 
-        function costBtnHtml(innerHtml, itemIds, itemInfoMap) {
-            if (!innerHtml) return '';
-            const icons = (itemIds || []).map(id => `<img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${itemInfoMap?.[id]?.iconId || id}.png">`).join('');
-            return `<span class="cost-wrap ake-ui-popover-anchor"><span class="cost-btn" data-ake-popover-trigger onclick="event.stopPropagation();var tip=this.parentElement.querySelector('.cost-tip');tip.classList.toggle('pinned');if(tip.classList.contains('pinned'))document.querySelectorAll('.cost-tip.pinned').forEach(x=>{if(x!==tip)x.classList.remove('pinned')})">${t('developmentCost')}</span><span class="cost-btn-icons">${icons}</span><span class="cost-tip ake-ui-popover" data-placement="top">${innerHtml}</span></span>`;
+        function materialPopoverHtml(options, itemInfoMap) {
+            return materialPopover(options, itemInfoMap)?.outerHTML || '';
         }
 
         function renderDetail(data) {
@@ -1226,38 +1243,37 @@
                 </span>
             `).join('');
 
-            const basicHtml = `
-                <header class="ake-ui-detail-header character-detail-hero" data-layout="showcase" id="character-overview">
-                    <div class="ake-ui-detail-identity">
-                        <div class="ake-ui-detail-icon">
-                            <img src="${data.icon || ''}" alt="">
-                        </div>
-                        <div class="ake-ui-detail-copy">
-                            <div class="ake-ui-detail-title-row">
-                                <span class="ake-ui-detail-title">${data.name}</span>
-                            </div>
-                            <div class="character-detail-tags">
-                                ${overviewMetaTags}
-                                ${(data.charBattleTag || []).map(tag => `<span class="ake-ui-badge">${tag}</span>`).join('')}
-                            </div>
-                            <dl class="character-detail-facts">
-                                <div><dt>${commonT('rarity')}</dt><dd>${t('rarityStars', { name: data.rarity })}</dd></div>
-                                <div><dt>${t('meta.weaponType')}</dt><dd>${data.weapontype || '-'}</dd></div>
-                                <div><dt>${t('meta.voiceActor')}</dt><dd>${(data.cvName || []).join(' / ') || '-'}</dd></div>
-                                <div class="character-detail-fact--key"><dt>${t('meta.mainAttribute')}</dt><dd>${data.mainAttrType || '-'}</dd></div>
-                                <div class="character-detail-fact--key"><dt>${t('meta.subAttribute')}</dt><dd>${data.subAttrType || '-'}</dd></div>
-                            </dl>
-                            ${(data.profile || data.feature) ? `<div class="character-detail-summary">
-                                ${data.profile ? `<div>${parseText(data.profile)}</div>` : ''}
-                                ${data.feature ? `<div>${parseText(data.feature)}</div>` : ''}
-                            </div>` : ''}
-                        </div>
-                    </div>
-                    <figure class="ake-ui-detail-visual character-detail-art">
-                        <img src="${data.pic || ''}" alt="">
-                    </figure>
-                </header>
-            `;
+            const headerContent = window.AKEUI.fragment(`
+                <div class="character-detail-tags">
+                    ${overviewMetaTags}
+                    ${(data.charBattleTag || []).map(tag => `<span class="ake-ui-badge">${tag}</span>`).join('')}
+                </div>
+                <dl class="character-detail-facts">
+                    <div><dt>${commonT('rarity')}</dt><dd>${t('rarityStars', { name: data.rarity })}</dd></div>
+                    <div><dt>${t('meta.weaponType')}</dt><dd>${data.weapontype || '-'}</dd></div>
+                    <div><dt>${t('meta.voiceActor')}</dt><dd>${(data.cvName || []).join(' / ') || '-'}</dd></div>
+                    <div class="character-detail-fact--key"><dt>${t('meta.mainAttribute')}</dt><dd>${data.mainAttrType || '-'}</dd></div>
+                    <div class="character-detail-fact--key"><dt>${t('meta.subAttribute')}</dt><dd>${data.subAttrType || '-'}</dd></div>
+                </dl>
+                ${(data.profile || data.feature) ? `<div class="ake-ui-detail-summary">
+                    ${data.profile ? `<div>${parseText(data.profile)}</div>` : ''}
+                    ${data.feature ? `<div>${parseText(data.feature)}</div>` : ''}
+                </div>` : ''}
+            `);
+            const detailHeader = window.AKEUI.detailHeader({
+                layout: 'showcase',
+                className: 'character-detail-hero',
+                attributes: { id: 'character-overview' },
+                icon: { src: data.icon || '' },
+                title: data.name,
+                content: headerContent,
+                visual: {
+                    element: 'figure',
+                    className: 'character-detail-art',
+                    src: data.pic || ''
+                }
+            });
+            const basicHtml = detailHeader?.outerHTML || '';
 
             const detailNavHtml = `
                 <nav class="character-detail-nav" aria-label="${escapeAttribute(data.name)}">
@@ -1269,12 +1285,18 @@
             `;
 
             const growthMatrix = renderGrowthMatrix(data, showAllCharLevels);
+            const growthToggle = charLevelsToShow ? window.AKEUI.disclosureButton({
+                className: 'toggle-char-levels-btn',
+                expanded: showAllCharLevels,
+                expandLabel: t('expandAllLevels'),
+                collapseLabel: t('collapseExtraLevels')
+            }) : null;
 
             const growthHtml = `
                 <div class="ake-ui-section" id="character-growth">
                     <div class="ake-ui-section__header">
                         <h3 class="ake-ui-section__title">${t('sections.attributeGrowth')}</h3>
-                        ${charLevelsToShow ? `<button class="toggle-char-levels-btn" type="button">${showAllCharLevels ? t('collapseExtraLevels') : t('expandAllLevels')}</button>` : ''}
+                        ${growthToggle?.outerHTML || ''}
                     </div>
                     <div class="ake-ui-table-shell">
                         <table class="ake-ui-table character-matrix-table">
@@ -1300,12 +1322,11 @@
             const talentsHtml = talentGroups.map(group => {
                 const talentCostRows = group.levels.map((talent, index) => {
                     const displayLevel = talent.level || index + 1;
-                    return renderLevelCostRow(
-                        t('levelAbbreviation', { name: displayLevel }),
-                        talent.requiredItem,
-                        itemInfoMap
-                    );
-                }).join('');
+                    return {
+                        label: t('levelAbbreviation', { name: displayLevel }),
+                        items: talent.requiredItem
+                    };
+                });
                 const talentCostIconIds = [...new Set(group.levels.flatMap(talent =>
                     (talent.requiredItem || []).map(item => item.id)
                 ))];
@@ -1315,7 +1336,7 @@
                         <div class="ake-ui-card__header character-talent-header">
                             ${group.icon ? `<img class="skill-icon character-talent-icon" src="${group.icon}" alt="">` : ''}
                             <div class="ake-ui-card__title">${group.name}</div>
-                            <div class="character-card-cost">${costBtnHtml(talentCostRows, talentCostIconIds, itemInfoMap)}</div>
+                            <div class="character-card-cost">${materialPopoverHtml({ rows: talentCostRows, iconIds: talentCostIconIds }, itemInfoMap)}</div>
                         </div>
                         <div class="ake-ui-card__body character-talent-levels">
                             ${group.levels.map((talent, index) => {
@@ -1336,25 +1357,25 @@
 
             const potentials = data.potentials || [];
             const potentialLevelOffset = potentials.some(pot => Number(pot.level) === 0) ? 1 : 0;
-            const potentialsHtml = potentials.map((pot, index) => {
+            const potentialRows = potentials.map((pot, index) => {
                 const valueMap = pot.values || {};
                 let desc = replacePlaceholders(pot.description, valueMap, pot.modifierTypes, showHiddenAttr);
                 desc = parseText(desc);
-                const costHtml = renderCostItemsHtml(pot.costItems, 0, itemInfoMap);
                 const costIconIds = (pot.costItems || []).map(it => it.id);
                 const rawLevel = pot.level == null ? NaN : Number(pot.level);
                 const displayLevel = Number.isFinite(rawLevel) ? rawLevel + potentialLevelOffset : index + 1;
-                return `
-                    <div class="character-progression-row" data-progression-kind="potential">
-                        <div class="character-progression-stage">${t('potentialName', { name: displayLevel })}</div>
-                        <div class="character-progression-copy">
-                            <div class="character-progression-title">${pot.name}</div>
-                            <div class="character-progression-desc">${desc}</div>
-                        </div>
-                        <div class="character-card-cost">${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
-                    </div>
-                `;
-            }).join('');
+                return window.AKEUI.progressionRow({
+                    kind: 'potential',
+                    stage: t('potentialName', { name: displayLevel }),
+                    title: pot.name,
+                    description: window.AKEUI.fragment(desc),
+                    action: materialPopover({ items: pot.costItems, iconIds: costIconIds }, itemInfoMap)
+                });
+            });
+            const potentialsHtml = window.AKEUI.progressionList({
+                rows: potentialRows,
+                empty: window.AKEUI.element('p', null, t('none'))
+            }).outerHTML;
 
             const attrNodes = data.attributeNodes || [];
             const attrStageOffset = attrNodes.some(node => Number(node.breakStage) === 0) ? 1 : 0;
@@ -1379,32 +1400,30 @@
                         ${attrNodeGroups.map(group => `
                             <div class="character-attribute-group">
                                 ${group.title ? `<div class="character-attribute-group-title">${group.title}</div>` : ''}
-                                <div class="character-progression-list">
-                                    ${group.nodes.map(node => {
-                                        const costHtml = renderCostItemsHtml(node.requiredItem, 0, itemInfoMap);
+                                ${window.AKEUI.progressionList({
+                                    rows: group.nodes.map(node => {
                                         const costIconIds = (node.requiredItem || []).map(it => it.id);
-                                        const modifierHtml = (node.modifiers || []).map(mod => {
+                                        const stats = (node.modifiers || []).map(mod => {
                                             const modifierName = modifierTypeMap[String(mod.modifierType)] || '';
                                             const modTypeTag = showHiddenAttr && modifierName
-                                                ? `<span class="attr-node-modifier-tag">${modifierName}</span>`
-                                                : '';
+                                                ? window.AKEUI.element('span', 'attr-node-modifier-tag', modifierName)
+                                                : null;
                                             const hasStructuredValue = mod.name != null && mod.value != null;
                                             const value = hasStructuredValue && typeof mod.value === 'number'
                                                 ? `${mod.value >= 0 ? '+' : ''}${mod.value}`
                                                 : '';
-                                            return `<span class="character-progression-stat">${hasStructuredValue
-                                                ? `<span>${mod.name}</span><strong>${value}</strong>`
-                                                : `<strong>${mod.text}</strong>`}${modTypeTag}</span>`;
-                                        }).join('');
-                                        return `
-                                            <div class="character-progression-row" data-progression-kind="attribute">
-                                                <div class="character-progression-stage">${t('breakthroughStage', { name: node.displayStage }, `#${node.displayStage}`)}</div>
-                                                <div class="character-progression-stats">${modifierHtml}</div>
-                                                <div class="character-card-cost">${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
-                                            </div>
-                                        `;
-                                    }).join('')}
-                                </div>
+                                            return hasStructuredValue
+                                                ? { label: mod.name, value, meta: modTypeTag }
+                                                : { content: window.AKEUI.fragment(`<strong>${mod.text || ''}</strong>`), meta: modTypeTag };
+                                        });
+                                        return window.AKEUI.progressionRow({
+                                            kind: 'attribute',
+                                            stage: t('breakthroughStage', { name: node.displayStage }, `#${node.displayStage}`),
+                                            stats,
+                                            action: materialPopover({ items: node.requiredItem, iconIds: costIconIds }, itemInfoMap)
+                                        });
+                                    })
+                                }).outerHTML}
                             </div>
                         `).join('') || `<p>${t('none')}</p>`}
                     </div>
@@ -1433,32 +1452,33 @@
                 const matrixHtml = renderSkillMatrix(skillDetail, isExpanded);
                 let skillTables = '';
                 if (matrixHtml) {
-                    const btnText = isExpanded ? t('collapseExtraLevels') : t('expandAllLevels');
+                    const toggle = skillLevelsToShow ? window.AKEUI.disclosureButton({
+                        className: 'skill-toggle-btn',
+                        expanded: isExpanded,
+                        expandLabel: t('expandAllLevels'),
+                        collapseLabel: t('collapseExtraLevels'),
+                        attributes: { 'data-skill-key': group.skillKey }
+                    }) : null;
 
                     skillTables = `
                         <div class="skill-detail">
-                            ${skillLevelsToShow ? `
-                                <div class="skill-toggle-container">
-                                    <button class="skill-toggle-btn" type="button" data-skill-key="${group.skillKey}">${btnText}</button>
-                                </div>
-                            ` : ''}
+                            ${toggle ? `<div class="skill-toggle-container">${toggle.outerHTML}</div>` : ''}
                             ${matrixHtml}
                         </div>
                     `;
                 }
 
                 const skCosts = group.showGroupCosts ? ((data.skillCosts || {})[group.skillGroupId] || []) : [];
-                let skCostHtml = '';
+                let skCostRows = [];
                 if (skCosts.length > 0) {
                     const rows = skCosts.map(c => {
                         const itemParts = [...(c.goldCost > 0 ? [{ id: 'item_gold', count: c.goldCost }] : []), ...c.items.filter(it => it.id !== 'item_gold')];
-                        return renderLevelCostRow(
-                            t('levelRange', { name: `${c.level - 1}→${c.level}` }),
-                            itemParts,
-                            itemInfoMap
-                        );
-                    }).join('');
-                    skCostHtml = rows;
+                        return {
+                            label: t('levelRange', { name: `${c.level - 1}→${c.level}` }),
+                            items: itemParts
+                        };
+                    });
+                    skCostRows = rows;
                 }
 
                 const conditionHtml = (group.conditionVariants || []).map(condition => `
@@ -1480,7 +1500,7 @@
                                 <div class="ake-ui-card__title">${displayName}</div>
                             </div>
                             <div class="character-card-cost">
-                                ${costBtnHtml(skCostHtml, ['item_gold', ...new Set(skCosts.flatMap(c => c.items.map(it => it.id)))], itemInfoMap)}
+                                ${materialPopoverHtml({ rows: skCostRows, iconIds: ['item_gold', ...new Set(skCosts.flatMap(c => c.items.map(it => it.id)))] }, itemInfoMap)}
                             </div>
                         </div>
                         <div class="ake-ui-card__body">${groupDesc}${conditionHtml ? `<div class="skill-conditions">${conditionHtml}</div>` : ''}${skillTables}</div>
@@ -1545,6 +1565,12 @@
                     </div>
                 </div>
             `).join('') : `<p>${t('none')}</p>`;
+            const globalSkillToggle = skillLevelsToShow ? window.AKEUI.disclosureButton({
+                className: 'global-skill-toggle-btn',
+                expanded: globalSkillExpand,
+                expandLabel: t('expandAllSkillLevels'),
+                collapseLabel: t('collapseAllSkillLevels')
+            }) : null;
 
             return `<article class="ake-ui-detail" data-detail-kind="character">
                 ${basicHtml}
@@ -1557,14 +1583,14 @@
                     </div>
                     <div class="ake-ui-section character-potential-section">
                         <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.potentials')}</h3></div>
-                        <div class="character-progression-list">${potentialsHtml || `<p>${t('none')}</p>`}</div>
+                        ${potentialsHtml}
                     </div>
                 </div>
                 ${attrNodesHtml}
                 <div class="ake-ui-section" id="character-skills">
                     <div class="ake-ui-section__header">
                         <h3 class="ake-ui-section__title">${t('sections.skills')}</h3>
-                        ${skillLevelsToShow ? `<button class="global-skill-toggle-btn" type="button">${globalSkillExpand ? t('collapseAllSkillLevels') : t('expandAllSkillLevels')}</button>` : ''}
+                        ${globalSkillToggle?.outerHTML || ''}
                     </div>
                     <div class="ake-ui-card-grid" data-size="full">${skillsHtml || `<p>${t('none')}</p>`}</div>
                 </div>
@@ -1617,10 +1643,6 @@
             isInitialized = true;
             if (window.configLoaded) await window.configLoaded;
             await loadMaps();
-
-            document.addEventListener('click', () => {
-                document.querySelectorAll('.cost-tip.pinned').forEach(t => t.classList.remove('pinned'));
-            });
 
             const settings = window.akeData?.getLevelSettings?.() || {};
             if (settings.enabled) {
