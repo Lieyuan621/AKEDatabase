@@ -1006,11 +1006,19 @@
         const viewportInset = 10;
         const anchorRect = anchor.getBoundingClientRect();
         const triggerRect = getPopoverTrigger(anchor).getBoundingClientRect();
-        let shiftX = triggerRect.left + triggerRect.width / 2 - (anchorRect.left + anchorRect.width / 2);
-        if (popoverRect.left + shiftX < viewportInset) shiftX += viewportInset - (popoverRect.left + shiftX);
-        if (popoverRect.right + shiftX > window.innerWidth - viewportInset) {
-            shiftX -= popoverRect.right + shiftX - (window.innerWidth - viewportInset);
-        }
+        const contentBoundary = anchor.closest('.ake-ui-directory__content');
+        const contentRect = contentBoundary?.getBoundingClientRect();
+        const minLeft = Math.max(viewportInset, contentRect ? contentRect.left + viewportInset : viewportInset);
+        const maxRight = Math.min(
+            window.innerWidth - viewportInset,
+            contentRect ? contentRect.right - viewportInset : window.innerWidth - viewportInset
+        );
+        const preferredShift = triggerRect.left + triggerRect.width / 2 - (anchorRect.left + anchorRect.width / 2);
+        const minShift = minLeft - popoverRect.left;
+        const maxShift = maxRight - popoverRect.right;
+        const shiftX = minShift <= maxShift
+            ? Math.min(Math.max(preferredShift, minShift), maxShift)
+            : minShift;
         target.style.setProperty('--ake-ui-popover-shift-x', `${Math.round(shiftX)}px`);
 
         const shiftedLeft = popoverRect.left + shiftX;

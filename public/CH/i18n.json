@@ -157,7 +157,9 @@
                 "overview": { "title": "敌人总览", "description": "按敌人类型分组，展示模板、危险度与变种数量", "fallback": "敌人", "dangerLevel": "危险度 {level}", "variantCount": "{count} 个变种" },
                 "columns": { "maxHp": "最大生命值", "defense": "防御力" },
                 "flags": { "dangerous": "危险", "globalEffect": "全局特效", "pinnedHealthBar": "置顶血条" },
-                "sections": { "poiseBreakBuffs": "失衡打断 Buff", "variantAttributes": "变种属性" },
+                "modifierLabels": { "buffBonus": "Buff 加成" },
+                "sections": { "poiseBreakBuffs": "失衡打断 Buff", "variantAttributes": "变种属性", "enemyTraits": "敌人特性", "combatStats": "战斗参数" },
+                "metaGroups": { "poiseAndArmor": "失衡与抗打断", "damageAndResistance": "处决与抗性", "resilienceAndMovement": "韧性与位移", "combatBehavior": "战斗与行为" },
                 "meta": {
                     "initialSuperArmor": "初始抗打断", "zeroPoiseSuperArmor": "失衡时抗打断", "superArmorWhenResilienceZero": "韧性归零时抗打断", "executionDamageScalar": "处决承伤系数", "breakingAttackedAtbObtain": "处决技力回复", "physicalDamageTakenScalar": "物理承伤系数", "naturalDamageTakenScalar": "自然承伤系数", "coldDamageTakenScalar": "寒冷承伤系数", "electroDamageTakenScalar": "电磁承伤系数", "fireDamageTakenScalar": "灼热承伤系数", "etherDamageTakenScalar": "超域承伤系数", "physicalResistScalar": "物理抗性系数", "naturalResistScalar": "自然抗性系数", "coldResistScalar": "寒冷抗性系数", "electroResistScalar": "电磁抗性系数", "fireResistScalar": "灼热抗性系数", "etherResistScalar": "超域抗性系数", "normalAttackRange": "普通攻击范围", "maxPoise": "失衡值上限", "poiseRecTime": "失衡恢复时间", "poiseKnotPct": "失衡节点", "weight": "重量", "attackValueAgainstTower": "对塔攻击值", "maxResilience": "最大韧性", "pushedBackCoefficient": "回弹系数", "resilienceDecreaseWhenHurt": "受伤韧性降低", "resilienceFullRecoverTime": "韧性完全回复时长", "resilienceRecover": "韧性回复值", "resilienceRecoverInterval": "韧性回复间隔", "criticalRate": "暴击率", "criticalDamage": "暴击伤害", "hatred": "仇恨值", "attackSpeed": "攻击速度"
                 }

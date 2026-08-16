@@ -1,6 +1,5 @@
 (function() {
         const t = window.akeI18n.scope('modules.equip');
-        const commonT = window.akeI18n.scope('common');
         let allSuits = [];
         let rawAllSuits = [];
         let activeSuitId = null;
@@ -234,53 +233,45 @@
             }
         }
 
-        function renderSubStatTable(displayAttrModifiers) {
+        function renderSubStatList(displayAttrModifiers) {
             const showHidden = getCurrentShowHidden();
             const subStats = displayAttrModifiers.filter(m => m.attrIndex > 0);
             if (subStats.length === 0) return '';
 
             const hasEnhance = subStats.some(m => m.enhancedAttrValues && m.enhancedAttrValues.length > 0);
 
-            let headerCells = `<th>${t('columns.stat')}</th>`;
-            if (hasEnhance) {
-                headerCells += `<th>${t('columns.base')}</th><th>+1</th><th>+2</th><th>+3</th>`;
-            } else {
-                headerCells += `<th>${t('columns.value')}</th>`;
-            }
-
-            let bodyRows = '';
-            subStats.forEach(m => {
+            const rows = subStats.map(m => {
                 const name = getAttrName(m.attrType, m.compositeAttr);
                 const baseVal = formatAttrValue(m.attrType, m.attrValue, m.compositeAttr);
                 const modType = modifierTypeMap[String(m.modifierType)] || '';
-                let cells = `<td>${escapeHtml(name)}`;
-                if (showHidden && modType) {
-                    cells += `<span class="ake-ui-badge" data-density="compact" title="${escapeHtml(modType)}">${modType}</span>`;
-                }
-                cells += `</td>`;
+                const modifierTag = showHidden && modType
+                    ? `<span class="ake-ui-badge" data-density="compact" title="${escapeHtml(modType)}">${escapeHtml(modType)}</span>`
+                    : '';
+                const values = hasEnhance
+                    ? [baseVal, ...Array.from({ length: 3 }, (_, index) => {
+                        const value = m.enhancedAttrValues?.[index];
+                        return value === undefined ? '-' : formatAttrValue(m.attrType, value, m.compositeAttr);
+                    })]
+                    : [baseVal];
+                const labels = hasEnhance
+                    ? [t('columns.base'), '+1', '+2', '+3']
+                    : [t('columns.value')];
+                const valueItems = values.map((value, index) => `
+                    <div class="v2eq-substat-stage">
+                        <dt>${labels[index]}</dt>
+                        <dd>${value}</dd>
+                    </div>
+                `).join('');
 
-                if (hasEnhance && m.enhancedAttrValues && m.enhancedAttrValues.length > 0) {
-                    cells += `<td class="v2eq-value-cell">${baseVal}</td>`;
-                    m.enhancedAttrValues.forEach(v => {
-                        cells += `<td class="v2eq-value-cell">${formatAttrValue(m.attrType, v, m.compositeAttr)}</td>`;
-                    });
-                    const filled = 1 + m.enhancedAttrValues.length;
-                    for (let i = filled; i < 4; i++) {
-                        cells += `<td class="v2eq-value-cell">-</td>`;
-                    }
-                } else {
-                    cells += `<td class="v2eq-value-cell">${baseVal}</td>`;
-                    if (hasEnhance) {
-                        for (let i = 1; i < 4; i++) cells += `<td class="v2eq-value-cell">-</td>`;
-                    }
-                }
-                bodyRows += `<tr>${cells}</tr>`;
-            });
+                return `
+                    <div class="v2eq-substat">
+                        <div class="v2eq-substat-heading"><span>${escapeHtml(name)}</span>${modifierTag}</div>
+                        <dl class="v2eq-substat-values">${valueItems}</dl>
+                    </div>
+                `;
+            }).join('');
 
-            return `<table class="ake-ui-table">
-                <thead><tr>${headerCells}</tr></thead>
-                <tbody>${bodyRows}</tbody>
-            </table>`;
+            return `<div class="v2eq-substats">${rows}</div>`;
         }
 
         function equipMaterialItem(itemId, count, itemTable) {
@@ -409,7 +400,7 @@
             const showHidden = getCurrentShowHidden();
             const mainModType = modifierTypeMap[String(mainMod.modifierType)] || '';
 
-            const subTableHtml = renderSubStatTable(equipData.displayAttrModifiers);
+            const subStatsHtml = renderSubStatList(equipData.displayAttrModifiers);
 
             let decoHtml = '';
             if (decoDesc) {
@@ -444,7 +435,7 @@
                                 ${showHidden && mainModType ? `<span class="v2eq-mainstat-modifier">(${mainModType})</span>` : ''}
                             </span>
                         </div>
-                        ${subTableHtml}
+                        ${subStatsHtml}
                         ${decoHtml}
                         ${renderAcquisition(acquisition)}
                     </div>
@@ -457,7 +448,7 @@
             if (!skillTable || Object.keys(skillTable).length === 0) return '';
 
             const showHidden = getCurrentShowHidden();
-            let html = `<div class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.setSkills')}</h3></div>`;
+            let html = `<section class="ake-ui-section v2eq-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.setSkills')}</h3></div><div class="v2eq-skill-list">`;
             for (const [skillId, skillData] of Object.entries(skillTable)) {
                 const bundle = skillData.SkillPatchDataBundle;
                 if (!bundle) continue;
@@ -489,7 +480,7 @@
                     }
                 });
             }
-            html += '</div>';
+            html += '</div></section>';
             return html;
         }
 
@@ -536,18 +527,6 @@
             });
         }
 
-        function renderPackSection(data) {
-            const packTable = data.equippacktable;
-            if (!packTable || Object.keys(packTable).length === 0) return '';
-
-            let html = '';
-            for (const [packId, pack] of Object.entries(packTable)) {
-                const packName = pack.name?.text || (getCurrentShowHidden() ? packId : '');
-                if (packName) html += `<span class="ake-ui-badge"${getCurrentShowHidden() ? ` title="${escapeHtml(packId)}"` : ''}>${escapeHtml(packName)}</span>`;
-            }
-            return html;
-        }
-
         function renderItemsSection(data) {
             const equipTable = data.equiptable;
             const itemTable = data.itemtable || {};
@@ -584,10 +563,10 @@
             });
 
             return `
-                <div class="ake-ui-section">
+                <section class="ake-ui-section v2eq-section">
                     <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.setPieces')}</h3></div>
                     <div class="ake-ui-card-grid" data-size="wide">${cardsHtml}</div>
-                </div>
+                </section>
             `;
         }
 
@@ -595,7 +574,7 @@
             const techConst = data.equiptechconst;
             if (!techConst) return '';
 
-            let html = `<div class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.enhancementInfo')}</h3></div>`;
+            let html = `<section class="ake-ui-section v2eq-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.enhancementInfo')}</h3></div>`;
             html += `<div class="v2eq-enhance-info">`;
             if (techConst.equipProduceMaxCount !== undefined) {
                 html += `<div class="v2eq-enhance-item">
@@ -644,7 +623,7 @@
                 }
             }
 
-            html += '</div>';
+            html += '</section>';
             return html;
         }
 
@@ -665,24 +644,23 @@
         function renderDetail(data, suit) {
             const suitTable = data.equipsuittable;
             const suitName = suitTable?.list?.[0]?.suitName?.text || suit.name;
-            const packHtml = renderPackSection(data);
+            const equipmentCount = Object.keys(data.equiptable || {}).length;
             const detailHeader = window.AKEUI.detailHeader({
+                className: 'equipment-detail-hero',
                 icon: { src: suit.icon || '' },
                 title: suitName,
-                id: suit.suitID,
-                badges: [commonT('rarityLabel', { rarity: suit.rarity })],
-                content: packHtml ? window.AKEUI.fragment(packHtml) : null
+                badges: equipmentCount ? [t('overview.equipmentCount', { count: equipmentCount })] : []
             });
 
             let html = `
-                <div class="ake-ui-detail" data-detail-kind="equipment" data-accent="rarity" data-accent-value="${suit.rarity}">
+                <article class="ake-ui-detail" data-detail-kind="equipment">
                     ${detailHeader?.outerHTML || ''}
             `;
 
             html += renderSkillSection(data);
             html += renderItemsSection(data);
             html += renderEnhanceConstSection(data);
-            html += '</div>';
+            html += '</article>';
             return html;
         }
 

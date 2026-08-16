@@ -89,6 +89,14 @@
             }).join(', ');
         }
 
+        function renderModifierSummary(content, label = '') {
+            if (!content) return '';
+            const labelHtml = label
+                ? `<span class="ake-ui-badge" data-tone="muted">${label}</span>`
+                : '';
+            return `<div class="v2e-variant-modifier">${labelHtml}<span class="v2e-variant-modifier__value">${content}</span></div>`;
+        }
+
         async function loadEnemyBuffData(rawData) {
             const ids = new Set();
             Object.values(rawData.enemytable || {}).forEach(enemy => (enemy.bornBuffs || []).forEach(id => ids.add(id)));
@@ -305,17 +313,40 @@
             return legacy;
         }
 
-        const META_FIELDS = [
-            'initialSuperArmor', 'zeroPoiseSuperArmor', 'superArmorWhenResilienceZero',
-            'executionDamageScalar', 'breakingAttackedAtbObtain', 'physicalDamageTakenScalar',
-            'naturalDamageTakenScalar', 'coldDamageTakenScalar', 'electroDamageTakenScalar',
-            'fireDamageTakenScalar', 'etherDamageTakenScalar', 'physicalResistance',
-            'naturalResistance', 'crystResistance', 'pulseResistance', 'fireResistance',
-            'etherResistance', 'normalAttackRange', 'maxPoise', 'poiseRecTime', 'poiseKnotPct',
-            'weight', 'attackValueAgainstTower', 'maxResilience', 'pushedBackCoefficient',
-            'resilienceDecreaseWhenHurt', 'resilienceFullRecoverTime', 'resilienceRecover',
-            'resilienceRecoverInterval', 'criticalRate', 'criticalDamage', 'hatred', 'attackSpeed'
+        const META_GROUPS = [
+            {
+                key: 'poiseAndArmor',
+                fallback: 'Poise and Super Armor',
+                fields: ['initialSuperArmor', 'zeroPoiseSuperArmor', 'superArmorWhenResilienceZero', 'maxPoise', 'poiseRecTime', 'poiseKnotPct']
+            },
+            {
+                key: 'damageAndResistance',
+                fallback: 'Execution and Resistance',
+                fields: [
+                    'executionDamageScalar', 'breakingAttackedAtbObtain', 'physicalDamageTakenScalar', 'naturalDamageTakenScalar',
+                    'coldDamageTakenScalar', 'electroDamageTakenScalar', 'fireDamageTakenScalar',
+                    'etherDamageTakenScalar', 'physicalResistance', 'naturalResistance',
+                    'crystResistance', 'pulseResistance', 'fireResistance', 'etherResistance'
+                ]
+            },
+            {
+                key: 'resilienceAndMovement',
+                fallback: 'Resilience and Displacement',
+                fields: [
+                    'weight', 'maxResilience', 'pushedBackCoefficient', 'resilienceDecreaseWhenHurt',
+                    'resilienceFullRecoverTime', 'resilienceRecover', 'resilienceRecoverInterval'
+                ]
+            },
+            {
+                key: 'combatBehavior',
+                fallback: 'Combat Parameters',
+                fields: [
+                    'normalAttackRange', 'attackValueAgainstTower', 'criticalRate', 'criticalDamage',
+                    'hatred', 'attackSpeed'
+                ]
+            }
         ];
+        const META_FIELDS = META_GROUPS.flatMap(group => group.fields);
 
         function getMetaLabel(key) {
             const attrType = ELEMENT_RESISTANCE_ATTR_TYPES[key];
@@ -323,22 +354,31 @@
         }
 
         function renderMeta(data) {
-            const items = [];
-            META_FIELDS.forEach(key => {
-                const val = data[key];
-                if (val !== undefined && val !== null && val !== '') {
-                    items.push({ label: getMetaLabel(key), value: val });
-                }
-            });
-            const grid = window.AKEUI.metaGrid(items);
-            if (!grid) return '';
-            grid.classList.add('v2e-meta-grid');
-            return grid.outerHTML;
+            return META_GROUPS.map(group => {
+                const items = group.fields.flatMap(key => {
+                    const value = data[key];
+                    return value === undefined || value === null || value === ''
+                        ? []
+                        : [{ label: getMetaLabel(key), value }];
+                });
+                const grid = window.AKEUI.metaGrid(items);
+                if (!grid) return '';
+                grid.classList.add('v2e-meta-grid');
+                return `<section class="v2e-meta-group">
+                    <h4 class="v2e-meta-group__title">${t(`metaGroups.${group.key}`, null, group.fallback)}</h4>
+                    ${grid.outerHTML}
+                </section>`;
+            }).filter(Boolean).join('');
         }
 
         function renderSkillDesc(arr) {
             if (!Array.isArray(arr) || arr.length === 0) return '';
-            return `<div class="ake-ui-card-grid" data-size="regular">${arr.map(s => `<div class="ake-ui-card" data-card-kind="enemy-skill" data-density="compact"><div class="ake-ui-card__body">${parseText(s)}</div></div>`).join('')}</div>`;
+            return `<div class="v2e-trait-list">${arr.map((text, index) => `
+                <div class="v2e-trait-item">
+                    <span class="v2e-trait-index">${String(index + 1).padStart(2, '0')}</span>
+                    <div class="v2e-trait-copy">${parseText(text)}</div>
+                </div>
+            `).join('')}</div>`;
         }
 
         function renderDistributionTags(data) {
@@ -399,7 +439,7 @@
                 label: variant.attrTemplateId,
                 placement: 'top',
                 className: 'v2e-variant-template',
-                triggerClassName: 'v2e-tag-id',
+                triggerClassName: 'ake-ui-badge ake-ui-badge--technical v2e-tag-id',
                 panelClassName: 'v2e-tooltip',
                 content: grid
             })?.outerHTML || '';
@@ -517,12 +557,12 @@
                 variantExpandStates = {};
                 data.variants.forEach((_, idx) => { variantExpandStates[idx] = false; });
 
-                container.innerHTML = renderDetail(data, enemy);
+                container.innerHTML = renderDetail(data);
                 if (rawData.__versionDiff?.baseline) await loadEnemyBuffData(rawData.__versionDiff.baseline);
                 const baselineData = rawData.__versionDiff?.baseline
                     ? normalizeV2ToLegacy(enemy, rawData.__versionDiff.baseline)
                     : null;
-                window.AKEModuleOverview?.renderVersionDiff(container, rawData, baselineData ? renderDetail(baselineData, enemy) : '');
+                window.AKEModuleOverview?.renderVersionDiff(container, rawData, baselineData ? renderDetail(baselineData) : '');
 
                 container.querySelectorAll('.v2e-toggle-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
@@ -606,16 +646,16 @@
                 if (!variant.levels.length) return '';
 
                 const titleExtra = !variant.isBase ? renderVariantTooltip(variant) : '';
-                const modifierHtml = variant.attrModifiersStr ? `<div class="v2e-variant-modifier">${variant.attrModifiersStr}</div>` : '';
+                const modifierHtml = renderModifierSummary(variant.attrModifiersStr);
                 const showHidden = getCurrentShowHidden();
                 const buffHtml = showHidden
-                    ? (variant.bornBuffs.length > 0 ? `<div class="v2e-buffs">${variant.bornBuffs.map(b => `<span class="v2e-buff-tag">${b}</span>`).join('')}</div>` : '')
-                    : (variant.buffModifiersStr ? `<div class="v2e-variant-modifier"><b>buff加成</b> ${variant.buffModifiersStr}</div>` : '');
+                    ? (variant.bornBuffs.length > 0 ? `<div class="v2e-buffs">${variant.bornBuffs.map(b => `<span class="ake-ui-badge ake-ui-badge--technical">${b}</span>`).join('')}</div>` : '')
+                    : renderModifierSummary(variant.buffModifiersStr, t('modifierLabels.buffBonus', null, 'Buff Bonus'));
 
                 const flags = [];
-                if (variant.isDangerous) flags.push(`<span class="v2e-flag danger">${t('flags.dangerous')}</span>`);
-                if (variant.showBigEffect) flags.push(`<span class="v2e-flag big-effect">${t('flags.globalEffect')}</span>`);
-                if (variant.showBigHeadbar) flags.push(`<span class="v2e-flag big-headbar">${t('flags.pinnedHealthBar')}</span>`);
+                if (variant.isDangerous) flags.push(`<span class="ake-ui-badge" data-tone="danger">${t('flags.dangerous')}</span>`);
+                if (variant.showBigEffect) flags.push(`<span class="ake-ui-badge" data-tone="accent">${t('flags.globalEffect')}</span>`);
+                if (variant.showBigHeadbar) flags.push(`<span class="ake-ui-badge" data-tone="muted">${t('flags.pinnedHealthBar')}</span>`);
                 const flagsHtml = flags.length ? `<div class="v2e-flags">${flags.join('')}</div>` : '';
 
                 const diffHtml = !variant.isBase ? renderVariantDiff(variant, baseSnapshot) : '';
@@ -635,69 +675,72 @@
                     attributes: { 'data-variant': idx }
                 }) : null;
                 const toggleButton = toggle
-                    ? `<div class="ake-ui-card__actions">${toggle.outerHTML}</div>`
+                    ? `<div class="ake-ui-card__header-actions">${toggle.outerHTML}</div>`
                     : '';
 
                 return `
                     <div class="ake-ui-card" data-card-kind="enemy-variant" data-density="regular" data-variant-index="${idx}">
-                        <div class="ake-ui-card__title">${variantId}${titleExtra}</div>
+                        <div class="ake-ui-card__header v2e-variant-header">
+                            <div class="ake-ui-card__title">${variantId}${titleExtra}</div>
+                            ${toggleButton}
+                        </div>
                         <div class="ake-ui-card__body">${modifierHtml}${buffHtml}${flagsHtml}${diffHtml}<div class="ake-ui-table-shell">
                             <table class="ake-ui-table">
                                 <thead><tr><th>${commonT('level')}</th><th>${t('columns.maxHp')}</th><th>${commonT('attack')}</th><th>${t('columns.defense')}</th></tr></thead>
                                 <tbody>${rowsToRender}</tbody>
                             </table>
                         </div></div>
-                        ${toggleButton}
                     </div>
                 `;
             }).filter(Boolean).join('');
         }
 
-        function renderDetail(data, enemy) {
-            const rarity = data.rarity || enemy.rarity || 1;
+        function renderDetail(data) {
+            const skillDescriptionsHtml = renderSkillDesc(data.skillDescriptions);
             const headerContent = window.AKEUI.fragment(`
                 <div class="ake-ui-detail-badges">
                     ${data.enemyTag ? `<span class="ake-ui-badge">${data.enemyTag}</span>` : ''}
                     ${renderDistributionTags(data)}
                 </div>
-                <div class="v2e-meta">${renderMeta(data)}</div>
-                ${data.description ? `<div class="v2e-desc">${parseText(data.description)}</div>` : ''}
-                ${data.skillDescriptions ? renderSkillDesc(data.skillDescriptions) : ''}
+                ${data.description ? `<div class="ake-ui-detail-summary v2e-desc"><div>${parseText(data.description)}</div></div>` : ''}
+                ${skillDescriptionsHtml ? `<section class="v2e-hero-traits">
+                    <h3 class="v2e-hero-traits__title">${t('sections.enemyTraits', null, 'Enemy Traits')}</h3>
+                    ${skillDescriptionsHtml}
+                </section>` : ''}
             `);
             const detailHeader = window.AKEUI.detailHeader({
                 layout: 'showcase',
-                icon: { src: data.icon || '' },
+                className: 'enemy-detail-hero',
                 title: data.name,
-                id: enemy.templateId,
-                badges: [{
-                    label: commonT('rarityLabel', { rarity }),
-                    title: commonT('rarityLabel', { rarity }),
-                    attributes: {
-                        'data-accent': 'rarity',
-                        'data-accent-value': rarity
-                    }
-                }],
                 content: headerContent,
-                visual: { src: data.iconbig || data.icon || '' }
+                visual: {
+                    src: data.iconbig || data.icon || '',
+                    className: 'enemy-detail-visual'
+                }
             });
+            const metaHtml = renderMeta(data);
 
             const showHidden = getCurrentShowHidden();
             const poiseBuffHtml = showHidden && data.poiseKnotBuffList.length > 0 ? `
                 <div class="ake-ui-section">
                     <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.poiseBreakBuffs')}</h3></div>
-                    <div class="v2e-buffs">${data.poiseKnotBuffList.map(b => `<span class="v2e-buff-tag">${b}</span>`).join('')}</div>
+                    <div class="v2e-buffs">${data.poiseKnotBuffList.map(b => `<span class="ake-ui-badge ake-ui-badge--technical">${b}</span>`).join('')}</div>
                 </div>
             ` : (!showHidden && data.poiseKnotBuffModifiersStr ? `
                 <div class="ake-ui-section">
                     <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.poiseBreakBuffs')}</h3></div>
-                    <div class="v2e-variant-modifier"><b>buff加成</b> ${data.poiseKnotBuffModifiersStr}</div>
+                    ${renderModifierSummary(data.poiseKnotBuffModifiersStr, t('modifierLabels.buffBonus', null, 'Buff Bonus'))}
                 </div>
             ` : '');
 
             const variantsHtml = renderVariants(data.variants, data.baseSnapshot);
 
-            return `<article class="ake-ui-detail" data-detail-kind="enemy" data-accent="rarity" data-accent-value="${rarity}">
+            return `<article class="ake-ui-detail" data-detail-kind="enemy">
                 ${detailHeader?.outerHTML || ''}
+                ${metaHtml ? `<section class="ake-ui-section v2e-meta">
+                    <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.combatStats', null, 'Combat Parameters')}</h3></div>
+                    <div class="v2e-meta-groups">${metaHtml}</div>
+                </section>` : ''}
                 ${poiseBuffHtml}
                 <div class="ake-ui-section">
                     <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.variantAttributes')}</h3></div>

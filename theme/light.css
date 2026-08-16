@@ -1247,25 +1247,93 @@
 }
 
 /* Source: theme/v2_enemy.css */
-@scope (body[data-ake-module="v3_enemy"]) {/* ===== 属性网格 ===== */
+@scope (body[data-ake-module="v3_enemy"]) {/* ===== 详情头部 ===== */
+.ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 360px);
+    align-items: start;
+    gap: clamp(24px, 4vw, 52px);
+    margin-bottom: 20px;
+}.ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-hero .ake-ui-detail-identity {
+    display: block;
+}.ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-hero .ake-ui-detail-title-row {
+    margin-bottom: 8px;
+}.ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-hero .ake-ui-detail-badges {
+    margin-bottom: 4px;
+}.ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-visual {
+    width: 100%;
+    max-width: 320px;
+    align-self: center;
+    justify-self: center;
+}.ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-visual > img {
+    width: 100%;
+    min-height: 0;
+    max-height: 320px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    object-fit: contain;
+}/* ===== 属性网格 ===== */
 .v2e-meta {
-    margin: 10px 0;
-}.v2e-meta-grid {
+    margin: 18px 0 0;
+}.v2e-meta-groups {
+    display: grid;
+    gap: 18px;
+}.v2e-meta-group {
+    min-width: 0;
+}.v2e-meta-group__title {
+    margin: 0 0 4px;
+    color: var(--text-color);
+    font-size: .78rem;
+    font-weight: 700;
+    line-height: 1.4;
+}.v2e-meta-group .v2e-meta-grid {
     --ake-ui-meta-columns: 3;
+    gap: 0 18px;
+}.v2e-meta-grid .ake-ui-meta-grid__item {
+    min-height: 38px;
+    padding: 8px 0;
+    border: 0;
+    border-bottom: var(--ake-ui-border);
+    border-radius: 0;
+    background: transparent;
+}.v2e-meta-grid .ake-ui-meta-grid__item dt {
+    font-size: .72rem;
+}.v2e-meta-grid .ake-ui-meta-grid__item dd {
+    font-variant-numeric: tabular-nums;
 }/* ===== 描述 / 技能描述 ===== */
 .v2e-desc {
-    border: 1px solid var(--border-color, #d9e0e8);
-    border-radius: 8px;
-    padding: 12px;
-    margin: 10px 0;
-    background: var(--module-bg, #f8fafd);
+    margin-top: 14px;
+}.v2e-hero-traits {
+    margin-top: 24px;
+}.v2e-hero-traits__title {
+    margin: 0 0 6px;
+    color: var(--text-color);
+    font-size: .82rem;
+    font-weight: 700;
+    line-height: 1.4;
+}.v2e-trait-list {
+    display: grid;
+    gap: 0;
+}.v2e-trait-item {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 12px;
+    padding: 10px 0;
+    align-items: start;
+    border-bottom: var(--ake-ui-border);
+}.v2e-trait-item:first-child {
+    padding-top: 2px;
+}.v2e-trait-index {
+    color: var(--accent-color);
+    font-family: Consolas, monospace;
+    font-size: .7rem;
+    font-weight: 700;
+    line-height: 1.75;
+}.v2e-trait-copy {
+    color: var(--desc-color);
     line-height: 1.6;
-}.ake-ui-card[data-card-kind="enemy-skill"] {
-    background: var(--module-bg, #f8fafd);
-    border-radius: 8px;
-    padding: 8px 12px;
-    margin-bottom: 6px;
-    border: 1px solid var(--border-color, #e2e7f0);
 }/* ===== 变种 ===== */
 .ake-ui-card[data-card-kind="enemy-variant"] {
     background: var(--module-bg, #f8fafd);
@@ -1273,11 +1341,9 @@
     padding: 16px;
     margin-bottom: 20px;
     border: 1px solid var(--border-color, #e2e7f0);
-}.v2e-variant-title {
-    font-weight: 600;
-    font-size: 1.2rem;
+}.v2e-variant-header {
+    align-items: center;
     margin-bottom: 8px;
-    color: var(--text-color, #1e2b3c);
 }.v2e-variant-template {
     position: relative;
     display: inline-block;
@@ -1285,19 +1351,10 @@
     vertical-align: middle;
     margin-left: 6px;
 }.v2e-tag-id {
-    display: inline-block;
-    min-height: 0;
-    font-size: 0.75rem;
-    font-weight: normal;
-    color: var(--tag-text, #2c4b6e);
-    background: var(--tag-bg, #e0e8f2);
-    border: 0;
-    padding: 1px 8px;
-    border-radius: 10px;
-    line-height: 1.6;
+    cursor: pointer;
 }.v2e-tag-id:hover {
-    background: var(--accent-color, #1e6f9f);
-    color: #fff;
+    border-color: var(--accent-color);
+    background: var(--ake-ui-surface-muted);
 }.v2e-tooltip {
     min-width: 320px;
     max-width: 480px;
@@ -1312,11 +1369,18 @@
     padding: 2px 0;
     border-bottom: 1px dotted var(--border-color, #e2e7f0);
 }.v2e-tooltip-label { font-weight: 600; white-space: nowrap; margin-right: 6px; }.v2e-tooltip-value { color: var(--desc-color, #5b6f86); text-align: right; font-variant-numeric: tabular-nums; }.v2e-variant-modifier {
-    color: var(--accent-color, #1e6f9f);
-    margin-bottom: 12px;
-    font-style: italic;
-    font-size: 0.88rem;
-    word-break: break-all;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 4px 0 8px;
+    color: var(--desc-color, #5b6f86);
+    font-size: 0.78rem;
+    font-style: normal;
+    line-height: 1.5;
+}.v2e-variant-modifier__value {
+    min-width: 0;
+    overflow-wrap: anywhere;
 }.v2e-modifier-type-tag {
     display: inline-block;
     background: #e8f5e9;
@@ -1327,51 +1391,137 @@
     font-style: normal;
     vertical-align: middle;
 }/* ===== 变种标志 / Buff ===== */
-.v2e-flags { display: flex; gap: 8px; margin: 4px 0; }.v2e-flag { font-size: 0.82rem; padding: 2px 8px; border-radius: 10px; }.v2e-flag.danger { background: #ffe0e0; color: #b00020; }.v2e-flag.big-effect { background: #e0f0ff; color: #1e6f9f; }.v2e-flag.big-headbar { background: #e0ffe0; color: #2e7d32; }.v2e-buffs { margin: 4px 0 8px; display: flex; flex-wrap: wrap; gap: 4px; }.v2e-buff-tag {
-    background: var(--tag-bg, #e8e0f2);
-    color: #6b4b8e;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 0.78rem;
+.v2e-flags,
+.v2e-buffs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 4px 0 8px;
 }/* ===== 变种差异 ===== */
 .v2e-diff {
-    margin: 6px 0 10px;
-    padding: 8px 12px;
+    margin: 4px 0 8px;
+    padding: 7px 10px;
     background: var(--module-bg, #f8fafd);
     border: 1px dashed var(--border-color, #d9e0e8);
     border-radius: 8px;
-    font-size: 0.88rem;
-}.v2e-diff-item { display: flex; gap: 6px; align-items: baseline; padding: 2px 0; }.v2e-diff-label { font-weight: 600; color: var(--text-color, #1e2b3c); white-space: nowrap; }.v2e-diff-val { color: var(--accent-color, #1e6f9f); }.v2e-diff-val.neg { color: #b00020; }
+    font-size: 0.76rem;
+    line-height: 1.45;
+}.v2e-diff > strong { display: block; margin-bottom: 2px; }.v2e-diff-item { display: flex; gap: 5px; align-items: baseline; padding: 1px 0; }.v2e-diff-label { font-weight: 600; color: var(--text-color, #1e2b3c); white-space: nowrap; }.v2e-diff-val { color: var(--accent-color, #1e6f9f); }.v2e-diff-val.neg { color: #b00020; }
+@media (max-width: 800px) {
+    .ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-hero {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+    }
+    .ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-visual {
+        width: min(100%, 280px);
+    }
+    .ake-ui-detail[data-detail-kind="enemy"] .enemy-detail-visual > img {
+        max-height: 260px;
+    }
+    .v2e-meta-group .v2e-meta-grid {
+        --ake-ui-meta-columns: 2;
+    }
+}
+
+@media (max-width: 560px) {
+    .v2e-meta-group .v2e-meta-grid {
+        --ake-ui-meta-columns: 1;
+    }
+}
 }
 
 /* Source: theme/v2_equip.css */
-@scope (body[data-ake-module="v3_equip"]) {.v2eq-skill-desc {
-    border: 1px solid var(--border-color, #d9e0e8);
-    border-radius: 8px;
-    padding: 12px;
-    background: var(--module-bg, #f8fafd);
+@scope (body[data-ake-module="v3_equip"]) {.ake-ui-detail[data-detail-kind="equipment"] {
+    padding: clamp(16px, 2vw, 28px);
+}.ake-ui-directory__content:has(> .ake-ui-detail[data-detail-kind="equipment"]) {
+    padding: 0;
+}.ake-ui-detail[data-detail-kind="equipment"] .equipment-detail-hero {
+    align-items: center;
+    margin: 0;
+    padding: 4px 0 20px;
+    border-bottom: var(--ake-ui-border);
+}.ake-ui-detail[data-detail-kind="equipment"] .equipment-detail-hero .ake-ui-detail-media {
+    width: 96px;
+    height: 96px;
+    flex-basis: 96px;
+    border: 0;
+    background: transparent;
+}.ake-ui-detail[data-detail-kind="equipment"] .equipment-detail-hero .ake-ui-detail-media img {
+    padding: 4px;
+}.ake-ui-detail[data-detail-kind="equipment"] .equipment-detail-hero .ake-ui-detail-title-row {
+    margin-bottom: 4px;
+}.ake-ui-detail[data-detail-kind="equipment"] > .v2eq-section {
+    margin-top: 28px;
+}.v2eq-skill-list {
+    display: grid;
+    gap: 0;
+}.v2eq-skill-desc {
+    padding: 8px 0 8px 12px;
+    border-inline-start: 2px solid var(--accent-color);
+    border-bottom: var(--ake-ui-border);
     line-height: 1.6;
     color: var(--text-color, #1e2b3c);
     white-space: pre-wrap;
-    margin-bottom: 16px;
+}.v2eq-skill-desc:last-child {
+    border-bottom: 0;
+}.v2eq-enhance-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 0 24px;
+}.v2eq-enhance-item {
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: var(--ake-ui-border);
 }.ake-ui-card[data-card-kind="equipment"] {
+    min-width: 0;
+    container-type: inline-size;
     background: var(--module-bg, #f8fafd);
-    border-radius: 12px;
-    padding: 16px;
+    border-radius: 8px;
+    padding: 14px;
     border: 1px solid var(--border-color, #e2e7f0);
     box-sizing: border-box;
 }.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header {
-    display: flex;
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
     align-items: center;
-    gap: 10px;
+    gap: 8px 14px;
     margin-bottom: 12px;
 }.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header-actions {
+    min-width: 0;
+    grid-column: 1 / -1;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    gap: 8px;
+    margin: 2px 0 0;
+    padding-top: 8px;
+    border-top: var(--ake-ui-border);
+}.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header-actions > .ake-ui-popover-anchor {
+    min-width: 0;
+    min-height: 28px;
+    display: inline-flex;
+    align-items: center;
     gap: 4px;
-    margin-left: auto;
-    flex-shrink: 0;
+    border: var(--ake-ui-border);
+    border-radius: var(--ake-ui-radius-sm);
+    background: var(--ake-ui-surface);
+    transition: border-color .15s ease, background-color .15s ease;
+}.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header-actions > .ake-ui-popover-anchor:hover,
+.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header-actions > .ake-ui-popover-anchor:has(.ake-ui-popover__trigger[aria-expanded="true"]) {
+    border-color: var(--accent-color);
+    background: var(--ake-ui-surface-hover);
+}.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header-actions .ake-ui-popover__trigger {
+    min-height: 26px;
+    padding: 3px 8px;
+    border: 0;
+    background: transparent;
+}.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header-actions .ake-ui-material__icons {
+    padding-inline-end: 7px;
 }.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__media img {
     width: 48px;
     height: 48px;
@@ -1380,71 +1530,112 @@
     background: var(--icon-bg, #eef3fa);
     flex-shrink: 0;
 }.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__heading {
-    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 2px;
-}.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
+}.ake-ui-card[data-card-kind="equipment"][data-ake-change] .ake-ui-card__heading {
+    padding-inline-end: 48px;
 }.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__title {
+    margin: 0;
+    overflow-wrap: anywhere;
     font-weight: 600;
     color: var(--text-color, #1e2b3c);
-    font-size: 1rem;
+    font-size: .92rem;
 }.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__id {
-    font-size: 0.75rem;
+    overflow-wrap: anywhere;
+    font-size: 0.68rem;
     color: var(--desc-color, #5b6f86);
 }.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__content {
+    min-width: 0;
     color: var(--desc-color, #5b6f86);
-    font-size: 0.9rem;
-    overflow-x: auto;
+    font-size: .8rem;
+    overflow: visible;
 }.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__badges {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: flex-start;
     margin-bottom: 8px;
     color: var(--text-color, #1e2b3c);
     font-weight: 500;
     flex-wrap: wrap;
     gap: 4px;
-}.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__badges .ake-ui-badge {
-    background: var(--tag-bg, #e0e8f2);
-    padding: 1px 8px;
-    border-radius: 10px;
-    font-size: 0.8rem;
-}.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__badges .ake-ui-badge:last-child {
-    background: #e8f0e0;
-    padding: 1px 8px;
-    border-radius: 10px;
-    font-size: 0.8rem;
-    color: #4b6b2e;
 }.v2eq-mainstat {
+    min-width: 0;
     display: flex;
+    align-items: baseline;
     justify-content: space-between;
-    padding: 4px 0;
-    border-bottom: 1px dashed var(--border-color, #d9e0e8);
-    margin-bottom: 4px;
+    gap: 12px;
+    padding: 7px 0;
+    border-top: var(--ake-ui-border);
+    border-bottom: var(--ake-ui-border);
+    margin-bottom: 8px;
     font-weight: 500;
 }.v2eq-mainstat-desc {
+    min-width: 0;
+    overflow-wrap: anywhere;
     color: var(--text-color, #1e2b3c);
 }.v2eq-mainstat-value {
     color: var(--accent-color, #1e6f9f);
+    font-weight: 650;
+    white-space: nowrap;
 }.v2eq-mainstat-modifier {
     font-size: 0.75rem;
     color: #999;
     margin-left: 4px;
-}.ake-ui-table .v2eq-value-cell {
-    font-family: monospace;
-    white-space: nowrap;
-}.v2eq-deco-desc {
-    border-left: 3px solid var(--accent-color, #1e6f9f);
-    padding-left: 12px;
-    margin-top: 8px;
+}.v2eq-substats {
+    display: grid;
+    gap: 0;
+}.v2eq-substat {
+    min-width: 0;
+    padding: 8px 0;
+    border-bottom: var(--ake-ui-border);
+}.v2eq-substat-heading {
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 6px;
+    margin-bottom: 6px;
+    color: var(--text-color, #1e2b3c);
+    font-weight: 600;
+}.v2eq-substat-heading > span:first-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}.v2eq-substat-values {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 68px), 1fr));
+    gap: 6px;
+    margin: 0;
+}.v2eq-substat-stage {
+    min-width: 0;
+    padding: 5px 7px;
+    border-radius: 4px;
+    background: var(--ake-ui-surface-muted);
+}.v2eq-substat-stage dt {
+    margin: 0 0 2px;
     color: var(--desc-color, #5b6f86);
-    font-style: italic;
-    line-height: 1.5;
-    font-size: 0.85rem;
+    font-size: .62rem;
+    line-height: 1.2;
+}.v2eq-substat-stage dd {
+    min-width: 0;
+    margin: 0;
+    overflow-wrap: anywhere;
+    color: var(--text-color, #1e2b3c);
+    font-family: Consolas, monospace;
+    font-size: .72rem;
+    font-weight: 600;
+    line-height: 1.35;
+}.v2eq-deco-desc {
+    min-width: 0;
+    padding: 8px 0 0;
+    margin-top: 0;
+    overflow-wrap: anywhere;
+    color: var(--desc-color, #5b6f86);
+    font-style: normal;
+    line-height: 1.55;
+    font-size: .74rem;
     white-space: pre-wrap;
 }.v2eq-oem-link {
     appearance: none;
@@ -1464,9 +1655,13 @@
     cursor: wait;
 }.v2eq-enhance-label {
     color: var(--desc-color, #5b6f86);
+    font-size: .74rem;
     font-weight: 500;
 }.v2eq-enhance-value {
     color: var(--text-color, #1e2b3c);
+    font-size: .9rem;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
 }
 
 .v2eq-enhance-tip {
@@ -1474,12 +1669,21 @@
     margin-bottom: 6px;
     color: var(--desc-color, #5b6f86);
 }.v2eq-blackboard-params {
-    margin-top: 8px;
-    font-size: 0.85rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 3px 10px;
+    margin-top: 6px;
+    padding-top: 6px;
+    color: var(--desc-color, #5b6f86);
+    font-size: 0.72rem;
+    line-height: 1.45;
 }.v2eq-blackboard-label {
     color: var(--desc-color, #5b6f86);
+    font-weight: 500;
 }.v2eq-blackboard-item {
-    margin-right: 12px;
+    min-width: 0;
+    overflow-wrap: anywhere;
 }.v2eq-material-row--default .ake-ui-material__row-label {
     color: var(--accent-color, #2878c8);
 }.v2eq-guarantee-tip {
@@ -1495,13 +1699,19 @@
     grid-template-columns: minmax(5.5em, auto) minmax(0, 1fr);
     align-items: center;
     gap: 8px;
-}.ake-ui-card[data-card-kind="equipment"] .ake-ui-card__header-actions {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-left: auto;
-    flex-shrink: 0;
+}
+@media (max-width: 560px) {
+    .ake-ui-detail[data-detail-kind="equipment"] .equipment-detail-hero {
+        align-items: flex-start;
+    }
+    .ake-ui-detail[data-detail-kind="equipment"] .equipment-detail-hero .ake-ui-detail-media {
+        width: 76px;
+        height: 76px;
+        flex-basis: 76px;
+    }
+    .ake-ui-detail[data-detail-kind="equipment"] > .v2eq-section {
+        margin-top: 22px;
+    }
 }
 }
 
@@ -6454,6 +6664,15 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
 .ake-ui-badge[data-tone="danger"] { color: #fff; border-color: var(--error-text); background: var(--error-text); }
 .ake-ui-badge[data-tone="accent"] { color: #fff; border-color: var(--accent-color); background: var(--accent-color); }
 .ake-ui-badge[data-tone="special"] { color: #fff; border-color: var(--ake-rarity-4); background: var(--ake-rarity-4); }
+.ake-ui-badge[data-tone="muted"] { color: var(--text-color); border-color: transparent; background: var(--ake-ui-surface-muted); }
+.ake-ui-badge--technical {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    color: var(--desc-color);
+    background: var(--ake-ui-surface-muted);
+    font-family: Consolas, monospace;
+    font-weight: 500;
+}
 .ake-ui-badge[data-accent="rarity"] { color: #fff; border-color: var(--ake-ui-badge-accent); background: var(--ake-ui-badge-accent); }
 .ake-ui-badge[data-accent="rarity"][data-accent-value="1"] { --ake-ui-badge-accent: var(--ake-rarity-1); }
 .ake-ui-badge[data-accent="rarity"][data-accent-value="2"] { --ake-ui-badge-accent: var(--ake-rarity-2); }
@@ -7636,9 +7855,18 @@ body[data-ake-module="v3_mission"] .ake-ui-directory__item[data-layout="entity"]
 .ake-ui-directory__item[data-layout="entity"][data-ake-change] .ake-ui-directory__item-heading {
     padding-inline-end: 40px;
 }
-.ake-ui-directory__item[data-layout="entity"][data-ake-change="added"] { --ake-item-change-color: var(--ake-change-added); }
-.ake-ui-directory__item[data-layout="entity"][data-ake-change="modified"] { --ake-item-change-color: var(--ake-change-modified); }
-.ake-ui-directory__item[data-layout="entity"][data-ake-change]::after {
+:is(
+    .ake-ui-directory__item[data-layout="entity"],
+    .ake-ui-card[data-card-kind="equipment"]
+)[data-ake-change="added"] { --ake-item-change-color: var(--ake-change-added); }
+:is(
+    .ake-ui-directory__item[data-layout="entity"],
+    .ake-ui-card[data-card-kind="equipment"]
+)[data-ake-change="modified"] { --ake-item-change-color: var(--ake-change-modified); }
+:is(
+    .ake-ui-directory__item[data-layout="entity"],
+    .ake-ui-card[data-card-kind="equipment"]
+)[data-ake-change]::after {
     position: absolute;
     z-index: 2;
     top: 0;
@@ -7658,6 +7886,12 @@ body[data-ake-module="v3_mission"] .ake-ui-directory__item[data-layout="entity"]
     line-height: 1.25;
     letter-spacing: 0;
     text-align: end;
+}
+.ake-ui-card[data-card-kind="equipment"][data-ake-change]::after {
+    max-width: 60px;
+    padding: 5px 8px 5px 18px;
+    font-size: 11px;
+    line-height: 1.3;
 }
 .ake-ui-page[data-ake-module="hidden-example"] { min-height: 300px; display: flex; align-items: center; justify-content: center; text-align: center; }
 .ake-ui-page[data-ake-module="hidden-example"] .ake-ui-state__title { font-size: 4rem; font-weight: 300; }

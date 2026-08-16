@@ -530,7 +530,6 @@
                 src: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png`
             },
             title: name,
-            id: weapon.weaponId,
             content: headerContent,
             mainAfter: window.AKEUI.fragment(atkHtml),
             visual: {
