@@ -18,6 +18,7 @@
             const bootstrapVersion = window.__akeBootstrapVersion || {};
             const configuredPluginVersions = bootstrapVersion.pluginversion || {};
             const configuredJsVersions = bootstrapVersion.jsversion || {};
+            const HIDDEN_MODULE_MARKER_ICON = '<svg viewBox="0 0 24 24" focusable="false"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>';
             const readStoredVersions = key => {
                 try {
                     const value = JSON.parse(storage.get(key, '{}'));
@@ -781,7 +782,9 @@
                     const iconHtml = navIcon
                         ? `<img class="module-nav-icon" src="${navIcon}" alt="" aria-hidden="true" data-no-image-fallback${navIconStyle}>`
                         : textIcon ? `<span class="module-icon" aria-hidden="true">${textIcon}</span>` : '';
-                    const hiddenMarker = mod.hidden ? '<span class="module-hidden-marker" aria-hidden="true">🔒</span>' : '';
+                    const hiddenMarker = mod.hidden
+                        ? `<span class="module-hidden-marker" aria-hidden="true">${HIDDEN_MODULE_MARKER_ICON}</span>`
+                        : '';
                     html += `
                         <div class="module-item" data-id="${mod.id}" data-has-icon="${hasIcon}">
                             <div class="module-title">

@@ -800,6 +800,7 @@
                 });
                 const costItems = (p.itemIds || []).map((id, i) => ({ id, count: (p.itemCnts || [])[i] || 0 }));
                 return {
+                    level: p.level,
                     name: p.name?.text || p.name || t('potentialName', { name: p.level || '' }),
                     description: desc,
                     values: values,
@@ -824,10 +825,12 @@
                 const modifiers = (info.attributeModifiers || []).filter(mod => mod && !(mod.attrType === 0 && mod.attrValue === 0));
                 if (modifiers.length === 0) return null;
                 return {
+                    breakStage: info.breakStage,
                     title: info.title?.text || '',
-                    description: info.desc?.text || '',
                     modifiers: modifiers.map(mod => ({
-                        text: `${getAttrName(mod.attrType) || mod.attrType}+${mod.attrValue}`,
+                        name: getAttrName(mod.attrType) || mod.attrType,
+                        value: mod.attrValue,
+                        text: `${getAttrName(mod.attrType) || mod.attrType}${mod.attrValue >= 0 ? '+' : ''}${mod.attrValue}`,
                         modifierType: mod.modifierType
                     })),
                     requiredItem: n.requiredItem || []
@@ -1200,6 +1203,14 @@
             }).join('');
         }
 
+        function renderLevelCostRow(label, items, itemInfoMap) {
+            const itemHtml = (items || []).map(it => {
+                const info = itemInfoMap?.[it.id] || {};
+                return `<span class="ci-ri" title="${escapeAttribute(info.description)}"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${info.iconId || it.id}.png">${info.name || it.id} ×${it.count}</span>`;
+            }).join('');
+            return itemHtml ? `<div class="sk-cost-row"><span class="cost-section-title">${label}</span><span class="sk-cost-items">${itemHtml}</span></div>` : '';
+        }
+
         function costBtnHtml(innerHtml, itemIds, itemInfoMap) {
             if (!innerHtml) return '';
             const icons = (itemIds || []).map(id => `<img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${itemInfoMap?.[id]?.iconId || id}.png">`).join('');
@@ -1286,72 +1297,116 @@
                 }
                 group.levels.push(talent);
             });
-            const talentsHtml = talentGroups.map(group => `
-                <div class="ake-ui-card" data-card-kind="character-talent" data-density="regular">
-                    <div class="ake-ui-card__header character-talent-header">
-                        ${group.icon ? `<img class="skill-icon character-talent-icon" src="${group.icon}" alt="">` : ''}
-                        <div class="ake-ui-card__title">${group.name}</div>
-                    </div>
-                    <div class="ake-ui-card__body character-talent-levels">
-                        ${group.levels.map((talent, index) => {
-                            const valueMap = talent.values || {};
-                            const desc = parseText(replacePlaceholders(talent.description, valueMap, talent.modifierTypes, showHiddenAttr));
-                            const costHtml = renderCostItemsHtml(talent.requiredItem, 0, itemInfoMap);
-                            const costIconIds = (talent.requiredItem || []).map(it => it.id);
-                            const displayLevel = talent.level || index + 1;
-                            return `
-                                <div class="character-talent-level">
-                                    <span class="character-talent-level-label">${t('levelAbbreviation', { name: displayLevel })}</span>
-                                    <div class="character-talent-level-content">
-                                        <div class="character-card-cost">${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
+            const talentsHtml = talentGroups.map(group => {
+                const talentCostRows = group.levels.map((talent, index) => {
+                    const displayLevel = talent.level || index + 1;
+                    return renderLevelCostRow(
+                        t('levelAbbreviation', { name: displayLevel }),
+                        talent.requiredItem,
+                        itemInfoMap
+                    );
+                }).join('');
+                const talentCostIconIds = [...new Set(group.levels.flatMap(talent =>
+                    (talent.requiredItem || []).map(item => item.id)
+                ))];
+
+                return `
+                    <div class="ake-ui-card" data-card-kind="character-talent" data-density="regular">
+                        <div class="ake-ui-card__header character-talent-header">
+                            ${group.icon ? `<img class="skill-icon character-talent-icon" src="${group.icon}" alt="">` : ''}
+                            <div class="ake-ui-card__title">${group.name}</div>
+                            <div class="character-card-cost">${costBtnHtml(talentCostRows, talentCostIconIds, itemInfoMap)}</div>
+                        </div>
+                        <div class="ake-ui-card__body character-talent-levels">
+                            ${group.levels.map((talent, index) => {
+                                const valueMap = talent.values || {};
+                                const desc = parseText(replacePlaceholders(talent.description, valueMap, talent.modifierTypes, showHiddenAttr));
+                                const displayLevel = talent.level || index + 1;
+                                return `
+                                    <div class="character-talent-level">
+                                        <span class="character-talent-level-label">${t('levelAbbreviation', { name: displayLevel })}</span>
                                         <div class="character-talent-level-desc">${desc}</div>
                                     </div>
-                                </div>
-                            `;
-                        }).join('')}
+                                `;
+                            }).join('')}
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
-            const potentialsHtml = (data.potentials || []).map(pot => {
+            const potentials = data.potentials || [];
+            const potentialLevelOffset = potentials.some(pot => Number(pot.level) === 0) ? 1 : 0;
+            const potentialsHtml = potentials.map((pot, index) => {
                 const valueMap = pot.values || {};
                 let desc = replacePlaceholders(pot.description, valueMap, pot.modifierTypes, showHiddenAttr);
                 desc = parseText(desc);
                 const costHtml = renderCostItemsHtml(pot.costItems, 0, itemInfoMap);
                 const costIconIds = (pot.costItems || []).map(it => it.id);
+                const rawLevel = pot.level == null ? NaN : Number(pot.level);
+                const displayLevel = Number.isFinite(rawLevel) ? rawLevel + potentialLevelOffset : index + 1;
                 return `
-                    <div class="ake-ui-card" data-card-kind="character-potential" data-density="regular">
-                        <div class="ake-ui-card__header">
-                            <div class="ake-ui-card__title">${pot.name}</div>
-                            <div class="character-card-cost">${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
+                    <div class="character-progression-row" data-progression-kind="potential">
+                        <div class="character-progression-stage">${t('potentialName', { name: displayLevel })}</div>
+                        <div class="character-progression-copy">
+                            <div class="character-progression-title">${pot.name}</div>
+                            <div class="character-progression-desc">${desc}</div>
                         </div>
-                        <div class="ake-ui-card__body">${desc}</div>
+                        <div class="character-card-cost">${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
                     </div>
                 `;
             }).join('');
 
             const attrNodes = data.attributeNodes || [];
+            const attrStageOffset = attrNodes.some(node => Number(node.breakStage) === 0) ? 1 : 0;
+            const attrNodeGroups = [];
+            attrNodes.forEach((node, index) => {
+                const title = node.title || '';
+                let group = attrNodeGroups.find(item => item.title === title);
+                if (!group) {
+                    group = { title, nodes: [] };
+                    attrNodeGroups.push(group);
+                }
+                const rawStage = node.breakStage == null ? NaN : Number(node.breakStage);
+                group.nodes.push({
+                    ...node,
+                    displayStage: Number.isFinite(rawStage) ? rawStage + attrStageOffset : index + 1
+                });
+            });
             const attrNodesHtml = `
                 <div class="ake-ui-section">
                     <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.attributeNodes')}</h3></div>
-                    <div class="ake-ui-card-grid character-attribute-grid" data-size="regular">
-                        ${attrNodes.map(node => {
-                            const costHtml = renderCostItemsHtml(node.requiredItem, 0, itemInfoMap);
-                            const costIconIds = (node.requiredItem || []).map(it => it.id);
-                            const modifierHtml = (node.modifiers || []).map(mod => {
-                                const modTypeTag = (showHiddenAttr && mod.modifierType != null)
-                                    ? ` <span class="attr-node-modifier-tag">${modifierTypeMap[String(mod.modifierType)] || ''}</span>`
-                                    : '';
-                                return `<div class="attr-node-modifier">${mod.text}${modTypeTag}</div>`;
-                            }).join('');
-                            return `<div class="ake-ui-card" data-card-kind="character-attribute" data-density="regular">
-                                <div class="ake-ui-card__header">
-                                    <div class="ake-ui-card__title">${node.title}</div>
-                                    <div class="character-card-cost">${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
+                    <div class="character-attribute-groups">
+                        ${attrNodeGroups.map(group => `
+                            <div class="character-attribute-group">
+                                ${group.title ? `<div class="character-attribute-group-title">${group.title}</div>` : ''}
+                                <div class="character-progression-list">
+                                    ${group.nodes.map(node => {
+                                        const costHtml = renderCostItemsHtml(node.requiredItem, 0, itemInfoMap);
+                                        const costIconIds = (node.requiredItem || []).map(it => it.id);
+                                        const modifierHtml = (node.modifiers || []).map(mod => {
+                                            const modifierName = modifierTypeMap[String(mod.modifierType)] || '';
+                                            const modTypeTag = showHiddenAttr && modifierName
+                                                ? `<span class="attr-node-modifier-tag">${modifierName}</span>`
+                                                : '';
+                                            const hasStructuredValue = mod.name != null && mod.value != null;
+                                            const value = hasStructuredValue && typeof mod.value === 'number'
+                                                ? `${mod.value >= 0 ? '+' : ''}${mod.value}`
+                                                : '';
+                                            return `<span class="character-progression-stat">${hasStructuredValue
+                                                ? `<span>${mod.name}</span><strong>${value}</strong>`
+                                                : `<strong>${mod.text}</strong>`}${modTypeTag}</span>`;
+                                        }).join('');
+                                        return `
+                                            <div class="character-progression-row" data-progression-kind="attribute">
+                                                <div class="character-progression-stage">${t('breakthroughStage', { name: node.displayStage }, `#${node.displayStage}`)}</div>
+                                                <div class="character-progression-stats">${modifierHtml}</div>
+                                                <div class="character-card-cost">${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
+                                            </div>
+                                        `;
+                                    }).join('')}
                                 </div>
-                                <div class="ake-ui-card__body">${node.description}${modifierHtml}</div>
-                            </div>`;
-                        }).join('')}
+                            </div>
+                        `).join('') || `<p>${t('none')}</p>`}
                     </div>
                 </div>
             `;
@@ -1397,11 +1452,11 @@
                 if (skCosts.length > 0) {
                     const rows = skCosts.map(c => {
                         const itemParts = [...(c.goldCost > 0 ? [{ id: 'item_gold', count: c.goldCost }] : []), ...c.items.filter(it => it.id !== 'item_gold')];
-                        const itemsStr = itemParts.map(it => {
-                            const info = itemInfoMap[it.id] || {};
-                            return `<span class="ci-ri" title="${escapeAttribute(info.description)}"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${info.iconId || it.id}.png">${info.name || it.id} ×${it.count}</span>`;
-                        }).join('');
-                        return `<div class="sk-cost-row"><span class="cost-section-title">${t('levelRange', { name: `${c.level - 1}→${c.level}` })}</span>${itemsStr}</div>`;
+                        return renderLevelCostRow(
+                            t('levelRange', { name: `${c.level - 1}→${c.level}` }),
+                            itemParts,
+                            itemInfoMap
+                        );
                     }).join('');
                     skCostHtml = rows;
                 }
@@ -1502,7 +1557,7 @@
                     </div>
                     <div class="ake-ui-section character-potential-section">
                         <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.potentials')}</h3></div>
-                        <div class="ake-ui-card-grid" data-size="full">${potentialsHtml || `<p>${t('none')}</p>`}</div>
+                        <div class="character-progression-list">${potentialsHtml || `<p>${t('none')}</p>`}</div>
                     </div>
                 </div>
                 ${attrNodesHtml}

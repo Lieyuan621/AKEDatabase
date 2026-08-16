@@ -163,7 +163,7 @@
             }
             .ake-sidebar-resize-handle {
                 position: absolute;
-                z-index: 30;
+                z-index: 5;
                 top: 0;
                 right: -6px;
                 bottom: 0;

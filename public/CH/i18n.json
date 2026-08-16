@@ -12,7 +12,7 @@
             "showHidden": "显示隐藏模块：", "showExport": "显示导出按钮：", "showVersionChanges": "显示版本间数据改动（测试功能）：", "keepUrlSync": "保持 URL 完整（地址栏随导航更新）：", "reset": "恢复默认设置",
             "dataSource": { "title": "游戏数据", "version": "数据版本：", "baseUrl": "请求域名：", "reset": "恢复生产数据源", "fixedVersions": "固定版本", "online": "版本清单已从数据服务加载", "fallback": "当前正在使用兼容版本配置", "debugLocal": "调试模式已启用，latest 使用当前本地服务器数据", "debugFixed": "调试模式下正在使用数据服务中的固定版本" },
             "cache": { "forceRefresh": "强制刷新网页缓存", "description": "由于服务器数据存在延迟，若您显示的页面中没有最新的数据，可以点击此按钮获取最新数据", "refreshing": "正在清理缓存..." },
-            "levels": { "title": "默认显示等级设置", "enabled": "激活设置：", "hint": "等级筛选：可以将需要显示的等级键入，使用英文逗号分隔", "character": "角色等级：", "weapon": "武器等级：", "enemy": "敌人等级：", "skill": "角色技能等级：", "levelPlaceholder": "例：80 或 10,20,30,80", "skillPlaceholder": "例：1,9,10,11,12" },
+            "levels": { "title": "默认显示等级设置", "enabled": "激活设置：", "hint": "等级筛选：可以将需要显示的等级键入，使用英文逗号分隔", "character": "干员等级：", "weapon": "武器等级：", "enemy": "敌人等级：", "skill": "干员技能等级：", "levelPlaceholder": "例：80 或 10,20,30,80", "skillPlaceholder": "例：1,9,10,11,12" },
             "tokens": { "title": "访问令牌", "hint": "输入令牌以解锁受保护的模块及内容，多个令牌使用英文逗号分隔", "label": "令牌：", "placeholder": "请输入访问令牌", "submit": "提交", "clear": "清除所有令牌", "empty": "尚未输入任何令牌", "count": "已输入 {count} 个令牌", "enterPrompt": "请输入令牌", "added": "已添加 {count} 个令牌", "duplicate": "这些令牌已存在", "noneSaved": "当前没有已保存的令牌", "cleared": "已清除 {count} 个令牌" },
             "showHiddenConfirm": "是否确认开启隐藏内容？隐藏内容中包含开发中内容，可能存在 bug（我们建议您不要在直播或其他公开场合开启或阅读隐藏内容）。"
         },
@@ -43,14 +43,14 @@
             "hidden": { "title": "隐藏模块", "testTitle": "隐藏功能测试" },
             "settings": { "title": "设置", "basicTitle": "基础设置", "aboutTitle": "关于", "aboutBody": "AKEData 动态模块演示 · 版本 1.0", "aboutTheme": "主题文件存放在 theme/ 文件夹，可自行扩展。" },
             "character": {
-                "title": "角色",
-                "search": "搜索角色（名称/ID）",
+                "title": "干员",
+                "search": "搜索干员（名称/ID）",
                 "element": "属性：",
                 "profession": "职业：",
                 "weapon": "武器：",
                 "loading": "加载干员数据...",
-                "select": "请选择角色",
-                "noMatches": "无匹配角色",
+                "select": "请选择干员",
+                "noMatches": "无匹配干员",
                 "loadFailed": "加载失败：{name}",
                 "unknown": "未知",
                 "unknownProfession": "未知职业",
@@ -67,10 +67,11 @@
                 "expandAllSkillLevels": "展开所有技能等级",
                 "collapseAllSkillLevels": "收起所有技能等级",
                 "potentialName": "潜能 {name}",
+                "breakthroughStage": "突破 {name}",
                 "overview": {
-                    "title": "角色总览",
+                    "title": "干员总览",
                     "description": "按职业分组，汇总属性、武器类型与稀有度",
-                    "fallback": "角色"
+                    "fallback": "干员"
                 },
                 "columns": {
                     "coolDown": "冷却时间",
