@@ -805,7 +805,10 @@
     }
 
     async function activityManifest(version) {
-        const [activities, tags, times] = await Promise.all([table('ActivityTable', version), table('ActivityTagTable', version), table('TimeRangeTable', version)]);
+        const [activities, tags, times, instructions] = await Promise.all([
+            table('ActivityTable', version), table('ActivityTagTable', version),
+            table('TimeRangeTable', version), table('InstructionBook', version)
+        ]);
         const now = Date.now();
         const rows = Object.entries(activities).map(([activityId, row], index) => {
             const range = times[row.timeId]?.timeRangeList?.[0] || {};
@@ -817,19 +820,22 @@
                 openTime: range.openTime || '', closeTime: range.closeTime || '',
                 tabImg: row.tabImg ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/activity/${row.tabImg}.png` : '', contentFile: `/__v3/activity/${activityId}.json`,
                 statusOrder, sourceOrder: row.sortId ?? index, hidden: false,
-                __diffSignature: diffSignature([row, times[row.timeId], pick(tags, row.tagIds || [])]) };
+                __diffSignature: diffSignature([
+                    row, times[row.timeId], pick(tags, row.tagIds || []), instructions[row.instructionId]
+                ]) };
         });
         rows.sort((a, b) => a.statusOrder - b.statusOrder || a.sourceOrder - b.sourceOrder || compareId(a, b));
         return assignPriority(rows);
     }
 
     async function activityDetail(id, version) {
-        const [activities, tags, rewards, items, conditionalStages, fightingStages, dungeons, times] = await Promise.all([
+        const [activities, tags, rewards, items, conditionalStages, fightingStages, dungeons, times, instructions] = await Promise.all([
             table('ActivityTable', version), table('ActivityTagTable', version), table('RewardTable', version), table('ItemTable', version),
             table('ActivityConditionalMultiStageTable', version), table('ActivityDungeonFightingStageTable', version),
-            table('DungeonTable', version), table('TimeRangeTable', version)
+            table('DungeonTable', version), table('TimeRangeTable', version), table('InstructionBook', version)
         ]);
         const row = activities[id] || {};
+        const instruction = instructions[row.instructionId] || null;
         const stageList = {};
         Object.entries(conditionalStages[id]?.stageList || {}).forEach(([stageId, stage]) => {
             const range = times[stage.timeId]?.timeRangeList?.[0] || {};
@@ -845,7 +851,13 @@
         }
         return { id, name: text(row.name, id), desc: text(row.desc), conditions: (row.conditions || []).map(condition => text(condition.desc)),
             rewarddetail: rewardsToView(row.rewardId, rewards, items), sortId: row.sortId, tabImg: row.tabImg, tabImgColor: row.tabImgColor,
-            tags: (row.tagIds || []).map(tagId => ({ tagId, name: text(tags[tagId]?.name, tagId) })), rawType: row.type, stageList };
+            tags: (row.tagIds || []).map(tagId => ({ tagId, name: text(tags[tagId]?.name, tagId) })), rawType: row.type,
+            instruction: instruction ? {
+                id: row.instructionId,
+                title: text(instruction.title),
+                content: text(instruction.content)
+            } : null,
+            stageList };
     }
 
     async function ccManifest(version) {

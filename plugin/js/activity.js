@@ -494,6 +494,12 @@
                 conditionsHtml = `<div class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.conditions')}</h3></div><ul class="ake-ui-list">${data.conditions.map(c => `<li>${parseText(c)}</li>`).join('')}</ul></div>`;
             }
 
+            let instructionHtml = '';
+            if (data.instruction?.content) {
+                const instructionTitle = data.instruction.title || t('sections.instructions');
+                instructionHtml = `<section class="ake-ui-section"><header class="ake-ui-section__header"><h3 class="ake-ui-section__title">${parseText(instructionTitle)}</h3></header><div class="ake-ui-section__body">${parseText(data.instruction.content)}</div></section>`;
+            }
+
             let rewardsHtml = '';
             if (data.rewarddetail && data.rewarddetail.length) {
                 rewardsHtml = `<div class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('rewards.activity')}</h3></div>${renderRewards(data.rewarddetail)}</div>`;
@@ -525,6 +531,7 @@
             return `
                 <div class="ake-ui-detail" data-detail-kind="activity">
                     ${detailHeader?.outerHTML || ''}
+                    ${instructionHtml}
                     ${conditionsHtml}
                     ${rewardsHtml}
                     ${stagesHtml}

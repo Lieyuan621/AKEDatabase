@@ -105,7 +105,7 @@
             '.ake-ui-directory__item-copy',
             '.ake-ui-directory__list',
             '.ake-ui-directory__sidebar-header, .ake-ui-directory__search, .ake-ui-directory__meta, .ake-ui-filter',
-            { minWidth: 255, compactThreshold: 180 }
+            { minWidth: 72, compactThreshold: 180 }
         ),
         layout: 'grid'
     });
@@ -132,6 +132,18 @@
             .ake-resizable-sidebar.ake-resizable-sidebar--active { overflow: visible !important; }
             .ake-resizable-sidebar.ake-sidebar-compact .ake-sidebar-compact-hidden { display: none !important; }
             .ake-resizable-sidebar.ake-sidebar-compact .ake-sidebar-icon-list { padding: 6px !important; }
+            .app > .sidebar.ake-sidebar-compact .brand {
+                min-height: 58px;
+                justify-content: center;
+                padding: 4px;
+            }
+            .app > .sidebar.ake-sidebar-compact .sidebar-footer {
+                gap: 4px;
+                padding: 6px 4px;
+            }
+            .app > .sidebar.ake-sidebar-compact :is(.settings-button, .export-button) {
+                padding: 0;
+            }
             .ake-resizable-sidebar.ake-sidebar-compact .ake-ui-directory__item:has(> .ake-ui-directory__item-icon),
             .ake-resizable-sidebar.ake-sidebar-compact .ake-sidebar-icon-item {
                 width: 100%;
@@ -145,7 +157,10 @@
                 overflow: hidden;
             }
             .ake-resizable-sidebar.ake-sidebar-compact .ake-ui-directory__item:has(> .ake-ui-directory__item-icon) > :not(.ake-ui-directory__item-icon),
-            .ake-resizable-sidebar.ake-sidebar-compact .ake-sidebar-icon-item > :not(.ake-sidebar-item-icon) {
+            .ake-resizable-sidebar.ake-sidebar-compact .ake-sidebar-icon-item > :not(.ake-sidebar-item-icon):not(.module-title) {
+                display: none !important;
+            }
+            .app > .sidebar.ake-sidebar-compact .ake-sidebar-icon-item .module-title > :not(.module-nav-icon) {
                 display: none !important;
             }
             .ake-resizable-sidebar.ake-sidebar-compact .ake-ui-directory__item > .ake-ui-directory__item-icon,
@@ -575,10 +590,17 @@
         if (mainInstance?.element === element) return mainInstance;
         mainInstance?.destroy();
         mainInstance = create(element, {
+            ...iconCompact(
+                '.module-item',
+                '.module-nav-icon',
+                '.module-name',
+                '.module-list',
+                '.brand-copy, .sidebar-tool-label',
+                { minWidth: 72, compactThreshold: 160 }
+            ),
             storageKey: 'main',
             defaultWidth: 255,
             fallbackWidth: 255,
-            minWidth: 255,
             maxWidth: 420,
             minContentWidth: 520,
             mediaQuery: DEFAULT_MEDIA_QUERY

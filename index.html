@@ -326,7 +326,7 @@
             const resourceKey = src => new URL(src, location.href).pathname.replace(/^\/+/, '');
             const currentResourceVersion = src => {
                 const key = resourceKey(src);
-                return version?.jsversion?.[key] || version?.appversion || '';
+                return version?.cssversion?.[key] || version?.jsversion?.[key] || version?.appversion || '';
             };
             let storedJsVersions = {};
             try {
