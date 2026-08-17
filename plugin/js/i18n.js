@@ -59,6 +59,11 @@
         return format(value === undefined ? (fallback === undefined ? key : fallback) : value, params);
     }
 
+    function getValue(key, fallback = null) {
+        const value = getPath(messages, key);
+        return value === undefined ? fallback : value;
+    }
+
     function translateElement(element) {
         if (!(element instanceof Element)) return;
         const textKey = element.dataset.i18n;
@@ -119,6 +124,7 @@
     window.akeI18n = {
         ready,
         t,
+        getValue,
         scope(prefix) {
             return (key, params, fallback) => t(`${prefix}.${key}`, params, fallback);
         },

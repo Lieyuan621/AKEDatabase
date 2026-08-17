@@ -836,7 +836,10 @@
                     return;
                 }
                 const themeUrl = new URL(`theme/${lowerTheme}.css`, window.location.href);
-                if (window.akeVersion) themeUrl.searchParams.set('v', window.akeVersion.appversion);
+                if (window.akeVersion) {
+                    const themeKey = themeUrl.pathname.replace(/^\/+/, '');
+                    themeUrl.searchParams.set('v', window.akeVersion.cssversion?.[themeKey] || window.akeVersion.appversion);
+                }
                 if (window.__akeForceRefreshTimestamp) themeUrl.searchParams.set('t', window.__akeForceRefreshTimestamp);
                 themeLink.disabled = false;
                 themeLink.href = themeUrl.href;

@@ -349,6 +349,7 @@
             typeof value.appversion === 'string' &&
             validVersionMap(value.pluginversion) &&
             validVersionMap(value.jsversion) &&
+            validVersionMap(value.cssversion) &&
             typeof value.updatedAt === 'string';
     }
 
@@ -459,7 +460,7 @@
         const explicitVersion = url.searchParams.get('v');
         if (explicitVersion) return explicitVersion;
         const key = url.pathname.replace(/^\/+/, '');
-        return version.jsversion?.[key] || version.appversion || '';
+        return version.cssversion?.[key] || version.jsversion?.[key] || version.appversion || '';
     }
 
     function isPublicResource(request) {

@@ -30,6 +30,7 @@
 
         const CHARACTER_META_ICON_BASE = '/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/elementicon/';
         const CHARACTER_PROFESSION_ICON_BASE = '/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/charprofessionicon/';
+        const CHARACTER_WEAPON_ICON_BASE = '/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/wiki/groupicon/';
         const CHARACTER_PORTRAIT_BASE = '/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/charicon/';
         const CHARACTER_SKILL_ICON_BASE = '/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/skillicon/';
         const CHAR_TYPE_ICON_MAP = {
@@ -38,6 +39,10 @@
         const PROFESSION_ICON_MAP = {
             0: '0', 2: '2', 4: '4', 5: '5', 7: '7', 8: '8',
             GUARD: '0', DEFENDER: '2', SUPPORTER: '4', CASTER: '5', VANGUARD: '7', ASSAULT: '8'
+        };
+        const WEAPON_ICON_MAP = {
+            1: 'sword', 2: 'wand', 3: 'claymores', 5: 'lance', 6: 'pistol',
+            Sword: 'sword', Wand: 'wand', Claymores: 'claymores', Lance: 'lance', Pistol: 'pistol'
         };
 
         const IMAGE_BASE_PATH = '/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/bufficon/';
@@ -48,6 +53,42 @@
         const ALWAYS_SHOW_COLS = ['coolDown', 'costValue'];
         function isAlwaysShowColumn(column) {
             return ALWAYS_SHOW_COLS.includes(column) || column.startsWith('coolDown:');
+        }
+        function isZeroSuppressedSkillField(field) {
+            const normalized = String(field || '').trim().toLowerCase();
+            return normalized === 'cooldown'
+                || normalized.startsWith('cooldown:')
+                || normalized === 'costvalue'
+                || /(^|_)atb(?:_|\d|$)/.test(normalized)
+                || /(^|_)usp(?:_|\d|$)/.test(normalized);
+        }
+        function hasOnlyZeroNumericValues(values) {
+            let foundNumber = false;
+            for (const value of values || []) {
+                if (value === '' || value === null || value === undefined) continue;
+                const number = Number(value);
+                if (!Number.isFinite(number)) return false;
+                foundNumber = true;
+                if (number !== 0) return false;
+            }
+            return foundNumber;
+        }
+        function hiddenFieldTranslation(field) {
+            const terms = window.akeI18n?.getValue?.('modules.character.hiddenFieldTerms', null);
+            if (!terms || typeof terms !== 'object' || Array.isArray(terms)) return '';
+            let translatedTerms = 0;
+            const translation = String(field || '').trim().toLowerCase()
+                .split('_')
+                .filter(Boolean)
+                .flatMap(term => term.match(/\d+|[^\d]+/g) || [])
+                .map(term => {
+                    const translated = terms[term];
+                    if (typeof translated !== 'string' || !translated) return term;
+                    translatedTerms++;
+                    return translated;
+                })
+                .join('');
+            return translatedTerms ? translation : '';
         }
         const GROWTH_ATTRIBUTES = [
             { id: 'strength', key: 'attributes.strength' },
@@ -212,8 +253,10 @@
         function getCharacterMetaIcons(character) {
             const charTypeId = character.charTypeId || findMapKey(charTypeMap, character.charType);
             const professionId = character.professionId ?? findMapKey(professionMap, character.profession);
+            const weaponTypeId = character.weaponTypeId ?? findMapKey(weaponMap, character.weapontype);
             const charTypeIcon = CHAR_TYPE_ICON_MAP[charTypeId];
             const professionIcon = PROFESSION_ICON_MAP[professionId];
+            const weaponIcon = WEAPON_ICON_MAP[weaponTypeId];
             const icons = [];
             if (charTypeIcon) {
                 icons.push({
@@ -228,6 +271,14 @@
                     src: `${CHARACTER_PROFESSION_ICON_BASE}icon_profession_${professionIcon}.png`,
                     label: character.profession || getProfessionName(professionId) || professionId,
                     kind: 'profession',
+                    tooltip: false
+                });
+            }
+            if (weaponIcon) {
+                icons.push({
+                    src: `${CHARACTER_WEAPON_ICON_BASE}icon_wiki_group_weapon_${weaponIcon}.png`,
+                    label: character.weapontype || getWeaponName(weaponTypeId) || weaponTypeId,
+                    kind: 'weapon',
                     tooltip: false
                 });
             }
@@ -632,6 +683,7 @@
                 charType: baseInfo.charType,
                 profession: baseInfo.profession,
                 weapontype: baseInfo.weapontype,
+                weaponTypeId: baseInfo.weaponTypeId,
                 mainAttrType: getAttrName(rawData.charactertable?.mainAttrType) || baseInfo.mainAttrType || '-',
                 subAttrType: getAttrName(rawData.chargrowthtable?.subAttrType) || baseInfo.subAttrType || '-',
                 charBattleTag: rawData.chargrowthtable?.charBattleTag || baseInfo.charBattleTag || [],
@@ -886,6 +938,8 @@
                 const subDescNames = [];
                 const subDescLabels = {};
                 const subDescValues = {};
+                const hiddenFieldLabels = {};
+                const fieldGroups = [];
                 if (patchLists.length > 0) {
                     patchLists[0].forEach(patch => {
                         values.coolDown.push(patch.coolDown ?? 0);
@@ -894,26 +948,34 @@
                     const seenKeys = new Set();
                     patchLists.forEach((patchList, patchListIndex) => {
                         const localKeyMap = {};
-                        (patchList[0]?.blackboard || []).forEach(bb => {
-                            if (!bb || !bb.key) return;
-                            if (!seenKeys.has(bb.key)) {
-                                localKeyMap[bb.key] = bb.key;
-                                seenKeys.add(bb.key);
-                            } else {
+                        const localBlackboardKeys = [];
+                        const ensureBlackboardKey = rawKey => {
+                            if (localKeyMap[rawKey]) return localKeyMap[rawKey];
+                            let finalKey = rawKey;
+                            if (seenKeys.has(finalKey)) {
                                 let seq = 2;
-                                let newKey = bb.key + '_' + seq;
-                                while (seenKeys.has(newKey)) { seq++; newKey = bb.key + '_' + seq; }
-                                localKeyMap[bb.key] = newKey;
-                                seenKeys.add(newKey);
+                                finalKey = `${rawKey}_${seq}`;
+                                while (seenKeys.has(finalKey)) {
+                                    seq++;
+                                    finalKey = `${rawKey}_${seq}`;
+                                }
                             }
-                        });
+                            localKeyMap[rawKey] = finalKey;
+                            localBlackboardKeys.push(finalKey);
+                            hiddenFieldLabels[finalKey] = rawKey;
+                            seenKeys.add(finalKey);
+                            return finalKey;
+                        };
                         const localSubDescKeys = [];
                         patchList.forEach((patch, levelIndex) => {
                             (patch.blackboard || []).forEach(bb => {
                                 if (!bb || !bb.key) return;
-                                const finalKey = localKeyMap[bb.key] || bb.key;
-                                if (!values[finalKey]) values[finalKey] = [];
-                                values[finalKey].push(bb.value ?? 0);
+                                const finalKey = ensureBlackboardKey(bb.key);
+                                if (!values[finalKey]) values[finalKey] = Array(levelIndex).fill('');
+                                values[finalKey][levelIndex] = bb.value ?? 0;
+                            });
+                            localBlackboardKeys.forEach(key => {
+                                if (values[key].length <= levelIndex) values[key].push('');
                             });
                             const occurrenceMap = {};
                             (patch.subDescDataList || []).forEach(subDesc => {
@@ -940,6 +1002,10 @@
                             localSubDescKeys.forEach(column => {
                                 if (subDescValues[column.key].length <= levelIndex) subDescValues[column.key].push('');
                             });
+                        });
+                        fieldGroups.push({
+                            descriptions: localSubDescKeys.map(column => column.key),
+                            hiddenFields: localBlackboardKeys
                         });
                     });
                 }
@@ -980,7 +1046,16 @@
                     conditionDesc: replacePlaceholders(condition.conditionDesc, descriptionValues).replace(/^\/\*|\*\/$/g, '').trim(),
                     description: replacePlaceholders(condition.description, descriptionValues)
                 }));
-                legacy.skill[skillKey] = { skillKey, name: groupName, values, subDescNames, subDescLabels, subDescValues };
+                legacy.skill[skillKey] = {
+                    skillKey,
+                    name: groupName,
+                    values,
+                    subDescNames,
+                    subDescLabels,
+                    subDescValues,
+                    hiddenFieldLabels,
+                    fieldGroups
+                };
                 return {
                     skillKey,
                     name: groupName,
@@ -1102,19 +1177,52 @@
             const subDescNames = skillDetail.subDescNames || [];
             const subDescLabels = skillDetail.subDescLabels || {};
             const subDescValues = skillDetail.subDescValues || {};
+            const hiddenFieldLabels = skillDetail.hiddenFieldLabels || {};
+            const fieldGroups = skillDetail.fieldGroups || [];
             const bbColumns = Object.keys(values).filter(key => Array.isArray(values[key]));
             const hasSubDesc = subDescNames.length > 0;
-            let fields;
+            const rows = [];
+            const groupedFields = new Set();
+            const groupedDescriptions = new Set();
+            bbColumns.filter(isAlwaysShowColumn).forEach(field => {
+                rows.push({ field, kind: 'value', depth: 0 });
+                groupedFields.add(field);
+            });
             if (hasSubDesc) {
-                fields = showHidden
-                    ? [...subDescNames, ...bbColumns]
-                    : [...bbColumns.filter(isAlwaysShowColumn), ...subDescNames];
+                fieldGroups.forEach(group => {
+                    const descriptions = group.descriptions || [];
+                    descriptions.forEach(field => {
+                        rows.push({ field, kind: 'description', depth: 0 });
+                        groupedDescriptions.add(field);
+                    });
+                    if (!showHidden) return;
+                    (group.hiddenFields || []).forEach(field => {
+                        if (groupedFields.has(field)) return;
+                        rows.push({ field, kind: 'hidden', depth: descriptions.length ? 1 : 0 });
+                        groupedFields.add(field);
+                    });
+                });
+                subDescNames.filter(field => !groupedDescriptions.has(field)).forEach(field => {
+                    rows.push({ field, kind: 'description', depth: 0 });
+                });
+                if (showHidden) {
+                    bbColumns.filter(field => !groupedFields.has(field)).forEach(field => {
+                        rows.push({ field, kind: 'hidden', depth: 1 });
+                    });
+                }
             } else {
-                fields = bbColumns;
+                bbColumns.filter(field => !groupedFields.has(field)).forEach(field => {
+                    rows.push({ field, kind: 'hidden', depth: 0 });
+                });
             }
-            if (fields.length === 0) return '';
+            const visibleRows = rows.filter(row => {
+                if (row.kind === 'description') return true;
+                const rawField = hiddenFieldLabels[row.field] || row.field;
+                return !isZeroSuppressedSkillField(rawField) || !hasOnlyZeroNumericValues(values[row.field]);
+            });
+            if (visibleRows.length === 0) return '';
 
-            const levelCount = Math.max(0, ...fields.map(field => (subDescValues[field] || values[field] || []).length));
+            const levelCount = Math.max(0, ...visibleRows.map(row => (subDescValues[row.field] || values[row.field] || []).length));
             const visibleLevels = getVisibleLevels(levelCount, skillLevelsToShow, isExpanded);
             const header = `
                 <tr>
@@ -1122,8 +1230,14 @@
                     ${visibleLevels.map(level => `<th scope="col">${t('levelAbbreviation', { name: level })}</th>`).join('')}
                 </tr>
             `;
-            const rows = fields.map(field => {
-                const label = COLUMN_KEY_MAP[field] ? t(COLUMN_KEY_MAP[field]) : (subDescLabels[field] || field);
+            const bodyRows = visibleRows.map(row => {
+                const field = row.field;
+                const rawField = hiddenFieldLabels[field] || field;
+                let label = COLUMN_KEY_MAP[field] ? t(COLUMN_KEY_MAP[field]) : (subDescLabels[field] || rawField);
+                if (row.kind === 'hidden') {
+                    const translation = hiddenFieldTranslation(rawField);
+                    label = `<span class="character-skill-field-label"><span class="character-skill-field-key">${rawField}</span>${translation ? `<small class="character-skill-field-translation">${translation}</small>` : ''}</span>`;
+                }
                 const cells = visibleLevels.map(level => {
                     if (hasSubDesc && subDescValues[field] !== undefined) {
                         return `<td>${subDescValues[field][level - 1] ?? ''}</td>`;
@@ -1138,13 +1252,13 @@
                     }
                     return `<td>${value}</td>`;
                 }).join('');
-                return `<tr><th scope="row">${label}</th>${cells}</tr>`;
+                return `<tr${row.kind === 'hidden' ? ' class="character-skill-field-row"' : ''} data-row-depth="${row.depth}"><th scope="row">${label}</th>${cells}</tr>`;
             }).join('');
             return `
                 <div class="ake-ui-table-shell">
                     <table class="ake-ui-table character-matrix-table">
                         <thead>${header}</thead>
-                        <tbody>${rows}</tbody>
+                        <tbody>${bodyRows}</tbody>
                     </table>
                 </div>
             `;
