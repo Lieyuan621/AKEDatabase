@@ -1082,8 +1082,8 @@
         return patchesFor(skillId).find(patch => Number(patch.level) === Number(level)) || null;
     }
 
-    function loadingHtml(title, message) {
-        return `<div class="ake-ui-state" data-state="loading"><span class="ake-ui-spinner" aria-hidden="true"></span><div>
+    function loadingHtml(title, message, page = false) {
+        return `<div class="ake-ui-state" data-state="loading"${page ? ' data-layout="page"' : ''}><div>
             <h2>${escapeHtml(title)}</h2><p>${escapeHtml(message)}</p></div></div>`;
     }
 
@@ -1968,13 +1968,16 @@
             enumValueLabel('skillSpecifications', raw.skillSpecification),
             enumValueLabel('passiveSkillTypes', raw.passiveSkillType)
         ].filter(Boolean);
-        return `<header class="ake-ui-detail-header">
-            ${icon ? `<img class="ake-ui-detail-icon" src="${escapeHtml(icon)}" alt="">` : ''}<div class="ake-ui-detail-copy">
-                <div class="ake-ui-detail-eyebrow">${escapeHtml(owner.character.name)}${isEnemy ? '' : ` · ${escapeHtml(owner.group.displayName)}`}</div>
-                <h1 class="ake-ui-detail-title">${escapeHtml(title)}</h1>
-                <p class="ake-ui-detail-subtitle">${escapeHtml(raw.skillId || owner.item.id)}</p></div>
-            <code class="ake-ui-detail-id" title="${escapeHtml(owner.item.id)}">${escapeHtml(owner.item.id)}</code>
-        </header>
+        const code = window.AKEUI.element('code', 'ake-ui-detail-id', owner.item.id);
+        code.title = owner.item.id;
+        const detailHeader = window.AKEUI.detailHeader({
+            icon: icon ? { src: icon } : null,
+            eyebrow: `${owner.character.name}${isEnemy ? '' : ` · ${owner.group.displayName}`}`,
+            title,
+            subtitle: raw.skillId || owner.item.id,
+            after: code
+        });
+        return `${detailHeader?.outerHTML || ''}
         <div class="combatv3-context-row">
             <label class="combatv3-context-item"><span>${escapeHtml(t('metrics.level', null, '等级'))}</span><select id="combatv3LevelSelect"${levels.length <= 1 ? ' disabled' : ''}>${options}</select></label>
             <span class="combatv3-context-item"><span>${escapeHtml(entityLabel)}</span><strong>${escapeHtml(owner.character.name)}</strong></span>
@@ -2454,7 +2457,7 @@
         const preserve = options?.preserve === true;
         const token = ++state.loadToken;
         if (!preserve) elements.detail.innerHTML = loadingHtml(MODULE_TITLE(),
-            t('loading.buildingDirectory', null, '正在建立角色与技能目录'));
+            t('loading.buildingDirectory', null, '正在建立角色与技能目录'), true);
         try {
             if (window.configLoaded) await window.configLoaded;
             const [manifest, characters, growth, patches, enemyDisplay, enemies, potentialTalents] = await Promise.all([

@@ -306,23 +306,10 @@
 }
 .v2e-tooltip {
     display: none;
-    position: absolute;
-    z-index: 300;
-    left: 0;
-    bottom: calc(100% + 6px);
-    background: var(--content-bg, #fff);
-    border: 1px solid var(--border-color, #d9e0e8);
-    border-radius: 10px;
-    padding: 12px 16px;
-    box-shadow: 0 6px 20px rgba(0,0,0,.18);
     min-width: 320px;
     max-width: 480px;
     pointer-events: none;
-    font-weight: normal;
-    font-style: normal;
-    color: var(--text-color, #1e2b3c);
     font-size: 0.85rem;
-    line-height: 1.5;
 }
 .v2e-variant-template:hover .v2e-tooltip,
 .v2e-tooltip.pinned {

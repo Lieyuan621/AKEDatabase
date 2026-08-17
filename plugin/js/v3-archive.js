@@ -666,21 +666,20 @@
         const icon = groupIconTag(group, gamePlainText(groupName), '');
         const detailIsAdded = state.addedGroupIds.has(String(group.firstLvId))
             || state.addedItemIds.has(String(item.id));
+        const detailHeader = window.AKEUI.detailHeader({
+            icon: window.AKEUI.fragment(icon),
+            beforeTitle: window.AKEUI.fragment(`<div class="ake-ui-detail-meta">
+                <span>${gameHtml(gameText(page?.name, page?.pageType || ''))}</span>
+                <span>${escapeHtml(t('details.category', null, '分类'))}: ${gameHtml(gameText(category?.name, group.categoryId))}</span>
+                <span>${escapeHtml(t('details.archiveId', null, '档案组 ID'))}: ${escapeHtml(group.firstLvId)}</span>
+                <span>${escapeHtml(t('details.entryId', null, '条目 ID'))}: ${escapeHtml(item.id)}</span>
+                ${detailIsAdded ? addedTag(t('changes.added', null, '新增')) : ''}
+            </div>`),
+            title: window.AKEUI.fragment(gameHtml(groupName)),
+            subtitle: window.AKEUI.fragment(gameHtml(description))
+        });
         elements.content.innerHTML = `<article class="ake-ui-detail" data-detail-kind="archive">
-            <header class="ake-ui-detail-header">
-                <div class="ake-ui-detail-media">${icon}</div>
-                <div class="ake-ui-detail-copy">
-                    <div class="ake-ui-detail-meta">
-                        <span>${gameHtml(gameText(page?.name, page?.pageType || ''))}</span>
-                        <span>${escapeHtml(t('details.category', null, '分类'))}: ${gameHtml(gameText(category?.name, group.categoryId))}</span>
-                        <span>${escapeHtml(t('details.archiveId', null, '档案组 ID'))}: ${escapeHtml(group.firstLvId)}</span>
-                        <span>${escapeHtml(t('details.entryId', null, '条目 ID'))}: ${escapeHtml(item.id)}</span>
-                        ${detailIsAdded ? addedTag(t('changes.added', null, '新增')) : ''}
-                    </div>
-                    <h1>${gameHtml(groupName)}</h1>
-                    <p>${gameHtml(description)}</p>
-                </div>
-            </header>
+            ${detailHeader?.outerHTML || ''}
             ${renderEntryTabs(group, item)}
             ${item.type === 'multi_media' ? renderTranscript(item, popup) : renderDocument(item, popup)}
         </article>`;
@@ -690,14 +689,14 @@
         const category = categoryForGroup(group);
         const groupName = gameText(group.name, group.firstLvId);
         const groupIsAdded = state.addedGroupIds.has(String(group.firstLvId));
+        const detailHeader = window.AKEUI.detailHeader({
+            icon: window.AKEUI.fragment(groupIconTag(group, gamePlainText(groupName), '')),
+            beforeTitle: window.AKEUI.fragment(`<div class="ake-ui-detail-meta"><span>${gameHtml(gameText(category?.name, group.categoryId))}</span><span>${escapeHtml(group.firstLvId)}</span>${groupIsAdded ? addedTag(t('changes.added', null, '新增')) : ''}</div>`),
+            title: window.AKEUI.fragment(gameHtml(groupName)),
+            subtitle: window.AKEUI.fragment(gameHtml(gameText(group.subName)))
+        });
         elements.content.innerHTML = `<article class="ake-ui-detail" data-detail-kind="archive">
-            <header class="ake-ui-detail-header">
-                <div class="ake-ui-detail-media">${groupIconTag(group, gamePlainText(groupName), '')}</div>
-                <div class="ake-ui-detail-copy">
-                    <div class="ake-ui-detail-meta"><span>${gameHtml(gameText(category?.name, group.categoryId))}</span><span>${escapeHtml(group.firstLvId)}</span>${groupIsAdded ? addedTag(t('changes.added', null, '新增')) : ''}</div>
-                    <h1>${gameHtml(groupName)}</h1><p>${gameHtml(gameText(group.subName))}</p>
-                </div>
-            </header>
+            ${detailHeader?.outerHTML || ''}
             <div class="ake-ui-state" data-state="empty"><div><p>${escapeHtml(t('empty.content', null, '该档案暂无正文内容'))}</p></div></div>
         </article>`;
     }
@@ -859,8 +858,7 @@
     }
 
     function loadingHtml() {
-        return `<div class="ake-ui-state" data-state="loading" role="status">
-            <span class="ake-ui-spinner" aria-hidden="true"></span>
+        return `<div class="ake-ui-state" data-state="loading" data-layout="page" role="status">
             <div><h2>${escapeHtml(t('title', null, '档案库'))}</h2><p>${escapeHtml(t('loading.archive', null, '正在读取档案库数据'))}</p></div>
         </div>`;
     }

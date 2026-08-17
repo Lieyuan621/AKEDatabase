@@ -236,6 +236,7 @@
         const statusNames = ['statuses.active', 'statuses.upcoming', 'statuses.ended', 'statuses.permanent'];
         window.AKEModuleOverview.render(container, {
             title: t('overview.title'), description: t('overview.description'),
+            variant: 'landscape',
             group: item => ({ id: String(item.statusOrder ?? 3), name: t(statusNames[item.statusOrder] || 'statuses.permanent'), order: item.statusOrder ?? 3 }),
             onReset: () => { activeGameId = null; },
             onSelect: item => { activeGameId = item.gameId; renderGameList(); },
@@ -362,7 +363,7 @@
     }
 
     async function loadGameDetail(game, container) {
-        container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
+        container.innerHTML = `<div class="ake-ui-state" data-state="loading">${t('loading')}</div>`;
         try {
             const data = await (window.akeFetch || fetch)(game.contentFile).then(r => r.json());
             currentData = data;
@@ -594,6 +595,23 @@
         });
     }
 
+    function rewardMaterialItem(item) {
+        return {
+            icon: item.iconId
+                ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${item.iconId}.png`
+                : '',
+            name: item.name,
+            count: item.count
+        };
+    }
+
+    function rewardMaterialList(items, className) {
+        return window.AKEUI.materialItems(
+            items.map(item => rewardMaterialItem(item)),
+            `ake-ui-material__items ${className}`
+        );
+    }
+
     function renderLevelRewards(data) {
         const lt = data.contingencycontractleveltable;
         if (!lt || !lt.levelMap || !Object.keys(lt.levelMap).length) return '';
@@ -615,28 +633,25 @@
             }
         });
 
+        const rewardRows = levels.map(([, lv]) => {
+            const items = resolveRewardItems(lv.firstReward, rewardTable, itemTable);
+            const content = rewardMaterialList(items, 'v2cc-level-reward-list')
+                || window.AKEUI.element('span', 'v2cc-reward-empty', lv.firstReward || '-');
+            return window.AKEUI.progressionRow({
+                kind: 'cc-level-reward',
+                stage: `Lv.${lv.level}`,
+                content
+            });
+        });
+        const rewardList = window.AKEUI.progressionList({
+            className: 'v2cc-levels',
+            rows: rewardRows
+        });
+
         return `
             <div class="ake-ui-section">
                 <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.levelRewards')}</h3></div>
-                <div class="v2cc-levels">
-                    ${levels.map(([, lv]) => {
-                        const items = resolveRewardItems(lv.firstReward, rewardTable, itemTable);
-                        return `
-                            <div class="ake-ui-card" data-card-kind="cc-level" data-density="regular">
-                                <div class="v2cc-level-num">Lv.${lv.level}</div>
-                                <div class="v2cc-level-reward-list">
-                                    ${items.length ? items.map(it => `
-                                        <div class="v2cc-reward-item">
-                                            <img class="v2cc-reward-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${it.iconId}.png">
-                                            <span class="v2cc-reward-name">${escapeHtml(it.name)}</span>
-                                            <span class="v2cc-reward-count">×${it.count}</span>
-                                        </div>
-                                    `).join('') : `<span class="v2cc-reward-empty">${escapeHtml(lv.firstReward || '-')}</span>`}
-                                </div>
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
+                ${rewardList.outerHTML}
                 ${descs.length ? `<div class="v2cc-level-desc">${descs.join('<br>')}</div>` : ''}
             </div>
         `;
@@ -760,6 +775,7 @@
                                         ${tasks.map(task => {
                                             const desc = task.desc?.text ? parseText(task.desc.text) : '';
                                             const rewards = resolveRewardItems(task.rewardId, rewardTable, itemTable);
+                                            const rewardList = rewardMaterialList(rewards, 'v2cc-task-rewards');
                                             return `
                                                 <div class="ake-ui-card" data-card-kind="cc-task" data-density="compact">
                                                     <div class="ake-ui-card__header">
@@ -769,13 +785,7 @@
                                                     ${rewards.length ? `
                                                         <div class="v2cc-task-item-rewards">
                                                             <span class="v2cc-task-reward-label">${t('tasks.rewards')}</span>
-                                                            ${rewards.map(r => `
-                                                                <span class="v2cc-task-reward">
-                                                                    ${r.iconId ? `<img class="v2cc-task-reward-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${r.iconId}.png">` : ''}
-                                                                    <span class="v2cc-task-reward-name">${escapeHtml(r.name)}</span>
-                                                                    <span class="v2cc-task-reward-count">×${r.count}</span>
-                                                                </span>
-                                                            `).join('')}
+                                                            ${rewardList?.outerHTML || ''}
                                                         </div>
                                                     ` : ''}
                                                 </div>
@@ -963,7 +973,7 @@
             const cls = isCcTag ? 'v2d-buff-tag v2d-has-tip cc-tag-buff' : 'v2d-buff-tag v2d-has-tip';
             if (rows.length === 0) return `<span class="${isCcTag ? 'v2d-buff-tag cc-tag-buff' : 'v2d-buff-tag'}">${escapeHtml(id)}</span>`;
             const tipHtml = rows.map(r => `<div>${r}</div>`).join('');
-            return `<span class="${cls}">${escapeHtml(id)}<span class="v2d-buff-tip">${tipHtml}</span></span>`;
+            return `<span class="${cls} ake-ui-popover-anchor">${escapeHtml(id)}<span class="v2d-buff-tip ake-ui-popover" data-placement="top">${tipHtml}</span></span>`;
         }).join('')}</div>`;
     }
 
@@ -1002,7 +1012,7 @@
                 ['buff加成', libraryBuffModifiers],
                 ['副本加成', scriptModifiers]
             ]);
-        const scriptBuffTagsHtml = showHidden && (scriptedBuffs || []).length ? `<div class="v2d-enemy-buffs">${scriptedBuffs.map(row => `<span class="v2d-buff-tag v2d-script-buff v2d-has-tip">${escapeHtml(row.buffId)}<small>脚本</small><span class="v2d-buff-tip"><div>条件性脚本 Buff · LevelScript ${escapeHtml(row.scriptId)}</div></span></span>`).join('')}</div>` : '';
+        const scriptBuffTagsHtml = showHidden && (scriptedBuffs || []).length ? `<div class="v2d-enemy-buffs">${scriptedBuffs.map(row => `<span class="v2d-buff-tag v2d-script-buff v2d-has-tip ake-ui-popover-anchor">${escapeHtml(row.buffId)}<small>脚本</small><span class="v2d-buff-tip ake-ui-popover" data-placement="top"><div>条件性脚本 Buff · LevelScript ${escapeHtml(row.scriptId)}</div></span></span>`).join('')}</div>` : '';
 
         const statState = window.AKEEnemyRenderer.calculateStats({
             attrData,
@@ -1182,9 +1192,9 @@
                     ? `margin-left:${stackIdx * offsetPct}%;margin-top:-${stackIdx * offsetPct}%;z-index:${10 - stackIdx};`
                     : 'z-index:10;';
 
-                mapSpotsHtml += `<div class="v2cc-map-spot" data-wave="${wi}" data-group="${g.groupKey}" data-target-group="${targetGroupKey}" style="left:${pct.left}%;top:${pct.top}%;${vis}${stackStyle}">
+                mapSpotsHtml += `<div class="v2cc-map-spot" data-ake-popover-anchor data-wave="${wi}" data-group="${g.groupKey}" data-target-group="${targetGroupKey}" style="left:${pct.left}%;top:${pct.top}%;${vis}${stackStyle}">
                     <img class="v2cc-map-spot-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${spawn.templateId}.png">
-                    <div class="v2cc-map-tip">${tipLines.map(l => `<div>${l}</div>`).join('')}</div>
+                    <div class="v2cc-map-tip ake-ui-popover" data-placement="top">${tipLines.map(l => `<div>${l}</div>`).join('')}</div>
                 </div>`;
             });
         });
@@ -1338,15 +1348,16 @@
         const tagCount = Object.keys(tagTable).length;
         const groupCount = cct && cct.contractGroupMap ? Object.keys(cct.contractGroupMap).length : 0;
 
+        const detailHeader = window.AKEUI.detailHeader({
+            title,
+            subtitle: getCurrentShowHidden()
+                ? t('detail.subtitle', { activity: game.activityId, groups: groupCount, terms: tagCount })
+                : ''
+        });
+
         let html = `
             <div class="ake-ui-detail" data-detail-kind="cc">
-                <div class="ake-ui-detail-header">
-                    <div class="ake-ui-detail-icon is-symbol">⚔️</div>
-                    <div class="ake-ui-detail-copy">
-                        <div class="ake-ui-detail-title">${escapeHtml(title)}</div>
-                        ${getCurrentShowHidden() ? `<div class="ake-ui-detail-subtitle">${t('detail.subtitle', { activity: escapeHtml(game.activityId), groups: groupCount, terms: tagCount })}</div>` : ''}
-                    </div>
-                </div>
+                ${detailHeader?.outerHTML || ''}
                 ${renderActivityInfo(acc)}
                 ${renderContractGroups(cct, tagTable)}
                 <div class="ake-ui-section" id="v2ccSelectedSummary"></div>
@@ -1702,13 +1713,8 @@
             if (!tip) return;
             const mapRect = map.getBoundingClientRect();
             const spotRect = spot.getBoundingClientRect();
-            const spotCenterX = spotRect.left + spotRect.width / 2 - mapRect.left;
             const spotTop = spotRect.top - mapRect.top;
-
-            tip.classList.remove('tip-below', 'tip-left', 'tip-right');
-            if (spotTop < 60) tip.classList.add('tip-below');
-            if (spotCenterX > mapRect.width * 0.7) tip.classList.add('tip-left');
-            else if (spotCenterX < mapRect.width * 0.3) tip.classList.add('tip-right');
+            tip.dataset.placement = spotTop < 60 ? 'bottom' : 'top';
         }
 
         function switchWave(wi, spawnerBody) {

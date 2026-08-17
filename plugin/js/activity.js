@@ -73,7 +73,6 @@
             const filterPanel = document.getElementById('activityFilterBar');
             const count = selectedTagIds.size + (selectedStatus ? 1 : 0);
             window.AKEUI?.updateFilterPanel(filterPanel, {
-                expanded: true,
                 summary: count ? commonT('filterCount', { count }) : commonT('filter')
             });
         }
@@ -307,7 +306,7 @@
 
             viewport.appendChild(canvas);
             section.appendChild(viewport);
-            container.querySelector('.ake-ui-page__header')?.after(section);
+            container.querySelector('.ake-overview-heading[data-level="page"]')?.after(section);
             requestAnimationFrame(() => {
                 const todayOffset = (now - rangeStart) / TIMELINE_DAY_MS;
                 if (todayOffset >= 0) viewport.scrollLeft = Math.max(0, todayOffset * TIMELINE_DAY_WIDTH - viewport.clientWidth * 0.3);
@@ -318,6 +317,7 @@
             const statusOrder = { 'status-active': 0, 'status-upcoming': 1, 'status-closed': 2, 'status-permanent': 3 };
             window.AKEModuleOverview.render(container, {
                 title: t('overview.title'), description: t('overview.description'),
+                variant: 'landscape',
                 group: item => { const status = getActivityStatus(item.openTime, item.closeTime); return { id: status.class, name: status.text, order: statusOrder[status.class] }; },
                 onReset: () => { activeActivityId = null; },
                 afterRender: () => renderActivityTimeline(items, container),
@@ -422,7 +422,7 @@
         }
 
         async function loadActivityDetail(activity, container) {
-            container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
+            container.innerHTML = `<div class="ake-ui-state" data-state="loading">${t('loading')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(activity.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data, activity);
@@ -503,23 +503,28 @@
             const tagsHtml = (data.tags || []).length
                 ? data.tags.map(tag => tag.name ? `<span class="ake-ui-badge">${tag.name}</span>` : '').join('')
                 : '';
+            const detailHeader = window.AKEUI.detailHeader({
+                title: data.name || activity.name,
+                badges: [{
+                    label: status.text,
+                    attributes: {
+                        'data-accent': 'status',
+                        'data-accent-value': status.class.replace('status-', '')
+                    }
+                }],
+                content: window.AKEUI.fragment(`
+                    <div class="ake-ui-detail-meta">
+                        <span>${t('dates.range', { start: openTimeStr, end: closeTimeStr })}</span>
+                        ${countdownHtml}
+                    </div>
+                    ${tagsHtml ? `<div class="ake-ui-detail-badges">${tagsHtml}</div>` : ''}
+                    ${data.desc ? `<div class="ake-ui-detail-subtitle">${parseText(data.desc)}</div>` : ''}
+                `)
+            });
 
             return `
                 <div class="ake-ui-detail" data-detail-kind="activity">
-                    <div class="ake-ui-detail-header">
-                        <div class="ake-ui-detail-copy">
-                            <div class="ake-ui-detail-title-row">
-                                <span class="ake-ui-detail-title">${data.name || activity.name}</span>
-                                <span class="ake-ui-badge" data-accent="status" data-accent-value="${status.class.replace('status-', '')}">${status.text}</span>
-                            </div>
-                            <div class="ake-ui-detail-meta">
-                                <span>${t('dates.range', { start: openTimeStr, end: closeTimeStr })}</span>
-                                ${countdownHtml}
-                            </div>
-                            ${tagsHtml ? `<div class="ake-ui-detail-badges">${tagsHtml}</div>` : ''}
-                            ${data.desc ? `<div class="ake-ui-detail-subtitle">${parseText(data.desc)}</div>` : ''}
-                        </div>
-                    </div>
+                    ${detailHeader?.outerHTML || ''}
                     ${conditionsHtml}
                     ${rewardsHtml}
                     ${stagesHtml}

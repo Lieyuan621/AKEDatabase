@@ -75,8 +75,27 @@
     }
 
     function renderShellState(kind, title, detail) {
-        const spinner = kind === 'loading' ? '<span class="ake-ui-spinner"></span>' : '';
-        content.innerHTML = `<div class="ake-ui-state" data-state="${escapeHtml(kind)}">${spinner}<b>${escapeHtml(title)}</b>${detail ? `<small>${escapeHtml(detail)}</small>` : ''}</div>`;
+        content.toggleAttribute('aria-busy', kind === 'loading');
+        content.innerHTML = `<div class="ake-ui-state" data-state="${escapeHtml(kind)}" role="${kind === 'error' ? 'alert' : 'status'}"><b class="ake-ui-state__title">${escapeHtml(title)}</b>${detail ? `<small class="ake-ui-state__message">${escapeHtml(detail)}</small>` : ''}</div>`;
+    }
+
+    function createMountSurface(title) {
+        renderShellState('loading', title);
+        const state = content.firstElementChild;
+        const host = document.createElement('div');
+        host.className = 'misc-submodule-host';
+        host.hidden = true;
+        host.setAttribute('aria-hidden', 'true');
+        content.append(host);
+        return {
+            host,
+            reveal() {
+                host.hidden = false;
+                host.removeAttribute('aria-hidden');
+                state?.remove();
+                content.removeAttribute('aria-busy');
+            }
+        };
     }
 
     function normalizeContentFile(value) {
@@ -182,7 +201,7 @@
         return null;
     }
 
-    function createScope(module, entryId) {
+    function createScope(module, entryId, host = content) {
         const abortController = new AbortController();
         const cleanups = new Set();
         const timeouts = new Set();
@@ -199,7 +218,7 @@
             id: module.id,
             module,
             root: null,
-            host: content,
+            host,
             routeId: entryId,
             signal: abortController.signal,
             table: (name, version) => window.AKEV3.table(name, version),
@@ -303,7 +322,7 @@
     }
 
     async function executeScripts(scope, module, generation) {
-        const scripts = Array.from(content.querySelectorAll('script'));
+        const scripts = Array.from(scope.context.host.querySelectorAll('script'));
         for (const sourceScript of scripts) {
             if (generation !== loadGeneration || scope.context.signal.aborted) throw new DOMException('Aborted', 'AbortError');
             const src = sourceScript.getAttribute('src');
@@ -323,10 +342,10 @@
         await releaseActiveController();
         if (generation !== loadGeneration || !parentActive || destroyed) return;
 
-        const scope = createScope(module, entryId);
+        const mountSurface = createMountSurface(`正在读取${translate(module.title)}`);
+        const scope = createScope(module, entryId, mountSurface.host);
         activeScope = scope;
-        renderShellState('loading', `正在读取${translate(module.title)}`);
-            const response = await (window.akeFetch || fetch)(versionedUrl(module.contentFile, 'plugin').href, { signal: scope.context.signal });
+        const response = await (window.akeFetch || fetch)(versionedUrl(module.contentFile, 'plugin').href, { signal: scope.context.signal });
         if (!response.ok) throw new Error(`无法加载 ${module.contentFile} (HTTP ${response.status})`);
         const html = await response.text();
         if (generation !== loadGeneration || scope.context.signal.aborted) return;
@@ -338,8 +357,8 @@
         }
         window.akeDataSource?.rewriteDomAssets?.(template.content);
         registrations.delete(module.id);
-        content.replaceChildren(template.content.cloneNode(true));
-        scope.context.root = content.querySelector(`[data-misc-module="${module.id}"]`) || content.firstElementChild || content;
+        mountSurface.host.replaceChildren(template.content.cloneNode(true));
+        scope.context.root = mountSurface.host.querySelector(`[data-misc-module="${module.id}"]`) || mountSurface.host.firstElementChild || mountSurface.host;
         await executeScripts(scope, module, generation);
         if (generation !== loadGeneration || scope.context.signal.aborted) return;
 
@@ -357,7 +376,8 @@
         if (mount) await mount(scope.context.root, scope.context);
         if (generation !== loadGeneration || scope.context.signal.aborted) return;
         await controllerMethod(controller, ['activate'])?.();
-        window.akeData?.translateDOM?.(content);
+        window.akeData?.translateDOM?.(mountSurface.host);
+        mountSurface.reveal();
     }
 
     async function selectModule(moduleId, options = {}) {
@@ -435,9 +455,7 @@
         parentActive = false;
         loadGeneration += 1;
         closeMobileList();
-        void releaseActiveController().then(() => {
-            if (!parentActive && !destroyed) renderShellState('loading', '杂项模块已暂停');
-        });
+        void releaseActiveController();
     }
 
     function resume() {

@@ -198,7 +198,10 @@
         function loadImage(url) {
             if (!imagePromises.has(url)) {
                 const promise = (async () => {
-                    const response = await (window.akeFetch || fetch)(url, { signal: context.signal });
+                    const response = await (window.akeFetch || fetch)(url, {
+                        signal: context.signal,
+                        akeProgress: false
+                    });
                     if (!response.ok) throw new Error(`HTTP ${response.status}`);
                     const image = await decodeBlob(await response.blob());
                     loadedImages.add(image);

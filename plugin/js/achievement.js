@@ -172,7 +172,7 @@
         }
 
         async function loadCategoryDetail(category, container) {
-            container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
+            container.innerHTML = `<div class="ake-ui-state" data-state="loading">${t('loading')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(category.contentFile).then(r => r.json());
                 container.innerHTML = renderDetail(data);

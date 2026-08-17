@@ -187,7 +187,7 @@
             const tips = [source, ...values];
             const label = `${escapeHtml(row.buffId)}${row.conditional ? '<small>脚本</small>' : ''}`;
             return tips.length
-                ? `<span class="v2d-buff-tag${row.conditional ? ' v2d-script-buff' : ''} v2d-has-tip">${label}<span class="v2d-buff-tip">${tips.map(value => `<div>${value}</div>`).join('')}</span></span>`
+                ? `<span class="v2d-buff-tag${row.conditional ? ' v2d-script-buff' : ''} v2d-has-tip ake-ui-popover-anchor">${label}<span class="v2d-buff-tip ake-ui-popover" data-placement="top">${tips.map(value => `<div>${value}</div>`).join('')}</span></span>`
                 : `<span class="v2d-buff-tag">${label}</span>`;
         }).join('')}</div>`;
     }
@@ -296,9 +296,9 @@
                 ].filter(Boolean);
                 const offset = (0.3 * 100 / (halfX * 2)).toFixed(2);
                 const stackStyle = stackIndex ? `margin-left:${stackIndex * offset}%;margin-top:-${stackIndex * offset}%;z-index:${10 - stackIndex};` : 'z-index:10;';
-                spots += `<div class="v2d-map-spot" data-wave="${waveIndex}" data-group="${escapeHtml(group.key)}" data-target-group="${escapeHtml(group.targetKey)}" data-enemy-id="${escapeHtml(spawn.id)}" style="left:${point.left}%;top:${point.top}%;${waveIndex ? 'display:none;' : ''}${stackStyle}">
+                spots += `<div class="v2d-map-spot" data-ake-popover-anchor data-wave="${waveIndex}" data-group="${escapeHtml(group.key)}" data-target-group="${escapeHtml(group.targetKey)}" data-enemy-id="${escapeHtml(spawn.id)}" style="left:${point.left}%;top:${point.top}%;${waveIndex ? 'display:none;' : ''}${stackStyle}">
                     <img class="v2d-map-spot-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${escapeHtml(spawn.templateId)}.png" alt="">
-                    <div class="v2d-map-tip"><div><b>${escapeHtml(enemyName)} ×${spawn.count} Lv.${spawn.level}</b></div>${details.map(detail => `<div>${escapeHtml(detail)}</div>`).join('')}</div>
+                    <div class="v2d-map-tip ake-ui-popover" data-placement="top"><div><b>${escapeHtml(enemyName)} ×${spawn.count} Lv.${spawn.level}</b></div>${details.map(detail => `<div>${escapeHtml(detail)}</div>`).join('')}</div>
                 </div>`;
             }));
         });
@@ -411,10 +411,15 @@
         const status = seasonStatus(season);
         const data = season.data;
         activeData = data;
-        detail.innerHTML = `<div class="ake-ui-detail" data-detail-kind="tower"><div class="ake-ui-detail-header">
-            <img class="ake-ui-detail-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/activity/${escapeHtml(data.activity.tabImg || 'activity_tab_bg_seasontower')}.png" alt="">
-            <div class="ake-ui-detail-copy"><h1 class="ake-ui-detail-title">${escapeHtml(text(data.activity.name, '战争回响'))} · ${escapeHtml(season.name)}</h1><p class="ake-ui-detail-subtitle">${escapeHtml(text(data.activity.desc, SERIES_ID))}</p><div class="ake-ui-detail-meta"><span class="ake-ui-badge" data-accent="status" data-accent-value="${status.key}">${status.label}</span><span>${formatDate(season.openTime)}</span><span>${formatDate(season.closeTime)}</span></div></div>
-        </div>
+        const detailHeader = window.AKEUI.detailHeader({
+            icon: {
+                src: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/activity/${data.activity.tabImg || 'activity_tab_bg_seasontower'}.png`
+            },
+            title: `${text(data.activity.name, '战争回响')} · ${season.name}`,
+            subtitle: text(data.activity.desc, SERIES_ID),
+            content: window.AKEUI.fragment(`<div class="ake-ui-detail-meta"><span class="ake-ui-badge" data-accent="status" data-accent-value="${status.key}">${status.label}</span><span>${formatDate(season.openTime)}</span><span>${formatDate(season.closeTime)}</span></div>`)
+        });
+        detail.innerHTML = `<div class="ake-ui-detail" data-detail-kind="tower">${detailHeader?.outerHTML || ''}
         ${renderIntro(data)}
         <section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">最终评级与称号</h2></header><div class="ake-ui-card-grid" data-size="narrow">${renderRanks(data)}</div></section>
         <section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">轮换周期</h2></header>${season.weeks.map((week, index) => renderWeek(week, index, data)).join('')}</section></div>`;
@@ -487,12 +492,8 @@
         if (!map || !tip) return;
         const mapRect = map.getBoundingClientRect();
         const spotRect = spot.getBoundingClientRect();
-        const centerX = spotRect.left + spotRect.width / 2 - mapRect.left;
         const top = spotRect.top - mapRect.top;
-        tip.classList.remove('tip-below', 'tip-left', 'tip-right');
-        if (top < 60) tip.classList.add('tip-below');
-        if (centerX > mapRect.width * .7) tip.classList.add('tip-left');
-        else if (centerX < mapRect.width * .3) tip.classList.add('tip-right');
+        tip.dataset.placement = top < 60 ? 'bottom' : 'top';
     }
 
     async function load() {

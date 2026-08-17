@@ -1,6 +1,5 @@
 (function() {
         const t = window.akeI18n.scope('modules.equip');
-        const commonT = window.akeI18n.scope('common');
         let allSuits = [];
         let rawAllSuits = [];
         let activeSuitId = null;
@@ -158,12 +157,13 @@
         function renderEquipOverview(items, container) {
             window.AKEModuleOverview.render(container, {
                 title: t('overview.title'), description: t('overview.description'),
+                tagsLayout: 'overlay',
                 group: item => ({ id: item.isIndependentGroup ? 'independent' : 'suit', name: item.isIndependentGroup ? t('independentEquipment') : t('equipmentSets'), order: item.isIndependentGroup ? 1 : 0 }),
                 onReset: () => { activeSuitId = null; },
                 onSelect: item => { activeSuitId = item.suitID; renderSuitList(); },
                 sidebarSelector: item => `.ake-ui-directory__item[data-suit-id="${CSS.escape(item.suitID)}"]`,
                 items: items.map(item => ({ ...item, id: item.suitID, image: item.icon, fallback: t('overview.fallback'),
-                    tags: [t('overview.highestRarity', { rarity: item.rarity || 1 }), t('overview.equipmentCount', { count: item.equipCount || 0 })] }))
+                    tags: [t('overview.equipmentCount', { count: item.equipCount || 0 })] }))
             });
         }
 
@@ -233,90 +233,93 @@
             }
         }
 
-        function renderSubStatTable(displayAttrModifiers) {
+        function renderSubStatList(displayAttrModifiers) {
             const showHidden = getCurrentShowHidden();
             const subStats = displayAttrModifiers.filter(m => m.attrIndex > 0);
             if (subStats.length === 0) return '';
 
             const hasEnhance = subStats.some(m => m.enhancedAttrValues && m.enhancedAttrValues.length > 0);
 
-            let headerCells = `<th>${t('columns.stat')}</th>`;
-            if (hasEnhance) {
-                headerCells += `<th>${t('columns.base')}</th><th>+1</th><th>+2</th><th>+3</th>`;
-            } else {
-                headerCells += `<th>${t('columns.value')}</th>`;
-            }
-
-            let bodyRows = '';
-            subStats.forEach(m => {
+            const rows = subStats.map(m => {
                 const name = getAttrName(m.attrType, m.compositeAttr);
                 const baseVal = formatAttrValue(m.attrType, m.attrValue, m.compositeAttr);
                 const modType = modifierTypeMap[String(m.modifierType)] || '';
-                let cells = `<td>${escapeHtml(name)}`;
-                if (showHidden && modType) {
-                    cells += `<span class="ake-ui-badge" data-density="compact" title="${escapeHtml(modType)}">${modType}</span>`;
-                }
-                cells += `</td>`;
+                const modifierTag = showHidden && modType
+                    ? `<span class="ake-ui-badge" data-density="compact" title="${escapeHtml(modType)}">${escapeHtml(modType)}</span>`
+                    : '';
+                const values = hasEnhance
+                    ? [baseVal, ...Array.from({ length: 3 }, (_, index) => {
+                        const value = m.enhancedAttrValues?.[index];
+                        return value === undefined ? '-' : formatAttrValue(m.attrType, value, m.compositeAttr);
+                    })]
+                    : [baseVal];
+                const labels = hasEnhance
+                    ? [t('columns.base'), '+1', '+2', '+3']
+                    : [t('columns.value')];
+                const valueItems = values.map((value, index) => `
+                    <div class="v2eq-substat-stage">
+                        <dt>${labels[index]}</dt>
+                        <dd>${value}</dd>
+                    </div>
+                `).join('');
 
-                if (hasEnhance && m.enhancedAttrValues && m.enhancedAttrValues.length > 0) {
-                    cells += `<td class="v2eq-value-cell">${baseVal}</td>`;
-                    m.enhancedAttrValues.forEach(v => {
-                        cells += `<td class="v2eq-value-cell">${formatAttrValue(m.attrType, v, m.compositeAttr)}</td>`;
-                    });
-                    const filled = 1 + m.enhancedAttrValues.length;
-                    for (let i = filled; i < 4; i++) {
-                        cells += `<td class="v2eq-value-cell">-</td>`;
-                    }
-                } else {
-                    cells += `<td class="v2eq-value-cell">${baseVal}</td>`;
-                    if (hasEnhance) {
-                        for (let i = 1; i < 4; i++) cells += `<td class="v2eq-value-cell">-</td>`;
-                    }
-                }
-                bodyRows += `<tr>${cells}</tr>`;
-            });
+                return `
+                    <div class="v2eq-substat">
+                        <div class="v2eq-substat-heading"><span>${escapeHtml(name)}</span>${modifierTag}</div>
+                        <dl class="v2eq-substat-values">${valueItems}</dl>
+                    </div>
+                `;
+            }).join('');
 
-            return `<table class="ake-ui-table">
-                <thead><tr>${headerCells}</tr></thead>
-                <tbody>${bodyRows}</tbody>
-            </table>`;
+            return `<div class="v2eq-substats">${rows}</div>`;
         }
 
-        function renderFormulaBtn(itemId, formulaData, formulaChainData, itemTable) {
+        function equipMaterialItem(itemId, count, itemTable) {
+            if (!itemId) return null;
+            const item = itemTable[itemId] || {};
+            return {
+                icon: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${item.iconId || itemId}.png`,
+                name: item.name?.text || itemId,
+                count: Number(count || 0).toLocaleString(),
+                description: item.desc?.text || ''
+            };
+        }
+
+        function renderFormulaBtn(formulaData, formulaChainData, itemTable) {
             const chains = formulaChainData?.chainList || [];
             if (!formulaData || chains.length === 0) return '';
 
-            function renderCostItem(costItemId, count, prefix) {
-                if (!costItemId) return '';
-                const item = itemTable[costItemId] || {};
-                const name = item.name?.text || costItemId;
-                const iconId = item.iconId || costItemId;
-                return `<div class="v2eq-cost-item"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId}.png"><span class="v2eq-ci-name">${escapeHtml(name)}</span><span class="v2eq-ci-cnt">${prefix}${Number(count || 0).toLocaleString()}</span></div>`;
-            }
-
-            const tipHtml = chains.map(chain => {
-                const costItems = chain.costItemId || [];
-                const costNums = chain.costItemNum || [];
-                let costsHtml = renderCostItem(chain.costGoldId, chain.costGoldNum, '');
-                costItems.forEach((costItemId, index) => {
-                    costsHtml += renderCostItem(costItemId, costNums[index], '×');
+            const getChainItems = chain => {
+                const items = [];
+                const gold = equipMaterialItem(chain.costGoldId, chain.costGoldNum, itemTable);
+                if (gold) items.push(gold);
+                (chain.costItemId || []).forEach((costItemId, index) => {
+                    const item = equipMaterialItem(costItemId, (chain.costItemNum || [])[index], itemTable);
+                    if (item) items.push(item);
                 });
-                const chainClass = chain.isDefault ? ' v2eq-cost-chain-default' : '';
+                return items;
+            };
+            const rows = chains.map(chain => {
                 const chainId = getCurrentShowHidden() ? ` · #${escapeHtml(String(chain.chainId ?? ''))}` : '';
-                return `<div class="v2eq-cost-chain${chainClass}"><div class="v2eq-cost-chain-title" title="isDefault: ${chain.isDefault === true}">${escapeHtml(formulaData.level || '')}${chainId}</div>${costsHtml}</div>`;
-            }).join('');
+                return {
+                    label: `${formulaData.level || t('craftingCost')}${chainId}`,
+                    className: chain.isDefault ? 'v2eq-material-row--default' : '',
+                    items: getChainItems(chain)
+                };
+            });
 
             const defaultChain = chains.find(chain => chain.isDefault === true) || chains[0];
-            const componentId = defaultChain?.costItemId?.[0];
-            const component = itemTable[componentId] || {};
-            const componentTitle = component.name?.text || (getCurrentShowHidden() ? componentId : '');
-            const componentIcon = componentId
-                ? `<img class="v2eq-default-component" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escapeHtml(component.iconId || componentId)}.png" alt="" title="${escapeHtml(componentTitle)}">`
-                : '';
-            return `<span class="v2eq-cost-wrap">${componentIcon}<span class="v2eq-cost-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-cost-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">${t('craftingCost')}</span><span class="v2eq-cost-tip">${tipHtml}</span></span>`;
+            const icons = [...new Set(getChainItems(defaultChain).map(item => item.icon))].map(icon => ({ icon }));
+            return window.AKEUI.materialPopover({
+                label: t('craftingCost'),
+                placement: 'bottom',
+                className: 'v2eq-material-popover',
+                rows,
+                icons
+            })?.outerHTML || '';
         }
 
-        function renderGuaranteeBtn(itemId, displayAttrModifiers, guaranteeRules, enhanceConst) {
+        function renderGuaranteeBtn(displayAttrModifiers, guaranteeRules, enhanceConst) {
             if (!guaranteeRules || Object.keys(guaranteeRules).length === 0) return '';
 
             const subStats = (displayAttrModifiers || []).filter(m => m.attrIndex > 0 && m.enhanceGuaranteeTimesRuleId && m.enhancedAttrValues && m.enhancedAttrValues.length > 0);
@@ -342,7 +345,14 @@
                 <tbody>${rows}</tbody>
             </table>`;
 
-            return `<span class="v2eq-guarantee-wrap"><span class="v2eq-guarantee-btn" onclick="event.stopPropagation();var t=this.nextElementSibling;t.classList.toggle('pinned');if(t.classList.contains('pinned'))document.querySelectorAll('.v2eq-guarantee-tip.pinned').forEach(x=>{if(x!==t)x.classList.remove('pinned')})">${t('enhancementGuarantee')}</span><span class="v2eq-guarantee-tip">${tipHtml}</span></span>`;
+            return window.AKEUI.popover({
+                label: t('enhancementGuarantee'),
+                placement: 'bottom',
+                className: 'v2eq-guarantee-popover',
+                panelClassName: 'v2eq-guarantee-tip',
+                panelElement: 'div',
+                content: window.AKEUI.fragment(tipHtml)
+            })?.outerHTML || '';
         }
 
         function renderAcquisition(acquisition) {
@@ -390,15 +400,15 @@
             const showHidden = getCurrentShowHidden();
             const mainModType = modifierTypeMap[String(mainMod.modifierType)] || '';
 
-            const subTableHtml = renderSubStatTable(equipData.displayAttrModifiers);
+            const subStatsHtml = renderSubStatList(equipData.displayAttrModifiers);
 
             let decoHtml = '';
             if (decoDesc) {
                 decoHtml = `<div class="v2eq-deco-desc">${parseText(decoDesc)}</div>`;
             }
 
-            const formulaBtnHtml = renderFormulaBtn(itemId, formulaData, formulaChainData, itemTable);
-            const guaranteeBtnHtml = renderGuaranteeBtn(itemId, equipData.displayAttrModifiers, guaranteeRules, enhanceConst);
+            const formulaBtnHtml = renderFormulaBtn(formulaData, formulaChainData, itemTable);
+            const guaranteeBtnHtml = renderGuaranteeBtn(equipData.displayAttrModifiers, guaranteeRules, enhanceConst);
             const hasActions = formulaBtnHtml || guaranteeBtnHtml;
             const addedLabel = window.akeData?.t('versionDiff.added', null, '新增') || '新增';
 
@@ -425,7 +435,7 @@
                                 ${showHidden && mainModType ? `<span class="v2eq-mainstat-modifier">(${mainModType})</span>` : ''}
                             </span>
                         </div>
-                        ${subTableHtml}
+                        ${subStatsHtml}
                         ${decoHtml}
                         ${renderAcquisition(acquisition)}
                     </div>
@@ -438,7 +448,7 @@
             if (!skillTable || Object.keys(skillTable).length === 0) return '';
 
             const showHidden = getCurrentShowHidden();
-            let html = `<div class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.setSkills')}</h3></div>`;
+            let html = `<section class="ake-ui-section v2eq-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.setSkills')}</h3></div><div class="v2eq-skill-list">`;
             for (const [skillId, skillData] of Object.entries(skillTable)) {
                 const bundle = skillData.SkillPatchDataBundle;
                 if (!bundle) continue;
@@ -470,7 +480,7 @@
                     }
                 });
             }
-            html += '</div>';
+            html += '</div></section>';
             return html;
         }
 
@@ -517,18 +527,6 @@
             });
         }
 
-        function renderPackSection(data) {
-            const packTable = data.equippacktable;
-            if (!packTable || Object.keys(packTable).length === 0) return '';
-
-            let html = '';
-            for (const [packId, pack] of Object.entries(packTable)) {
-                const packName = pack.name?.text || (getCurrentShowHidden() ? packId : '');
-                if (packName) html += `<span class="ake-ui-badge"${getCurrentShowHidden() ? ` title="${escapeHtml(packId)}"` : ''}>${escapeHtml(packName)}</span>`;
-            }
-            return html;
-        }
-
         function renderItemsSection(data) {
             const equipTable = data.equiptable;
             const itemTable = data.itemtable || {};
@@ -565,10 +563,10 @@
             });
 
             return `
-                <div class="ake-ui-section">
+                <section class="ake-ui-section v2eq-section">
                     <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.setPieces')}</h3></div>
                     <div class="ake-ui-card-grid" data-size="wide">${cardsHtml}</div>
-                </div>
+                </section>
             `;
         }
 
@@ -576,7 +574,7 @@
             const techConst = data.equiptechconst;
             if (!techConst) return '';
 
-            let html = `<div class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.enhancementInfo')}</h3></div>`;
+            let html = `<section class="ake-ui-section v2eq-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.enhancementInfo')}</h3></div>`;
             html += `<div class="v2eq-enhance-info">`;
             if (techConst.equipProduceMaxCount !== undefined) {
                 html += `<div class="v2eq-enhance-item">
@@ -595,31 +593,43 @@
             const enhanceCost = data.equipenhancecosttable;
             const showHidden = getCurrentShowHidden();
             if (enhanceCost && showHidden) {
-                for (const [domainId, cost] of Object.entries(enhanceCost)) {
+                const itemTable = data.itemtable || {};
+                const rows = Object.entries(enhanceCost).map(([domainId, cost]) => {
                     const dName = getDomainName(cost.domainId || domainId);
-                    html += `<div class="ake-ui-card" data-card-kind="equipment-cost">`;
-                    html += `<div class="v2eq-enhance-cost-domain">${escapeHtml(dName)}</div>`;
-                    html += `<div class="v2eq-enhance-item">
-                        <span class="v2eq-enhance-label">${t('materialsConsumed')}</span>
-                        <span class="v2eq-enhance-value">${escapeHtml(cost.consumeItemId)} ×${cost.consumeItemCnt}</span>
-                    </div>`;
-                    if (cost.returnbackItemId) {
-                        html += `<div class="v2eq-enhance-item">
-                            <span class="v2eq-enhance-label">${t('materialsReturned')}</span>
-                            <span class="v2eq-enhance-value">${escapeHtml(cost.returnbackItemId)} ×${cost.returnbackItemCnt}</span>
-                        </div>`;
-                    }
-                    html += `</div>`;
+                    const content = window.AKEUI.element('div', 'v2eq-enhance-materials');
+                    const appendMaterialLine = (label, itemId, count) => {
+                        const material = equipMaterialItem(itemId, count, itemTable);
+                        if (!material) return;
+                        const line = window.AKEUI.element('div', 'v2eq-enhance-material-line');
+                        line.appendChild(window.AKEUI.element('span', 'v2eq-enhance-label', label));
+                        const items = window.AKEUI.materialItems([material]);
+                        if (items) line.appendChild(items);
+                        content.appendChild(line);
+                    };
+                    appendMaterialLine(t('materialsConsumed'), cost.consumeItemId, cost.consumeItemCnt);
+                    appendMaterialLine(t('materialsReturned'), cost.returnbackItemId, cost.returnbackItemCnt);
+                    if (!content.childElementCount) return null;
+                    return window.AKEUI.progressionRow({
+                        kind: 'equipment-enhancement',
+                        stage: dName || domainId,
+                        content
+                    });
+                }).filter(Boolean);
+                if (rows.length) {
+                    html += window.AKEUI.progressionList({
+                        className: 'v2eq-enhance-progression',
+                        rows
+                    }).outerHTML;
                 }
             }
 
-            html += '</div>';
+            html += '</section>';
             return html;
         }
 
         async function loadSuitDetail(suit, container) {
             const generation = ++detailRequestGeneration;
-            container.innerHTML = `<div class="ake-ui-state">${t('loadingSet')}</div>`;
+            container.innerHTML = `<div class="ake-ui-state" data-state="loading">${t('loadingSet')}</div>`;
             try {
                 const data = await (window.akeFetch || fetch)(suit.contentFile).then(r => r.json());
                 if (generation !== detailRequestGeneration || activeSuitId !== suit.suitID) return;
@@ -634,29 +644,23 @@
         function renderDetail(data, suit) {
             const suitTable = data.equipsuittable;
             const suitName = suitTable?.list?.[0]?.suitName?.text || suit.name;
-            const packHtml = renderPackSection(data);
+            const equipmentCount = Object.keys(data.equiptable || {}).length;
+            const detailHeader = window.AKEUI.detailHeader({
+                className: 'equipment-detail-hero',
+                icon: { src: suit.icon || '' },
+                title: suitName,
+                badges: equipmentCount ? [t('overview.equipmentCount', { count: equipmentCount })] : []
+            });
 
             let html = `
-                <div class="ake-ui-detail" data-detail-kind="equipment" data-accent="rarity" data-accent-value="${suit.rarity}">
-                    <div class="ake-ui-detail-header">
-                        <div class="ake-ui-detail-icon">
-                            <img src="${suit.icon || ''}">
-                        </div>
-                        <div class="ake-ui-detail-copy">
-                            <div class="ake-ui-detail-title-row">
-                                <span class="ake-ui-detail-title">${escapeHtml(suitName)}</span>
-                                <span class="ake-ui-badge">${commonT('rarityLabel', { rarity: suit.rarity })}</span>
-                                <span class="ake-ui-detail-id">${escapeHtml(suit.suitID)}</span>
-                            </div>
-                            ${packHtml}
-                        </div>
-                    </div>
+                <article class="ake-ui-detail" data-detail-kind="equipment">
+                    ${detailHeader?.outerHTML || ''}
             `;
 
             html += renderSkillSection(data);
             html += renderItemsSection(data);
             html += renderEnhanceConstSection(data);
-            html += '</div>';
+            html += '</article>';
             return html;
         }
 

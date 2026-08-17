@@ -30,6 +30,8 @@
 
         const CHARACTER_META_ICON_BASE = '/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/elementicon/';
         const CHARACTER_PROFESSION_ICON_BASE = '/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/charprofessionicon/';
+        const CHARACTER_PORTRAIT_BASE = '/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/charicon/';
+        const CHARACTER_SKILL_ICON_BASE = '/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/skillicon/';
         const CHAR_TYPE_ICON_MAP = {
             Physical: 'physical', Fire: 'fire', Pulse: 'pulse', Cryst: 'cold', Natural: 'nature'
         };
@@ -217,14 +219,16 @@
                 icons.push({
                     src: `${CHARACTER_META_ICON_BASE}icon_charattrtype_${charTypeIcon}.png`,
                     label: character.charType || getCharTypeName(charTypeId) || charTypeId,
-                    kind: `element-${charTypeIcon}`
+                    kind: `element-${charTypeIcon}`,
+                    tooltip: false
                 });
             }
             if (professionIcon) {
                 icons.push({
                     src: `${CHARACTER_PROFESSION_ICON_BASE}icon_profession_${professionIcon}.png`,
                     label: character.profession || getProfessionName(professionId) || professionId,
-                    kind: 'profession'
+                    kind: 'profession',
+                    tooltip: false
                 });
             }
             return icons;
@@ -283,7 +287,6 @@
                 const count = selectedRarities.size + selectedCharTypes.size
                     + selectedProfessions.size + selectedWeaponTypes.size;
                 window.AKEUI?.updateFilterPanel(filterPanel, {
-                    expanded: true,
                     summary: count ? commonT('filterCount', { count }) : commonT('filter')
                 });
             };
@@ -414,11 +417,14 @@
         function renderCharacterOverview(items, container) {
             window.AKEModuleOverview.render(container, {
                 title: t('overview.title'), description: t('overview.description'),
+                variant: 'character',
                 group: char => ({ id: char.profession || 'unknown', name: char.profession || t('unknownProfession') }),
                 onReset: () => { activeCharId = null; },
                 onSelect: char => { activeCharId = char.charId; renderCharacterList(); },
                 sidebarSelector: char => `.ake-ui-directory__item[data-char-id="${CSS.escape(char.charId)}"]`,
-                items: items.map(char => ({ ...char, id: char.charId, image: char.icon, fallback: t('overview.fallback'),
+                items: items.map(char => ({ ...char, id: char.charId,
+                    image: `${CHARACTER_PORTRAIT_BASE}icon_${encodeURIComponent(char.charId)}.png`, imageFallback: char.icon,
+                    fallback: t('overview.fallback'),
                     icons: getCharacterMetaIcons(char) }))
             });
         }
@@ -490,7 +496,8 @@
         }
 
         async function loadCharacterDetail(character, container) {
-            container.innerHTML = `<div class="ake-ui-state">${t('loading')}</div>`;
+            container.__akeCharacterDetailNavCleanup?.();
+            container.innerHTML = `<div class="ake-ui-state" data-state="loading">${t('loading')}</div>`;
             try {
                 const fileName = (character.contentFile || '').split('/').pop() || `${character.charId}.json`;
                 const contentFile = `/public/CH/v2_character/${fileName}`;
@@ -503,6 +510,7 @@
                     ? normalizeV2ToLegacy(character, rawData.__versionDiff.baseline)
                     : null;
                 window.AKEModuleOverview?.renderVersionDiff(container, rawData, baselineData ? renderDetail(baselineData) : '');
+                initCharacterDetailNav(container);
 
                 const globalSkillBtn = container.querySelector('.global-skill-toggle-btn');
                 if (globalSkillBtn) {
@@ -510,6 +518,7 @@
                         e.preventDefault();
                         globalSkillExpand = !globalSkillExpand;
                         if (globalSkillExpand) skillExpandMap = {};
+                        window.AKEUI.setDisclosureButtonExpanded(globalSkillBtn, globalSkillExpand);
                         updateAllSkillTables();
                     });
                 }
@@ -520,9 +529,12 @@
                         e.preventDefault();
                         const skillKey = btn.dataset.skillKey;
                         if (!skillKey) return;
+                        const wasGlobalExpanded = globalSkillExpand;
                         if (globalSkillExpand) globalSkillExpand = false;
                         skillExpandMap[skillKey] = !skillExpandMap[skillKey];
-                        updateSkillTable(skillKey);
+                        window.AKEUI.setDisclosureButtonExpanded(globalSkillBtn, false);
+                        if (wasGlobalExpanded) updateAllSkillTables();
+                        else updateSkillTable(skillKey);
                     });
                 });
 
@@ -537,11 +549,11 @@
 
                 container.querySelectorAll('.collapsible-section > .ake-ui-section__header').forEach(header => {
                     header.addEventListener('click', () => {
-                        const indicator = header.querySelector('.collapse-indicator');
+                        const toggle = header.querySelector('.character-collapse-toggle');
                         const content = header.nextElementSibling;
                         if (content && content.classList.contains('collapse-content')) {
                             const isOpen = header.parentElement.classList.toggle('is-open');
-                            indicator.textContent = isOpen ? '▼' : '▶';
+                            toggle?.setAttribute('aria-expanded', String(isOpen));
                         }
                     });
                 });
@@ -552,6 +564,61 @@
                 error.textContent = t('loadFailed', { name: err.message });
                 container.replaceChildren(error);
             }
+        }
+
+        function initCharacterDetailNav(container) {
+            container.__akeCharacterDetailNavCleanup?.();
+
+            const detail = container.querySelector(':scope > .ake-ui-detail[data-detail-kind="character"]');
+            const nav = detail?.querySelector(':scope > .character-detail-nav');
+            if (!detail || !nav) return;
+
+            const entries = Array.from(nav.querySelectorAll('a[href^="#"]'))
+                .map(link => ({ link, target: detail.querySelector(link.getAttribute('href')) }))
+                .filter(entry => entry.target);
+            if (!entries.length) return;
+
+            let animationFrame = 0;
+            const setActive = activeLink => {
+                entries.forEach(({ link }) => {
+                    const isActive = link === activeLink;
+                    link.classList.toggle('is-active', isActive);
+                    if (isActive) link.setAttribute('aria-current', 'location');
+                    else link.removeAttribute('aria-current');
+                });
+            };
+            const updateActive = () => {
+                animationFrame = 0;
+                const activationLine = container.getBoundingClientRect().top + nav.offsetHeight + 16;
+                let activeEntry = entries[0];
+
+                entries.forEach(entry => {
+                    if (entry.target.getBoundingClientRect().top <= activationLine) activeEntry = entry;
+                });
+                if (container.scrollTop + container.clientHeight >= container.scrollHeight - 2) {
+                    activeEntry = entries[entries.length - 1];
+                }
+                setActive(activeEntry.link);
+            };
+            const scheduleUpdate = () => {
+                if (!animationFrame) animationFrame = requestAnimationFrame(updateActive);
+            };
+            const clickHandlers = entries.map(({ link }) => {
+                const handleClick = () => setActive(link);
+                link.addEventListener('click', handleClick);
+                return { link, handleClick };
+            });
+
+            container.addEventListener('scroll', scheduleUpdate, { passive: true });
+            window.addEventListener('resize', scheduleUpdate);
+            container.__akeCharacterDetailNavCleanup = () => {
+                container.removeEventListener('scroll', scheduleUpdate);
+                window.removeEventListener('resize', scheduleUpdate);
+                clickHandlers.forEach(({ link, handleClick }) => link.removeEventListener('click', handleClick));
+                if (animationFrame) cancelAnimationFrame(animationFrame);
+                delete container.__akeCharacterDetailNavCleanup;
+            };
+            updateActive();
         }
 
         function normalizeV2ToLegacy(baseInfo, rawData) {
@@ -685,8 +752,13 @@
                 return {
                     name: n.passiveSkillNodeInfo.name?.text || effect.name?.text || effect.name || t('sections.talents'),
                     description: descRaw,
-                    values: values,
-                    modifierTypes: modifierTypes,
+                    values,
+                    modifierTypes,
+                    groupIndex: n.passiveSkillNodeInfo.index ?? 0,
+                    level: n.passiveSkillNodeInfo.level ?? 0,
+                    icon: n.passiveSkillNodeInfo.iconId
+                        ? `${CHARACTER_SKILL_ICON_BASE}${n.passiveSkillNodeInfo.iconId}.png`
+                        : '',
                     requiredItem: n.requiredItem || []
                 };
             }).filter(Boolean);
@@ -732,6 +804,7 @@
                 });
                 const costItems = (p.itemIds || []).map((id, i) => ({ id, count: (p.itemCnts || [])[i] || 0 }));
                 return {
+                    level: p.level,
                     name: p.name?.text || p.name || t('potentialName', { name: p.level || '' }),
                     description: desc,
                     values: values,
@@ -756,10 +829,12 @@
                 const modifiers = (info.attributeModifiers || []).filter(mod => mod && !(mod.attrType === 0 && mod.attrValue === 0));
                 if (modifiers.length === 0) return null;
                 return {
+                    breakStage: info.breakStage,
                     title: info.title?.text || '',
-                    description: info.desc?.text || '',
                     modifiers: modifiers.map(mod => ({
-                        text: `${getAttrName(mod.attrType) || mod.attrType}+${mod.attrValue}`,
+                        name: getAttrName(mod.attrType) || mod.attrType,
+                        value: mod.attrValue,
+                        text: `${getAttrName(mod.attrType) || mod.attrType}${mod.attrValue >= 0 ? '+' : ''}${mod.attrValue}`,
                         modifierType: mod.modifierType
                     })),
                     requiredItem: n.requiredItem || []
@@ -783,7 +858,7 @@
                 .map(node => rawData.potentialtalenteffecttable?.[node.passiveSkillNodeInfo.talentEffectId])
                 .filter(Boolean);
             legacy.skills = skillGroups.map(s => {
-                const iconPath = s.icon ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/skillicon/${s.icon}.png` : '';
+                const iconPath = s.icon ? `${CHARACTER_SKILL_ICON_BASE}${s.icon}.png` : '';
                 const groupName = getText(s.name);
                 const groupDescription = getText(s.desc);
                 const skillIdList = Array.isArray(s.skillIdList) ? s.skillIdList : [];
@@ -801,7 +876,7 @@
                     return {
                         id: conditionId,
                         name: s[`conditionName${index}`]?.text || '',
-                        icon: s[`conditionIcon${index}`] ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/skillicon/${s[`conditionIcon${index}`]}.png` : iconPath,
+                        icon: s[`conditionIcon${index}`] ? `${CHARACTER_SKILL_ICON_BASE}${s[`conditionIcon${index}`]}.png` : iconPath,
                         conditionDesc: s[`conditionDesc${index}`]?.text || '',
                         description: s[`conditionPostDesc${index}`]?.text || ''
                     };
@@ -971,46 +1046,108 @@
             return legacy;
         }
 
-        function updateGrowthTable() {
-            const tbody = document.querySelector('.ake-ui-table tbody');
-            if (!tbody || !currentCharData) return;
-            const growth = currentCharData.growth || {};
+        function getVisibleLevels(levelCount, configuredLevels, isExpanded) {
+            const allLevels = Array.from({ length: levelCount }, (_, index) => index + 1);
+            if (isExpanded || !configuredLevels) return allLevels;
+            const configuredSet = new Set(configuredLevels);
+            const visibleLevels = allLevels.filter(level => configuredSet.has(level));
+            if (visibleLevels.length || configuredLevels.length === 0) return visibleLevels;
+            const fallbackLevel = Math.max(...configuredLevels);
+            return allLevels.includes(fallbackLevel) ? [fallbackLevel] : [];
+        }
+
+        function renderGrowthMatrix(data, isExpanded) {
+            const growth = data.growth || {};
             const attributes = GROWTH_ATTRIBUTES.map(attribute => attribute.id);
             const preciseAttrs = new Set(GROWTH_ATTRIBUTES.filter(attribute => attribute.precise).map(attribute => attribute.id));
             const showHiddenGrowth = getCurrentShowHidden();
             const firstAttr = attributes.find(attr => growth[attr] && growth[attr].length);
             const levelCount = firstAttr ? growth[firstAttr].length : 0;
-            const allGrowthRows = [];
-            for (let lv = 1; lv <= levelCount; lv++) {
-                const cells = attributes.map(attr => {
-                    const val = growth[attr]?.[lv - 1];
-                    const precision = preciseAttrs.has(attr) ? (showHiddenGrowth ? 5 : 3) : 2;
+            const visibleLevels = getVisibleLevels(levelCount, charLevelsToShow, isExpanded);
+            const header = `
+                <tr>
+                    <th scope="col">${t('level')}</th>
+                    ${visibleLevels.map(level => `<th scope="col">${t('levelAbbreviation', { name: level })}</th>`).join('')}
+                </tr>
+            `;
+            const rows = GROWTH_ATTRIBUTES.map(attribute => {
+                const cells = visibleLevels.map(level => {
+                    const val = growth[attribute.id]?.[level - 1];
+                    const precision = preciseAttrs.has(attribute.id) ? (showHiddenGrowth ? 5 : 3) : 2;
                     if (val === undefined) return '<td>-</td>';
                     const display = Number(val).toFixed(precision);
-                    const detail = currentCharData.growthDetails?.[attr]?.[lv - 1];
+                    const detail = data.growthDetails?.[attribute.id]?.[level - 1];
                     const html = window.renderRawValueTip ? window.renderRawValueTip(display, detail || val) : display;
                     return `<td>${html}</td>`;
                 }).join('');
-                allGrowthRows.push(`<tr data-level="${lv}"><td>${lv}</td>${cells}</tr>`);
-            }
+                return `<tr><th scope="row">${t(attribute.key)}</th>${cells}</tr>`;
+            }).join('');
+            return { header, rows };
+        }
 
-            let rowsToRender = allGrowthRows;
-            if (charLevelsToShow && !showAllCharLevels) {
-                const levelSet = new Set(charLevelsToShow);
-                rowsToRender = allGrowthRows.filter(row => {
-                    const match = row.match(/data-level="(\d+)"/);
-                    return match && levelSet.has(parseInt(match[1], 10));
-                });
-            }
-            if (rowsToRender.length === 0 && charLevelsToShow && charLevelsToShow.length > 0) {
-                const maxLevel = Math.max(...charLevelsToShow);
-                const found = allGrowthRows.find(r => r.includes(`data-level="${maxLevel}"`));
-                if (found) rowsToRender = [found];
-            }
-            tbody.innerHTML = rowsToRender.join('');
+        function updateGrowthTable() {
+            const table = document.querySelector('#character-growth .character-matrix-table');
+            if (!table || !currentCharData) return;
+            const matrix = renderGrowthMatrix(currentCharData, showAllCharLevels);
+            table.querySelector('thead').innerHTML = matrix.header;
+            table.querySelector('tbody').innerHTML = matrix.rows;
 
             const btn = document.querySelector('.toggle-char-levels-btn');
-            if (btn) btn.textContent = showAllCharLevels ? t('collapseExtraLevels') : t('expandAllLevels');
+            window.AKEUI.setDisclosureButtonExpanded(btn, showAllCharLevels);
+        }
+
+        function renderSkillMatrix(skillDetail, isExpanded) {
+            const showHidden = getCurrentShowHidden();
+            const values = skillDetail.values || {};
+            const subDescNames = skillDetail.subDescNames || [];
+            const subDescLabels = skillDetail.subDescLabels || {};
+            const subDescValues = skillDetail.subDescValues || {};
+            const bbColumns = Object.keys(values).filter(key => Array.isArray(values[key]));
+            const hasSubDesc = subDescNames.length > 0;
+            let fields;
+            if (hasSubDesc) {
+                fields = showHidden
+                    ? [...subDescNames, ...bbColumns]
+                    : [...bbColumns.filter(isAlwaysShowColumn), ...subDescNames];
+            } else {
+                fields = bbColumns;
+            }
+            if (fields.length === 0) return '';
+
+            const levelCount = Math.max(0, ...fields.map(field => (subDescValues[field] || values[field] || []).length));
+            const visibleLevels = getVisibleLevels(levelCount, skillLevelsToShow, isExpanded);
+            const header = `
+                <tr>
+                    <th scope="col">${t('level')}</th>
+                    ${visibleLevels.map(level => `<th scope="col">${t('levelAbbreviation', { name: level })}</th>`).join('')}
+                </tr>
+            `;
+            const rows = fields.map(field => {
+                const label = COLUMN_KEY_MAP[field] ? t(COLUMN_KEY_MAP[field]) : (subDescLabels[field] || field);
+                const cells = visibleLevels.map(level => {
+                    if (hasSubDesc && subDescValues[field] !== undefined) {
+                        return `<td>${subDescValues[field][level - 1] ?? ''}</td>`;
+                    }
+                    const valuesForField = values[field];
+                    let value = valuesForField
+                        ? (valuesForField[level - 1] !== undefined ? valuesForField[level - 1] : valuesForField[valuesForField.length - 1])
+                        : '';
+                    if (typeof value === 'number') {
+                        const display = value.toFixed(2);
+                        value = window.renderRawValueTip ? window.renderRawValueTip(display, value, field) : display;
+                    }
+                    return `<td>${value}</td>`;
+                }).join('');
+                return `<tr><th scope="row">${label}</th>${cells}</tr>`;
+            }).join('');
+            return `
+                <div class="ake-ui-table-shell">
+                    <table class="ake-ui-table character-matrix-table">
+                        <thead>${header}</thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </div>
+            `;
         }
 
         function updateSkillTable(skillKey) {
@@ -1018,76 +1155,26 @@
             const skillContainer = skillItem?.querySelector('.skill-detail');
             if (!skillContainer || !currentCharData) return;
 
-            const showHidden = getCurrentShowHidden();
             const group = currentCharData.skills?.find(g => g.skillKey === skillKey);
             const skillDetail = currentCharData.skill?.[skillKey];
             if (!group || !skillDetail) return;
 
-            const values = skillDetail.values || {};
-            const subDescNames = skillDetail.subDescNames || [];
-            const subDescLabels = skillDetail.subDescLabels || {};
-            const subDescValues = skillDetail.subDescValues || {};
-            const bbColumns = Object.keys(values).filter(k => Array.isArray(values[k]));
-            const hasSubDesc = subDescNames.length > 0;
-            let allColumns;
-            if (hasSubDesc) {
-                if (showHidden) {
-                    allColumns = [...subDescNames, ...bbColumns];
-                } else {
-                    const extraCols = bbColumns.filter(isAlwaysShowColumn);
-                    allColumns = [...extraCols, ...subDescNames];
-                }
-            } else {
-                allColumns = bbColumns;
-            }
-            if (allColumns.length === 0) {
+            const isExpanded = globalSkillExpand ? true : (skillExpandMap[skillKey] || false);
+            const matrixHtml = renderSkillMatrix(skillDetail, isExpanded);
+            if (!matrixHtml) {
                 skillContainer.innerHTML = '';
                 return;
             }
-
-            const levelCount = Math.max(0, ...allColumns.map(col => (subDescValues[col] || values[col] || []).length));
-            const allSkillRows = [];
-            for (let lv = 1; lv <= levelCount; lv++) {
-                const cells = allColumns.map(col => {
-                    if (hasSubDesc && subDescValues[col] !== undefined) {
-                        return `<td>${subDescValues[col][lv - 1] ?? ''}</td>`;
-                    }
-                    const arr = values[col];
-                    let val = arr ? (arr[lv - 1] !== undefined ? arr[lv - 1] : arr[arr.length - 1]) : '';
-                    if (typeof val === 'number') {
-                        const display = val.toFixed(2);
-                        val = window.renderRawValueTip ? window.renderRawValueTip(display, val, col) : display;
-                    }
-                    return `<td>${val}</td>`;
-                }).join('');
-                allSkillRows.push(`<tr data-level="${lv}"><td>${t('levelAbbreviation', { name: lv })}</td>${cells}</tr>`);
-            }
-
-            const isExpanded = globalSkillExpand ? true : (skillExpandMap[skillKey] || false);
-            let rowsToRender = allSkillRows;
-            if (!isExpanded && skillLevelsToShow) {
-                const levelSet = new Set(skillLevelsToShow);
-                rowsToRender = allSkillRows.filter(row => {
-                    const match = row.match(/data-level="(\d+)"/);
-                    return match && levelSet.has(parseInt(match[1], 10));
-                });
-            }
-            if (rowsToRender.length === 0 && !isExpanded && skillLevelsToShow && skillLevelsToShow.length > 0) {
-                const maxLevel = Math.max(...skillLevelsToShow);
-                const found = allSkillRows.find(r => r.includes(`data-level="${maxLevel}"`));
-                if (found) rowsToRender = [found];
-            }
-
-            const headerCells = allColumns.map(col => `<th>${COLUMN_KEY_MAP[col] ? t(COLUMN_KEY_MAP[col]) : (subDescLabels[col] || col)}</th>`).join('');
-            const header = `<tr><th>${t('level')}</th>${headerCells}</tr>`;
+            const toggle = skillLevelsToShow ? window.AKEUI.disclosureButton({
+                className: 'skill-toggle-btn',
+                expanded: isExpanded,
+                expandLabel: t('expandAllLevels'),
+                collapseLabel: t('collapseExtraLevels'),
+                attributes: { 'data-skill-key': skillKey }
+            }) : null;
             const tableHtml = `
-                <div class="skill-toggle-container">
-                    <button class="skill-toggle-btn" data-skill-key="${skillKey}">${isExpanded ? t('collapseExtraLevels') : t('expandAllLevels')}</button>
-                </div>
-                <table class="ake-ui-table">
-                    <thead>${header}</thead>
-                    <tbody>${rowsToRender.join('')}</tbody>
-                </table>
+                ${toggle ? `<div class="skill-toggle-container">${toggle.outerHTML}</div>` : ''}
+                ${matrixHtml}
             `;
             skillContainer.innerHTML = tableHtml;
 
@@ -1095,9 +1182,13 @@
             if (newBtn) {
                 newBtn.addEventListener('click', (e) => {
                     e.preventDefault();
+                    const wasGlobalExpanded = globalSkillExpand;
                     if (globalSkillExpand) globalSkillExpand = false;
                     skillExpandMap[skillKey] = !skillExpandMap[skillKey];
-                    updateSkillTable(skillKey);
+                    const globalButton = document.querySelector('.global-skill-toggle-btn');
+                    window.AKEUI.setDisclosureButtonExpanded(globalButton, false);
+                    if (wasGlobalExpanded) updateAllSkillTables();
+                    else updateSkillTable(skillKey);
                 });
             }
         }
@@ -1111,107 +1202,106 @@
             return String(value || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }
 
-        function renderCostItemsHtml(items, goldCost, itemInfoMap) {
-            const parts = [...(items || [])];
-            if (goldCost && goldCost > 0 && !parts.some(it => it.id === 'item_gold')) {
-                parts.push({ id: 'item_gold', count: goldCost });
-            }
-            if (parts.length === 0) return '';
-            return parts.map(it => {
-                const info = itemInfoMap?.[it.id] || {};
-                return `<div class="cost-item" title="${escapeAttribute(info.description)}"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${info.iconId || it.id}.png"><span class="ci-name">${info.name || it.id}</span><span class="ci-cnt">×${it.count}</span></div>`;
-            }).join('');
+        function materialItem(item, itemInfoMap) {
+            const info = itemInfoMap?.[item.id] || {};
+            return {
+                icon: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${info.iconId || item.id}.png`,
+                name: info.name || item.id,
+                count: item.count,
+                description: info.description
+            };
         }
 
-        function costBtnHtml(innerHtml, itemIds, itemInfoMap) {
-            if (!innerHtml) return '';
-            const icons = (itemIds || []).map(id => `<img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${itemInfoMap?.[id]?.iconId || id}.png">`).join('');
-            return `<span class="cost-wrap"><span class="cost-btn" onclick="event.stopPropagation();var tip=this.nextElementSibling;tip.classList.toggle('pinned');if(tip.classList.contains('pinned'))document.querySelectorAll('.cost-tip.pinned').forEach(x=>{if(x!==tip)x.classList.remove('pinned')})">${t('developmentCost')}</span><span class="cost-btn-icons">${icons}</span><span class="cost-tip">${innerHtml}</span></span>`;
+        function materialPopover(options, itemInfoMap) {
+            const rows = (options.rows || []).map(row => ({
+                label: row.label,
+                items: (row.items || []).map(item => materialItem(item, itemInfoMap))
+            }));
+            const items = (options.items || []).map(item => materialItem(item, itemInfoMap));
+            const icons = [...new Set(options.iconIds || [])].map(id => ({
+                icon: materialItem({ id }, itemInfoMap).icon
+            }));
+            return window.AKEUI.materialPopover({
+                label: t('developmentCost'),
+                placement: options.placement || 'top',
+                rows,
+                items,
+                icons
+            });
+        }
+
+        function materialPopoverHtml(options, itemInfoMap) {
+            return materialPopover(options, itemInfoMap)?.outerHTML || '';
         }
 
         function renderDetail(data) {
             const showHidden = getCurrentShowHidden();
+            const overviewMetaTags = getCharacterMetaIcons(data).map(icon => `
+                <span class="character-detail-tag">
+                    <img class="ake-ui-meta-icon" src="${icon.src}" alt="" data-kind="${icon.kind || ''}">
+                    <span>${icon.label || ''}</span>
+                </span>
+            `).join('');
 
-            const basicHtml = `
-                <div class="ake-ui-detail-header" data-layout="showcase">
-                    <div class="ake-ui-detail-identity">
-                        <div class="ake-ui-detail-icon">
-                            <img src="${data.icon || ''}">
-                        </div>
-                        <div class="ake-ui-detail-copy">
-                            <div class="ake-ui-detail-title-row">
-                                <span class="ake-ui-detail-title">${data.name}</span>
-                                <span class="ake-ui-badge" data-accent="rarity" data-accent-value="${data.rarity}" title="${t('rarityLabel', { name: data.rarity })}">${t('rarityLabel', { name: data.rarity })}</span>
-                            </div>
-                            <div class="ake-ui-detail-badges">
-                                ${(data.charBattleTag || []).map(tag => `<span class="ake-ui-badge">${tag}</span>`).join('')}
-                            </div>
-                            <div class="ake-ui-detail-meta">
-                                <div><span class="ake-ui-meta-label">${t('meta.profession')}</span> ${data.profession || '-'}</div>
-                                <div><span class="ake-ui-meta-label">${t('meta.weaponType')}</span> ${data.weapontype || '-'}</div>
-                                <div><span class="ake-ui-meta-label">${t('meta.mainAttribute')}</span> ${data.mainAttrType || '-'}</div>
-                                <div><span class="ake-ui-meta-label">${t('meta.subAttribute')}</span> ${data.subAttrType || '-'}</div>
-                                <div><span class="ake-ui-meta-label">${t('meta.voiceActor')}</span> ${(data.cvName || []).join(' / ')}</div>
-                            </div>
-                            <div class="detail-profile">${parseText(data.profile || '')}</div>
-                            <div class="detail-feature">${parseText(data.feature || '')}</div>
-                        </div>
-                    </div>
-                    <div class="ake-ui-detail-visual">
-                        <img src="${data.pic || ''}">
-                    </div>
+            const headerContent = window.AKEUI.fragment(`
+                <div class="character-detail-tags">
+                    ${overviewMetaTags}
+                    ${(data.charBattleTag || []).map(tag => `<span class="ake-ui-badge">${tag}</span>`).join('')}
                 </div>
+                <dl class="character-detail-facts">
+                    <div><dt>${commonT('rarity')}</dt><dd>${t('rarityStars', { name: data.rarity })}</dd></div>
+                    <div><dt>${t('meta.weaponType')}</dt><dd>${data.weapontype || '-'}</dd></div>
+                    <div><dt>${t('meta.voiceActor')}</dt><dd>${(data.cvName || []).join(' / ') || '-'}</dd></div>
+                    <div class="character-detail-fact--key"><dt>${t('meta.mainAttribute')}</dt><dd>${data.mainAttrType || '-'}</dd></div>
+                    <div class="character-detail-fact--key"><dt>${t('meta.subAttribute')}</dt><dd>${data.subAttrType || '-'}</dd></div>
+                </dl>
+                ${(data.profile || data.feature) ? `<div class="ake-ui-detail-summary">
+                    ${data.profile ? `<div>${parseText(data.profile)}</div>` : ''}
+                    ${data.feature ? `<div>${parseText(data.feature)}</div>` : ''}
+                </div>` : ''}
+            `);
+            const detailHeader = window.AKEUI.detailHeader({
+                layout: 'showcase',
+                className: 'character-detail-hero',
+                attributes: { id: 'character-overview' },
+                icon: { src: data.icon || '' },
+                title: data.name,
+                content: headerContent,
+                visual: {
+                    element: 'figure',
+                    className: 'character-detail-art',
+                    src: data.pic || ''
+                }
+            });
+            const basicHtml = detailHeader?.outerHTML || '';
+
+            const detailNavHtml = `
+                <nav class="character-detail-nav" aria-label="${escapeAttribute(data.name)}">
+                    <a href="#character-growth">${t('sections.attributeGrowth')}</a>
+                    <a href="#character-progression">${t('sections.potentials')}</a>
+                    <a href="#character-skills">${t('sections.skills')}</a>
+                    <a href="#character-archive">${t('sections.profile')}</a>
+                </nav>
             `;
 
-            const growth = data.growth || {};
-            const attributes = GROWTH_ATTRIBUTES.map(attribute => attribute.id);
-            const preciseAttrs = new Set(GROWTH_ATTRIBUTES.filter(attribute => attribute.precise).map(attribute => attribute.id));
-            const showHiddenGrowth = getCurrentShowHidden();
-            const firstAttr = attributes.find(attr => growth[attr] && growth[attr].length);
-            const levelCount = firstAttr ? growth[firstAttr].length : 0;
-            const allGrowthRows = [];
-            for (let lv = 1; lv <= levelCount; lv++) {
-                const cells = attributes.map(attr => {
-                    const val = growth[attr]?.[lv - 1];
-                    const precision = preciseAttrs.has(attr) ? (showHiddenGrowth ? 5 : 3) : 2;
-                    if (val === undefined) return '<td>-</td>';
-                    const display = Number(val).toFixed(precision);
-                    const detail = data.growthDetails?.[attr]?.[lv - 1];
-                    const html = window.renderRawValueTip ? window.renderRawValueTip(display, detail || val) : display;
-                    return `<td>${html}</td>`;
-                }).join('');
-                allGrowthRows.push(`<tr data-level="${lv}"><td>${lv}</td>${cells}</tr>`);
-            }
-
-            let growthRowsToRender = allGrowthRows;
-            if (charLevelsToShow && !showAllCharLevels) {
-                const levelSet = new Set(charLevelsToShow);
-                growthRowsToRender = allGrowthRows.filter(row => {
-                    const match = row.match(/data-level="(\d+)"/);
-                    return match && levelSet.has(parseInt(match[1], 10));
-                });
-            }
-            if (growthRowsToRender.length === 0 && charLevelsToShow && charLevelsToShow.length > 0) {
-                const maxLevel = Math.max(...charLevelsToShow);
-                const found = allGrowthRows.find(r => r.includes(`data-level="${maxLevel}"`));
-                if (found) growthRowsToRender = [found];
-            }
+            const growthMatrix = renderGrowthMatrix(data, showAllCharLevels);
+            const growthToggle = charLevelsToShow ? window.AKEUI.disclosureButton({
+                className: 'toggle-char-levels-btn',
+                expanded: showAllCharLevels,
+                expandLabel: t('expandAllLevels'),
+                collapseLabel: t('collapseExtraLevels')
+            }) : null;
 
             const growthHtml = `
-                <div class="ake-ui-section">
+                <div class="ake-ui-section" id="character-growth">
                     <div class="ake-ui-section__header">
                         <h3 class="ake-ui-section__title">${t('sections.attributeGrowth')}</h3>
-                        ${charLevelsToShow ? `<button class="toggle-char-levels-btn">${showAllCharLevels ? t('collapseExtraLevels') : t('expandAllLevels')}</button>` : ''}
+                        ${growthToggle?.outerHTML || ''}
                     </div>
                     <div class="ake-ui-table-shell">
-                        <table class="ake-ui-table">
-                            <thead>
-                                <tr>
-                                    <th>${t('level')}</th>
-                                    ${GROWTH_ATTRIBUTES.map(attribute => `<th>${t(attribute.key)}</th>`).join('')}
-                                </tr>
-                            </thead>
-                            <tbody>${growthRowsToRender.join('')}</tbody>
+                        <table class="ake-ui-table character-matrix-table">
+                            <thead>${growthMatrix.header}</thead>
+                            <tbody>${growthMatrix.rows}</tbody>
                         </table>
                     </div>
                 </div>
@@ -1219,67 +1309,134 @@
 
             const itemInfoMap = data.itemInfoMap || {};
             const showHiddenAttr = getCurrentShowHidden();
-            const talentsHtml = (data.talents || []).map(talent => {
-                const valueMap = talent.values || {};
-                let desc = replacePlaceholders(talent.description, valueMap, talent.modifierTypes, showHiddenAttr);
-                desc = parseText(desc);
-                const costHtml = renderCostItemsHtml(talent.requiredItem, 0, itemInfoMap);
-                const costIconIds = (talent.requiredItem || []).map(it => it.id);
+            const talentGroups = [];
+            (data.talents || []).forEach(talent => {
+                const groupKey = talent.groupIndex ?? talent.icon ?? talent.name;
+                let group = talentGroups.find(item => item.key === groupKey);
+                if (!group) {
+                    group = { key: groupKey, name: talent.name, icon: talent.icon, levels: [] };
+                    talentGroups.push(group);
+                }
+                group.levels.push(talent);
+            });
+            const talentsHtml = talentGroups.map(group => {
+                const talentCostRows = group.levels.map((talent, index) => {
+                    const displayLevel = talent.level || index + 1;
+                    return {
+                        label: t('levelAbbreviation', { name: displayLevel }),
+                        items: talent.requiredItem
+                    };
+                });
+                const talentCostIconIds = [...new Set(group.levels.flatMap(talent =>
+                    (talent.requiredItem || []).map(item => item.id)
+                ))];
+
                 return `
                     <div class="ake-ui-card" data-card-kind="character-talent" data-density="regular">
-                        <div class="ake-ui-card__title">${talent.name} ${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
-                        <div class="ake-ui-card__body">${desc}</div>
+                        <div class="ake-ui-card__header character-talent-header">
+                            ${group.icon ? `<img class="skill-icon character-talent-icon" src="${group.icon}" alt="">` : ''}
+                            <div class="ake-ui-card__title">${group.name}</div>
+                            <div class="character-card-cost">${materialPopoverHtml({ rows: talentCostRows, iconIds: talentCostIconIds }, itemInfoMap)}</div>
+                        </div>
+                        <div class="ake-ui-card__body character-talent-levels">
+                            ${group.levels.map((talent, index) => {
+                                const valueMap = talent.values || {};
+                                const desc = parseText(replacePlaceholders(talent.description, valueMap, talent.modifierTypes, showHiddenAttr));
+                                const displayLevel = talent.level || index + 1;
+                                return `
+                                    <div class="character-talent-level">
+                                        <span class="character-talent-level-label">${t('levelAbbreviation', { name: displayLevel })}</span>
+                                        <div class="character-talent-level-desc">${desc}</div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
                     </div>
                 `;
             }).join('');
 
-            const potentialsHtml = (data.potentials || []).map(pot => {
+            const potentials = data.potentials || [];
+            const potentialLevelOffset = potentials.some(pot => Number(pot.level) === 0) ? 1 : 0;
+            const potentialRows = potentials.map((pot, index) => {
                 const valueMap = pot.values || {};
                 let desc = replacePlaceholders(pot.description, valueMap, pot.modifierTypes, showHiddenAttr);
                 desc = parseText(desc);
-                const costHtml = renderCostItemsHtml(pot.costItems, 0, itemInfoMap);
                 const costIconIds = (pot.costItems || []).map(it => it.id);
-                return `
-                    <div class="ake-ui-card" data-card-kind="character-potential" data-density="regular">
-                        <div class="ake-ui-card__title">${pot.name} ${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
-                        <div class="ake-ui-card__body">${desc}</div>
-                    </div>
-                `;
-            }).join('');
+                const rawLevel = pot.level == null ? NaN : Number(pot.level);
+                const displayLevel = Number.isFinite(rawLevel) ? rawLevel + potentialLevelOffset : index + 1;
+                return window.AKEUI.progressionRow({
+                    kind: 'potential',
+                    stage: t('potentialName', { name: displayLevel }),
+                    title: pot.name,
+                    description: window.AKEUI.fragment(desc),
+                    action: materialPopover({ items: pot.costItems, iconIds: costIconIds }, itemInfoMap)
+                });
+            });
+            const potentialsHtml = window.AKEUI.progressionList({
+                rows: potentialRows,
+                empty: window.AKEUI.element('p', null, t('none'))
+            }).outerHTML;
 
             const attrNodes = data.attributeNodes || [];
+            const attrStageOffset = attrNodes.some(node => Number(node.breakStage) === 0) ? 1 : 0;
+            const attrNodeGroups = [];
+            attrNodes.forEach((node, index) => {
+                const title = node.title || '';
+                let group = attrNodeGroups.find(item => item.title === title);
+                if (!group) {
+                    group = { title, nodes: [] };
+                    attrNodeGroups.push(group);
+                }
+                const rawStage = node.breakStage == null ? NaN : Number(node.breakStage);
+                group.nodes.push({
+                    ...node,
+                    displayStage: Number.isFinite(rawStage) ? rawStage + attrStageOffset : index + 1
+                });
+            });
             const attrNodesHtml = `
                 <div class="ake-ui-section">
                     <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.attributeNodes')}</h3></div>
-                    <div class="ake-ui-card-grid" data-size="regular" data-columns="4">
-                        ${attrNodes.map(node => {
-                            const costHtml = renderCostItemsHtml(node.requiredItem, 0, itemInfoMap);
-                            const costIconIds = (node.requiredItem || []).map(it => it.id);
-                            const modifierHtml = (node.modifiers || []).map(mod => {
-                                const modTypeTag = (showHiddenAttr && mod.modifierType != null)
-                                    ? ` <span class="attr-node-modifier-tag">${modifierTypeMap[String(mod.modifierType)] || ''}</span>`
-                                    : '';
-                                return `<div class="attr-node-modifier">${mod.text}${modTypeTag}</div>`;
-                            }).join('');
-                            return `<div class="ake-ui-card" data-card-kind="character-attribute" data-density="regular">
-                                <div class="ake-ui-card__title">${node.title} ${costBtnHtml(costHtml, costIconIds, itemInfoMap)}</div>
-                                <div class="ake-ui-card__body">${node.description}${modifierHtml}</div>
-                            </div>`;
-                        }).join('')}
+                    <div class="character-attribute-groups">
+                        ${attrNodeGroups.map(group => `
+                            <div class="character-attribute-group">
+                                ${group.title ? `<div class="character-attribute-group-title">${group.title}</div>` : ''}
+                                ${window.AKEUI.progressionList({
+                                    rows: group.nodes.map(node => {
+                                        const costIconIds = (node.requiredItem || []).map(it => it.id);
+                                        const stats = (node.modifiers || []).map(mod => {
+                                            const modifierName = modifierTypeMap[String(mod.modifierType)] || '';
+                                            const modTypeTag = showHiddenAttr && modifierName
+                                                ? window.AKEUI.element('span', 'attr-node-modifier-tag', modifierName)
+                                                : null;
+                                            const hasStructuredValue = mod.name != null && mod.value != null;
+                                            const value = hasStructuredValue && typeof mod.value === 'number'
+                                                ? `${mod.value >= 0 ? '+' : ''}${mod.value}`
+                                                : '';
+                                            return hasStructuredValue
+                                                ? { label: mod.name, value, meta: modTypeTag }
+                                                : { content: window.AKEUI.fragment(`<strong>${mod.text || ''}</strong>`), meta: modTypeTag };
+                                        });
+                                        return window.AKEUI.progressionRow({
+                                            kind: 'attribute',
+                                            stage: t('breakthroughStage', { name: node.displayStage }, `#${node.displayStage}`),
+                                            stats,
+                                            action: materialPopover({ items: node.requiredItem, iconIds: costIconIds }, itemInfoMap)
+                                        });
+                                    })
+                                }).outerHTML}
+                            </div>
+                        `).join('') || `<p>${t('none')}</p>`}
                     </div>
                 </div>
             `;
 
             const skillsGroups = data.skills || [];
             const skillTypePrefix = [t('skillTypes.basicAttack'), t('skillTypes.combatSkill'), t('skillTypes.comboSkill'), t('skillTypes.ultimate')];
-            const skillsHtml = skillsGroups.map((group, index) => {
+            const skillsHtml = skillsGroups.map(group => {
                 const skillDetail = data.skill?.[group.skillKey];
                 if (!skillDetail) return '';
 
                 const values = skillDetail.values || {};
-                const subDescNames = skillDetail.subDescNames || [];
-                const subDescLabels = skillDetail.subDescLabels || {};
-                const subDescValues = skillDetail.subDescValues || {};
                 const level1Values = {};
                 for (const [key, val] of Object.entries(values)) {
                     if (Array.isArray(val) && val.length > 0) level1Values[key] = val[0];
@@ -1291,84 +1448,37 @@
                 const prefix = skillTypePrefix[prefixIndex] || t('sections.skills');
                 const displayName = `${prefix}·${group.name}`;
 
-                const bbColumns = Object.keys(values).filter(k => Array.isArray(values[k]));
-                const hasSubDesc = subDescNames.length > 0;
-                let allColumns;
-                if (hasSubDesc) {
-                    if (showHidden) {
-                        allColumns = [...subDescNames, ...bbColumns];
-                    } else {
-                        const extraCols = bbColumns.filter(isAlwaysShowColumn);
-                        allColumns = [...extraCols, ...subDescNames];
-                    }
-                } else {
-                    allColumns = bbColumns;
-                }
-
+                const isExpanded = globalSkillExpand ? true : (skillExpandMap[group.skillKey] || false);
+                const matrixHtml = renderSkillMatrix(skillDetail, isExpanded);
                 let skillTables = '';
-                if (allColumns.length > 0) {
-                    const levelCount = Math.max(0, ...allColumns.map(col => (subDescValues[col] || values[col] || []).length));
-                    const allSkillRows = [];
-                    for (let lv = 1; lv <= levelCount; lv++) {
-                        const cells = allColumns.map(col => {
-                            if (hasSubDesc && subDescValues[col] !== undefined) {
-                                return `<td>${subDescValues[col][lv - 1] ?? ''}</td>`;
-                            }
-                            const arr = values[col];
-                            let val = arr ? (arr[lv - 1] !== undefined ? arr[lv - 1] : arr[arr.length - 1]) : '';
-                            if (typeof val === 'number') {
-                                const display = val.toFixed(2);
-                                val = window.renderRawValueTip ? window.renderRawValueTip(display, val, col) : display;
-                            }
-                            return `<td>${val}</td>`;
-                        }).join('');
-                        allSkillRows.push(`<tr data-level="${lv}"><td>${t('levelAbbreviation', { name: lv })}</td>${cells}</tr>`);
-                    }
-
-                    const isExpanded = globalSkillExpand ? true : (skillExpandMap[group.skillKey] || false);
-                    let skillRowsToRender = allSkillRows;
-                    if (!isExpanded && skillLevelsToShow) {
-                        const levelSet = new Set(skillLevelsToShow);
-                        skillRowsToRender = allSkillRows.filter(row => {
-                            const match = row.match(/data-level="(\d+)"/);
-                            return match && levelSet.has(parseInt(match[1], 10));
-                        });
-                    }
-                    if (skillRowsToRender.length === 0 && !isExpanded && skillLevelsToShow && skillLevelsToShow.length > 0) {
-                        const maxLevel = Math.max(...skillLevelsToShow);
-                        const found = allSkillRows.find(r => r.includes(`data-level="${maxLevel}"`));
-                        if (found) skillRowsToRender = [found];
-                    }
-
-                    const headerCells = allColumns.map(col => `<th>${COLUMN_KEY_MAP[col] ? t(COLUMN_KEY_MAP[col]) : (subDescLabels[col] || col)}</th>`).join('');
-                    const header = `<tr><th>${t('level')}</th>${headerCells}</tr>`;
-                    const btnText = isExpanded ? t('collapseExtraLevels') : t('expandAllLevels');
+                if (matrixHtml) {
+                    const toggle = skillLevelsToShow ? window.AKEUI.disclosureButton({
+                        className: 'skill-toggle-btn',
+                        expanded: isExpanded,
+                        expandLabel: t('expandAllLevels'),
+                        collapseLabel: t('collapseExtraLevels'),
+                        attributes: { 'data-skill-key': group.skillKey }
+                    }) : null;
 
                     skillTables = `
                         <div class="skill-detail">
-                            <div class="skill-toggle-container">
-                                <button class="skill-toggle-btn" data-skill-key="${group.skillKey}">${btnText}</button>
-                            </div>
-                            <table class="ake-ui-table">
-                                <thead>${header}</thead>
-                                <tbody>${skillRowsToRender.join('')}</tbody>
-                            </table>
+                            ${toggle ? `<div class="skill-toggle-container">${toggle.outerHTML}</div>` : ''}
+                            ${matrixHtml}
                         </div>
                     `;
                 }
 
                 const skCosts = group.showGroupCosts ? ((data.skillCosts || {})[group.skillGroupId] || []) : [];
-                let skCostHtml = '';
+                let skCostRows = [];
                 if (skCosts.length > 0) {
                     const rows = skCosts.map(c => {
                         const itemParts = [...(c.goldCost > 0 ? [{ id: 'item_gold', count: c.goldCost }] : []), ...c.items.filter(it => it.id !== 'item_gold')];
-                        const itemsStr = itemParts.map(it => {
-                            const info = itemInfoMap[it.id] || {};
-                            return `<span class="ci-ri" title="${escapeAttribute(info.description)}"><img src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${info.iconId || it.id}.png">${info.name || it.id} ×${it.count}</span>`;
-                        }).join('');
-                        return `<div class="sk-cost-row"><span class="cost-section-title">${t('levelRange', { name: `${c.level - 1}→${c.level}` })}</span>${itemsStr}</div>`;
-                    }).join('');
-                    skCostHtml = rows;
+                        return {
+                            label: t('levelRange', { name: `${c.level - 1}→${c.level}` }),
+                            items: itemParts
+                        };
+                    });
+                    skCostRows = rows;
                 }
 
                 const conditionHtml = (group.conditionVariants || []).map(condition => `
@@ -1384,9 +1494,14 @@
 
                 return `
                     <div class="ake-ui-card" data-card-kind="character-skill" data-density="regular" data-skill-key="${group.skillKey}">
-                        <div class="ake-ui-card__title">
-                            <img class="skill-icon" src="${group.icon}" alt="">
-                            ${displayName} ${costBtnHtml(skCostHtml, ['item_gold', ...new Set(skCosts.flatMap(c => c.items.map(it => it.id)))], itemInfoMap)}
+                        <div class="ake-ui-card__header character-skill-header">
+                            <div class="ake-ui-card__header-start">
+                                <img class="skill-icon" src="${group.icon}" alt="">
+                                <div class="ake-ui-card__title">${displayName}</div>
+                            </div>
+                            <div class="character-card-cost">
+                                ${materialPopoverHtml({ rows: skCostRows, iconIds: ['item_gold', ...new Set(skCosts.flatMap(c => c.items.map(it => it.id)))] }, itemInfoMap)}
+                            </div>
                         </div>
                         <div class="ake-ui-card__body">${groupDesc}${conditionHtml ? `<div class="skill-conditions">${conditionHtml}</div>` : ''}${skillTables}</div>
                     </div>
@@ -1396,12 +1511,15 @@
             const potentialPics = data.potentialpics || [];
             const potentialPicsHtml = potentialPics.length > 0 ? `
                 <div class="ake-ui-section collapsible-section">
-                    <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">
-                        <span class="collapse-indicator">▶</span> ${t('sections.potentialImages')}
-                    </h3></div>
+                    <div class="ake-ui-section__header">
+                        <button class="character-collapse-toggle" type="button" aria-expanded="false">
+                            <span class="ake-ui-section__title">${t('sections.potentialImages')}</span>
+                            <span class="collapse-indicator" aria-hidden="true"></span>
+                        </button>
+                    </div>
                     <div class="collapse-content">
                         <div class="potential-pics">
-                            ${potentialPics.map(src => `<img src="${src}">`).join('')}
+                            ${potentialPics.map(src => `<figure class="potential-pic-frame"><img src="${src}" alt=""></figure>`).join('')}
                         </div>
                     </div>
                 </div>
@@ -1415,14 +1533,14 @@
             `).join('');
 
             const voiceHtml = (data.profileVoice || []).length ? `
-                <table class="ake-ui-table">
+                <div class="character-voice-list">
                     ${(data.profileVoice || []).map(v => `
-                        <tr>
-                            <td class="voice-title">${v.title}</td>
-                            <td class="voice-desc">${v.desc}</td>
-                        </tr>
+                        <div class="character-voice-row">
+                            <div class="voice-title">${v.title}</div>
+                            <div class="voice-desc">${v.desc}</div>
+                        </div>
                     `).join('')}
-                </table>
+                </div>
             ` : `<p>${t('none')}</p>`;
 
             const spaceshipSkills = data.spaceshipSkills || [];
@@ -1431,7 +1549,7 @@
                     <div class="ake-ui-card__header">
                         <img class="spaceship-icon" src="${slot.icon}" alt="">
                         <span class="ake-ui-card__title">${slot.talentName}</span>
-                        <span class="ake-ui-badge">${slot.roomTypeName}</span>
+                        <span class="spaceship-skill-room">${slot.roomTypeName}</span>
                     </div>
                     <div class="ake-ui-card__body">
                         ${slot.levels.map(lv => `
@@ -1447,47 +1565,62 @@
                     </div>
                 </div>
             `).join('') : `<p>${t('none')}</p>`;
+            const globalSkillToggle = skillLevelsToShow ? window.AKEUI.disclosureButton({
+                className: 'global-skill-toggle-btn',
+                expanded: globalSkillExpand,
+                expandLabel: t('expandAllSkillLevels'),
+                collapseLabel: t('collapseAllSkillLevels')
+            }) : null;
 
-            return `<article class="ake-ui-detail" data-detail-kind="character" data-accent="rarity" data-accent-value="${data.rarity}">
+            return `<article class="ake-ui-detail" data-detail-kind="character">
                 ${basicHtml}
+                ${detailNavHtml}
                 ${growthHtml}
-                <div class="character-progression-grid">
+                <div class="character-progression-grid" id="character-progression">
                     <div class="ake-ui-section character-talent-section">
                         <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.talents')}</h3></div>
                         <div class="ake-ui-card-grid" data-size="full">${talentsHtml || `<p>${t('none')}</p>`}</div>
                     </div>
                     <div class="ake-ui-section character-potential-section">
                         <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.potentials')}</h3></div>
-                        <div class="ake-ui-card-grid" data-size="full">${potentialsHtml || `<p>${t('none')}</p>`}</div>
+                        ${potentialsHtml}
                     </div>
                 </div>
                 ${attrNodesHtml}
-                <div class="ake-ui-section">
+                <div class="ake-ui-section" id="character-skills">
                     <div class="ake-ui-section__header">
                         <h3 class="ake-ui-section__title">${t('sections.skills')}</h3>
-                        ${skillLevelsToShow ? `<button class="global-skill-toggle-btn">${globalSkillExpand ? t('collapseAllSkillLevels') : t('expandAllSkillLevels')}</button>` : ''}
+                        ${globalSkillToggle?.outerHTML || ''}
                     </div>
                     <div class="ake-ui-card-grid" data-size="full">${skillsHtml || `<p>${t('none')}</p>`}</div>
                 </div>
-                <div class="ake-ui-section">
+                <div class="ake-ui-section" id="character-logistics">
                     <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.logisticsSkills')}</h3></div>
                     <div class="ake-ui-card-grid" data-size="regular">${spaceshipHtml}</div>
                 </div>
-                ${potentialPicsHtml}
-                <div class="ake-ui-section collapsible-section">
-                    <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">
-                        <span class="collapse-indicator">▶</span> ${t('sections.profile')}
-                    </h3></div>
-                    <div class="collapse-content">
-                        <div class="ake-ui-card-grid" data-size="full">${profileRecordsHtml || `<p>${t('none')}</p>`}</div>
+                <div class="character-archive-stack" id="character-archive">
+                    ${potentialPicsHtml}
+                    <div class="ake-ui-section collapsible-section">
+                        <div class="ake-ui-section__header">
+                            <button class="character-collapse-toggle" type="button" aria-expanded="false">
+                                <span class="ake-ui-section__title">${t('sections.profile')}</span>
+                                <span class="collapse-indicator" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="collapse-content">
+                            <div class="ake-ui-card-grid" data-size="full">${profileRecordsHtml || `<p>${t('none')}</p>`}</div>
+                        </div>
                     </div>
-                </div>
-                <div class="ake-ui-section collapsible-section">
-                    <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">
-                        <span class="collapse-indicator">▶</span> ${t('sections.voiceRecords')}
-                    </h3></div>
-                    <div class="collapse-content">
-                        ${voiceHtml}
+                    <div class="ake-ui-section collapsible-section">
+                        <div class="ake-ui-section__header">
+                            <button class="character-collapse-toggle" type="button" aria-expanded="false">
+                                <span class="ake-ui-section__title">${t('sections.voiceRecords')}</span>
+                                <span class="collapse-indicator" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="collapse-content">
+                            ${voiceHtml}
+                        </div>
                     </div>
                 </div>
                 </article>
@@ -1510,10 +1643,6 @@
             isInitialized = true;
             if (window.configLoaded) await window.configLoaded;
             await loadMaps();
-
-            document.addEventListener('click', () => {
-                document.querySelectorAll('.cost-tip.pinned').forEach(t => t.classList.remove('pinned'));
-            });
 
             const settings = window.akeData?.getLevelSettings?.() || {};
             if (settings.enabled) {

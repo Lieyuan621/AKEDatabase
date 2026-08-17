@@ -13,17 +13,19 @@
             <input id="bakerSearchInput" type="search" autocomplete="off" placeholder="搜索联系人、群聊或消息">
         </label>
         <div class="ake-ui-filter" id="bakerFilterBar">
-            <div class="ake-ui-filter__options" id="bakerTypeFilter" role="group" aria-label="会话类型">
-                <button type="button" class="ake-ui-filter__button is-active" data-baker-type="all" aria-pressed="true">全部</button>
-                <button type="button" class="ake-ui-filter__button" data-baker-type="3" aria-pressed="false">干员</button>
-                <button type="button" class="ake-ui-filter__button" data-baker-type="1" aria-pressed="false">联系人</button>
-                <button type="button" class="ake-ui-filter__button" data-baker-type="2" aria-pressed="false">群聊</button>
+            <div class="ake-ui-filter__group">
+                <div class="ake-ui-filter__options" id="bakerTypeFilter" role="group" aria-label="会话类型">
+                    <button type="button" class="ake-ui-filter__button is-active" data-baker-type="all" aria-pressed="true">全部</button>
+                    <button type="button" class="ake-ui-filter__button" data-baker-type="3" aria-pressed="false">干员</button>
+                    <button type="button" class="ake-ui-filter__button" data-baker-type="1" aria-pressed="false">联系人</button>
+                    <button type="button" class="ake-ui-filter__button" data-baker-type="2" aria-pressed="false">群聊</button>
+                </div>
             </div>
         </div>
         <div class="ake-ui-directory__list" id="bakerContactList"></div>
     </aside>
     <main class="ake-ui-directory__content" id="bakerConversation">
-        <div class="ake-ui-state" data-state="loading"><span class="ake-ui-spinner"></span><b>正在建立 Baker 会话索引</b></div>
+        <div class="ake-ui-state" data-state="loading" data-layout="page"><b>正在建立 Baker 会话索引</b></div>
     </main>
     <button class="ake-ui-directory__mobile-button" id="bakerMobileButton" type="button" aria-label="打开联系人列表">联系人</button>
     <button class="ake-ui-directory__mobile-overlay" id="bakerMobileBackdrop" type="button" aria-label="关闭联系人列表"></button>
