@@ -437,14 +437,51 @@
             let html = '<div class="ake-ui-item-list">';
             rewardList.forEach(reward => {
                 const iconSrc = reward.picpath || '';
+                const countHtml = reward.count === null || reward.count === undefined
+                    ? ''
+                    : `<span class="ake-ui-item__meta">${t('rewards.count', { count: reward.count })}</span>`;
                 html += `
                     <div class="ake-ui-item">
                         ${iconSrc ? `<img class="ake-ui-item__media" src="${iconSrc}" alt="">` : ''}
-                        <div class="ake-ui-item__copy"><span class="ake-ui-item__title">${reward.name}</span><span class="ake-ui-item__meta">${t('rewards.count', { count: reward.count })}</span></div>
+                        <div class="ake-ui-item__copy"><span class="ake-ui-item__title">${reward.name}</span>${countHtml}</div>
                     </div>
                 `;
             });
             html += '</div>';
+            return html;
+        }
+
+        function rewardGroupTitle(group, index) {
+            if (group.title) return group.title;
+            const titles = {
+                checkin: () => t('rewards.day', { day: group.day ?? index + 1 }),
+                level: () => t('rewards.level', { level: group.index ?? index + 1 }),
+                task: () => t('rewards.task', { index: group.index ?? index + 1 }),
+                milestone: () => t('rewards.milestoneScore', { score: group.score }),
+                reflowOneTime: () => t('rewards.oneTime'),
+                questionnaire: () => t('rewards.questionnaire', { index: group.index ?? index + 1 }),
+                trial: () => t('rewards.trial', { index: group.index ?? index + 1 }),
+                phase: () => t('rewards.phase', { index: group.index ?? index + 1 }),
+                benefit: () => t('rewards.benefit', { index: group.index ?? index + 1 })
+            };
+            return (titles[group.kind] || titles.task)();
+        }
+
+        function renderRewardGroups(groups) {
+            if (!groups || groups.length === 0) return '';
+            let html = `<section class="ake-ui-section"><header class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.rewardDetails')}</h3></header><div class="ake-ui-card-grid" data-size="regular">`;
+            groups.forEach((group, index) => {
+                const keyReward = group.keyReward ? `<div class="ake-ui-card__meta"><span class="ake-ui-badge">${t('rewards.keyReward')}</span></div>` : '';
+                html += '<article class="ake-ui-card" data-card-kind="activity-reward" data-density="regular">' +
+                    `<div class="ake-ui-card__title">${parseText(rewardGroupTitle(group, index))}</div>` +
+                    (group.desc ? `<div class="ake-ui-card__body">${parseText(group.desc)}</div>` : '') +
+                    keyReward +
+                    '<div class="ake-ui-card__footer"><div class="stage-rewards">' +
+                    `<span class="ake-ui-badge">${t('rewards.preview')}</span>` +
+                    renderRewards(group.rewarddetail || []) +
+                    '</div></div></article>';
+            });
+            html += '</div></section>';
             return html;
         }
 
@@ -506,6 +543,7 @@
             }
 
             let stagesHtml = renderStages(data.stageList);
+            const rewardGroupsHtml = renderRewardGroups(data.rewardGroups);
             const tagsHtml = (data.tags || []).length
                 ? data.tags.map(tag => tag.name ? `<span class="ake-ui-badge">${tag.name}</span>` : '').join('')
                 : '';
@@ -534,6 +572,7 @@
                     ${instructionHtml}
                     ${conditionsHtml}
                     ${rewardsHtml}
+                    ${rewardGroupsHtml}
                     ${stagesHtml}
                 </div>
             `;

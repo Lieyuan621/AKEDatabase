@@ -804,10 +804,32 @@
         });
     }
 
+    function itemsToView(itemIds, items) {
+        return [...new Set((itemIds || []).filter(Boolean))].map(itemId => {
+            const item = items[itemId] || {};
+            return { id: itemId, count: null, name: text(item.name, itemId), picpath: icon('item', itemId, item.iconId) };
+        });
+    }
+
+    const ACTIVITY_CONDITIONAL_STAGE_PANELS = new Set([
+        'ActivityArknightsBirth', 'ActivityCleaning', 'ActivityCoin', 'ActivityContingencyContract',
+        'ActivityDevelopReturn', 'ActivityDoubleAssault', 'ActivityDungeonActMonster', 'ActivityHighDifficulty',
+        'ActivityLimitedFormulaAssistRegion', 'ActivityMaterialSupply', 'ActivityPhotoTaking',
+        'ActivityPhotoTakingUniverse', 'ActivitySimulationTrainingTask', 'ActivityStaminaDiscount', 'ActivityVersionGuide'
+    ]);
+    const ACTIVITY_CHECKIN_PANELS = new Set([
+        'ActivityCharSignCommon', 'ActivityRewardRegistration', 'ActivityFreeMonthlyPass', 'ActivityReflowFormal'
+    ]);
+    const ACTIVITY_LEVEL_REWARD_PANELS = new Set(['ActivityGachaBeginner', 'ActivityLevelRewards', 'ActivityMissionReward']);
+    const ACTIVITY_TASK_REWARD_PANELS = new Set([
+        'ActivityContingencyContract', 'ActivityCoin', 'ActivityReflowFormal',
+        'ActivitySimulationTrainingTask', 'ActivityDoubleAssault'
+    ]);
+
     async function activityManifest(version) {
-        const [activities, tags, times, instructions] = await Promise.all([
+        const [activities, tags, times] = await Promise.all([
             table('ActivityTable', version), table('ActivityTagTable', version),
-            table('TimeRangeTable', version), table('InstructionBook', version)
+            table('TimeRangeTable', version)
         ]);
         const now = Date.now();
         const rows = Object.entries(activities).map(([activityId, row], index) => {
@@ -821,7 +843,7 @@
                 tabImg: row.tabImg ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/activity/${row.tabImg}.png` : '', contentFile: `/__v3/activity/${activityId}.json`,
                 statusOrder, sourceOrder: row.sortId ?? index, hidden: false,
                 __diffSignature: diffSignature([
-                    row, times[row.timeId], pick(tags, row.tagIds || []), instructions[row.instructionId]
+                    row, times[row.timeId], pick(tags, row.tagIds || [])
                 ]) };
         });
         rows.sort((a, b) => a.statusOrder - b.statusOrder || a.sourceOrder - b.sourceOrder || compareId(a, b));
@@ -829,26 +851,131 @@
     }
 
     async function activityDetail(id, version) {
-        const [activities, tags, rewards, items, conditionalStages, fightingStages, dungeons, times, instructions] = await Promise.all([
-            table('ActivityTable', version), table('ActivityTagTable', version), table('RewardTable', version), table('ItemTable', version),
-            table('ActivityConditionalMultiStageTable', version), table('ActivityDungeonFightingStageTable', version),
-            table('DungeonTable', version), table('TimeRangeTable', version), table('InstructionBook', version)
+        const [activities, tags, times] = await Promise.all([
+            table('ActivityTable', version), table('ActivityTagTable', version), table('TimeRangeTable', version)
         ]);
         const row = activities[id] || {};
-        const instruction = instructions[row.instructionId] || null;
+        const panelId = row.panelId || '';
+        const detailTables = {};
+        const detailLoads = [];
+        const loadDetailTable = (key, tableName) => {
+            detailLoads.push(table(tableName, version).then(value => { detailTables[key] = value; }));
+        };
+
+        if (row.instructionId) loadDetailTable('instructions', 'InstructionBook');
+        if (ACTIVITY_CONDITIONAL_STAGE_PANELS.has(panelId)) loadDetailTable('conditionalStages', 'ActivityConditionalMultiStageTable');
+        if (id === 'dungeon_fighting') {
+            loadDetailTable('fightingStages', 'ActivityDungeonFightingStageTable');
+            loadDetailTable('dungeons', 'DungeonTable');
+        }
+        if (ACTIVITY_CHECKIN_PANELS.has(panelId)) loadDetailTable('checkins', 'CheckInRewardTable');
+        if (ACTIVITY_LEVEL_REWARD_PANELS.has(panelId)) loadDetailTable('levelRewards', 'ActivityLevelRewardsTable');
+        if (ACTIVITY_TASK_REWARD_PANELS.has(panelId)) loadDetailTable('taskRewards', 'ActivityConditionalMultiStageTaskConfigTable');
+        if (panelId === 'ActivityCoin') loadDetailTable('racingMilestones', 'ActivityRacingDungeonMilestoneTable');
+        if (panelId === 'ActivityWeeklyTask') loadDetailTable('weeklyMilestones', 'ActivityWeeklyTaskMileStoneTable');
+        if (panelId === 'ActivityReflowFormal') loadDetailTable('reflowRewards', 'ActivityReflowTable');
+        if (panelId === 'ActivityCharacterTrial') loadDetailTable('charTrials', 'ActivityCharTrial');
+        if (panelId === 'ActivityArknightsBirth') loadDetailTable('birthStages', 'ActivityArknightsBirthMultiStageTable');
+        if (panelId === 'ActivityBenefits') loadDetailTable('benefits', 'ActivityBenefitsTable');
+        await Promise.all(detailLoads);
+
+        const rewardIds = new Set();
+        const addRewardId = rewardId => { if (rewardId) rewardIds.add(rewardId); };
+        addRewardId(row.rewardId);
+
+        const stageRows = [];
+        Object.entries(detailTables.conditionalStages?.[id]?.stageList || {}).forEach(([stageId, stage]) => {
+            addRewardId(stage.rewardId);
+            stageRows.push({ stageId, stage, source: 'conditional' });
+        });
+        if (id === 'dungeon_fighting') {
+            Object.entries(detailTables.fightingStages || {}).forEach(([stageId, stage]) => {
+                const dungeon = detailTables.dungeons?.[stage.levelId] || {};
+                addRewardId(dungeon.rewardId);
+                stageRows.push({ stageId, stage, dungeon, source: 'dungeon' });
+            });
+        }
+
+        const rewardGroupRows = [];
+        const addRewardGroup = group => {
+            addRewardId(group.rewardId);
+            rewardGroupRows.push(group);
+        };
+
+        (detailTables.checkins?.[id]?.stageList || []).forEach((stage, index) => addRewardGroup({
+            id: `checkin-${stage.day ?? index + 1}`, kind: 'checkin', day: stage.day ?? index + 1,
+            title: text(stage.rewardName), keyReward: stage.isKeyReward === true, sortId: 1000 + (stage.day ?? index + 1),
+            rewardId: stage.rewardId
+        }));
+        (detailTables.levelRewards?.[id]?.stageList || []).forEach((stage, index) => addRewardGroup({
+            id: stage.stageStrId || `level-${index + 1}`, kind: 'level', index: stage.stageId ?? index + 1,
+            desc: text(stage.conditions?.[0]?.desc), sortId: 1000 + (stage.stageId ?? index + 1), rewardId: stage.rewardId
+        }));
+        Object.values(detailTables.taskRewards?.[id]?.TaskConfigMap || {}).forEach((task, index) => addRewardGroup({
+            id: task.taskId || `task-${index + 1}`, kind: 'task', index: task.sortId ?? index + 1, title: text(task.desc),
+            sortId: 2000 + (task.sortId ?? index + 1), rewardId: task.rewardId
+        }));
+        Object.values(detailTables.racingMilestones?.[id]?.milestoneMap || {}).forEach((milestone, index) => addRewardGroup({
+            id: `racing-${milestone.nodeId ?? index + 1}`, kind: 'milestone', score: milestone.completeScore,
+            sortId: 3000 + (milestone.nodeId ?? index + 1), rewardId: milestone.rewardId
+        }));
+        Object.values(detailTables.weeklyMilestones?.[id]?.mileStones || {}).forEach((milestone, index) => addRewardGroup({
+            id: `weekly-${milestone.score ?? index + 1}`, kind: 'milestone', score: milestone.score,
+            sortId: 1000 + (milestone.score ?? index + 1), rewardId: milestone.rewardId
+        }));
+
+        const reflow = detailTables.reflowRewards?.[id];
+        if (reflow?.reflowCfg?.oneTimeRewardId) addRewardGroup({
+            id: 'reflow-one-time', kind: 'reflowOneTime', sortId: 0, rewardId: reflow.reflowCfg.oneTimeRewardId
+        });
+        Object.values(reflow?.questionnaires || {}).forEach((questionnaire, index) => addRewardGroup({
+            id: questionnaire.questionnaireTriggerId || `questionnaire-${index + 1}`, kind: 'questionnaire',
+            index: questionnaire.sortId ?? index + 1, title: text(questionnaire.title),
+            sortId: 3000 + (questionnaire.sortId ?? index + 1), rewardId: questionnaire.rewardId
+        }));
+        Object.values(reflow?.stages || {}).forEach((stage, index) => addRewardGroup({
+            id: stage.milestoneStageId || `reflow-stage-${index + 1}`, kind: 'milestone', score: stage.pointRequired,
+            sortId: 4000 + index, rewardId: stage.rewardId
+        }));
+
+        Object.entries(detailTables.charTrials || {}).filter(([, trial]) => trial.activityId === id).forEach(([trialId, trial], index) => addRewardGroup({
+            id: trialId, kind: 'trial', index: index + 1, desc: text(trial.desc), sortId: 1000 + (trial.sortId ?? index + 1),
+            rewardId: trial.rewardId
+        }));
+        Object.entries(detailTables.birthStages || {}).forEach(([stageId, stage], index) => {
+            if (!stage.rewardItemId || stage.isVisible === false) return;
+            addRewardGroup({ id: stageId, kind: 'phase', index: index + 1, sortId: 1000 + index, rewardId: stage.rewardItemId });
+        });
+        (detailTables.benefits?.[id]?.stageList || []).forEach((benefit, index) => rewardGroupRows.push({
+            id: benefit.benefitId || `benefit-${index + 1}`, kind: 'benefit', index: index + 1,
+            title: text(benefit.title), desc: [text(benefit.desc), text(benefit.bigRewardStatement)].filter(Boolean).join('\n'),
+            sortId: 1000 + (benefit.sortId ?? index + 1),
+            directItemIds: [benefit.bigRewardId, ...(benefit.rewardIdList || [])]
+        }));
+
+        const needsItems = rewardIds.size > 0 || rewardGroupRows.some(group => group.directItemIds?.length);
+        const [rewards, items] = await Promise.all([
+            rewardIds.size > 0 ? table('RewardTable', version) : Promise.resolve({}),
+            needsItems ? table('ItemTable', version) : Promise.resolve({})
+        ]);
+
+        const instruction = detailTables.instructions?.[row.instructionId] || null;
         const stageList = {};
-        Object.entries(conditionalStages[id]?.stageList || {}).forEach(([stageId, stage]) => {
+        stageRows.forEach(({ stageId, stage, dungeon, source }) => {
+            if (source === 'dungeon') {
+                stageList[stageId] = { name: text(dungeon.dungeonName, stageId), desc: text(dungeon.dungeonDesc), sortId: dungeon.sortId,
+                    opentime: times[row.timeId]?.timeRangeList?.[0]?.openTime || '', rewarddetail: rewardsToView(dungeon.rewardId, rewards, items) };
+                return;
+            }
             const range = times[stage.timeId]?.timeRangeList?.[0] || {};
             stageList[stageId] = { name: text(stage.name, stageId), desc: text(stage.desc), sortId: stage.sortId,
                 opentime: range.openTime || '', rewarddetail: rewardsToView(stage.rewardId, rewards, items) };
         });
-        if (id === 'dungeon_fighting') {
-            Object.entries(fightingStages).forEach(([stageId, stage]) => {
-                const dungeon = dungeons[stage.levelId] || {};
-                stageList[stageId] = { name: text(dungeon.dungeonName, stageId), desc: text(dungeon.dungeonDesc), sortId: dungeon.sortId,
-                    opentime: times[row.timeId]?.timeRangeList?.[0]?.openTime || '', rewarddetail: rewardsToView(dungeon.rewardId, rewards, items) };
-            });
-        }
+        const rewardGroups = rewardGroupRows.map(group => {
+            const { rewardId, directItemIds, ...view } = group;
+            return { ...view, rewarddetail: directItemIds ? itemsToView(directItemIds, items) : rewardsToView(rewardId, rewards, items) };
+        }).filter(group => group.rewarddetail.length > 0).sort((a, b) => (a.sortId || 0) - (b.sortId || 0));
+
         return { id, name: text(row.name, id), desc: text(row.desc), conditions: (row.conditions || []).map(condition => text(condition.desc)),
             rewarddetail: rewardsToView(row.rewardId, rewards, items), sortId: row.sortId, tabImg: row.tabImg, tabImgColor: row.tabImgColor,
             tags: (row.tagIds || []).map(tagId => ({ tagId, name: text(tags[tagId]?.name, tagId) })), rawType: row.type,
@@ -857,7 +984,7 @@
                 title: text(instruction.title),
                 content: text(instruction.content)
             } : null,
-            stageList };
+            stageList, rewardGroups };
     }
 
     async function ccManifest(version) {

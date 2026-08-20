@@ -2,6 +2,27 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.2.12
+
+#### Characters and skills
+
+- Character directory entries now show weapon-type icons, and character details include a matching weapon-type tag.
+- When hidden mode is enabled, raw fields for skill groups containing multiple skills now appear beneath the description of the skill they belong to and use the next description depth.
+- In the Chinese interface, hidden field names are tokenized only at underscores and numeric suffixes, and the provided term explanations are assembled beneath the original field name. Concatenated fields without underscores are left intact.
+- Cooldown, ATB, and ultimate-energy cost fields are omitted when every level is `0`, including hidden `atb` and `usp` fields.
+
+#### Events
+
+- Event details now include the in-game instructions from `InstructionBook`.
+- Added reward details for check-ins, level rewards, event tasks, score milestones, return events, character trials, anniversary stages, and new-player benefits while retaining existing event and stage rewards.
+- Supplemental instruction, reward, item, stage, and dungeon tables are loaded only after the matching event detail is opened. The event landing page no longer requests them in advance.
+- Event overview images are now aligned to the right while preserving their original aspect ratio and existing display size.
+
+#### Sidebars and resource versions
+
+- Reduced the minimum width of the main and module sidebars. Entries with icons switch to icon-only display at narrow widths, and main-sidebar icons no longer disappear when the sidebar is collapsed.
+- Added independent CSS versions for the light, dark, and eye-comfort themes in `version.json`, allowing unchanged theme resources to remain cached.
+
 ### v1.2.11
 
 #### Secondary navigation and shared interface
