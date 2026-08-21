@@ -10,6 +10,7 @@
     const localBaseUrl = normalizeBaseUrl(window.location.origin);
     const manifestPath = String(bootstrapVersion.dataManifestPath || '/manifest.json');
     let state = null;
+    let assetRevision = '';
     let assetObserver = null;
     let assetHooksInstalled = false;
 
@@ -145,6 +146,7 @@
     function classify(resource) {
         const url = new URL(typeof resource === 'string' ? resource : resource?.url, window.location.href);
         if (url.origin !== window.location.origin) return { type: 'external', url };
+        if (url.pathname === '/asset-sync-index.json') return { type: 'shared', url };
         if (url.pathname.startsWith('/public/TableCfg/')) return { type: 'table', url };
         if (url.pathname.startsWith('/public/Json/')) return { type: 'shared', url };
         if (url.pathname.startsWith('/public/images/')) return { type: 'shared', url };
@@ -162,7 +164,7 @@
         } else {
             target.pathname = result.url.pathname;
             if (!result.url.pathname.startsWith('/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/mainhud/')) {
-                target.searchParams.set('v', state.manifest.sharedRevision);
+                target.searchParams.set('v', assetRevision || state.manifest.sharedRevision);
             }
         }
         result.url.searchParams.forEach((value, key) => target.searchParams.set(key, value));
@@ -323,7 +325,7 @@
         const result = classify(resource);
         if (!state) return `site|${appVersion || '1'}`;
         if (result.type === 'table') return `table|${state.baseUrl}|${state.selected.hotfixVersion}`;
-        if (result.type === 'shared') return `shared|${state.baseUrl}|${state.manifest.sharedRevision}`;
+        if (result.type === 'shared') return `shared|${state.baseUrl}|${assetRevision || state.manifest.sharedRevision}`;
         return `site|${window.location.origin}|${appVersion || '1'}`;
     }
 
@@ -386,6 +388,10 @@
         resolveImageUrl,
         rewriteDomAssets,
         cacheNamespace,
+        setAssetRevision(revision) {
+            const value = String(revision || '').trim();
+            if (value) assetRevision = value;
+        },
         getState: () => state,
         async configure({ baseUrl, selection }) {
             if (debugLocalMode) return false;

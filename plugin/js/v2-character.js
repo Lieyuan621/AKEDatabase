@@ -129,6 +129,14 @@
             return typeof value?.text === 'string' ? value.text : '';
         }
 
+        function voiceButtonHtml(voId) {
+            return window.AKEVoicePlayer?.buttonHtml(voId, {
+                play: t('audio.play', null, '播放语音'),
+                pause: t('audio.pause', null, '暂停语音'),
+                error: t('audio.error', null, '语音播放失败')
+            }) || '';
+        }
+
         function parseLevelInput(input, maxLevel = 90) {
             if (!input || input.trim() === '') return [];
             const parts = input.split(',').map(s => parseInt(s.trim(), 10)).filter(n => !isNaN(n) && n >= 1 && n <= maxLevel);
@@ -466,6 +474,7 @@
         }
 
         function renderCharacterOverview(items, container) {
+            window.AKEVoicePlayer?.stop();
             window.AKEModuleOverview.render(container, {
                 title: t('overview.title'), description: t('overview.description'),
                 variant: 'character',
@@ -489,6 +498,7 @@
 
             container.innerHTML = '';
             if (filtered.length === 0) {
+                window.AKEVoicePlayer?.stop();
                 container.innerHTML = `<div class="ake-ui-state">${t('noMatches')}</div>`;
                 if (detailContainer) detailContainer.innerHTML = `<div class="ake-ui-state">${t('select')}</div>`;
                 activeCharId = null;
@@ -547,6 +557,7 @@
         }
 
         async function loadCharacterDetail(character, container) {
+            window.AKEVoicePlayer?.stop();
             container.__akeCharacterDetailNavCleanup?.();
             container.innerHTML = `<div class="ake-ui-state" data-state="loading">${t('loading')}</div>`;
             try {
@@ -1115,7 +1126,8 @@
             }));
             legacy.profileVoice = (rawData.charactertable?.profileVoice || []).map(v => ({
                 title: getText(v.voiceTitle) || v.voId || '',
-                desc: getText(v.voiceDesc)
+                desc: getText(v.voiceDesc),
+                voId: v.voId || ''
             }));
 
             return legacy;
@@ -1650,7 +1662,7 @@
                 <div class="character-voice-list">
                     ${(data.profileVoice || []).map(v => `
                         <div class="character-voice-row">
-                            <div class="voice-title">${v.title}</div>
+                            <div class="voice-title">${voiceButtonHtml(v.voId)}${v.title}</div>
                             <div class="voice-desc">${v.desc}</div>
                         </div>
                     `).join('')}

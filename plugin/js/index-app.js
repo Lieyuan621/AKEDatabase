@@ -633,13 +633,13 @@
                 return scriptSourceCache.get(cacheKey);
             }
 
-            async function executeModuleScript(sourceScript) {
+            async function executeModuleScript(sourceScript, prefetchedSource) {
                 const script = document.createElement('script');
                 Array.from(sourceScript.attributes).forEach(attr => {
                     if (attr.name !== 'src') script.setAttribute(attr.name, attr.value);
                 });
                 if (sourceScript.src) {
-                    const source = await getScriptSource(sourceScript.src);
+                    const source = await (prefetchedSource || getScriptSource(sourceScript.src));
                     script.textContent = `${source}\n//# sourceURL=${canonicalResourceUrl(sourceScript.src)}`;
                 } else {
                     script.textContent = sourceScript.textContent;
@@ -708,9 +708,14 @@
                     activateModuleScope(module.id);
                     contentArea.replaceChildren(template.content.cloneNode(true));
                     const scripts = Array.from(contentArea.querySelectorAll('script'));
+                    const prefetchedScripts = new Map();
+                    scripts.forEach(oldScript => {
+                        if (oldScript.src) prefetchedScripts.set(oldScript, getScriptSource(oldScript.src));
+                    });
+                    await Promise.all(prefetchedScripts.values());
                     for (const oldScript of scripts) {
                         if (generation !== moduleLoadGeneration) return false;
-                        await executeModuleScript(oldScript);
+                        await executeModuleScript(oldScript, prefetchedScripts.get(oldScript));
                     }
                     if (generation !== moduleLoadGeneration) return false;
                     window.AKESidebarResize?.mountModule(contentArea, module.id);
@@ -1624,7 +1629,9 @@
 
                 await window.akeI18n?.ready;
                 await window.akeDataSource?.ready;
-                await window.akeServiceWorkerReady;
+                void window.akeServiceWorkerReady?.catch(error => {
+                    console.warn('Service Worker 后台启动失败，页面继续使用普通数据请求。', error);
+                });
                 config.language = window.akeI18n?.getLanguage?.() || 'CH';
                 renderLanguageOptions();
                 renderDataSourceSettings();

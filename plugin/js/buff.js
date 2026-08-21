@@ -39,9 +39,7 @@
 
         async function loadBuffManifest(showHidden) {
             try {
-                const res = await (window.akeFetch || fetch)('/public/Json/BuffData/manifest.json');
-                if (!res.ok) throw new Error('无法加载效果清单');
-                const all = await res.json();
+                const all = await window.akeAssetIndex.listJsonFiles('BuffData', { hidden: showHidden });
                 rawAllBuffs = all || [];
                 let buffs = showHidden ? rawAllBuffs : rawAllBuffs.filter(b => !b.hidden);
                 buffs.sort((a, b) => (a.priority || 999) - (b.priority || 999));

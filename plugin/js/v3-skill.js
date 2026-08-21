@@ -2438,9 +2438,7 @@
     }
 
     async function fetchManifest() {
-        const response = await (window.akeFetch || fetch)('/public/Json/SkillData/manifest.json');
-        if (!response.ok) throw new Error(t('errors.manifestLoad', null, '无法加载 SkillData 清单'));
-        const data = await response.json();
+        const data = await window.akeAssetIndex.listJsonFiles('SkillData', { hidden: showHidden() });
         return Array.isArray(data) ? data : Object.values(data || {});
     }
 

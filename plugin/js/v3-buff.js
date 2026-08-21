@@ -1231,9 +1231,7 @@
     }
 
     async function loadManifest() {
-        const response = await (window.akeFetch || fetch)('/public/Json/BuffData/manifest.json');
-        if (!response.ok) throw new Error(t('common.manifestFailed', null, '无法加载 BuffData 清单'));
-        return response.json();
+        return window.akeAssetIndex.listJsonFiles('BuffData', { hidden: showHidden() });
     }
 
     async function initialize() {

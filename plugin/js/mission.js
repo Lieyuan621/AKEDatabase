@@ -28,6 +28,11 @@
         auxiliary: ['RewardTable', 'ItemTable', 'LevelDescTable', 'CharacterTable', 'MissionExtraInfoTable'],
         dialogue: ['DialogTextTable', 'DialogOptionTable', 'DialogSummaryTable', 'SNSDialogTable', 'SNSDialogOptionTable', 'SNSChatTable', 'NpcTable', 'CharacterTable']
     };
+    const PLAY_DIALOG_ACTIONS = new Set([
+        'StartDialogAction',
+        'StartDialogAndTeleportAction',
+        'PlayDialogAndHideSceneObjectAction'
+    ]);
 
     const state = {
         manifest: [],
@@ -49,6 +54,8 @@
         dialogue: new Map(),
         avatarCache: new Map(),
         dialogueChoices: new Map(),
+        levelScriptScenes: new Map(),
+        missionScriptCache: new Map(),
         renderToken: 0
     };
 
@@ -195,13 +202,144 @@
         return response.json();
     }
 
+    function valueOf(field) {
+        return field && typeof field === 'object' && Object.hasOwn(field, 'constValue') ? field.constValue : field;
+    }
+
+    function collectLevelScriptSceneIds(row) {
+        const sceneIds = new Set();
+        const inspect = value => {
+            ['sceneId', 'levelId', 'levelIdOverride'].forEach(key => {
+                const sceneId = valueOf(value?.[key]);
+                if (typeof sceneId === 'string' && sceneId.trim()) sceneIds.add(sceneId.trim());
+            });
+        };
+        walk(row?.mission, inspect);
+        walk(row?.meta, inspect);
+        return Array.from(sceneIds);
+    }
+
+    async function loadLevelScriptScene(sceneId) {
+        if (!state.levelScriptScenes.has(sceneId)) {
+            const request = (async () => {
+                const manifest = await window.akeAssetIndex.listJsonFiles(`LevelScriptData/${sceneId}`);
+                const base = `/public/Json/LevelScriptData/${encodeURIComponent(sceneId)}`;
+                const scripts = await Promise.all(manifest.filter(entry => !entry.hidden).map(async entry => {
+                    try {
+                        const script = await fetchJson(entry.contentFile || `${base}/${encodeURIComponent(entry.id)}.json`);
+                        return { sceneId, scriptId: String(entry.id), script };
+                    } catch (error) {
+                        console.warn(`LevelScriptData ${sceneId}/${entry.id} 加载失败。`, error);
+                        return null;
+                    }
+                }));
+                return scripts.filter(Boolean);
+            })().catch(error => {
+                state.levelScriptScenes.delete(sceneId);
+                throw error;
+            });
+            state.levelScriptScenes.set(sceneId, request);
+        }
+        return state.levelScriptScenes.get(sceneId);
+    }
+
+    async function ensureMissionLevelScripts(row) {
+        if (!state.missionScriptCache.has(row.id)) {
+            state.missionScriptCache.set(row.id, Promise.all(collectLevelScriptSceneIds(row).map(async sceneId => {
+                try {
+                    return await loadLevelScriptScene(sceneId);
+                } catch (error) {
+                    console.warn(`任务 ${row.id} 的 LevelScriptData 场景 ${sceneId} 加载失败。`, error);
+                    return [];
+                }
+            })).then(groups => groups.flat()));
+        }
+        return state.missionScriptCache.get(row.id);
+    }
+
+    function actionNodes(script) {
+        const dataMap = script?.actionMap?.dataMap || {};
+        return [...(dataMap.headerList || []), ...(dataMap.actionList || []), ...(dataMap.getterList || [])];
+    }
+
+    function actionNextIds(action, nodeMap) {
+        const ids = [];
+        const add = value => {
+            const id = Number(value);
+            if (Number.isFinite(id) && nodeMap.has(id) && !ids.includes(id)) ids.push(id);
+        };
+        const addList = value => (Array.isArray(value) ? value : []).forEach(add);
+        add(action?._nextID);
+        addList(action?._idList);
+        addList(action?._caseIDList);
+        add(action?._defaultID);
+        add(action?._onTrueID);
+        add(action?._onFalseID);
+        add(action?._successID);
+        add(action?._failedID);
+        return ids;
+    }
+
+    function actionDialogId(action) {
+        return valueOf(action?._dialogId) || valueOf(action?.dialogId) || '';
+    }
+
+    function actionType(action) {
+        return shortType(action?.$type).split('.').pop();
+    }
+
+    function downstreamDialogs(startId, nodeMap) {
+        const targets = new Set();
+        const queue = [Number(startId)];
+        const visited = new Set();
+        while (queue.length && visited.size < 200) {
+            const id = queue.shift();
+            if (!Number.isFinite(id) || visited.has(id)) continue;
+            visited.add(id);
+            const action = nodeMap.get(id);
+            if (!action) continue;
+            const type = actionType(action);
+            const dialogId = actionDialogId(action);
+            if (PLAY_DIALOG_ACTIONS.has(type) && dialogId) {
+                targets.add(String(dialogId));
+                continue;
+            }
+            actionNextIds(action, nodeMap).forEach(nextId => queue.push(nextId));
+        }
+        return Array.from(targets);
+    }
+
+    function levelScriptDialogFlow(scriptEntries) {
+        const flow = new Map();
+        scriptEntries.forEach(entry => {
+            const nodes = actionNodes(entry.script);
+            const nodeMap = new Map(nodes.map(action => [Number(action?._ID), action]).filter(([id]) => Number.isFinite(id)));
+            nodes.filter(action => actionType(action) === 'OnDialogExit').forEach(action => {
+                const dialogId = String(valueOf(action?._filteredDialogId) || '');
+                if (!dialogId) return;
+                const finishId = Number(valueOf(action?._filteredFinishId));
+                const targets = downstreamDialogs(action?._nextID, nodeMap);
+                const transition = {
+                    finishId: Number.isFinite(finishId) ? finishId : -1,
+                    targets,
+                    sceneId: entry.sceneId,
+                    scriptId: entry.scriptId
+                };
+                if (!flow.has(dialogId)) flow.set(dialogId, []);
+                const transitions = flow.get(dialogId);
+                const key = `${transition.finishId}|${targets.join(',')}`;
+                if (!transitions.some(item => `${item.finishId}|${item.targets.join(',')}` === key)) transitions.push(transition);
+            });
+        });
+        return flow;
+    }
+
     async function loadCore() {
         const [manifest, typeInfo, textTable] = await Promise.all([
-            fetchJson('/public/Json/MissionRuntimeAsset/manifest.json?missionIndex=3'),
+            window.akeAssetIndex.listJsonFiles('MissionRuntimeAsset'),
             window.AKEV3.table('MissionTypeInfoTable'),
             window.AKEV3.table('TextTable')
         ]);
-        if (!Array.isArray(manifest)) throw new Error('MissionRuntimeAsset manifest 根节点不是数组');
         state.manifest = manifest;
         state.typeInfo = typeInfo || {};
         state.textTable = textTable || {};
@@ -212,7 +350,7 @@
         });
         const entries = Array.from(state.missionEntries.values());
         if (entries.some(entry => entry.missionType === undefined || !entry.missionName || entry.missionImportance === undefined || entry.questCount === undefined)) {
-            throw new Error('MissionRuntimeAsset manifest 缺少任务基础索引字段，请重新生成 Json 索引');
+            throw new Error('MissionRuntimeAsset 远端资产索引缺少任务基础索引字段');
         }
         state.stats = {
             missionCount: entries.length,
@@ -527,7 +665,7 @@
         return path;
     }
 
-    function standardDialogGroups(missionId, mission, tables, refs = collectRuntimeDialogueRefs(mission)) {
+    function standardDialogGroups(missionId, mission, tables, refs = collectRuntimeDialogueRefs(mission), scriptFlow = new Map()) {
         const escapedId = missionId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         const keyPattern = new RegExp(`^(dlg_${escapedId}_.+)_\\d{3}$`);
         Object.keys(tables.DialogTextTable || {}).forEach(key => {
@@ -538,10 +676,18 @@
             const lines = Object.entries(tables.DialogTextTable || {}).filter(([key]) => key.startsWith(`${dialogId}_`)).sort(([a], [b]) => naturalCompare(a, b)).map(([id, line]) => ({
                 id, speaker: line.actorName?.text || line.actorNameId || '旁白', avatar: dialogueAvatar(line.actorNameId, tables), text: line.dialogText?.text || '', hint: line.hint?.text || '', audio: line.audioOverride || ''
             }));
-            const options = Object.entries(tables.DialogOptionTable || {}).filter(([key]) => key.startsWith(`option_${dialogId}_`)).sort(([a], [b]) => naturalCompare(a, b)).map(([id, option]) => ({ id, text: option.optionText?.text || '', iconType: option.iconType || '' }));
+            const optionPattern = new RegExp(`^option_${dialogId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}_(\\d+)_(\\d+)$`);
+            const options = Object.entries(tables.DialogOptionTable || {}).filter(([key]) => key.startsWith(`option_${dialogId}_`)).sort(([a], [b]) => naturalCompare(a, b)).map(([id, option]) => {
+                const match = id.match(optionPattern);
+                return { id, text: option.optionText?.text || '', iconType: option.iconType || '', group: Number(match?.[1]), index: Number(match?.[2]) };
+            });
+            const optionGroups = Array.from(new Set(options.map(option => option.group).filter(Number.isFinite))).sort((a, b) => a - b).map(group => ({
+                group,
+                options: options.filter(option => option.group === group)
+            }));
             const summaryPrefix = `summary_${dialogId.replace(/^dlg_/, '')}_`;
             const summaries = Object.entries(tables.DialogSummaryTable || {}).filter(([key]) => key.startsWith(summaryPrefix)).sort(([a], [b]) => naturalCompare(a, b)).map(([id, summary]) => ({ id, text: summary.text || '' }));
-            return { kind: 'dialog', id: dialogId, lines, options, summaries };
+            return { kind: 'dialog', id: dialogId, lines, options, optionGroups, summaries, transitions: scriptFlow.get(dialogId) || [] };
         }).filter(group => group.lines.length || group.options.length || refs.dialog.has(group.id));
     }
 
@@ -587,9 +733,10 @@
         });
     }
 
-    function dialogueData(row, tables) {
+    function dialogueData(row, tables, scriptEntries = []) {
         const refs = collectRuntimeDialogueRefs(row.mission);
-        const standard = standardDialogGroups(row.id, row.mission, tables, refs);
+        const scriptFlow = levelScriptDialogFlow(scriptEntries);
+        const standard = standardDialogGroups(row.id, row.mission, tables, refs, scriptFlow);
         const sns = snsDialogGroups(row.id, row.mission, tables, refs);
         const groups = [...standard, ...sns].sort((a, b) => {
             const aOrder = refs.order.get(a.id);
@@ -657,7 +804,18 @@
         const summaries = (group.summaries || []).map(item => `<div class="mission-description">${richText(item.text)}</div>`).join('');
         const lines = group.lines.map(renderDialogueLine).join('');
         const options = group.options.map(option => `<div class="mission-dialog-option">选择：${richText(option.text || option.id)} <small>${escapeHtml(option.id)}</small></div>`).join('');
-        return `<section class="mission-dialog-group"><h2 class="mission-dialog-group__title"><span class="ake-ui-badge">剧情对话</span><code>${escapeHtml(group.id)}</code>${group.missing ? '<span class="ake-ui-badge">表中缺失</span>' : ''}</h2>${summaries}${lines || '<div class="mission-dialog-empty">找到了对话引用，但没有对应台词。</div>'}${options}</section>`;
+        const specificTransitions = (group.transitions || []).filter(transition => transition.finishId >= 0);
+        const maxFinishId = specificTransitions.reduce((max, transition) => Math.max(max, transition.finishId), -1);
+        const optionGroup = [...(group.optionGroups || [])].reverse().find(item => item.options.length > maxFinishId);
+        const transitions = (group.transitions || []).filter(transition => transition.finishId >= 0 || transition.targets.length).map(transition => {
+            const option = transition.finishId >= 0 ? optionGroup?.options?.[transition.finishId] : null;
+            const label = option?.text || (transition.finishId >= 0 ? `分支 ${transition.finishId + 1}` : '完成对话');
+            const target = transition.targets[0] || '';
+            const destination = transition.targets.length ? transition.targets.join(' / ') : '结束';
+            return `<button class="mission-dialog-choice__button" type="button"${target ? ` data-dialog-target="${escapeHtml(target)}"` : ' disabled'}>${richText(label)} <small>→ ${escapeHtml(destination)}</small></button>`;
+        }).join('');
+        const flow = transitions ? `<div class="mission-dialog-choice"><div class="mission-dialog-choice__label">LevelScript 对话跳转</div><div class="mission-dialog-choice__buttons">${transitions}</div></div>` : '';
+        return `<section class="mission-dialog-group" id="mission-dialog-${escapeHtml(group.id)}"><h2 class="mission-dialog-group__title"><span class="ake-ui-badge">剧情对话</span><code>${escapeHtml(group.id)}</code>${group.missing ? '<span class="ake-ui-badge">表中缺失</span>' : ''}</h2>${summaries}${lines || '<div class="mission-dialog-empty">找到了对话引用，但没有对应台词。</div>'}${options}${flow}</section>`;
     }
 
     function renderDialogueContent(data, panel) {
@@ -670,19 +828,22 @@
             selectSnsOption(group, button.dataset.snsContent, button.dataset.snsOption);
             renderDialogueContent(data, panel);
         }));
+        panel.querySelectorAll('[data-dialog-target]').forEach(button => button.addEventListener('click', () => {
+            document.getElementById(`mission-dialog-${button.dataset.dialogTarget}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }));
     }
 
     async function renderDialoguePanel(row, panel, token) {
-        let tables;
+        let tables, scriptEntries;
         try {
-            tables = await ensureDialogue();
+            [tables, scriptEntries] = await Promise.all([ensureDialogue(), ensureMissionLevelScripts(row)]);
         } catch (error) {
             if (token !== state.renderToken) return;
             panel.innerHTML = `<div class="ake-ui-state" data-state="error">对话表加载失败：${escapeHtml(error.message)}</div>`;
             return;
         }
         if (token !== state.renderToken || state.selectedId !== row.id || state.activeTab !== 'dialogue') return;
-        const data = dialogueData(row, tables);
+        const data = dialogueData(row, tables, scriptEntries);
         renderDialogueContent(data, panel);
     }
 
@@ -760,11 +921,11 @@
             enrichDialogueSearch();
         } catch (error) {
             console.error('任务模块初始化失败', error);
-            elements.detail.innerHTML = `<div class="ake-ui-state" data-state="error"><div><b>任务模块加载失败</b><br>${escapeHtml(error.message)}<br><small>请通过 JSON 上传流程生成 public/Json/MissionRuntimeAsset/manifest.json。</small></div></div>`;
+            elements.detail.innerHTML = `<div class="ake-ui-state" data-state="error"><div><b>任务模块加载失败</b><br>${escapeHtml(error.message)}</div></div>`;
             elements.summary.textContent = '加载失败';
         }
     }
 
-    window.__akeMission = { state, dialogueData, questEntries, collectRuntimeDialogueRefs, snsTimeline, selectSnsOption };
+    window.__akeMission = { state, dialogueData, questEntries, collectRuntimeDialogueRefs, levelScriptDialogFlow, snsTimeline, selectSnsOption };
     initialize();
 })();

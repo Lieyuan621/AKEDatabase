@@ -611,6 +611,14 @@
         </div>`;
     }
 
+    function voiceButtonHtml(voId) {
+        return window.AKEVoicePlayer?.buttonHtml(voId, {
+            play: t('audio.play', null, '播放语音'),
+            pause: t('audio.pause', null, '暂停语音'),
+            error: t('audio.error', null, '语音播放失败')
+        }) || '';
+    }
+
     function renderDocument(item, popup) {
         const rich = state.tables.richContent?.[item.contentId] || null;
         const title = gameText(rich?.title) || gameText(popup?.title) || gameText(item.name, item.id);
@@ -631,9 +639,10 @@
         const logo = popupLogo(popup);
         const lineHtml = lines.map(line => {
             const speaker = gameText(line.actorName) || gameText(line.infoActorName) || line.actorNameId || '';
+            const voiceButton = voiceButtonHtml(line.audioOverride);
             return `<div class="akearchive-line${speaker ? '' : ' akearchive-line--anonymous'}">
-                ${speaker ? `<div class="akearchive-line-speaker">${gameHtml(speaker)}</div>` : ''}
-                <div class="akearchive-line-text">${gameHtml(gameText(line.radioText))}</div>
+                ${speaker ? `<div class="akearchive-line-speaker">${voiceButton}${gameHtml(speaker)}</div>` : ''}
+                <div class="akearchive-line-text">${speaker ? '' : voiceButton}${gameHtml(gameText(line.radioText))}</div>
             </div>`;
         }).join('');
         return `<section class="akearchive-transcript ake-ui-section">
@@ -656,6 +665,7 @@
     }
 
     function renderDetail(item) {
+        window.AKEVoicePlayer?.stop();
         const group = state.groupMap.get(String(item.firstLvId));
         if (!group) return;
         const category = categoryForGroup(group);
@@ -686,6 +696,7 @@
     }
 
     function renderEmptyGroup(group) {
+        window.AKEVoicePlayer?.stop();
         const category = categoryForGroup(group);
         const groupName = gameText(group.name, group.firstLvId);
         const groupIsAdded = state.addedGroupIds.has(String(group.firstLvId));
@@ -725,6 +736,7 @@
     }
 
     function showOverview(options) {
+        window.AKEVoicePlayer?.stop();
         state.activeGroupId = '';
         state.activeItemId = '';
         if (options?.resetPage !== false) state.activePageType = '';
@@ -811,6 +823,7 @@
     }
 
     function onModuleDeactivate(event) {
+        if (!event.detail?.moduleId || event.detail.moduleId === MODULE_ID) window.AKEVoicePlayer?.stop();
         if (event.detail?.moduleId === MODULE_ID) closeMobileDirectory({ restoreFocus: false });
     }
 
@@ -924,6 +937,7 @@
 
     window.__akeArchiveController = {
         destroy() {
+            window.AKEVoicePlayer?.stop();
             state.disposed = true;
             state.loadToken += 1;
             elements.home?.removeEventListener('click', onHomeClick);

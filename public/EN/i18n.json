@@ -47,6 +47,15 @@
             "independentEquipment": "Independent Equipment"
         },
         "modules": {
+            "asset": {
+                "title": "Assets", "overview": "Choose public / images or public / Json to browse", "root": "Root", "path": "Current path", "search": "Search file name or full path", "schema": "Index schema", "revision": "Asset revision", "folder": "Folder · {count} items", "download": "Download", "downloading": "Downloading", "downloadFailed": "Download failed", "openOriginal": "Open original", "imageFailed": "Image failed to load",
+                "loading": { "index": "Loading unified index" },
+                "directory": { "title": "Asset directory" },
+                "counts": { "folders": "{count} folders", "files": "{count} files", "images": "{count} images" },
+                "empty": { "directory": "Empty directory", "search": "No search results" },
+                "errors": { "load": "Asset index failed to load", "unavailable": "Unified index service unavailable" },
+                "mobile": { "open": "Open asset directory", "close": "Close asset directory" }
+            },
             "archive": {
                 "title": "Archives",
                 "search": { "label": "Search archives", "placeholder": "Search by archive name, content, or ID", "clear": "Clear search" },
@@ -59,6 +68,7 @@
                 "empty": { "archives": "No archives available", "search": "No matching archives", "content": "This archive has no content", "transcript": "This archive has no transcript" },
                 "errors": { "loadFailed": "Failed to load archives: {message}", "contentFailed": "Failed to load archive content: {message}", "imageFailed": "Failed to load content image" },
                 "buttons": { "close": "Close", "back": "Back to Overview", "openDirectory": "Open Directory" },
+                "audio": { "play": "Play voice", "pause": "Pause voice", "error": "Voice playback failed" },
                 "contentImage": { "alt": "Archive content image", "unavailable": "Content image unavailable" },
                 "transcript": { "title": "Transcript", "label": "Text Transcript" },
                 "protagonistGender": { "label": "Protagonist Gender", "male": "Male", "female": "Female" }
@@ -77,6 +87,7 @@
                 "select": "Select a character",
                 "noMatches": "No matching characters",
                 "loadFailed": "Failed to load: {name}",
+                "audio": { "play": "Play voice", "pause": "Pause voice", "error": "Voice playback failed" },
                 "unknown": "Unknown",
                 "unknownProfession": "Unknown class",
                 "attributeFallback": "Attribute {name}",
