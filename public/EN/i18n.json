@@ -47,6 +47,15 @@
             "independentEquipment": "Independent Equipment"
         },
         "modules": {
+            "asset": {
+                "title": "Assets", "overview": "Choose public / images or public / Json to browse", "root": "Root", "path": "Current path", "search": "Search file name or full path", "schema": "Index schema", "revision": "Asset revision", "folder": "Folder · {count} items", "download": "Download", "downloading": "Downloading", "downloadFailed": "Download failed", "openOriginal": "Open original", "imageFailed": "Image failed to load",
+                "loading": { "index": "Loading unified index" },
+                "directory": { "title": "Asset directory" },
+                "counts": { "folders": "{count} folders", "files": "{count} files", "images": "{count} images" },
+                "empty": { "directory": "Empty directory", "search": "No search results" },
+                "errors": { "load": "Asset index failed to load", "unavailable": "Unified index service unavailable" },
+                "mobile": { "open": "Open asset directory", "close": "Close asset directory" }
+            },
             "archive": {
                 "title": "Archives",
                 "search": { "label": "Search archives", "placeholder": "Search by archive name, content, or ID", "clear": "Clear search" },

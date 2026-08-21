@@ -50,10 +50,12 @@
 
     function cachedLevelDataJson(url) {
         if (!levelDataJsonPromises.has(url)) {
-            const promise = originalAkeFetch(url).then(response => {
-                if (!response.ok) throw new Error(`无法加载 ${url} (HTTP ${response.status})`);
-                return response.json();
-            }).catch(error => {
+            const promise = (window.akeDataLoader?.loadJson
+                ? window.akeDataLoader.loadJson(url, { priority: 'dependency' })
+                : originalAkeFetch(url).then(response => {
+                    if (!response.ok) throw new Error(`无法加载 ${url} (HTTP ${response.status})`);
+                    return response.json();
+                })).catch(error => {
                 levelDataJsonPromises.delete(url);
                 throw error;
             });
@@ -114,11 +116,14 @@
                 null,
                 '首次加载需要加载文本映射表，可能速度较慢'
             ));
-            const localized = fetchText(`${TABLE_ROOT}I18nTextTable_${suffix}.json`).then(JSON.parse);
-            const promise = (suffix === 'CN' ? localized : Promise.all([
+            const load = url => window.akeDataLoader?.loadJson
+                ? window.akeDataLoader.loadJson(url, { priority: 'prefetch', hydrate: false })
+                : fetchText(url).then(losslessParse);
+            const localized = load(`${TABLE_ROOT}I18nTextTable_${suffix}.json`);
+            const promise = (suffix === 'CN' ? localized.then(value => ({ localized: value, chinese: value })) : Promise.all([
                 localized,
-                fetchText(`${TABLE_ROOT}I18nTextTable_CN.json`).then(JSON.parse)
-            ]).then(([current, chinese]) => ({ ...chinese, ...Object.fromEntries(Object.entries(current).filter(([, value]) => value !== '')) })))
+                load(`${TABLE_ROOT}I18nTextTable_CN.json`)
+            ]).then(([current, chinese]) => ({ localized: current, chinese })))
                 .catch(error => {
                     i18nPromises.delete(suffix);
                     throw error;
@@ -129,16 +134,19 @@
         return i18nPromises.get(suffix);
     }
 
-    async function table(name, version) {
-        const cacheKey = `${version?.id || 'current'}:${languageInfo().table}:${name}`;
+    async function loadTableInternal(name, version, options = {}) {
+        const cacheKey = `${version?.id || 'current'}:${languageInfo().table}:${name}:${options?.hydrate === false ? 'raw' : 'hydrated'}`;
         if (!tableCache.has(cacheKey)) {
-            const raw = fetchText(versionTableUrl(name, version))
+            const raw = (window.akeDataLoader?.loadJson
+                ? window.akeDataLoader.loadJson(versionTableUrl(name, version), { priority: 'foreground' })
+                : fetchText(versionTableUrl(name, version)).then(losslessParse))
                 .catch(error => {
                     console.warn(`Table ${name} not found${version ? ` in version ${version.id}` : ''}, treating as empty`, error.message || error);
-                    return '{}';
-                })
-                .then(losslessParse);
-            tableCache.set(cacheKey, Promise.all([raw, loadI18n()]).then(([data, i18n]) => hydrate(data, i18n)));
+                    return {};
+                });
+            tableCache.set(cacheKey, options?.hydrate === false
+                ? raw
+                : Promise.all([raw, loadI18n()]).then(([data, i18n]) => hydrate(data, i18n)));
         }
         return tableCache.get(cacheKey);
     }
@@ -150,7 +158,7 @@
         seen.add(value);
         if (!Array.isArray(value) && Object.prototype.hasOwnProperty.call(value, 'id') &&
             Object.prototype.hasOwnProperty.call(value, 'text') && !value.text) {
-            value.text = i18n[String(value.id)] || '';
+            value.text = i18n.localized?.[String(value.id)] || i18n.chinese?.[String(value.id)] || '';
         }
         Object.values(value).forEach(child => hydrate(child, i18n, seen));
         return value;
@@ -606,7 +614,7 @@
             if (!gasEnv) return null;
             const environmentId = Number(factoryEnvironments[String(gasEnv)]?.GenEnv || gasEnv);
             const textId = FACTORY_ENVIRONMENT_TEXT_IDS[environmentId];
-            return { id: environmentId, name: (textId && i18n[textId]) || `gasEnv ${environmentId}` };
+            return { id: environmentId, name: (textId && (i18n.localized?.[textId] || i18n.chinese?.[textId])) || `gasEnv ${environmentId}` };
         };
         const recipeRows = [];
         const addRecipe = (recipeId, kind, name, inputs, outputs, meta, durationMs, environment) => {
@@ -697,8 +705,8 @@
             levelDataByDungeon[dungeonId] = mainLevelData ? { [`${row.sceneId}_lv_data`]: mainLevelData } : {};
             if (!sceneRuntimeCache.has(row.sceneId)) {
                 sceneRuntimeCache.set(row.sceneId, (async () => {
+                    const spawnerManifest = await window.akeAssetIndex.listJsonFiles(`SpawnerConfig/${row.sceneId}`);
                     const spawnerBase = `/public/Json/SpawnerConfig/${row.sceneId}`;
-                    const spawnerManifest = await optionalJson(`${spawnerBase}/manifest.json`);
                     const loadEntries = (manifest, base) => Array.isArray(manifest)
                         ? Promise.all(manifest.filter(entry => !entry.hidden).sort((a, b) =>
                             (a.priority || 999) - (b.priority || 999) || String(a.id || '').localeCompare(String(b.id || ''), 'en'))
@@ -1069,6 +1077,16 @@
         window.__akeRouter.__v3Patched = true;
     }
 
+    function table(name, version, options = {}) {
+        return window.akeDataLoader?.loadTable
+            ? window.akeDataLoader.loadTable(name, version, options)
+            : loadTableInternal(name, version, options);
+    }
+
+    window.akeDataLoader?.registerTableLoader(({ name, version, options }) =>
+        loadTableInternal(name, version, options));
+    window.akeDataLoader?.registerI18nLoader(() => loadI18n());
+
     window.AKEV3 = {
         activate(module) {
             if (!adapters[module]) throw new Error(`未知 v3 模块: ${module}`);
@@ -1078,6 +1096,11 @@
         },
         preloadTextTable: loadI18n,
         table,
+        tables(entries, options = {}) {
+            return window.akeDataLoader?.loadTables
+                ? window.akeDataLoader.loadTables(entries, options)
+                : Promise.all((entries || []).map(entry => table(entry.name, entry.version, { ...options, ...entry })));
+        },
         text,
         async equipTemplateShareUrl(rewardIds) {
             for (const rewardId of rewardIds || []) {

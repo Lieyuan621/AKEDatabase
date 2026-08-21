@@ -87,7 +87,7 @@
         return Boolean(document.querySelector(INLINE_PROGRESS_SELECTOR));
     }
 
-    function renderProgress(forceVisible = false) {
+    function renderProgressNow(forceVisible = false) {
         const requests = Array.from(progressRequests.values());
         const showDetails = window.akeData?.getConfig?.().showHidden === true || forceProgressDetails;
         const active = requests.filter(request => !request.done);
@@ -137,6 +137,20 @@
             file.textContent = '';
         }
         root.setAttribute('aria-valuetext', `${text.textContent}${file.textContent ? `，${file.textContent}` : ''}`);
+    }
+
+    let progressFrame = null;
+    let progressFrameForce = false;
+    function renderProgress(forceVisible = false) {
+        progressFrameForce = progressFrameForce || forceVisible;
+        if (progressFrame) return;
+        const schedule = window.requestAnimationFrame || (callback => setTimeout(callback, 16));
+        progressFrame = schedule(() => {
+            progressFrame = null;
+            const force = progressFrameForce;
+            progressFrameForce = false;
+            renderProgressNow(force);
+        });
     }
 
     function beginProgress(url, source) {
@@ -495,40 +509,77 @@
         });
     }
 
-    async function readRecord(db, key) {
-        if (!db) return null;
+    const idbReadQueue = [];
+    const idbWriteQueue = [];
+    let idbReadFlush = null;
+    let idbWriteFlush = null;
+
+    function flushIdbReads() {
+        idbReadFlush = null;
+        const batch = idbReadQueue.splice(0);
+        if (!batch.length) return;
+        const db = batch[0].db;
+        if (!db) {
+            batch.forEach(item => item.resolve(null));
+            return;
+        }
         try {
             const tx = db.transaction(RESPONSE_STORE, 'readonly');
-            return await idbRequest(tx.objectStore(RESPONSE_STORE).get(key));
+            const request = tx.objectStore(RESPONSE_STORE).getAll(batch.map(item => item.key));
+            request.onsuccess = () => {
+                const records = new Map((request.result || []).map(record => [record.key, record]));
+                batch.forEach(item => item.resolve(records.get(item.key) || null));
+            };
+            request.onerror = () => batch.forEach(item => item.resolve(null));
         } catch {
-            return null;
+            batch.forEach(item => item.resolve(null));
         }
     }
 
-    async function writeRecord(db, record) {
+    async function readRecord(db, key) {
+        if (!db) return null;
+        return new Promise(resolve => {
+            idbReadQueue.push({ db, key, resolve });
+            if (!idbReadFlush) idbReadFlush = setTimeout(flushIdbReads, 0);
+        });
+    }
+
+    function flushIdbWrites() {
+        idbWriteFlush = null;
+        const batch = idbWriteQueue.splice(0);
+        if (!batch.length) return;
+        const db = batch[0].db;
         if (!db) return;
         try {
-            await new Promise((resolve, reject) => {
-                const tx = db.transaction(RESPONSE_STORE, 'readwrite');
-                tx.objectStore(RESPONSE_STORE).put(record);
-                tx.oncomplete = resolve;
-                tx.onerror = () => reject(tx.error);
-                tx.onabort = () => reject(tx.error);
-            });
+            const tx = db.transaction(RESPONSE_STORE, 'readwrite');
+            const store = tx.objectStore(RESPONSE_STORE);
+            batch.forEach(item => store.put(item.record));
+            tx.onerror = () => console.warn(`无法批量缓存 ${batch.length} 个响应`, tx.error);
         } catch (error) {
-            console.warn(`无法缓存 ${record.url}`, error);
+            console.warn(`无法批量缓存 ${batch.length} 个响应`, error);
         }
+    }
+
+    function writeRecord(db, record) {
+        if (!db) return;
+        idbWriteQueue.push({ db, record });
+        if (!idbWriteFlush) idbWriteFlush = setTimeout(flushIdbWrites, 0);
     }
 
     const versionPromise = loadVersion();
+    const databaseOpenPromise = openDatabase();
     const serviceWorkerPromise = versionPromise.then(registerServiceWorker);
-    const databasePromise = Promise.all([versionPromise, openDatabase()]).then(async ([version, db]) => ({
+    const databasePromise = Promise.all([versionPromise, databaseOpenPromise]).then(async ([version, db]) => ({
         version,
         db: await Promise.race([
             prepareDatabase(db, version),
             new Promise(resolve => setTimeout(() => resolve(null), 5000))
         ])
     }));
+    const fastDatabase = () => Promise.race([
+        databaseOpenPromise,
+        new Promise(resolve => setTimeout(() => resolve(null), 120))
+    ]);
 
     window.akeVersionReady = versionPromise;
     window.akeServiceWorkerReady = serviceWorkerPromise;
@@ -596,7 +647,7 @@
         const progressId = trackProgress ? beginProgress(canonicalUrl, 'cache') : null;
         if (!pendingRequests.has(key)) {
             const loadPromise = (async () => {
-                const { db } = await databasePromise;
+                const db = await fastDatabase();
                 const cached = forceRefresh ? null : await readRecord(db, key);
                 if (cached) {
                     memoryResponses.set(key, cached);
@@ -671,10 +722,12 @@
         const directory = window.akeI18n?.getLanguageInfo?.().directory || 'CH';
         if (!window.__akeMapsPromises) window.__akeMapsPromises = {};
         if (!window.__akeMapsPromises[directory]) {
-            window.__akeMapsPromises[directory] = window.akeFetch(`/public/${directory}/maps.json`).then(response => {
-                if (!response.ok) throw new Error(`无法加载 maps.json (HTTP ${response.status})`);
-                return response.json();
-            }).catch(error => {
+            window.__akeMapsPromises[directory] = (window.akeDataLoader?.loadJson
+                ? window.akeDataLoader.loadJson(`/public/${directory}/maps.json`, { priority: 'dependency' })
+                : window.akeFetch(`/public/${directory}/maps.json`).then(response => {
+                    if (!response.ok) throw new Error(`无法加载 maps.json (HTTP ${response.status})`);
+                    return response.json();
+                })).catch(error => {
                 window.__akeMapsPromises[directory] = null;
                 throw error;
             });

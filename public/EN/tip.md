@@ -2,6 +2,27 @@ AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redir
 
 # AKEData Version Changelog
 
+### v1.2.13
+
+#### Unified asset index and Asset module
+
+- Added a token-protected Asset module for browsing remote image and Json directories, previewing images, and downloading files.
+- Remote `asset-sync-index` now describes image and Json revisions independently from the TableCfg game-data version in `version.json`.
+- Asset synchronization no longer depends on `manifest.json` files inside Json directories; the runtime no longer generates local or remote manifests.
+
+#### Data-loading architecture
+
+- Startup scripts and dynamically loaded module scripts are prefetched in parallel and executed in their original order, reducing serial network waterfalls.
+- Added a bounded-concurrency data loader with request deduplication, priority scheduling, batched Table loading, shared cancellation waits, and loading statistics.
+- Large JSON payloads are parsed in a Worker. Text tables now look up localized values with Chinese fallback on demand instead of expanding a full merged copy.
+- IndexedDB now gets only a short opportunity before a request proceeds to the network, and cache reads and writes are batched. Progress rendering is frame-scheduled.
+- Service Worker registration runs in the background and no longer blocks the initial page.
+
+#### Stability fixes
+
+- Fixed dynamically prefetched module scripts being executed before their source Promise had resolved.
+- Fixed the asset-index revision from being incorrectly coupled to the TableCfg `sharedRevision`; the two independent data-version systems no longer conflict.
+
 ### v1.2.12
 
 #### Characters and skills

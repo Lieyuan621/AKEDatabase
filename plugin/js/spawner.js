@@ -67,21 +67,16 @@
 
         // ---------- 加载根清单 ----------
         async function loadRootManifest() {
-            const url = '/public/Json/SpawnerConfig/manifest.json';
             try {
-                const resp = await (window.akeFetch || fetch)(url);
-                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-                const items = await resp.json();
-                rawGroups = items;
+                const directories = await window.akeAssetIndex.listJsonDirectories('SpawnerConfig');
                 const showHidden = window.akeData?.getConfig().showHidden ?? false;
-                let filtered = showHidden ? items : items.filter(item => !item.hidden);
-                filtered.sort((a, b) => (a.priority || 999) - (b.priority || 999));
-                groups = filtered.map(item => ({
-                    id: item.id,
-                    name: item.name || item.id,
-                    manifestPath: item.contentFile,
+                groups = directories.map(path => ({
+                    id: path.split('/').pop(),
+                    name: path.split('/').pop(),
+                    directory: path,
                     spawners: null
                 }));
+                rawGroups = groups;
                 return groups;
             } catch (err) {
                 console.error('加载根清单失败:', err);
@@ -92,11 +87,8 @@
         // 按需加载分组的子清单
         async function loadGroupSpawners(group) {
             if (group.spawners !== null) return group.spawners;
-            const url = group.manifestPath;
             try {
-                const resp = await (window.akeFetch || fetch)(url);
-                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-                const items = await resp.json();
+                const items = await window.akeAssetIndex.listJsonFiles(group.directory);
                 const showHidden = window.akeData?.getConfig().showHidden ?? false;
                 let filtered = showHidden ? items : items.filter(item => !item.hidden);
                 filtered.sort((a, b) => (a.priority || 999) - (b.priority || 999));

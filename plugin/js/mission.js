@@ -222,9 +222,8 @@
     async function loadLevelScriptScene(sceneId) {
         if (!state.levelScriptScenes.has(sceneId)) {
             const request = (async () => {
+                const manifest = await window.akeAssetIndex.listJsonFiles(`LevelScriptData/${sceneId}`);
                 const base = `/public/Json/LevelScriptData/${encodeURIComponent(sceneId)}`;
-                const manifest = await fetchJson(`${base}/manifest.json`);
-                if (!Array.isArray(manifest)) throw new Error(`${sceneId} 的 LevelScriptData manifest 根节点不是数组`);
                 const scripts = await Promise.all(manifest.filter(entry => !entry.hidden).map(async entry => {
                     try {
                         const script = await fetchJson(entry.contentFile || `${base}/${encodeURIComponent(entry.id)}.json`);
@@ -337,11 +336,10 @@
 
     async function loadCore() {
         const [manifest, typeInfo, textTable] = await Promise.all([
-            fetchJson('/public/Json/MissionRuntimeAsset/manifest.json?missionIndex=3'),
+            window.akeAssetIndex.listJsonFiles('MissionRuntimeAsset'),
             window.AKEV3.table('MissionTypeInfoTable'),
             window.AKEV3.table('TextTable')
         ]);
-        if (!Array.isArray(manifest)) throw new Error('MissionRuntimeAsset manifest 根节点不是数组');
         state.manifest = manifest;
         state.typeInfo = typeInfo || {};
         state.textTable = textTable || {};
@@ -352,7 +350,7 @@
         });
         const entries = Array.from(state.missionEntries.values());
         if (entries.some(entry => entry.missionType === undefined || !entry.missionName || entry.missionImportance === undefined || entry.questCount === undefined)) {
-            throw new Error('MissionRuntimeAsset manifest 缺少任务基础索引字段，请重新生成 Json 索引');
+            throw new Error('MissionRuntimeAsset 远端资产索引缺少任务基础索引字段');
         }
         state.stats = {
             missionCount: entries.length,
@@ -923,7 +921,7 @@
             enrichDialogueSearch();
         } catch (error) {
             console.error('任务模块初始化失败', error);
-            elements.detail.innerHTML = `<div class="ake-ui-state" data-state="error"><div><b>任务模块加载失败</b><br>${escapeHtml(error.message)}<br><small>请通过 JSON 上传流程生成 public/Json/MissionRuntimeAsset/manifest.json。</small></div></div>`;
+            elements.detail.innerHTML = `<div class="ake-ui-state" data-state="error"><div><b>任务模块加载失败</b><br>${escapeHtml(error.message)}</div></div>`;
             elements.summary.textContent = '加载失败';
         }
     }

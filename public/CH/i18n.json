@@ -22,6 +22,15 @@
         "errors": { "load": "加载失败：{message}", "startup": "应用启动失败：{message}", "notFoundTitle": "页面未找到", "notFoundDesc": "您访问的模块或条目不存在", "returnHome": "返回首页", "hiddenContentHint": "该内容可能为隐藏内容。", "hiddenContentHelp": "您可以通过点击左下角全局设置按钮，开启“显示隐藏模块”来访问隐藏内容。", "moduleContentMissing": "模块内容文件未指定", "moduleLoad": "无法加载模块内容：{message}", "moduleManifestRead": "无法读取模块清单。<br>请通过本地服务器访问。", "exportFailed": "截图失败：{message}" },
         "data": { "independentEquipment": "独立装备" },
         "modules": {
+            "asset": {
+                "title": "资产", "overview": "选择 public / images 或 public / Json 开始浏览", "root": "根目录", "path": "当前路径", "search": "搜索文件名或完整路径", "schema": "索引 schema", "revision": "资产 revision", "folder": "文件夹 · {count} 项", "download": "下载", "downloading": "下载中", "downloadFailed": "下载失败", "openOriginal": "打开原文件", "imageFailed": "图片加载失败",
+                "loading": { "index": "正在读取统一索引" },
+                "directory": { "title": "资产目录" },
+                "counts": { "folders": "{count} 个文件夹", "files": "{count} 个文件", "images": "{count} 张图片" },
+                "empty": { "directory": "空目录", "search": "搜索无结果" },
+                "errors": { "load": "资产索引加载失败", "unavailable": "统一索引服务不可用" },
+                "mobile": { "open": "打开资产目录", "close": "关闭资产目录" }
+            },
             "archive": {
                 "title": "档案库",
                 "search": { "label": "搜索档案", "placeholder": "输入档案名称、内容或 ID", "clear": "清除搜索" },

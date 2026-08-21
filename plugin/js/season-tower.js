@@ -76,9 +76,8 @@
     }
 
     async function loadSpawners() {
-        const base = `/public/Json/SpawnerConfig/${SCENE_ID}`;
-        const manifest = await fetchJson(`${base}/manifest.json`);
-        const configs = await Promise.all(manifest.filter(entry => !entry.hidden).map(entry => fetchJson(entry.contentFile || `${base}/${entry.id}.json`)));
+        const manifest = await window.akeAssetIndex.listJsonFiles(`SpawnerConfig/${SCENE_ID}`);
+        const configs = await Promise.all(manifest.filter(entry => !entry.hidden).map(entry => fetchJson(entry.contentFile)));
         return Object.fromEntries(configs.map(config => [config.configId, config]));
     }
 

@@ -357,18 +357,19 @@
                 releaseStyleGate();
             }
             const themeLink = document.getElementById('theme-style');
+            let themePreload = Promise.resolve();
             if (themeLink) {
                 const themeUrl = resourceUrl('/theme/light.css');
-                try {
-                    const themeResponse = await fetch(themeUrl, { cache: resourceCache });
+                themePreload = fetch(themeUrl, { cache: resourceCache }).then(async themeResponse => {
                     if (!themeResponse.ok) throw new Error(`HTTP ${themeResponse.status}`);
                     await themeResponse.text();
-                } catch (error) {
+                }).catch(error => {
                     console.warn('无法预加载默认主题样式。', error);
-                }
+                });
                 themeLink.removeAttribute('href');
             }
-            const loadScript = async src => {
+            const scriptSources = new Map();
+            const prefetchScript = async src => {
                 const key = resourceKey(src);
                 const resourceVersion = currentResourceVersion(src);
                 const cacheMode = refreshTimestamp
@@ -380,22 +381,34 @@
                 if (!response.ok) throw new Error(`无法加载 ${src} (HTTP ${response.status})`);
                 const source = await response.text();
                 rememberJsVersion(key, resourceVersion);
+                return source;
+            };
+            const loadScript = async (src, sourcePromise) => {
+                const source = await sourcePromise;
                 const script = document.createElement('script');
                 script.textContent = `${source}\n//# sourceURL=${new URL(src, location.href).href}`;
                 document.body.appendChild(script);
             };
             try {
-                await loadScript('/plugin/js/ake-image-fallback.js');
-                await loadScript('/plugin/js/index-parse-fallback.js');
-                await loadScript('/plugin/js/i18n.js');
-                await loadScript('/plugin/js/ake-ui.js');
-                await loadScript('/plugin/js/toast.js');
-                await loadScript('/plugin/js/ake-data-source.js');
-                await loadScript('/plugin/js/ake-cache.js');
-                await loadScript('/plugin/js/sidebar-resize.js');
-                await loadScript('/plugin/js/module-view-state.js');
-                await loadScript('/plugin/js/v3-table-data.js');
-                await loadScript('/plugin/js/index-app.js');
+                const scripts = [
+                    '/plugin/js/ake-image-fallback.js',
+                    '/plugin/js/index-parse-fallback.js',
+                    '/plugin/js/i18n.js',
+                    '/plugin/js/ake-ui.js',
+                    '/plugin/js/toast.js',
+                    '/plugin/js/ake-data-source.js',
+                    '/plugin/js/ake-cache.js',
+                    '/plugin/js/ake-data-worker.js',
+                    '/plugin/js/ake-data-loader.js',
+                    '/plugin/js/ake-asset-index.js',
+                    '/plugin/js/sidebar-resize.js',
+                    '/plugin/js/module-view-state.js',
+                    '/plugin/js/v3-table-data.js',
+                    '/plugin/js/index-app.js'
+                ];
+                scripts.forEach(src => scriptSources.set(src, prefetchScript(src)));
+                await Promise.all([themePreload, ...scriptSources.values()]);
+                for (const src of scripts) await loadScript(src, scriptSources.get(src));
             } catch (error) {
                 releaseStyleGate();
                 void revealNavigationShell({ waitForImages: false });

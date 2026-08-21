@@ -133,11 +133,7 @@
         if (!sceneScriptCache.has(sceneId)) {
             sceneScriptCache.set(sceneId, (async () => {
                 try {
-                    const base = `/public/Json/LevelScriptData/${sceneId}`;
-                    const response = await (window.akeFetch || fetch)(`${base}/manifest.json`);
-                    if (!response.ok) return { scriptBuffs: {}, enemies: [] };
-                    const manifest = await response.json();
-                    if (!Array.isArray(manifest)) return { scriptBuffs: {}, enemies: [] };
+                    const manifest = await window.akeAssetIndex.listJsonFiles(`LevelScriptData/${sceneId}`);
                     const scripts = await Promise.all(manifest.filter(entry => !entry.hidden).map(async entry => {
                         try {
                             const scriptResponse = await (window.akeFetch || fetch)(entry.contentFile || `${base}/${entry.id}.json`);

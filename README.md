@@ -12,7 +12,13 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 
 ## 当前版本
 
-`1.2.12` 完善角色技能与活动信息。角色目录和详情新增武器类型图标与标签；隐藏模式下的技能原始字段现在归属到对应技能说明下方，并按下划线分词显示已提供的中文释义。冷却时间、技力或终结技能量消耗全部为 `0` 的字段不再显示。
+`1.2.13` 为正式版，完成统一资产索引、带令牌的资产浏览模块，以及脚本、缓存和 Table 数据加载架构升级。
+
+资产数据现在通过远端 `asset-sync-index` 统一描述图片和 Json 数据版本，资产模块支持按目录浏览、图片预览和文件下载；资产版本与 `version.json` 中负责 TableCfg 的游戏版本相互独立。旧的 Json `manifest.json` 不再参与运行时资产索引生成。
+
+应用启动和模块加载改为并行预取、顺序执行。数据加载器提供有限并发、请求去重、优先级调度、批量 Table 加载和加载统计；大型 JSON 的解析交由 Worker，文本表改为本地化数据与中文回退按需查询，减少主线程阻塞。
+
+缓存层缩短 IndexedDB 对首屏网络请求的等待，并合并 IndexedDB 读写事务；进度显示使用帧调度更新。Service Worker 改为后台启动，不再阻塞首页进入。
 
 活动详情新增游戏内活动说明，并补充签到、等级、任务、里程碑、回流、角色试用、周年阶段和新手福利奖励。活动附属表只在打开对应活动详情后按需加载，减少活动起始页的流量；活动总览图片改为保持原比例并靠右显示。
 
@@ -43,6 +49,7 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 - 隐藏模块、默认等级、URL 同步和默认开启的长图导出设置
 - 模块和实体深链接
 - 桌面与移动端响应式布局
+- 带访问令牌的资产目录、图片预览和文件下载
 - 首页数据更新时间倒计时、可重复查看的多语言网站公告和公告版本更新自动提醒
 - Latest 与上一个游戏版本最终 Hotfix 的数据差异、可见内容 Diff 及新增/修改标签
 - 首页底部展示工信部备案号并链接至备案管理系统
@@ -69,6 +76,7 @@ AKEData 面向日常查询、攻略研究和游戏机制分析，当前公开模
 | `baker` | Baker | SNSChat、SNSDialog、SNSDialogOption、SNSDialogTopic、Item 等 TableCfg |
 | `v3_cc` | 危机合约 | TableCfg、SpawnerConfig、LevelScriptData、BuffData |
 | `v3_archive` | 档案库 | PrtsPage/PrtsCategory/PrtsFirstLv/PrtsAllItem、RichContentTable、RadioTable、ReadingPopUpTable/ReadingPopUpIconTable |
+| `asset` | 资产 | 远端 `asset-sync-index`、图片与 Json 资产；需要访问令牌 |
 | `research` | 研究 | `public/CH/research` Markdown |
 | `about` | 关于 | 静态内容、赞助信息 |
 
@@ -106,6 +114,8 @@ AKEDatabase/
 │     ├─ module-view-state.js     # 访问期内的模块路由与滚动状态恢复
 │     ├─ ake-data-source.js       # R2 清单、版本选择和逻辑 URL 解析
 │     ├─ ake-cache.js             # 按数据域和版本隔离的 fetch 缓存策略
+│     ├─ ake-data-loader.js       # 有限并发、去重、优先级和批量数据加载
+│     ├─ ake-data-worker.js       # 大型 JSON 的后台解析 Worker
 │     ├─ ake-stats.js             # 属性和 modifier 计算
 │     ├─ ake-enemy-renderer.js    # 副本、危机合约和战争回响的共享怪物渲染器
 │     ├─ v3-table-data.js         # TableCfg/Json 到 v2 UI 数据契约的适配层
@@ -205,21 +215,30 @@ AKE Data Tool 的“资产上传”分页可以单独选择图片、Json 或同�
 
 `index.html` 先以 `no-store` 读取根目录 `version.json`，再按 `jsversion`（缺失时回退到 `appversion`）查询参数依次加载：
 
-1. `plugin/js/index-parse-fallback.js`
-2. `plugin/js/i18n.js`
-3. `plugin/js/toast.js`
-4. `plugin/js/ake-data-source.js`
-5. `plugin/js/ake-cache.js`
-6. `plugin/js/sidebar-resize.js`
-7. `plugin/js/module-view-state.js`
-8. `plugin/js/v3-table-data.js`
-9. `plugin/js/index-app.js`
+1. `plugin/js/ake-image-fallback.js`
+2. `plugin/js/index-parse-fallback.js`
+3. `plugin/js/i18n.js`
+4. `plugin/js/ake-ui.js`
+5. `plugin/js/toast.js`
+6. `plugin/js/ake-data-source.js`
+7. `plugin/js/ake-cache.js`
+8. `plugin/js/ake-data-worker.js`
+9. `plugin/js/ake-data-loader.js`
+10. `plugin/js/ake-asset-index.js`
+11. `plugin/js/sidebar-resize.js`
+12. `plugin/js/module-view-state.js`
+13. `plugin/js/v3-table-data.js`
+14. `plugin/js/index-app.js`
+
+入口会先并发预取这些脚本，再按上述顺序执行；模块 HTML 中的外部脚本也会先并发预取，再按原始 DOM 顺序执行。Service Worker 在应用启动后后台注册，不作为首页进入条件。
 
 `index-app.js` 读取 `plugin/manifest.json`，过滤禁用模块，按 `priority` 排序，然后生成桌面侧栏和移动端菜单。
 
 设置弹窗中的应用版本和网站最后修改时间来自 `version.json`；游戏版本与 Hotfix 只来自 R2 `manifest.json` 当前选择的版本。`version.json` 不保存 `gameversion` 或 `hotfixversion`，也不参与线上游戏数据版本决策。`updatedAt` 在游戏数据版本或 `appversion` 任一更新时刷新。首页不显示版本号，而是读取 `totime` 和 `desc` 显示下次数据更新倒计时及可选更新原因。发布新的代码、CSS、模块结构或界面语言版本时，由维护者明确设置 `appversion`。`debugmode` 为 `true` 时强制使用当前同源本地数据，并在每次刷新时清空持久响应缓存、绕过浏览器缓存。
 
-点击模块后，框架通过 `window.akeFetch` 获取模块 HTML并插入 `#contentArea`。因为动态插入的 `<script>` 不会自动执行，加载器会按 DOM 顺序重新创建脚本节点并等待外部脚本完成。
+点击模块后，框架通过 `window.akeFetch` 获取模块 HTML并插入 `#contentArea`。因为动态插入的 `<script>` 不会自动执行，加载器会先并发获取所有外部脚本源码，再按 DOM 顺序重新创建脚本节点并等待源码完成。
+
+`ake-data-loader.js` 默认使用桌面端 6 路、移动端 4 路并发，最高限制为 8 路。Table 请求通过 `window.AKEV3.table(name, version)` 和 `window.AKEV3.tables(entries, options)` 进入统一调度器，并继续保留请求去重、AbortSignal、数据源选择、Latest/固定版本和 `sharedRevision` 隔离。
 
 同一标签页内，模块 HTML、脚本源码和 CSS 按规范化 URL 缓存。首次进入模块时加载器会执行控制器并挂载 DOM；离开模块时，当前 DOM 会暂存到页面内存，返回时直接恢复，不重复获取资源或重新执行控制器，因此页面、已选条目、筛选和展开等交互状态可以延续。模块 CSS 每个 URL 只创建一次，并按当前模块启用或禁用。
 
@@ -228,10 +247,11 @@ AKE Data Tool 的“资产上传”分页可以单独选择图片、Json 或同�
 ### 缓存分层
 
 - localStorage：保存主题、隐藏开关、默认等级、URL 设置、数据域、版本选择、令牌和各侧栏宽度等小型偏好；所有访问都有异常保护。
-- 页面内存：缓存模块 HTML、脚本源码、CSS Promise、模块 DOM、各模块当前条目及按条目区分的滚动位置，以及 v3 已解析的 TableCfg/I18n/maps。模块浏览状态仅在同一次访问内有效，刷新后清空。
+- 页面内存：缓存模块 HTML、脚本源码、CSS Promise、模块 DOM、各模块当前条目及按条目区分的滚动位置，以及 v3 已解析的 TableCfg/I18n/maps。数据加载器还负责请求去重、优先级队列、共享取消等待和加载统计。模块浏览状态仅在同一次访问内有效，刷新后清空。
 - IndexedDB：数据库 `akedata-data-cache` 使用“数据域 + TableCfg Hotfix”或“数据域 + sharedRevision”命名空间保存 `akeFetch` 响应；多个版本可以共存。
 - 图片路由：模块 HTML 和图片属性写入 DOM 时会同步将 `/public/images/**` 改写为当前数据域的绝对 URL；运行时新增或修改的图片、`srcset`、海报及内联背景图另由 DOM 观察器复查，避免浏览器先向网站域名发出请求。
 - Service Worker：根目录 `ake-sw.js` 为尚未改写或绕过 `akeFetch` 的 `/public/images/**` 请求提供后备代理。数据域与 `sharedRevision` 同时编码在 Worker 注册 URL 中，确保 Worker 休眠后重新启动仍会直接请求数据域，而不会回退到网站域名。
+- Worker：大型 JSON 在后台 Worker 中完成长整数保护和解析；Worker 不可用时自动回退到主线程解析。
 - HTTP Cache：继续负责版本化的 HTML、JS、CSS 和网络响应。
 
 切换游戏版本不会清空其他版本的 IndexedDB 数据；数据域也属于缓存键，生产数据与本地数据不会混用。IndexedDB、Service Worker 或 localStorage 不可用时，页面自动降级到内存缓存和普通网络请求，不阻止应用启动。`version.json` 与 R2 `manifest.json` 每次启动均使用 `no-store` 请求。
