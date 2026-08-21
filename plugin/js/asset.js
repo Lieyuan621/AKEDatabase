@@ -230,6 +230,5 @@
     root.dataset.moduleId = MODULE_ID;
     const controller = { destroy() { state.disposed = true; state.renderToken += 1; elements.home.replaceWith(elements.home.cloneNode(true)); elements.search.replaceWith(elements.search.cloneNode(true)); elements.mobileSearch.replaceWith(elements.mobileSearch.cloneNode(true)); elements.mobileButton.replaceWith(elements.mobileButton.cloneNode(true)); elements.mobileClose.replaceWith(elements.mobileClose.cloneNode(true)); } };
     window.__akeAssetController = controller;
-    window.addEventListener('ake:module-deactivate', event => { if (event.detail?.moduleId === MODULE_ID) controller.destroy(); }, { once: true });
     initialize();
 })();
