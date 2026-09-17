@@ -5589,6 +5589,43 @@ body { background-color: var(--ake-shell-page); color: var(--text-color); }
 *::-webkit-scrollbar { width: 6px; height: 6px; }
 *::-webkit-scrollbar-track { background: var(--ake-scrollbar-track); border-radius: 10px; }
 *::-webkit-scrollbar-thumb { background: var(--ake-scrollbar-thumb); border-radius: 10px; }
+.sidebar .module-list,
+.ake-ui-directory__list {
+    scrollbar-width: none;
+    scrollbar-gutter: auto;
+}
+.sidebar .module-list::-webkit-scrollbar,
+.ake-ui-directory__list::-webkit-scrollbar { display: none; }
+.ake-scroll-shadow-frame {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+}
+.ake-scroll-shadow-frame > :is(.module-list, .ake-ui-directory__list) { height: 100%; }
+.ake-scroll-shadow-frame::before,
+.ake-scroll-shadow-frame::after {
+    position: absolute;
+    z-index: 4;
+    right: 0;
+    left: 0;
+    height: 14px;
+    opacity: 0;
+    pointer-events: none;
+    content: '';
+    transition: opacity .14s ease;
+}
+.ake-scroll-shadow-frame::before {
+    top: 0;
+    background: linear-gradient(to bottom, color-mix(in srgb, var(--text-color) 20%, transparent), transparent);
+}
+.ake-scroll-shadow-frame::after {
+    bottom: 0;
+    background: linear-gradient(to top, color-mix(in srgb, var(--text-color) 20%, transparent), transparent);
+}
+.ake-scroll-shadow-frame.has-scroll-above::before,
+.ake-scroll-shadow-frame.has-scroll-below::after { opacity: 1; }
 .sidebar { background-color: var(--sidebar-bg); border-right-color: var(--border-color); box-shadow: var(--ake-shell-sidebar-shadow); }
 .brand { color: var(--ake-shell-brand-text); border-bottom-color: var(--border-color); }
 .brand:hover { background-color: var(--active-bg); }
@@ -7560,6 +7597,35 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
     min-width: 0;
 }
 .ake-ui-detail[data-detail-kind="character"] .character-progression-grid .ake-ui-card { width: 100%; }
+.ake-ui-detail[data-detail-kind="character"] .character-related-list { gap: 0 18px; }
+.ake-ui-detail[data-detail-kind="character"] .character-related-item {
+    min-height: 54px;
+    padding: 7px 2px;
+    color: inherit;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    text-decoration: none;
+    transition: background-color .16s ease;
+}
+.ake-ui-detail[data-detail-kind="character"] .character-related-item:hover,
+.ake-ui-detail[data-detail-kind="character"] .character-related-item:focus-visible {
+    background: color-mix(in srgb, var(--accent-color) 5%, transparent);
+}
+.ake-ui-detail[data-detail-kind="character"] .character-related-item:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: -2px;
+}
+.ake-ui-detail[data-detail-kind="character"] .character-related-item .ake-ui-item__media {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+    padding: 4px;
+    border: var(--ake-ui-border);
+    border-radius: var(--ake-ui-radius-sm);
+    background: var(--ake-ui-surface-muted);
+    box-sizing: border-box;
+}
 .ake-ui-detail[data-detail-kind="character"] .character-attribute-groups {
     min-width: 0;
     display: grid;

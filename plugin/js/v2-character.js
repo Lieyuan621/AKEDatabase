@@ -1423,16 +1423,30 @@
             };
         }
 
-        function itemCardHtml(item, itemInfoMap, subtitle = '', plugin = 'v3_item') {
+        function itemEntryHtml(item, itemInfoMap, subtitle = '', plugin = 'v3_item') {
             const displayItem = materialItem(item, itemInfoMap);
             const count = Number(item.count) > 0 ? `×${item.count}` : '';
-            const cardSubtitle = [subtitle, count].filter(Boolean).join(' · ');
-            return window.AKEUI.card({
-                element: 'a',
-                attributes: window.__akeRouter?.entryAttributes?.(plugin, item.id, displayItem.name),
-                media: { src: displayItem.icon, alt: displayItem.name },
-                header: { title: displayItem.name, subtitle: cardSubtitle }
-            }).outerHTML;
+            const meta = [subtitle, count].filter(Boolean).join(' · ');
+            const entry = window.AKEUI.entryLink({
+                plugin,
+                id: item.id,
+                label: displayItem.name,
+                className: 'ake-ui-item character-related-item',
+                content: window.AKEUI.fragment()
+            }) || window.AKEUI.element('span', 'ake-ui-item character-related-item');
+            if (displayItem.icon) {
+                const icon = window.AKEUI.element('img', 'ake-ui-item__media');
+                icon.src = displayItem.icon;
+                icon.alt = '';
+                icon.loading = 'lazy';
+                icon.decoding = 'async';
+                entry.appendChild(icon);
+            }
+            const copy = window.AKEUI.element('span', 'ake-ui-item__copy');
+            copy.appendChild(window.AKEUI.element('span', 'ake-ui-item__title', displayItem.name));
+            if (meta) copy.appendChild(window.AKEUI.element('span', 'ake-ui-item__meta', meta));
+            entry.appendChild(copy);
+            return entry.outerHTML;
         }
 
         function materialPopover(options, itemInfoMap) {
@@ -1473,7 +1487,6 @@
                 </div>
                 <dl class="character-detail-facts">
                     <div><dt>${commonT('rarity')}</dt><dd>${t('rarityStars', { name: data.rarity })}</dd></div>
-                    <div><dt>${t('meta.weaponType')}</dt><dd>${data.weapontype || '-'}</dd></div>
                     <div><dt>${t('meta.voiceActor')}</dt><dd>${(data.cvName || []).join(' / ') || '-'}</dd></div>
                     <div class="character-detail-fact--key"><dt>${t('meta.mainAttribute')}</dt><dd>${data.mainAttrType || '-'}</dd></div>
                     <div class="character-detail-fact--key"><dt>${t('meta.subAttribute')}</dt><dd>${data.subAttrType || '-'}</dd></div>
@@ -1503,8 +1516,6 @@
                     <a href="#character-growth">${t('sections.attributeGrowth')}</a>
                     <a href="#character-progression">${t('sections.potentials')}</a>
                     <a href="#character-skills">${t('sections.skills')}</a>
-                    <a href="#character-gifts">${t('sections.gifts')}</a>
-                    <a href="#character-weapon-recommendations">${t('sections.weaponRecommendations')}</a>
                     <a href="#character-archive">${t('sections.profile')}</a>
                 </nav>
             `;
@@ -1797,12 +1808,12 @@
             `).join('') : `<p>${t('none')}</p>`;
 
             const giftSectionHtml = data.giftStages?.length ? `
-                <div class="ake-ui-section" id="character-gifts">
+                <div class="ake-ui-section">
                     <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.gifts')}</h3></div>
                     ${data.giftStages.map(stage => `
                         <div class="ake-ui-section__header"><h4 class="ake-ui-section__title">${stage.label}</h4></div>
-                        <div class="ake-ui-card-grid" data-size="regular">
-                            ${stage.items.map(item => itemCardHtml(
+                        <div class="ake-ui-item-list character-related-list">
+                            ${stage.items.map(item => itemEntryHtml(
                                 item, itemInfoMap, item.isPossible ? t('gifts.possibleItems') : t('gifts.returnItems')
                             )).join('')}
                         </div>
@@ -1811,24 +1822,20 @@
             ` : '';
 
             const weaponRecommendationsHtml = `
-                <div class="ake-ui-section" id="character-weapon-recommendations">
+                <div class="ake-ui-section">
                     <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.weaponRecommendations')}</h3></div>
                     <div class="ake-ui-card-grid" data-size="regular">
-                        <div class="ake-ui-card" data-card-kind="character-weapon-recommendation" data-density="regular">
-                            <div class="ake-ui-card__header"><div class="ake-ui-card__title">${t('weaponRecommendations.skillAdaptation')}</div></div>
-                            <div class="ake-ui-card__body">
-                                ${data.weaponRecommendations?.skillAdaptation?.length
-                                    ? `<div class="ake-ui-card-grid" data-size="regular">${data.weaponRecommendations.skillAdaptation.map(item => itemCardHtml(item, itemInfoMap, '', 'v3_weapon')).join('')}</div>`
-                                    : `<p>${t('none')}</p>`}
-                            </div>
+                        <div class="ake-ui-section">
+                            <div class="ake-ui-section__header"><h4 class="ake-ui-section__title">${t('weaponRecommendations.skillAdaptation')}</h4></div>
+                            ${data.weaponRecommendations?.skillAdaptation?.length
+                                ? `<div class="ake-ui-item-list character-related-list">${data.weaponRecommendations.skillAdaptation.map(item => itemEntryHtml(item, itemInfoMap, '', 'v3_weapon')).join('')}</div>`
+                                : `<p>${t('none')}</p>`}
                         </div>
-                        <div class="ake-ui-card" data-card-kind="character-attribute-recommendation" data-density="regular">
-                            <div class="ake-ui-card__header"><div class="ake-ui-card__title">${t('weaponRecommendations.attributeAdaptation')}</div></div>
-                            <div class="ake-ui-card__body">
-                                ${data.weaponRecommendations?.attributeAdaptation?.length
-                                    ? `<div class="ake-ui-card-grid" data-size="regular">${data.weaponRecommendations.attributeAdaptation.map(item => itemCardHtml(item, itemInfoMap, '', 'v3_weapon')).join('')}</div>`
-                                    : `<p>${t('none')}</p>`}
-                            </div>
+                        <div class="ake-ui-section">
+                            <div class="ake-ui-section__header"><h4 class="ake-ui-section__title">${t('weaponRecommendations.attributeAdaptation')}</h4></div>
+                            ${data.weaponRecommendations?.attributeAdaptation?.length
+                                ? `<div class="ake-ui-item-list character-related-list">${data.weaponRecommendations.attributeAdaptation.map(item => itemEntryHtml(item, itemInfoMap, '', 'v3_weapon')).join('')}</div>`
+                                : `<p>${t('none')}</p>`}
                         </div>
                     </div>
                 </div>
