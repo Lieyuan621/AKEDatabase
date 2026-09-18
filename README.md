@@ -77,6 +77,7 @@ AKEData 同时为以下工具和网站提供数据支持：
 - [@ZianTT](https://github.com/ZianTT/)：网站部署及token支持
 - [@Lieyuan621](https://github.com/Lieyuan621/)：网站前端UI美化
 - [@逻辑元](https://github.com/Arknights-yituliu/)：宣发支持
+- [@ZeroAsh](https://github.com/Deliay)：网站语音数据/反向索引数据支持
 
 项目由[CloudFlare](https://www.cloudflare.com/)提供部署支持，并由[EdgeOne](https://cloud.tencent.com/product/teo)提供免费的国内CDN支持
 
