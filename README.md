@@ -69,12 +69,29 @@ AKEData 同时为以下工具和网站提供数据支持：
 - 用户反馈群：1091817282
 - 项目地址：[nagiyume/AKEDatabase](https://github.com/nagiyume/AKEDatabase)
 
+## 致谢
+
+本项目的建立与完善离不开以下用户/组织的参与：
+
+- [@MoeYinLo](https://github.com/moeyinlo/)：数据解析与运维
+- [@ZianTT](https://github.com/ZianTT/)：网站部署及token支持
+- [@Lieyuan621](https://github.com/Lieyuan621/)：网站前端UI美化
+- [@逻辑元](https://github.com/Arknights-yituliu/)：宣发支持
+- [@ZeroAsh](https://github.com/Deliay)：网站语音数据/反向索引数据支持
+
+项目由[CloudFlare](https://www.cloudflare.com/)提供部署支持，并由[EdgeOne](https://cloud.tencent.com/product/teo)提供免费的国内CDN支持
+
+项目使用的AI工具有（按照使用先后顺序排序）：
+
+- [Deepseek](https://www.deepseek.com/): v4
+- [Xiaomi-Mimo](https://mimo.mi.com/): v2.5
+- [ChatGPT](https://chatgpt.com/)：5.6-luna, 5.6-sol, 6-astra
+
 ## 免责声明
 
 本项目是玩家同好项目，与鹰角网络、Gryphline 官方无关。所有商标归各自权利方所有。
 
 项目中的游戏配置、运行数据和相关图片版权归鹰角网络及相关权利方所有。本项目仅供学习、交流和研究，不得用于侵犯权利方权益或其他非法用途。
-- 项目地址：[nagiyume/AKEDatabase](https://github.com/nagiyume/AKEDatabase)
 
 项目开发中使用了 AI 工具辅助编程，数据和实现可能存在错误，请以游戏内实际表现为准。
 

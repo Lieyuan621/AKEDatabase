@@ -258,6 +258,50 @@
         style[property] = value;
     }
 
+    function createScrollAffordance(list) {
+        if (!(list instanceof HTMLElement)) return null;
+
+        const frame = document.createElement('div');
+        frame.className = 'ake-scroll-shadow-frame';
+        list.before(frame);
+        frame.appendChild(list);
+
+        let updateFrame = 0;
+        const update = () => {
+            updateFrame = 0;
+            const maxScrollTop = Math.max(0, list.scrollHeight - list.clientHeight);
+            frame.classList.toggle('has-scroll-above', maxScrollTop > 1 && list.scrollTop > 1);
+            frame.classList.toggle('has-scroll-below', maxScrollTop > 1 && list.scrollTop < maxScrollTop - 1);
+        };
+        const scheduleUpdate = () => {
+            if (updateFrame) return;
+            updateFrame = requestAnimationFrame(update);
+        };
+        const resizeObserver = typeof ResizeObserver === 'function'
+            ? new ResizeObserver(scheduleUpdate)
+            : null;
+        const contentObserver = new MutationObserver(scheduleUpdate);
+
+        list.addEventListener('scroll', scheduleUpdate, { passive: true });
+        list.addEventListener('load', scheduleUpdate, true);
+        resizeObserver?.observe(list);
+        resizeObserver?.observe(frame);
+        contentObserver.observe(list, { childList: true, subtree: true, characterData: true });
+        scheduleUpdate();
+
+        return {
+            update: scheduleUpdate,
+            destroy() {
+                if (updateFrame) cancelAnimationFrame(updateFrame);
+                resizeObserver?.disconnect();
+                contentObserver.disconnect();
+                list.removeEventListener('scroll', scheduleUpdate);
+                list.removeEventListener('load', scheduleUpdate, true);
+                if (list.parentElement === frame) frame.replaceWith(list);
+            }
+        };
+    }
+
     function create(element, options = {}) {
         if (!(element instanceof HTMLElement)) return null;
         if (instances.has(element)) return instances.get(element);
@@ -313,6 +357,7 @@
         let resizeFrame = 0;
         let compact = false;
         let compactObserver = null;
+        const scrollAffordances = [];
 
         function ensureDefaultWidth() {
             if (Number.isFinite(defaultWidth) && defaultWidth > 0) return defaultWidth;
@@ -370,6 +415,13 @@
                     attributeFilter: ['src']
                 });
             }
+        }
+
+        function prepareScrollAffordances() {
+            element.querySelectorAll('.module-list, .ake-ui-directory__list').forEach(list => {
+                const affordance = createScrollAffordance(list);
+                if (affordance) scrollAffordances.push(affordance);
+            });
         }
 
         function updateCompactState(width) {
@@ -537,6 +589,7 @@
             resizeFrame = requestAnimationFrame(() => {
                 resizeFrame = 0;
                 applyWidth(preferredWidth ?? ensureDefaultWidth(), 'viewport');
+                scrollAffordances.forEach(affordance => affordance.update());
             });
         }
 
@@ -546,6 +599,7 @@
             finishDrag(false);
             if (resizeFrame) cancelAnimationFrame(resizeFrame);
             compactObserver?.disconnect();
+            scrollAffordances.forEach(affordance => affordance.destroy());
             handle.removeEventListener('pointerdown', onPointerDown);
             handle.removeEventListener('pointermove', onPointerMove);
             handle.removeEventListener('pointerup', onPointerUp);
@@ -572,6 +626,7 @@
         else media.addListener(updateMode);
 
         prepareCompactStructure();
+        prepareScrollAffordances();
         const instance = {
             element,
             handle,
