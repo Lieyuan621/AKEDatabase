@@ -1,10 +1,32 @@
 # Special Announcement
 
-AKEData `v1.2.19` is now available. This release adds cross-module entry navigation, an optional new-tab workflow, and four-language voice playback, while fixing medal plating details and link hit areas that could interfere with data interactions.
+AKEData `v1.2.20` is now available. This release expands Archive investigations and version comparisons, adds configurable New-label scope, and improves Assets access, Season Tower loading, and data caching.
 
 AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redirects here.
 
 # AKEData Version Changelog
+
+### v1.2.20
+
+#### Archives and investigations
+
+- Added an Investigation view that groups related archive records with their analysis and administrator notes. It does not depend on a player account or show collection progress or rewards.
+- Investigation entries display archive content beside its notes. Archive titles link to the original record and follow the global new-tab setting.
+- Archive details now offer a “View in OEM” action based on the record's Logic ID.
+- Investigation groups, records, and notes participate in version comparisons.
+
+#### Version comparison and Assets
+
+- The new “New label data range” setting supports game-version changes, hotfix changes, or hiding New labels. Assets and other data modules use the same comparison range.
+- “Show data changes between versions (experimental)” has moved to the Game Data settings section.
+- Assets no longer requires a Token. The Game Map quick jump now points to `public / images/assets/beyond/dynamicassets/gameplay/ui/sprites/levelmap/levelmapchunks`.
+- Fixed IndexedDB cache reads so cached data is not repeatedly fetched over the network when the database takes longer to open.
+
+#### Season Tower and Dungeons
+
+- Season Tower loads the selected season's data on demand instead of requesting all seasons on entry.
+- Enemy stat displays in Season Tower and Dungeons now follow the Contingency Contract presentation and distinguish modifier sources.
+- The Contingency Contract overview now shows availability status and dates. Conflict messages no longer expose internal IDs outside Hidden Mode.
 
 ### v1.2.19
 
