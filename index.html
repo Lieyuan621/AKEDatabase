@@ -8,6 +8,7 @@
     <style>html.ake-styles-pending body { visibility: hidden; }</style>
     <link rel="stylesheet" id="base-style">
     <link rel="stylesheet" id="theme-style">
+    <link rel="stylesheet" id="guide-image-generator-style">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
@@ -89,10 +90,6 @@
                         <input class="ake-ui-switch" type="checkbox" id="modalShowExportCheck">
                     </div>
                     <div class="app-field app-field--toggle">
-                        <label class="app-field-label" for="modalShowVersionChanges" data-i18n="settings.showVersionChanges">settings.showVersionChanges</label>
-                        <input class="ake-ui-switch" type="checkbox" id="modalShowVersionChanges">
-                    </div>
-                    <div class="app-field app-field--toggle">
                         <label class="app-field-label" for="modalOpenEntriesInNewTab" data-i18n="settings.openEntriesInNewTab">settings.openEntriesInNewTab</label>
                         <input class="ake-ui-switch" type="checkbox" id="modalOpenEntriesInNewTab">
                     </div>
@@ -110,6 +107,18 @@
                     <div class="app-field">
                         <label class="app-field-label" for="modalDataVersionSelect" data-i18n="settings.dataSource.version">Data version:</label>
                         <select class="ake-ui-control ake-ui-control--select" id="modalDataVersionSelect"></select>
+                    </div>
+                    <div class="app-field">
+                        <label class="app-field-label" for="modalNewTagScope" data-i18n="settings.newTagScope.title">新增标签数据范围</label>
+                        <select class="ake-ui-control ake-ui-control--select" id="modalNewTagScope">
+                            <option value="major" data-i18n="settings.newTagScope.major">基于大版本号</option>
+                            <option value="hotfix" data-i18n="settings.newTagScope.hotfix">基于热更新版本号</option>
+                            <option value="none" data-i18n="settings.newTagScope.none">不显示新增标签</option>
+                        </select>
+                    </div>
+                    <div class="app-field app-field--toggle">
+                        <label class="app-field-label" for="modalShowVersionChanges" data-i18n="settings.showVersionChanges">settings.showVersionChanges</label>
+                        <input class="ake-ui-switch" type="checkbox" id="modalShowVersionChanges">
                     </div>
                     <div class="app-field">
                         <label class="app-field-label" for="modalDataBaseUrl" data-i18n="settings.dataSource.baseUrl">Request origin:</label>
@@ -372,6 +381,8 @@
                 });
                 themeLink.removeAttribute('href');
             }
+            const guideImageLink = document.getElementById('guide-image-generator-style');
+            if (guideImageLink) guideImageLink.href = resourceUrl('/theme/guide-image-generator.css');
             const scriptSources = new Map();
             const prefetchScript = async src => {
                 const key = resourceKey(src);

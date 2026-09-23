@@ -58,7 +58,7 @@
             key: 'gameMap',
             label: 'quickJumps.gameMap',
             fallback: '游戏地图',
-            location: ['images', 'assets', 'beyond', 'dynamicassets', 'gameplay', 'ui', 'textures', 'levelmap', 'levelmapchunks']
+            location: [...SPRITES_ROOT, 'levelmap', 'levelmapchunks']
         }
     ];
     const FOLDER_ALIASES = new Map(SPRITE_FOLDER_MAPPINGS.map(mapping => [mapping.location.join('/'), mapping]));
@@ -243,7 +243,10 @@
     async function makeTree(index) {
         const roots = new Map();
         const searchEntries = [];
-        const latestAssetVersion = currentAssetVersion(index);
+        const dataSource = window.akeDataSource?.getState?.();
+        const newTagScope = window.akeDataSource?.getNewTagScope?.() || 'major';
+        const latestAssetVersion = dataSource?.comparison?.baseline && newTagScope !== 'none'
+            ? currentAssetVersion(index) : null;
         let processed = 0;
         for (const dataset of ['images', 'json']) {
             const datasetName = dataset === 'images' ? 'public / images' : 'public / Json';
@@ -271,7 +274,9 @@
                 });
 
                 const version = parseAssetVersion(record?.version);
-                const isNew = Boolean(version && latestAssetVersion && compareAssetVersions(version, latestAssetVersion) === 0);
+                const isNew = Boolean(version && latestAssetVersion && (newTagScope === 'major'
+                    ? compareVersionParts({ parts: version.gameParts }, { parts: latestAssetVersion.gameParts }) === 0
+                    : compareAssetVersions(version, latestAssetVersion) === 0));
                 const file = makeFile(dataset, relative, record, current, isNew);
                 current.files.push(file);
                 current.directBytes += Number(record?.size || 0);
@@ -902,6 +907,7 @@
     function updateNewOnlyControls() {
         [elements.newOnly, elements.mobileNewOnly].forEach(button => {
             if (!button) return;
+            button.hidden = window.akeDataSource?.getNewTagScope?.() === 'none';
             button.classList.toggle('is-active', state.newOnly);
             button.setAttribute('aria-pressed', String(state.newOnly));
         });

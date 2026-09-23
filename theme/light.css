@@ -2811,10 +2811,19 @@
     cursor: pointer;
 }.ake-ui-card[data-card-kind="archive"]:hover { border-color: var(--akearchive-accent); background: var(--akearchive-active); }.ake-ui-card[data-card-kind="archive"][data-category="report"] { border-left-color: var(--akearchive-report); }.ake-ui-card[data-card-kind="archive"][data-category="collection"] { border-left-color: var(--akearchive-collection); }.ake-ui-card[data-card-kind="archive"] img { width: 56px; height: 56px; object-fit: contain; }.akearchive-document { max-width: 920px; margin: 20px auto 0; padding: 25px clamp(18px, 4vw, 48px) 38px; color: var(--akearchive-text); border: 1px solid var(--akearchive-paper-border); border-radius: 4px; background: var(--akearchive-paper); box-shadow: 0 7px 22px rgba(35, 39, 43, .08); }.akearchive-paragraph { margin: 0 0 14px; overflow-wrap: anywhere; font-size: .88rem; line-height: 1.85; white-space: normal; }.akearchive-paragraph:last-child { margin-bottom: 0; }.akearchive-paragraph .inline-icon { max-width: 100%; }.akearchive-content-image { display: block; max-width: min(100%, 760px); height: auto; margin: 20px auto; object-fit: contain; }.akearchive-image-row { margin: 18px 0; text-align: center; }.akearchive-image-row img { max-width: 100%; height: auto; }.akearchive-image-placeholder { padding: 26px 14px; color: #77716a; border: 1px dashed #b9b09d; text-align: center; font-size: .72rem; }.akearchive-gender-control { display: inline-flex; align-items: center; gap: 7px; margin-top: 14px; color: var(--akearchive-muted); font-size: .68rem; }.akearchive-transcript { max-width: 880px; margin: 20px auto 0; }.akearchive-popup-logo { display: block; width: auto; max-width: 132px; height: 30px; margin-bottom: 7px; object-fit: contain; object-position: left center; }.akearchive-transcript-list { display: grid; gap: 7px; }.akearchive-line { display: grid; grid-template-columns: minmax(90px, 150px) minmax(0, 1fr); gap: 14px; padding: 10px 12px; border-left: 3px solid var(--akearchive-accent); background: var(--akearchive-surface); }.akearchive-line--anonymous { grid-template-columns: minmax(0, 1fr); }.akearchive-line-speaker { min-width: 0; overflow-wrap: anywhere; color: var(--akearchive-muted); font-size: .69rem; font-weight: 700; }.akearchive-line-text { min-width: 0; overflow-wrap: anywhere; font-size: .82rem; line-height: 1.7; }
 
-@media (max-width: 999px) {.akearchive-search--mobile { flex: 0 0 auto; }.ake-ui-directory__mobile-list { padding: 0 12px 18px; }
+.akearchive-overview-status { flex-direction: column; align-items: flex-end; }
+.akearchive-overview-counts { display: flex; align-items: center; gap: var(--ake-ui-space-2); }
+.akearchive-investigation-columns { display: grid; grid-template-columns: minmax(0, 3fr) minmax(260px, 2fr); gap: 20px; align-items: start; }
+.akearchive-investigation-text, .akearchive-investigation-notes { min-width: 0; display: grid; align-content: start; gap: 16px; }
+.akearchive-investigation-entry { min-width: 0; }
+.akearchive-investigation-entry .akearchive-document, .akearchive-investigation-entry .akearchive-transcript { max-width: none; margin: 0; }
+.akearchive-investigation-note { min-width: 0; padding: 16px; border: 1px solid var(--akearchive-border); border-radius: 4px; background: var(--akearchive-surface); }
+.akearchive-investigation-note > .ake-ui-section__header { margin-bottom: 12px; }
+
+@media (max-width: 999px) {.akearchive-search--mobile { flex: 0 0 auto; }.ake-ui-directory__mobile-list { padding: 0 12px 18px; }.akearchive-investigation-columns { grid-template-columns: minmax(0, 1fr); }
 }
 
-@media (max-width: 620px) {.ake-ui-card[data-card-kind="archive"] { min-height: 74px; grid-template-columns: 50px minmax(0, 1fr); }.ake-ui-card[data-card-kind="archive"] img { width: 48px; height: 48px; }.akearchive-document { margin-top: 14px; padding: 19px 15px 28px; }.akearchive-line { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+@media (max-width: 620px) {.ake-ui-card[data-card-kind="archive"] { min-height: 74px; grid-template-columns: 50px minmax(0, 1fr); }.ake-ui-card[data-card-kind="archive"] img { width: 48px; height: 48px; }.akearchive-document { margin-top: 14px; padding: 19px 15px 28px; }.akearchive-line { grid-template-columns: minmax(0, 1fr); gap: 4px; }.akearchive-overview-status { align-items: flex-start; }
 }
 }
 

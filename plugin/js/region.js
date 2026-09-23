@@ -102,6 +102,8 @@
     }
 
     function buildDomain(domain, mineEntries, currentVersion, tables) {
+        const comparison = window.akeDataSource?.getState?.()?.comparison;
+        const newTagScope = window.akeDataSource?.getNewTagScope?.() || 'major';
         const mines = new Map();
         mineEntries.forEach(entry => (entry.meta?.factoryMines || []).forEach(rawMine => {
             const key = String(rawMine.logicMineDataId);
@@ -112,7 +114,10 @@
                 levelId,
                 levelName: tables.levelDescTable?.[levelId]?.showName?.text || (showTechnicalIds() ? levelId : t('unknownRegion', null, '未命名地区')),
                 sourcePath: entry.path || '',
-                isNew: rawMine.addedVersion === currentVersion
+                isNew: Boolean(comparison?.baseline && newTagScope !== 'none' && rawMine.addedVersion &&
+                    (newTagScope === 'major'
+                        ? String(rawMine.addedVersion).split('@')[0] === String(currentVersion).split('@')[0]
+                        : rawMine.addedVersion === currentVersion))
             });
         }));
         const developmentRows = [...(domain.domainDevelopmentLevel || [])].sort((a, b) => Number(a.domainDevelopmentLevel) - Number(b.domainDevelopmentLevel));

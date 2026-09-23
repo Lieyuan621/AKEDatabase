@@ -154,6 +154,7 @@
                 showHidden: false,
                 showExportButton: true,
                 showVersionChanges: storage.get('akedata-showVersionChanges', 'false') === 'true',
+                newTagScope: window.akeDataSource?.getNewTagScope?.() || 'major',
                 openEntriesInNewTab: storage.get('akedata-openEntriesInNewTab', 'true') === 'true',
                 levelSettings: {
                     enabled: true,
@@ -185,6 +186,7 @@
             const modalLanguageSelect = document.getElementById('modalLanguageSelect');
             const modalShowHiddenCheck = document.getElementById('modalShowHiddenCheck');
             const modalShowVersionChanges = document.getElementById('modalShowVersionChanges');
+            const modalNewTagScope = document.getElementById('modalNewTagScope');
             const modalOpenEntriesInNewTab = document.getElementById('modalOpenEntriesInNewTab');
             const modalDataVersionSelect = document.getElementById('modalDataVersionSelect');
             const modalDataBaseUrl = document.getElementById('modalDataBaseUrl');
@@ -975,6 +977,10 @@
                 const modalShowExportCheck = document.getElementById('modalShowExportCheck');
                 if (modalShowExportCheck) modalShowExportCheck.checked = config.showExportButton;
                 if (modalShowVersionChanges) modalShowVersionChanges.checked = config.showVersionChanges;
+                if (modalNewTagScope) {
+                    modalNewTagScope.value = config.newTagScope;
+                    window.AKEUI?.refreshSelect(modalNewTagScope);
+                }
                 if (modalOpenEntriesInNewTab) modalOpenEntriesInNewTab.checked = config.openEntriesInNewTab;
                 const modalKeepUrlSync = document.getElementById('modalKeepUrlSync');
                 if (modalKeepUrlSync) modalKeepUrlSync.checked = config.keepUrlSync;
@@ -1033,11 +1039,17 @@
                 }
 
                 let requiresReload = false;
+                if (modalNewTagScope) {
+                    const nextScope = modalNewTagScope.value;
+                    requiresReload = nextScope !== config.newTagScope;
+                    config.newTagScope = nextScope;
+                    storage.set('akedata-newTagScope', nextScope);
+                }
                 if (modalShowVersionChanges) {
                     const wasShowingVersionChanges = config.showVersionChanges;
                     config.showVersionChanges = modalShowVersionChanges.checked;
                     storage.set('akedata-showVersionChanges', config.showVersionChanges);
-                    requiresReload = wasShowingVersionChanges !== config.showVersionChanges;
+                    requiresReload = requiresReload || wasShowingVersionChanges !== config.showVersionChanges;
                 }
 
                 if (modalOpenEntriesInNewTab) {
@@ -1301,6 +1313,7 @@
                 stripUrl() {
                     history.replaceState(null, '', window.location.pathname);
                 },
+                normalizeModuleId: normalizeModuleRouteId,
                 entryUrl,
                 entryAttributes
             };
@@ -1951,6 +1964,7 @@
                         document.getElementById('modalShowHiddenCheck').checked = false;
                         document.getElementById('modalShowExportCheck').checked = true;
                         document.getElementById('modalShowVersionChanges').checked = false;
+                        document.getElementById('modalNewTagScope').value = 'major';
                         document.getElementById('modalOpenEntriesInNewTab').checked = true;
                         document.getElementById('modalKeepUrlSync').checked = true;
                         const currentDataSource = window.akeDataSource?.getState?.();

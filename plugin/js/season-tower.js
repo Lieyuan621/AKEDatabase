@@ -1,5 +1,7 @@
 (function () {
     const t = window.akeI18n.scope('modules.seasonTower');
+    const ccT = window.akeI18n.scope('modules.cc');
+    const commonT = window.akeI18n.scope('common');
     const MODULE_ID = 'season_tower';
     const DIFFICULTIES = { 1: t('normal'), 2: t('hard'), 3: t('brutal') };
     const ATTR_ORDER = [0, 1, 2, 3, 20, 21, 27, 12, 8, 9, 10, 11, 15];
@@ -14,10 +16,14 @@
     overlay.querySelector('.ake-ui-directory__mobile-header button').setAttribute('aria-label', t('close'));
     window.__akeSeasonTowerController?.destroy?.();
     const buffCache = {};
+    const buffRequests = new Map();
+    const seasonLoads = new Map();
     let destroyed = false;
     let seasons = [];
+    let seasonBase = null;
     let activeSeasonId = '';
     let activeData = null;
+    let selectionGeneration = 0;
     let attrMap = {};
     let attrNameToId = {};
 
@@ -73,15 +79,10 @@
         return { key: 'active', label: t('active') };
     }
 
-    async function fetchJson(url) {
-        const response = await (window.akeFetch || fetch)(url);
-        if (!response.ok) throw new Error(`无法加载 ${url} (HTTP ${response.status})`);
-        return response.json();
-    }
-
     async function loadSpawners(sceneId) {
         const manifest = await window.akeAssetIndex.listJsonFiles(`SpawnerConfig/${sceneId}`);
-        const configs = await Promise.all(manifest.filter(entry => !entry.hidden).map(entry => fetchJson(entry.contentFile)));
+        const configs = await Promise.all(manifest.filter(entry => !entry.hidden)
+            .map(entry => window.akeDataLoader.loadJson(entry.contentFile, { priority: 'dependency' })));
         return Object.fromEntries(configs.map(config => [config.configId, config]));
     }
 
@@ -96,13 +97,27 @@
 
     async function loadBuffs(data) {
         const ids = new Set();
-        Object.values(data.enemies).forEach(enemy => (enemy.bornBuffs || []).forEach(id => ids.add(id)));
+        const enemyIds = new Set(Object.values(data.dungeons).flatMap(dungeon => dungeon.enemyIds || []));
+        Object.values(data.spawners).forEach(config => (config.enemyLibrary || []).forEach(enemy => enemyIds.add(enemy.enemyId)));
+        enemyIds.forEach(id => (data.enemies[id]?.bornBuffs || []).forEach(buffId => ids.add(buffId)));
         Object.values(data.spawners).forEach(config => (config.enemyLibrary || []).forEach(enemy =>
             (enemy.bornBuffList || []).forEach(buff => ids.add(buff.buffId))));
         Object.values(data.scriptBuffs).forEach(scene => Object.values(scene).forEach(buffs => buffs.forEach(buff => ids.add(buff.buffId))));
         await Promise.all(Array.from(ids).map(async id => {
-            try { buffCache[id] = await fetchJson(`/public/Json/BuffData/${id}.json`); }
-            catch { buffCache[id] = null; }
+            if (Object.prototype.hasOwnProperty.call(buffCache, id)) return;
+            if (!buffRequests.has(id)) {
+                buffRequests.set(id, window.akeDataLoader.loadJson(`/public/Json/BuffData/${id}.json`, { priority: 'dependency' })
+                    .then(buff => { buffCache[id] = buff; })
+                    .catch(error => {
+                        if (error.status === 404) {
+                            buffCache[id] = null;
+                            return;
+                        }
+                        throw error;
+                    })
+                    .finally(() => buffRequests.delete(id)));
+            }
+            await buffRequests.get(id);
         }));
     }
 
@@ -148,18 +163,8 @@
     }
 
     function formatModifierSummary(modifiers) {
-        return window.AKEStats.combineModifiers(modifiers)
-            .filter(modifier => !LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES.includes(modifier.attrType))
-            .map(modifier => {
-                const name = attrMap[modifier.attrType] || t('attribute', { id: modifier.attrType });
-                const directMultiplier = modifier.modifierType === 4 || modifier.modifierType === 8;
-                const multiplier = directMultiplier || modifier.modifierType === 1 || modifier.modifierType === 6;
-                const value = directMultiplier ? modifier.attrValue - 1 : modifier.attrValue;
-                const display = multiplier
-                    ? `${value > 0 ? '+' : ''}${(value * 100).toFixed(1)}%`
-                    : `${value > 0 ? '+' : ''}${Number.isInteger(value) ? value : Number(value.toFixed(4))}`;
-                return `${escapeHtml(name)} ${display}`;
-            }).join(', ');
+        return window.AKEEnemyRenderer.summarizeModifiers(modifiers,
+            type => attrMap[type] || t('attribute', { id: type }));
     }
 
     function renderBuffs(inlineModifiers, ownBuffs, libraryBuffs, scriptedBuffs) {
@@ -168,14 +173,12 @@
             const libraryModifiers = (libraryBuffs || []).flatMap(buff => buffModifiers(buff.buffId, buff.blackboard));
             const scriptModifiers = (scriptedBuffs || []).flatMap(buff => buffModifiers(buff.buffId, buff.blackboard));
             const groups = [
-                [t('bornBonus'), [...(inlineModifiers || []), ...ownModifiers]],
-                [t('buffBonus'), libraryModifiers],
-                [t('dungeonBonus'), scriptModifiers]
+                ['born', [...(inlineModifiers || []), ...ownModifiers]],
+                ['buff', libraryModifiers],
+                ['dungeon', scriptModifiers]
             ];
-            return groups.map(([label, modifiers]) => {
-                const summary = formatModifierSummary(modifiers);
-                return summary ? `<div class="v2d-enemy-modifier"><b>${label}</b> ${summary}</div>` : '';
-            }).join('');
+            return window.AKEEnemyRenderer.renderModifierSources(groups, formatModifierSummary,
+                key => ccT(`modifierSources.${key}`));
         }
         const rows = [...(ownBuffs || []).map(buffId => ({ buffId })), ...(libraryBuffs || []), ...(scriptedBuffs || [])];
         const unique = [...new Map(rows.map(row => [`${row.buffId}:${row.conditional ? 'script' : 'base'}`, row])).values()];
@@ -201,9 +204,9 @@
         (libraryBuffs || []).forEach(buff => modifiers.push(...buffModifiers(buff.buffId, buff.blackboard)));
         const scriptedModifiers = (scriptedBuffs || []).flatMap(buff => buffModifiers(buff.buffId, buff.blackboard));
         const flags = [];
-        if (enemy.isDangerous) flags.push(`<span class="v2d-enemy-flag danger">${escapeHtml(t('danger'))}</span>`);
-        if (enemy.showBigEffect) flags.push(`<span class="v2d-enemy-flag big-effect">${escapeHtml(t('effect'))}</span>`);
-        if (enemy.showBigHeadbar) flags.push(`<span class="v2d-enemy-flag big-headbar">${escapeHtml(t('headbar'))}</span>`);
+        if (enemy.isDangerous) flags.push(`<span class="ake-ui-badge" data-tone="danger">${escapeHtml(t('danger'))}</span>`);
+        if (enemy.showBigEffect) flags.push(`<span class="ake-ui-badge" data-tone="accent">${escapeHtml(t('effect'))}</span>`);
+        if (enemy.showBigHeadbar) flags.push(`<span class="ake-ui-badge" data-tone="muted">${escapeHtml(t('headbar'))}</span>`);
         const statState = window.AKEEnemyRenderer.calculateStats({
             attrData: attrTemplate,
             level,
@@ -215,10 +218,10 @@
             dataAttributes: {
                 akeEntryPlugin: 'v3_enemy',
                 akeEntryId: enemy.templateId || enemyId,
-                akeEntryLabel: text(display.name, enemy.templateId || enemyId)
+                akeEntryLabel: text(display.name, commonT('unknown'))
             },
             iconSrc: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${enemy.templateId || enemyId}.png`,
-            name: text(display.name, enemy.templateId || enemyId),
+            name: text(display.name, commonT('unknown')),
             nickname: text(display.nickname),
             level,
             descriptionHtml: text(display.description) ? parseGameText(text(display.description)) : '',
@@ -460,14 +463,60 @@
         mobileList.replaceChildren(...seasons.map(seasonButton));
     }
 
+    function loadSeasonData(season) {
+        if (season.data) return Promise.resolve(season.data);
+        if (seasonLoads.has(season.id)) return seasonLoads.get(season.id);
+        const request = (async () => {
+            const groupIds = new Set(season.weeks.flatMap(week => week.groupIds));
+            const dungeonIds = new Set([...groupIds].flatMap(id => Object.values(seasonBase.gameGroups[id]?.stars || {}).map(row => row.gameId)));
+            const dungeons = Object.fromEntries([...dungeonIds]
+                .filter(id => seasonBase.allDungeons[id])
+                .map(id => [id, { ...seasonBase.allDungeons[id] }]));
+            const sceneIds = [...new Set(Object.values(dungeons).map(row => row.sceneId).filter(Boolean))];
+            const sceneData = await Promise.all(sceneIds.map(async id => ({
+                id,
+                spawners: await loadSpawners(id),
+                buffs: await window.AKECombatData.loadSceneScriptBuffs(id)
+            })));
+            const spawnersByScene = Object.fromEntries(sceneData.map(scene => [scene.id, scene.spawners]));
+            Object.values(dungeons).forEach(dungeon => {
+                dungeon.spawnerConfigs = spawnersForDungeon(dungeon, spawnersByScene[dungeon.sceneId] || {});
+            });
+            const data = {
+                ...seasonBase,
+                dungeons,
+                spawners: Object.fromEntries(sceneData.flatMap(scene => Object.entries(scene.spawners).map(([id, row]) => [`${scene.id}:${id}`, row]))),
+                scriptBuffs: Object.fromEntries(sceneData.map(scene => [scene.id, scene.buffs]))
+            };
+            await loadBuffs(data);
+            season.data = data;
+            return data;
+        })();
+        seasonLoads.set(season.id, request);
+        request.finally(() => seasonLoads.delete(season.id)).catch(() => {});
+        return request;
+    }
+
     function selectSeason(id, updateUrl) {
         const season = seasons.find(entry => entry.id === String(id));
         if (!season) return false;
         activeSeasonId = season.id;
+        const generation = ++selectionGeneration;
         renderLists();
-        renderSeason(season);
         closeOverlay();
         if (updateUrl) window.__akeRouter?.updateUrl(MODULE_ID, season.id);
+        if (season.data) {
+            renderSeason(season);
+        } else {
+            detail.innerHTML = `<div class="ake-ui-state" data-state="loading">${escapeHtml(t('loading'))}</div>`;
+            loadSeasonData(season).then(() => {
+                if (!destroyed && generation === selectionGeneration) renderSeason(season);
+            }).catch(error => {
+                if (!destroyed && generation === selectionGeneration) {
+                    detail.innerHTML = `<div class="ake-ui-state" data-state="error"><div><b>${escapeHtml(t('loadFailed'))}</b><span>${escapeHtml(error.message)}</span></div></div>`;
+                }
+            });
+        }
         return true;
     }
 
@@ -515,34 +564,24 @@
             const [seasonTable, gameGroups, mechanicGroups, allDungeons, mechanics, towerDungeons, rewards, items, times, constants, ranks, series, enemies, enemyDisplay, enemyAttrs, intros, activities, maps] = await Promise.all([
                 ...names.map(name => window.AKEV3.table(name)), window.akeLoadMaps()
             ]);
-            const groupIds = new Set(Object.values(seasonTable).flatMap(season => Object.values(season.weeks || {}).flatMap(week => week.includeGameIdList || [])));
-            const dungeonIds = new Set([...groupIds].flatMap(id => Object.values(gameGroups[id]?.stars || {}).map(row => row.gameId)));
-            const dungeons = Object.fromEntries([...dungeonIds].filter(id => allDungeons[id]).map(id => [id, { ...allDungeons[id] }]));
-            const sceneIds = [...new Set(Object.values(dungeons).map(row => row.sceneId).filter(Boolean))];
-            const sceneData = await Promise.all(sceneIds.map(async id => ({ id, spawners: await loadSpawners(id), buffs: await window.AKECombatData.loadSceneScriptBuffs(id) })));
-            const spawners = Object.fromEntries(sceneData.flatMap(scene => Object.entries(scene.spawners).map(([id, row]) => [`${scene.id}:${id}`, row])));
-            const scriptBuffs = Object.fromEntries(sceneData.map(scene => [scene.id, scene.buffs]));
-            const spawnersByScene = Object.fromEntries(sceneData.map(scene => [scene.id, scene.spawners]));
             attrMap = maps.ATTR_MAP || {};
             attrNameToId = Object.fromEntries(Object.entries(maps.ATTR_MAP_EN || {}).map(([id, name]) => [name, Number(id)]));
-            Object.values(dungeons).forEach(dungeon => {
-                dungeon.spawnerConfigs = spawnersForDungeon(dungeon, spawnersByScene[dungeon.sceneId] || {});
-            });
             const towerActivities = Object.entries(activities).filter(([, row]) => row.panelId === 'ActivitySeasonTower').map(([activityId, row]) => ({ ...row, activityId }));
             const activity = towerActivities.length === 1 ? towerActivities[0] : {};
             if (towerActivities.length > 1) console.warn('SeasonTower: multiple activities without a season-to-activity relation', towerActivities.map(row => row.id));
+            const groupIds = new Set(Object.values(seasonTable).flatMap(season => Object.values(season.weeks || {}).flatMap(week => week.includeGameIdList || [])));
+            const dungeonIds = new Set([...groupIds].flatMap(id => Object.values(gameGroups[id]?.stars || {}).map(row => row.gameId)));
             const missingReferences = [...groupIds].filter(id => !gameGroups[id]).concat([...dungeonIds].filter(id => !allDungeons[id]));
             if (missingReferences.length) console.warn('SeasonTower: unresolved group/dungeon references', missingReferences);
-            const shared = { gameGroups, mechanicGroups, dungeons, mechanics, towerDungeons, rewards, items, constants, ranks, enemies, enemyDisplay, enemyAttrs, spawners, scriptBuffs, activity,
+            seasonBase = { gameGroups, mechanicGroups, allDungeons, mechanics, towerDungeons, rewards, items, constants, ranks, enemies, enemyDisplay, enemyAttrs, activity,
                 introPages: [...(intros.season_tower?.dataArray || [])].sort((a, b) => Number(a.pageIndex) - Number(b.pageIndex)) };
-            await loadBuffs(shared);
             if (destroyed) return;
             seasons = Object.entries(seasonTable).map(([id, row]) => {
                 const weeks = Object.entries(row.weeks || {}).map(([weekId, week]) => {
                     const range = times[`time_activity_seasontower_season_${id}_week_${weekId}`]?.timeRangeList?.[0] || {};
                     return { id: weekId, name: text(week.weekShowName, t('rotation', { id: weekId })), groupIds: week.includeGameIdList || [], openTime: range.openTime || '', closeTime: range.closeTime || '' };
                 });
-                return { id, name: text(row.name, t('season', { id })), weeks, openTime: weeks[0]?.openTime || '', closeTime: weeks[weeks.length - 1]?.closeTime || '', data: shared };
+                return { id, name: text(row.name, t('season', { id })), weeks, openTime: weeks[0]?.openTime || '', closeTime: weeks[weeks.length - 1]?.closeTime || '', data: null };
             }).sort((a, b) => Number(a.id) - Number(b.id));
             const deepId = window.__deepLinkId;
             window.__deepLinkId = null;
@@ -619,7 +658,7 @@
     function onConfigChanged() {
         if (!root.isConnected) return;
         const season = seasons.find(entry => entry.id === activeSeasonId);
-        if (season) renderSeason(season);
+        if (season?.data) renderSeason(season);
     }
     window.addEventListener('globalConfigChanged', onConfigChanged);
     window.__akeSeasonTowerController = {

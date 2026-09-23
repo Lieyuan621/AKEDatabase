@@ -1,6 +1,8 @@
 (function() {
         const t = window.akeI18n.scope('modules.dungeon');
+        const ccT = window.akeI18n.scope('modules.cc');
         const commonT = window.akeI18n.scope('common');
+        const ATTR_DISPLAY_ORDER = [0, 1, 2, 3, 20, 21, 27, 12, 8, 9, 10, 11, 15];
         let allSeries = [];
         let rawAllSeries = [];
         let activeSeriesId = null;
@@ -9,7 +11,6 @@
         let attrMap = {};
         let attrNameToId = {};
         let buffCache = {};
-        let modifierTypeMap = {};
 
         const FORMULA_TO_MODTYPE = window.AKEStats.FORMULA_TO_MODTYPE;
         const LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES = window.AKEEnemyRenderer.LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES;
@@ -54,7 +55,6 @@
                 attrMap = data.ATTR_MAP || {};
                 const attrEn = data.ATTR_MAP_EN || {};
                 Object.entries(attrEn).forEach(([id, name]) => { attrNameToId[name] = parseInt(id, 10); });
-                modifierTypeMap = data.MODIFIER_TYPE_MAP || {};
             } catch (err) {
                 console.error('加载映射数据失败:', err);
                 attrMap = {};
@@ -273,32 +273,7 @@
         }
 
         function formatAttrModifiers(modifiers) {
-            if (!Array.isArray(modifiers) || modifiers.length === 0) return '';
-            const showHidden = getCurrentShowHidden();
-            return window.AKEStats.combineModifiers(modifiers).filter(m => !LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES.includes(m.attrType)).map(m => {
-                const name = getAttrName(m.attrType);
-                const val = m.attrValue;
-                const isMult = (m.modifierType === 1 || m.modifierType === 4 ||
-                    m.modifierType === 6 || m.modifierType === 8);
-                const displayVal = (m.modifierType === 4 || m.modifierType === 8) ? val - 1 : val;
-                const displayText = `${displayVal > 0 ? '+' : ''}${(displayVal * 100).toFixed(1)}%`;
-                const converted = m.modifierType === 4 || m.modifierType === 8;
-                const displayHtml = window.renderRawValueTip ? window.renderRawValueTip(displayText, converted ? {
-                    name,
-                    rawValue: val,
-                    value: displayVal,
-                    changed: true,
-                    formula: `${val} - 1 = ${displayVal}`
-                } : val) : displayText;
-                let text = isMult
-                    ? `${name} ${displayHtml}`
-                    : `${name} ${val > 0 ? '+' : ''}${val}`;
-                if (showHidden) {
-                    const modName = modifierTypeMap[String(m.modifierType)] || '';
-                    if (modName) text += ` <span class="v2d-modifier-type-tag">${modName}</span>`;
-                }
-                return text;
-            }).join(', ');
+            return window.AKEEnemyRenderer.summarizeModifiers(modifiers, getAttrName);
         }
 
         function formatPlainValue(val) {
@@ -521,8 +496,9 @@
 
         function getEnemyStatDetailsAtLevel(attrTemplateData, enemyLevel, modifiers) {
             return window.AKEStats.getEnemyStatDetailsAtLevel(attrTemplateData, enemyLevel, modifiers, {
+                displayOrder: ATTR_DISPLAY_ORDER,
                 getAttrName,
-                includeModifierOnlyAttrs: true,
+                includeModifierOnlyAttrs: false,
                 excludeAttrTypes: LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES
             });
         }
@@ -557,22 +533,16 @@
             const scriptModifiers = (scriptedBuffs || []).flatMap(b => getBuffModifiers(b.buffId, b.blackboard));
 
             const flags = [];
-            if (enemyConfig.isDangerous) flags.push(`<span class="v2d-enemy-flag danger">${t('flags.dangerous')}</span>`);
-            if (enemyConfig.showBigEffect) flags.push(`<span class="v2d-enemy-flag big-effect">${t('flags.globalEffect')}</span>`);
-            if (enemyConfig.showBigHeadbar) flags.push(`<span class="v2d-enemy-flag big-headbar">${t('flags.pinnedHealthBar')}</span>`);
+            if (enemyConfig.isDangerous) flags.push(`<span class="ake-ui-badge" data-tone="danger">${t('flags.dangerous')}</span>`);
+            if (enemyConfig.showBigEffect) flags.push(`<span class="ake-ui-badge" data-tone="accent">${t('flags.globalEffect')}</span>`);
+            if (enemyConfig.showBigHeadbar) flags.push(`<span class="ake-ui-badge" data-tone="muted">${t('flags.pinnedHealthBar')}</span>`);
 
             const showHidden = getCurrentShowHidden();
-            const modifierGroups = [
-                ['出生加成', [...inlineModifiers, ...ownBuffModifiers]],
-                ['buff加成', libraryBuffModifiers],
-                ['副本加成', scriptModifiers]
-            ];
-            const modifierSummaryHtml = modifierGroups.map(([label, modifiers]) => {
-                const summary = formatAttrModifiers(modifiers);
-                return summary ? `<div class="v2d-enemy-modifier"><b>${label}</b> ${summary}</div>` : '';
-            }).join('');
-            const modifierStr = formatAttrModifiers(inlineModifiers);
-            const modifierHtml = showHidden && modifierStr ? `<div class="v2d-enemy-modifier">${modifierStr}</div>` : '';
+            const modifierSummaryHtml = showHidden ? '' : window.AKEEnemyRenderer.renderModifierSources([
+                ['born', [...inlineModifiers, ...ownBuffModifiers]],
+                ['buff', libraryBuffModifiers],
+                ['dungeon', scriptModifiers]
+            ], formatAttrModifiers, key => ccT(`modifierSources.${key}`));
 
             const allBuffIds = [...new Set([...ownBuffs, ...libBuffs.map(b => b.buffId)])];
             const buffBbMap = {};
@@ -639,7 +609,7 @@
                 nickname,
                 level: enemyLevel,
                 descriptionHtml: desc ? parseText(desc) : '',
-                extraHtml: `${showHidden ? '' : modifierSummaryHtml}${modifierHtml}${buffTagsHtml}${scriptBuffTagsHtml}`,
+                extraHtml: `${modifierSummaryHtml}${buffTagsHtml}${scriptBuffTagsHtml}`,
                 flags,
                 statState,
                 formatStatValue,

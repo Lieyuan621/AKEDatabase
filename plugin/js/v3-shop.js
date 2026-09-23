@@ -176,12 +176,17 @@
         state.changes = { normal: {}, cash: {}, groups: {} };
         if (!state.baseline) return;
         const includeModified = window.akeData?.getConfig?.().showVersionChanges === true;
+        const includeAdded = window.akeDataSource?.getState?.()?.comparison?.showAdded !== false;
         Object.keys(state.tables.goods).forEach(id => {
-            if (!state.baseline.goods?.[id]) state.changes.normal[id] = 'added';
+            if (!state.baseline.goods?.[id]) {
+                if (includeAdded) state.changes.normal[id] = 'added';
+            }
             else if (includeModified && normalGoodsSignature(state.tables, id) !== normalGoodsSignature(state.baseline, id)) state.changes.normal[id] = 'modified';
         });
         Object.keys(state.tables.cashGoods).forEach(id => {
-            if (!state.baseline.cashGoods?.[id]) state.changes.cash[id] = 'added';
+            if (!state.baseline.cashGoods?.[id]) {
+                if (includeAdded) state.changes.cash[id] = 'added';
+            }
             else if (includeModified && cashGoodsSignature(state.tables, id) !== cashGoodsSignature(state.baseline, id)) state.changes.cash[id] = 'modified';
         });
         state.groups.forEach(group => {
@@ -197,8 +202,8 @@
                 state.baseline.cashGroups?.[group.shopGroupId],
                 group.shopGroupId === 'shop_pay_recommend' ? state.baseline.recommendations : null
             ]);
-            if (!baselineGroup || childChanges.includes('added')) state.changes.groups[group.shopGroupId] = 'added';
-            else if (includeModified && (groupChanged || childChanges.includes('modified'))) state.changes.groups[group.shopGroupId] = 'modified';
+            if ((!baselineGroup || childChanges.includes('added')) && includeAdded) state.changes.groups[group.shopGroupId] = 'added';
+            else if (baselineGroup && includeModified && (groupChanged || childChanges.includes('modified'))) state.changes.groups[group.shopGroupId] = 'modified';
         });
     }
 

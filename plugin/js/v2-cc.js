@@ -874,26 +874,13 @@
     }
 
     function formatModifierSummary(modifiers) {
-        return window.AKEStats.combineModifiers(modifiers)
-            .filter(modifier => !LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES.includes(modifier.attrType))
-            .map(modifier => {
-                const name = ccAttrMap[modifier.attrType] || t('attributeFallback', { type: modifier.attrType });
-                const directMultiplier = modifier.modifierType === 4 || modifier.modifierType === 8;
-                const multiplier = directMultiplier || modifier.modifierType === 1 || modifier.modifierType === 6;
-                const value = directMultiplier ? modifier.attrValue - 1 : modifier.attrValue;
-                const display = multiplier
-                    ? `${value > 0 ? '+' : ''}${(value * 100).toFixed(1)}%`
-                    : `${value > 0 ? '+' : ''}${Number.isInteger(value) ? value : Number(value.toFixed(4))}`;
-                return `${escapeHtml(name)} ${display}`;
-            }).join(', ');
+        return window.AKEEnemyRenderer.summarizeModifiers(modifiers,
+            type => ccAttrMap[type] || t('attributeFallback', { type }));
     }
 
     function renderModifierSources(groups) {
-        const rows = groups.map(([labelKey, modifiers]) => {
-            const summary = formatModifierSummary(modifiers);
-            return summary ? `<div class="ake-ui-card__meta"><span class="ake-ui-badge" data-tone="muted">${escapeHtml(t(`modifierSources.${labelKey}`))}</span><span class="ake-ui-card__body">${summary}</span></div>` : '';
-        }).join('');
-        return rows ? `<div class="ake-ui-card__content v2cc-current-buffs">${rows}</div>` : '';
+        return window.AKEEnemyRenderer.renderModifierSources(groups, formatModifierSummary,
+            key => t(`modifierSources.${key}`));
     }
 
     function buildEnemyBuffTagsHtml(ownBuffs, libBuffs, extraTagBuffs) {

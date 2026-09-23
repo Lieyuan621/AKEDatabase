@@ -63,6 +63,9 @@
         'PrtsCategory',
         'PrtsFirstLv',
         'PrtsAllItem',
+        'PrtsInvestigate',
+        'PrtsNote',
+        'DomainDataTable',
         'RichContentTable',
         'RadioTable',
         'ReadingPopUpTable',
@@ -79,6 +82,9 @@
         addedItemIds: new Set(),
         modifiedGroupIds: new Set(),
         modifiedItemIds: new Set(),
+        investigationChanges: new Map(),
+        investigationNoteChanges: new Map(),
+        investigationItemChanges: new Map(),
         readingChanges: new Map(),
         dialogChanges: new Map(),
         pages: [],
@@ -87,7 +93,13 @@
         groups: [],
         groupMap: new Map(),
         itemMap: new Map(),
+        oemPoints: new Map(),
         itemsByGroup: new Map(),
+        investigations: [],
+        investigationMap: new Map(),
+        investigationsByItem: new Map(),
+        activeInvestigationId: '',
+        investigationListOpen: false,
         popupByContent: new Map(),
         groupSearch: new Map(),
         itemSearch: new Map(),
@@ -154,6 +166,14 @@
                 : [item?.id, item?.contentId],
             fallback || t('empty.untitledEntry', null, '未命名条目')
         );
+    }
+
+    function investigationDisplayName(row) {
+        return displayEntityText(row?.name, [row?.id], t('investigate.unnamed', null, '未命名调查'));
+    }
+
+    function investigationSectionName(row) {
+        return displayEntityText(row?.name, [], t('investigate.unnamedSection', null, '未命名报告'));
     }
 
     function pageDisplayName(page) {
@@ -313,6 +333,9 @@
         state.addedItemIds.clear();
         state.modifiedGroupIds.clear();
         state.modifiedItemIds.clear();
+        state.investigationChanges.clear();
+        state.investigationNoteChanges.clear();
+        state.investigationItemChanges.clear();
         state.readingChanges.clear();
         state.dialogChanges.clear();
         if (!comparison?.baseline || !baselineRaw) return;
@@ -329,13 +352,14 @@
             console.warn('Archive version comparison was skipped because the baseline tables are empty');
             return;
         }
-        if (Object.keys(baselineGroups).length) {
+        const includeAdded = comparison.showAdded !== false;
+        if (includeAdded && Object.keys(baselineGroups).length) {
             const baselineGroupIds = tableEntityIds(baselineGroups, 'firstLvId');
             tableEntityIds(raw.PrtsFirstLv, 'firstLvId').forEach(id => {
                 if (!baselineGroupIds.has(id)) state.addedGroupIds.add(id);
             });
         }
-        if (Object.keys(baselineItems).length) {
+        if (includeAdded && Object.keys(baselineItems).length) {
             const baselineItemIds = tableEntityIds(baselineItems, 'id');
             tableEntityIds(raw.PrtsAllItem, 'id').forEach(id => {
                 if (!baselineItemIds.has(id)) state.addedItemIds.add(id);
@@ -354,6 +378,56 @@
                 dialogSignatures(baselineRaw.DialogTextTable),
                 state.dialogChanges
             );
+        }
+        if (Object.keys(baselineRaw.PrtsInvestigate || {}).length) {
+            compareEntitySignatures(
+                new Map(Object.entries(raw.PrtsInvestigate || {}).map(([id, row]) => [id, stableSignature(row)])),
+                new Map(Object.entries(baselineRaw.PrtsInvestigate).map(([id, row]) => [id, stableSignature(row)])),
+                state.investigationChanges
+            );
+        }
+        if (Object.keys(baselineRaw.PrtsNote || {}).length) {
+            compareEntitySignatures(
+                new Map(Object.entries(raw.PrtsNote || {}).map(([id, row]) => [id, stableSignature(row)])),
+                new Map(Object.entries(baselineRaw.PrtsNote).map(([id, row]) => [id, stableSignature(row)])),
+                state.investigationNoteChanges
+            );
+        }
+        const investigationItemIds = new Set(Object.values(raw.PrtsInvestigate || {}).flatMap(row =>
+            [...(row.collectionIdList || []), row.unlockPrts].filter(Boolean).map(String)));
+        if (Object.keys(baselineItems).length) {
+            investigationItemIds.forEach(id => {
+                const item = raw.PrtsAllItem?.[id];
+                const previous = baselineItems[id];
+                if (!item) return;
+                if (!previous) {
+                    if (includeAdded) state.investigationItemChanges.set(id, 'added');
+                } else if (stableSignature(item) !== stableSignature(previous)) {
+                    state.investigationItemChanges.set(id, 'modified');
+                }
+            });
+        }
+        if (Object.keys(baselineRaw.RichContentTable || {}).length) {
+            investigationItemIds.forEach(id => {
+                const item = raw.PrtsAllItem?.[id];
+                const contentId = String(item?.contentId || '');
+                if (!contentId || state.investigationItemChanges.get(id) === 'added') return;
+                const content = raw.RichContentTable?.[contentId];
+                const previous = baselineRaw.RichContentTable[contentId];
+                if (!content) return;
+                if (!previous) {
+                    if (includeAdded) state.investigationItemChanges.set(id, 'added');
+                } else if (stableSignature(content) !== stableSignature(previous)) {
+                    state.investigationItemChanges.set(id, 'modified');
+                }
+            });
+        }
+        if (!includeAdded) {
+            for (const changes of [state.readingChanges, state.dialogChanges, state.investigationChanges, state.investigationNoteChanges]) {
+                for (const [key, change] of changes) {
+                    if (change === 'added') changes.delete(key);
+                }
+            }
         }
         state.comparisonVersion = baselineVersion;
     }
@@ -920,6 +994,62 @@
         });
     }
 
+    function investigationVersionInfo(row) {
+        const ownChange = state.investigationChanges.get(String(row?.id || ''));
+        const itemIds = [...new Set([...(row?.collectionIdList || []), row?.unlockPrts].filter(Boolean).map(String))];
+        const noteIds = [...new Set((row?.categoryDataList || []).flatMap(category => category.noteIdList || []).map(String))];
+        const itemChanges = itemIds.map(id => state.investigationItemChanges.get(id) ||
+            (state.addedItemIds.has(id) ? 'added' : state.modifiedItemIds.has(id) ? 'modified' : ''));
+        const noteChanges = noteIds.map(id => state.investigationNoteChanges.get(id) || '');
+        const isNewGroup = ownChange === 'added';
+        const addedItemCount = itemChanges.filter(change => change === 'added').length
+            + noteChanges.filter(change => change === 'added').length;
+        const hasAddition = isNewGroup || addedItemCount > 0;
+        const hasModification = ownChange === 'modified' || itemChanges.includes('modified') || noteChanges.includes('modified');
+        return { isNewGroup, addedItemCount, hasAddition, hasModification, hasChange: hasAddition || hasModification };
+    }
+
+    function investigationItemChangeTag(id) {
+        const change = state.investigationItemChanges.get(String(id)) ||
+            (state.addedItemIds.has(String(id)) ? 'added' : state.modifiedItemIds.has(String(id)) ? 'modified' : '');
+        return change ? addedTag(t(`changes.${change}`, null, change === 'added' ? '新增' : '修改'), true, change) : '';
+    }
+
+    function investigationNoteChangeTag(id) {
+        const change = state.investigationNoteChanges.get(String(id));
+        return change ? addedTag(t(`changes.${change}`, null, change === 'added' ? '新增' : '修改'), true, change) : '';
+    }
+
+    function prepareInvestigations() {
+        state.investigations = Object.values(state.tables.investigations || {}).sort((a, b) =>
+            String(a.domainId || '').localeCompare(String(b.domainId || ''), 'en')
+            || safeOrder(a.index) - safeOrder(b.index)
+            || String(a.id || '').localeCompare(String(b.id || ''), 'en')
+        );
+        state.investigationMap.clear();
+        state.investigationsByItem.clear();
+        const unresolved = [];
+        state.investigations.forEach(row => {
+            state.investigationMap.set(String(row.id), row);
+            (row.collectionIdList || []).forEach(id => {
+                const key = String(id);
+                if (!state.itemMap.has(key)) unresolved.push({ investigation: row.id, kind: 'archive', id: key });
+                if (!state.investigationsByItem.has(key)) state.investigationsByItem.set(key, []);
+                state.investigationsByItem.get(key).push(row);
+            });
+            (row.categoryDataList || []).forEach(category => (category.noteIdList || []).forEach(id => {
+                if (!state.tables.notes?.[id]) unresolved.push({ investigation: row.id, kind: 'note', id });
+            }));
+            const reportId = String(row.unlockPrts || '');
+            if (reportId) {
+                if (!state.itemMap.has(reportId)) unresolved.push({ investigation: row.id, kind: 'report', id: reportId });
+                if (!state.investigationsByItem.has(reportId)) state.investigationsByItem.set(reportId, []);
+                if (!state.investigationsByItem.get(reportId).includes(row)) state.investigationsByItem.get(reportId).push(row);
+            }
+        });
+        if (unresolved.length) console.warn('Archive investigations contain unresolved references', unresolved);
+    }
+
     function prepareTables(raw, assetIndex) {
         const mapText = mapTextRecords(raw.DialogTextTable || {}, assetIndex);
         const supplementalReading = supplementalReadingRecords(raw, assetIndex);
@@ -944,6 +1074,9 @@
             },
             groups: { ...(raw.PrtsFirstLv || {}), ...mapText.groups, ...supplementalReading.groups },
             items: { ...(raw.PrtsAllItem || {}), ...mapText.items, ...supplementalReading.items },
+            investigations: raw.PrtsInvestigate || {},
+            notes: raw.PrtsNote || {},
+            domains: raw.DomainDataTable || {},
             richContent: raw.RichContentTable || {},
             radio: raw.RadioTable || {},
             popups: raw.ReadingPopUpTable || {},
@@ -996,6 +1129,7 @@
             }
         });
         buildIndexes();
+        prepareInvestigations();
     }
 
     function filteredGroups(options) {
@@ -1036,7 +1170,7 @@
             subtitle: t('overview.subtitle', null, '浏览全部档案与收录内容'),
             icon: { src: pageIcon(state.pages[0]), alt: '' },
             count: state.itemMap.size,
-            active: !state.activeGroupId,
+            active: !state.activeGroupId && !state.investigationListOpen && !state.activeInvestigationId,
             attributes: { 'data-akearchive-action': 'show-overview' }
         });
     }
@@ -1181,14 +1315,109 @@
         elements.content.innerHTML = `<section class="ake-ui-page">
             <header class="ake-ui-page__header">
                 <div><h1 class="ake-ui-page__title">${escapeHtml(t('overview.title', null, '档案一览'))}</h1><p class="ake-ui-page__summary">${escapeHtml(t('overview.subtitle', null, '浏览全部档案与收录内容'))}</p></div>
-                <div class="ake-ui-page__status">
-                    <strong>${escapeHtml(tr('counts.groups', { count: records.length }, `${records.length} 组档案`))}</strong>
-                    <span>${escapeHtml(tr('counts.entries', { count: visibleCount }, `${visibleCount} 条记录`))}</span>
+                <div class="ake-ui-page__status akearchive-overview-status">
+                    <div class="akearchive-overview-counts"><strong>${escapeHtml(tr('counts.groups', { count: records.length }, `${records.length} 组档案`))}</strong>
+                    <span>${escapeHtml(tr('counts.entries', { count: visibleCount }, `${visibleCount} 条记录`))}</span></div>
+                    <button type="button" class="ake-ui-button ake-ui-button--secondary" data-akearchive-action="show-investigations">${escapeHtml(t('investigate.title', null, '情报采集'))}</button>
                 </div>
             </header>
             ${renderPageTabs(allRecords)}
             ${changeSections}${sections || (changeSections ? '' : noResults)}
         </section>`;
+    }
+
+    function investigationDomainName(row) {
+        return displayEntityText(state.tables.domains?.[row?.domainId]?.domainName, [row?.domainId],
+            t('investigate.unknownRegion', null, '未标注地区'));
+    }
+
+    function investigationCard(row) {
+        const count = (row.collectionIdList || []).length;
+        const changeInfo = investigationVersionInfo(row);
+        return `<button type="button" class="ake-ui-card is-interactive" data-ake-component="card" data-density="compact"
+            data-akearchive-action="open-investigation" data-investigation-id="${escapeHtml(row.id)}" data-ake-entry-plugin="v3_archive" data-ake-entry-id="${escapeHtml(`investigation:${row.id}`)}">
+            <span class="ake-ui-card__content">
+                <strong class="ake-ui-card__title">${gameHtml(investigationDisplayName(row))}</strong>
+                <small class="ake-ui-card__subtitle">${gameHtml(investigationDomainName(row))}</small>
+                <span class="ake-ui-card__meta">${groupChangeTag(changeInfo, true)}<span class="ake-ui-badge">${escapeHtml(tr('investigate.requiredCount', { count }, `关联档案 ${count} 条`))}</span></span>
+            </span>
+        </button>`;
+    }
+
+    function renderInvestigationList() {
+        const rows = state.investigations.filter(row => !state.query || normalizeSearch([
+            investigationDisplayName(row), investigationDomainName(row), gameText(row.desc),
+            ...(row.categoryDataList || []).map(investigationSectionName),
+            ...(row.collectionIdList || []).map(id => itemDisplayName(state.itemMap.get(String(id)))),
+            ...(row.categoryDataList || []).flatMap(category => (category.noteIdList || [])
+                .map(id => gameText(state.tables.notes?.[id]?.desc)))
+        ].join(' ')).includes(state.query));
+        const changedRows = rows.filter(row => investigationVersionInfo(row).hasChange)
+            .sort((a, b) => Number(investigationVersionInfo(b).hasAddition) - Number(investigationVersionInfo(a).hasAddition));
+        const regularRows = rows.filter(row => !investigationVersionInfo(row).hasChange);
+        const domains = [...new Set(regularRows.map(row => String(row.domainId || '')))];
+        elements.content.innerHTML = `<section class="ake-ui-page">
+            <header class="ake-ui-page__header"><div><h1 class="ake-ui-page__title">${escapeHtml(t('investigate.title', null, '情报采集'))}</h1>
+                <p class="ake-ui-page__summary">${escapeHtml(t('investigate.subtitle', null, '按调查项目查看关联档案、分析批注与报告'))}</p></div>
+                <div class="ake-ui-page__status"><strong>${escapeHtml(tr('investigate.count', { count: rows.length }, `${rows.length} 项调查`))}</strong></div>
+            </header>
+            ${changedRows.length && comparisonLabel() ? `<section class="ake-ui-section" data-tone="added"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">${escapeHtml(tr('changes.group', { version: comparisonLabel() }, `版本差异 · 相比 ${comparisonLabel()}`))}</h2></header>
+                <div class="ake-ui-card-grid" data-size="regular">${changedRows.map(investigationCard).join('')}</div></section>` : ''}
+            ${domains.map(domainId => {
+                const domainRows = regularRows.filter(row => String(row.domainId || '') === domainId);
+                return `<section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">${gameHtml(investigationDomainName(domainRows[0]))}</h2></header>
+                    <div class="ake-ui-card-grid" data-size="regular">${domainRows.map(investigationCard).join('')}</div></section>`;
+            }).join('') || (!changedRows.length ? `<div class="ake-ui-state" data-state="empty"><div><p>${escapeHtml(t('empty.search', null, '没有匹配的档案'))}</p></div></div>` : '')}
+        </section>`;
+    }
+
+    function investigationItemContent(id) {
+        const item = state.itemMap.get(String(id));
+        if (!item) return `<span class="ake-ui-badge">${escapeHtml(t('investigate.missingEntry', null, '关联档案不可用'))}${showTechnicalIds() ? ` · ${escapeHtml(id)}` : ''}</span>`;
+        const popup = popupForItem(item);
+        return `<div class="akearchive-investigation-entry">
+            ${item.type === 'multi_media' ? renderTranscript(item, popup, true) : renderDocument(item, popup, true)}
+        </div>`;
+    }
+
+    function investigationNoteContent(id, index) {
+        const note = state.tables.notes?.[id];
+        return `<article class="ake-ui-section akearchive-investigation-note">
+            <header class="ake-ui-section__header"><h3 class="ake-ui-section__title">${escapeHtml(tr('investigate.note', { number: index + 1 }, `批注 ${index + 1}`))}</h3>${investigationNoteChangeTag(id)}</header>
+            ${note ? renderRichValue(gameText(note.desc)) || `<p>${escapeHtml(t('investigate.missingNote', null, '批注内容不可用'))}</p>` : `<p>${escapeHtml(t('investigate.missingNote', null, '批注内容不可用'))}${showTechnicalIds() ? ` · ${escapeHtml(id)}` : ''}</p>`}
+        </article>`;
+    }
+
+    function renderInvestigation(row) {
+        const categories = [...(row.categoryDataList || [])].sort((a, b) => safeOrder(a.index) - safeOrder(b.index));
+        const groupedIds = new Set(categories.flatMap(category => category.collectionIdList || []).map(String));
+        const ungroupedIds = (row.collectionIdList || []).filter(id => !groupedIds.has(String(id)));
+        const changeInfo = investigationVersionInfo(row);
+        const header = window.AKEUI.detailHeader({
+            beforeTitle: window.AKEUI.fragment(`<div class="ake-ui-detail-meta"><span>${escapeHtml(t('investigate.title', null, '情报采集'))}</span><span>${gameHtml(investigationDomainName(row))}</span><span>${escapeHtml(tr('investigate.requiredCount', { count: (row.collectionIdList || []).length }, `关联档案 ${(row.collectionIdList || []).length} 条`))}</span>${groupChangeTag(changeInfo, true)}${showTechnicalIds() ? `<span>${escapeHtml(row.id)}</span>` : ''}</div>`),
+            title: window.AKEUI.fragment(gameHtml(investigationDisplayName(row))),
+            subtitle: window.AKEUI.fragment(gameHtml(gameText(row.desc)))
+        });
+        elements.content.innerHTML = `<article class="ake-ui-detail" data-detail-kind="archive">
+            ${header?.outerHTML || ''}
+            <div class="ake-ui-tabs" data-variant="underline"><button type="button" class="ake-ui-tabs__button" data-akearchive-action="show-investigations">${escapeHtml(t('investigate.back', null, '返回情报采集'))}</button></div>
+            ${categories.map(category => `<section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">${gameHtml(investigationSectionName(category))}</h2>
+                <span class="ake-ui-section__meta">${escapeHtml(tr('investigate.noteCount', { count: (category.noteIdList || []).length }, `批注 ${((category.noteIdList || []).length)} 条`))}</span></header>
+                <div class="akearchive-investigation-columns"><div class="akearchive-investigation-text">${(category.collectionIdList || []).map(investigationItemContent).join('')}</div>
+                    <aside class="akearchive-investigation-notes" aria-label="${escapeHtml(t('investigate.annotations', null, '批注'))}">${(category.noteIdList || []).map(investigationNoteContent).join('')}</aside></div>
+            </section>`).join('')}
+            ${ungroupedIds.length ? `<section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">${escapeHtml(t('investigate.otherEntries', null, '其他关联档案'))}</h2></header>
+                <div class="akearchive-investigation-text">${ungroupedIds.map(investigationItemContent).join('')}</div></section>` : ''}
+            ${row.unlockPrts ? `<section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">${escapeHtml(t('investigate.report', null, '分析报告'))}</h2></header>
+                <div class="akearchive-investigation-text">${investigationItemContent(row.unlockPrts)}</div></section>` : ''}
+        </article>`;
+    }
+
+    function investigationLinks(item) {
+        const rows = state.investigationsByItem.get(String(item.id)) || [];
+        if (!rows.length) return '';
+        return `<section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">${escapeHtml(t('investigate.related', null, '关联调查'))}</h2></header>
+            <div class="ake-ui-card-grid" data-size="regular">${rows.map(investigationCard).join('')}</div></section>`;
     }
 
     function readingImageUrl(rawSource) {
@@ -1258,7 +1487,14 @@
         }) || '';
     }
 
-    function renderDocument(item, popup) {
+    function investigationLinkedTitle(item, title) {
+        const href = window.__akeRouter?.entryUrl?.(MODULE_ID, item.id)
+            || `?plugin=${encodeURIComponent(MODULE_ID)}&id=${encodeURIComponent(item.id)}`;
+        return `<a href="${escapeHtml(href)}" data-akearchive-action="select-entry" data-entry-id="${escapeHtml(item.id)}"
+            data-ake-entry-plugin="v3_archive" data-ake-entry-id="${escapeHtml(item.id)}">${gameHtml(title)}</a>${investigationItemChangeTag(item.id)}`;
+    }
+
+    function renderDocument(item, popup, linkTitle = false) {
         const rich = state.tables.richContent?.[item.contentId] || null;
         const itemName = itemDisplayName(item);
         const title = contentDisplayTitle(
@@ -1271,13 +1507,13 @@
         return `${richContentHasGenderImage(rich) ? renderGenderControl() : ''}
             <article class="akearchive-document">
                 <header class="ake-ui-section__header">
-                    <div>${logo ? imageTag(logo, 'akearchive-popup-logo', '', ' aria-hidden="true"') : ''}${voiceButtonHtml(itemVoiceId(item, popup))}<h2 class="ake-ui-section__title">${gameHtml(title)}</h2><p class="ake-ui-section__meta">${gameHtml(itemName)}</p></div>
+                    <div>${logo ? imageTag(logo, 'akearchive-popup-logo', '', ' aria-hidden="true"') : ''}${voiceButtonHtml(itemVoiceId(item, popup))}<h2 class="ake-ui-section__title">${linkTitle ? investigationLinkedTitle(item, title) : gameHtml(title)}</h2><p class="ake-ui-section__meta">${gameHtml(itemName)}</p></div>
                 </header>
                 ${body || `<p class="akearchive-paragraph">${escapeHtml(t('empty.content', null, '该档案暂无正文内容'))}</p>`}
             </article>`;
     }
 
-    function renderTranscript(item, popup) {
+    function renderTranscript(item, popup, linkTitle = false) {
         const radio = radioForItem(item);
         const lines = [...(radio?.radioSingleDataList || [])].sort((a, b) => safeOrder(a.index) - safeOrder(b.index));
         const logo = popupLogo(popup);
@@ -1292,7 +1528,7 @@
         }).join('');
         return `<section class="akearchive-transcript ake-ui-section">
             <header class="ake-ui-section__header">
-                <div>${logo ? imageTag(logo, 'akearchive-popup-logo', '', ' aria-hidden="true"') : ''}${voiceButtonHtml(itemVoiceId(item, popup))}<h2 class="ake-ui-section__title">${gameHtml(contentDisplayTitle(popup?.title, item))}</h2></div>
+                <div>${logo ? imageTag(logo, 'akearchive-popup-logo', '', ' aria-hidden="true"') : ''}${voiceButtonHtml(itemVoiceId(item, popup))}<h2 class="ake-ui-section__title">${linkTitle ? investigationLinkedTitle(item, contentDisplayTitle(popup?.title, item)) : gameHtml(contentDisplayTitle(popup?.title, item))}</h2></div>
                 <span class="ake-ui-section__meta">${escapeHtml(tr('counts.entries', { count: lines.length }, `${lines.length} 条记录`))}</span>
             </header>
             <div class="akearchive-transcript-list">${lineHtml || `<div class="ake-ui-state" data-state="empty"><div><p>${escapeHtml(t('empty.transcript', null, '该档案暂无字幕'))}</p></div></div>`}</div>
@@ -1346,6 +1582,11 @@
         const readingTechnical = showTechnicalIds() && group.categoryId === READING_LIST_CATEGORY_ID
             ? `<span>${escapeHtml(t('details.contentId', null, '内容 ID'))}: ${escapeHtml(item.contentId || '')}</span>${item.readingUniqId ? `<span>${escapeHtml(t('details.readingId', null, '目录项 ID'))}: ${escapeHtml(item.readingUniqId)}</span>` : ''}${(item.levelScriptPaths || []).map(path => `<span>${escapeHtml(t('details.levelScriptPath', null, '关卡脚本'))}: ${escapeHtml(path)}</span>`).join('')}`
             : '';
+        const oemUrl = window.AKEV3.pointShareUrl?.(state.oemPoints.get(String(item.id))?.[0]) || '';
+        const oemLabel = t('details.oemLink', null, '在OEM中查看');
+        const headerActions = `${window.AKEVoicePlayer?.languageControlHtml?.() || ''}${oemUrl
+            ? `<a class="ake-ui-button ake-ui-button--secondary" href="${escapeHtml(oemUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(oemLabel)}</a>`
+            : ''}`;
         const detailHeader = window.AKEUI.detailHeader({
             icon: window.AKEUI.fragment(icon),
             beforeTitle: window.AKEUI.fragment(`<div class="ake-ui-detail-meta">
@@ -1356,14 +1597,13 @@
             </div>`),
             title: window.AKEUI.fragment(gameHtml(groupName)),
             subtitle: window.AKEUI.fragment(gameHtml(description)),
-            after: window.AKEVoicePlayer?.languageControlHtml
-                ? window.AKEUI.fragment(window.AKEVoicePlayer.languageControlHtml())
-                : null
+            after: headerActions ? window.AKEUI.fragment(headerActions) : null
         });
         elements.content.innerHTML = `<article class="ake-ui-detail" data-detail-kind="archive">
             ${detailHeader?.outerHTML || ''}
             ${renderEntryTabs(group, item)}
             ${item.type === 'map_text' ? renderMapText(item) : item.type === 'multi_media' ? renderTranscript(item, popup) : renderDocument(item, popup)}
+            ${investigationLinks(item)}
         </article>`;
         if (!elements.content.querySelector('[data-ake-voice-id]')) {
             elements.content.querySelector('[data-ake-voice-language-control]')?.remove();
@@ -1414,7 +1654,7 @@
     }
 
     function rememberOverviewState() {
-        if (state.activeGroupId || state.activeItemId) return;
+        if (state.activeGroupId || state.activeItemId || state.activeInvestigationId || state.investigationListOpen) return;
         state.overviewState = {
             query: state.query,
             activePageType: state.activePageType,
@@ -1449,6 +1689,8 @@
         }
         state.activeGroupId = '';
         state.activeItemId = '';
+        state.activeInvestigationId = '';
+        state.investigationListOpen = false;
         if (!remembered && options?.resetPage !== false) state.activePageType = '';
         if (!remembered && options?.resetRegion) {
             state.activeRegionId = '';
@@ -1469,17 +1711,48 @@
         }
     }
 
+    function showInvestigationList(options) {
+        window.AKEVoicePlayer?.stop();
+        state.activeGroupId = '';
+        state.activeItemId = '';
+        state.activeInvestigationId = '';
+        state.investigationListOpen = true;
+        renderDirectories();
+        renderInvestigationList();
+        closeMobileDirectory({ restoreFocus: false });
+        if (options?.updateUrl !== false) window.__akeRouter?.updateUrl?.(MODULE_ID, 'investigations');
+        if (options?.focusContent !== false) focusContent();
+    }
+
+    function openInvestigation(id, options) {
+        const row = state.investigationMap.get(String(id || ''));
+        if (!row) return false;
+        window.AKEVoicePlayer?.stop();
+        state.activeGroupId = '';
+        state.activeItemId = '';
+        state.activeInvestigationId = String(row.id);
+        state.investigationListOpen = false;
+        renderDirectories();
+        renderInvestigation(row);
+        closeMobileDirectory({ restoreFocus: false });
+        if (options?.updateUrl !== false) window.__akeRouter?.updateUrl?.(MODULE_ID, `investigation:${row.id}`);
+        if (options?.focusContent !== false) focusContent();
+        return true;
+    }
+
     function selectItem(itemId, options) {
         const item = state.itemMap.get(String(itemId || ''));
         if (!item) return false;
         rememberOverviewState();
         state.activeItemId = String(item.id);
         state.activeGroupId = String(item.firstLvId || '');
+        state.activeInvestigationId = '';
+        state.investigationListOpen = false;
         renderDirectories();
         scheduleDirectoryGroupScroll(elements.directory, state.activeGroupId, 'smooth');
         renderDetail(item);
         closeMobileDirectory({ restoreFocus: false });
-        if (options?.updateUrl !== false) window.__akeRouter?.updateUrl?.(MODULE_ID, state.activeGroupId);
+        if (options?.updateUrl !== false) window.__akeRouter?.updateUrl?.(MODULE_ID, options?.routeItem ? state.activeItemId : state.activeGroupId);
         if (options?.focusContent !== false) focusContent();
         return true;
     }
@@ -1492,6 +1765,8 @@
         if (queryItem || items[0]) return selectItem((queryItem || items[0]).id, options);
         state.activeGroupId = String(group.firstLvId);
         state.activeItemId = '';
+        state.activeInvestigationId = '';
+        state.investigationListOpen = false;
         renderDirectories();
         scheduleDirectoryGroupScroll(elements.directory, state.activeGroupId, 'smooth');
         renderEmptyGroup(group);
@@ -1506,6 +1781,7 @@
         if (!target) return;
         const action = target.dataset.akearchiveAction;
         if (action === 'open-group') openGroup(target.dataset.groupId, { updateUrl: true });
+        if (action === 'show-investigations') showInvestigationList({ updateUrl: true });
         if (action === 'show-overview') showOverview({ updateUrl: true, focusContent: true, restoreFocus: false, resetPage: false, restoreOverviewState: true });
     }
 
@@ -1514,7 +1790,15 @@
         if (!target) return;
         const action = target.dataset.akearchiveAction;
         if (action === 'open-group') openGroup(target.dataset.groupId, { updateUrl: true });
-        if (action === 'select-entry') selectItem(target.dataset.entryId, { updateUrl: true });
+        if (action === 'open-investigation') openInvestigation(target.dataset.investigationId, { updateUrl: true });
+        if (action === 'show-investigations') showInvestigationList({ updateUrl: true });
+        if (action === 'select-entry') {
+            if (target.tagName === 'A') {
+                if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+                event.preventDefault();
+            }
+            selectItem(target.dataset.entryId, { updateUrl: true, routeItem: true });
+        }
         if (action === 'filter-page') {
             const pageType = String(target.dataset.pageType || '');
             state.activePageType = state.activePageType === pageType ? '' : pageType;
@@ -1526,6 +1810,7 @@
             state.gender = target.dataset.gender;
             const item = state.itemMap.get(state.activeItemId);
             if (item) renderDetail(item);
+            else if (state.activeInvestigationId) renderInvestigation(state.investigationMap.get(state.activeInvestigationId));
         }
         if (action === 'show-overview') showOverview({ updateUrl: true, focusContent: true, resetPage: false, restoreOverviewState: true });
     }
@@ -1539,11 +1824,19 @@
         if (elements.search && elements.search !== event.currentTarget) elements.search.value = value;
         if (elements.mobileSearch && elements.mobileSearch !== event.currentTarget) elements.mobileSearch.value = value;
         const leftDetail = Boolean(state.activeItemId || state.activeGroupId);
+        const inInvestigations = state.investigationListOpen || Boolean(state.activeInvestigationId);
         state.activeItemId = '';
         state.activeGroupId = '';
+        state.activeInvestigationId = '';
+        if (inInvestigations) state.investigationListOpen = true;
         renderDirectories();
-        renderOverview();
-        if (leftDetail) window.__akeRouter?.updateUrl?.(MODULE_ID, '');
+        if (inInvestigations) {
+            renderInvestigationList();
+            window.__akeRouter?.updateUrl?.(MODULE_ID, 'investigations');
+        } else {
+            renderOverview();
+            if (leftDetail) window.__akeRouter?.updateUrl?.(MODULE_ID, '');
+        }
     }
 
     function onOverlayClick(event) {
@@ -1560,6 +1853,14 @@
         if (typeof nextShowHidden !== 'boolean' || !state.tables) return;
         buildIndexes();
         renderDirectories();
+        if (state.activeInvestigationId) {
+            renderInvestigation(state.investigationMap.get(state.activeInvestigationId));
+            return;
+        }
+        if (state.investigationListOpen) {
+            renderInvestigationList();
+            return;
+        }
         const item = state.itemMap.get(state.activeItemId);
         if (item) {
             renderDetail(item);
@@ -1634,18 +1935,30 @@
             if (window.configLoaded) await window.configLoaded;
             const comparison = window.akeDataSource?.getState?.()?.comparison;
             const baselinePromise = comparison?.baseline
-                ? Promise.all(['PrtsFirstLv', 'PrtsAllItem', 'PrtsReading', 'DialogTextTable']
-                    .map(name => window.AKEV3.table(name, comparison.baseline)))
-                    .then(loaded => ({
-                        PrtsFirstLv: loaded[0],
-                        PrtsAllItem: loaded[1],
-                        PrtsReading: loaded[2],
-                        DialogTextTable: loaded[3]
+                ? Promise.all([
+                    Promise.all(['PrtsFirstLv', 'PrtsAllItem', 'PrtsReading', 'DialogTextTable']
+                        .map(name => window.AKEV3.table(name, comparison.baseline)))
+                        .catch(error => {
+                            console.warn('Failed to load baseline archive data for version comparison', error);
+                            return null;
+                        }),
+                    Promise.all(['PrtsInvestigate', 'PrtsNote', 'RichContentTable'].map(async name => {
+                        try {
+                            return await window.AKEV3.table(name, comparison.baseline, { optional: true });
+                        } catch (error) {
+                            console.warn(`Failed to load baseline ${name} for investigation comparison`, error);
+                            return {};
+                        }
                     }))
-                    .catch(error => {
-                        console.warn('Failed to load baseline archive data for version comparison', error);
-                        return null;
-                    })
+                ]).then(([core, extra]) => core ? {
+                    PrtsFirstLv: core[0],
+                    PrtsAllItem: core[1],
+                    PrtsReading: core[2],
+                    DialogTextTable: core[3],
+                    PrtsInvestigate: extra[0],
+                    PrtsNote: extra[1],
+                    RichContentTable: extra[2]
+                } : null)
                 : Promise.resolve(null);
             if (!window.akeAssetIndex?.ready) {
                 throw new Error(t('mapText.indexUnavailable', null, '统一资产索引服务不可用'));
@@ -1659,8 +1972,30 @@
             const raw = Object.fromEntries(TABLE_NAMES.map((name, index) => [name, loaded[index]]));
             prepareVersionChanges(raw, baselineRaw, comparison);
             prepareTables(raw, assetIndex);
+            const levelDataRecords = Object.entries(assetIndex?.datasets?.json?.files || {})
+                .filter(([path]) => path.startsWith('LevelData/') && path.toLowerCase().endsWith('.json'));
+            state.oemPoints = new Map();
+            const indexedPoints = new Map();
+            levelDataRecords.forEach(([, record]) => {
+                const points = record?.meta?.archivePoints;
+                if (!Array.isArray(points)) return;
+                points.forEach(point => {
+                    const prtsId = String(point?.prtsId || '');
+                    const logicId = point?.logicId;
+                    if (!state.itemMap.has(prtsId) || !window.AKEV3.pointShareUrl?.(logicId)) return;
+                    if (!indexedPoints.has(prtsId)) indexedPoints.set(prtsId, []);
+                    if (!indexedPoints.get(prtsId).includes(logicId)) indexedPoints.get(prtsId).push(logicId);
+                });
+            });
+            indexedPoints.forEach((ids, prtsId) => state.oemPoints.set(prtsId, ids.sort((a, b) => a - b)));
             renderDirectories();
             if (pendingDeepId) {
+                if (pendingDeepId === 'investigations') {
+                    showInvestigationList({ updateUrl: false, focusContent: false });
+                    return;
+                }
+                if (pendingDeepId.startsWith('investigation:') && openInvestigation(pendingDeepId.slice('investigation:'.length), { updateUrl: false, focusContent: false })) return;
+                if (selectItem(pendingDeepId, { updateUrl: false, focusContent: false })) return;
                 const selected = openGroup(pendingDeepId, { updateUrl: false, focusContent: false });
                 if (selected) return;
                 window.__akeRouter?.onDeepLinkNotFound?.(pendingDeepId, false);
