@@ -3,6 +3,7 @@
 
     const BASE_URL_KEY = 'akedata-data-base-url';
     const VERSION_KEY = 'akedata-data-version';
+    const NEW_TAG_SCOPE_KEY = 'akedata-newTagScope';
     const MANIFEST_CACHE_PREFIX = 'akedata-data-manifest:';
     const bootstrapVersion = window.__akeBootstrapVersion || {};
     const debugLocalMode = bootstrapVersion.debugmode === true;
@@ -105,17 +106,38 @@
         return String(a || '').localeCompare(String(b || ''), 'en');
     }
 
+    function compareHotfixVersions(a, b) {
+        const left = String(a || '').split('-').map(Number);
+        const right = String(b || '').split('-').map(Number);
+        if (left.some(part => !Number.isFinite(part)) || right.some(part => !Number.isFinite(part))) {
+            return String(a || '').localeCompare(String(b || ''), 'en', { numeric: true });
+        }
+        for (let index = 0; index < Math.max(left.length, right.length); index += 1) {
+            const difference = (left[index] || 0) - (right[index] || 0);
+            if (difference) return difference;
+        }
+        return 0;
+    }
+
+    function compareVersions(a, b) {
+        return compareGameVersions(a.gameVersion, b.gameVersion)
+            || compareHotfixVersions(a.hotfixVersion, b.hotfixVersion);
+    }
+
+    function getNewTagScope() {
+        const value = storage.get(NEW_TAG_SCOPE_KEY, 'major');
+        return ['major', 'hotfix', 'none'].includes(value) ? value : 'major';
+    }
+
     function findLatestComparison(manifest) {
         const current = manifest.versions.find(item => item.id === manifest.latest);
         if (!current || current.gameVersion === 'local') return null;
-        const previousGameVersion = Array.from(new Set(manifest.versions.map(item => item.gameVersion)))
-            .filter(gameVersion => compareGameVersions(gameVersion, current.gameVersion) < 0)
-            .sort((a, b) => compareGameVersions(b, a))[0];
-        if (!previousGameVersion) return null;
-        const baseline = manifest.versions
-            .filter(item => item.gameVersion === previousGameVersion)
-            .sort((a, b) => String(b.publishedAt).localeCompare(String(a.publishedAt), 'en'))[0];
-        return baseline ? Object.freeze({ current, baseline }) : null;
+        const scope = getNewTagScope();
+        const previous = manifest.versions.filter(item => scope === 'hotfix'
+            ? compareVersions(item, current) < 0
+            : compareGameVersions(item.gameVersion, current.gameVersion) < 0);
+        const baseline = previous.sort((a, b) => compareVersions(b, a))[0];
+        return baseline ? Object.freeze({ current, baseline, showAdded: scope !== 'none' }) : null;
     }
 
     async function loadManifest(baseUrl, localFallbackBaseUrl = null) {
@@ -393,6 +415,7 @@
             if (value) assetRevision = value;
         },
         getState: () => state,
+        getNewTagScope,
         async configure({ baseUrl, selection }) {
             if (debugLocalMode) return false;
             const normalizedBase = normalizeBaseUrl(baseUrl || defaultBaseUrl);

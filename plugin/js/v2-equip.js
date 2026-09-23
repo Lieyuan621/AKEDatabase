@@ -452,7 +452,6 @@
 
         function renderEquipCard(itemId, equipData, itemData, formulaData, formulaChainData, guaranteeRules, enhanceConst, itemTable, acquisition, isVersionAdded, recommendationPool) {
             const name = itemData?.name?.text || itemId;
-            const rarity = itemData?.rarity ?? 0;
             const iconId = itemData?.iconId || '';
             const iconSrc = getEquipIconSrc(itemId, iconId);
             const partType = equipData.partType;
@@ -497,7 +496,7 @@
             const addedLabel = window.akeData?.t('versionDiff.added', null, '新增') || '新增';
 
             return `
-                <article class="ake-ui-card has-media" data-ake-component="card" data-card-kind="equipment" data-density="regular" data-accent="rarity" data-accent-value="${rarity}"${isVersionAdded ? ` data-ake-change="added" data-ake-change-label="${escapeHtml(addedLabel)}"` : ''}>
+                <article class="ake-ui-card has-media" data-ake-component="card" data-card-kind="equipment" data-density="regular"${isVersionAdded ? ` data-ake-change="added" data-ake-change-label="${escapeHtml(addedLabel)}"` : ''}>
                     <div class="ake-ui-card__content">
                         <header class="ake-ui-card__header">
                             <div class="ake-ui-card__media"><img src="${iconSrc}" alt=""></div>

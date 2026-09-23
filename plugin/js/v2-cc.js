@@ -20,6 +20,8 @@
     const ATTR_DISPLAY_ORDER = [0, 1, 2, 3, 20, 21, 27, 12, 8, 9, 10, 11, 15];
 
     const IMAGE_BASE_PATH = '/public/images/';
+    const STATUS_NAMES = ['statuses.active', 'statuses.upcoming', 'statuses.ended', 'statuses.permanent'];
+    const STATUS_ACCENTS = ['active', 'upcoming', 'closed', 'permanent'];
 
     const TERM_TYPE_MAP = {
         1: { labelKey: 'termTypes.enemyBuff', cls: 'enemy-buff' },
@@ -173,7 +175,9 @@
                 if (sid === String(tagId)) continue;
                 const st = allTags[sid];
                 if (st && st.conflictId === tag.conflictId) {
-                    return { ok: false, reason: t('conflicts.withTag', { tag: sid, conflict: tag.conflictId }) };
+                    return { ok: false, kind: 'conflict', reason: getCurrentShowHidden()
+                        ? t('conflicts.withTag', { tag: sid, conflict: tag.conflictId })
+                        : t('conflicts.withSelected') };
                 }
             }
         }
@@ -182,7 +186,9 @@
             const availableKeys = getAvailableKeys(selectedIds, allTags);
             const missing = tag.lockIds.filter(k => !availableKeys.has(k));
             if (missing.length > 0) {
-                return { ok: false, reason: t('conflicts.missingKeys', { keys: missing.join(', ') }) };
+                return { ok: false, reason: getCurrentShowHidden()
+                    ? t('conflicts.missingKeys', { keys: missing.join(', ') })
+                    : t('conflicts.requiresOther') };
             }
         }
 
@@ -218,6 +224,18 @@
         return total;
     }
 
+    function formatAvailability(game) {
+        const open = String(game.openTime || '').slice(0, 10);
+        const close = String(game.closeTime || '').slice(0, 10);
+        return open && close
+            ? t('overview.dateRange', { start: open, end: close }, `${open}–${close}`)
+            : open ? t('overview.opensOn', { date: open }, open) : close ? t('overview.endsOn', { date: close }, close) : '';
+    }
+
+    function displayGameName(game) {
+        return game.name && game.name !== game.gameId ? game.name : t('detail.unnamed');
+    }
+
     async function loadGameManifest(showHidden) {
         try {
             const res = await (window.akeFetch || fetch)('/public/CH/v2_cc/manifest.json');
@@ -233,16 +251,22 @@
     }
 
     function renderGameOverview(items, container) {
-        const statusNames = ['statuses.active', 'statuses.upcoming', 'statuses.ended', 'statuses.permanent'];
         window.AKEModuleOverview.render(container, {
             title: t('overview.title'), description: t('overview.description'),
             variant: 'landscape',
-            group: item => ({ id: String(item.statusOrder ?? 3), name: t(statusNames[item.statusOrder] || 'statuses.permanent'), order: item.statusOrder ?? 3 }),
+            group: item => ({ id: String(item.statusOrder ?? 3), name: t(STATUS_NAMES[item.statusOrder] || 'statuses.permanent'), order: item.statusOrder ?? 3 }),
             onReset: () => { activeGameId = null; },
             onSelect: item => { activeGameId = item.gameId; renderGameList(); },
             sidebarSelector: item => `.ake-ui-directory__item[data-game-id="${CSS.escape(item.gameId)}"]`,
-            items: items.map(item => ({ ...item, id: item.gameId, image: item.image, fallback: 'CC',
-                tags: [t('counts.indicatorGroups', { count: item.contractGroupCount || 0 }), t('counts.terms', { count: item.contractCount || 0 }), item.dungeonName] }))
+            items: items.map(item => {
+                const status = STATUS_ACCENTS[item.statusOrder] || 'permanent';
+                const groups = item.contractGroupCount || 0;
+                const terms = item.contractCount || 0;
+                const scale = `${t('counts.indicatorGroups', { count: groups })} · ${t('counts.terms', { count: terms })}`;
+                return { ...item, id: item.gameId, name: displayGameName(item), image: item.image, fallback: 'CC',
+                    outline: status === 'permanent' ? '' : `status-${status}`,
+                    tags: [scale, formatAvailability(item)] };
+            })
         });
     }
 
@@ -251,15 +275,17 @@
     const mobileContent = document.getElementById('v2ccMobileListContent');
 
     function createGameDirectoryItem(game, options = {}) {
+        const status = STATUS_ACCENTS[game.statusOrder] || 'permanent';
         const icon = game.image
             ? { src: game.image, alt: '' }
             : window.AKEUI.element('span', 'ake-ui-directory__item-icon is-symbol', 'CC');
         const item = window.AKEUI.directoryItem({
             layout: 'entity',
-            title: game.name || game.gameId,
+            title: displayGameName(game),
             id: game.activityId || game.gameId,
             icon,
-            meta: [{ label: game.dungeonName || '', kind: 'cc-dungeon' }],
+            meta: [{ label: t(STATUS_NAMES[game.statusOrder] || 'statuses.permanent'), kind: `status-${status}` }],
+            accent: { type: 'status', value: status },
             active: options.active,
             attributes: { 'data-game-id': game.gameId },
             onSelect: options.onSelect
@@ -418,7 +444,7 @@
     }
 
     function renderActivityInfo(acc) {
-        if (!acc) return '';
+        if (!acc || !getCurrentShowHidden()) return '';
         const items = [
             { l: t('activityInfo.activityId'), v: acc.activityId },
             { l: t('activityInfo.gameplayType'), v: acc.type },
@@ -430,19 +456,11 @@
 
         if (!items.length) return '';
 
-        return `
-            <details class="ake-ui-section v2cc-activity-config">
-                <summary>${t('sections.activityConfiguration')}</summary>
-                <dl class="ake-ui-meta-grid">
-                    ${items.map(i => `
-                        <div class="ake-ui-meta-grid__item">
-                            <dt>${escapeHtml(i.l)}</dt>
-                            <dd>${escapeHtml(String(i.v))}</dd>
-                        </div>
-                    `).join('')}
-                </dl>
-            </details>
-        `;
+        const meta = window.AKEUI.metaGrid(items.map(item => ({ label: item.l, value: String(item.v) })));
+        return `<details class="ake-ui-section v2cc-activity-config">
+            <summary>${t('sections.activityConfiguration')}</summary>
+            ${meta?.outerHTML || ''}
+        </details>`;
     }
 
     function renderTagTermEffect(term) {
@@ -451,7 +469,7 @@
             const value = bb.valueStr !== undefined && bb.valueStr !== ''
                 ? escapeHtml(String(bb.valueStr))
                 : formatBlackboardValue(bb.value);
-            return `<span class="v2cc-term-param"><span class="v2cc-term-param-key">${escapeHtml(bb.key)}</span><span class="v2cc-term-param-value">${value}</span></span>`;
+            return `<span class="v2cc-term-param">${getCurrentShowHidden() ? `<span class="v2cc-term-param-key">${escapeHtml(bb.key)}</span>` : ''}<span class="v2cc-term-param-value">${value}</span></span>`;
         }).join('');
 
         return `
@@ -466,15 +484,13 @@
         const total = computeTotalScore(selectedTagIds, tagTable);
         const count = selectedTagIds.size;
         return `
-            <div class="v2cc-score-panel" id="v2ccScorePanel">
+            <div class="ake-ui-toolbar v2cc-score-panel" id="v2ccScorePanel">
                 <div class="v2cc-score-panel-left">
                     <span class="v2cc-score-panel-label">${t('score.currentTotal')}</span>
                     <span class="v2cc-score-panel-value">${total}</span>
-                    <span class="v2cc-score-panel-count">${t('score.selectedTerms', { count })}</span>
+                    <span class="ake-ui-badge v2cc-score-panel-count">${t('score.selectedTerms', { count })}</span>
                 </div>
-                <div class="v2cc-score-panel-right">
-                    <button class="v2cc-reset-btn" id="v2ccResetBtn">${t('score.reset')}</button>
-                </div>
+                <button type="button" id="v2ccResetBtn">${t('score.reset')}</button>
             </div>
         `;
     }
@@ -492,20 +508,20 @@
             <div class="ake-ui-section">
                 <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.contractTerms')}</h3></div>
                 ${renderScorePanel(tagTable)}
-                <div class="v2cc-groups">
+                <div class="ake-ui-card-grid v2cc-groups" data-size="wide">
                     ${groupIds.map(gid => {
                         const group = groupMap[gid];
                         const contractMap = group.contractMap || {};
                         const entryKeys = Object.keys(contractMap).sort((a, b) => Number(a) - Number(b));
 
                         return `
-                            <div class="v2cc-group">
-                                <div class="v2cc-group-title">${t('contract.group', { id: escapeHtml(gid) })}</div>
+                            <section class="ake-ui-section v2cc-group">
+                                <div class="ake-ui-section__header"><h4 class="ake-ui-section__title">${t('contract.group', { id: escapeHtml(gid) })}</h4></div>
                                 ${entryKeys.map(ek => {
                                     const tag = contractMap[ek];
                                     const tid = String(tag.tagId);
                                     const tagData = tagTable[tid] || {};
-                                    const name = tagData.name?.text || `Tag ${tid}`;
+                                    const name = tagData.name?.text || (getCurrentShowHidden() ? `Tag ${tid}` : t('contract.unnamedTerm'));
                                     const terms = tagData.tagTerms || [];
                                     const bbValueMap = buildBlackboardValueMap(terms);
                                     const desc = replacePlaceholders(tagData.desc?.text || '', bbValueMap, allValueMaps);
@@ -515,64 +531,42 @@
                                     const isSelected = selectedTagIds.has(tid);
                                     const selCheck = isTagSelectable(tid, selectedTagIds, allTags);
                                     const isSelectable = selCheck.ok || isSelected;
-                                    const stateClass = isSelected ? 'selected' : (selCheck.ok ? 'selectable' : 'locked');
+                                    const stateClass = isSelected ? 'selected' : (selCheck.ok ? 'selectable' : `locked${selCheck.kind === 'conflict' ? ' conflict-locked' : ''}`);
 
                                     let badges = '';
+                                    const showHidden = getCurrentShowHidden();
+                                    const heldKeys = getAvailableKeys(selectedTagIds, allTags);
                                     if (tag.keyId) {
-                                        const keyHeld = getAvailableKeys(selectedTagIds, allTags).has(tag.keyId);
-                                        badges += `<span class="v2cc-tag-badge key${keyHeld ? ' held' : ''}"><span class="badge-dot"></span>${t('contract.key', { key: escapeHtml(tag.keyId) })}</span>`;
+                                        const keyHeld = heldKeys.has(tag.keyId);
+                                        badges += `<span class="ake-ui-badge v2cc-tag-badge key${keyHeld ? ' held' : ''}" data-key-id="${escapeHtml(tag.keyId)}"><span class="badge-dot"></span>${showHidden ? t('contract.key', { key: escapeHtml(tag.keyId) }) : t('contract.unlocksOther')}</span>`;
                                     }
                                     if (tag.lockIds && tag.lockIds.length > 0) {
-                                        tag.lockIds.forEach(lid => {
-                                            const keyHeld = getAvailableKeys(selectedTagIds, allTags).has(lid);
-                                            badges += `<span class="v2cc-tag-badge lock${keyHeld ? ' held' : ''}"><span class="badge-dot"></span>${t('contract.requires', { key: escapeHtml(lid) })}</span>`;
+                                        const locks = showHidden ? tag.lockIds.map(lid => [lid]) : [tag.lockIds];
+                                        locks.forEach(ids => {
+                                            const keyHeld = ids.every(lid => heldKeys.has(lid));
+                                            badges += `<span class="ake-ui-badge v2cc-tag-badge lock${keyHeld ? ' held' : ''}" data-lock-ids="${escapeHtml(ids.join('|'))}"><span class="badge-dot"></span>${showHidden ? t('contract.requires', { key: escapeHtml(ids[0]) }) : t('contract.requiresSelection')}</span>`;
                                         });
                                     }
-                                    if (tag.conflictId) {
-                                        let conflictWith = '';
-                                        for (const sid of selectedTagIds) {
-                                            if (sid === tid) continue;
-                                            const st = allTags[sid];
-                                            if (st && st.conflictId === tag.conflictId) {
-                                                conflictWith = sid;
-                                                break;
-                                            }
-                                        }
-                                        const conflictText = conflictWith
-                                            ? t('contract.conflictWith', { conflict: escapeHtml(tag.conflictId), tag: escapeHtml(conflictWith) })
-                                            : t('contract.conflict', { conflict: escapeHtml(tag.conflictId) });
-                                        badges += `<span class="v2cc-tag-badge conflict${conflictWith ? ' active-conflict' : ''}"><span class="badge-dot"></span>${conflictText}</span>`;
-                                    }
-                                    if (!tag.canPreview) {
-                                        badges += `<span class="v2cc-tag-badge preview-off">🔒 ${t('contract.previewUnavailable')}</span>`;
-                                    }
-
-                                    let lockReason = '';
-                                    if (!isSelected && !selCheck.ok) {
-                                        lockReason = `<div class="v2cc-tag-lock-reason">${escapeHtml(selCheck.reason)}</div>`;
-                                    }
-
                                     return `
-                                        <div class="ake-ui-card ${stateClass}" data-card-kind="cc-tag" data-tag-id="${tid}">
+                                        <div class="ake-ui-card is-interactive ${stateClass}" data-card-kind="cc-tag" data-tag-id="${escapeHtml(tid)}" role="checkbox" tabindex="0" aria-checked="${isSelected}" aria-disabled="${!isSelectable}" aria-label="${escapeHtml(name)}"${!isSelectable ? ` aria-description="${escapeHtml(selCheck.reason)}"` : ''}>
                                             <div class="ake-ui-card__header" data-layout="split">
                                                 <div class="ake-ui-card__header-start">
                                                     <div class="v2cc-tag-check">${isSelected ? '✓' : ''}</div>
-                                                    ${icon ? `<img class="v2cc-tag-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/contingencycontract/buff/${icon}.png">` : ''}
+                                                    ${icon ? `<img class="v2cc-tag-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/contingencycontract/buff/${icon}.png" alt="">` : ''}
                                                     <span class="ake-ui-card__title">${escapeHtml(name)}</span>
                                                 </div>
                                                 <div class="ake-ui-card__header-end">
-                                                    ${roman ? `<span class="v2cc-tag-roman">${escapeHtml(roman)}</span>` : ''}
+                                                    ${roman ? `<span class="ake-ui-badge" data-tone="muted">${escapeHtml(roman)}</span>` : ''}
                                                     <span class="v2cc-tag-score">+${score}</span>
                                                 </div>
                                             </div>
                                             ${desc ? `<div class="ake-ui-card__body">${desc}</div>` : ''}
                                             ${terms.length ? `<div class="v2cc-tag-terms">${terms.map(renderTagTermEffect).join('')}</div>` : ''}
-                                            ${badges ? `<div class="v2cc-tag-meta">${badges}</div>` : ''}
-                                            ${lockReason}
+                                            ${badges ? `<div class="ake-ui-card__badges v2cc-tag-meta">${badges}</div>` : ''}
                                         </div>
                                     `;
                                 }).join('')}
-                            </div>
+                            </section>
                         `;
                     }).join('')}
                 </div>
@@ -588,7 +582,7 @@
             return {
                 id: bundle.id,
                 count: bundle.count,
-                name: item?.name?.text || bundle.id,
+                name: item?.name?.text || (getCurrentShowHidden() ? bundle.id : commonT('unknown')),
                 iconId: item?.iconId || '',
                 rarity: item?.rarity ?? 0
             };
@@ -623,26 +617,17 @@
 
         const acc = data.activitycontingencycontracttable;
         const scoreBand = acc?.scoreBand || [];
-        const descs = [];
-        levels.forEach(([, lv], i) => {
-            const items = resolveRewardItems(lv.firstReward, rewardTable, itemTable);
-            const rewardText = items.map(it => `${escapeHtml(it.name)}×${it.count}`).join(t('rewards.separator'));
-            const score = scoreBand[i];
-            if (score !== undefined) {
-                descs.push(`<span class="v2cc-level-desc-line">${t('rewards.scoreLevel', { score, level: lv.level, rewards: rewardText })}</span>`);
-            } else {
-                descs.push(`<span class="v2cc-level-desc-line">${t('rewards.allCompletedLevel', { level: lv.level, rewards: rewardText })}</span>`);
-            }
-        });
-
-        const rewardRows = levels.map(([, lv]) => {
+        const rewardRows = levels.map(([, lv], index) => {
             const items = resolveRewardItems(lv.firstReward, rewardTable, itemTable);
             const content = rewardMaterialList(items, 'v2cc-level-reward-list')
-                || window.AKEUI.element('span', 'v2cc-reward-empty', lv.firstReward || '-');
+                || window.AKEUI.element('span', 'v2cc-reward-empty', getCurrentShowHidden() ? (lv.firstReward || '-') : commonT('unknown'));
+            const score = scoreBand[index];
             return window.AKEUI.progressionRow({
                 kind: 'cc-level-reward',
                 stage: `Lv.${lv.level}`,
-                content
+                content,
+                action: window.AKEUI.badge({ label: score !== undefined
+                    ? t('rewards.scoreThreshold', { score }) : t('rewards.allCompleted') })
             });
         });
         const rewardList = window.AKEUI.progressionList({
@@ -654,7 +639,6 @@
             <div class="ake-ui-section">
                 <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.levelRewards')}</h3></div>
                 ${rewardList.outerHTML}
-                ${descs.length ? `<div class="v2cc-level-desc">${descs.join('<br>')}</div>` : ''}
             </div>
         `;
     }
@@ -666,14 +650,14 @@
         const itemTable = data.itemtable || {};
         if (!sgt || !Object.keys(shopTable).length) return '';
 
-        const groupName = sgt.shopGroupName?.text || sgt.shopGroupId;
+        const groupName = sgt.shopGroupName?.text || (getCurrentShowHidden() ? sgt.shopGroupId : commonT('unknown'));
         const shopIds = sgt.shopIds || [];
         const currencyCache = {};
 
         function getCurrencyName(moneyId) {
             if (currencyCache[moneyId]) return currencyCache[moneyId];
             const item = itemTable[moneyId];
-            const name = item?.name?.text || moneyId;
+            const name = item?.name?.text || (getCurrentShowHidden() ? moneyId : commonT('unknown'));
             currencyCache[moneyId] = name;
             return name;
         }
@@ -684,7 +668,7 @@
                 ${shopIds.map(sid => {
                     const shop = shopTable[sid];
                     if (!shop) return '';
-                    const shopName = shop.shopName?.text || sid;
+                    const shopName = shop.shopName?.text || (getCurrentShowHidden() ? sid : commonT('unknown'));
                     const goodsIds = shop.shopGoodsIds || [];
                     const goods = goodsIds.map(gid => goodsTable[gid]).filter(Boolean);
 
@@ -694,23 +678,20 @@
                                 <span class="ake-ui-card__title">${parseText(shopName)}</span>
                                 <span class="ake-ui-badge">${t('shop.goodsCount', { count: goods.length })}</span>
                             </div>
-                            <table class="ake-ui-table">
-                                <thead>
-                                    <tr>
-                                        <th class="col-icon"></th>
-                                        <th class="col-name">${t('shop.item')}</th>
-                                        <th class="col-price">${t('shop.price')}</th>
-                                        <th class="col-limit">${t('shop.limit')}</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                            <div class="v2cc-shop-goods-body">
+                            <div class="ake-ui-table-shell"><table class="ake-ui-table">
+                                <thead><tr>
+                                    <th class="col-icon" scope="col"></th>
+                                    <th class="col-name" scope="col">${t('shop.item')}</th>
+                                    <th class="col-price" scope="col">${t('shop.price')}</th>
+                                    <th class="col-limit" scope="col">${t('shop.limit')}</th>
+                                </tr></thead>
+                                <tbody>
                                 ${goods.map(g => {
                                     const rewardItems = resolveRewardItems(g.rewardId, data.rewardtable || {}, itemTable);
                                     const itemIcon = rewardItems.length ? rewardItems[0].iconId : '';
                                     const itemName = rewardItems.length
                                         ? rewardItems.map(r => window.AKEUI.entryLinkHtml({ plugin: 'v3_item', id: r.id, label: r.name, contentHtml: escapeHtml(r.name) + (r.count > 1 ? `<span class="v2cc-item-qty">×${r.count}</span>` : '') })).join(' + ')
-                                        : `<span class="v2cc-goods-fallback">${escapeHtml(g.goodsTagId || g.goodsId)}</span>`;
+                                        : `<span class="v2cc-goods-fallback">${escapeHtml(getCurrentShowHidden() ? (g.goodsTagId || g.goodsId) : commonT('unknown'))}</span>`;
                                     const currencyText = getCurrencyName(g.moneyId);
                                     const currencyName = window.AKEUI.entryLinkHtml({ plugin: 'v3_item', id: g.moneyId, label: currencyText, contentHtml: escapeHtml(currencyText) });
                                     const limitText = g.limitCount > 0 ? g.limitCount : '∞';
@@ -718,17 +699,16 @@
                                     const actualPrice = hasDiscount ? Math.ceil(g.price * g.cnDiscount) : g.price;
 
                                     return `
-                                        <div class="v2cc-shop-goods-row">
-                                            <span class="col-icon">
-                                                ${itemIcon ? `<img class="v2cc-goods-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${itemIcon}.png">` : ''}
-                                            </span>
-                                            <span class="col-name">${itemName}</span>
-                                            <span class="col-price">${hasDiscount ? `<span class="v2cc-price-original">${g.price}</span> ` : ''}${actualPrice} ${currencyName}${hasDiscount ? ` <span class="v2cc-goods-discount">-${Math.round((1 - g.cnDiscount) * 100)}%</span>` : ''}</span>
-                                            <span class="col-limit">${limitText}</span>
-                                        </div>
+                                        <tr>
+                                            <td class="col-icon">${itemIcon ? `<img class="v2cc-goods-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${itemIcon}.png" alt="">` : ''}</td>
+                                            <td class="col-name">${itemName}</td>
+                                            <td class="col-price">${hasDiscount ? `<span class="v2cc-price-original">${g.price}</span> ` : ''}${actualPrice} ${currencyName}${hasDiscount ? ` <span class="v2cc-goods-discount">-${Math.round((1 - g.cnDiscount) * 100)}%</span>` : ''}</td>
+                                            <td class="col-limit">${limitText}</td>
+                                        </tr>
                                     `;
                                 }).join('')}
-                            </div>
+                                </tbody>
+                            </table></div>
                         </div>
                     `;
                 }).join('')}
@@ -766,10 +746,10 @@
                             .sort((a, b) => (a.sortId || 0) - (b.sortId || 0));
 
                         return `
-                            <section class="ake-ui-section" data-variant="surface">
+                            <section class="ake-ui-section">
                                 <div class="ake-ui-section__header">
                                     ${tg.icon ? `<img class="ake-ui-section__icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/contingencycontract/${tg.icon}.png" alt="">` : ''}
-                                    <span class="ake-ui-section__title">${tg.name?.text ? parseText(tg.name.text) : escapeHtml(tgId)}</span>
+                                    <span class="ake-ui-section__title">${tg.name?.text ? parseText(tg.name.text) : escapeHtml(getCurrentShowHidden() ? tgId : commonT('unknown'))}</span>
                                     <span class="ake-ui-badge">${t('tasks.count', { count: tasks.length })}</span>
                                     ${tg.canUpdate ? `<span class="ake-ui-badge" data-tone="added">${t('tasks.updatable')}</span>` : ''}
                                 </div>
@@ -781,10 +761,8 @@
                                             const rewardList = rewardMaterialList(rewards, 'v2cc-task-rewards');
                                             return `
                                                 <div class="ake-ui-card" data-card-kind="cc-task" data-density="compact">
-                                                    <div class="ake-ui-card__header">
-                                                        <span class="ake-ui-card__id">${escapeHtml(task.taskId)}</span>
-                                                    </div>
-                                                    ${desc ? `<div class="ake-ui-card__body">${desc}</div>` : ''}
+                                                    ${getCurrentShowHidden() ? `<div class="ake-ui-card__header"><span class="ake-ui-card__id">${escapeHtml(task.taskId)}</span></div>` : ''}
+                                                    <div class="ake-ui-card__body">${desc || t('tasks.unnamed')}</div>
                                                     ${rewards.length ? `
                                                         <div class="v2cc-task-item-rewards">
                                                             <span class="v2cc-task-reward-label">${t('tasks.rewards')}</span>
@@ -896,26 +874,13 @@
     }
 
     function formatModifierSummary(modifiers) {
-        return window.AKEStats.combineModifiers(modifiers)
-            .filter(modifier => !LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES.includes(modifier.attrType))
-            .map(modifier => {
-                const name = ccAttrMap[modifier.attrType] || t('attributeFallback', { type: modifier.attrType });
-                const directMultiplier = modifier.modifierType === 4 || modifier.modifierType === 8;
-                const multiplier = directMultiplier || modifier.modifierType === 1 || modifier.modifierType === 6;
-                const value = directMultiplier ? modifier.attrValue - 1 : modifier.attrValue;
-                const display = multiplier
-                    ? `${value > 0 ? '+' : ''}${(value * 100).toFixed(1)}%`
-                    : `${value > 0 ? '+' : ''}${Number.isInteger(value) ? value : Number(value.toFixed(4))}`;
-                return `${escapeHtml(name)} ${display}`;
-            }).join(', ');
+        return window.AKEEnemyRenderer.summarizeModifiers(modifiers,
+            type => ccAttrMap[type] || t('attributeFallback', { type }));
     }
 
     function renderModifierSources(groups) {
-        const rows = groups.map(([label, modifiers]) => {
-            const summary = formatModifierSummary(modifiers);
-            return summary ? `<div class="v2d-enemy-modifier"><b>${label}</b> ${summary}</div>` : '';
-        }).join('');
-        return rows ? `<div class="v2cc-current-buffs">${rows}</div>` : '';
+        return window.AKEEnemyRenderer.renderModifierSources(groups, formatModifierSummary,
+            key => t(`modifierSources.${key}`));
     }
 
     function buildEnemyBuffTagsHtml(ownBuffs, libBuffs, extraTagBuffs) {
@@ -988,7 +953,7 @@
         const attrTemplateId = enemyConfig.attrTemplateId || findTemplateId(enemyId, attrTable);
         const displayInfo = displayTable[templateId] || {};
         const attrData = attrTable[attrTemplateId] || {};
-        const name = displayInfo.name?.text || templateId;
+        const name = displayInfo.name?.text || (getCurrentShowHidden() ? templateId : commonT('unknown'));
         const nickname = displayInfo.nickname?.text || '';
         const desc = displayInfo.description?.text || '';
         const inlineModifiers = enemyConfig.attrModifiers || [];
@@ -1003,17 +968,17 @@
         const scriptModifiers = (scriptedBuffs || []).flatMap(b => getBuffModifiers(b.buffId, b.blackboard));
 
         const flags = [];
-        if (enemyConfig.isDangerous) flags.push(`<span class="v2d-enemy-flag danger">${t('enemyFlags.dangerous')}</span>`);
-        if (enemyConfig.showBigEffect) flags.push(`<span class="v2d-enemy-flag big-effect">${t('enemyFlags.globalEffect')}</span>`);
-        if (enemyConfig.showBigHeadbar) flags.push(`<span class="v2d-enemy-flag big-headbar">${t('enemyFlags.pinnedHealthBar')}</span>`);
+        if (enemyConfig.isDangerous) flags.push(`<span class="ake-ui-badge" data-tone="danger">${t('enemyFlags.dangerous')}</span>`);
+        if (enemyConfig.showBigEffect) flags.push(`<span class="ake-ui-badge" data-tone="accent">${t('enemyFlags.globalEffect')}</span>`);
+        if (enemyConfig.showBigHeadbar) flags.push(`<span class="ake-ui-badge" data-tone="muted">${t('enemyFlags.pinnedHealthBar')}</span>`);
 
         const showHidden = getCurrentShowHidden();
         const buffTagsHtml = showHidden
             ? buildEnemyBuffTagsHtml(ownBuffs, libBuffs, [])
             : renderModifierSources([
-                ['出生加成', [...inlineModifiers, ...ownBuffModifiers]],
-                ['buff加成', libraryBuffModifiers],
-                ['副本加成', scriptModifiers]
+                ['born', [...inlineModifiers, ...ownBuffModifiers]],
+                ['buff', libraryBuffModifiers],
+                ['dungeon', scriptModifiers]
             ]);
         const scriptBuffTagsHtml = showHidden && (scriptedBuffs || []).length ? `<div class="v2d-enemy-buffs">${scriptedBuffs.map(row => window.AKEUI.entryLinkHtml({ plugin: 'v3_buff', id: row.buffId, label: row.buffId, className: 'v2d-buff-tag v2d-script-buff v2d-has-tip ake-ui-popover-anchor', contentHtml: `${escapeHtml(row.buffId)}<small>脚本</small><span class="v2d-buff-tip ake-ui-popover" data-placement="top"><div>条件性脚本 Buff · LevelScript ${escapeHtml(row.scriptId)}</div></span>` })).join('')}</div>` : '';
 
@@ -1089,7 +1054,7 @@
                         const templateId = cfg.templateId || findTemplateId(eid, displayTable);
                         const attrTemplateId = cfg.attrTemplateId || findTemplateId(eid, attrTable);
                         const disp = displayTable[templateId] || {};
-                        const name = disp.name?.text || templateId;
+                        const name = disp.name?.text || (getCurrentShowHidden() ? templateId : commonT('unknown'));
                         const count = action.spawnCount || 1;
                         groupInfo.spawns.push({
                             instanceId: eid, templateId, attrTemplateId, name, count,
@@ -1153,7 +1118,7 @@
             const allSpawns = [];
             (w.groups || []).forEach((g, gi) => {
                 const modeKey = { 'Parallel': 'parallel', 'Sequence': 'sequence', 'PartKilled': 'partKilled', 'AllKilled': 'allKilled', 'Deadline': 'deadline' }[g.groupMode];
-                const modeLabel = modeKey ? t(`spawnModes.${modeKey}`) : g.groupMode;
+                const modeLabel = modeKey ? t(`spawnModes.${modeKey}`) : (getCurrentShowHidden() ? g.groupMode : commonT('unknown'));
                 let conditionText = '';
                 let targetGroupKey = '';
                 if (g.groupMode === 'PartKilled' && g.groupModeTargetKey) {
@@ -1188,8 +1153,8 @@
 
                 const tipLines = [
                     `<b>${escapeHtml(spawn.name)} ×${spawn.count} Lv.${spawn.level}</b>`,
-                    t('spawn.coordinates', { position: posStr, radius: randomStr }),
-                    t('spawn.groupMode', { group: g.groupKey, mode: modeLabel, condition: conditionText ? ' · ' + conditionText : '' }),
+                    getCurrentShowHidden() ? t('spawn.coordinates', { position: posStr, radius: randomStr }) : '',
+                    getCurrentShowHidden() ? t('spawn.groupMode', { group: g.groupKey, mode: modeLabel, condition: conditionText ? ' · ' + conditionText : '' }) : modeLabel,
                     [delayStr, intervalStr, warnStr, faceStr].filter(Boolean).join(' · ')
                 ].filter(Boolean);
 
@@ -1198,14 +1163,14 @@
                     ? `margin-left:${stackIdx * offsetPct}%;margin-top:-${stackIdx * offsetPct}%;z-index:${10 - stackIdx};`
                     : 'z-index:10;';
 
-                mapSpotsHtml += `<div class="v2cc-map-spot" data-ake-popover-anchor data-wave="${wi}" data-group="${g.groupKey}" data-target-group="${targetGroupKey}" style="left:${pct.left}%;top:${pct.top}%;${vis}${stackStyle}">
-                    <img class="v2cc-map-spot-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${spawn.templateId}.png">
+                mapSpotsHtml += `<div class="v2cc-map-spot" data-ake-popover-anchor tabindex="0" role="img" aria-label="${escapeHtml(`${spawn.name} ×${spawn.count} Lv.${spawn.level}`)}" data-wave="${wi}" data-group="${escapeHtml(g.groupKey)}" data-target-group="${escapeHtml(targetGroupKey)}" style="left:${pct.left}%;top:${pct.top}%;${vis}${stackStyle}">
+                    <img class="v2cc-map-spot-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${spawn.templateId}.png" alt="">
                     <div class="v2cc-map-tip ake-ui-popover" data-placement="top">${tipLines.map(l => `<div>${l}</div>`).join('')}</div>
                 </div>`;
             });
         });
 
-        const coordInfo = `<div class="v2cc-map-coords">X: ${minX.toFixed(0)} ~ ${maxX.toFixed(0)}  Z: ${minZ.toFixed(0)} ~ ${maxZ.toFixed(0)}</div>`;
+        const coordInfo = getCurrentShowHidden() ? `<div class="v2cc-map-coords">X: ${minX.toFixed(0)} ~ ${maxX.toFixed(0)}  Z: ${minZ.toFixed(0)} ~ ${maxZ.toFixed(0)}</div>` : '';
         const unitPct = (100 / (2 * halfX)).toFixed(2);
 
         return `<div class="v2cc-spawn-map-container">
@@ -1217,6 +1182,10 @@
         </div>`;
     }
 
+    function renderSpawnerChevron() {
+        return '<svg class="v2cc-spawner-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    }
+
     function renderDungeonSection(dungeonData) {
         if (!dungeonData || !dungeonData.dungeontable) return '';
         const dungeons = dungeonData.dungeontable;
@@ -1226,7 +1195,7 @@
         let html = '';
         dungeonIds.forEach(dgId => {
             const dg = dungeons[dgId];
-            const name = dg.dungeonName?.text || dgId;
+            const name = dg.dungeonName?.text || (getCurrentShowHidden() ? dgId : commonT('unknown'));
             const desc = dg.dungeonDesc?.text ? parseText(dg.dungeonDesc.text) : '';
             const featureDesc = dg.featureDesc?.text ? parseText(dg.featureDesc.text) : '';
             const recommendLv = dg.recommendLv || '?';
@@ -1234,12 +1203,12 @@
 
             const waveSpawners = parseDungeonWaves(dg);
 
-            html += `<div class="ake-ui-card" data-card-kind="cc-dungeon" data-density="regular">
-                <div class="ake-ui-card__header">
-                    ${seriesId ? window.AKEUI.entryLinkHtml({ plugin: 'v3_dungeon', id: seriesId, label: name, className: 'ake-ui-card__title', contentHtml: escapeHtml(name) }) : `<span class="ake-ui-card__title">${escapeHtml(name)}</span>`}
+            html += `<section class="ake-ui-section" data-card-kind="cc-dungeon">
+                <div class="ake-ui-section__header">
+                    <h4 class="ake-ui-section__title">${seriesId ? window.AKEUI.entryLinkHtml({ plugin: 'v3_dungeon', id: seriesId, label: name, contentHtml: escapeHtml(name) }) : escapeHtml(name)}</h4>
                     <span class="ake-ui-badge">${t('dungeon.recommendedLevel', { label: commonT('level'), level: recommendLv })}</span>
                 </div>
-                ${desc ? `<div class="ake-ui-card__body">${desc}</div>` : ''}
+                ${desc ? `<div class="ake-ui-section__body">${desc}</div>` : ''}
                 ${featureDesc ? `<div class="v2cc-dungeon-feature">${featureDesc}</div>` : ''}`;
 
             if (waveSpawners) {
@@ -1264,15 +1233,15 @@
 
                     let waveDetailHtml = '';
                     mergedWaves.forEach((wave, wIdx) => {
-                        const repeatTag = wave.repeatable ? ` <span class="v2d-wave-repeat">${t('waves.repeatable')}</span>` : '';
-                        const aliveTag = wave.maxAlive > 0 ? ` <span class="v2d-wave-alive">${t('waves.aliveLimit', { count: wave.maxAlive })}</span>` : '';
-                        const pauseTag = wave.hasPause ? ` <span class="v2d-wave-pause">${t('waves.externallyControlled')}</span>` : '';
+                        const repeatTag = wave.repeatable ? `<span class="ake-ui-badge">${t('waves.repeatable')}</span>` : '';
+                        const aliveTag = wave.maxAlive > 0 ? `<span class="ake-ui-badge">${t('waves.aliveLimit', { count: wave.maxAlive })}</span>` : '';
+                        const pauseTag = wave.hasPause ? `<span class="ake-ui-badge">${t('waves.externallyControlled')}</span>` : '';
                         const enemyParts = wave.enemies.map(e => {
                             const iconSrc = `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${e.templateId}.png`;
-                            return `<span class="v2d-wave-enemy" data-wave-idx="${wIdx}" data-enemy-id="${e.instanceId}"><img class="v2d-wave-icon" src="${iconSrc}"><span class="v2d-wave-ename">${escapeHtml(e.name)}</span> ×${e.count} <span class="v2d-wave-lv">Lv.${e.level}</span></span>`;
+                            return `<span class="ake-ui-badge v2d-wave-enemy" data-wave-idx="${wIdx}" data-enemy-id="${e.instanceId}"><img class="v2d-wave-icon" src="${iconSrc}" alt=""><span class="v2d-wave-ename">${escapeHtml(e.name)}</span> ×${e.count} <span class="v2d-wave-lv">Lv.${e.level}</span></span>`;
                         }).join(' ');
                         const activeCls = wIdx === 0 ? ' active' : '';
-                        waveDetailHtml += `<div class="v2d-wave-line${activeCls}" data-wave-idx="${wIdx}"><span class="v2d-wave-num" data-wave-idx="${wIdx}">${t('waves.number', { number: wave.waveIdx })}</span>${repeatTag}${aliveTag}${pauseTag}: ${enemyParts}</div>`;
+                        waveDetailHtml += `<button class="ake-ui-card is-interactive v2d-wave-line${activeCls}" type="button" data-card-kind="cc-wave" data-wave-idx="${wIdx}" aria-pressed="${wIdx === 0}"><span class="ake-ui-card__meta"><span class="v2d-wave-num" data-wave-idx="${wIdx}">${t('waves.number', { number: wave.waveIdx })}</span>${repeatTag}${aliveTag}${pauseTag}</span><span class="ake-ui-card__badges">${enemyParts}</span></button>`;
                     });
 
                     const mergedSpawner = { ...sp, waves: mergedWaves };
@@ -1312,16 +1281,15 @@
 
                     const collapsed = spIdx > 0 ? ' collapsed' : '';
                     html += `<div class="v2cc-spawner-block${collapsed}">
-                        <div class="v2cc-spawner-title" onclick="this.parentElement.classList.toggle('collapsed')">
-                            <span class="v2cc-spawner-toggle">▼</span>
+                        <button class="v2cc-spawner-title" type="button" data-v2cc-spawner-toggle aria-expanded="${spIdx === 0}">
+                            ${renderSpawnerChevron()}
                             ${t('waves.configuration', { number: spIdx + 1 })}
-                            <span class="v2cc-spawner-id">${escapeHtml(sp.configId)}</span>
+                            ${getCurrentShowHidden() ? `<span class="v2cc-spawner-id">${escapeHtml(sp.configId)}</span>` : ''}
                             <span class="v2cc-spawner-brief">${t('waves.brief', { waves: totalWaves, enemies: totalEnemies })}</span>
-                        </div>
+                        </button>
                         <div class="v2cc-spawner-body">
                             <div class="v2cc-wave-map-row">
                                 <div class="v2d-wave-section">
-                                    <div class="v2d-wave-summary"><span class="v2d-wave-label">${t('waves.summaryLabel')}</span> ${t('waves.summary', { waves: totalWaves, enemies: totalEnemies })}</div>
                                     <div class="v2d-wave-detail">${waveDetailHtml}</div>
                                 </div>
                                 ${spawnMapHtml}
@@ -1336,13 +1304,13 @@
                 if (enemyIds.length > 0) {
                     html += `<div class="v2d-enemy-list">`;
                     enemyIds.forEach((eid, idx) => {
-                        html += renderCcEnemyCard(eid, enemyLevels[idx] || recommendLv, dg, []);
+                        html += renderCcEnemyCard(eid, enemyLevels[idx] || recommendLv, dgId, dg, [], []);
                     });
                     html += '</div>';
                 }
             }
 
-            html += '<div class="v2cc-cc-tags"></div></div>';
+            html += '<div class="v2cc-cc-tags"></div></section>';
         });
         return html;
     }
@@ -1351,18 +1319,27 @@
         const acc = data.activitycontingencycontracttable;
         const cct = data.contingencycontracttable;
         const tagTable = data.cctagtable || {};
-        const title = game.gameId;
         const tagCount = Object.keys(tagTable).length;
         const groupCount = cct && cct.contractGroupMap ? Object.keys(cct.contractGroupMap).length : 0;
+        const showHidden = getCurrentShowHidden();
+        const status = STATUS_ACCENTS[game.statusOrder] || 'permanent';
+        const counts = window.AKEUI.fragment(`<div class="ake-ui-detail-badges">
+            <span class="ake-ui-badge">${t('counts.indicatorGroups', { count: groupCount })}</span>
+            <span class="ake-ui-badge">${t('counts.terms', { count: tagCount })}</span>
+        </div>`);
 
         const detailHeader = window.AKEUI.detailHeader({
-            title,
+            layout: game.image ? 'showcase' : undefined,
+            title: displayGameName(game),
+            id: showHidden ? game.gameId : '',
+            badges: [{ label: t(STATUS_NAMES[game.statusOrder] || 'statuses.permanent'),
+                ...(status === 'permanent' ? { tone: 'muted' } : { attributes: { 'data-accent': 'status', 'data-accent-value': status } }) }],
             beforeTitle: game.activityId
-                ? window.AKEUI.entryLink({ plugin: 'v3_activity', id: game.activityId, label: game.activityId, content: game.activityId })
+                ? window.AKEUI.entryLink({ plugin: 'v3_activity', id: game.activityId, label: t('detail.activityLink'), content: t('detail.activityLink') })
                 : null,
-            subtitle: getCurrentShowHidden()
-                ? t('detail.subtitle', { activity: game.activityId, groups: groupCount, terms: tagCount })
-                : ''
+            subtitle: formatAvailability(game),
+            content: counts,
+            visual: game.image ? { src: game.image, alt: '', frame: true } : null
         });
 
         let html = `
@@ -1392,7 +1369,7 @@
         const items = Array.from(selectedTagIds).map(tid => {
             const td = tagTable[tid];
             if (!td) return '';
-            const name = td.name?.text || `Tag ${tid}`;
+            const name = td.name?.text || (getCurrentShowHidden() ? `Tag ${tid}` : t('contract.unnamedTerm'));
             const bbMap = buildBlackboardValueMap(td.tagTerms || []);
             const desc = replacePlaceholders(td.desc?.text || '', bbMap, allValueMaps);
             const score = td.score ?? 0;
@@ -1405,7 +1382,7 @@
             `;
         }).join('');
         container.innerHTML = `
-            <h3>${t('sections.selectedTermDetails')}</h3>
+            <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.selectedTermDetails')}</h3></div>
             <div class="v2cc-selected-list">${items}</div>
         `;
     }
@@ -1506,19 +1483,17 @@
                 const newBuffTagsHtml = getCurrentShowHidden()
                     ? buildEnemyBuffTagsHtml(ownBuffs, libBuffs, ccTagBuffs)
                     : renderModifierSources([
-                        ['出生加成', [...inlineModifiers, ...ownBuffModifiers]],
-                        ['buff加成', libraryBuffModifiers],
-                        ['副本加成', scriptModifiers],
-                        ['词条加成', tagModifiers]
+                        ['born', [...inlineModifiers, ...ownBuffModifiers]],
+                        ['buff', libraryBuffModifiers],
+                        ['dungeon', scriptModifiers],
+                        ['term', tagModifiers]
                     ]);
                 const oldBuffTags = card.querySelector('.v2cc-current-buffs');
                 if (newBuffTagsHtml) {
                     if (oldBuffTags) {
                         oldBuffTags.outerHTML = newBuffTagsHtml;
                     } else {
-                        const flagsEl = card.querySelector('.v2d-enemy-flags');
-                        const statsEl = card.querySelector('.v2d-attr-grid');
-                        const refEl = flagsEl || statsEl;
+                        const refEl = card.querySelector('.ake-ui-card__badges, .v2d-attr-grid');
                         if (refEl) refEl.insertAdjacentHTML('beforebegin', newBuffTagsHtml);
                     }
                 } else if (oldBuffTags) {
@@ -1570,13 +1545,17 @@
             const tid = card.dataset.tagId;
             const tag = allTags[tid];
             if (!tag) return;
-            const tagData = tagTable[String(tag.tagId)] || {};
             const isSelected = selectedTagIds.has(tid);
             const selCheck = isTagSelectable(tid, selectedTagIds, allTags);
             const stateClass = isSelected ? 'selected' : (selCheck.ok ? 'selectable' : 'locked');
 
-            card.classList.remove('selected', 'selectable', 'locked');
+            card.classList.remove('selected', 'selectable', 'locked', 'conflict-locked');
             card.classList.add(stateClass);
+            card.classList.toggle('conflict-locked', !isSelected && selCheck.kind === 'conflict');
+            card.setAttribute('aria-checked', String(isSelected));
+            card.setAttribute('aria-disabled', String(!selCheck.ok && !isSelected));
+            if (!isSelected && !selCheck.ok) card.setAttribute('aria-description', selCheck.reason);
+            else card.removeAttribute('aria-description');
 
             const checkEl = card.querySelector('.v2cc-tag-check');
             if (checkEl) checkEl.textContent = isSelected ? '\u2713' : '';
@@ -1584,41 +1563,13 @@
             const badges = card.querySelectorAll('.v2cc-tag-badge');
             const heldKeys = getAvailableKeys(selectedTagIds, allTags);
             badges.forEach(badge => {
-                const text = badge.textContent;
                 if (badge.classList.contains('key') && tag.keyId) {
-                    badge.classList.toggle('held', heldKeys.has(tag.keyId));
+                    badge.classList.toggle('held', heldKeys.has(badge.dataset.keyId));
                 }
-                if (badge.classList.contains('lock') && tag.lockIds) {
-                    tag.lockIds.forEach(lid => {
-                        if (text.includes(lid)) badge.classList.toggle('held', heldKeys.has(lid));
-                    });
-                }
-                if (badge.classList.contains('conflict') && tag.conflictId) {
-                    let conflictWith = '';
-                    for (const sid of selectedTagIds) {
-                        if (sid === tid) continue;
-                        const st = allTags[sid];
-                        if (st && st.conflictId === tag.conflictId) { conflictWith = sid; break; }
-                    }
-                    badge.classList.toggle('active-conflict', !!conflictWith);
-                    const conflictText = conflictWith
-                        ? t('contract.conflictWith', { conflict: escapeHtml(tag.conflictId), tag: escapeHtml(conflictWith) })
-                        : t('contract.conflict', { conflict: escapeHtml(tag.conflictId) });
-                    badge.innerHTML = '<span class="badge-dot"></span>' + conflictText;
+                if (badge.classList.contains('lock') && badge.dataset.lockIds) {
+                    badge.classList.toggle('held', badge.dataset.lockIds.split('|').every(lid => heldKeys.has(lid)));
                 }
             });
-
-            let lockReasonEl = card.querySelector('.v2cc-tag-lock-reason');
-            if (!isSelected && !selCheck.ok) {
-                if (!lockReasonEl) {
-                    lockReasonEl = document.createElement('div');
-                    lockReasonEl.className = 'v2cc-tag-lock-reason';
-                    card.appendChild(lockReasonEl);
-                }
-                lockReasonEl.textContent = selCheck.reason;
-            } else if (lockReasonEl) {
-                lockReasonEl.remove();
-            }
         });
 
         updateSelectedSummary(tagTable);
@@ -1626,12 +1577,20 @@
     }
 
     function bindTagEvents() {
+        document.querySelectorAll('[data-v2cc-spawner-toggle]').forEach(button => {
+            button.addEventListener('click', () => {
+                const block = button.closest('.v2cc-spawner-block');
+                if (!block) return;
+                const collapsed = block.classList.toggle('collapsed');
+                button.setAttribute('aria-expanded', String(!collapsed));
+            });
+        });
         const cct = currentData ? currentData.contingencycontracttable : null;
         if (!cct) return;
         const allTags = getAllContractTags(cct);
 
         document.querySelectorAll('[data-card-kind="cc-tag"][data-tag-id]').forEach(card => {
-            card.addEventListener('click', () => {
+            const toggleCard = () => {
                 const tid = card.dataset.tagId;
                 if (selectedTagIds.has(tid)) {
                     selectedTagIds.delete(tid);
@@ -1642,9 +1601,15 @@
                     selectedTagIds.add(tid);
                 }
                 refreshInteractiveSection();
+            };
+            card.addEventListener('click', toggleCard);
+            card.addEventListener('keydown', event => {
+                if (event.key !== 'Enter' && event.key !== ' ') return;
+                event.preventDefault();
+                toggleCard();
             });
 
-            card.addEventListener('mouseenter', () => {
+            const highlightRelated = () => {
                 const tid = card.dataset.tagId;
                 if (card.classList.contains('locked')) {
                     const tag = allTags[tid];
@@ -1668,13 +1633,17 @@
                         });
                     }
                 }
-            });
+            };
 
-            card.addEventListener('mouseleave', () => {
+            const clearHighlight = () => {
                 document.querySelectorAll('.highlight-conflict, .highlight-key').forEach(el => {
                     el.classList.remove('highlight-conflict', 'highlight-key');
                 });
-            });
+            };
+            card.addEventListener('mouseenter', highlightRelated);
+            card.addEventListener('focus', highlightRelated);
+            card.addEventListener('mouseleave', clearHighlight);
+            card.addEventListener('blur', clearHighlight);
         });
 
         const resetBtn = document.getElementById('v2ccResetBtn');
@@ -1729,10 +1698,12 @@
 
         function switchWave(wi, spawnerBody) {
             const map = spawnerBody.querySelector('.v2cc-spawn-map');
-            if (!map) return;
             spawnerBody.querySelectorAll('.v2d-wave-line').forEach(l => {
-                l.classList.toggle('active', l.dataset.waveIdx === wi);
+                const active = l.dataset.waveIdx === wi;
+                l.classList.toggle('active', active);
+                l.setAttribute('aria-pressed', String(active));
             });
+            if (!map) return;
             map.querySelectorAll('.v2cc-map-spot').forEach(spot => {
                 spot.style.display = spot.dataset.wave === wi ? '' : 'none';
             });

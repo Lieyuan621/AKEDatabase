@@ -92,6 +92,7 @@ def _level_data_meta(path: Path) -> dict[str, Any]:
         raise ValidationError(f"LevelData Json 根节点不是对象：{path}")
 
     dialog_ids: list[str] = []
+    archive_points: list[dict[str, Any]] = []
     seen: set[str] = set()
     interactives = payload.get("interactives")
     if not isinstance(interactives, list):
@@ -105,8 +106,9 @@ def _level_data_meta(path: Path) -> dict[str, Any]:
         narrative_components = component_properties.get("NarrativeComponent")
         if not isinstance(narrative_components, list):
             continue
+        logic_id = interactive.get("levelLogicId")
         for component in narrative_components:
-            if not isinstance(component, dict) or component.get("key") != "type_id":
+            if not isinstance(component, dict) or component.get("key") not in ("type_id", "prts_id"):
                 continue
             value = component.get("value")
             value_array = value.get("valueArray") if isinstance(value, dict) else None
@@ -114,13 +116,18 @@ def _level_data_meta(path: Path) -> dict[str, Any]:
                 continue
             for entry in value_array:
                 dialog_id = entry.get("valueString") if isinstance(entry, dict) else None
-                if isinstance(dialog_id, str) and dialog_id.startswith("dlg_") and dialog_id not in seen:
+                if component["key"] == "prts_id":
+                    if isinstance(dialog_id, str) and dialog_id and isinstance(logic_id, int) and not isinstance(logic_id, bool) and 0 <= logic_id < 2**36:
+                        point = {"prtsId": dialog_id, "logicId": logic_id}
+                        if point not in archive_points:
+                            archive_points.append(point)
+                elif isinstance(dialog_id, str) and dialog_id.startswith("dlg_") and dialog_id not in seen:
                     seen.add(dialog_id)
                     dialog_ids.append(dialog_id)
     factory_mines: list[dict[str, Any]] = []
     raw_mines = payload.get("factoryMines")
     if not isinstance(raw_mines, list) or not raw_mines:
-        return {"narrativeDialogIds": dialog_ids}
+        return {"narrativeDialogIds": dialog_ids, "archivePoints": archive_points}
     for mine in raw_mines:
         if not isinstance(mine, dict):
             continue
@@ -146,7 +153,7 @@ def _level_data_meta(path: Path) -> dict[str, Any]:
             entry["voxelPosition"] = [position["x"], position["y"], position["z"]]
         factory_mines.append(entry)
     modified_at = datetime.fromtimestamp(path.stat().st_mtime, timezone.utc).isoformat()
-    return {"narrativeDialogIds": dialog_ids, "factoryMines": factory_mines, "mapModifiedAt": modified_at, "metadataSchemaVersion": 2}
+    return {"narrativeDialogIds": dialog_ids, "archivePoints": archive_points, "factoryMines": factory_mines, "mapModifiedAt": modified_at, "metadataSchemaVersion": 2}
 
 
 def _level_script_meta(path: Path) -> dict[str, Any]:

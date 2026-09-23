@@ -243,61 +243,34 @@
 
 /* Score panel */
 .v2cc-score-panel {
-    display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    padding: 14px 18px;
-    margin-bottom: 16px;
-    background: var(--content-bg, #ffffff);
-    border-radius: 12px;
-    border: 1px solid var(--border-color, #e5e9f0);
-    flex-wrap: wrap;
+    padding-block: var(--ake-ui-space-2);
     position: sticky;
     top: 0;
     z-index: 10;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 .v2cc-score-panel-left {
     display: flex;
-    align-items: baseline;
-    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--ake-ui-space-2);
 }
 .v2cc-score-panel-label {
-    font-size: 0.85rem;
-    color: var(--desc-color, #5b6f86);
-    font-weight: 500;
+    font-size: .76rem;
+    color: var(--desc-color);
+    font-weight: 600;
 }
 .v2cc-score-panel-value {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--accent-color, #1e6f9f);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    font-variant-numeric: tabular-nums;
     line-height: 1;
 }
-.v2cc-score-panel-count {
-    font-size: 0.8rem;
-    color: var(--desc-color, #5b6f86);
-}
-.v2cc-score-panel-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-.v2cc-reset-btn {
-    padding: 6px 14px;
-    border: 1px solid var(--border-color, #d9e0e8);
-    border-radius: 6px;
-    background: var(--module-bg, #fff);
-    color: var(--text-color, #1e2b3c);
-    font-size: 0.8rem;
+.v2cc-score-panel > button {
+    padding-inline: var(--ake-ui-space-3);
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
-}
-.v2cc-reset-btn:hover {
-    background: #e74c3c;
-    color: #fff;
-    border-color: #e74c3c;
 }
 
 /* Tag cards */
@@ -609,6 +582,9 @@
 }
 
 /* Shop */
+.ake-ui-card[data-card-kind="cc-shop"] > .ake-ui-card__header {
+    margin-bottom: var(--ake-ui-space-2);
+}
 .v2cc-shops {
     display: flex;
     flex-direction: column;
@@ -986,13 +962,6 @@
     .v2cc-group {
         max-width: none;
     }
-    .v2cc-score-panel {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .v2cc-score-panel-right {
-        width: 100%;
-    }
 }
 
 /* Dungeon enemy section */
@@ -1064,13 +1033,12 @@
     align-items: center;
     gap: 6px;
 }
-.v2cc-spawner-toggle {
-    font-size: 0.65rem;
-    color: var(--desc-color, #5b6f86);
-    transition: transform 0.2s;
-    display: inline-block;
+.v2cc-spawner-chevron {
     width: 14px;
-    text-align: center;
+    height: 14px;
+    flex: 0 0 14px;
+    color: var(--desc-color, #5b6f86);
+    transition: transform 0.2s ease;
 }
 .v2cc-spawner-brief {
     font-size: 0.72rem;
@@ -1078,7 +1046,7 @@
     color: var(--desc-color, #5b6f86);
     margin-left: auto;
 }
-.v2cc-spawner-block.collapsed .v2cc-spawner-toggle {
+.v2cc-spawner-title[aria-expanded="false"] .v2cc-spawner-chevron {
     transform: rotate(-90deg);
 }
 .v2cc-spawner-block.collapsed .v2cc-spawner-body {
@@ -1167,37 +1135,36 @@
         width: 100%;
     }
 }
-.v2d-wave-line {
-    cursor: pointer;
-    padding: 2px 4px;
-    border-radius: 4px;
-    transition: background 0.15s;
+.v2cc-wave-map-row .v2d-wave-detail {
+    gap: var(--ake-ui-space-2);
+    margin-top: 0;
 }
-.v2d-wave-line:hover {
-    background: var(--active-bg, #e2eaf9);
+.ake-ui-card[data-card-kind="cc-wave"] {
+    --ake-ui-card-accent: var(--accent-color);
+    display: grid;
+    gap: var(--ake-ui-space-2);
+    padding: var(--ake-ui-space-2);
+    font-size: .78rem;
 }
-.v2d-wave-line.active {
-    background: rgba(30,111,159,0.1);
-    border-left: 3px solid var(--accent-color, #1e6f9f);
-    padding-left: 8px;
+.ake-ui-card[data-card-kind="cc-wave"].active {
+    padding: var(--ake-ui-space-2);
+    border: 1px solid var(--accent-color);
+    background: color-mix(in srgb, var(--accent-color) 6%, var(--ake-ui-surface));
 }
-.v2d-wave-num {
-    cursor: pointer;
+.ake-ui-card[data-card-kind="cc-wave"] .v2d-wave-enemy {
+    padding: 2px 6px;
+    border-radius: var(--ake-ui-radius-sm);
+    background: var(--ake-ui-surface);
+    font-size: .76rem;
 }
-.v2d-wave-enemy {
-    cursor: pointer;
-    border-radius: 3px;
-    padding: 1px 2px;
-    transition: background 0.15s;
+.ake-ui-card[data-card-kind="cc-wave"] .v2d-wave-enemy:hover {
+    background: var(--ake-ui-surface-hover);
 }
-.v2d-wave-enemy:hover {
-    background: var(--active-bg, #e2eaf9);
-}
-.v2d-wave-enemy.enemy-highlight {
+.ake-ui-card[data-card-kind="cc-wave"] .v2d-wave-enemy.enemy-highlight {
     background: rgba(39,174,96,0.15);
     outline: 1px solid #27ae60;
 }
-.v2d-wave-enemy.enemy-target-highlight {
+.ake-ui-card[data-card-kind="cc-wave"] .v2d-wave-enemy.enemy-target-highlight {
     background: rgba(241,196,15,0.15);
     outline: 1px solid #f1c40f;
 }

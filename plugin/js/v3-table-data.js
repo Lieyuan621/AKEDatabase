@@ -304,10 +304,11 @@
                 : null;
             const moduleEntries = new Map();
             const includeModified = showModifiedVersionChanges();
+            const includeAdded = comparison.showAdded !== false;
             const ranked = currentRows.map(row => {
                 const baseline = baselineById.get(manifestId(module, row));
                 const groupedEntitySignatures = row.__diffEntitySignatures || {};
-                const addedEntityIds = usesGroupedEntityDiff
+                const addedEntityIds = includeAdded && usesGroupedEntityDiff
                     ? Object.keys(groupedEntitySignatures).filter(entityId => !baselineGroupedEntities.has(entityId))
                     : [];
                 let isModified = Boolean(baseline && row.__diffSignature !== baseline.__diffSignature);
@@ -326,7 +327,7 @@
                 const changeType = hasGroupedAddition
                     ? 'added'
                     : !baseline
-                    ? (canMarkWholeRowAdded ? 'added' : '')
+                    ? (includeAdded && canMarkWholeRowAdded ? 'added' : '')
                     : (includeModified && isModified ? 'modified' : '');
                 const publicRow = publicManifestRow(row);
                 if (module === 'equip' && addedEntityIds.length) {

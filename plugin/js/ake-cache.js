@@ -515,12 +515,15 @@
         }
         try {
             const tx = db.transaction(RESPONSE_STORE, 'readonly');
-            const request = tx.objectStore(RESPONSE_STORE).getAll(batch.map(item => item.key));
-            request.onsuccess = () => {
-                const records = new Map((request.result || []).map(record => [record.key, record]));
-                batch.forEach(item => item.resolve(records.get(item.key) || null));
-            };
-            request.onerror = () => batch.forEach(item => item.resolve(null));
+            const store = tx.objectStore(RESPONSE_STORE);
+            const records = new Map();
+            batch.forEach(item => {
+                const request = store.get(item.key);
+                request.onsuccess = () => { if (request.result) records.set(item.key, request.result); };
+            });
+            tx.oncomplete = () => batch.forEach(item => item.resolve(records.get(item.key) || null));
+            tx.onerror = () => batch.forEach(item => item.resolve(null));
+            tx.onabort = () => batch.forEach(item => item.resolve(null));
         } catch {
             batch.forEach(item => item.resolve(null));
         }
@@ -566,11 +569,6 @@
             new Promise(resolve => setTimeout(() => resolve(null), 5000))
         ])
     }));
-    const fastDatabase = () => Promise.race([
-        databaseOpenPromise,
-        new Promise(resolve => setTimeout(() => resolve(null), 120))
-    ]);
-
     window.akeVersionReady = versionPromise;
     window.akeServiceWorkerReady = serviceWorkerPromise;
     window.akeCacheReady = databasePromise;
@@ -637,7 +635,7 @@
         const progressId = trackProgress ? beginProgress(canonicalUrl, 'cache') : null;
         if (!pendingRequests.has(key)) {
             const loadPromise = (async () => {
-                const db = await fastDatabase();
+                const { db } = await databasePromise;
                 const cached = forceRefresh ? null : await readRecord(db, key);
                 if (cached) {
                     memoryResponses.set(key, cached);

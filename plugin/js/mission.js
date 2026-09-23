@@ -25,8 +25,8 @@
     const IMPORTANCE_LEVEL = { 1: '1', 2: '2', 3: '3', High: '1', Mid: '2', Low: '3' };
     const QUEST_TYPES = { 0: '普通', 1: '阻断', 2: '可选' };
     const TABLE_NAMES = {
-        auxiliary: ['RewardTable', 'ItemTable', 'LevelDescTable', 'CharacterTable', 'MissionExtraInfoTable'],
-        dialogue: ['DialogTextTable', 'DialogOptionTable', 'DialogSummaryTable', 'SNSDialogTable', 'SNSDialogOptionTable', 'SNSChatTable', 'NpcTable', 'CharacterTable']
+        auxiliary: ['RewardTable', 'ItemTable', 'LevelDescTable', 'CharacterTable', 'MissionExtraInfoTable', 'EnemyTemplateDisplayInfoTable'],
+        dialogue: ['DialogTextTable', 'DialogOptionTable', 'DialogSummaryTable', 'SNSDialogTable', 'SNSDialogOptionTable', 'SNSChatTable', 'NpcTable', 'CharacterTable', 'RadioTable']
     };
     const PLAY_DIALOG_ACTIONS = new Set([
         'StartDialogAction',
@@ -45,7 +45,6 @@
         textTable: {},
         rows: [],
         selectedId: null,
-        activeTab: 'dialogue',
         search: '',
         type: 'all',
         chapter: 'all',
@@ -56,6 +55,9 @@
         dialogueChoices: new Map(),
         levelScriptScenes: new Map(),
         missionScriptCache: new Map(),
+        missionOwnedScripts: new Map(),
+        levelDataScenes: new Map(),
+        spawnerConfigs: new Map(),
         renderToken: 0
     };
 
@@ -153,6 +155,129 @@
         }
         entries.filter(entry => !result.includes(entry)).sort((a, b) => naturalCompare(a.id, b.id)).forEach(entry => result.push(entry));
         return result;
+    }
+
+    function mainPathQuestEntries(mission) {
+        const quests = mission?.questDic || {};
+        const path = (mission?.mainPathQuests || []).filter(id => quests[id]).map(id => ({ id, ...quests[id] }));
+        return path.length ? path : questEntries(mission);
+    }
+
+    function questFlow(mission) {
+        const path = mainPathQuestEntries(mission);
+        const pathIds = new Set(path.map(quest => quest.id));
+        let segments = [];
+        let current = null;
+        let gap = [];
+        path.forEach(quest => {
+            if (!(quest.objectiveList || []).length) {
+                current = null;
+                gap.push(quest);
+                return;
+            }
+            quest.objectiveList.forEach((objective, index) => {
+                const key = objective.description?.key || `${quest.id}:${index}`;
+                if (!current || current.key !== key) {
+                    current = { key, objectives: [], quests: [], gapBefore: gap, branch: false };
+                    segments.push(current);
+                    gap = [];
+                }
+                current.objectives.push(objective);
+                if (!current.quests.includes(quest)) current.quests.push(quest);
+            });
+        });
+
+        const pathIndex = new Map(path.map((quest, index) => [quest.id, index]));
+        const optionalStarts = new Set();
+        questEntries(mission).filter(quest => !pathIds.has(quest.id) && quest.questType === 'Optional').forEach(quest => {
+            const queue = [...(quest.prevQuestIdList || [])];
+            const seen = new Set();
+            while (queue.length) {
+                const id = queue.shift();
+                if (seen.has(id)) continue;
+                seen.add(id);
+                if (pathIndex.has(id)) {
+                    optionalStarts.add(pathIndex.get(id) + 1);
+                    break;
+                }
+                queue.push(...(mission.questDic?.[id]?.prevQuestIdList || []));
+            }
+        });
+        // A repeated objective starts a parallel phase only when an optional path opens at its preceding step.
+        segments.forEach((segment, index) => {
+            const next = segments[index + 1];
+            const preceding = segments[index - 1];
+            if (next?.key === segment.key && next.gapBefore.some(quest => quest.showMode === 'AlwaysHide') &&
+                preceding && optionalStarts.has(pathIndex.get(preceding.quests[0].id))) {
+                segment.branch = true;
+            }
+        });
+        const consolidated = [];
+        segments.forEach(segment => {
+            const previous = consolidated[consolidated.length - 1];
+            if (previous && !previous.branch && !segment.branch && previous.key === segment.key) {
+                previous.objectives.push(...segment.objectives);
+                segment.quests.forEach(quest => { if (!previous.quests.includes(quest)) previous.quests.push(quest); });
+            } else {
+                consolidated.push(segment);
+            }
+        });
+        segments = consolidated;
+        const steps = segments.filter(segment => !segment.branch);
+        const branches = segments.filter(segment => segment.branch).map(segment => ({
+            ...segment, anchor: steps.findLastIndex(step => segments.indexOf(step) < segments.indexOf(segment))
+        }));
+        const findMainPredecessor = quest => {
+            const queue = [...(quest.prevQuestIdList || [])];
+            const seen = new Set();
+            while (queue.length) {
+                const id = queue.shift();
+                if (seen.has(id)) continue;
+                seen.add(id);
+                const index = steps.findIndex(step => step.quests.some(item => item.id === id));
+                if (index >= 0) return index;
+                queue.push(...(mission.questDic?.[id]?.prevQuestIdList || []));
+            }
+            return -1;
+        };
+        if ((mission.mainPathQuests || []).length) {
+            questEntries(mission).filter(quest => !pathIds.has(quest.id)).forEach(quest => {
+                (quest.objectiveList || []).forEach((objective, index) => {
+                    const key = objective.description?.key || `${quest.id}:${index}`;
+                    const equivalent = steps.find(step => step.key === key && step.quests.some(item =>
+                        (item.prevQuestIdList || []).some(id => (quest.prevQuestIdList || []).includes(id))
+                    ));
+                    if (equivalent) {
+                        equivalent.objectives.push(objective);
+                        if (!equivalent.quests.includes(quest)) equivalent.quests.push(quest);
+                        return;
+                    }
+                    const predecessor = findMainPredecessor(quest);
+                    const concurrent = quest.questType === 'Optional' || Number(quest.flowIndex) > 0;
+                    const anchor = predecessor < 0 ? -1 : Math.min(predecessor + (concurrent ? 1 : 0), steps.length - 1);
+                    branches.push({ key, objectives: [objective], quests: [quest], branch: true, anchor });
+                });
+            });
+        }
+        const ordered = [];
+        steps.forEach((step, index) => {
+            step.number = index + 1;
+            step.label = `第 ${step.number} 步`;
+            ordered.push(step);
+            branches.filter(branch => branch.anchor === index).forEach((branch, branchIndex) => {
+                branch.number = index + 1;
+                branch.label = `${step.label} · 并行目标 ${String.fromCharCode(65 + branchIndex)}${branch.quests.some(quest => quest.questType === 'Optional') ? '（可选）' : ''}`;
+                branch.marker = String.fromCharCode(65 + branchIndex);
+                ordered.push(branch);
+            });
+        });
+        branches.filter(branch => branch.anchor < 0).forEach(branch => {
+            branch.number = null;
+            branch.label = '其他分支目标';
+            branch.marker = '?';
+            ordered.push(branch);
+        });
+        return { steps, ordered };
     }
 
     function walk(value, visitor, path = '$', seen = new WeakSet()) {
@@ -257,6 +382,103 @@
         return state.missionScriptCache.get(row.id);
     }
 
+    async function missionOwnedScriptIds(row) {
+        if (!state.missionOwnedScripts.has(row.id)) {
+            const request = Promise.all(collectLevelScriptSceneIds(row).map(async sceneId => {
+                const path = `LevelData/${sceneId}/${sceneId}_lv_data_sub_${row.id}.json`;
+                const entry = await window.akeAssetIndex.getJsonFile(path);
+                if (!entry) return [];
+                const data = await fetchJson(entry.contentFile);
+                return Object.keys(data.levelScriptBriefDataDict || {});
+            })).then(groups => new Set(groups.flat())).catch(error => {
+                state.missionOwnedScripts.delete(row.id);
+                throw error;
+            });
+            state.missionOwnedScripts.set(row.id, request);
+        }
+        return state.missionOwnedScripts.get(row.id);
+    }
+
+    function loadLevelDataEntry(entry) {
+        if (!state.levelDataScenes.has(entry.path)) {
+            state.levelDataScenes.set(entry.path, fetchJson(entry.contentFile).catch(error => {
+                state.levelDataScenes.delete(entry.path);
+                throw error;
+            }));
+        }
+        return state.levelDataScenes.get(entry.path);
+    }
+
+    async function levelDataForScript(sceneId, missionId, scriptId) {
+        const entries = await window.akeAssetIndex.listJsonFiles(`LevelData/${sceneId}`);
+        const group = Number(String(scriptId).slice(2, 6));
+        const candidateIds = new Set([
+            `${sceneId}_lv_data`, `${sceneId}_lv_data_sub_${missionId}`,
+            ...(Number.isFinite(group) ? [`${sceneId}_lv_data_sub_${String(group).padStart(2, '0')}`] : [])
+        ]);
+        const matches = data => Boolean(data.levelScriptBriefDataDict?.[scriptId]) ||
+            (data.spawners || []).some(spawner => String(spawner.belongLevelScriptId) === scriptId);
+        const preferred = entries.filter(entry => candidateIds.has(entry.id));
+        const loaded = await Promise.all(preferred.map(loadLevelDataEntry));
+        const found = loaded.filter(matches);
+        if (found.length) return found;
+        for (const entry of entries.filter(item => !candidateIds.has(item.id))) {
+            const data = await loadLevelDataEntry(entry);
+            if (matches(data)) return [data];
+        }
+        return [];
+    }
+
+    async function loadSpawnerConfig(sceneId, configId) {
+        const key = `${sceneId}/${configId}`;
+        if (!state.spawnerConfigs.has(key)) {
+            const request = (async () => {
+                const entry = await window.akeAssetIndex.getJsonFile(`SpawnerConfig/${sceneId}/${configId}.json`);
+                return entry ? fetchJson(entry.contentFile) : null;
+            })().catch(error => {
+                state.spawnerConfigs.delete(key);
+                throw error;
+            });
+            state.spawnerConfigs.set(key, request);
+        }
+        return state.spawnerConfigs.get(key);
+    }
+
+    async function stepEnemies(row, step, scripts) {
+        const questIds = new Set(step.quests.map(quest => quest.id));
+        const related = scripts.filter(entry => actionNodes(entry.script).some(action =>
+            actionType(action) === 'OnQuestStateChanged' && questIds.has(String(valueOf(action._filtedQuestId) || ''))
+        ));
+        const fixed = new Map();
+        const waves = [];
+        for (const entry of related) {
+            const levelFiles = await levelDataForScript(entry.sceneId, row.id, entry.scriptId);
+            for (const level of levelFiles) {
+                const worldIds = new Set((level.levelScriptBriefDataDict?.[entry.scriptId]?.refWorldEntityIdList || []).map(String));
+                (level.enemies || []).filter(enemy => worldIds.has(String(enemy.levelLogicId))).forEach(enemy =>
+                    fixed.set(String(enemy.levelLogicId), enemy)
+                );
+                for (const spawner of (level.spawners || []).filter(item => String(item.belongLevelScriptId) === entry.scriptId)) {
+                    const config = await loadSpawnerConfig(entry.sceneId, spawner.configId);
+                    const library = new Map((config?.enemyLibrary || []).map(enemy => [enemy.key, enemy]));
+                    Object.values(config?.waveMap || {}).forEach(wave => Object.values(wave.groupMap || {}).forEach(group =>
+                        Object.values(group.actionMap || {}).forEach(action => {
+                            const enemy = library.get(action.libraryKey);
+                            if (enemy?.enemyId && Number(action.spawnCount) > 0) waves.push({
+                                wave: wave.waveId, id: enemy.enemyId, level: enemy.enemyLevel,
+                                count: Number(action.spawnCount), configId: spawner.configId
+                            });
+                        })
+                    ));
+                }
+            }
+            Object.entries(entry.script?.enemies || {}).forEach(([slot, enemy]) =>
+                fixed.set(`${entry.scriptId}:${slot}`, enemy)
+            );
+        }
+        return { fixed: [...fixed.values()], waves };
+    }
+
     function actionNodes(script) {
         const dataMap = script?.actionMap?.dataMap || {};
         return [...(dataMap.headerList || []), ...(dataMap.actionList || []), ...(dataMap.getterList || [])];
@@ -270,8 +492,10 @@
         };
         const addList = value => (Array.isArray(value) ? value : []).forEach(add);
         add(action?._nextID);
+        add(action?.m_nextID);
         addList(action?._idList);
         addList(action?._caseIDList);
+        addList(action?.m_extraThreadIDList);
         add(action?._defaultID);
         add(action?._onTrueID);
         add(action?._onFalseID);
@@ -332,6 +556,88 @@
             });
         });
         return flow;
+    }
+
+    function missionScriptEvents(row, scriptEntries, ownedScriptIds = new Set()) {
+        const questIds = new Set(Object.keys(row.mission?.questDic || {}));
+        const questsByScript = new Map();
+        questEntries(row.mission).forEach(quest => walk(quest, value => {
+            [value?.scriptId, value?._scriptId].forEach(field => {
+                const reference = valueOf(field);
+                const scriptId = reference && typeof reference === 'object' ? reference.scriptId : reference;
+                if (scriptId === undefined || scriptId === null || scriptId === '' || scriptId === 0) return;
+                const id = String(scriptId);
+                if (!questsByScript.has(id)) questsByScript.set(id, new Set());
+                questsByScript.get(id).add(quest.id);
+            });
+        }));
+        const events = [];
+        scriptEntries.forEach(entry => {
+            const nodes = actionNodes(entry.script);
+            const nodeMap = new Map(nodes.map(action => [Number(action?._ID), action]).filter(([id]) => Number.isFinite(id)));
+            const anchors = new Map();
+            nodes.filter(action => actionType(action) === 'OnQuestStateChanged').forEach(header => {
+                const questId = String(valueOf(header._filtedQuestId) || '');
+                if (!questIds.has(questId)) return;
+                const queue = actionNextIds(header, nodeMap);
+                const visited = new Set();
+                while (queue.length && visited.size < 500) {
+                    const id = queue.shift();
+                    if (visited.has(id)) continue;
+                    visited.add(id);
+                    if (!anchors.has(id)) anchors.set(id, new Set());
+                    anchors.get(id).add(questId);
+                    actionNextIds(nodeMap.get(id), nodeMap).forEach(next => queue.push(next));
+                }
+            });
+            nodes.forEach(action => {
+                const type = actionType(action);
+                const dialogId = String(actionDialogId(action) || '');
+                const radioId = String(valueOf(action?._radioId) || '');
+                const questAnchors = [...(anchors.get(Number(action?._ID)) || questsByScript.get(entry.scriptId) || [])];
+                const ownedDialog = dialogId.startsWith(`dlg_${row.id}_`) || dialogId.startsWith(`sns_${row.id}_`);
+                const ownedRadio = radioId.startsWith(`radio_${row.id}_`);
+                let kind = '', id = '';
+                if (PLAY_DIALOG_ACTIONS.has(type) && (ownedDialog || questAnchors.length)) {
+                    kind = dialogId.startsWith('sns_') ? 'sns' : 'dialog'; id = dialogId;
+                } else if (type.startsWith('PlayRadio') && (ownedRadio || questAnchors.length)) {
+                    kind = 'radio'; id = radioId;
+                } else if ((questAnchors.length || ownedScriptIds.has(entry.scriptId)) && ['PlayCutsceneAction', 'PlayFmvAction'].includes(type)) {
+                    kind = 'cutscene'; id = String(valueOf(action._cutsceneId) || valueOf(action._moviePath) || action._ID);
+                } else if ((questAnchors.length || ownedScriptIds.has(entry.scriptId)) && ['ShowLimitedGuide', 'ManuallyStartGuideGroup'].includes(type)) {
+                    kind = 'guide'; id = String(valueOf(action._mediaGuideGroupId) || valueOf(action._guideGroupId) || action._ID);
+                }
+                if (!kind || !id) return;
+                events.push({ kind, id, questAnchors, sceneId: entry.sceneId, scriptId: entry.scriptId,
+                    actionId: action._ID, position: entry.script?.activeShapeList?.[0]?.offset || null });
+            });
+        });
+        return events;
+    }
+
+    function missionClientEvents(row) {
+        const mission = row.mission || {};
+        const actions = new Map((mission.actionMapRaw?.dataMap?.actionList || []).map(action => [Number(action._ID), action]));
+        return (mission.clientActionMapKey || []).flatMap((binding, index) => {
+            const action = actions.get(Number(mission.clientActionMapValue?.[index]));
+            if (!action || !mission.questDic?.[binding.questId]) return [];
+            const type = actionType(action);
+            const dialogId = String(actionDialogId(action) || '');
+            const radioId = String(valueOf(action._radioId) || '');
+            let kind = '', id = '', titleKey = '';
+            if (PLAY_DIALOG_ACTIONS.has(type) && dialogId) {
+                kind = dialogId.startsWith('sns_') ? 'sns' : 'dialog'; id = dialogId;
+            } else if (type.startsWith('PlayRadio') && radioId) {
+                kind = 'radio'; id = radioId;
+            } else if (['PlayCutsceneAction', 'PlayFmvAction'].includes(type)) {
+                kind = 'cutscene'; id = String(valueOf(action._cutsceneId) || valueOf(action._moviePath) || action._ID);
+            } else if (['ShowLimitedGuide', 'ManuallyStartGuideGroup'].includes(type)) {
+                kind = 'guide'; id = String(valueOf(action._mediaGuideGroupId) || valueOf(action._guideGroupId) || action._ID);
+                titleKey = String(valueOf(action._textId) || '');
+            }
+            return kind && id ? [{ kind, id, titleKey, questAnchors: [binding.questId],
+                sceneId: mission.levelId, scriptId: '', position: null }] : [];
+        });
     }
 
     async function loadCore() {
@@ -476,7 +782,6 @@
 
     function renderOverview() {
         state.selectedId = null;
-        state.activeTab = 'dialogue';
         renderList();
         const currentRows = state.rows;
         const stats = state.stats;
@@ -492,10 +797,10 @@
             </button>`;
         }).join('');
         elements.detail.innerHTML = `<div class="ake-ui-page" data-ake-view="overview">
-            <header class="ake-ui-page__header"><div><div class="ake-ui-page__eyebrow">Mission Runtime Database</div><h2>任务总览</h2><p class="ake-ui-page__summary">汇总任务定义、步骤、目标、奖励以及任务相关对话。选择左侧任务进入以台词为中心的详情。</p></div><div class="ake-ui-page__status">${escapeHtml(version)}</div></header>
+            <header class="ake-ui-page__header"><div><div class="ake-ui-page__eyebrow">Mission Runtime Database</div><h2>任务总览</h2><p class="ake-ui-page__summary">汇总任务定义、目标、奖励与相关剧情。</p></div><div class="ake-ui-page__status">${escapeHtml(version)}</div></header>
             <div class="ake-ui-card-grid" data-size="compact"><div class="ake-ui-card" data-card-kind="mission-stat"><b>${stats.missionCount}</b><span>任务</span></div><div class="ake-ui-card" data-card-kind="mission-stat"><b>${stats.questCount}</b><span>Quest 步骤</span></div><div class="ake-ui-card" data-card-kind="mission-stat"><b>${stats.objectiveCount}</b><span>任务目标</span></div><div class="ake-ui-card" data-card-kind="mission-stat"><b>${stats.metaCount}</b><span>Meta 配置</span></div></div>
             <section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">全部任务数据</h2></header><div class="ake-ui-card-grid" data-size="narrow">${typeCards}</div></section>
-            <section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">数据说明</h2></header><div class="mission-description">总览直接读取轻量任务索引；只有打开具体任务时才加载对应运行数据与 Meta。任务步骤按 <code>prevQuestIdList</code> 还原顺序，普通剧情台词按 Dialog ID 聚合，SNS 对话按内容节点与选项分支还原。</div></section>
+            <section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">数据范围</h2></header><div class="mission-description">打开任务后加载任务流程、相关剧情与奖励。无法确认触发步骤的剧情单独列出。</div></section>
         </div>`;
         elements.detail.querySelectorAll('[data-overview-type]').forEach(button => button.addEventListener('click', () => {
             state.type = button.dataset.overviewType;
@@ -510,11 +815,10 @@
         root.classList.remove('is-mobile-open');
     }
 
-    async function selectMission(id, tab) {
+    async function selectMission(id) {
         const row = state.rows.find(item => item.id === id);
         if (!row) return;
         state.selectedId = id;
-        state.activeTab = tab || 'dialogue';
         renderList();
         requestAnimationFrame(() => elements.list.querySelector(`[data-mission-id="${CSS.escape(id)}"]`)?.scrollIntoView({ block: 'nearest' }));
         closeMobileList();
@@ -533,10 +837,10 @@
     function renderHero(row) {
         const mission = row.mission || {};
         const mapId = mission.levelId || '未指定地图';
-        const mapCode = window.AKEUI.element('code', 'ake-ui-detail-id', mapId);
-        mapCode.title = mapId;
+        const mapCode = state.showHidden ? window.AKEUI.element('code', 'ake-ui-detail-id', mapId) : null;
+        if (mapCode) mapCode.title = mapId;
         const header = window.AKEUI.detailHeader({
-            eyebrow: `${row.typeDef.enumName} · ${row.id}`,
+            eyebrow: row.typeDef.name,
             title: row.name,
             subtitle: row.description
                 ? window.AKEUI.fragment(richText(row.description))
@@ -548,19 +852,7 @@
     }
 
     function renderSelectedMission(row) {
-        const tabs = [
-            ['dialogue', '对话还原'], ['quests', '任务流程']
-        ];
-        elements.detail.innerHTML = `<article class="ake-ui-detail" data-detail-kind="mission">${renderHero(row)}<nav class="ake-ui-tabs" data-variant="pill" data-sticky="true" role="tablist">${tabs.map(([id, label]) => `<button class="ake-ui-tabs__button${state.activeTab === id ? ' is-active' : ''}" role="tab" aria-selected="${state.activeTab === id}" type="button" data-mission-tab="${id}">${label}</button>`).join('')}</nav><section class="ake-ui-tabs__panel" id="missionPanel" role="tabpanel"><div class="ake-ui-state" data-state="loading"><p>正在加载${tabs.find(tab => tab[0] === state.activeTab)?.[1] || '内容'}…</p></div></section></article>`;
-        elements.detail.querySelectorAll('[data-mission-tab]').forEach(button => button.addEventListener('click', () => {
-            state.activeTab = button.dataset.missionTab;
-            elements.detail.querySelectorAll('[data-mission-tab]').forEach(tab => {
-                const isActive = tab === button;
-                tab.classList.toggle('is-active', isActive);
-                tab.setAttribute('aria-selected', String(isActive));
-            });
-            renderActivePanel(row);
-        }));
+        elements.detail.innerHTML = `<article class="ake-ui-detail" data-detail-kind="mission">${renderHero(row)}<section id="missionPanel"><div class="ake-ui-state" data-state="loading"><p>正在加载任务内容…</p></div></section></article>`;
         renderActivePanel(row);
     }
 
@@ -569,13 +861,15 @@
         const level = auxiliary?.LevelDescTable?.[mission.levelId];
         const character = auxiliary?.CharacterTable?.[mission.charId];
         const extraInfo = auxiliary?.MissionExtraInfoTable?.[row.id];
+        const acceptMode = { Automatic: '自动接取', EnterArea: '进入区域', Interaction: '交互接取' };
         const cells = [
-            ['任务 ID', row.id], ['类型', `${row.typeDef.name} (${row.type})`], ['视图', row.typeDef.view],
+            ['类型', row.typeDef.name],
             ['重要度', IMPORTANCE[row.importance] ?? '未配置'], ['章节', chapterName(row.chapter)],
-            ['地图', level?.showName?.text || mission.levelId || '未配置'], ['关联角色', character?.name?.text || mission.charId || '无'],
-            ['领取方式', row.meta?.acceptMode?.mode ?? '缺少 Meta'], ['任务奖励', mission.rewardId || '无'],
+            ['地图', level?.showName?.text || (state.showHidden ? mission.levelId : '未配置')], ['关联角色', character?.name?.text || (state.showHidden ? mission.charId : '无')],
+            ['领取方式', acceptMode[row.meta?.acceptMode?.mode] || row.meta?.acceptMode?.mode || '未配置'],
             ['额外说明', extraInfo?.extraInfoDesc?.text || '无']
         ];
+        if (state.showHidden) cells.unshift(['任务 ID', row.id]);
         return `<dl class="ake-ui-meta-grid">${cells.map(([label, value]) => {
             const content = label === '关联角色' && mission.charId
                 ? window.AKEUI.entryLinkHtml({ plugin: 'v3_character', id: mission.charId, label: value, contentHtml: escapeHtml(value) })
@@ -598,35 +892,119 @@
     function rewardHtml(rewardId, auxiliary) {
         const reward = auxiliary?.RewardTable?.[rewardId];
         if (!rewardId) return '';
-        if (!reward) return `<div class="mission-reward-list"><div class="mission-reward"><div><b>${escapeHtml(rewardId)}</b><br><small>奖励表中缺失</small></div></div></div>`;
+        if (!reward) return `<div class="mission-reward-list"><div class="mission-reward"><b>${state.showHidden ? escapeHtml(rewardId) : '奖励数据暂不可用'}</b></div></div>`;
         const bundles = [...(reward.itemBundles || []), ...(reward.probItemBundles || [])];
         return `<div class="mission-reward-list">${bundles.map(bundle => {
             const item = auxiliary.ItemTable?.[bundle.id] || {};
             const icon = item.iconId ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${item.iconId}.png` : '';
-            const name = item.name?.text || bundle.id;
+            const name = item.name?.text || (state.showHidden ? bundle.id : '未命名物品');
             return window.AKEUI.entryLinkHtml({ plugin: 'v3_item', id: bundle.id, label: name, className: 'mission-reward', contentHtml: `${icon ? `<img src="${escapeHtml(icon)}" alt="">` : ''}<div><b>${escapeHtml(name)}</b><br><small>× ${escapeHtml(bundle.count ?? '?')}</small></div>` });
-        }).join('') || `<div class="mission-reward"><b>${escapeHtml(rewardId)}</b></div>`}</div>`;
+        }).join('') || `<div class="mission-reward"><b>${state.showHidden ? escapeHtml(rewardId) : '未配置奖励物品'}</b></div>`}</div>`;
     }
 
     async function renderQuestPanel(row, panel, token) {
         const auxiliary = await ensureAuxiliary().catch(() => ({}));
-        if (token !== state.renderToken || state.selectedId !== row.id || state.activeTab !== 'quests') return;
-        const quests = questEntries(row.mission);
-        panel.innerHTML = `${renderInfoGrid(row, auxiliary)}${row.mission.rewardId ? `<div class="mission-description"><b>任务完成奖励</b>${rewardHtml(row.mission.rewardId, auxiliary)}</div>` : ''}<div class="mission-quest-list">${quests.map((quest, questIndex) => {
-            const override = textByKey(quest.descriptionOverride?.key, state.textTable, '');
-            const summary = override || (quest.objectiveList || []).map(objectiveDescription).filter(Boolean).join(' / ') || '无显示目标';
-            return `<details class="mission-quest" ${questIndex < 3 ? 'open' : ''}><summary><span class="mission-quest__id">${escapeHtml(quest.questId)}</span><span class="mission-quest__desc">${richText(summary)}</span><span class="ake-ui-badge">${QUEST_TYPES[quest.questType] || quest.questType}</span></summary><div class="mission-quest__body">
-                ${(quest.objectiveList || []).map((objective, index) => `<div class="mission-objective"><div class="mission-objective__index">${index + 1}</div><div><div class="mission-objective__text">${richText(objectiveDescription(objective))}</div><div class="mission-objective__meta">${escapeHtml(conditionSummary(objective))}</div></div></div>`).join('') || '<div class="mission-dialog-empty">该 Quest 没有 Objective</div>'}
-                ${quest.rewardId ? `<div><b>Quest 奖励</b>${rewardHtml(quest.rewardId, auxiliary)}</div>` : ''}
-                ${(quest.needItemIds || []).length ? `<div class="mission-objective__meta">需求物品：${quest.needItemIds.map(itemId => {
-                    const name = auxiliary.ItemTable?.[itemId]?.name?.text || itemId;
-                    return window.AKEUI.entryLinkHtml({ plugin: 'v3_item', id: itemId, label: name, contentHtml: escapeHtml(name) });
-                }).join(', ')}</div>` : ''}
+        if (token !== state.renderToken || state.selectedId !== row.id) return;
+        const flow = questFlow(row.mission);
+        const steps = flow.ordered;
+        const renderedSteps = panel.querySelectorAll('[data-mission-step]');
+        const openSteps = new Set([...renderedSteps].filter(step => step.open).map(step => step.dataset.missionStep));
+        const renderItems = ids => ids.map(itemId => {
+            const name = auxiliary.ItemTable?.[itemId]?.name?.text || (state.showHidden ? itemId : '未命名物品');
+            return window.AKEUI.entryLinkHtml({ plugin: 'v3_item', id: itemId, label: name, contentHtml: escapeHtml(name) });
+        }).join('、');
+        panel.innerHTML = `${renderInfoGrid(row, auxiliary)}<div class="mission-quest-list">${steps.map((step, index) => {
+            const itemIds = [...new Set(step.quests.flatMap(quest => quest.needItemIds || []))];
+            const sceneIds = [...new Set(step.objectives.flatMap(objective => (objective.trackingInfoList || []).map(track => track.sceneId).filter(Boolean)))];
+            const sceneNames = sceneIds.map(id => auxiliary.LevelDescTable?.[id]?.showName?.text || (state.showHidden ? id : '未命名区域'));
+            const details = state.showHidden ? `<div class="mission-objective__meta">${step.quests.map(quest => escapeHtml(quest.id)).join(' · ')}</div>` : '';
+            return `<details class="mission-quest" data-mission-step="${index}" ${renderedSteps.length ? (openSteps.has(String(index)) ? 'open' : '') : (index === 0 ? 'open' : '')}><summary><span class="mission-objective__index">${escapeHtml(step.branch ? step.marker : step.number)}</span><span class="mission-quest__desc">${step.branch ? `${escapeHtml(step.label)} · ` : ''}${richText(objectiveDescription(step.objectives[0]))}</span></summary><div class="mission-quest__body">
+                ${sceneNames.length ? `<div class="mission-objective__meta">区域：${sceneNames.map(escapeHtml).join('、')}</div>` : ''}
+                ${itemIds.length ? `<div class="mission-objective__meta">需要：${renderItems(itemIds)}</div>` : ''}
+                ${state.showHidden ? `${details}${step.objectives.map(objective => `<div class="mission-objective__meta">${escapeHtml(conditionSummary(objective))}</div>`).join('')}` : ''}
+                ${step.quests.filter(quest => quest.rewardId).map(quest => rewardHtml(quest.rewardId, auxiliary)).join('')}
             </div></details>`;
-        }).join('')}</div>`;
+        }).join('')}</div>${row.mission.rewardId ? `<div class="mission-description"><b>任务完成奖励</b>${rewardHtml(row.mission.rewardId, auxiliary)}</div>` : ''}`;
+        try {
+            const [tables, scripts, ownedScriptIds] = await Promise.all([ensureDialogue(), ensureMissionLevelScripts(row), missionOwnedScriptIds(row)]);
+            if (token !== state.renderToken || state.selectedId !== row.id) return;
+            const data = dialogueData(row, tables, scripts);
+            const groups = new Map(data.groups.map(group => [group.id, group]));
+            const stepByQuest = new Map(steps.flatMap((step, index) =>
+                [...(step.gapBefore || []), ...step.quests].map(quest => [quest.id, index])
+            ));
+            const unresolved = [];
+            const shownGroups = new Set();
+            const appendEvent = (html, stepIndex) => {
+                const target = Number.isInteger(stepIndex) ? panel.querySelector(`[data-mission-step="${stepIndex}"] .mission-quest__body`) : null;
+                if (target) target.insertAdjacentHTML('beforeend', html);
+                else unresolved.push(html);
+            };
+            [...missionClientEvents(row), ...missionScriptEvents(row, scripts, ownedScriptIds)].forEach(event => {
+                const group = groups.get(event.id);
+                if (group) {
+                    if (shownGroups.has(group.id)) return;
+                    shownGroups.add(group.id);
+                    appendEvent(renderMissionEvent(event, groups, auxiliary), group.stepOrder);
+                    return;
+                }
+                const anchors = [...new Set(event.questAnchors.map(id => stepByQuest.get(id)).filter(Number.isInteger))];
+                appendEvent(renderMissionEvent(event, groups, auxiliary), anchors.length === 1 ? anchors[0] : null);
+            });
+            data.groups.filter(group => !shownGroups.has(group.id)).forEach(group =>
+                appendEvent(renderDialogueGroup(group), group.stepOrder)
+            );
+            if (unresolved.length) panel.insertAdjacentHTML('beforeend', `<section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">未定位到具体步骤的剧情</h2></header>${unresolved.join('')}</section>`);
+            bindDialogueActions(panel, data, () => renderQuestPanel(row, panel, token));
+            panel.querySelectorAll('[data-mission-step]').forEach((details, index) => {
+                const step = steps[index];
+                const questIds = new Set(step.quests.map(quest => quest.id));
+                if (!scripts.some(entry => actionNodes(entry.script).some(action =>
+                    actionType(action) === 'OnQuestStateChanged' && questIds.has(String(valueOf(action._filtedQuestId) || ''))
+                ))) return;
+                const load = async () => {
+                    if (!details.open || details.dataset.enemyLoaded) return;
+                    details.dataset.enemyLoaded = 'loading';
+                    const target = details.querySelector('.mission-quest__body');
+                    const marker = document.createElement('div');
+                    marker.className = 'mission-objective__meta';
+                    marker.textContent = '正在读取敌人配置…';
+                    target.append(marker);
+                    try {
+                        const enemies = await stepEnemies(row, step, scripts);
+                        if (token === state.renderToken && details.isConnected) {
+                            const html = renderStepEnemies(enemies, auxiliary);
+                            if (html) marker.innerHTML = html;
+                            else marker.remove();
+                        }
+                        details.dataset.enemyLoaded = 'done';
+                    } catch (error) {
+                        details.dataset.enemyLoaded = '';
+                        if (details.isConnected) marker.textContent = '敌人配置暂不可用';
+                        console.warn(`任务 ${row.id} 的敌人配置加载失败。`, error);
+                    }
+                };
+                details.addEventListener('toggle', load);
+                if (details.open) load();
+            });
+        } catch (error) {
+            console.warn(`任务 ${row.id} 的剧情事件加载失败。`, error);
+            if (token === state.renderToken && panel.isConnected) {
+                panel.insertAdjacentHTML('beforeend', '<div class="ake-ui-state" data-state="error">相关剧情暂时无法加载。</div>');
+            }
+        }
     }
 
-    function collectRuntimeDialogueRefs(mission) {
+    function visitDialogueRefs(value, add) {
+        const dialogId = value?._dialogId?.constValue || value?.dialogId;
+        const radioId = value?._radioId?.constValue;
+        if (dialogId && String(dialogId).startsWith('dlg_')) add('dialog', dialogId);
+        if (value?.snsDialogId) add('sns', value.snsDialogId);
+        if (dialogId && String(dialogId).startsWith('sns_')) add('sns', dialogId);
+        if (radioId) add('radio', radioId);
+    }
+
+    function collectRuntimeDialogueRefs(mission, scriptEntries = []) {
         const refs = { dialog: new Set(), sns: new Set(), radio: new Set(), order: new Map() };
         let sequence = 0;
         const add = (kind, id) => {
@@ -635,16 +1013,21 @@
             refs[kind].add(normalized);
             if (!refs.order.has(normalized)) refs.order.set(normalized, sequence++);
         };
-        const inspect = value => {
-            const dialogId = value?._dialogId?.constValue || value?.dialogId;
-            const radioId = value?._radioId?.constValue;
-            if (dialogId && String(dialogId).startsWith('dlg_')) add('dialog', dialogId);
-            if (value?.snsDialogId) add('sns', value.snsDialogId);
-            if (dialogId && String(dialogId).startsWith('sns_')) add('sns', dialogId);
-            if (radioId) add('radio', radioId);
-        };
+        const inspect = value => visitDialogueRefs(value, add);
         questEntries(mission).forEach(quest => walk(quest, inspect));
         Object.entries(mission || {}).filter(([key]) => key !== 'questDic').forEach(([, value]) => walk(value, inspect));
+        const missionId = mission?.missionId;
+        scriptEntries.forEach(entry => {
+            const nodes = actionNodes(entry.script);
+            const hasQuest = nodes.some(action => mission?.questDic?.[valueOf(action?._filtedQuestId)]);
+            nodes.forEach(action => {
+                const dialogId = String(actionDialogId(action) || '');
+                const radioId = String(valueOf(action?._radioId) || '');
+                if (dialogId?.startsWith(`dlg_${missionId}_`) || (hasQuest && dialogId?.startsWith('dlg_'))) add('dialog', dialogId);
+                if (dialogId?.startsWith(`sns_${missionId}_`) || (hasQuest && dialogId?.startsWith('sns_'))) add('sns', dialogId);
+                if (radioId?.startsWith(`radio_${missionId}_`) || (hasQuest && radioId?.startsWith('radio_'))) add('radio', radioId);
+            });
+        });
         return refs;
     }
 
@@ -742,24 +1125,57 @@
         });
     }
 
+    function radioGroups(refs, tables) {
+        return Array.from(refs.radio).map(id => {
+            const row = tables.RadioTable?.[id];
+            const lines = [...(row?.radioSingleDataList || [])].sort((a, b) => Number(a.index || 0) - Number(b.index || 0)).map(line => ({
+                id: line.id, speaker: line.actorName?.text || line.actorNameId || '广播',
+                avatar: dialogueAvatar(line.actorNameId, tables), text: line.radioText?.text || '', audio: line.audioOverride || ''
+            }));
+            return { kind: 'radio', id, lines, missing: !row };
+        });
+    }
+
+    function questDialogueIds(quest) {
+        const ids = new Set();
+        walk(quest, value => visitDialogueRefs(value, (_, id) => ids.add(String(id))));
+        return ids;
+    }
+
     function dialogueData(row, tables, scriptEntries = []) {
-        const refs = collectRuntimeDialogueRefs(row.mission);
+        const refs = collectRuntimeDialogueRefs(row.mission, scriptEntries);
         const scriptFlow = levelScriptDialogFlow(scriptEntries);
         const standard = standardDialogGroups(row.id, row.mission, tables, refs, scriptFlow);
         const sns = snsDialogGroups(row.id, row.mission, tables, refs);
-        const groups = [...standard, ...sns].sort((a, b) => {
-            const aOrder = refs.order.get(a.id);
-            const bOrder = refs.order.get(b.id);
-            if (aOrder !== undefined && bOrder !== undefined) return aOrder - bOrder;
-            if (aOrder !== undefined) return -1;
-            if (bOrder !== undefined) return 1;
-            return naturalCompare(a.id, b.id);
+        const stepByQuest = new Map();
+        const directStages = new Map();
+        questFlow(row.mission).ordered.forEach((step, index) => {
+            const placement = { number: step.number, label: step.label, order: index };
+            [...(step.gapBefore || []), ...step.quests].forEach(quest => {
+                stepByQuest.set(quest.id, placement);
+                questDialogueIds(quest).forEach(id => {
+                    if (!directStages.has(id)) directStages.set(id, new Map());
+                    directStages.get(id).set(index, placement);
+                });
+            });
         });
-        return { groups, radio: Array.from(refs.radio) };
+        const stages = new Map();
+        [...missionClientEvents(row), ...missionScriptEvents(row, scriptEntries)].forEach(event => {
+            if (!['dialog', 'sns', 'radio'].includes(event.kind)) return;
+            const steps = [...new Set(event.questAnchors.map(id => stepByQuest.get(id)).filter(Boolean))];
+            if (!stages.has(event.id)) stages.set(event.id, new Map());
+            steps.forEach(step => stages.get(event.id).set(step.label, step));
+        });
+        const groups = [...standard, ...sns, ...radioGroups(refs, tables)].map(group => {
+            const linked = [...(directStages.get(group.id)?.values() || stages.get(group.id)?.values() || [])];
+            const step = linked.length === 1 ? linked[0] : null;
+            return { ...group, stepNumber: step?.number ?? null, stepLabel: step?.label || '', stepOrder: step?.order ?? Infinity };
+        }).sort((a, b) => a.stepOrder - b.stepOrder || naturalCompare(a.id, b.id));
+        return { groups };
     }
 
     function renderDialogueLine(line) {
-        return `<div class="mission-dialog-line${line.avatar ? ' has-avatar' : ''}">${line.avatar ? `<img class="mission-dialog-line__avatar" src="${escapeHtml(line.avatar)}" alt="" loading="lazy">` : ''}<div class="mission-dialog-line__speaker">${escapeHtml(line.speaker)}</div><div class="mission-dialog-line__text">${line.text ? richText(line.text) : '<span class="ake-ui-muted">（空台词）</span>'}${line.hint ? `<div class="mission-objective__meta">${richText(line.hint)}</div>` : ''}</div><div class="mission-dialog-line__id">${escapeHtml(line.id)}${line.audio ? ` · ${escapeHtml(line.audio)}` : ''}</div></div>`;
+        return `<div class="mission-dialog-line${line.avatar ? ' has-avatar' : ''}">${line.avatar ? `<img class="mission-dialog-line__avatar" src="${escapeHtml(line.avatar)}" alt="" loading="lazy">` : ''}<div class="mission-dialog-line__speaker">${escapeHtml(line.speaker)}</div><div class="mission-dialog-line__text">${line.text ? richText(line.text) : '<span class="ake-ui-muted">（空台词）</span>'}${line.hint ? `<div class="mission-objective__meta">${richText(line.hint)}</div>` : ''}</div>${state.showHidden ? `<div class="mission-dialog-line__id">${escapeHtml(line.id)}${line.audio ? ` · ${escapeHtml(line.audio)}` : ''}</div>` : ''}</div>`;
     }
 
     function snsChoiceState(groupId) {
@@ -803,16 +1219,17 @@
         const timeline = snsTimeline(group);
         const content = timeline.map(item => {
             if (item.kind === 'line') return renderDialogueLine(item.line);
-            return `<div class="mission-dialog-choice"><div class="mission-dialog-choice__label">选择任务选项</div><div class="mission-dialog-choice__buttons">${item.options.map(option => `<button class="mission-dialog-choice__button${option.id === item.selectedId ? ' is-selected' : ''}" type="button" data-sns-group="${escapeHtml(group.id)}" data-sns-content="${escapeHtml(item.contentId)}" data-sns-option="${escapeHtml(option.id)}" aria-pressed="${option.id === item.selectedId}">${richText(option.text || option.id)}</button>`).join('')}</div></div>`;
+            return `<div class="mission-dialog-choice"><div class="mission-dialog-choice__label">选择任务选项</div><div class="mission-dialog-choice__buttons">${item.options.map(option => `<button class="mission-dialog-choice__button${option.id === item.selectedId ? ' is-selected' : ''}" type="button" data-sns-group="${escapeHtml(group.id)}" data-sns-content="${escapeHtml(item.contentId)}" data-sns-option="${escapeHtml(option.id)}" aria-pressed="${option.id === item.selectedId}">${richText(option.text || (state.showHidden ? option.id : '未命名选项'))}</button>`).join('')}</div></div>`;
         }).join('');
-        return `<section class="mission-dialog-group"><h2 class="mission-dialog-group__title"><span class="ake-ui-badge">SNS 对话</span><code>${escapeHtml(group.id)}</code>${group.missing ? '<span class="ake-ui-badge">表中缺失</span>' : ''}</h2>${content || '<div class="mission-dialog-empty">找到了对话引用，但没有对应台词。</div>'}</section>`;
+        return `<section class="mission-dialog-group"><h2 class="mission-dialog-group__title"><span class="ake-ui-badge">SNS 对话</span>${state.showHidden ? `<code>${escapeHtml(group.id)}</code>` : ''}${group.missing ? '<span class="ake-ui-badge">表中缺失</span>' : ''}</h2>${content || '<div class="mission-dialog-empty">找到了对话引用，但没有对应台词。</div>'}</section>`;
     }
 
     function renderDialogueGroup(group) {
         if (group.kind === 'sns') return renderSnsDialogueGroup(group);
+        if (group.kind === 'radio') return `<section class="mission-dialog-group"><h2 class="mission-dialog-group__title"><span class="ake-ui-badge">广播</span>${state.showHidden ? `<code>${escapeHtml(group.id)}</code>` : ''}</h2>${group.lines.map(renderDialogueLine).join('') || '<div class="mission-dialog-empty">未找到广播台词。</div>'}</section>`;
         const summaries = (group.summaries || []).map(item => `<div class="mission-description">${richText(item.text)}</div>`).join('');
         const lines = group.lines.map(renderDialogueLine).join('');
-        const options = group.options.map(option => `<div class="mission-dialog-option">选择：${richText(option.text || option.id)} <small>${escapeHtml(option.id)}</small></div>`).join('');
+        const options = group.options.map(option => `<div class="mission-dialog-option">选择：${richText(option.text || (state.showHidden ? option.id : '未命名选项'))}${state.showHidden ? ` <small>${escapeHtml(option.id)}</small>` : ''}</div>`).join('');
         const specificTransitions = (group.transitions || []).filter(transition => transition.finishId >= 0);
         const maxFinishId = specificTransitions.reduce((max, transition) => Math.max(max, transition.finishId), -1);
         const optionGroup = [...(group.optionGroups || [])].reverse().find(item => item.options.length > maxFinishId);
@@ -821,39 +1238,70 @@
             const label = option?.text || (transition.finishId >= 0 ? `分支 ${transition.finishId + 1}` : '完成对话');
             const target = transition.targets[0] || '';
             const destination = transition.targets.length ? transition.targets.join(' / ') : '结束';
-            return `<button class="mission-dialog-choice__button" type="button"${target ? ` data-dialog-target="${escapeHtml(target)}"` : ' disabled'}>${richText(label)} <small>→ ${escapeHtml(destination)}</small></button>`;
+            return `<button class="mission-dialog-choice__button" type="button"${target ? ` data-dialog-target="${escapeHtml(target)}"` : ' disabled'}>${richText(label)} <small>→ ${state.showHidden ? escapeHtml(destination) : (target ? '下一段剧情' : '结束')}</small></button>`;
         }).join('');
         const flow = transitions ? `<div class="mission-dialog-choice"><div class="mission-dialog-choice__label">LevelScript 对话跳转</div><div class="mission-dialog-choice__buttons">${transitions}</div></div>` : '';
-        return `<section class="mission-dialog-group" id="mission-dialog-${escapeHtml(group.id)}"><h2 class="mission-dialog-group__title"><span class="ake-ui-badge">剧情对话</span><code>${escapeHtml(group.id)}</code>${group.missing ? '<span class="ake-ui-badge">表中缺失</span>' : ''}</h2>${summaries}${lines || '<div class="mission-dialog-empty">找到了对话引用，但没有对应台词。</div>'}${options}${flow}</section>`;
+        return `<section class="mission-dialog-group" id="mission-dialog-${escapeHtml(group.id)}"><h2 class="mission-dialog-group__title"><span class="ake-ui-badge">剧情对话</span>${state.showHidden ? `<code>${escapeHtml(group.id)}</code>` : ''}${group.missing ? '<span class="ake-ui-badge">表中缺失</span>' : ''}</h2>${summaries}${lines || '<div class="mission-dialog-empty">找到了对话引用，但没有对应台词。</div>'}${options}${flow}</section>`;
     }
 
-    function renderDialogueContent(data, panel) {
-        panel.innerHTML = data.groups.length || data.radio.length
-            ? `${data.groups.map(renderDialogueGroup).join('')}${data.radio.length ? `<section class="mission-dialog-group"><h2 class="mission-dialog-group__title"><span class="ake-ui-badge">广播</span></h2>${data.radio.map(id => `<div class="mission-dialog-empty">${escapeHtml(id)}<br><small>运行时包含播放广播动作，当前 TableCfg 没有独立广播台词表。</small></div>`).join('')}</section>` : ''}`
-            : '<div class="mission-dialog-empty">没有找到与该任务关联的剧情对话、SNS 对话或广播。<br><small>任务流程和 Objective 仍可在“任务流程”中查看。</small></div>';
+    function renderMissionEvent(event, groups, auxiliary) {
+        const group = groups.get(event.id);
+        const position = event.position && ['x', 'y', 'z'].every(axis => Number.isFinite(Number(event.position[axis])))
+            ? ` · ${['x', 'y', 'z'].map(axis => Number(event.position[axis]).toFixed(1)).join(', ')}` : '';
+        const scene = auxiliary.LevelDescTable?.[event.sceneId]?.showName?.text || (state.showHidden ? event.sceneId : '场景');
+        const label = event.kind === 'cutscene' ? '剧情过场' : '引导教学';
+        const title = event.titleKey ? (state.textTable?.[event.titleKey]?.text || (state.showHidden ? event.titleKey : '')) : '';
+        const content = group ? renderDialogueGroup(group)
+            : `<div class="mission-dialog-group"><span class="ake-ui-badge">${label}</span>${title ? ` ${richText(title)}` : ''}${state.showHidden ? ` <code>${escapeHtml(event.id)}</code>` : ''}</div>`;
+        return `<div class="mission-objective__meta">${escapeHtml(scene)}${escapeHtml(position)}</div>${content}`;
+    }
+
+    function renderStepEnemies(enemies, auxiliary) {
+        const fixed = new Map();
+        enemies.fixed.forEach(enemy => {
+            const key = `${enemy.entityDataIdKey}:${enemy.level}`;
+            if (!enemy.entityDataIdKey) return;
+            if (!fixed.has(key)) fixed.set(key, { id: enemy.entityDataIdKey, level: enemy.level, count: 0 });
+            fixed.get(key).count++;
+        });
+        const waves = new Map();
+        enemies.waves.forEach(enemy => {
+            const key = `${enemy.configId}:${enemy.wave}:${enemy.id}:${enemy.level}`;
+            if (!waves.has(key)) waves.set(key, { ...enemy, count: 0 });
+            waves.get(key).count += enemy.count;
+        });
+        const totals = new Map();
+        [...fixed.values(), ...waves.values()].forEach(enemy => {
+            const key = `${enemy.id}:${enemy.level}`;
+            if (!totals.has(key)) totals.set(key, { id: enemy.id, level: enemy.level, count: 0 });
+            totals.get(key).count += enemy.count;
+        });
+        const entry = enemy => {
+            const name = auxiliary.EnemyTemplateDisplayInfoTable?.[enemy.id]?.name?.text || (state.showHidden ? enemy.id : '未命名敌人');
+            const link = window.AKEUI.entryLinkHtml({ plugin: 'v3_enemy', id: enemy.id, label: name, contentHtml: escapeHtml(name) });
+            return `${link} Lv.${escapeHtml(enemy.level ?? '?')} ×${escapeHtml(enemy.count)}`;
+        };
+        const parts = [];
+        if (totals.size) parts.push(`出现敌人：${[...totals.values()].map(entry).join('、')}`);
+        if (fixed.size) parts.push(`场景配置：${[...fixed.values()].map(entry).join('、')}`);
+        if (waves.size) parts.push(`刷怪配置：${[...waves.values()].map(enemy => `配置第${escapeHtml(enemy.wave)}波 ${entry(enemy)}`).join('、')}`);
+        return parts.join('<br>');
+    }
+
+    function bindDialogueActions(panel, data, refresh) {
         panel.querySelectorAll('[data-sns-option]').forEach(button => button.addEventListener('click', () => {
             const group = data.groups.find(item => item.kind === 'sns' && item.id === button.dataset.snsGroup);
             if (!group) return;
             selectSnsOption(group, button.dataset.snsContent, button.dataset.snsOption);
-            renderDialogueContent(data, panel);
+            refresh();
         }));
         panel.querySelectorAll('[data-dialog-target]').forEach(button => button.addEventListener('click', () => {
-            document.getElementById(`mission-dialog-${button.dataset.dialogTarget}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const target = document.getElementById(`mission-dialog-${button.dataset.dialogTarget}`);
+            if (!target) return;
+            const step = target.closest('[data-mission-step]');
+            if (step) step.open = true;
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }));
-    }
-
-    async function renderDialoguePanel(row, panel, token) {
-        let tables, scriptEntries;
-        try {
-            [tables, scriptEntries] = await Promise.all([ensureDialogue(), ensureMissionLevelScripts(row)]);
-        } catch (error) {
-            if (token !== state.renderToken) return;
-            panel.innerHTML = `<div class="ake-ui-state" data-state="error">对话表加载失败：${escapeHtml(error.message)}</div>`;
-            return;
-        }
-        if (token !== state.renderToken || state.selectedId !== row.id || state.activeTab !== 'dialogue') return;
-        const data = dialogueData(row, tables, scriptEntries);
-        renderDialogueContent(data, panel);
     }
 
     function renderActivePanel(row) {
@@ -861,8 +1309,7 @@
         if (!panel) return;
         const token = ++state.renderToken;
         panel.innerHTML = '<div class="ake-ui-state" data-state="loading"><p>正在加载数据…</p></div>';
-        if (state.activeTab === 'quests') renderQuestPanel(row, panel, token);
-        else renderDialoguePanel(row, panel, token);
+        renderQuestPanel(row, panel, token);
     }
 
     async function enrichDialogueSearch() {

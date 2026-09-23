@@ -1,0 +1,113 @@
+<section class="ake-ui-tool guide-image-generator" data-ake-view="guide-image-generator" data-misc-module="guide_image_generator" aria-labelledby="guideImageGeneratorTitle">
+    <header class="misc-icon-generator__header">
+        <h2 id="guideImageGeneratorTitle">兔头攻略图生成器（横/竖版）</h2>
+        <span id="guideImageGeneratorStatus" class="misc-icon-generator__status" role="status" aria-live="polite"></span>
+    </header>
+
+    <div class="misc-icon-generator__workspace">
+        <div class="misc-icon-generator__controls">
+            <section class="misc-icon-generator__control-section">
+                <h3>输出设置</h3>
+                <div class="ake-ui-form-row">
+                    <label for="guideImageMode">版式</label>
+                    <select id="guideImageMode" class="ake-ui-control ake-ui-control--select">
+                        <option value="horizontal">横版攻略图</option>
+                        <option value="vertical">竖版攻略图</option>
+                    </select>
+                </div>
+                <div class="ake-ui-form-row">
+                    <label for="guideImageTitle">竖版标题（可选）</label>
+                    <input id="guideImageTitle" class="ake-ui-control" type="text" maxlength="80" placeholder="留空则不显示顶部标题">
+                </div>
+                <div class="ake-ui-form-row">
+                    <label for="guideImageBackground">背景色</label>
+                    <input id="guideImageBackground" class="ake-ui-control" type="color" value="#eeeeee">
+                </div>
+                <div id="guideImageLayoutFields"></div>
+            </section>
+
+            <section class="misc-icon-generator__control-section">
+                <h3>干员信息</h3>
+                <div class="ake-ui-form-row">
+                    <label for="guideImageCharacter">选择干员</label>
+                    <select id="guideImageCharacter" class="ake-ui-control ake-ui-control--select"></select>
+                </div>
+                <div class="ake-ui-form-row">
+                    <label for="guideImageCharacterName">显示名称</label>
+                    <input id="guideImageCharacterName" class="ake-ui-control" type="text" maxlength="40">
+                </div>
+                <div class="ake-ui-form-row">
+                    <label for="guideImageDescription">简介</label>
+                    <textarea id="guideImageDescription" class="ake-ui-control" rows="3" maxlength="500"></textarea>
+                </div>
+            </section>
+
+            <section class="misc-icon-generator__control-section">
+                <h3>技能与推荐</h3>
+                <div id="guideImageSkills"></div>
+                <div id="guideImageWeapons"></div>
+                <div id="guideImageEquips"></div>
+            </section>
+
+            <section class="misc-icon-generator__control-section">
+                <h3>潜能收益</h3>
+                <div class="ake-ui-form-row">
+                    <label for="guideImagePotentialLabels">阶段标签</label>
+                    <input id="guideImagePotentialLabels" class="ake-ui-control" type="text" value="0潜,1潜,2潜,3潜,4潜,5潜,5+6潜">
+                </div>
+                <div class="ake-ui-form-row">
+                    <label for="guideImagePotentialValues">数值</label>
+                    <input id="guideImagePotentialValues" class="ake-ui-control" type="text" value="100,110,115,115,119,134,163">
+                </div>
+                <div class="ake-ui-form-row">
+                    <label for="guideImagePotentialNote">说明</label>
+                    <input id="guideImagePotentialNote" class="ake-ui-control" type="text" value="数值可按实际攻略内容修改">
+                </div>
+            </section>
+
+            <section class="misc-icon-generator__control-section">
+                <h3>队伍配装（竖版）</h3>
+                <div id="guideImageTeam"></div>
+                <div class="ake-ui-form-row">
+                    <label for="guideImageTeamNote">队伍说明</label>
+                    <textarea id="guideImageTeamNote" class="ake-ui-control" rows="3" maxlength="300">可在这里补充队伍循环、装备选择和使用说明。</textarea>
+                </div>
+            </section>
+
+            <section class="misc-icon-generator__control-section">
+                <h3>分布图（横版）</h3>
+                <div class="ake-ui-form-row">
+                    <label for="guideImageRatio">倍率分布</label>
+                    <input id="guideImageRatio" class="ake-ui-control" type="text" value="大招:0,战技:54.3,连携:16.55,普攻:29.15">
+                </div>
+                <div class="ake-ui-form-row">
+                    <label for="guideImageDamage">伤害分布</label>
+                    <input id="guideImageDamage" class="ake-ui-control" type="text" value="大招:0,战技:65.87,连携:13.2,普攻:20.93">
+                </div>
+            </section>
+
+            <div class="ake-ui-form-row">
+                <button id="guideImageLayoutToggle" class="ake-ui-button ake-ui-button--secondary" type="button">布局模式</button>
+                <button id="guideImageLayoutReset" class="ake-ui-button ake-ui-button--secondary" type="button">重置布局</button>
+                <button id="guideImageExport" class="ake-ui-button" type="button">导出 PNG</button>
+                <button id="guideImageSave" class="ake-ui-button ake-ui-button--secondary" type="button">导出配置</button>
+                <button id="guideImageLoad" class="ake-ui-button ake-ui-button--secondary" type="button">导入配置</button>
+                <input id="guideImageConfigInput" type="file" accept="application/json,.json" hidden>
+            </div>
+        </div>
+
+        <section class="misc-icon-generator__preview" aria-labelledby="guideImagePreviewLabel">
+            <div class="misc-icon-generator__preview-heading">
+                <span id="guideImagePreviewLabel">预览</span>
+                <strong id="guideImageDimensions"></strong>
+            </div>
+            <div class="misc-icon-generator__canvas-stage">
+                <div class="guide-image-preview-wrap">
+                    <canvas id="guideImageCanvas" width="1920" height="1080" role="img" aria-label="攻略图预览"></canvas>
+                    <div id="guideImageLayoutOverlay" hidden></div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+<script src="/plugin/js/misc-guide-image-generator.js"></script>

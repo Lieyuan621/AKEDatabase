@@ -48,6 +48,29 @@
         )).join('')}</div>`;
     }
 
+    function renderModifierSources(groups, formatSummary, getLabel) {
+        const rows = groups.map(([key, modifiers]) => {
+            const summary = formatSummary(modifiers);
+            return summary ? `<div class="ake-ui-card__meta"><span class="ake-ui-badge" data-tone="muted">${escapeHtml(getLabel(key))}</span><span class="ake-ui-card__body">${summary}</span></div>` : '';
+        }).join('');
+        return rows ? `<div class="ake-ui-card__content v2cc-current-buffs">${rows}</div>` : '';
+    }
+
+    function summarizeModifiers(modifiers, getAttrName) {
+        return window.AKEStats.combineModifiers(modifiers)
+            .filter(modifier => !LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES.includes(modifier.attrType))
+            .map(modifier => {
+                const name = getAttrName(modifier.attrType);
+                const directMultiplier = modifier.modifierType === 4 || modifier.modifierType === 8;
+                const multiplier = directMultiplier || modifier.modifierType === 1 || modifier.modifierType === 6;
+                const value = directMultiplier ? modifier.attrValue - 1 : modifier.attrValue;
+                const display = multiplier
+                    ? `${value > 0 ? '+' : ''}${(value * 100).toFixed(1)}%`
+                    : `${value > 0 ? '+' : ''}${Number.isInteger(value) ? value : Number(value.toFixed(4))}`;
+                return `${escapeHtml(name)} ${display}`;
+            }).join(', ');
+    }
+
     function renderCard(options) {
         const flags = (options.flags || []).filter(Boolean);
         const nickname = options.nickname && options.nickname !== options.name ? options.nickname : '';
@@ -92,6 +115,8 @@
     window.AKEEnemyRenderer = Object.freeze({
         LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES,
         calculateStats,
+        renderModifierSources,
+        summarizeModifiers,
         renderCard
     });
 })();
