@@ -1301,7 +1301,6 @@
                 stripUrl() {
                     history.replaceState(null, '', window.location.pathname);
                 },
-                normalizeModuleId: normalizeModuleRouteId,
                 entryUrl,
                 entryAttributes
             };

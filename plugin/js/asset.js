@@ -433,7 +433,7 @@
         label.appendChild(labelTextNode);
         const countNode = document.createElement('span');
         countNode.className = 'ake-ui-tree__group-count';
-        countNode.textContent = String(count);
+        countNode.textContent = t('directory.groupCount', { count }, `${count} 项`);
         toggle.append(label, countNode);
 
         const content = document.createElement('div');
@@ -470,17 +470,9 @@
     }
 
     function updateSidebarMeta() {
-        if (state.query) {
-            elements.sidebarMeta.textContent = state.searchLimited
-                ? t('directory.resultLimit', { count: SEARCH_RESULT_LIMIT }, `仅显示前 ${SEARCH_RESULT_LIMIT} 项`)
-                : t('counts.results', { count: state.searchResults.length }, `找到 ${state.searchResults.length} 项`);
-            elements.sidebarMeta.removeAttribute('title');
-            return;
-        }
         if (state.index) {
             const value = `${t('schema', null, 'schema')} ${state.index.schemaVersion} · ${t('revision', null, 'revision')} ${state.index.revision}`;
             elements.sidebarMeta.textContent = value;
-            elements.sidebarMeta.title = value;
         }
     }
 
@@ -564,6 +556,11 @@
         heading.textContent = t('directory.searchResults', null, '搜索结果');
         const count = document.createElement('span');
         count.textContent = state.searchLimited ? `${SEARCH_RESULT_LIMIT}+` : String(state.searchResults.length);
+        if (state.searchLimited) {
+            const limitLabel = t('directory.resultLimit', { count: SEARCH_RESULT_LIMIT }, `仅显示前 ${SEARCH_RESULT_LIMIT} 项`);
+            count.title = limitLabel;
+            count.setAttribute('aria-label', limitLabel);
+        }
         header.append(heading, count);
         target.appendChild(header);
 
