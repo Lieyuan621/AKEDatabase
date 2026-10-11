@@ -11,7 +11,6 @@
     <link rel="stylesheet" id="guide-image-generator-style">
     <link rel="stylesheet" id="asset-style">
     <link rel="stylesheet" id="model-viewer-style">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
     <div class="app">
@@ -23,6 +22,7 @@
                     <span class="brand-badge">Wiki</span>
                 </span>
             </div>
+            <nav id="specialModulesTop" aria-label="搜索" data-i18n-aria-label="modules.search.title" data-ake-shell-part hidden></nav>
             <div class="module-list" id="moduleListContainer" data-ake-shell-part hidden>
                 <div class="ake-ui-state" data-state="loading" data-density="compact" data-indicator="none" data-visibility="assistive" data-i18n="nav.loadingModules">加载模块清单...</div>
             </div>
@@ -284,13 +284,27 @@
             if (navigationIsReady()) void revealNavigationShell();
             shellRevealTimer = setTimeout(() => void revealNavigationShell({ waitForImages: false }), 5000);
 
-            let version = null;
-            try {
-                const response = await fetch(`/version.json?t=${Date.now()}`, { cache: 'no-store' });
-                if (response.ok) version = await response.json();
-            } catch (error) {
-                console.warn('无法读取 version.json，将使用无版本启动资源。', error);
-            }
+            const requestedRefresh = new URLSearchParams(location.search).get('t');
+            window.__akeBootstrapVersionPromise = (async () => {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 10000);
+                try {
+                    const url = new URL('/version.json', location.href);
+                    if (requestedRefresh) url.searchParams.set('t', requestedRefresh);
+                    const response = await fetch(url.href, {
+                        cache: requestedRefresh ? 'no-store' : 'default',
+                        signal: controller.signal
+                    });
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    return await response.json();
+                } catch (error) {
+                    console.warn('无法读取 version.json，将使用无版本启动资源。', error);
+                    return null;
+                } finally {
+                    clearTimeout(timeout);
+                }
+            })();
+            const version = await window.__akeBootstrapVersionPromise;
             window.__akeBootstrapVersion = version;
             const isPreRelease = String(version?.appversion || '').toLowerCase().includes('pre');
             document.documentElement.classList.toggle('ake-pre-release', isPreRelease);
@@ -334,7 +348,6 @@
                 watermark.style.backgroundImage = `url("data:image/svg+xml,${encodeURIComponent(svgSource)}")`;
                 document.body.appendChild(watermark);
             }
-            const requestedRefresh = new URLSearchParams(location.search).get('t');
             const refreshTimestamp = version?.debugmode === true ? String(Date.now()) : requestedRefresh;
             window.__akeForceRefreshTimestamp = refreshTimestamp || '';
             const jsVersionStorageKey = 'akedata-js-versions';
@@ -362,7 +375,6 @@
                 if (refreshTimestamp) url.searchParams.set('t', refreshTimestamp);
                 return url.href;
             };
-            const resourceCache = refreshTimestamp ? 'no-store' : 'force-cache';
             const baseLink = document.getElementById('base-style');
             if (baseLink) {
                 baseLink.addEventListener('load', releaseStyleGate, { once: true });
@@ -372,17 +384,7 @@
                 releaseStyleGate();
             }
             const themeLink = document.getElementById('theme-style');
-            let themePreload = Promise.resolve();
-            if (themeLink) {
-                const themeUrl = resourceUrl('/theme/light.css');
-                themePreload = fetch(themeUrl, { cache: resourceCache }).then(async themeResponse => {
-                    if (!themeResponse.ok) throw new Error(`HTTP ${themeResponse.status}`);
-                    await themeResponse.text();
-                }).catch(error => {
-                    console.warn('无法预加载默认主题样式。', error);
-                });
-                themeLink.removeAttribute('href');
-            }
+            if (themeLink) themeLink.removeAttribute('href');
             const guideImageLink = document.getElementById('guide-image-generator-style');
             if (guideImageLink) guideImageLink.href = resourceUrl('/theme/guide-image-generator.css');
             const assetLink = document.getElementById('asset-style');
@@ -413,11 +415,11 @@
             try {
                 const scripts = [
                     '/plugin/js/ake-image-fallback.js',
+                    '/plugin/js/ake-data-source.js',
                     '/plugin/js/index-parse-fallback.js',
                     '/plugin/js/i18n.js',
                     '/plugin/js/ake-ui.js',
                     '/plugin/js/toast.js',
-                    '/plugin/js/ake-data-source.js',
                     '/plugin/js/ake-cache.js',
                     '/plugin/js/ake-data-worker.js',
                     '/plugin/js/ake-data-loader.js',
@@ -425,12 +427,14 @@
                     '/plugin/js/sidebar-resize.js',
                     '/plugin/js/module-view-state.js',
                     '/plugin/js/v3-table-data.js',
-                    '/plugin/js/ake-renderer.js',
-                    '/plugin/js/ake-model-viewer.js',
                     '/plugin/js/index-app.js'
                 ];
-                scripts.forEach(src => scriptSources.set(src, prefetchScript(src)));
-                await Promise.all([themePreload, ...scriptSources.values()]);
+                scripts.forEach(src => {
+                    const pending = prefetchScript(src);
+                    // Later downloads can fail before execution reaches them.
+                    pending.catch(() => {});
+                    scriptSources.set(src, pending);
+                });
                 for (const src of scripts) await loadScript(src, scriptSources.get(src));
             } catch (error) {
                 releaseStyleGate();

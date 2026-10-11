@@ -1,10 +1,26 @@
 # Special Announcement
 
-AKEData `v1.2.21` is now available. This release improves the guide image generator, refreshes the home page and Assets directory layout, and fixes raw attribute overrides in shared stat calculations.
+AKEData `v1.3.0` is now available. This major update to loading and navigation introduces faster home page startup, background module preloading, longer cache reuse, and global search to make finding data and switching modules easier.
 
 AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redirects here.
 
 # AKEData Version Changelog
+
+### v1.3.0
+
+#### Loading and navigation
+
+- Reduced sequential waits for version metadata and scripts so the home page and navigation can appear sooner.
+- Load larger dependencies, including model rendering and image export libraries, on demand instead of during home page startup.
+- After the page finishes loading, preload non-hidden module pages and scripts one at a time during idle periods, including Misc submodules. Preloading pauses while foreground content is loading; scripts run only when a module is opened.
+- Reuse local data and browser caches. Versioned TableCfg files, images, and static resources now have a browser cache lifetime of 180 days to reduce repeated downloads.
+- Unified CDN cache policies for the production and beta sites. Fixed stale data manifests being cached too long, while retaining short metadata cache lifetimes and force refresh support.
+
+#### Global search
+
+- Added a search box at the top of the sidebar. Search automatically by name or text, with support for IME composition.
+- Results are grouped by module and entry, with direct navigation for confirmed matches.
+- Unresolved results retain diagnostic hints instead of treating candidate modules as confirmed matches. Hidden-content and access-token restrictions remain in effect.
 
 ### v1.2.21
 

@@ -1200,10 +1200,6 @@
                 setStatus(actionText('没有可导出的配方链', 'No recipe flow to export'), 'error');
                 return;
             }
-            if (typeof window.html2canvas !== 'function') {
-                setStatus(actionText('PNG 导出组件未加载', 'PNG export library is unavailable'), 'error');
-                return;
-            }
 
             const width = number(sourceCanvas.dataset.recipeFlowBaseWidth, 0);
             const height = number(sourceCanvas.dataset.recipeFlowBaseHeight, 0);
@@ -1231,9 +1227,11 @@
             host.appendChild(graph);
             document.body.appendChild(host);
             try {
+                const html2canvas = await window.akeLoadHtml2Canvas();
+                if (context.signal.aborted) return;
                 await waitForGraphImages(graph);
                 const area = width * height;
-                const rendered = await window.html2canvas(graph, {
+                const rendered = await html2canvas(graph, {
                     scale: area > 12000000 ? 1 : 2,
                     width,
                     height,

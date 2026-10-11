@@ -18,6 +18,32 @@
             const bootstrapVersion = window.__akeBootstrapVersion || {};
             const configuredPluginVersions = bootstrapVersion.pluginversion || {};
             const configuredJsVersions = bootstrapVersion.jsversion || {};
+            let html2canvasPromise = null;
+            window.akeLoadHtml2Canvas = function () {
+                if (typeof window.html2canvas === 'function') return Promise.resolve(window.html2canvas);
+                if (!html2canvasPromise) {
+                    html2canvasPromise = new Promise((resolve, reject) => {
+                        const script = document.createElement('script');
+                        const finish = error => {
+                            clearTimeout(timeout);
+                            script.onload = script.onerror = null;
+                            if (error) {
+                                script.remove();
+                                reject(error);
+                            } else resolve(window.html2canvas);
+                        };
+                        const timeout = setTimeout(() => finish(new Error('PNG export library request timed out')), 15000);
+                        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                        script.onload = () => finish(typeof window.html2canvas === 'function' ? null : new Error('PNG export library is unavailable'));
+                        script.onerror = () => finish(new Error('PNG export library could not be loaded'));
+                        document.head.appendChild(script);
+                    }).catch(error => {
+                        html2canvasPromise = null;
+                        throw error;
+                    });
+                }
+                return html2canvasPromise;
+            };
             const HIDDEN_MODULE_MARKER_ICON = '<svg viewBox="0 0 24 24" focusable="false"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>';
             const EXPORT_COLOR_FUNCTION_PATTERN = /\bcolor\([^()]*\)/gi;
 
@@ -241,7 +267,10 @@
             function buildMobileMenu() {
                 if (!mobileMenuList) return false;
                 const visibleModules = filterModules(allModules);
-                const sorted = sortModulesByPriority(visibleModules);
+                const sorted = [
+                    ...sortModulesByPriority(allModules.filter(m => m.special === 'top' && isModuleUnlocked(m))),
+                    ...sortModulesByPriority(visibleModules)
+                ];
                 mobileMenuList.innerHTML = '';
                 sorted.forEach(mod => {
                     const item = document.createElement('div');
@@ -486,7 +515,12 @@
 
             function renderDataSourceSettings() {
                 const dataState = window.akeDataSource?.getState?.();
-                if (!dataState || !modalDataVersionSelect || !modalDataBaseUrl) return;
+                if (!modalDataVersionSelect || !modalDataBaseUrl) return;
+                if (!dataState) {
+                    modalDataVersionSelect.disabled = true;
+                    modalDataBaseUrl.disabled = true;
+                    return;
+                }
                 modalDataBaseUrl.value = dataState.baseUrl;
                 modalDataBaseUrl.disabled = Boolean(dataState.debugMode);
                 modalDataVersionSelect.disabled = Boolean(dataState.debugMode);
@@ -512,6 +546,10 @@
                         ? tr('settings.dataSource.debugLocal', null, '调试模式已启用，强制使用当前本地服务器数据')
                         : dataState.manifestSource === 'network'
                         ? tr('settings.dataSource.online', null, '版本清单已从数据服务加载')
+                        : dataState.manifestSource === 'recent-cache'
+                        ? tr('settings.dataSource.cached', null, '正在使用最近获取的版本清单')
+                        : dataState.manifestSource === 'cache'
+                        ? tr('settings.dataSource.stale', null, '数据服务暂时不可用，正在使用上次的版本清单')
                         : tr('settings.dataSource.fallback', null, '当前正在使用兼容版本配置');
                     dataSourceStatus.textContent = `${sourceText} · ${dataState.baseUrl}`;
                 }
@@ -728,6 +766,92 @@
                 return scriptSourceCache.get(cacheKey);
             }
 
+            function getModuleSource(module) {
+                const versionKey = module.versionKey || module.id;
+                const currentVersion = configuredPluginVersions[versionKey] || bootstrapVersion.appversion || '';
+                const cacheKey = `${module.id}|${canonicalResourceUrl(module.contentFile)}|${currentVersion}`;
+                if (!moduleHtmlCache.has(cacheKey)) {
+                    moduleHtmlCache.set(cacheKey, fetchVersionedResource(
+                        module.contentFile,
+                        currentVersion,
+                        storedPluginVersions,
+                        changedPluginVersions,
+                        pluginVersionStorageKey,
+                        versionKey
+                    ).then(response => {
+                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                        return response.text();
+                    }).catch(error => {
+                        moduleHtmlCache.delete(cacheKey);
+                        throw error;
+                    }));
+                }
+                return moduleHtmlCache.get(cacheKey);
+            }
+
+            async function waitForModulePreloadIdle() {
+                do {
+                    await new Promise(resolve => {
+                        if (window.requestIdleCallback) window.requestIdleCallback(resolve, { timeout: 1000 });
+                        else setTimeout(resolve, 200);
+                    });
+                    const stats = window.akeDataLoader?.getStats?.();
+                    if (!document.hidden && !stats?.active && !stats?.queued &&
+                        !contentArea.querySelector('.ake-ui-state[data-state="loading"]')) return;
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                } while (true);
+            }
+
+            async function preloadVisibleModules() {
+                if (document.readyState !== 'complete') {
+                    await new Promise(resolve => window.addEventListener('load', resolve, { once: true }));
+                }
+                const scripts = new Set();
+                const queue = [...allModules];
+                for (const module of queue) {
+                    if (module.hidden || module.disabled || !isModuleUnlocked(module)) continue;
+                    await waitForModulePreloadIdle();
+                    let html;
+                    try {
+                        html = await getModuleSource(module);
+                    } catch (error) {
+                        console.warn(`模块 ${module.id} 后台预加载失败，打开时将重试。`, error);
+                        continue;
+                    }
+                    const template = document.createElement('template');
+                    template.innerHTML = html;
+                    for (const script of template.content.querySelectorAll('script[src]')) {
+                        const src = new URL(script.getAttribute('src'), window.location.href).href;
+                        if (scripts.has(src)) continue;
+                        await waitForModulePreloadIdle();
+                        try {
+                            await getScriptSource(src);
+                            scripts.add(src);
+                        } catch (error) {
+                            console.warn(`脚本 ${src} 后台预加载失败，打开模块时将重试。`, error);
+                        }
+                    }
+                    if (module.id === 'misc') {
+                        await waitForModulePreloadIdle();
+                        try {
+                            const manifest = JSON.parse(await getModuleSource({
+                                id: 'misc/manifest', versionKey: 'misc', contentFile: '/plugin/misc/manifest.json'
+                            }));
+                            if (!Array.isArray(manifest)) throw new Error('Invalid misc module manifest');
+                            for (const child of manifest) {
+                                if (!child?.id || !child.contentFile || child.hidden || child.disabled) continue;
+                                const url = new URL(child.contentFile, window.location.href);
+                                if (url.origin !== window.location.origin || !url.pathname.startsWith('/plugin/misc/') ||
+                                    !url.pathname.endsWith('.html')) continue;
+                                queue.push({ ...child, id: `misc/${child.id}`, versionKey: 'misc' });
+                            }
+                        } catch (error) {
+                            console.warn('杂项子模块后台预加载失败，打开时将重试。', error);
+                        }
+                    }
+                }
+            }
+
             async function executeModuleScript(sourceScript, prefetchedSource) {
                 const script = document.createElement('script');
                 Array.from(sourceScript.attributes).forEach(attr => {
@@ -774,25 +898,9 @@
                     message: firstLoadTextTableHint()
                 });
                 try {
-                    const currentVersion = configuredPluginVersions[module.id] || bootstrapVersion.appversion || '';
-                    const cacheKey = `${module.id}|${canonicalResourceUrl(module.contentFile)}|${currentVersion}`;
-                    if (!moduleHtmlCache.has(cacheKey)) {
-                        moduleHtmlCache.set(cacheKey, fetchVersionedResource(
-                            module.contentFile,
-                            currentVersion,
-                            storedPluginVersions,
-                            changedPluginVersions,
-                            pluginVersionStorageKey,
-                            module.id
-                        ).then(response => {
-                            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                            return response.text();
-                        }).catch(error => {
-                            moduleHtmlCache.delete(cacheKey);
-                            throw error;
-                        }));
-                    }
-                    const html = await moduleHtmlCache.get(cacheKey);
+                    const html = await getModuleSource(module);
+                    // The navigation shell is independent; module adapters need a fixed data snapshot.
+                    await window.akeDataSource?.ready;
                     if (generation !== moduleLoadGeneration) return false;
                     const template = document.createElement('template');
                     template.innerHTML = html;
@@ -838,7 +946,7 @@
             }
 
             function filterModules(modules) {
-                let filtered = modules.filter(m => m.id !== 'settings');
+                let filtered = modules.filter(m => !m.special && m.id !== 'settings');
                 if (!config.showHidden) {
                     filtered = filtered.filter(m => !m.hidden);
                 }
@@ -849,9 +957,67 @@
             function applyFilterAndRender() {
                 if (!modulesReady) return;
                 const visibleModules = filterModules(allModules);
+                const topModules = allModules.filter(m => m.special === 'top' && !m.disabled && isModuleUnlocked(m));
+                const topNavigation = document.getElementById('specialModulesTop');
+                const searchDraft = document.getElementById('sidebarSearchInput')?.value ?? '';
+                topNavigation.replaceChildren(...topModules.map(mod => {
+                    if (mod.id === 'search') {
+                        const form = document.createElement('form');
+                        form.className = 'ake-ui-directory__search ake-module-search-row';
+                        form.setAttribute('role', 'search');
+                        const input = document.createElement('input');
+                        input.id = 'sidebarSearchInput';
+                        input.type = 'search';
+                        input.className = 'ake-ui-input';
+                        input.autocomplete = 'off';
+                        input.value = searchDraft;
+                        input.placeholder = tr('modules.search.placeholder');
+                        input.setAttribute('aria-label', tr('modules.search.title'));
+                        const submit = document.createElement('button');
+                        submit.type = 'submit';
+                        submit.className = 'ake-ui-icon-button';
+                        const icon = document.createElement('img');
+                        icon.className = 'sidebar-tool-icon';
+                        icon.src = '/public/images/assets/beyond/dynamicassets/gameplay/ui/prefabs/common/common_search_icon.png';
+                        icon.alt = '';
+                        icon.setAttribute('aria-hidden', 'true');
+                        icon.setAttribute('data-no-image-fallback', '');
+                        submit.append(icon);
+                        submit.setAttribute('aria-label', tr('modules.search.submit'));
+                        form.append(submit, input);
+                        form.addEventListener('submit', async event => {
+                            event.preventDefault();
+                            const query = input.value.trim();
+                            window.__akePendingSearchQuery = query;
+                            try {
+                                const loaded = await loadModuleContent(mod);
+                                if (!loaded) return;
+                                activeModuleId = mod.id;
+                                document.querySelectorAll('.module-item').forEach(item => item.classList.remove('active'));
+                                syncModuleNavigation(mod.id, loaded);
+                                window.__akeSearchController?.search(query);
+                            } finally {
+                                if (window.__akePendingSearchQuery === query) delete window.__akePendingSearchQuery;
+                            }
+                        });
+                        return form;
+                    }
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.className = 'module-item ake-ui-button';
+                    button.dataset.id = mod.id;
+                    const title = document.createElement('span');
+                    title.className = 'module-title';
+                    const label = document.createElement('span');
+                    label.className = 'module-name';
+                    label.textContent = translateModuleField(mod, 'title');
+                    title.append(label);
+                    button.append(title);
+                    return button;
+                }));
                 renderModuleList(visibleModules);
                 if (activeModuleId) {
-                    const stillVisible = visibleModules.some(m => m.id === activeModuleId);
+                    const stillVisible = [...visibleModules, ...topModules].some(m => m.id === activeModuleId);
                     if (!stillVisible) {
                         showHomePage();
                     } else {
@@ -862,12 +1028,8 @@
             }
 
             function renderModuleList(modulesArray) {
-                if (!modulesArray || modulesArray.length === 0) {
-                    moduleListEl.innerHTML = `<div class="ake-ui-state" data-state="empty" data-density="compact">${tr('nav.noVisibleModules')}</div>`;
-                    return;
-                }
-                const sorted = sortModulesByPriority(modulesArray);
-                let html = '';
+                const sorted = sortModulesByPriority(modulesArray || []);
+                let html = sorted.length ? '' : `<div class="ake-ui-state" data-state="empty" data-density="compact">${tr('nav.noVisibleModules')}</div>`;
                 sorted.forEach(mod => {
                     const icon = String(mod.icon || '').trim();
                     const navIcon = String(mod.navIcon || '').trim();
@@ -1070,7 +1232,7 @@
                     requiresReload = requiresReload || wasSync !== config.keepUrlSync;
                 }
 
-                if (modalDataVersionSelect && modalDataBaseUrl && window.akeDataSource) {
+                if (modalDataVersionSelect && modalDataBaseUrl && window.akeDataSource?.getState?.()) {
                     try {
                         const current = window.akeDataSource.getState();
                         const normalizedBase = new URL(modalDataBaseUrl.value.trim() || current.defaultBaseUrl, window.location.href).href.replace(/\/$/, '');
@@ -1861,7 +2023,13 @@
                 }
 
                 await window.akeI18n?.ready;
-                await window.akeDataSource?.ready;
+                void window.akeDataSource?.ready.then(() => {
+                    renderDataSourceSettings();
+                    renderVersionInfo();
+                }).catch(error => {
+                    if (dataSourceStatus) dataSourceStatus.textContent = tr('errors.startup', { message: error.message });
+                    console.warn('游戏数据源初始化失败，导航仍可使用。', error);
+                });
                 void window.akeServiceWorkerReady?.catch(error => {
                     console.warn('Service Worker 后台启动失败，页面继续使用普通数据请求。', error);
                 });
@@ -2105,6 +2273,7 @@
                     exportControl.dataset.exportFilename = title + '.png';
 
                     try {
+                        const html2canvas = await window.akeLoadHtml2Canvas();
                         const exportArea = Math.max(contentArea.scrollWidth, contentArea.clientWidth) * Math.max(contentArea.scrollHeight, contentArea.clientHeight);
                         const canvas = await html2canvas(contentArea, {
                             scale: exportArea > 8_000_000 ? 1 : 2,
@@ -2235,8 +2404,10 @@
                     applyFilterAndRender();
                     storage.set('akedata-showHidden', val);
                     if (modalShowHiddenCheck) modalShowHiddenCheck.checked = val;
+                    window.dispatchEvent(new CustomEvent('globalConfigChanged', { detail: { showHidden: val } }));
                 },
                 getConfig: () => ({ ...config }),
+                getModules: () => allModules.map(module => ({ ...module })),
                 getLevelSettings: () => ({ ...config.levelSettings }),
                 showHomePage,
                 isTokenUnlocked: (token) => {
@@ -2246,7 +2417,11 @@
                 getUnlockedTokens: () => [...config.unlockedTokens]
             };
             brandHome.addEventListener('click', showHomePage);
-            initApp().catch(error => {
+            initApp().then(() => {
+                void preloadVisibleModules().catch(error => {
+                    console.warn('模块后台预加载已停止，模块仍可按需加载。', error);
+                });
+            }).catch(error => {
                 void window.__akeRevealNavigationShell?.({ waitForImages: false });
                 window.AKEUI?.setState(contentArea, {
                     state: 'error',

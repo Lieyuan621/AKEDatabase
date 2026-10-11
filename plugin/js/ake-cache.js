@@ -359,11 +359,22 @@
 
     async function loadVersion() {
         try {
-            let version = window.__akeBootstrapVersion;
-            if (!version) {
-                const response = await fetch(`${VERSION_URL}?t=${Date.now()}`, { cache: 'no-store' });
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                version = await response.json();
+            let version = window.__akeBootstrapVersionPromise
+                ? await window.__akeBootstrapVersionPromise
+                : window.__akeBootstrapVersion;
+            if (!version && !window.__akeBootstrapVersionPromise) {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 10000);
+                try {
+                    const url = new URL(VERSION_URL, window.location.href);
+                    const refresh = window.__akeForceRefreshTimestamp || new URLSearchParams(location.search).get('t');
+                    if (refresh) url.searchParams.set('t', refresh);
+                    const response = await fetch(url.href, { cache: refresh ? 'no-store' : 'default', signal: controller.signal });
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    version = await response.json();
+                } finally {
+                    clearTimeout(timeout);
+                }
             }
             if (!validVersion(version)) throw new Error('版本文件格式无效');
             window.akeVersion = Object.freeze(version);
@@ -575,11 +586,13 @@
 
     window.akeFetch = async function (resource, init) {
         const version = await versionPromise;
-        await window.akeDataSource?.ready;
         const trackProgress = init?.akeProgress !== false;
         const request = new Request(resource, init);
         const url = normalizeUrl(request);
         const resourceType = window.akeDataSource?.classify(request)?.type || 'other';
+        if (['table', 'shared', 'model-bundle'].includes(resourceType)) {
+            await window.akeDataSource?.ready;
+        }
         const resolvedUrl = window.akeDataSource?.resolveUrl(request.url) || request.url;
         const forceRefreshTimestamp = window.__akeForceRefreshTimestamp || (version?.debugmode === true ? String(Date.now()) : '');
         const forceRefresh = Boolean(forceRefreshTimestamp);
@@ -648,6 +661,8 @@
                 const requestUrl = new URL(resolvedUrl);
                 if (resourceType === 'site-public') requestUrl.searchParams.set('v', version.appversion);
                 if (forceRefresh) requestUrl.searchParams.set('t', forceRefreshTimestamp);
+                const versionedResource = Boolean(requestUrl.searchParams.get('v')) ||
+                    (resourceType === 'table' && /^\/public\/[^/]+\/[^/]+\/TableCfg\//.test(requestUrl.pathname));
                 const headers = new Headers(request.headers);
                 const response = await fetch(requestUrl.href, {
                     method: request.method,
@@ -658,7 +673,9 @@
                     referrer: request.referrer,
                     referrerPolicy: request.referrerPolicy,
                     integrity: request.integrity,
-                    cache: forceRefresh ? 'no-store' : (request.cache === 'default' ? 'no-cache' : request.cache)
+                    cache: forceRefresh ? 'no-store' : (request.cache === 'default'
+                        ? (versionedResource ? 'default' : 'no-cache')
+                        : request.cache)
                 });
                 if (!response.ok || response.status !== 200) {
                     const body = await response.blob();
