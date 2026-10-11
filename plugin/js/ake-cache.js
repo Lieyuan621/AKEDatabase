@@ -661,6 +661,8 @@
                 const requestUrl = new URL(resolvedUrl);
                 if (resourceType === 'site-public') requestUrl.searchParams.set('v', version.appversion);
                 if (forceRefresh) requestUrl.searchParams.set('t', forceRefreshTimestamp);
+                const versionedResource = Boolean(requestUrl.searchParams.get('v')) ||
+                    (resourceType === 'table' && /^\/public\/[^/]+\/[^/]+\/TableCfg\//.test(requestUrl.pathname));
                 const headers = new Headers(request.headers);
                 const response = await fetch(requestUrl.href, {
                     method: request.method,
@@ -671,7 +673,9 @@
                     referrer: request.referrer,
                     referrerPolicy: request.referrerPolicy,
                     integrity: request.integrity,
-                    cache: forceRefresh ? 'no-store' : (request.cache === 'default' ? 'no-cache' : request.cache)
+                    cache: forceRefresh ? 'no-store' : (request.cache === 'default'
+                        ? (versionedResource ? 'default' : 'no-cache')
+                        : request.cache)
                 });
                 if (!response.ok || response.status !== 200) {
                     const body = await response.blob();
