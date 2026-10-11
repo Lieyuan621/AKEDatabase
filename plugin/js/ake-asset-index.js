@@ -71,12 +71,15 @@
 
     async function load(options = {}) {
         const requestedBase = options?.baseUrl ? normalizeBaseUrl(options.baseUrl) : '';
-        const cacheKey = requestedBase || '__default__';
+        const forceRefresh = window.__akeForceRefreshTimestamp || '';
+        const cacheKey = `${requestedBase || '__default__'}|${forceRefresh}`;
         if (!sharedPromises.has(cacheKey)) {
             sharedPromises.set(cacheKey, (async () => {
                 const state = await window.akeDataSource.ready;
                 const base = requestedBase || (state.debugMode ? productionBase : state.baseUrl);
-                const response = await fetch(`${base}/asset-sync-index.json?t=${Date.now()}`, { cache: 'no-store' });
+                const url = new URL(`${base}/asset-sync-index.json`);
+                if (forceRefresh) url.searchParams.set('t', forceRefresh);
+                const response = await fetch(url.href, { cache: forceRefresh ? 'no-store' : 'no-cache' });
                 if (!response.ok) throw new Error(`无法加载远端资产索引 (HTTP ${response.status})`);
                 const index = validateIndex(await response.json());
                 if (base === state.baseUrl) window.akeDataSource.setAssetRevision(index.revision);
