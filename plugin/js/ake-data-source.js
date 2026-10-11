@@ -5,6 +5,7 @@
     const VERSION_KEY = 'akedata-data-version';
     const NEW_TAG_SCOPE_KEY = 'akedata-newTagScope';
     const MANIFEST_CACHE_PREFIX = 'akedata-data-manifest:';
+    const MANIFEST_MAX_AGE = 60000;
     const bootstrapVersion = window.__akeBootstrapVersion || {};
     const debugLocalMode = bootstrapVersion.debugmode === true;
     const defaultBaseUrl = normalizeBaseUrl(bootstrapVersion.dataBaseUrl || 'https://data.akedata.wiki');
@@ -141,27 +142,48 @@
     }
 
     async function loadManifest(baseUrl, localFallbackBaseUrl = null) {
-        const cacheKey = `${MANIFEST_CACHE_PREFIX}${baseUrl}`;
         const url = new URL(manifestPath, `${baseUrl}/`);
-        url.searchParams.set('t', Date.now());
+        const cacheKey = `${MANIFEST_CACHE_PREFIX}v2:${url.href}`;
+        const forceRefresh = window.__akeForceRefreshTimestamp;
+        let cached = null;
+        let fetchedAt = 0;
         try {
-            const response = await fetch(url.href, { cache: 'no-store' });
+            const saved = JSON.parse(storage.get(cacheKey, 'null'));
+            if (saved) {
+                cached = validateManifest(saved.manifest);
+                fetchedAt = Number(saved.fetchedAt) || 0;
+            }
+        } catch {}
+        if (!cached && manifestPath === '/manifest.json') {
+            try {
+                cached = validateManifest(JSON.parse(storage.get(`${MANIFEST_CACHE_PREFIX}${baseUrl}`, 'null')));
+            } catch {}
+        }
+        const age = Date.now() - fetchedAt;
+        if (!forceRefresh && cached && fetchedAt > 0 && age >= 0 && age < MANIFEST_MAX_AGE) {
+            return { manifest: cached, source: 'recent-cache' };
+        }
+        if (forceRefresh) url.searchParams.set('t', forceRefresh);
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 8000);
+        try {
+            const response = await fetch(url.href, {
+                cache: forceRefresh ? 'no-store' : 'no-cache',
+                signal: controller.signal
+            });
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const manifest = validateManifest(await response.json());
-            storage.set(cacheKey, JSON.stringify(manifest));
+            storage.set(cacheKey, JSON.stringify({ manifest, fetchedAt: Date.now() }));
             return { manifest, source: 'network' };
         } catch (error) {
-            const cached = storage.get(cacheKey);
-            if (cached) {
-                try {
-                    return { manifest: validateManifest(JSON.parse(cached)), source: 'cache', error };
-                } catch {}
-            }
+            if (cached) return { manifest: cached, source: 'cache', error };
             if (localFallbackBaseUrl && isLocalDataSource(localFallbackBaseUrl)) {
                 console.warn(`无法读取 ${url.origin} 的版本清单，使用本地未版本化数据。`, error);
                 return { manifest: fallbackManifest(localFallbackBaseUrl), source: 'fallback', error };
             }
             throw new Error(`无法读取 ${url.origin} 的版本清单，且没有可用的缓存清单`);
+        } finally {
+            clearTimeout(timeout);
         }
     }
 
@@ -348,9 +370,8 @@
 
     function cacheNamespace(resource, appVersion) {
         const result = classify(resource);
-        if (!state) return `site|${appVersion || '1'}`;
-        if (result.type === 'table') return `table|${state.baseUrl}|${state.selected.hotfixVersion}`;
-        if (result.type === 'shared') return `shared|${state.baseUrl}|${assetRevision || state.manifest.sharedRevision}`;
+        if (state && result.type === 'table') return `table|${state.baseUrl}|${state.selected.hotfixVersion}`;
+        if (state && result.type === 'shared') return `shared|${state.baseUrl}|${assetRevision || state.manifest.sharedRevision}`;
         return `site|${window.location.origin}|${appVersion || '1'}`;
     }
 
@@ -405,6 +426,8 @@
     }
 
     const ready = initialize();
+    // Startup continues while metadata is loading; consumers still receive failures.
+    ready.catch(() => {});
 
     window.akeDataSource = {
         ready,

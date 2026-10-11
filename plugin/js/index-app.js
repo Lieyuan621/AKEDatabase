@@ -18,6 +18,32 @@
             const bootstrapVersion = window.__akeBootstrapVersion || {};
             const configuredPluginVersions = bootstrapVersion.pluginversion || {};
             const configuredJsVersions = bootstrapVersion.jsversion || {};
+            let html2canvasPromise = null;
+            window.akeLoadHtml2Canvas = function () {
+                if (typeof window.html2canvas === 'function') return Promise.resolve(window.html2canvas);
+                if (!html2canvasPromise) {
+                    html2canvasPromise = new Promise((resolve, reject) => {
+                        const script = document.createElement('script');
+                        const finish = error => {
+                            clearTimeout(timeout);
+                            script.onload = script.onerror = null;
+                            if (error) {
+                                script.remove();
+                                reject(error);
+                            } else resolve(window.html2canvas);
+                        };
+                        const timeout = setTimeout(() => finish(new Error('PNG export library request timed out')), 15000);
+                        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                        script.onload = () => finish(typeof window.html2canvas === 'function' ? null : new Error('PNG export library is unavailable'));
+                        script.onerror = () => finish(new Error('PNG export library could not be loaded'));
+                        document.head.appendChild(script);
+                    }).catch(error => {
+                        html2canvasPromise = null;
+                        throw error;
+                    });
+                }
+                return html2canvasPromise;
+            };
             const HIDDEN_MODULE_MARKER_ICON = '<svg viewBox="0 0 24 24" focusable="false"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>';
             const EXPORT_COLOR_FUNCTION_PATTERN = /\bcolor\([^()]*\)/gi;
 
@@ -489,7 +515,12 @@
 
             function renderDataSourceSettings() {
                 const dataState = window.akeDataSource?.getState?.();
-                if (!dataState || !modalDataVersionSelect || !modalDataBaseUrl) return;
+                if (!modalDataVersionSelect || !modalDataBaseUrl) return;
+                if (!dataState) {
+                    modalDataVersionSelect.disabled = true;
+                    modalDataBaseUrl.disabled = true;
+                    return;
+                }
                 modalDataBaseUrl.value = dataState.baseUrl;
                 modalDataBaseUrl.disabled = Boolean(dataState.debugMode);
                 modalDataVersionSelect.disabled = Boolean(dataState.debugMode);
@@ -515,6 +546,10 @@
                         ? tr('settings.dataSource.debugLocal', null, '调试模式已启用，强制使用当前本地服务器数据')
                         : dataState.manifestSource === 'network'
                         ? tr('settings.dataSource.online', null, '版本清单已从数据服务加载')
+                        : dataState.manifestSource === 'recent-cache'
+                        ? tr('settings.dataSource.cached', null, '正在使用最近获取的版本清单')
+                        : dataState.manifestSource === 'cache'
+                        ? tr('settings.dataSource.stale', null, '数据服务暂时不可用，正在使用上次的版本清单')
                         : tr('settings.dataSource.fallback', null, '当前正在使用兼容版本配置');
                     dataSourceStatus.textContent = `${sourceText} · ${dataState.baseUrl}`;
                 }
@@ -796,6 +831,8 @@
                         }));
                     }
                     const html = await moduleHtmlCache.get(cacheKey);
+                    // The navigation shell is independent; module adapters need a fixed data snapshot.
+                    await window.akeDataSource?.ready;
                     if (generation !== moduleLoadGeneration) return false;
                     const template = document.createElement('template');
                     template.innerHTML = html;
@@ -1127,7 +1164,7 @@
                     requiresReload = requiresReload || wasSync !== config.keepUrlSync;
                 }
 
-                if (modalDataVersionSelect && modalDataBaseUrl && window.akeDataSource) {
+                if (modalDataVersionSelect && modalDataBaseUrl && window.akeDataSource?.getState?.()) {
                     try {
                         const current = window.akeDataSource.getState();
                         const normalizedBase = new URL(modalDataBaseUrl.value.trim() || current.defaultBaseUrl, window.location.href).href.replace(/\/$/, '');
@@ -1918,7 +1955,13 @@
                 }
 
                 await window.akeI18n?.ready;
-                await window.akeDataSource?.ready;
+                void window.akeDataSource?.ready.then(() => {
+                    renderDataSourceSettings();
+                    renderVersionInfo();
+                }).catch(error => {
+                    if (dataSourceStatus) dataSourceStatus.textContent = tr('errors.startup', { message: error.message });
+                    console.warn('游戏数据源初始化失败，导航仍可使用。', error);
+                });
                 void window.akeServiceWorkerReady?.catch(error => {
                     console.warn('Service Worker 后台启动失败，页面继续使用普通数据请求。', error);
                 });
@@ -2162,6 +2205,7 @@
                     exportControl.dataset.exportFilename = title + '.png';
 
                     try {
+                        const html2canvas = await window.akeLoadHtml2Canvas();
                         const exportArea = Math.max(contentArea.scrollWidth, contentArea.clientWidth) * Math.max(contentArea.scrollHeight, contentArea.clientHeight);
                         const canvas = await html2canvas(contentArea, {
                             scale: exportArea > 8_000_000 ? 1 : 2,
