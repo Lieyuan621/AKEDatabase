@@ -766,6 +766,92 @@
                 return scriptSourceCache.get(cacheKey);
             }
 
+            function getModuleSource(module) {
+                const versionKey = module.versionKey || module.id;
+                const currentVersion = configuredPluginVersions[versionKey] || bootstrapVersion.appversion || '';
+                const cacheKey = `${module.id}|${canonicalResourceUrl(module.contentFile)}|${currentVersion}`;
+                if (!moduleHtmlCache.has(cacheKey)) {
+                    moduleHtmlCache.set(cacheKey, fetchVersionedResource(
+                        module.contentFile,
+                        currentVersion,
+                        storedPluginVersions,
+                        changedPluginVersions,
+                        pluginVersionStorageKey,
+                        versionKey
+                    ).then(response => {
+                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                        return response.text();
+                    }).catch(error => {
+                        moduleHtmlCache.delete(cacheKey);
+                        throw error;
+                    }));
+                }
+                return moduleHtmlCache.get(cacheKey);
+            }
+
+            async function waitForModulePreloadIdle() {
+                do {
+                    await new Promise(resolve => {
+                        if (window.requestIdleCallback) window.requestIdleCallback(resolve, { timeout: 1000 });
+                        else setTimeout(resolve, 200);
+                    });
+                    const stats = window.akeDataLoader?.getStats?.();
+                    if (!document.hidden && !stats?.active && !stats?.queued &&
+                        !contentArea.querySelector('.ake-ui-state[data-state="loading"]')) return;
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                } while (true);
+            }
+
+            async function preloadVisibleModules() {
+                if (document.readyState !== 'complete') {
+                    await new Promise(resolve => window.addEventListener('load', resolve, { once: true }));
+                }
+                const scripts = new Set();
+                const queue = [...allModules];
+                for (const module of queue) {
+                    if (module.hidden || module.disabled || !isModuleUnlocked(module)) continue;
+                    await waitForModulePreloadIdle();
+                    let html;
+                    try {
+                        html = await getModuleSource(module);
+                    } catch (error) {
+                        console.warn(`模块 ${module.id} 后台预加载失败，打开时将重试。`, error);
+                        continue;
+                    }
+                    const template = document.createElement('template');
+                    template.innerHTML = html;
+                    for (const script of template.content.querySelectorAll('script[src]')) {
+                        const src = new URL(script.getAttribute('src'), window.location.href).href;
+                        if (scripts.has(src)) continue;
+                        await waitForModulePreloadIdle();
+                        try {
+                            await getScriptSource(src);
+                            scripts.add(src);
+                        } catch (error) {
+                            console.warn(`脚本 ${src} 后台预加载失败，打开模块时将重试。`, error);
+                        }
+                    }
+                    if (module.id === 'misc') {
+                        await waitForModulePreloadIdle();
+                        try {
+                            const manifest = JSON.parse(await getModuleSource({
+                                id: 'misc/manifest', versionKey: 'misc', contentFile: '/plugin/misc/manifest.json'
+                            }));
+                            if (!Array.isArray(manifest)) throw new Error('Invalid misc module manifest');
+                            for (const child of manifest) {
+                                if (!child?.id || !child.contentFile || child.hidden || child.disabled) continue;
+                                const url = new URL(child.contentFile, window.location.href);
+                                if (url.origin !== window.location.origin || !url.pathname.startsWith('/plugin/misc/') ||
+                                    !url.pathname.endsWith('.html')) continue;
+                                queue.push({ ...child, id: `misc/${child.id}`, versionKey: 'misc' });
+                            }
+                        } catch (error) {
+                            console.warn('杂项子模块后台预加载失败，打开时将重试。', error);
+                        }
+                    }
+                }
+            }
+
             async function executeModuleScript(sourceScript, prefetchedSource) {
                 const script = document.createElement('script');
                 Array.from(sourceScript.attributes).forEach(attr => {
@@ -812,25 +898,7 @@
                     message: firstLoadTextTableHint()
                 });
                 try {
-                    const currentVersion = configuredPluginVersions[module.id] || bootstrapVersion.appversion || '';
-                    const cacheKey = `${module.id}|${canonicalResourceUrl(module.contentFile)}|${currentVersion}`;
-                    if (!moduleHtmlCache.has(cacheKey)) {
-                        moduleHtmlCache.set(cacheKey, fetchVersionedResource(
-                            module.contentFile,
-                            currentVersion,
-                            storedPluginVersions,
-                            changedPluginVersions,
-                            pluginVersionStorageKey,
-                            module.id
-                        ).then(response => {
-                            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                            return response.text();
-                        }).catch(error => {
-                            moduleHtmlCache.delete(cacheKey);
-                            throw error;
-                        }));
-                    }
-                    const html = await moduleHtmlCache.get(cacheKey);
+                    const html = await getModuleSource(module);
                     // The navigation shell is independent; module adapters need a fixed data snapshot.
                     await window.akeDataSource?.ready;
                     if (generation !== moduleLoadGeneration) return false;
@@ -2349,7 +2417,11 @@
                 getUnlockedTokens: () => [...config.unlockedTokens]
             };
             brandHome.addEventListener('click', showHomePage);
-            initApp().catch(error => {
+            initApp().then(() => {
+                void preloadVisibleModules().catch(error => {
+                    console.warn('模块后台预加载已停止，模块仍可按需加载。', error);
+                });
+            }).catch(error => {
                 void window.__akeRevealNavigationShell?.({ waitForImages: false });
                 window.AKEUI?.setState(contentArea, {
                     state: 'error',
