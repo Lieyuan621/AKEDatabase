@@ -427,6 +427,32 @@ window.AKESearchIndex = {
       "plugin/season_tower.html"
     ]
   },
+  "monument": {
+    "tables": [
+      "ActivityConditionalMultiStageCompleteConditionTable",
+      "ActivityConditionalMultiStageTable",
+      "ActivityTable",
+      "DungeonSeriesTable",
+      "DungeonTable",
+      "EnemyAttributeTemplateTable",
+      "EnemyTable",
+      "EnemyTemplateDisplayInfoTable",
+      "HighDifficultySeriesTable",
+      "HighDifficultyGameIdToSeriesIdTable",
+      "ItemTable",
+      "RewardTable",
+      "TimeRangeTable"
+    ],
+    "sources": [
+      "plugin/js/ake-combat-data.js",
+      "plugin/js/ake-enemy-renderer.js",
+      "plugin/js/ake-stats.js",
+      "plugin/js/module-overview.js",
+      "plugin/js/v2-dungeon.js",
+      "plugin/js/v3-table-data.js#monument",
+      "plugin/monument.html"
+    ]
+  },
   "v3_achievement": {
     "tables": [
       "AchievementTable",

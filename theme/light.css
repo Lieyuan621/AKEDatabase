@@ -1981,7 +1981,7 @@
 }
 
 /* Source: theme/v2_dungeon.css */
-@scope (body:is([data-ake-module="v3_dungeon"], [data-ake-module="v3_cc"], [data-ake-module="season_tower"])) {.v2d-series-banner {
+@scope (body:is([data-ake-module="v3_dungeon"], [data-ake-module="v3_cc"], [data-ake-module="season_tower"], [data-ake-module="monument"])) {.v2d-series-banner {
     position: relative;
     border-radius: 16px;
     overflow: hidden;
@@ -2006,7 +2006,7 @@
     left: 0;
     width: 100%;
     height: 60%;
-    background: linear-gradient(to top, var(--content-bg, #ffffff) 0%, transparent 100%);
+    background: linear-gradient(to top, var(--monument-banner-fade-color, var(--content-bg, #ffffff)) 0%, transparent 100%);
     z-index: 0;
     pointer-events: none;
 }.v2d-series-banner .v2d-series-header {

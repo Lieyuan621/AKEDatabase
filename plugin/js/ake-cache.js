@@ -616,9 +616,10 @@
                     cache: forceRefresh ? 'no-store' : (request.cache === 'default' ? 'force-cache' : request.cache)
                 });
             }
-            if (version && isPublicResource(request)) {
+            // Data routing must survive a failed website version lookup.
+            if (isPublicResource(request)) {
                 const publicUrl = new URL(resolvedUrl);
-                if (resourceType === 'site-public') publicUrl.searchParams.set('v', version.appversion);
+                if (resourceType === 'site-public' && version) publicUrl.searchParams.set('v', version.appversion);
                 if (forceRefresh) publicUrl.searchParams.set('t', forceRefreshTimestamp);
                 return fetch(new Request(publicUrl.href, request), forceRefresh ? { cache: 'no-store' } : undefined);
             }

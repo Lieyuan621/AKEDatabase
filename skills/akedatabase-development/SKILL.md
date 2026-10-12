@@ -29,7 +29,7 @@ description: Review and develop AKEDatabase with TableCfg-driven inclusion, shar
 
 - 优先复用 `AKEV3.table`、`akeDataLoader`、`akeFetch`、`AKEUI`、`parseText`、`renderRawValueTip`、`AKEVoicePlayer` 和 `__akeRouter`，先查看现有调用方式。
 - 相同业务转换共用实现；页面只组织展示。避免另建取数、语音播放、配方解析或富文本管线。
-- 默认不自行新增或修改 CSS，复用已有 `ake-ui-*` 组件；如果当前任务明确授权新增专用 CSS，应将样式放在独立资源中，并确认不会被其他模块复用。维护模块挂载/销毁、事件和异步请求生命周期。
+- 默认不自行新增或修改 CSS，复用已有 `ake-ui-*` 组件；如果当前任务明确授权 CSS 修改，结构和共享组件规则写入 `theme/light.css`，不得在模块 HTML、内联 `<style>` 或独立样式表中添加规则。每次样式改动都要同时审阅 `theme/light.css`、`theme/dark.css`、`theme/yellow.css`：light 维护共享结构，dark/yellow 为新增的主题外观提供对应作用域变量，确保三种主题下均一致可用；同步更新三份文件的 `cssversion`。维护模块挂载/销毁、事件和异步请求生命周期。
 - 界面文案遵循现有 i18n 结构、占位符和键名，默认补齐简体中文与英文，其他语言不擅自推测翻译。游戏文本从文本表本地化，缺失时保留 ID 或明确缺失状态。
 - 游戏内 ID 属于隐藏技术信息：只有“隐藏模块”开关开启（`showHidden === true`）时才展示；开关关闭时不得显示地区、关卡、任务、奖励、物品、芯片、词缀、组合或其他游戏内 ID。缺失名称应使用本地化的“未命名/不可用”等安全文案，除非用户明确要求展示原始 ID。
 
@@ -43,6 +43,8 @@ description: Review and develop AKEDatabase with TableCfg-driven inclusion, shar
 
 ## 版本
 
+- 首页 `index.html` 作为稳定入口，后续开发尽量不修改；优先通过已有外部脚本、模块和 `version.json` 实现更新。正式站与 beta 的首页 HTML 使用 EdgeOne 30 天节点缓存，浏览器仍重新验证，首页查询参数不参与缓存键；更新 `version.json` 不会使旧首页 HTML 自动失效。
+- 确需修改 `index.html` 时，必须在对话交付说明中明确告知用户本次修改了首页，并提醒用户在部署后手动清除受影响站点的 EdgeOne 首页缓存（`/`、`/index`、`/index.html`）。不要仅依靠版本号变化或普通刷新，也不要代替用户自动清除缓存，除非当前任务另有明确授权。
 - 以用户声明的基础版本为准；未重新指定时沿用当前版本的基础部分。每次需要让浏览器获取一组新的可见网站行为或资源时，递增一次 `基础版本-pre{x}`；同一轮内部的连续编辑如果仍需用户刷新查看新内容，也属于新的可见迭代，应递增到下一个 `pre`。同一迭代内不能因工具调用、压缩上下文或重复读取文件再次递增。版本号用于 `version.json` 资源查询参数，是浏览器缓存失效边界，不能只在会话开始时设置一次。
 - 用户明确指定正式版、修订号、候选版时按其要求。版本值不加 `v`。
 - 同步 `appversion`、所有实际受影响模块的 `pluginversion`、修改/新增脚本的 `jsversion`，未受影响条目保持不变。共享脚本需追踪 HTML 和动态加载入口。

@@ -271,7 +271,7 @@
     function manifestId(module, row) {
         const fields = {
             character: 'charId', weapon: 'weaponId', enemy: 'templateId', equip: 'suitID', item: 'itemId',
-            dungeon: 'templateId', achievement: 'categoryId', activity: 'activityId', cc: 'gameId'
+            dungeon: 'templateId', monument: 'templateId', achievement: 'categoryId', activity: 'activityId', cc: 'gameId'
         };
         return String(row?.[fields[module]] || '');
     }
@@ -806,7 +806,7 @@
             craftitemtable: pick(items, Array.from(recipeItemIds)) };
     }
 
-    async function dungeonManifest(version) {
+    async function dungeonManifest(version, includeSeries = () => true, module = 'dungeon') {
         const [series, dungeons] = await Promise.all([table('DungeonSeriesTable', version), table('DungeonTable', version)]);
         const categoryNames = {
             dungeon_highdifficulty: 'highDifficulty', dungeon_bossrush: 'bossRush', dungeon_ss: 'protocolSpace',
@@ -815,15 +815,78 @@
             dungeon_contract: 'contingencyContract', dungeon_train: 'training', dungeon_worldlevel: 'worldLevel',
             dungeon_wuling_A: 'wulingA', dungeon_wuling_B: 'wulingB'
         };
-        const rows = Object.entries(series).filter(([, row]) => row.gameCategory).map(([templateId, row], index) => ({
+        const rows = Object.entries(series).filter(([templateId, row]) => row.gameCategory && includeSeries(row, templateId)).map(([templateId, row], index) => ({
             templateId, name: text(row.name, templateId), rarity: dungeonRarity(row),
             gameCategory: row.gameCategory, gameCategoryName: categoryNames[row.gameCategory] ? dungeonT(`categories.${categoryNames[row.gameCategory]}`) : row.gameCategory,
             categoryOrder: dungeonRarity(row) * -1, dungeonCount: (row.includeDungeonIds || []).length,
             image: row.dungeonPicPath ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/dungeon/${row.dungeonPicPath}_bg.png` : '',
-            contentFile: `/__v3/dungeon/${templateId}.json`, sourceOrder: index, hidden: false,
+            contentFile: `/__v3/${module}/${templateId}.json`, sourceOrder: index, hidden: false,
             __diffSignature: diffSignature([row, pick(dungeons, row.includeDungeonIds || [])])
         }));
         return assignPriority(rows.sort(byRarityThenId));
+    }
+
+    async function monumentPeriodData(version) {
+        const [activities, multiStages, stageConditions, gameSeries, times] = await Promise.all([
+            table('ActivityTable', version), table('ActivityConditionalMultiStageTable', version),
+            table('ActivityConditionalMultiStageCompleteConditionTable', version),
+            table('HighDifficultyGameIdToSeriesIdTable', version), table('TimeRangeTable', version)
+        ]);
+        const seriesTimes = new Map();
+        const unmappedStages = [];
+        const parseTime = value => {
+            const match = String(value || '').match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})\s+(\d{1,2}):(\d{1,2}):(\d{1,2})$/);
+            if (!match) return null;
+            const date = new Date(`${match[1]}-${match[2].padStart(2, '0')}-${match[3].padStart(2, '0')}T${match[4].padStart(2, '0')}:${match[5]}:${match[6]}+08:00`);
+            return Number.isNaN(date.getTime()) ? null : date.getTime();
+        };
+        Object.entries(activities).filter(([, activity]) => activity.panelId === 'ActivityHighDifficulty').forEach(([activityId, activity]) => {
+            const stageList = multiStages[activityId]?.stageList || {};
+            Object.values(stageList).forEach(stage => {
+                const conditionRows = stageConditions[stage.stageId]?.conditionList || [];
+                const seriesIds = new Set(conditionRows.flatMap(condition => condition.parameters || [])
+                    .flatMap(parameter => parameter.valueStringList || [])
+                    .map(gameId => gameSeries[gameId]?.seriesId).filter(Boolean));
+                if (!seriesIds.size) {
+                    unmappedStages.push(stage.stageId);
+                    return;
+                }
+                const stageRange = times[stage.timeId]?.timeRangeList?.[0] || {};
+                const activityRange = times[activity.timeId]?.timeRangeList?.[0] || {};
+                // High difficulty stage ranges commonly define the opening only;
+                // the activity range supplies the period end.
+                const openTime = parseTime(stageRange.openTime) !== null ? stageRange.openTime : activityRange.openTime;
+                const closeTime = parseTime(stageRange.closeTime) !== null ? stageRange.closeTime : activityRange.closeTime;
+                const openValue = parseTime(openTime);
+                const closeValue = parseTime(closeTime);
+                seriesIds.forEach(seriesId => {
+                    if (!seriesTimes.has(seriesId)) seriesTimes.set(seriesId, { openValue: null, closeValue: null, openTime: '', closeTime: '' });
+                    const period = seriesTimes.get(seriesId);
+                    if (openValue !== null && (period.openValue === null || openValue < period.openValue)) {
+                        period.openValue = openValue; period.openTime = openTime;
+                    }
+                    if (closeValue !== null && (period.closeValue === null || closeValue > period.closeValue)) {
+                        period.closeValue = closeValue; period.closeTime = closeTime;
+                    }
+                });
+            });
+        });
+        return { seriesTimes, unmappedStages };
+    }
+
+    async function monumentManifest(version) {
+        const [rows, periodData, highDifficultySeries] = await Promise.all([
+            dungeonManifest(version, row => row.gameCategory === 'dungeon_highdifficulty', 'monument'),
+            monumentPeriodData(version), table('HighDifficultySeriesTable', version)
+        ]);
+        return rows.map(row => {
+            const period = periodData.seriesTimes.get(row.templateId);
+            const poster = highDifficultySeries[row.templateId]?.bgImg;
+            return { ...row,
+                image: poster ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/activity/${poster}.png` : row.image,
+                openTime: period?.openTime || '', closeTime: period?.closeTime || '',
+                __diffSignature: diffSignature([row.__diffSignature, poster, period?.openTime, period?.closeTime]) };
+        });
     }
 
     async function dungeonDetail(id, version) {
@@ -1184,6 +1247,7 @@
     const adapters = {
         character: [characterManifest, characterDetail], weapon: [weaponManifest, weaponDetail], enemy: [enemyManifest, enemyDetail],
         equip: [equipManifest, equipDetail], item: [itemManifest, itemDetail], dungeon: [dungeonManifest, dungeonDetail],
+        monument: [monumentManifest, dungeonDetail],
         achievement: [achievementManifest, achievementDetail], activity: [activityManifest, activityDetail], cc: [ccManifest, ccDetail]
     };
 
@@ -1194,9 +1258,9 @@
     async function v3Fetch(input, init) {
         const url = typeof input === 'string' ? input : input.url;
         const mountedModule = document.querySelector('#contentArea script[data-ake-v3-module]')?.dataset.akeV3Module || '';
-        const manifestMatch = url.match(/^\/public\/(?:CH|EN)\/(?:v2_)?(character|weapon|enemy|equip|item|dungeon|cc|activity|achievement)\/manifest\.json(?:\?|$)/);
+        const manifestMatch = url.match(/^\/public\/(?:CH|EN)\/(?:v2_)?(character|weapon|enemy|equip|item|dungeon|monument|cc|activity|achievement)\/manifest\.json(?:\?|$)/);
         if (manifestMatch && manifestMatch[1] === mountedModule) return virtualResponse(await manifestWithVersionDiff(mountedModule));
-        const detailMatch = url.match(/^\/__v3\/(character|weapon|enemy|equip|item|dungeon|cc|activity|achievement)\/([^/?]+)\.json/);
+        const detailMatch = url.match(/^\/__v3\/(character|weapon|enemy|equip|item|dungeon|monument|cc|activity|achievement)\/([^/?]+)\.json/);
         if (detailMatch && (detailMatch[1] === mountedModule || (mountedModule === 'cc' && detailMatch[1] === 'dungeon'))) {
             const id = decodeURIComponent(detailMatch[2]);
             const data = detailMatch[1] === mountedModule
@@ -1230,7 +1294,7 @@
     // Explicitly invoked by maintainers; never run during normal module loading.
     async function auditCoverage(modules = Object.keys(adapters)) {
         const sources = { character: 'CharacterTable', weapon: 'WeaponBasicTable', enemy: 'EnemyTemplateDisplayInfoTable',
-            equip: 'EquipTable', item: 'ItemTable', dungeon: 'DungeonSeriesTable', achievement: 'AchievementTypeTable',
+            equip: 'EquipTable', item: 'ItemTable', dungeon: 'DungeonSeriesTable', monument: 'DungeonSeriesTable', achievement: 'AchievementTypeTable',
             activity: 'ActivityTable', cc: 'ActivityContingencyContractTable' };
         const report = { generatedAt: new Date().toISOString(), dataSource: window.akeDataSource?.getState?.(), modules: {}, tables: [] };
         for (const module of modules) {
@@ -1241,13 +1305,31 @@
                 const included = new Set(module === 'equip'
                     ? rows.flatMap(row => (row.equipmentIndex || []).map(item => item.itemId))
                     : rows.map(row => manifestId(module, row)));
-                const expected = Object.entries(source).map(([id, row]) => module === 'cc' ? String(row.gameId) : id);
+                const expectedEntries = Object.entries(source).filter(([, row]) => module !== 'monument' || row.gameCategory === 'dungeon_highdifficulty');
+                const expected = expectedEntries.map(([id, row]) => module === 'cc' ? String(row.gameId) : id);
                 const excluded = module === 'dungeon'
-                    ? Object.entries(source).filter(([, row]) => !row.gameCategory).map(([id]) => ({ id, reason: 'Missing gameCategory in DungeonSeriesTable' })) : [];
+                    ? Object.entries(source).filter(([, row]) => !row.gameCategory).map(([id]) => ({ id, reason: 'Missing gameCategory in DungeonSeriesTable' }))
+                    : module === 'monument'
+                        ? Object.entries(source).filter(([, row]) => row.gameCategory !== 'dungeon_highdifficulty').map(([id, row]) => ({ id, gameCategory: row.gameCategory || '', reason: 'Not dungeon_highdifficulty' }))
+                        : [];
                 const excludedIds = new Set(excluded.map(row => row.id));
                 const missing = expected.filter(id => !included.has(id) && !excludedIds.has(id));
                 const extra = [...included].filter(id => !expected.includes(id));
                 const result = { source: sources[module], sourceCount: expected.length, includedCount: included.size, excluded, missing, extra };
+                if (module === 'monument') {
+                    const periodData = await monumentPeriodData();
+                    const highDifficultySeries = await table('HighDifficultySeriesTable');
+                    result.periodRelations = {
+                        mappedSeriesCount: periodData.seriesTimes.size,
+                        missingSeriesPeriods: expected.filter(id => !periodData.seriesTimes.has(id)),
+                        stageCountWithoutSeriesMapping: periodData.unmappedStages.length,
+                        unmappedStages: periodData.unmappedStages
+                    };
+                    result.coverRelations = {
+                        source: 'HighDifficultySeriesTable.bgImg',
+                        missingSeriesCovers: expected.filter(id => !highDifficultySeries[id]?.bgImg)
+                    };
+                }
                 if (module === 'activity') {
                     const stages = await table('ActivityConditionalMultiStageTable', undefined, { optional: true });
                     result.stages = [];

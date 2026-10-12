@@ -1,4 +1,7 @@
 /* Eye-comfort theme tokens. Structural and component rules live in light.css. */
+@scope (body[data-ake-module="monument"]) {
+    .v2d-series-banner { --monument-banner-fade-color: #fdf8f0; }
+}
 :root {
     --sidebar-bg: #e8dccc;
     --border-color: #cbbaa7;

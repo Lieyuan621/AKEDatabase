@@ -1,4 +1,7 @@
 /* Dark theme tokens. Structural and component rules live in light.css. */
+@scope (body[data-ake-module="monument"]) {
+    .v2d-series-banner { --monument-banner-fade-color: #171717; }
+}
 :root {
     --sidebar-bg: #121212;
     --border-color: #343434;
