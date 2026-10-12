@@ -5320,6 +5320,7 @@
     --text-secondary: #637184;
     --text-color-secondary: #637184;
     --desc-color: #637184;
+    --ake-ui-nested-heading-color: #637184;
     --accent-color: #3d6288;
     --tag-bg: #e8edf3;
     --tag-text: #42536a;
@@ -7146,6 +7147,25 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
 }
 .ake-ui-card[data-card-kind="overview"] .ake-ui-badge--change[data-tone="added"] { --ake-item-change-color: var(--ake-change-added); }
 .ake-ui-card[data-card-kind="overview"] .ake-ui-badge--change[data-tone="modified"] { --ake-item-change-color: var(--ake-change-modified); }
+.ake-ui-badge--change.ake-ui-badge--foresight {
+    --ake-item-change-color: #d63384;
+    min-height: 26px;
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 7px 3px 12px;
+    border: 0;
+    border-radius: 4px 0 0 4px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        color-mix(in srgb, var(--ake-item-change-color) 72%, transparent) 32%,
+        var(--ake-item-change-color) 70%);
+    box-shadow: none;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 750;
+    line-height: 1.25;
+    text-align: end;
+}
 .ake-ui-card[data-overview-variant="text"] .ake-ui-card__content { padding: 12px 14px 14px; }
 .ake-ui-card[data-overview-variant="text"] .ake-ui-card__badges { margin-top: 2px; }
 @media (max-width: 560px) {
@@ -7189,6 +7209,7 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
 }
 [data-ake-change="added"]::after { background: var(--ake-change-added); }
 [data-ake-change="modified"]::after { background: var(--ake-change-modified); }
+[data-ake-change="foresight"]::after { background: #d63384; }
 .ake-ui-directory__item[data-ake-change] { padding-inline-end: 58px; }
 
 .ake-ui-meta-grid {
@@ -7229,6 +7250,22 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
 .ake-ui-detail .ake-ui-section__header .ake-ui-section__title {
     font-size: .98rem;
     font-weight: 700;
+}
+.ake-ui-detail .ake-ui-section__header--nested {
+    min-height: 24px;
+    margin-bottom: 8px;
+    padding: 0 0 5px 8px;
+}
+.ake-ui-detail .ake-ui-section__header--nested::before {
+    top: 4px;
+    bottom: 6px;
+    width: 2px;
+    background: var(--ake-ui-nested-heading-color, var(--desc-color));
+}
+.ake-ui-detail .ake-ui-section__header--nested .ake-ui-section__title {
+    color: var(--ake-ui-nested-heading-color, var(--desc-color));
+    font-size: .82rem;
+    font-weight: 650;
 }
 
 /* Character detail structure */
@@ -8196,6 +8233,10 @@ body[data-ake-module="v3_mission"] .ake-ui-directory__item[data-layout="entity"]
     .ake-ui-directory__item[data-layout="entity"],
     .ake-ui-card[data-card-kind="equipment"]
 )[data-ake-change="modified"] { --ake-item-change-color: var(--ake-change-modified); }
+:is(
+    .ake-ui-directory__item[data-layout="entity"],
+    .ake-ui-card[data-card-kind="equipment"]
+)[data-ake-change="foresight"] { --ake-item-change-color: #d63384; }
 :is(
     .ake-ui-directory__item[data-layout="entity"],
     .ake-ui-card[data-card-kind="equipment"]

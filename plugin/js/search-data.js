@@ -140,6 +140,20 @@
             }
         }
         if (source === 'WeaponBasicTable' && has('v3_weapon')) add('v3_weapon', key, title((await table('ItemTable'))[key]));
+        if (source === 'ForesightCharGrowthTable' && has('v3_character')) add('v3_character', key, title(row));
+        if (source === 'ForesightCharWpnRecommendTable' && has('v3_character')) {
+            const character = (await table('ForesightCharGrowthTable'))[key] || (await table('CharacterTable'))[key];
+            if (character) add('v3_character', key, title(character));
+        }
+        if (source === 'ForesightWeaponTable' && has('v3_weapon')) {
+            const item = (await table('ItemTable'))[key];
+            add('v3_weapon', key, title(item) || title(row));
+        }
+        if (source === 'ForesightWeaponGemwishlistTable' && has('v3_weapon')) {
+            const weaponId = row.weaponId || key;
+            const item = (await table('ItemTable'))[weaponId];
+            add('v3_weapon', weaponId, title(item) || title((await table('ForesightWeaponTable'))[weaponId]));
+        }
         if (source === 'EnemyTable') await from('EnemyTemplateDisplayInfoTable', row.templateId, 'v3_enemy');
         if (source === 'EquipTable' && has('v3_equip')) {
             const suits = entries(await table('EquipSuitTable')).filter(([, suit]) => (suit.equipList || []).includes(key));

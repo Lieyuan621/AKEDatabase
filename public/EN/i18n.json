@@ -41,7 +41,7 @@
             "count": "{count} entries",
             "hint": "Select a card to view full details"
         },
-        "versionDiff": { "group": "Version changes · vs. {version}", "added": "New", "modified": "Modified", "detailTitle": "Visible changes · vs. {version}", "changeCount": "{count} changes", "truncated": "Too many changes; showing the first 500 lines." },
+        "versionDiff": { "group": "Version changes · vs. {version}", "foresightGroup": "Preview Version Items", "added": "New", "modified": "Modified", "detailTitle": "Visible changes · vs. {version}", "changeCount": "{count} changes", "truncated": "Too many changes; showing the first 500 lines." },
         "errors": {
             "load": "Failed to load: {message}", "startup": "Application startup failed: {message}", "notFoundTitle": "Page not found", "notFoundDesc": "The requested module or entry does not exist", "returnHome": "Return home", "hiddenContentHint": "🔒 This content may be hidden.", "hiddenContentHelp": "Enable Show hidden modules in Global Settings to access hidden content.", "moduleContentMissing": "Module content file is not specified", "moduleLoad": "❌ Failed to load module content: {message}", "moduleManifestRead": "❌ Failed to read the module manifest.<br>Please access the site through a local server.", "exportFailed": "Screenshot failed: {message}"
         },
@@ -549,6 +549,7 @@
                     "logisticsSkills": "Base Skills",
                     "gifts": "Affinity Gifts",
                     "weaponRecommendations": "Weapon Recommendations",
+                    "trainingMaterials": "Training Materials",
                     "potentialImages": "Potential Images",
                     "profile": "Profile",
                     "voiceRecords": "Voice Records"
@@ -563,6 +564,11 @@
                 "weaponRecommendations": {
                     "skillAdaptation": "Skill Adaptation",
                     "attributeAdaptation": "Attribute Adaptation"
+                },
+                "foresight": {
+                    "badge": "Preview", "unnamed": "Unnamed character", "materials": "Preview Growth Materials", "stage": "Stage {stage}",
+                    "targetLevel": "Target Level", "gemTags": "Weapon Attributes", "skillNames": "Skill Effects", "associatedWeapons": "Associated Weapons",
+                    "unknownMaterial": "No known way to obtain this material", "unknownWeapon": "Weapon name unavailable"
                 }
             },
             "weapon": {
@@ -598,8 +604,13 @@
                 "sections": {
                     "skillData": "Skill Data",
                     "breakthroughMaterials": "Breakthrough Materials",
+                    "trainingMaterials": "Training Materials",
                     "potentials": "Potentials",
                     "story": "Weapon Story"
+                },
+                "foresight": {
+                    "badge": "Preview", "unnamed": "Unnamed weapon", "materials": "Preview Growth Materials", "stage": "Stage {stage}",
+                    "targetLevel": "Target Level", "gemTags": "Weapon Attributes", "skillNames": "Skill Effects", "unknownMaterial": "No known way to obtain this material"
                 }
             },
             "enemy": {

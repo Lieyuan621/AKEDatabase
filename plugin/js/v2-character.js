@@ -330,7 +330,7 @@
                 },
                 onSelect: options.onSelect
             });
-            window.AKEModuleOverview?.markVersionChange(item, character);
+            window.AKEModuleOverview?.markVersionChange(item, character, t('foresight.badge'));
             return item;
         }
 
@@ -533,7 +533,7 @@
                 onReset: () => { activeCharId = null; },
                 onSelect: char => { activeCharId = char.charId; renderCharacterList(); },
                 sidebarSelector: char => `.ake-ui-directory__item[data-char-id="${CSS.escape(char.charId)}"]`,
-                items: items.map(char => ({ ...char, id: char.charId,
+                items: items.map(char => ({ ...char, id: char.charId, cornerTag: char.isForesight ? t('foresight.badge') : '',
                     image: `${CHARACTER_PORTRAIT_BASE}icon_${encodeURIComponent(char.charId)}.png`, imageFallback: char.icon,
                     fallback: t('overview.fallback'),
                     icons: getCharacterMetaIcons(char),
@@ -774,9 +774,15 @@
                 spaceshipSkills: [],
                 giftStages: [],
                 weaponRecommendations: { skillAdaptation: [], attributeAdaptation: [] },
+                trainingmaterials: rawData.trainingmaterials || [],
                 profileRecord: [],
                 profileVoice: [],
-                specialVoices: []
+                specialVoices: [],
+                isForesight: Boolean(rawData.foresightchartable),
+                foresightStageMaterials: rawData.foresightchartable?.stageMaterials || {},
+                foresightGrowthStages: rawData.foresightgrowthstagetable || {},
+                foresightWeaponIds: rawData.foresightweaponids || [],
+                foresightWeaponInfo: rawData.foresightweaponnametable || {}
             };
 
             const preferredAttrs = GROWTH_ATTRIBUTES.map(attribute => attribute.id);
@@ -1449,6 +1455,20 @@
             return entry.outerHTML;
         }
 
+        function trainingMaterialsHtml(stages, itemInfoMap, sectionTitle) {
+            if (!stages?.length) return '';
+            const escape = value => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+            const stageHtml = stages.map(stage => {
+                const items = (stage.items || []).map(item => {
+                    const info = itemInfoMap[item.id] || {};
+                    const name = info.name && info.name !== item.id ? info.name : t('foresight.unknownMaterial');
+                    return `<span class="ake-ui-material__item"><img class="ake-ui-material__item-icon" src="${ITEM_ICON_BASE}${escape(info.iconId || item.id)}.png" alt="" loading="lazy" decoding="async"><span class="ake-ui-material__item-name">${escape(name)}</span><strong class="ake-ui-material__item-count">×${escape(item.count)}</strong></span>`;
+                }).join('');
+                return `<section class="ake-ui-section"><div class="ake-ui-section__header ake-ui-section__header--nested"><h4 class="ake-ui-section__title">${escape(stage.name || t('foresight.stage', { stage: stage.stageId }))}</h4></div>${items ? `<div class="ake-ui-material__items">${items}</div>` : `<p>${t('none')}</p>`}</section>`;
+            }).join('');
+            return `<section class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${escape(sectionTitle)}</h3></div>${stageHtml}</section>`;
+        }
+
         function materialPopover(options, itemInfoMap) {
             const rows = (options.rows || []).map(row => ({
                 label: row.label,
@@ -1471,6 +1491,21 @@
             return materialPopover(options, itemInfoMap)?.outerHTML || '';
         }
 
+        function renderForesightCharacterDetail(data, headerHtml) {
+            const escape = value => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+            const itemInfo = data.itemInfoMap || {};
+            const stages = trainingMaterialsHtml(data.trainingmaterials, itemInfo, t('foresight.materials'));
+            const weapons = (data.foresightWeaponIds || []).map(id => {
+                const info = data.foresightWeaponInfo?.[id] || {};
+                const weaponInfo = { ...itemInfo, [id]: { name: getText(info.name) || itemInfo[id]?.name || t('foresight.unknownWeapon'), iconId: info.iconId || itemInfo[id]?.iconId || id } };
+                return itemEntryHtml({ id }, weaponInfo, '', 'v3_weapon');
+            }).join('');
+            return `<article class="ake-ui-detail" data-detail-kind="character">${headerHtml}
+                ${data.foresightWeaponIds?.length ? `<section class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('foresight.associatedWeapons')}</h3></div><div class="ake-ui-item-list">${weapons}</div></section>` : ''}
+                ${stages}
+            </article>`;
+        }
+
         function renderDetail(data) {
             const showHidden = getCurrentShowHidden();
             const overviewMetaTags = getCharacterMetaIcons(data).map(icon => `
@@ -1487,9 +1522,9 @@
                 </div>
                 <dl class="character-detail-facts">
                     <div><dt>${commonT('rarity')}</dt><dd>${t('rarityStars', { name: data.rarity })}</dd></div>
-                    <div><dt>${t('meta.voiceActor')}</dt><dd>${(data.cvName || []).join(' / ') || '-'}</dd></div>
-                    <div class="character-detail-fact--key"><dt>${t('meta.mainAttribute')}</dt><dd>${data.mainAttrType || '-'}</dd></div>
-                    <div class="character-detail-fact--key"><dt>${t('meta.subAttribute')}</dt><dd>${data.subAttrType || '-'}</dd></div>
+                    ${!data.isForesight ? `<div><dt>${t('meta.voiceActor')}</dt><dd>${(data.cvName || []).join(' / ') || '-'}</dd></div>` : ''}
+                    ${!data.isForesight ? `<div class="character-detail-fact--key"><dt>${t('meta.mainAttribute')}</dt><dd>${data.mainAttrType || '-'}</dd></div>` : ''}
+                    ${!data.isForesight ? `<div class="character-detail-fact--key"><dt>${t('meta.subAttribute')}</dt><dd>${data.subAttrType || '-'}</dd></div>` : ''}
                 </dl>
                 ${(data.profile || data.feature) ? `<div class="ake-ui-detail-summary">
                     ${data.profile ? `<div>${parseText(data.profile)}</div>` : ''}
@@ -1503,13 +1538,15 @@
                 icon: { src: data.icon || '' },
                 title: data.name,
                 content: headerContent,
-                visual: {
+                visual: !data.isForesight ? {
                     element: 'figure',
                     className: 'character-detail-art',
                     src: data.pic || ''
-                }
+                } : null
             });
             const basicHtml = detailHeader?.outerHTML || '';
+
+            if (data.isForesight) return renderForesightCharacterDetail(data, basicHtml);
 
             const detailNavHtml = `
                 <nav class="character-detail-nav" aria-label="${escapeAttribute(data.name)}">
@@ -1811,12 +1848,13 @@
                 <div class="ake-ui-section">
                     <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.gifts')}</h3></div>
                     ${data.giftStages.map(stage => `
-                        <div class="ake-ui-section__header"><h4 class="ake-ui-section__title">${stage.label}</h4></div>
-                        <div class="ake-ui-item-list character-related-list">
-                            ${stage.items.map(item => itemEntryHtml(
-                                item, itemInfoMap, item.isPossible ? t('gifts.possibleItems') : t('gifts.returnItems')
-                            )).join('')}
-                        </div>
+                        <section class="ake-ui-section"><div class="ake-ui-section__header ake-ui-section__header--nested"><h4 class="ake-ui-section__title">${stage.label}</h4></div>
+                            <div class="ake-ui-item-list character-related-list">
+                                ${stage.items.map(item => itemEntryHtml(
+                                    item, itemInfoMap, item.isPossible ? t('gifts.possibleItems') : t('gifts.returnItems')
+                                )).join('')}
+                            </div>
+                        </section>
                     `).join('')}
                 </div>
             ` : '';
@@ -1826,13 +1864,13 @@
                     <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.weaponRecommendations')}</h3></div>
                     <div class="ake-ui-card-grid" data-size="regular">
                         <div class="ake-ui-section">
-                            <div class="ake-ui-section__header"><h4 class="ake-ui-section__title">${t('weaponRecommendations.skillAdaptation')}</h4></div>
+                            <div class="ake-ui-section__header ake-ui-section__header--nested"><h4 class="ake-ui-section__title">${t('weaponRecommendations.skillAdaptation')}</h4></div>
                             ${data.weaponRecommendations?.skillAdaptation?.length
                                 ? `<div class="ake-ui-item-list character-related-list">${data.weaponRecommendations.skillAdaptation.map(item => itemEntryHtml(item, itemInfoMap, '', 'v3_weapon')).join('')}</div>`
                                 : `<p>${t('none')}</p>`}
                         </div>
                         <div class="ake-ui-section">
-                            <div class="ake-ui-section__header"><h4 class="ake-ui-section__title">${t('weaponRecommendations.attributeAdaptation')}</h4></div>
+                            <div class="ake-ui-section__header ake-ui-section__header--nested"><h4 class="ake-ui-section__title">${t('weaponRecommendations.attributeAdaptation')}</h4></div>
                             ${data.weaponRecommendations?.attributeAdaptation?.length
                                 ? `<div class="ake-ui-item-list character-related-list">${data.weaponRecommendations.attributeAdaptation.map(item => itemEntryHtml(item, itemInfoMap, '', 'v3_weapon')).join('')}</div>`
                                 : `<p>${t('none')}</p>`}
@@ -1875,6 +1913,7 @@
                 </div>
                 ${giftSectionHtml}
                 ${weaponRecommendationsHtml}
+                ${trainingMaterialsHtml(data.trainingmaterials, itemInfoMap, t('sections.trainingMaterials'))}
                 <div class="character-archive-stack" id="character-archive">
                     ${potentialPicsHtml}
                     <div class="ake-ui-section collapsible-section">

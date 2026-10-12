@@ -232,6 +232,102 @@
         return ref?.text || fallback || '';
     }
 
+    function foresightMaterialIds(stages) {
+        return Object.values(stages || {}).flatMap(stage => Object.entries(stage || {})
+            .filter(([key]) => /Ids$/.test(key))
+            .flatMap(([, ids]) => (Array.isArray(ids) ? ids : String(ids || '').split(/\s+/)).filter(Boolean).map(String)));
+    }
+
+    function listValue(value) {
+        return (Array.isArray(value) ? value : String(value || '').split(/\s+/)).filter(item => item !== '' && item != null);
+    }
+
+    function addMaterialTotals(totals, items) {
+        (items || []).forEach(item => {
+            const id = String(item?.id || '');
+            const count = Number(item?.count || 0);
+            if (id && count > 0) totals.set(id, (totals.get(id) || 0) + count);
+        });
+    }
+
+    function stageMaterialItems(stage) {
+        const totals = new Map();
+        Object.entries(stage || {}).filter(([key]) => /Ids$/.test(key)).forEach(([key, rawIds]) => {
+            const ids = listValue(rawIds);
+            const counts = listValue(stage[key.replace(/Ids$/, 'Cnt')]);
+            ids.forEach((id, index) => addMaterialTotals(totals, [{ id, count: counts[index] }]));
+        });
+        return Array.from(totals, ([id, count]) => ({ id, count }));
+    }
+
+    function buildCharacterTrainingMaterials(growth, stages, levelCosts, expItems, foresight) {
+        const stageRows = Object.values(stages || {}).sort((a, b) => Number(a.sortWeight || a.stageId) - Number(b.sortWeight || b.stageId));
+        const suppliedStages = foresight?.stageMaterials || {};
+        if (Object.keys(suppliedStages).length) {
+            return Object.entries(suppliedStages).map(([stageId, values]) => ({
+                stageId, name: text(stageRows.find(row => String(row.stageId) === String(stageId))?.name),
+                items: stageMaterialItems(values)
+            }));
+        }
+        const groups = Object.values(growth.skillGroupMap || {}).sort((a, b) => {
+            const order = { 0: 0, 1: 1, 3: 2, 2: 3 };
+            return (order[a.skillGroupType] ?? a.skillGroupType) - (order[b.skillGroupType] ?? b.skillGroupType);
+        });
+        return stageRows.map(stage => {
+            const totals = new Map();
+            Object.values(growth.charBreakCostMap || {}).filter(node => node.nodeType === 1 && Number(node.breakStage) <= Number(stage.breakStage))
+                .forEach(node => addMaterialTotals(totals, node.requiredItem));
+            const targetLevels = stage.skillLevel || [];
+            (growth.skillLevelUp || []).filter(entry => {
+                const groupIndex = groups.findIndex(group => group.skillGroupId === entry.skillGroupId);
+                return groupIndex >= 0 && Number(entry.level) <= Number(targetLevels[groupIndex] || 0);
+            }).forEach(entry => {
+                addMaterialTotals(totals, entry.itemBundle);
+                addMaterialTotals(totals, [{ id: 'item_gold', count: entry.goldCost }]);
+            });
+            const levelExpByType = new Map();
+            Object.entries(levelCosts || {}).filter(([level]) => Number(level) < Number(stage.level)).forEach(([level, cost]) => {
+                const type = Number(level) > 60 ? 2 : 0;
+                levelExpByType.set(type, (levelExpByType.get(type) || 0) + Number(cost.exp || 0));
+                addMaterialTotals(totals, [{ id: 'item_gold', count: cost.gold }]);
+            });
+            levelExpByType.forEach((exp, type) => {
+                const candidates = Object.entries(expItems || {}).filter(([, row]) => Number(row.expType) === type && Number(row.expGain) > 0)
+                    .sort((a, b) => Number(a[1].expGain) - Number(b[1].expGain));
+                const [itemId, item] = candidates[0] || [];
+                if (itemId) addMaterialTotals(totals, [{ id: itemId, count: Math.ceil(exp / Number(item.expGain)) }]);
+            });
+            return { stageId: String(stage.stageId), name: text(stage.name), items: Array.from(totals, ([id, count]) => ({ id, count })) };
+        });
+    }
+
+    function buildWeaponTrainingMaterials(weapon, breakthrough, upgradeSum, expItems, foresight, stages) {
+        const stageRows = Object.values(stages || {}).sort((a, b) => Number(a.sortWeight || a.stageId) - Number(b.sortWeight || b.stageId));
+        const suppliedStages = foresight?.stageMaterials || {};
+        if (Object.keys(suppliedStages).length) {
+            return Object.entries(suppliedStages).map(([stageId, values]) => ({
+                stageId, name: text(stageRows.find(row => String(row.stageId) === String(stageId))?.name),
+                items: stageMaterialItems(values)
+            }));
+        }
+        const breakRows = breakthrough?.[weapon.breakthroughTemplateId]?.list || [];
+        const levelRows = upgradeSum?.[weapon.levelTemplateId]?.list || [];
+        const expItem = Object.entries(expItems || {}).filter(([, row]) => row.expItemId && Number(row.itemExp) > 0)
+            .sort((a, b) => Number(a[1].itemExp) - Number(b[1].itemExp))[0];
+        return stageRows.map(stage => {
+            const totals = new Map();
+            const levelRow = levelRows.find(row => Number(row.weaponLv) === Number(stage.weaponLevel));
+            if (levelRow && expItem) addMaterialTotals(totals, [{ id: expItem[1].expItemId, count: Math.ceil(Number(levelRow.lvUpExpSum || 0) / Number(expItem[1].itemExp)) }]);
+            addMaterialTotals(totals, [{ id: 'item_gold', count: levelRow?.lvUpGoldSum || 0 }]);
+            breakRows.forEach((row, index) => {
+                if (index === 0 || index > Number(stage.breakStage)) return;
+                addMaterialTotals(totals, row.breakItemList);
+                addMaterialTotals(totals, [{ id: 'item_gold', count: row.breakthroughGold }]);
+            });
+            return { stageId: String(stage.stageId), name: text(stage.name), items: Array.from(totals, ([id, count]) => ({ id, count })) };
+        });
+    }
+
     function compareId(a, b) {
         const aId = a.charId || a.weaponId || a.templateId || a.suitID || a.itemId || a.activityId || a.categoryId || a.gameId || a.id || '';
         const bId = b.charId || b.weaponId || b.templateId || b.suitID || b.itemId || b.activityId || b.categoryId || b.gameId || b.id || '';
@@ -410,7 +506,7 @@
 
     function icon(kind, id, iconId) {
         const paths = {
-            character: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/charremoteicon/icon_${id}.png`,
+            character: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/charroundicon/icon_round_${id}.png`,
             weapon: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId || id}.png`,
             enemy: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${id}.png`,
             item: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${iconId || id}.png`,
@@ -420,9 +516,10 @@
     }
 
     async function characterManifest(version) {
-        const [chars, growth, maps, rewards, weaponRecommendations, shipChars, shipSkills] = await Promise.all([
+        const [chars, growth, maps, rewards, weaponRecommendations, shipChars, shipSkills, foresightGrowth, foresightRecommendations] = await Promise.all([
             table('CharacterTable', version), table('CharGrowthTable', version), loadMaps(), table('RewardTable', version),
-            table('CharWpnRecommendTable', version), table('SpaceshipCharSkillTable', version), table('SpaceshipSkillTable', version)
+            table('CharWpnRecommendTable', version), table('SpaceshipCharSkillTable', version), table('SpaceshipSkillTable', version),
+            optionalForesightTable('ForesightCharGrowthTable', version), optionalForesightTable('ForesightCharWpnRecommendTable', version)
         ]);
         const rows = Object.entries(chars).map(([charId, row], index) => {
             const grow = growth[charId] || {};
@@ -459,20 +556,46 @@
                 )])
             };
         });
-        return assignPriority(rows.sort(byRarityThenId));
+        const foresightRows = Object.entries(foresightGrowth).filter(([charId]) => !chars[charId] && !growth[charId]).map(([charId, row], index) => {
+            const recommendation = foresightRecommendations[charId]?.weaponIds || row.weaponIds || [];
+            return {
+                charId, name: text(row.name, window.akeI18n.t('modules.character.foresight.unnamed', null, '未命名角色')),
+                rarity: row.rarity,
+                charType: maps.char_type_map?.[row.charTypeId] || row.charTypeId,
+                charTypeId: row.charTypeId,
+                profession: maps.profession_id_map?.[String(row.profession)] || row.profession,
+                professionId: row.profession,
+                weapontype: maps.weapon_id_map?.[String(row.weaponType)] || row.weaponType,
+                weaponTypeId: row.weaponType,
+                mainAttrType: row.mainAttrType, subAttrType: row.subAttrType,
+                charBattleTag: row.charBattleTag || [], logisticsSkills: [],
+                icon: icon('character', charId), contentFile: `/__v3/character/${charId}.json`,
+                sourceOrder: rows.length + index, hidden: false, isForesight: true, changeType: 'added',
+                __diffSignature: diffSignature([row, recommendation])
+            };
+        });
+        return assignPriority([...rows, ...foresightRows].sort((a, b) => Number(Boolean(b.isForesight)) - Number(Boolean(a.isForesight)) || byRarityThenId(a, b)));
     }
 
     async function characterDetail(id, version) {
         const [chars, growth, potentials, talentEffects, skills, shipChars, shipSkills, items, professions, rewards,
-            weaponRecommendations, responsiveDialogs, audioDialogs, dialogTexts, aiBarkTexts] = await Promise.all([
+            weaponRecommendations, responsiveDialogs, audioDialogs, dialogTexts, aiBarkTexts, foresightGrowth,
+            foresightRecommendations, foresightStages, foresightWeapons, levelCosts, expItems] = await Promise.all([
             table('CharacterTable', version), table('CharGrowthTable', version), table('CharacterPotentialTable', version),
             table('PotentialTalentEffectTable', version), table('SkillPatchTable', version), table('SpaceshipCharSkillTable', version),
             table('SpaceshipSkillTable', version), table('ItemTable', version), table('CharProfessionTable', version),
             table('RewardTable', version), table('CharWpnRecommendTable', version), table('ResponsiveDialog', version),
-            table('AudioDialog', version), table('DialogTextTable', version), table('AIBarkText', version)
+            table('AudioDialog', version), table('DialogTextTable', version), table('AIBarkText', version),
+            optionalForesightTable('ForesightCharGrowthTable', version), optionalForesightTable('ForesightCharWpnRecommendTable', version),
+            optionalForesightTable('ForesightGrowthStageTable', version),
+            optionalForesightTable('ForesightWeaponTable', version),
+            table('CharLevelUpTable', version), table('ExpItemDataMap', version)
         ]);
         const char = chars[id] || {};
         const grow = growth[id] || {};
+        const foresightCharacter = !chars[id] && !growth[id] ? foresightGrowth[id] || null : null;
+        const foresightCharacterData = foresightGrowth[id] || null;
+        const foresightWeaponIds = foresightRecommendations[id]?.weaponIds || foresightCharacter?.weaponIds || [];
         const talentIds = Object.values(grow.talentNodeMap || {}).map(n => n.passiveSkillNodeInfo?.talentEffectId).filter(Boolean);
         const potential = potentials[id] || {};
         const potentialIds = (potential.potentialUnlockBundle || []).map(p => p.potentialEffectId).filter(Boolean);
@@ -488,6 +611,11 @@
         Object.values(grow.talentNodeMap || {}).forEach(n => (n.requiredItem || []).forEach(item => itemIds.add(item.id)));
         (potential.potentialUnlockBundle || []).forEach(p => (p.itemIds || []).forEach(itemId => itemIds.add(itemId)));
         (grow.skillLevelUp || []).forEach(level => (level.itemBundle || []).forEach(item => itemIds.add(item.id)));
+        foresightMaterialIds(foresightCharacter?.stageMaterials).forEach(itemId => itemIds.add(itemId));
+        (foresightCharacter?.weaponIds || []).forEach(itemId => itemIds.add(itemId));
+        (foresightRecommendations[id]?.weaponIds || []).forEach(itemId => itemIds.add(itemId));
+        const trainingMaterials = buildCharacterTrainingMaterials(grow, foresightStages, levelCosts, expItems, foresightCharacterData);
+        trainingMaterials.forEach(stage => stage.items.forEach(item => itemIds.add(item.id)));
         const giftRewardIds = characterGiftRewardIds(id);
         const giftRewards = pick(rewards, giftRewardIds);
         Object.values(giftRewards).forEach(reward => {
@@ -534,13 +662,19 @@
             skillpatchtable: pick(skills, Array.from(skillIds)), spaceshipcharskilltable: shipRow,
             spaceshipskilltable: pick(shipSkills, shipIds), itemtable: items[id] || {}, costitemtable: pick(items, Array.from(itemIds)),
             charprofessiontable: professions[char.profession] || {}, giftrewardtable: giftRewards,
-            charwpnrecommendtable: weaponRecommendations[id] || {}, specialvoicetable: specialVoices
+            charwpnrecommendtable: weaponRecommendations[id] || {}, specialvoicetable: specialVoices,
+            foresightchartable: foresightCharacter,
+            trainingmaterials: trainingMaterials,
+            foresightweaponids: foresightWeaponIds,
+            foresightweaponnametable: pick(foresightWeapons, foresightWeaponIds),
+            foresightgrowthstagetable: foresightStages
         };
     }
 
     async function weaponManifest(version) {
-        const [weapons, items, tags, gems] = await Promise.all([
-            table('WeaponBasicTable', version), table('ItemTable', version), table('GemTagKeyToWeaponTable', version), table('GemTable', version)
+        const [weapons, items, tags, gems, foresightWeapons, foresightWishlists] = await Promise.all([
+            table('WeaponBasicTable', version), table('ItemTable', version), table('GemTagKeyToWeaponTable', version), table('GemTable', version),
+            optionalForesightTable('ForesightWeaponTable', version), optionalForesightTable('ForesightWeaponGemwishlistTable', version)
         ]);
         const weaponTagMeta = Object.values(gems || {}).reduce((map, gem) => {
             if (gem?.tagId) map[gem.tagId] = { label: text(gem.tagName, gem.tagId), dimension: Number(gem.termType), sort: Number(gem.sortOrder || 0) };
@@ -554,21 +688,50 @@
                 icon: icon('weapon', weaponId, item.iconId), contentFile: `/__v3/weapon/${weaponId}.json`, sourceOrder: index, hidden: false,
                 __diffSignature: diffSignature([row, item]) };
         });
-        return assignPriority(rows.sort(byRarityThenId));
+        const foresightRows = Object.entries(foresightWeapons).filter(([weaponId]) => !weapons[weaponId]).map(([weaponId, row], index) => {
+            const item = items[weaponId] || {};
+            const wishlist = foresightWishlists[weaponId] || {};
+            const weaponTags = wishlist.gemTagIds || row.gemTagIds || [];
+            return {
+                weaponId, name: text(item.name, text(row.name, window.akeI18n.t('modules.weapon.foresight.unnamed', null, '未命名武器'))),
+                rarity: row.rarity, weaponType: row.wpnType,
+                weaponTags, weaponTagMeta,
+                icon: icon('weapon', weaponId, item.iconId || row.iconId),
+                contentFile: `/__v3/weapon/${weaponId}.json`, sourceOrder: rows.length + index,
+                hidden: false, isForesight: true, changeType: 'added',
+                __diffSignature: diffSignature([row, wishlist, item])
+            };
+        });
+        return assignPriority([...rows, ...foresightRows].sort((a, b) => Number(Boolean(b.isForesight)) - Number(Boolean(a.isForesight)) || byRarityThenId(a, b)));
     }
 
     async function weaponDetail(id, version) {
-        const [weapons, items, skills, breakthrough, upgrade, upgradeSum, talents] = await Promise.all([
+        const [weapons, items, skills, breakthrough, upgrade, upgradeSum, talents, foresightWeapons,
+            foresightWishlists, foresightStages, gems, weaponExpItems] = await Promise.all([
             table('WeaponBasicTable', version), table('ItemTable', version), table('SkillPatchTable', version), table('WeaponBreakThroughTemplateTable', version),
-            table('WeaponUpgradeTemplateTable', version), table('WeaponUpgradeTemplateSumTable', version), table('WeaponTalentTemplateTable', version)
+            table('WeaponUpgradeTemplateTable', version), table('WeaponUpgradeTemplateSumTable', version), table('WeaponTalentTemplateTable', version),
+            optionalForesightTable('ForesightWeaponTable', version), optionalForesightTable('ForesightWeaponGemwishlistTable', version),
+            optionalForesightTable('ForesightGrowthStageTable', version), optionalForesightTable('GemTable', version),
+            table('WeaponExpItemTable', version)
         ]);
         const weapon = weapons[id] || {};
+        const foresightWeapon = !weapons[id] ? foresightWeapons[id] || null : null;
+        const foresightWeaponData = foresightWeapons[id] || null;
         const bt = breakthrough[weapon.breakthroughTemplateId];
         const materialIds = (bt?.list || []).flatMap(row => (row.breakItemList || []).map(item => item.id));
-        return { weaponId: id, weaponbasictable: weapon, itemtable: pick(items, [id].concat(materialIds)),
+        foresightMaterialIds(foresightWeapon?.stageMaterials).forEach(itemId => materialIds.push(itemId));
+        const trainingMaterials = buildWeaponTrainingMaterials(weapon, breakthrough, upgradeSum, weaponExpItems, foresightWeaponData, foresightStages);
+        trainingMaterials.forEach(stage => stage.items.forEach(item => materialIds.push(item.id)));
+        const wishlist = foresightWishlists[id] || {};
+        const gemIds = new Set([...(foresightWeapon?.gemTagIds || []), ...(wishlist.gemTagIds || [])]);
+        return { weaponId: id, weaponbasictable: weapon, itemtable: pick(items, [id].concat(materialIds)), trainingmaterials: trainingMaterials,
             skillpatchtable: pick(skills, weapon.weaponSkillList || []), weaponbreakthroughtemplatetable: pick(breakthrough, [weapon.breakthroughTemplateId]),
             weaponupgradetemplatetable: pick(upgrade, [weapon.levelTemplateId]), weaponupgradetemplatesumtable: pick(upgradeSum, [weapon.levelTemplateId]),
-            weapontalenttemplatetable: pick(talents, [weapon.talentTemplateId]) };
+            weapontalenttemplatetable: pick(talents, [weapon.talentTemplateId]),
+            foresightweapontable: foresightWeapon,
+            foresightweaponwishlisttable: foresightWeapon ? wishlist : {},
+            foresightgrowthstagetable: foresightStages,
+            foresightgemtable: Object.fromEntries(Object.entries(gems || {}).filter(([, gem]) => gemIds.has(gem.tagId))) };
     }
 
     async function enemyManifest(version) {
@@ -1289,6 +1452,15 @@
         return window.akeDataLoader?.loadTable
             ? window.akeDataLoader.loadTable(name, version, options)
             : loadTableInternal(name, version, options);
+    }
+
+    async function optionalForesightTable(name, version) {
+        try {
+            return await table(name, version, { optional: true });
+        } catch (error) {
+            console.warn(`可选补充数据表 ${name} 暂不可用，继续使用已有数据。`, error);
+            return {};
+        }
     }
 
     // Explicitly invoked by maintainers; never run during normal module loading.
