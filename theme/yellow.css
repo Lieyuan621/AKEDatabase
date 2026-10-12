@@ -11,6 +11,7 @@
     --text-secondary: #6b5d4e;
     --text-color-secondary: #6b5d4e;
     --desc-color: #6b5d4e;
+    --ake-ui-nested-heading-color: #6b5d4e;
     --accent-color: #657087;
     --tag-bg: #dacdbc;
     --tag-text: #5e4a3b;
@@ -132,4 +133,17 @@
     --ake-shell-settings-border: #b3a18e;
     --ake-shell-settings-about: #f0e5d8;
     --ake-shell-settings-about-text: #4a3c2f;
+}
+
+@scope (body[data-ake-module="tech_tree"]) {
+    .ake-ui-directory.ake-ui-tech-tree {
+        --tech-surface: #f6efdf;
+        --tech-band: #ebe1ca;
+        --tech-card: #fff9eb;
+        --tech-line: #9c8b70;
+        --tech-active: #886013;
+        --tech-selected: #f7e4ab;
+        --tech-text: #4a3d2b;
+        --tech-border: #cab996;
+    }
 }

@@ -81,7 +81,9 @@
         const deepId = window.__deepLinkId;
         window.__deepLinkId = null;
         const title = () => window.akeI18n.t(`modules.${spec.id}.title`);
-        const close = () => { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); };
+        const close = () => { overlay?.classList.remove('is-open'); overlay?.setAttribute('aria-hidden', 'true'); };
+        // Optional presentation adapter; loading, details, links and diagnostics stay shared.
+        const view = spec.createView?.({ root, select, reload: load });
         function renderDetail() {
             if (!ctx) return;
             const row = rows.find(entry => entry.id === activeId);
@@ -90,13 +92,14 @@
             detail.innerHTML = `<article class="ake-ui-detail">${header.outerHTML}${spec.render(row, ctx)}${raw(row.raw)}</article>`;
         }
         function select(id, update = true) {
-            if (!rows.some(row => row.id === id)) return false;
+            if (!(view && id === null) && !rows.some(row => row.id === id)) return false;
             activeId = id;
             renderList(); renderDetail(); close();
             if (update) window.__akeRouter?.updateUrl(spec.id, id);
             return true;
         }
         function renderList() {
+            if (view) { view.update({ rows, ctx, activeId }); return; }
             const query = search.value.trim().toLocaleLowerCase();
             const filtered = rows.filter(row => (!filter.value || row.group === filter.value) && (!query || `${row.name} ${row.group} ${row.search || ''} ${hidden() ? row.id : ''}`.toLocaleLowerCase().includes(query)));
             count.textContent = t('count', { count: filtered.length, total: rows.length });
@@ -118,11 +121,13 @@
                 if (ids.has(row.id)) { ctx.issue('duplicate-entry', spec.id, row.id); return false; }
                 ids.add(row.id); return true;
             });
-            const selectedGroup = filter.value;
-            filter.replaceChildren(new Option(t('all'), ''));
-            [...new Set(rows.map(row => row.group).filter(Boolean))].forEach(group => filter.add(new Option(group, group)));
-            filter.value = [...filter.options].some(option => option.value === selectedGroup) ? selectedGroup : '';
-            window.AKEUI.refreshSelect?.(filter);
+            if (!view) {
+                const selectedGroup = filter.value;
+                filter.replaceChildren(new Option(t('all'), ''));
+                [...new Set(rows.map(row => row.group).filter(Boolean))].forEach(group => filter.add(new Option(group, group)));
+                filter.value = [...filter.options].some(option => option.value === selectedGroup) ? selectedGroup : '';
+                window.AKEUI.refreshSelect?.(filter);
+            }
             for (const source of spec.primary || []) {
                 const included = new Set(rows.flatMap(row => (row.sources || []).filter(ref => ref.table === source).map(ref => String(ref.key))));
                 const expected = Object.keys(ctx.tables[source] || {});
@@ -133,12 +138,13 @@
                 window.__akeRouter?.onDeepLinkNotFound?.(pendingNotFound, false);
                 pendingNotFound = null;
             }
-            activeId = rows.some(row => row.id === preferred) ? preferred : rows[0]?.id || null;
+            activeId = rows.some(row => row.id === preferred) ? preferred : (view ? null : rows[0]?.id || null);
             renderList(); renderDetail();
         }
         async function load() {
             const token = ++generation;
             loading = true;
+            view?.status('loading');
             diagnostics = { state: 'loading', sources: {}, issues: [], coverage: {} };
             detail.innerHTML = `<div class="ake-ui-state" data-state="loading">${h(t('loading'))}</div>`;
             try {
@@ -155,6 +161,7 @@
                 if (destroyed || token !== generation) return;
                 ctx = null;
                 diagnostics.state = 'error'; diagnostics.error = error.message;
+                view?.status('error');
                 detail.innerHTML = `<div class="ake-ui-state" data-state="error"><p>${h(t('loadFailed'))}</p>${hidden() ? `<p>${h(error.message)}</p>` : ''}<button class="ake-ui-button" type="button" data-catalog-retry>${h(t('retry'))}</button></div>`;
             } finally { if (token === generation) loading = false; }
         }
@@ -217,7 +224,7 @@
                 pendingNotFound = null;
             } else if (!ctx && !loading) load();
         });
-        const controller = { select, destroy() { destroyed = true; generation++; abort.abort(); }, diagnostics() { return structuredClone(diagnostics); } };
+        const controller = { select, destroy() { destroyed = true; generation++; abort.abort(); view?.destroy(); }, diagnostics() { return structuredClone(diagnostics); } };
         controllers.set(spec.id, controller);
         root.querySelector('[data-catalog-title]').textContent = title();
         load();

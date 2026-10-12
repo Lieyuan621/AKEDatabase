@@ -90,8 +90,14 @@
         return header;
     }
 
-    function markVersionChange(element, item) {
-        if (!element || !item?.changeType) return;
+    function markVersionChange(element, item, foresightLabel) {
+        if (!element || !item) return;
+        if (item.isForesight) {
+            element.dataset.akeChange = 'foresight';
+            element.dataset.akeChangeLabel = foresightLabel || '前瞻';
+            return;
+        }
+        if (!item.changeType) return;
         const label = item.changeType === 'added'
             ? (window.akeData?.t('versionDiff.added', null, '新增') || '新增')
             : (window.akeData?.t('versionDiff.modified', null, '修改') || '修改');
@@ -212,7 +218,9 @@
         items.forEach((item) => {
             const baseVersion = String(item.changeBaseVersion || '').split('@')[0];
             const group = item.changeType
-                ? { id: '__version_diff__', name: window.akeData?.t('versionDiff.group', { version: baseVersion }, `版本差异 · 相比 ${baseVersion}`) || `版本差异 · 相比 ${baseVersion}`, order: -10000 }
+                ? { id: '__version_diff__', name: baseVersion
+                    ? (window.akeData?.t('versionDiff.group', { version: baseVersion }, `版本差异 · 相比 ${baseVersion}`) || `版本差异 · 相比 ${baseVersion}`)
+                    : (window.akeData?.t('versionDiff.foresightGroup', null, '前瞻版本差异') || '前瞻版本差异'), order: -10000 }
                 : (options.group(item) || { id: 'all', name: window.akeData?.t('common.all', null, '全部') || '全部' });
             if (!groups.has(group.id)) groups.set(group.id, { ...group, items: [] });
             groups.get(group.id).items.push(item);
@@ -338,7 +346,12 @@
                 id.textContent = item.id;
                 const tags = document.createElement('div');
                 tags.className = 'ake-ui-card__badges';
-                if (item.changeType) {
+                if (item.isForesight) {
+                    const previewTag = document.createElement('span');
+                    previewTag.className = 'ake-ui-badge ake-ui-badge--change ake-ui-badge--foresight';
+                    previewTag.textContent = item.cornerTag || '前瞻';
+                    tags.appendChild(previewTag);
+                } else if (item.changeType) {
                     const changeTag = document.createElement('span');
                     changeTag.className = 'ake-ui-badge ake-ui-badge--change';
                     changeTag.dataset.tone = item.changeType;

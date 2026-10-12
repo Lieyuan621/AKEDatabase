@@ -20,7 +20,7 @@
         },
         "version": { "loading": "正在读取更新信息...", "unavailable": "更新信息暂不可用", "appLine": "AKEData · 版本 {version}", "gameLine": "游戏版本 {version}", "hotfixLine": "Hotfix 版本 {version}", "updatedLine": "最后更新于：{updatedAt}{updatedBy}", "homeLine": "AKEData {app} · {game}", "countdown": "距离下次可能的数据更新还有 {time}", "updateReason": "更新原因：{desc}" },
         "overview": { "count": "{count} 条数据", "hint": "选择卡片查看完整数据" },
-        "versionDiff": { "group": "版本差异 · 相比 {version}", "added": "新增", "modified": "修改", "detailTitle": "显示内容差异 · 相比 {version}", "changeCount": "{count} 处变更", "truncated": "差异过多，仅显示前 500 行。" },
+        "versionDiff": { "group": "版本差异 · 相比 {version}", "foresightGroup": "前瞻版本差异", "added": "新增", "modified": "修改", "detailTitle": "显示内容差异 · 相比 {version}", "changeCount": "{count} 处变更", "truncated": "差异过多，仅显示前 500 行。" },
         "errors": { "load": "加载失败：{message}", "startup": "应用启动失败：{message}", "notFoundTitle": "页面未找到", "notFoundDesc": "您访问的模块或条目不存在", "returnHome": "返回首页", "hiddenContentHint": "该内容可能为隐藏内容。", "hiddenContentHelp": "您可以通过点击左下角全局设置按钮，开启“显示隐藏模块”来访问隐藏内容。", "moduleContentMissing": "模块内容文件未指定", "moduleLoad": "无法加载模块内容：{message}", "moduleManifestRead": "无法读取模块清单。<br>请通过本地服务器访问。", "exportFailed": "截图失败：{message}" },
         "data": { "independentEquipment": "独立装备" },
         "modules": {
@@ -244,7 +244,24 @@
                 }
             },
             "tech_tree": {
-                "title": "工业科技树"
+                "title": "工业科技树",
+                "planDetails": "计划详情",
+                "search": "搜索科技节点（全部计划）",
+                "locate": "定位下一个",
+                "zoomIn": "放大",
+                "zoomOut": "缩小",
+                "fit": "适应画布",
+                "graph": "工业科技节点图",
+                "details": "科技详情",
+                "help": "拖动平移，滚轮或双指缩放；点击节点查看详情，点击阶段名称查看解锁要求。箭头从前置科技指向后续科技。键盘方向键平移，+ / − 缩放，Home 适应画布。",
+                "nodeCount": "当前计划共 {count} 个科技节点",
+                "matches": "全部计划找到 {count} 个匹配节点；点击“定位下一个”依次查看",
+                "missingNode": "前置科技数据缺失",
+                "relatedPlans": "关联计划的前置科技",
+                "unassigned": "未归属计划",
+                "retryIcons": "重试图标加载",
+                "dataIssues": "部分数据关系或布局字段存在异常，已保留节点并自动安排位置。",
+                "missingIcons": "部分图标不可用，节点仍可查看。"
             },
             "spaceship": {
                 "title": "帝江号"
@@ -600,6 +617,7 @@
                     "logisticsSkills": "后勤技能",
                     "gifts": "好感赠礼",
                     "weaponRecommendations": "武器推荐",
+                    "trainingMaterials": "培养材料",
                     "potentialImages": "潜能图片",
                     "profile": "档案",
                     "voiceRecords": "语音记录"
@@ -614,6 +632,11 @@
                 "weaponRecommendations": {
                     "skillAdaptation": "技能适配",
                     "attributeAdaptation": "属性适配"
+                },
+                "foresight": {
+                    "badge": "前瞻", "unnamed": "未命名角色", "materials": "前瞻培养材料", "stage": "阶段 {stage}",
+                    "targetLevel": "目标等级", "gemTags": "武器词条", "skillNames": "技能效果", "associatedWeapons": "关联武器",
+                    "unknownMaterial": "材料暂无获取途径", "unknownWeapon": "武器名称不可用"
                 }
             },
             "weapon": {
@@ -649,8 +672,13 @@
                 "sections": {
                     "skillData": "技能数据",
                     "breakthroughMaterials": "突破材料",
+                    "trainingMaterials": "培养材料",
                     "potentials": "潜能",
                     "story": "武器故事"
+                },
+                "foresight": {
+                    "badge": "前瞻", "unnamed": "未命名武器", "materials": "前瞻培养材料", "stage": "阶段 {stage}",
+                    "targetLevel": "目标等级", "gemTags": "武器词条", "skillNames": "技能效果", "unknownMaterial": "材料暂无获取途径"
                 }
             },
             "enemy": {

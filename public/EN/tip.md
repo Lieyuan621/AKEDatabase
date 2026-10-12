@@ -1,10 +1,24 @@
 # Special Announcement
 
-AKEData `v1.3.0` is now available. This major update to loading and navigation introduces faster home page startup, background module preloading, longer cache reuse, and global search to make finding data and switching modules easier.
+AKEData `v1.3.1` is now available. This release expands preview information for Characters and Weapons, adds growth materials to regular Character and Weapon details, and includes preview entries and related information in global search.
 
 AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redirects here.
 
 # AKEData Version Changelog
+
+### v1.3.1
+
+#### Character and Weapon previews
+
+- Preview Characters and Weapons now appear in their respective modules with a Preview label and priority in the listings. Character entries show associated Weapons with their icons.
+- Character preview details show associated Weapons, available skill information, and materials by growth stage. Unavailable voice actor, primary/secondary attribute, and large portrait fields are omitted.
+- Weapon preview details show Weapon Attributes and materials by stage, without target level or the large side illustration. Missing material acquisition information is labeled as unavailable.
+- Global search now indexes preview tables and related information, with direct navigation to the corresponding module entries.
+
+#### Growth materials and section hierarchy
+
+- Regular Character and Weapon details now include a Training Materials section listing required items and quantities by stage.
+- Reorganized Character gift stages, Weapon recommendations, and growth expectations under their related sections.
 
 ### v1.3.0
 

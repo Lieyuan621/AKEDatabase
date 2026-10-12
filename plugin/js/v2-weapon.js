@@ -151,7 +151,7 @@
             attributes: { 'data-weapon-id': weapon.weaponId },
             onSelect: options.onSelect
         });
-        window.AKEModuleOverview?.markVersionChange(item, weapon);
+        window.AKEModuleOverview?.markVersionChange(item, weapon, t('foresight.badge'));
         return item;
     }
 
@@ -201,7 +201,7 @@
             onReset: () => { activeWeaponId = null; },
             onSelect: item => { activeWeaponId = item.weaponId; renderWeaponList(); },
             sidebarSelector: item => `.ake-ui-directory__item[data-weapon-id="${CSS.escape(item.weaponId)}"]`,
-            items: items.map(item => ({ ...item, id: item.weaponId, image: item.icon, fallback: t('overview.fallback') }))
+            items: items.map(item => ({ ...item, id: item.weaponId, image: item.icon, fallback: t('overview.fallback'), cornerTag: item.isForesight ? t('foresight.badge') : '' }))
         });
     }
 
@@ -406,6 +406,20 @@
         return t('breakthroughLevel', { level: marker }).replace(marker, '').trim();
     }
 
+    function trainingMaterialsHtml(stages, itemTable, sectionTitle) {
+        if (!stages?.length) return '';
+        const stageHtml = stages.map(stage => {
+            const items = (stage.items || []).map(item => {
+                const info = itemTable[item.id] || {};
+                const name = info.name?.text || info.name || t('foresight.unknownMaterial');
+                const iconId = info.iconId || item.id;
+                return `<span class="ake-ui-material__item"><img class="ake-ui-material__item-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${escapeHtml(iconId)}.png" alt="" loading="lazy" decoding="async"><span class="ake-ui-material__item-name">${escapeHtml(name)}</span><strong class="ake-ui-material__item-count">×${escapeHtml(String(item.count))}</strong></span>`;
+            }).join('');
+            return `<section class="ake-ui-section"><div class="ake-ui-section__header ake-ui-section__header--nested"><h4 class="ake-ui-section__title">${escapeHtml(stage.name || t('foresight.stage', { stage: stage.stageId }))}</h4></div>${items ? `<div class="ake-ui-material__items">${items}</div>` : `<p>${t('none')}</p>`}</section>`;
+        }).join('');
+        return `<section class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${escapeHtml(sectionTitle)}</h3></div>${stageHtml}</section>`;
+    }
+
     function renderBreakthrough(data, itemTable) {
         const btTable = data.weaponbreakthroughtemplatetable;
         if (!btTable) return '';
@@ -539,6 +553,7 @@
     }
 
     function renderDetail(data, weapon) {
+        if (weapon.isForesight) return renderForesightWeaponDetail(data, weapon);
         const basicTable = data.weaponbasictable || {};
         const itemTable = data.itemtable || {};
         const weaponItem = itemTable[weapon.weaponId] || {};
@@ -551,6 +566,7 @@
         const atkHtml = renderAtkTable(data);
         const skillHtml = renderSkills(data);
         const breakHtml = renderBreakthrough(data, itemTable);
+        const trainingHtml = trainingMaterialsHtml(data.trainingmaterials, itemTable, t('sections.trainingMaterials'));
         const storyHtml = weaponDesc ? `
             <section class="ake-ui-section weapon-story-section">
                 <div class="ake-ui-section__header">
@@ -585,9 +601,32 @@
             ${detailHeader?.outerHTML || ''}
             ${skillHtml}
             ${breakHtml}
+            ${trainingHtml}
             ${storyHtml}
             </article>
         `;
+    }
+
+    function renderForesightWeaponDetail(data, weapon) {
+        const escape = value => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+        const row = data.foresightweapontable || {};
+        const itemTable = data.itemtable || {};
+        const wishlist = data.foresightweaponwishlisttable || {};
+        const stages = trainingMaterialsHtml(data.trainingmaterials, itemTable, t('foresight.materials'));
+        const gemLabels = Object.values(data.foresightgemtable || {}).map(gem => gem.tagName?.text || gem.tagName || gem.tagId).filter(Boolean);
+        const skillLabels = row.skNames || wishlist.skNames || wishlist.skillNames || [];
+        const facts = [
+            `<div><dt>${commonT('rarity')}</dt><dd>${commonT('rarityStars', { rarity: weapon.rarity })}</dd></div>`,
+            gemLabels.length ? `<div><dt>${t('foresight.gemTags')}</dt><dd>${gemLabels.map(escape).join(' / ')}</dd></div>` : '',
+            skillLabels.length ? `<div><dt>${t('foresight.skillNames')}</dt><dd>${skillLabels.map(skill => escape(skill?.text || skill)).join(' / ')}</dd></div>` : ''
+        ].filter(Boolean).join('');
+        const header = window.AKEUI.detailHeader({
+            layout: 'showcase', className: 'weapon-detail-hero',
+            icon: { src: weapon.icon || '' }, title: weapon.name,
+            content: window.AKEUI.fragment(`<dl class="character-detail-facts">${facts}</dl>`),
+            visual: weapon.isForesight ? null : { src: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/gachaweapon/${weapon.weaponId}.png`, frame: true }
+        });
+        return `<article class="ake-ui-detail" data-detail-kind="weapon">${header?.outerHTML || ''}${gemLabels.length ? `<section class="ake-ui-section"><div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('foresight.gemTags')}</h3></div><div class="ake-ui-card__badges">${gemLabels.map(label => `<span class="ake-ui-badge">${escape(label)}</span>`).join('')}</div></section>` : ''}${stages}</article>`;
     }
 
     function bindWeaponLevelToggle(container) {

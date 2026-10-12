@@ -28,6 +28,7 @@ window.AKESearchIndex = {
     "sources": [
       "plugin/js/ake-catalog.js",
       "plugin/js/tech-tree.js",
+      "plugin/js/tech-tree-view.js",
       "plugin/tech_tree.html"
     ]
   },
@@ -681,6 +682,9 @@ window.AKESearchIndex = {
   },
   "v3_weapon": {
     "tables": [
+      "ForesightGrowthStageTable",
+      "ForesightWeaponGemwishlistTable",
+      "ForesightWeaponTable",
       "GemTable",
       "GemTagKeyToWeaponTable",
       "ItemTable",
@@ -708,6 +712,9 @@ window.AKESearchIndex = {
       "CharProfessionTable",
       "CharWpnRecommendTable",
       "DialogTextTable",
+      "ForesightCharGrowthTable",
+      "ForesightCharWpnRecommendTable",
+      "ForesightGrowthStageTable",
       "ItemTable",
       "PotentialTalentEffectTable",
       "ResponsiveDialog",
