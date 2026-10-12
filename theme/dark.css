@@ -133,3 +133,16 @@
     --ake-shell-settings-about: #171717;
     --ake-shell-settings-about-text: #b8b8b8;
 }
+
+@scope (body[data-ake-module="tech_tree"]) {
+    .ake-ui-directory.ake-ui-tech-tree {
+        --tech-surface: #191e24;
+        --tech-band: #222a32;
+        --tech-card: #303942;
+        --tech-line: #8798a5;
+        --tech-active: #f0cf59;
+        --tech-selected: #4a4430;
+        --tech-text: #e7edf2;
+        --tech-border: #4b5865;
+    }
+}

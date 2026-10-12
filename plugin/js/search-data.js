@@ -264,6 +264,8 @@
             add('spaceship', `room:${type}`, title((await table('SpaceshipRoomTypeTable'))[type]));
         }
         if (source === 'FacSTTConditionTable') await from('FacSTTNodeTable', row.techId, 'tech_tree', 'node:');
+        // Category headings are rendered in the owning plan's graph.
+        if (source === 'FacSTTCategoryTable') await from('FacSTTGroupTable', row.groupId, 'tech_tree', 'plan:');
         if (source === 'FacSTTPackConditionTable') await from('FacSTTGroupTable', row.groupId, 'tech_tree', 'plan:');
         abortCheck(signal);
         return [...results.values()];

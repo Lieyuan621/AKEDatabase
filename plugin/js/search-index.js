@@ -28,6 +28,7 @@ window.AKESearchIndex = {
     "sources": [
       "plugin/js/ake-catalog.js",
       "plugin/js/tech-tree.js",
+      "plugin/js/tech-tree-view.js",
       "plugin/tech_tree.html"
     ]
   },

@@ -2,6 +2,7 @@
     'use strict';
     window.AKECatalog.mount({
         id: 'tech_tree',
+        createView: options => window.AKETechTreeView.create(options),
         tables: ['FacSTTGroupTable', 'FacSTTCategoryTable', 'FacSTTLayerTable', 'FacSTTNodeTable', 'FacSTTConditionTable', 'FacSTTPackConditionTable', 'FacSTTBuildingDomainLimitTechTable', 'MachineId2MachineTechIdTable', 'FactoryBuildingTable', 'DomainDataTable', 'DungeonTable'],
         primary: ['FacSTTGroupTable', 'FacSTTLayerTable', 'FacSTTNodeTable'],
         build(c) {
@@ -58,6 +59,10 @@
                     [c.h(c.t('initiallyUnlocked')), c.h(c.t(r.alreadyUnlock ? 'yes' : 'no'))]
                 ]), true);
                 html += c.section(c.t('prerequisites'), (r.preNode || []).map(techLink).join(' ') || c.h(c.t('none')), true);
+                const layer = T.FacSTTLayerTable[r.layer];
+                if (layer) html += c.section(c.t('layers'), layerLink(r.layer) + c.table([c.t('prerequisites'), c.t('cost')], [
+                    [layer.preLayer ? layerLink(layer.preLayer) : c.h(c.t('none')), c.items(layer.costItems)]
+                ]), true);
                 const successors = c.entries(T.FacSTTNodeTable).filter(([, row]) => (row.preNode || []).includes(entry.key));
                 html += c.section(c.t('nextTechnologies'), successors.map(([id]) => techLink(id)).join(' '));
                 html += c.section(c.t('cost'), `${plan?.costPointType ? c.item(plan.costPointType, r.costPointCount) : c.number(r.costPointCount)}<br>${c.items(r.costItems)}`, true);

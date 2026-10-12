@@ -8793,3 +8793,86 @@ body[data-ake-module="misc"] :is(#miscWeeklyPrevious, #miscWeeklyNext) {
     .welcome-home__announcement { top: 12px; right: 16px; }
 }
 @media (max-width: 600px) { .raw-value-popover { max-width: calc(100vw - 20px); font-size: .78rem; } .pre-release-watermark { background-size: 280px 148px; } }
+
+/* Technology graph: shared geometry and per-theme visual tokens. */
+.ake-ui-directory.ake-ui-tech-tree {
+    --tech-surface: #f3f5f7;
+    --tech-band: #e8edf1;
+    --tech-card: #ffffff;
+    --tech-line: #87969e;
+    --tech-active: #986900;
+    --tech-selected: #fff3c4;
+    --tech-text: #26343e;
+    --tech-border: #c4ced5;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    width: 100%;
+    height: auto;
+}
+.ake-ui-tech-tree__toolbar,
+.ake-ui-tech-tree__toolbar form,
+.ake-ui-tech-tree__controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.ake-ui-tech-tree__toolbar form { flex: 1 1 280px; }
+.ake-ui-tech-tree__toolbar .ake-ui-input { flex: 1 1 180px; min-width: 100px; width: auto; }
+.ake-ui-tech-tree__toolbar label { display: flex; align-items: center; gap: 6px; }
+.ake-ui-tech-tree__controls output { min-width: 42px; text-align: center; font-size: .8rem; }
+.ake-ui-tech-tree > p { margin: 0; }
+.ake-ui-tech-tree__status { color: var(--desc-color); font-size: .8rem; min-height: 24px; }
+.ake-ui-tech-tree__workspace {
+    display: flex;
+    position: relative;
+    min-width: 0;
+    height: clamp(420px, 72dvh, 1000px);
+    overflow: hidden;
+    border: 1px solid var(--tech-border);
+    border-radius: var(--ake-ui-radius);
+    background: var(--tech-surface);
+}
+.ake-ui-tech-tree__viewport { flex: 1 1 0; min-width: 0; height: 100%; overflow: hidden; touch-action: none; cursor: grab; user-select: none; }
+.ake-ui-tech-tree__viewport.is-dragging { cursor: grabbing; }
+.ake-ui-tech-tree__viewport:focus-visible { outline: 2px solid var(--tech-active); outline-offset: -3px; }
+.ake-ui-tech-tree__svg { display: block; width: 100%; height: 100%; }
+.ake-ui-tech-tree__svg[hidden] { display: none; }
+.ake-ui-tech-tree__band { fill: var(--tech-surface); }
+.ake-ui-tech-tree__band.is-alternate { fill: var(--tech-band); }
+.ake-ui-tech-tree__divider { stroke: var(--tech-border); stroke-width: 1; }
+.ake-ui-tech-tree__label { fill: var(--tech-text); font-size: 15px; font-weight: 600; }
+.ake-ui-tech-tree__heading[role="button"] { cursor: pointer; }
+.ake-ui-tech-tree__heading[role="button"]:is(:hover, :focus-visible) text { fill: var(--tech-active); text-decoration: underline; }
+.ake-ui-tech-tree__edge { fill: none; stroke: var(--tech-line); stroke-width: 2; stroke-linejoin: round; }
+.ake-ui-tech-tree__edge.is-selected { stroke: var(--tech-active); stroke-width: 3.5; }
+.ake-ui-tech-tree__node { cursor: pointer; outline: none; }
+.ake-ui-tech-tree__node > rect { fill: var(--tech-card); stroke: var(--tech-border); stroke-width: 1.5; }
+.ake-ui-tech-tree__node.is-external > rect { stroke-dasharray: 5 3; }
+.ake-ui-tech-tree__node.is-related > rect { stroke: var(--tech-active); }
+.ake-ui-tech-tree__node.is-match > rect { stroke: var(--tech-active); stroke-width: 3; }
+.ake-ui-tech-tree__node:is(:hover, :focus-visible, .is-selected) > rect { fill: var(--tech-selected); stroke: var(--tech-active); stroke-width: 3.5; }
+.ake-ui-tech-tree__node-label { fill: var(--tech-text); font-size: 12px; }
+.ake-ui-tech-tree__placeholder { fill: var(--tech-line); font-size: 36px; }
+.ake-ui-tech-tree__node:has(image) .ake-ui-tech-tree__placeholder { visibility: hidden; }
+.ake-ui-tech-tree__drawer {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 clamp(300px, 32%, 460px);
+    min-width: 0;
+    height: 100%;
+    overflow: hidden;
+    border-left: 1px solid var(--tech-border);
+    background: var(--ake-ui-surface, var(--content-bg));
+}
+.ake-ui-tech-tree__drawer[hidden] { display: none; }
+.ake-ui-tech-tree__drawer-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px; border-bottom: 1px solid var(--tech-border); }
+.ake-ui-tech-tree__drawer-header h3 { margin: 0; font-size: .9rem; }
+.ake-ui-tech-tree__drawer > main { min-height: 0; flex: 1; padding: 14px; overflow: auto; overscroll-behavior: contain; }
+.ake-ui-tech-tree__drawer .ake-ui-detail { min-width: 0; }
+@media (max-width: 900px) {
+    .ake-ui-tech-tree__drawer { position: absolute; right: 0; top: 0; bottom: 0; width: min(90%, 400px); z-index: 2; box-shadow: var(--ake-ui-shadow-hover); }
+    .ake-ui-tech-tree__workspace { height: 68dvh; min-height: 400px; }
+}
