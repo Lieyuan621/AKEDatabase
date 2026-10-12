@@ -12,6 +12,7 @@
         v3_item: '[data-ake-module="item"] .ake-ui-directory__search',
         v3_shop: '[data-ake-module="shop"] .ake-ui-directory__search',
         v3_dungeon: '[data-ake-module="dungeon"] .ake-ui-directory__search',
+        monument: '[data-ake-module="monument"] .ake-ui-directory__search',
         v3_achievement: '[data-ake-module="achievement"] .ake-ui-directory__search',
         v3_archive: '[data-ake-module="archive"] > .ake-ui-directory__sidebar .ake-ui-directory__search:not(.ake-ui-directory__search--mobile)',
         v3_mission: '[data-ake-module="mission"] .ake-ui-directory__search',
@@ -372,7 +373,7 @@
             v3_cc: 'v2ccDetail', research: 'researchDetail', v3_character: 'v2characterDetail',
             v3_weapon: 'v2wpnDetail', v3_enemy: 'v2enemyDetail', v3_equip: 'v2equipDetail',
             v3_activity: 'activityDetail', v3_item: 'v2itemDetail', v3_dungeon: 'v2dungeonDetail',
-            v3_achievement: 'achievementDetail'
+            v3_achievement: 'achievementDetail', monument: 'v2dungeonDetail'
         };
         const entry = roots.get(detailIds[module]);
         if (entry?.container.isConnected) {

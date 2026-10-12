@@ -152,10 +152,11 @@
                 if ((type.achievementGroupData || []).some(group => group.groupId === row.groupId)) add('v3_achievement', id, title(type));
             }
         }
-        if (['DungeonTable', 'DungeonSeriesTable'].includes(source) && has('v3_dungeon')) {
+        if (['DungeonTable', 'DungeonSeriesTable'].includes(source) && (has('v3_dungeon') || has('monument'))) {
             const id = source === 'DungeonTable' ? row.dungeonSeriesId : key;
             const series = (await table('DungeonSeriesTable'))[id];
             if (series?.gameCategory) add('v3_dungeon', id, title(series));
+            if (series?.gameCategory === 'dungeon_highdifficulty' && has('monument')) add('monument', id, title(series));
         }
         if (['CharGrowthTable', 'CharacterPotentialTable', 'SpaceshipCharSkillTable'].includes(source)) await from('CharacterTable', key, 'v3_character');
         if (source === 'SpaceshipSkillTable' && has('v3_character')) {

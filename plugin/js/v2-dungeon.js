@@ -2,6 +2,7 @@
         const t = window.akeI18n.scope('modules.dungeon');
         const ccT = window.akeI18n.scope('modules.cc');
         const commonT = window.akeI18n.scope('common');
+        const monumentT = window.akeI18n.scope('modules.monument');
         const ATTR_DISPLAY_ORDER = [0, 1, 2, 3, 20, 21, 27, 12, 8, 9, 10, 11, 15];
         let allSeries = [];
         let rawAllSeries = [];
@@ -11,6 +12,9 @@
         let attrMap = {};
         let attrNameToId = {};
         let buffCache = {};
+        const moduleRoot = document.querySelector('.ake-ui-directory[data-ake-module="dungeon"], .ake-ui-directory[data-ake-module="monument"]');
+        const moduleId = moduleRoot?.dataset.akeModule || 'dungeon';
+        const routeModuleId = moduleId === 'monument' ? 'monument' : 'v2_dungeon';
 
         const FORMULA_TO_MODTYPE = window.AKEStats.FORMULA_TO_MODTYPE;
         const LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES = window.AKEEnemyRenderer.LEGACY_ELEMENT_RESISTANCE_ATTR_TYPES;
@@ -308,18 +312,53 @@
             );
         }
 
+        function parsePeriodDate(value) {
+            const match = String(value || '').match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})\s+(\d{1,2}):(\d{1,2}):(\d{1,2})$/);
+            if (!match) return null;
+            const date = new Date(`${match[1]}-${match[2].padStart(2, '0')}-${match[3].padStart(2, '0')}T${match[4].padStart(2, '0')}:${match[5]}:${match[6]}+08:00`);
+            return Number.isNaN(date.getTime()) ? null : date;
+        }
+
+        function getMonumentStatus(series) {
+            const open = parsePeriodDate(series.openTime)?.getTime();
+            const close = parsePeriodDate(series.closeTime)?.getTime();
+            if (!Number.isFinite(open) || !Number.isFinite(close)) return { key: 'unknown', label: monumentT('status.unknown') };
+            if (Date.now() < open) return { key: 'upcoming', label: monumentT('status.upcoming') };
+            if (Date.now() >= close) return { key: 'closed', label: monumentT('status.closed') };
+            return { key: 'active', label: monumentT('status.active') };
+        }
+
+        function formatMonumentDate(value, dateOnly = false) {
+            const date = parsePeriodDate(value);
+            if (!date) return monumentT('status.unknown');
+            const info = window.akeI18n?.getLanguageInfo?.();
+            return new Intl.DateTimeFormat(info?.htmlLang || 'zh-CN', {
+                year: 'numeric', month: '2-digit', day: '2-digit',
+                ...(dateOnly ? {} : { hour: '2-digit', minute: '2-digit', hour12: false })
+            }).format(date);
+        }
+
         const mobileBtn = document.getElementById('v2dungeonMobileListBtn');
         const mobileOverlay = document.getElementById('v2dungeonMobileListOverlay');
         const mobileContent = document.getElementById('v2dungeonMobileListContent');
 
         function createDungeonDirectoryItem(series, options = {}) {
+            const isMonument = moduleId === 'monument';
+            const status = isMonument ? getMonumentStatus(series) : null;
+            const subtitle = isMonument
+                ? (series.openTime || series.closeTime
+                    ? `${formatMonumentDate(series.openTime, true)} - ${formatMonumentDate(series.closeTime, true)}`
+                    : monumentT('status.unknown'))
+                : undefined;
             const item = window.AKEUI.directoryItem({
                 layout: 'entity',
                 title: series.name,
+                subtitle,
                 id: series.templateId,
                 icon: { src: series.image || '', alt: '' },
-                meta: [{ label: series.gameCategoryName || '', kind: 'dungeon-category' }],
-                accent: { type: 'rarity', value: series.rarity || 1 },
+                meta: isMonument ? [{ label: status.label, kind: `status-${status.key}` }]
+                    : [{ label: series.gameCategoryName || '', kind: 'dungeon-category' }],
+                accent: isMonument ? { type: 'status', value: status.key } : { type: 'rarity', value: series.rarity || 1 },
                 active: options.active,
                 attributes: { 'data-series-id': series.templateId },
                 onSelect: options.onSelect
@@ -336,7 +375,7 @@
                     active: series.templateId === activeSeriesId,
                     onSelect: () => {
                         activeSeriesId = series.templateId;
-                        if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', series.templateId);
+                        if (window.__akeRouter) window.__akeRouter.updateUrl(routeModuleId, series.templateId);
                         loadSeriesDetail(series, document.getElementById('v2dungeonDetail'));
                         closeMobileList();
                         const desktopList = document.getElementById('v2dungeonList');
@@ -359,12 +398,19 @@
 
         async function loadSeriesManifest(showHidden) {
             try {
-                const res = await (window.akeFetch || fetch)('/public/CH/v2_dungeon/manifest.json');
+                const res = await (window.akeFetch || fetch)(`/public/CH/${moduleId}/manifest.json`);
                 if (!res.ok) throw new Error('无法加载副本系列清单');
                 const all = await res.json();
                 rawAllSeries = all;
                 let series = showHidden ? all : all.filter(s => !s.hidden);
-                series.sort((a, b) => (a.priority || 999) - (b.priority || 999));
+                series.sort((a, b) => {
+                    if (moduleId === 'monument') {
+                        const statusOrder = { closed: 0, active: 1, upcoming: 2, unknown: 3 };
+                        const statusDifference = statusOrder[getMonumentStatus(a).key] - statusOrder[getMonumentStatus(b).key];
+                        if (statusDifference) return statusDifference;
+                    }
+                    return (a.priority || 999) - (b.priority || 999);
+                });
                 return series;
             } catch (err) {
                 console.error('加载副本系列清单失败:', err);
@@ -380,6 +426,18 @@
                 onReset: () => { activeSeriesId = null; },
                 onSelect: item => { activeSeriesId = item.templateId; renderSeriesList(); },
                 sidebarSelector: item => `.ake-ui-directory__item[data-series-id="${CSS.escape(item.templateId)}"]`,
+                afterRender: root => {
+                    if (moduleId !== 'monument') return;
+                    root.querySelectorAll('.ake-ui-card__media img').forEach(image => {
+                        image.style.objectFit = 'contain';
+                        const fitPoster = () => {
+                            if (!image.naturalWidth || !image.naturalHeight) return;
+                            image.closest('.ake-ui-card__media').style.aspectRatio = `${image.naturalWidth} / ${image.naturalHeight}`;
+                        };
+                        if (image.complete) fitPoster();
+                        else image.addEventListener('load', fitPoster, { once: true });
+                    });
+                },
                 items: items.map(item => ({ ...item, id: item.templateId, image: item.image, fallback: t('overview.fallback'),
                     tags: [t('overview.stageCount', { count: item.dungeonCount || 0 }), commonT('rarityLabel', { rarity: item.rarity || 1 })] }))
             });
@@ -403,11 +461,11 @@
             filtered.forEach((item, index) => {
                 const node = createDungeonDirectoryItem(item, {
                     active: item.templateId === activeSeriesId
-                        || (index === 0 && !activeSeriesId && !window.AKEModuleOverview?.isActive('dungeon')),
+                        || (index === 0 && !activeSeriesId && !window.AKEModuleOverview?.isActive(moduleId)),
                     onSelect: () => {
                         window.AKEUI.setDirectoryItemActive(container, node);
                         activeSeriesId = item.templateId;
-                        if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', item.templateId);
+                        if (window.__akeRouter) window.__akeRouter.updateUrl(routeModuleId, item.templateId);
                         loadSeriesDetail(item, detailContainer);
                     }
                 });
@@ -430,7 +488,7 @@
 
             const activeExists = filtered.some(s => s.templateId === activeSeriesId);
             if (!activeExists && filtered.length > 0) {
-                if (window.AKEModuleOverview?.isActive('dungeon')) {
+                if (window.AKEModuleOverview?.isActive(moduleId)) {
                     activeSeriesId = null;
                     renderDungeonOverview(filtered, detailContainer);
                     return;
@@ -438,14 +496,14 @@
                 activeSeriesId = filtered[0].templateId;
                 const firstItem = container.querySelector('.ake-ui-directory__item');
                 if (firstItem) window.AKEUI.setDirectoryItemActive(container, firstItem);
-                if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', activeSeriesId);
+                if (window.__akeRouter) window.__akeRouter.updateUrl(routeModuleId, activeSeriesId);
                 loadSeriesDetail(filtered[0], detailContainer);
             } else if (activeExists) {
                 const activeItem = filtered.find(s => s.templateId === activeSeriesId);
                 if (activeItem) {
                     const activeDiv = container.querySelector(`.ake-ui-directory__item[data-series-id="${activeSeriesId}"]`);
                     if (activeDiv) window.AKEUI.setDirectoryItemActive(container, activeDiv);
-                    if (window.__akeRouter) window.__akeRouter.updateUrl('v2_dungeon', activeSeriesId);
+                    if (window.__akeRouter) window.__akeRouter.updateUrl(routeModuleId, activeSeriesId);
                     loadSeriesDetail(activeItem, detailContainer);
                 }
             }
@@ -819,6 +877,11 @@
             let metaHtml = '';
             if (categoryLabel) metaHtml += `<span class="ake-ui-badge">${categoryLabel}</span>`;
             if (staminaText) metaHtml += `<span class="ake-ui-badge">${t('stamina', { value: staminaText })}</span>`;
+            if (moduleId === 'monument') {
+                const status = getMonumentStatus(seriesItem);
+                metaHtml += `<span class="ake-ui-badge" data-accent="status" data-accent-value="${status.key}">${status.label}</span>`;
+                metaHtml += `<span>${formatMonumentDate(seriesItem.openTime)} - ${formatMonumentDate(seriesItem.closeTime)}</span>`;
+            }
             if (metaHtml) metaHtml = `<div class="ake-ui-detail-badges">${metaHtml}</div>`;
 
             const bgSrc = picPath ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/dungeon/${picPath}_bg.png` : '';
