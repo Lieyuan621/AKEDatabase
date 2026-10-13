@@ -878,6 +878,7 @@
                 return {
                     name: n.passiveSkillNodeInfo.name?.text || effect.name?.text || effect.name || t('sections.talents'),
                     description: descRaw,
+                    advancedTargets: window.AKEAdvancedLinks.effectTargets(effect),
                     values,
                     modifierTypes,
                     groupIndex: n.passiveSkillNodeInfo.index ?? 0,
@@ -933,6 +934,7 @@
                     level: p.level,
                     name: p.name?.text || p.name || t('potentialName', { name: p.level || '' }),
                     description: desc,
+                    advancedTargets: window.AKEAdvancedLinks.effectTargets(effect),
                     values: values,
                     modifierTypes: modifierTypes,
                     costItems: costItems
@@ -1609,7 +1611,7 @@
                         <div class="ake-ui-card__header character-talent-header">
                             ${group.icon ? `<img class="skill-icon character-talent-icon" src="${group.icon}" alt="">` : ''}
                             <div class="ake-ui-card__title">${group.name}</div>
-                            <div class="character-card-cost">${materialPopoverHtml({ rows: talentCostRows, iconIds: talentCostIconIds }, itemInfoMap)}</div>
+                            <div class="character-card-cost">${window.AKEAdvancedLinks.html(group.levels.flatMap(talent => talent.advancedTargets || []))}${materialPopoverHtml({ rows: talentCostRows, iconIds: talentCostIconIds }, itemInfoMap)}</div>
                         </div>
                         <div class="ake-ui-card__body character-talent-levels">
                             ${group.levels.map((talent, index) => {
@@ -1640,7 +1642,7 @@
                 return window.AKEUI.progressionRow({
                     kind: 'potential',
                     stage: t('potentialName', { name: displayLevel }),
-                    title: pot.name,
+                    title: window.AKEUI.fragment(`<div class="ake-ui-card__header">${window.AKEUI.element('span', null, pot.name).outerHTML}<div class="ake-ui-card__header-actions">${window.AKEAdvancedLinks.html(pot.advancedTargets)}</div></div>`),
                     description: window.AKEUI.fragment(desc),
                     action: materialPopover({ items: pot.costItems, iconIds: costIconIds }, itemInfoMap)
                 });
@@ -1777,6 +1779,7 @@
                                 ${skillTitle}
                             </div>
                             <div class="character-card-cost">
+                                ${window.AKEAdvancedLinks.html([{ plugin: 'v3_skill', id: skillId }])}
                                 ${materialPopoverHtml({ rows: skCostRows, iconIds: ['item_gold', ...new Set(skCosts.flatMap(c => c.items.map(it => it.id)))] }, itemInfoMap)}
                             </div>
                         </div>

@@ -358,7 +358,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">Rank</th>
-                                ${skills.map(skill => `<th scope="col">${window.AKEUI.entryLinkHtml({ plugin: 'v3_skill', id: skill.id, label: skill.name })}</th>`).join('')}
+                                ${skills.map(skill => `<th scope="col"><div class="ake-ui-card__header">${window.AKEUI.entryLinkHtml({ plugin: 'v3_skill', id: skill.id, label: skill.name })}<div class="ake-ui-card__header-actions">${window.AKEAdvancedLinks.html([{ plugin: 'v3_skill', id: skill.id }])}</div></div></th>`).join('')}
                             </tr>
                         </thead>
                         <tbody>${rankRows}</tbody>

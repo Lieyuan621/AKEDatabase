@@ -201,6 +201,9 @@ window.AKESearchIndex = {
     "sources": [
       "plugin/js/module-overview.js",
       "plugin/js/v3-skill-data.js",
+      "plugin/js/ake-action-graph.js",
+      "plugin/js/ake-action-graph-view.js",
+      "plugin/js/vendor/dagre-3.1.1/dagre.min.js",
       "plugin/js/v3-skill.js",
       "plugin/v3_skill.html"
     ],
@@ -658,6 +661,7 @@ window.AKESearchIndex = {
     ],
     "sources": [
       "plugin/js/module-overview.js",
+      "plugin/js/ake-advanced-links.js",
       "plugin/js/v2-equip.js",
       "plugin/js/v3-table-data.js#equip",
       "plugin/v3_equip.html"
@@ -675,6 +679,7 @@ window.AKESearchIndex = {
     "sources": [
       "plugin/js/ake-stats.js",
       "plugin/js/module-overview.js",
+      "plugin/js/ake-advanced-links.js",
       "plugin/js/v2-enemy.js",
       "plugin/js/v3-table-data.js#enemy",
       "plugin/v3_enemy.html"
@@ -697,6 +702,7 @@ window.AKESearchIndex = {
     ],
     "sources": [
       "plugin/js/module-overview.js",
+      "plugin/js/ake-advanced-links.js",
       "plugin/js/v2-weapon.js",
       "plugin/js/v3-table-data.js#weapon",
       "plugin/v3_weapon.html"
@@ -726,6 +732,7 @@ window.AKESearchIndex = {
     "sources": [
       "plugin/js/ake-voice-player.js",
       "plugin/js/module-overview.js",
+      "plugin/js/ake-advanced-links.js",
       "plugin/js/v2-character.js",
       "plugin/js/v3-table-data.js#character",
       "plugin/v3_character.html"

@@ -7627,9 +7627,14 @@ img.ake-ui-detail-icon { width: 112px; height: 112px; object-fit: contain; paddi
     margin: 0;
     padding: 4px;
     border-radius: var(--ake-ui-radius-sm);
-    background: #344454;
     object-fit: contain;
 }
+.ake-ui-detail[data-detail-kind="character"] .skill-icon,
+body[data-ake-module="v3_skill"] .combatv3-identity-header .ake-ui-detail-media,
+body[data-ake-module="v3_skill"] .ake-ui-tree__group-icon[data-size="small"],
+body[data-ake-module="v3_buff"] .ake-ui-detail[data-detail-kind="buff"] .ake-ui-detail-icon,
+body[data-ake-module="v3_buff"] .ake-ui-detail[data-detail-kind="buff"] .ake-ui-detail-icon img,
+body[data-ake-module="v3_buff"] .ake-ui-tree__group-icon { background: #344454; }
 .ake-ui-detail[data-detail-kind="character"] .skill-conditions {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -8916,4 +8921,120 @@ body[data-ake-module="misc"] :is(#miscWeeklyPrevious, #miscWeeklyNext) {
 @media (max-width: 900px) {
     .ake-ui-tech-tree__drawer { position: absolute; right: 0; top: 0; bottom: 0; width: min(90%, 400px); z-index: 2; box-shadow: var(--ake-ui-shadow-hover); }
     .ake-ui-tech-tree__workspace { height: 68dvh; min-height: 400px; }
+}
+
+/* Combat editor: shared metrics above, graph and timeline in one workspace. */
+@scope (body[data-ake-module="v3_skill"]) {
+    #combatv3Detail { display: flex; flex-direction: column; overflow: hidden; height: 100%; padding: 12px; }
+    .combatv3-page-identity { flex: 0 1 auto; min-height: 0; max-height: 28%; overflow: auto; }
+    .combatv3-page-identity .ake-ui-detail-header { margin-bottom: 8px; }
+    .combatv3-identity-header { align-items: center; gap: 12px; }
+    .combatv3-identity-header > .ake-ui-detail-copy { flex: 0 1 28%; }
+    .combatv3-context-bar { display: flex; flex: 1 1 0; align-items: center; gap: 8px; margin: 0; min-width: 0; }
+    .combatv3-page-identity .combatv3-context-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); flex: 1; min-width: 0; gap: 5px 10px; margin: 0; }
+    .combatv3-page-identity .combatv3-context-row > * { min-width: 0; }
+    .combatv3-page-identity .combatv3-context-item { flex-wrap: wrap; }
+    .combatv3-page-identity .combatv3-context-item select { max-width: 100%; }
+    .combatv3-section-switcher { flex: 0 0 auto; max-width: 65%; margin-inline-start: auto; overflow-x: auto; }
+    .combatv3-section-switcher button { flex: 0 0 auto; white-space: nowrap; }
+    .combatv3-page-identity .ake-ui-detail-badges { margin: 0; }
+    .combatv3-sections { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+    .combatv3-section { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; border: var(--ake-ui-border); border-radius: var(--ake-ui-radius-sm); }
+    .combatv3-section[hidden] { display: none; }
+    .combatv3-section__body { flex: 1; min-height: 0; overflow: auto; padding: 12px; overscroll-behavior: contain; }
+    .combatv3-section__body[hidden] { display: none; }
+    #combatv3Section-graph { padding: 0; overflow: hidden; }
+    .combatv3-editor {
+        --combatv3-node-entry: #28736c;
+        --combatv3-node-damage: #c34848;
+        --combatv3-node-support: #388349;
+        --combatv3-node-logic: #8556bb;
+        --combatv3-node-timing: #9e760e;
+        --combatv3-node-movement: #326fb5;
+        --combatv3-node-resource: #b24884;
+        --combatv3-node-reference: #b66a30;
+        --combatv3-node-data: #237f99;
+        --combatv3-node-presentation: #74779a;
+        --combatv3-node-other: #697780;
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: minmax(0, var(--combatv3-graph-track, 70fr)) 26px minmax(0, var(--combatv3-timeline-track, 30fr));
+        height: 100%;
+        min-width: 0;
+        margin: 0;
+        overflow: hidden;
+        border: var(--ake-ui-border);
+        border-radius: var(--ake-ui-radius);
+        background: var(--combatv3-surface);
+    }
+    .combatv3-editor.is-inspecting { grid-template-columns: minmax(0, 1fr) clamp(280px, 32%, 400px); }
+    .combatv3-editor__graph,
+    .combatv3-editor__timeline { min-width: 0; min-height: 0; display: flex; flex-direction: column; margin: 0; overflow: hidden; }
+    .combatv3-editor__graph { grid-area: 1 / 1; }
+    .combatv3-editor__timeline { grid-area: 3 / 1; }
+    .combatv3-editor__timeline[hidden] { display: none; }
+    .combatv3-editor.is-timeline-collapsed { grid-template-rows: minmax(0, 1fr) 26px 0; }
+    .combatv3-editor__divider { grid-area: 2 / 1; display: flex; min-width: 0; align-items: stretch; justify-content: flex-end; border-block: var(--ake-ui-border); background: var(--combatv3-surface-muted); }
+    .combatv3-editor__divider > button { min-height: 0; padding-block: 2px; font-size: .7rem; }
+    .combatv3-editor__resize { flex: 1; min-width: 32px; display: flex; align-items: center; justify-content: center; cursor: row-resize; touch-action: none; user-select: none; }
+    .combatv3-editor__resize::after { content: ''; width: 48px; height: 3px; border-radius: 2px; background: var(--combatv3-border-strong); }
+    .combatv3-editor__resize:hover::after,
+    .combatv3-editor__resize:focus-visible::after { background: var(--combatv3-accent); }
+    .combatv3-editor__resize[hidden] { display: none; }
+    .combatv3-editor__toolbar { flex: 0 0 auto; flex-wrap: nowrap; gap: 4px; margin: 0; padding: 2px 6px; overflow-x: auto; font-size: .7rem; }
+    .combatv3-editor__toolbar .ake-ui-segmented__button { min-height: 24px; padding: 2px 6px; font-size: .7rem; }
+    .combatv3-editor__toolbar > * { flex-shrink: 0; }
+    .combatv3-editor__canvas { min-height: 0; max-height: none; flex: 1; margin: 0; overflow: hidden; border: 0; border-radius: 0; }
+    .combatv3-editor__canvas svg { display: block; width: 100%; height: 100%; touch-action: none; user-select: none; cursor: grab; }
+    .combatv3-editor__canvas svg:active { cursor: grabbing; }
+    .combatv3-editor__canvas [data-graph-node] { cursor: pointer; }
+    .combatv3-editor__canvas [data-graph-node]:focus-visible > rect { stroke: var(--combatv3-accent); stroke-width: 4px; }
+    .combatv3-editor__notes { flex: 0 0 auto; max-height: 100px; overflow: auto; padding: 4px 8px; font-size: .72rem; }
+    .combatv3-editor__timeline > header { flex: 0 0 auto; margin: 0; padding: 8px; }
+    #combatv3TimelinePanel { display: flex; flex-direction: row; min-height: 0; flex: 1; overflow: hidden; }
+    .combatv3-editor__timeline-tools { display: flex; flex-direction: column; align-items: stretch; gap: 10px; flex: 0 0 112px; padding: 10px 6px; overflow: auto; border-right: var(--ake-ui-border); background: var(--combatv3-surface-muted); }
+    .combatv3-editor__timeline-tools h3 { font-size: .78rem; }
+    #combatv3TimelinePanel > .combatv3-window-scroll { flex: 1; min-width: 0; min-height: 0; overflow: auto; overscroll-behavior: contain; border: 0; border-radius: 0; }
+    #combatv3TimelinePanel > .ake-ui-state { min-height: 0; overflow: auto; }
+    #combatv3TimelinePanel .combatv3-window-ruler { position: sticky; top: 0; z-index: 4; background: var(--combatv3-surface-muted); }
+    #combatv3TimelinePanel .is-selected > .combatv3-lane-track { box-shadow: inset 0 0 0 2px var(--combatv3-accent); background-color: var(--combatv3-surface-active); }
+    .combatv3-lane-track [role="button"] { cursor: pointer; }
+    .combatv3-lane-track [role="button"]:focus-visible { outline: 2px solid var(--combatv3-text); outline-offset: -2px; }
+    .combatv3-editor__inspector {
+        grid-area: 1 / 2 / 4 / 3;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        min-width: 0;
+        padding: 0;
+        overflow: hidden;
+        border: 0;
+        border-left: var(--ake-ui-border);
+        border-radius: 0;
+        color: var(--combatv3-text);
+        background: var(--combatv3-surface-muted);
+    }
+    .combatv3-editor__inspector[hidden] { display: none; }
+    .combatv3-editor__inspector > header { flex: 0 0 auto; margin: 0; padding: 8px 12px; border-bottom: var(--ake-ui-border); }
+    #combatv3GraphInspector { flex: 1; min-height: 0; padding: 12px; overflow: auto; overscroll-behavior: contain; overflow-wrap: anywhere; }
+    #combatv3GraphInspector .combatv3-definition-list { grid-template-columns: minmax(0, 1fr); }
+    #combatv3GraphInspector pre { max-width: 100%; overflow: auto; }
+    @media (max-width: 1200px) {
+        .combatv3-editor.is-inspecting { grid-template-columns: minmax(0, 1fr); }
+        .combatv3-editor__inspector { grid-area: auto; position: absolute; inset: 0 0 0 auto; width: min(88%, 380px); z-index: 5; box-shadow: var(--ake-ui-shadow-hover); }
+    }
+    .combatv3-node-legend { display: flex; flex-wrap: wrap; gap: 8px 14px; padding-block: 8px; }
+    .combatv3-node-legend span::before { content: ''; display: inline-block; width: 10px; height: 10px; margin-right: 5px; border-radius: 2px; background: var(--node-tone); }
+    [data-node-tone="entry"] { --node-tone: var(--combatv3-node-entry); }
+    [data-node-tone="damage"] { --node-tone: var(--combatv3-node-damage); }
+    [data-node-tone="support"] { --node-tone: var(--combatv3-node-support); }
+    [data-node-tone="logic"] { --node-tone: var(--combatv3-node-logic); }
+    [data-node-tone="timing"] { --node-tone: var(--combatv3-node-timing); }
+    [data-node-tone="movement"] { --node-tone: var(--combatv3-node-movement); }
+    [data-node-tone="resource"] { --node-tone: var(--combatv3-node-resource); }
+    [data-node-tone="reference"] { --node-tone: var(--combatv3-node-reference); }
+    [data-node-tone="data"] { --node-tone: var(--combatv3-node-data); }
+    [data-node-tone="presentation"] { --node-tone: var(--combatv3-node-presentation); }
+    [data-node-tone="other"] { --node-tone: var(--combatv3-node-other); }
 }

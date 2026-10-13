@@ -807,6 +807,7 @@
             const item = Object.assign({
                 id: `spatial:${scopeId}:${spatialFactSerial++}`,
                 skillId: data.skillId ?? '',
+                scopeId,
                 confidence: 'medium',
                 conditions: [],
                 timing: null,
@@ -1024,6 +1025,32 @@
             }
             return resolved;
         };
+
+        const attributeConfig = isObject(data.cardAttributeModifier) ? data.cardAttributeModifier : {};
+        // Same native structure as BuffData.attributeModifier; Endaxis reads it in
+        // source/attributeModifiers.ts. Preserve target/formula enums without guessing final stats.
+        if (hasOwn(attributeConfig, 'attributeModifiers') && !Array.isArray(attributeConfig.attributeModifiers)) {
+            addWarning('INVALID_CARD_ATTRIBUTE_MODIFIERS', 'Expected an attribute modifier array.', { path: 'cardAttributeModifier.attributeModifiers' });
+        }
+        const cardAttributeModifiers = (Array.isArray(attributeConfig.attributeModifiers) ? attributeConfig.attributeModifiers : []).map((item, index) => {
+            const path = `cardAttributeModifier.attributeModifiers[${index}]`;
+            const param = resolveValue(item?.param, blackboardData);
+            // A missing blackboard reference is not an effective attribute bonus.
+            if (param.resolved === false || param.value == null) {
+                addWarning('UNRESOLVED_CARD_ATTRIBUTE_PARAM', 'Attribute modifier parameter is unresolved.', { path: `${path}.param`, key: param.blackboardKey });
+                param.value = null;
+                param.resolved = false;
+            }
+            return {
+                path,
+                isConvertedAttribute: attributeConfig.isConvertedAttribute,
+                modifyAttributeType: item?.modifyAttributeType,
+                attributeType: item?.attributeType,
+                formulaItem: item?.formulaItem,
+                param,
+                raw: item
+            };
+        });
 
         const character = isObject(metaContext.character) ? metaContext.character : {};
         const group = isObject(metaContext.group) ? metaContext.group : {};
@@ -2052,6 +2079,9 @@
                     confidence: grouped.consumers.some(event => event.category === 'damage') ? 'high' : 'medium',
                     sourceFactId: search.id,
                     consumerEventIndexes: grouped.consumers.map(event => event.index),
+                    consumers: grouped.consumers.map(event => Object.assign(eventSpatialMetadata(event), {
+                        skillId: data.skillId ?? '', scopeId, category: event.category
+                    })),
                     conditions: grouped.conditions
                 });
                 delete impactData.id;
@@ -2227,7 +2257,9 @@
                     _spatialScope: childScope,
                     _spatialOrigin: {
                         parentSkillId: data.skillId ?? '',
+                        parentScopeId: scopeId,
                         spawnEventIndex: reference.event.index,
+                        spawnTiming: Object.assign({ scope: 'skill-local' }, frameInfo(reference.event.startFrame, reference.event.endFrame)),
                         spawnPath: reference.event.path
                     },
                     _spatialTraversal: {
@@ -2285,8 +2317,16 @@
             }
         });
 
+        const graph = !metaContext._spatialTraversal && global.AKEActionGraph
+            ? global.AKEActionGraph.buildSkillGraph(data, {
+                events, links, blackboard: blackboardData, resolveValue, formatType: formatActionType,
+                sourceFile: metaContext.manifestItem?.contentFile || ''
+            }) : null;
+
         return {
+            graph,
             basic,
+            cardAttributeModifiers,
             windows,
             hits,
             events,

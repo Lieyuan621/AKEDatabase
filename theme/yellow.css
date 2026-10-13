@@ -1,4 +1,19 @@
 /* Eye-comfort theme tokens. Structural and component rules live in light.css. */
+@scope (body[data-ake-module="v3_skill"]) {
+    .combatv3-editor {
+        --combatv3-node-entry: #447b69;
+        --combatv3-node-damage: #b65248;
+        --combatv3-node-support: #608043;
+        --combatv3-node-logic: #866298;
+        --combatv3-node-timing: #977823;
+        --combatv3-node-movement: #4e7399;
+        --combatv3-node-resource: #a85b7e;
+        --combatv3-node-reference: #a86c38;
+        --combatv3-node-data: #477f8b;
+        --combatv3-node-presentation: #7d7d96;
+        --combatv3-node-other: #79766b;
+    }
+}
 @scope (body[data-ake-module="monument"]) {
     .v2d-series-banner { --monument-banner-fade-color: #fdf8f0; }
 }
