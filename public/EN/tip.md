@@ -1,10 +1,26 @@
 # Special Announcement
 
-AKEData `v1.3.1` is now available. This release expands preview information for Characters and Weapons, adds growth materials to regular Character and Weapon details, and includes preview entries and related information in global search.
+AKEData `v1.3.2` opens the Combat and Buff modules, adds a complete skill logic graph, a resizable timeline and advanced data links, and improves core metrics and skill attribute modifier parsing.
 
 AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redirects here.
 
 # AKEData Version Changelog
+
+### v1.3.2
+
+#### Combat and Buff data
+
+- Combat and Buff modules are now visible in navigation, after Medals and before Umbral Monument.
+- Added a complete skill logic graph showing action order, branches, and resource references. Node colors distinguish action types, and selecting a node opens its details on the right.
+- The graph and timeline share a vertical workspace. Collapse the timeline or drag the divider to resize them; use the top controls to switch between core metrics, the graph, key information, and debugging information.
+- Core metrics group hit volumes, effect centers, and sources by related effect. Static skill attribute modifiers now show values from the selected level's blackboard, with missing parameters explicitly marked as unresolved.
+- The logic graph represents skill configuration, not an actual combat run or final damage calculation.
+
+#### Advanced data links and interface
+
+- Added View advanced data buttons for Character skills, talents and potentials, Weapon attributes, Equipment set effects, and associated Enemy Buffs, linking to Combat or Buff details.
+- Buttons appear to the right of the corresponding name. When multiple skills or Buffs are associated, the button opens the first one.
+- Unified dark icon backgrounds for Combat and Buff skills, improved workspace use and node detail placement, and updated Chinese and English interface text.
 
 ### v1.3.1
 

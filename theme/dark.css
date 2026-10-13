@@ -1,4 +1,19 @@
 /* Dark theme tokens. Structural and component rules live in light.css. */
+@scope (body[data-ake-module="v3_skill"]) {
+    .combatv3-editor {
+        --combatv3-node-entry: #64bfb0;
+        --combatv3-node-damage: #f07d7d;
+        --combatv3-node-support: #82c98f;
+        --combatv3-node-logic: #b994ec;
+        --combatv3-node-timing: #e4c16c;
+        --combatv3-node-movement: #7cabef;
+        --combatv3-node-resource: #e691be;
+        --combatv3-node-reference: #e7aa77;
+        --combatv3-node-data: #75c5df;
+        --combatv3-node-presentation: #b1b4d7;
+        --combatv3-node-other: #aab4bd;
+    }
+}
 @scope (body[data-ake-module="monument"]) {
     .v2d-series-banner { --monument-banner-fade-color: #171717; }
 }

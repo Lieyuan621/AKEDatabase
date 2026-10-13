@@ -53,8 +53,10 @@
         currentPatch: null,
         analysis: emptyAnalysis(),
         analysisSource: null,
-        activeTab: 'timeline',
         showPerformance: false,
+        activeSection: 'graph',
+        timelineCollapsed: false,
+        graphShare: 70,
         timelineEvents: [],
         skillCache: new Map(),
         loadToken: 0,
@@ -554,10 +556,10 @@
 
     function emptyAnalysis() {
         return {
-            basic: {}, windows: [], hits: [], events: [], links: [], blackboard: {}, warnings: [],
+            graph: null, basic: {}, windows: [], hits: [], events: [], links: [], blackboard: {}, warnings: [],
             spatial: {
                 castLimits: [], selectionHints: [], targetSearches: [], impactVolumes: [],
-                persistentFields: [], collisionVolumes: [], relations: [], warnings: []
+                persistentFields: [], collisionVolumes: [], relations: [], warnings: [], pendingReferences: []
             }
         };
     }
@@ -1128,7 +1130,9 @@
             return true;
         });
         return {
+            graph: source.graph || null,
             basic: isObject(source.basic) ? source.basic : {},
+            cardAttributeModifiers: collection(source.cardAttributeModifiers),
             windows: collection(source.windows),
             hits: collection(source.hits),
             events: collection(source.events),
@@ -1143,7 +1147,8 @@
                 persistentFields: collection(rawSpatial.persistentFields),
                 collisionVolumes: collection(rawSpatial.collisionVolumes),
                 relations: collection(rawSpatial.relations),
-                warnings: collection(rawSpatial.warnings)
+                warnings: collection(rawSpatial.warnings),
+                pendingReferences: collection(rawSpatial.pendingReferences)
             }
         };
     }
@@ -1154,6 +1159,9 @@
             return t('warnings.UNKNOWN', { message }, `分析警告：${message}`);
         }
         let code = String(warning.code || 'UNKNOWN');
+        if (code === 'UNRESOLVED_CARD_ATTRIBUTE_PARAM' || code === 'INVALID_CARD_ATTRIBUTE_MODIFIERS') {
+            return `${t('cardAttributes.title')}：${t('cardAttributes.unresolved')}${showHidden() && warning.path ? ` (${warning.path})` : ''}`;
+        }
         if (code === 'PATCH_LEVEL_FALLBACK' && isPresent(warning.requestedLevel)) {
             code = 'PATCH_LEVEL_FALLBACK_REQUESTED';
         }
@@ -1195,6 +1203,7 @@
         if (token !== state.detailToken) return;
         state.analysisSource = result;
         state.analysis = normalizeAnalysis(result);
+        graphView?.setGraph(state.analysis.graph, state.analysis);
         renderDetail();
     }
 
@@ -1209,7 +1218,7 @@
         state.currentPatch = null;
         state.analysis = emptyAnalysis();
         state.analysisSource = null;
-        state.activeTab = 'timeline';
+        graphView?.setGraph(null, null);
         state.showPerformance = false;
         state.expandedCharacters.add(owner.character.id);
         state.expandedGroups.add(groupKey(owner.character.id, owner.group.id));
@@ -1537,6 +1546,7 @@
             if (potential) {
                 return t('spatial.conditions.potentialLevel', { level: potential[1] }, `潜能 ${potential[1]}`);
             }
+            if (!showHidden()) return window.akeI18n.t('actionGraph.spatialCards.externalCondition');
             return t('spatial.conditions.externalSource', { source: formatValue(condition.sourceId) },
                 `外部条件 ${formatValue(condition.sourceId)}`);
         }
@@ -1786,121 +1796,126 @@
         return relationLabel || t('spatial.relations.runtime', null, '运行时范围关系');
     }
 
-    function uniqueSpatialFacts(values) {
-        const groups = new Map();
-        values.forEach(value => {
-            if (!isObject(value)) {
-                const key = String(value);
-                if (!groups.has(key)) groups.set(key, value);
-                return;
-            }
-            const identity = [
-                value.skillId || '', value.semantic || '', value.resolution || '',
-                spatialSignature(value), spatialCenterText(spatialAnchorValue(value)),
-                spatialConditionText(value.condition ?? value.conditions), spatialVariantTexts(value).join('|')
-            ].join('::');
-            const timing = spatialTimingText(value);
-            if (!groups.has(identity)) {
-                groups.set(identity, Object.assign({}, value, { _spatialTimings: timing ? [timing] : [] }));
-                return;
-            }
-            const existing = groups.get(identity);
-            if (timing && !existing._spatialTimings.includes(timing)) existing._spatialTimings.push(timing);
-        });
-        return [...groups.values()];
-    }
-
-    function spatialMetrics() {
-        const spatial = state.analysis.spatial || emptyAnalysis().spatial;
-        const targeting = state.analysis.basic?.targeting || {};
-        const castLimits = collection(spatial.castLimits);
-        const fallbackCastDistance = targeting.castDistance ?? state.currentData?.castData?.castDistance;
-        const fallbackCastScalar = spatialScalar(fallbackCastDistance);
-        if (!castLimits.length && fallbackCastScalar.text
-            && (fallbackCastScalar.unresolved
-                || !Number.isFinite(Number(fallbackCastScalar.scalar))
-                || Number(fallbackCastScalar.scalar) !== 0)) {
-            castLimits.push({ value: fallbackCastDistance });
-        }
-        const cards = [];
-        const addFacts = (facts, key, label, category, important, qualifier) => {
-            uniqueSpatialFacts(collection(facts)).forEach(fact => {
-                const geometry = spatialGeometryText(fact, category);
-                if (!geometry) return;
-                cards.push({
-                    key, label,
-                    value: qualifier ? `${qualifier} · ${geometry}` : geometry,
-                    unit: spatialFactUnit(fact), important: Boolean(important), wide: false
-                });
-            });
-        };
-        addFacts(castLimits, 'spatialCastLimit', t('metrics.spatial.castLimit', null, '施放距离'), 'cast', false);
-        addFacts(spatial.selectionHints, 'spatialSelectionHint',
-            t('metrics.spatial.selectionHint', null, '操作提示'), 'shape', false);
+    function renderSpatialEffects() {
+        const spatial = state.analysis.spatial;
+        const st = (key, params) => window.akeI18n.t(`actionGraph.spatialCards.${key}`, params);
         const impacts = collection(spatial.impactVolumes);
-        const impactSourceIds = new Set(impacts.map(fact => fact?.sourceFactId).filter(Boolean));
-        const standaloneSearches = collection(spatial.targetSearches)
-            .filter(fact => !impactSourceIds.has(fact?.id));
-        addFacts(impacts, 'spatialImpactVolume',
-            t('metrics.spatial.actualImpact', null, '实际判定'), 'shape', true,
-            t('spatial.purposes.impact', null, '命中'));
-        addFacts(standaloneSearches, 'spatialTargetSearch',
-            t('metrics.spatial.actualImpact', null, '实际判定'), 'shape', true,
-            t('spatial.purposes.targetSearch', null, '索敌'));
-        addFacts(spatial.collisionVolumes, 'spatialCollisionVolume',
-            t('metrics.spatial.actualImpact', null, '实际判定'), 'shape', true,
-            t('spatial.purposes.collision', null, '碰撞'));
-        addFacts(spatial.persistentFields, 'spatialPersistentField',
-            t('metrics.spatial.persistentField', null, '持续领域'), 'shape', true);
-
-        const allFacts = [
-            ...collection(spatial.castLimits), ...collection(spatial.selectionHints),
-            ...collection(spatial.targetSearches), ...collection(spatial.impactVolumes),
-            ...collection(spatial.persistentFields), ...collection(spatial.collisionVolumes)
-        ];
-        const centers = [...new Set(allFacts.map(spatialAnchorValue).map(spatialCenterText).filter(Boolean))];
-        centers.forEach(center => cards.push({
-            key: 'spatialEffectCenter', label: t('metrics.spatial.effectCenter', null, '生效中心'),
-            value: center, unit: '', important: false, wide: false
-        }));
-
-        const factsById = new Map(allFacts.filter(fact => isObject(fact) && isPresent(fact.id))
-            .map(fact => [String(fact.id), fact]));
-        const relationPriority = {
-            sharesvalue: 0, inheritsblackboard: 1, spawns: 2,
-            targets: 3
-        };
-        const normalizeRelation = relation => String(relation?.type || '').toLowerCase().replace(/[_\s-]+/g, '');
-        const rawRelations = collection(spatial.relations).filter(relation =>
-            !(normalizeRelation(relation) === 'inheritsblackboard' && relation?.status === 'disabled')
-            && normalizeRelation(relation) !== 'producestargetgroup'
-            && !String(relation?.from || '').startsWith('target-group:')
-            && !String(relation?.to || '').startsWith('target-group:')).sort((left, right) =>
-            (relationPriority[normalizeRelation(left)] ?? 99) - (relationPriority[normalizeRelation(right)] ?? 99));
-        const relations = rawRelations.map(relation => spatialRelationText(relation, factsById)).filter(Boolean);
-        const hints = collection(spatial.selectionHints);
-        const actual = [...collection(spatial.impactVolumes), ...collection(spatial.targetSearches)];
-        if (hints.length && actual.length) {
-            const hintSignatures = new Set(hints.map(spatialSignature));
-            const actualSignatures = new Set(actual.map(spatialSignature));
-            const same = hintSignatures.size === actualSignatures.size
-                && [...hintSignatures].every(signature => actualSignatures.has(signature));
-            if (!same) relations.unshift(t('spatial.relations.hintMismatch', null, '操作提示与实际判定不同'));
+        const usedSearches = new Set(impacts.map(fact => fact.sourceFactId).filter(Boolean));
+        const cast = collection(spatial.castLimits).slice();
+        const fallback = state.analysis.basic?.targeting?.castDistance ?? state.currentData?.castData?.castDistance;
+        if (!cast.length && isPresent(fallback)) {
+            const value = spatialScalar(fallback);
+            if (value.text && (value.unresolved || Number(value.scalar) !== 0)) cast.push({
+                skillId: state.currentData?.skillId || state.activeSkillId,
+                value: fallback, semantic: 'cast-limit'
+            });
         }
-        const uniqueRelations = [...new Set(relations)];
-        if (uniqueRelations.length) cards.push({
-            key: 'spatialRelations', label: t('metrics.spatial.relations', null, '范围关系'),
-            value: [
-                ...uniqueRelations.slice(0, 8),
-                ...(uniqueRelations.length > 8
-                    ? [t('spatial.relations.more', { count: uniqueRelations.length - 8 },
-                        `另 ${uniqueRelations.length - 8} 项关系`)] : [])
-            ].join(t('spatial.relations.separator', null, '；')),
-            unit: [...new Set(rawRelations.map(relation => spatialConditionText(relation?.condition)).filter(Boolean))]
-                .map(condition => t('spatial.conditions.prefixed', { condition }, `条件：${condition}`)).join(' · '),
-            important: false, wide: true
+        const sources = new Map();
+        const allFacts = [];
+        const add = (values, purpose) => collection(values).forEach((fact, index) => {
+            const record = isObject(fact) ? fact : { value: fact };
+            const scope = record.scopeId || record.skillId || state.activeSkillId;
+            if (!sources.has(scope)) sources.set(scope, { fact: record, cards: new Map() });
+            const source = sources.get(scope);
+            // Only variants of the very same source fact share a card.
+            // Equal geometry, timing or target-group names never establish identity.
+            const identity = record.sourceFactId || record.id || `${purpose}:${index}`;
+            const key = `${purpose}:${identity}`;
+            if (!source.cards.has(key)) source.cards.set(key, { purpose, facts: [], order: allFacts.length });
+            source.cards.get(key).facts.push(record);
+            allFacts.push(record);
         });
-        return cards;
+        add(cast, 'cast');
+        add(spatial.selectionHints, 'hint');
+        add(impacts, 'impact');
+        add(collection(spatial.targetSearches).filter(fact => !usedSearches.has(fact.id)), 'search');
+        add(spatial.collisionVolumes, 'collision');
+        add(spatial.persistentFields, 'field');
+        if (!sources.size && !spatial.warnings.length && !spatial.pendingReferences.length) return '';
+        const isRoot = fact => !fact.origin && (!fact.skillId || fact.skillId === (state.currentData?.skillId || state.activeSkillId));
+        const row = (label, content) => `<dt>${escapeHtml(label)}</dt><dd>${content}</dd>`;
+        const plainRow = (label, value) => row(label, escapeHtml(value || st('unknown')));
+        const actionButton = (fact, path, label) => isRoot(fact) && path && state.analysis.graph?.nodeByPath.has(path)
+            ? `<button type="button" class="ake-ui-segmented__button" data-combatv3-action="locate-spatial" data-action-path="${escapeHtml(path)}">${escapeHtml(label)}</button>` : '';
+        const factNames = new Map();
+        const orderedSources = [...sources.values()].sort((a, b) => Number(isRoot(b.fact)) - Number(isRoot(a.fact)));
+        let childNumber = 0;
+        const sections = orderedSources.map(source => {
+            const rootSource = isRoot(source.fact);
+            const owner = rootSource ? state.activeOwner : ownerFor(source.fact.skillId);
+            const sourceLabel = rootSource ? st('currentSkill')
+                : st('childSkill', { number: ++childNumber });
+            const sourceName = owner?.item?.displayName === source.fact.skillId && !showHidden() ? '' : owner?.item?.displayName;
+            const title = [sourceLabel, sourceName].filter(Boolean).join(' · ');
+            const sourceLink = !rootSource && owner ? window.AKEUI.entryLinkHtml({
+                plugin: MODULE_ID, id: source.fact.skillId, label: st('openSkill'), content: st('openSkill')
+            }) : '';
+            const cards = [...source.cards.values()].sort((a, b) => {
+                const frame = card => {
+                    const values = card.facts.map(fact => fact.timing?.startFrame).filter(value => value !== null && value !== undefined && Number.isFinite(Number(value)));
+                    return values.length ? Math.min(...values.map(Number)) : Infinity;
+                };
+                return frame(a) - frame(b) || a.order - b.order;
+            });
+            const cardHtml = cards.map((card, index) => {
+                const label = st('effectNumber', { number: index + 1, purpose: st(card.purpose) });
+                card.facts.forEach(fact => { if (fact.id) factNames.set(fact.id, `${sourceLabel} · ${label}`); });
+                const variants = card.facts.map(fact => {
+                    const center = spatialCenterText(spatialAnchorValue(fact));
+                    const condition = spatialConditionText(fact.condition ?? fact.conditions);
+                    const consumers = collection(fact.consumers);
+                    const geometry = spatialGeometryText(fact, card.purpose === 'cast' ? 'cast' : 'shape');
+                    const duration = isPresent(fact.duration) ? spatialScalar(fact.duration, fact) : null;
+                    const variantsText = spatialVariantTexts(fact);
+                    const actions = consumers.map(consumer => {
+                        const action = actionLabel(consumer.actionType);
+                        const timing = spatialTimingText(consumer);
+                        return `<li>${escapeHtml([action, timing].filter(Boolean).join(' · '))}
+                            ${actionButton(fact, consumer.path, st('viewAction'))}</li>`;
+                    }).join('');
+                    const detail = [
+                        plainRow(st('range'), geometry),
+                        card.purpose === 'cast' ? '' : plainRow(st('center'), center),
+                        plainRow(st('condition'), condition || st('noExtraCondition')),
+                        plainRow(st(card.purpose === 'impact' ? 'selectionTime' : 'time'), spatialTimingText(fact)),
+                        duration ? plainRow(st('duration'), duration.unresolved ? duration.text : st('seconds', { value: duration.text })) : '',
+                        fact.anchor?.fixedWhenStart === true ? plainRow(st('centerMotion'), st('fixedAtStart'))
+                            : typeof fact.followsPosition === 'boolean' ? plainRow(st('centerMotion'), st(fact.followsPosition ? 'followsPosition' : 'doesNotFollow')) : '',
+                        fact.actionType ? plainRow(st('sourceAction'), actionLabel(fact.actionType)) : '',
+                        variantsText.length ? row(st('variants'), `<ul>${variantsText.map(value => `<li>${escapeHtml(value)}</li>`).join('')}</ul>`) : '',
+                        actions ? row(st('effects'), `<ul>${actions}</ul>`)
+                            : card.purpose === 'search' || card.purpose === 'impact' ? plainRow(st('effects'), st('unlinked')) : '',
+                        showHidden() ? plainRow(st('source'), [fact.skillId, fact.path, fact.id].filter(Boolean).join(' · ')) : ''
+                    ].join('');
+                    return `<div class="ake-ui-section">${card.purpose === 'impact' ? `<p class="ake-ui-section__meta">${escapeHtml(st('inferred'))}</p>` : ''}
+                        <dl class="combatv3-definition-list">${detail}</dl>
+                        ${actionButton(fact, fact.path, st('viewSource'))}</div>`;
+                }).join('');
+                return `<article class="ake-ui-card"><header class="ake-ui-card__header"><h4 class="ake-ui-card__title">${escapeHtml(label)}</h4></header>
+                    <div class="ake-ui-card__body">${variants}</div></article>`;
+            }).join('');
+            const origin = source.fact.origin;
+            const originText = origin ? st('childTiming') : '';
+            const parentIsRoot = origin?.parentScopeId === (state.currentData?.skillId || state.activeSkillId);
+            const parentAction = parentIsRoot ? actionButton({ skillId: origin.parentSkillId }, origin.spawnPath, st('viewSpawn')) : '';
+            const spawnTiming = origin?.spawnTiming ? spatialTimingText({ skillId: origin.parentSkillId, timing: origin.spawnTiming }) : '';
+            return `<section class="ake-ui-section"><header class="ake-ui-section__header"><h3 class="ake-ui-section__title">${escapeHtml(title)}</h3>${sourceLink}</header>
+                ${originText ? `<p class="ake-ui-section__meta">${escapeHtml(originText)}</p>` : ''}
+                ${spawnTiming ? `<p class="ake-ui-section__meta">${escapeHtml(st('spawnTime', { time: spawnTiming }))} ${parentAction}</p>` : parentAction}
+                <div class="ake-ui-card-grid" data-size="wide">${cardHtml}</div></section>`;
+        }).join('');
+        // Relation endpoints retain their card identity, rather than a generic "actual impact" label.
+        const relations = collection(spatial.relations).filter(relation => factNames.has(relation.from) && factNames.has(relation.to))
+            .map(relation => {
+                const label = spatialRelationText({ ...relation, fromLabel: factNames.get(relation.from), toLabel: factNames.get(relation.to) }, new Map());
+                return `<li>${escapeHtml(label)}</li>`;
+            }).join('');
+        const pending = spatial.pendingReferences.length;
+        const warnings = spatial.warnings.length;
+        return `<section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">${escapeHtml(st('title'))}</h2></header>
+            <p class="ake-ui-section__meta">${escapeHtml(st('notice'))}</p>${sections}
+            ${relations ? `<details><summary>${escapeHtml(st('relations'))}</summary><ul>${relations}</ul></details>` : ''}
+            ${pending || warnings ? `<p class="combatv3-note is-warning">${escapeHtml(st('incomplete', { pending, warnings }))}</p>` : ''}</section>`;
     }
 
     function coreMetrics() {
@@ -1983,13 +1998,40 @@
             subtitle: raw.skillId || owner.item.id,
             after: code
         });
-        return `${detailHeader?.outerHTML || ''}
-        <div class="combatv3-context-row">
+        const contextBar = `<div class="combatv3-context-bar"><div class="combatv3-context-row">
             <label class="combatv3-context-item"><span>${escapeHtml(t('metrics.level', null, '等级'))}</span><select id="combatv3LevelSelect"${levels.length <= 1 ? ' disabled' : ''}>${options}</select></label>
             <span class="combatv3-context-item"><span>${escapeHtml(entityLabel)}</span><strong>${escapeHtml(owner.character.name)}</strong></span>
             ${isEnemy ? '' : `<span class="combatv3-context-item"><span>${escapeHtml(t('directory.groupLabel', null, '技能组'))}</span><strong>${escapeHtml(owner.group.displayName)}</strong></span>`}
-        </div>
-        ${tags.length ? `<div class="ake-ui-detail-badges">${tags.map((tag, index) => `<span class="ake-ui-badge"${index === 0 ? ' data-tone="accent"' : ''}>${escapeHtml(tag)}</span>`).join('')}</div>` : ''}`;
+            ${tags.length ? `<div class="ake-ui-detail-badges">${tags.map((tag, index) => `<span class="ake-ui-badge"${index === 0 ? ' data-tone="accent"' : ''}>${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
+        </div><div class="ake-ui-segmented combatv3-section-switcher">${[
+            ['core', 'coreSection'], ['graph', 'graphSection'], ['key', 'keySection'], ['debug', 'debugSection']
+        ].map(([id, label]) => `<button type="button" class="ake-ui-segmented__button" id="combatv3SectionButton-${id}"
+            data-combatv3-action="select-section" data-section="${id}" aria-pressed="${state.activeSection === id}"
+            aria-controls="combatv3Section-${id}">${escapeHtml(window.akeI18n?.t(`actionGraph.${label}`))}</button>`).join('')}</div></div>`;
+        if (!detailHeader) return contextBar;
+        detailHeader.classList.add('combatv3-identity-header');
+        const copy = detailHeader.querySelector('.ake-ui-detail-copy');
+        if (copy) copy.insertAdjacentHTML('afterend', contextBar);
+        else detailHeader.insertAdjacentHTML('beforeend', contextBar);
+        return detailHeader.outerHTML;
+    }
+
+    function renderCardAttributeModifiers() {
+        const modifiers = state.analysis.cardAttributeModifiers || [];
+        if (!modifiers.length) return '';
+        const label = key => t(`cardAttributes.${key}`, null, key);
+        const enumLabel = (group, value) => t(`cardAttributes.${group}.${value}`, null, formatValue(value));
+        const cell = value => `<td>${escapeHtml(value)}</td>`;
+        return `<section class="ake-ui-section"><header class="ake-ui-section__header"><h3 class="ake-ui-section__title">${escapeHtml(label('title'))}</h3></header>
+            <div class="ake-ui-table-shell"><table class="ake-ui-table"><thead><tr>${['target', 'attribute', 'formula', 'value', 'source', 'converted'].map(key => `<th>${escapeHtml(label(key))}</th>`).join('')}</tr></thead>
+            <tbody>${modifiers.map(item => {
+                const param = item.param || {};
+                const value = param.resolved === false ? label('unresolved') : formatValue(param.value);
+                const source = param.usesBlackboard
+                    ? `${label('blackboard')} · ${param.blackboardKey}${param.resolved === false ? '' : ` · ${enumLabel('sources', param.source)}`}`
+                    : label('literal');
+                return `<tr>${cell(enumLabel('targets', item.modifyAttributeType))}${cell(enumLabel('attributes', item.attributeType))}${cell(enumLabel('formulas', item.formulaItem))}${cell(value)}${cell(source)}${cell(formatValue(item.isConvertedAttribute))}</tr>`;
+            }).join('')}</tbody></table></div></section>`;
     }
 
     function renderCore() {
@@ -1999,13 +2041,8 @@
             return `<div class="combatv3-metric${important ? ' is-important' : ''}"><span class="combatv3-metric-label">${escapeHtml(label)}</span>
                 <strong class="combatv3-metric-value">${escapeHtml(value.value)}</strong>${value.unit ? `<span class="combatv3-metric-unit">${escapeHtml(value.unit)}</span>` : ''}</div>`;
         }).join('');
-        const spatialHtml = spatialMetrics().map(metric =>
-            `<div class="combatv3-metric combatv3-metric--spatial${metric.wide ? ' combatv3-metric--wide' : ''}${metric.important ? ' is-important' : ''}">
-                <span class="combatv3-metric-label">${escapeHtml(metric.label)}</span>
-                <strong class="combatv3-metric-value">${escapeHtml(metric.value)}</strong>
-                ${metric.unit ? `<span class="combatv3-metric-unit">${escapeHtml(metric.unit)}</span>` : ''}</div>`).join('');
-        const metricHtml = standardHtml || spatialHtml
-            ? `${standardHtml}${spatialHtml}`
+        const metricHtml = standardHtml
+            ? standardHtml
             : `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noCoreMetrics', null, '分析器未返回核心指标'))}</div>`;
         const patches = patchMetrics();
         const patchHtml = patches.length ? `<section class="ake-ui-section">
@@ -2016,7 +2053,7 @@
                     <strong class="combatv3-metric-value">${escapeHtml(value.value)}</strong>${value.unit ? `<span class="combatv3-metric-unit">${escapeHtml(value.unit)}</span>` : ''}</div>`;
             }).join('')}</div></section>` : '';
         return `${patchHtml}<section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">${escapeHtml(t('sections.coreMetrics', null, '核心指标'))}</h2>
-            <span class="ake-ui-section__meta">${escapeHtml(t('sectionNotes.keyCombatFields', null, '关键战斗字段'))}</span></header><div class="combatv3-metric-grid">${metricHtml}</div></section>`;
+            <span class="ake-ui-section__meta">${escapeHtml(t('sectionNotes.keyCombatFields', null, '关键战斗字段'))}</span></header><div class="combatv3-metric-grid">${metricHtml}</div></section>${renderCardAttributeModifiers()}${renderSpatialEffects()}`;
     }
 
     function frameOf(item, names) {
@@ -2178,8 +2215,13 @@
             const tooltip = `${label} · ${frameText}${isPresent(detail) ? ` · ${formatValue(detail)}` : ''}`;
             const kind = windowKind(item);
             const blockClass = start === end ? 'combatv3-window-point' : `combatv3-window combatv3-window--${kind}`;
-            return `<div class="combatv3-window-lane"><span class="combatv3-lane-label" title="${escapeHtml(label)}">${escapeHtml(label)}</span>
+            const graphEvent = Number.isInteger(item.eventIndex) ? item.eventIndex : item.index;
+            const graphNode = Number.isInteger(graphEvent) && state.analysis.graph?.nodeByPath.has(item.path);
+            const graphButton = graphNode ? `<button type="button" class="ake-ui-segmented__button" data-combatv3-action="locate-graph"
+                data-event-index="${graphEvent}" aria-label="${escapeHtml(window.akeI18n?.t('actionGraph.locateGraph') || '查看动作流程')}">${escapeHtml(label)} ↗</button>` : escapeHtml(label);
+            return `<div class="combatv3-window-lane"${graphNode ? ` data-graph-event-index="${graphEvent}"` : ''}><span class="combatv3-lane-label" title="${escapeHtml(label)}">${graphButton}</span>
                 <div class="combatv3-lane-track"><span class="${blockClass}" style="left:${escapeHtml(left)}%;width:${escapeHtml(width)}%;"
+                    ${graphNode ? `role="button" tabindex="0" data-combatv3-action="locate-graph" data-event-index="${graphEvent}" aria-label="${escapeHtml(tooltip)}"` : ''}
                     data-combatv3-tooltip="${escapeHtml(tooltip)}">${start === end ? '' : `<span>${escapeHtml(label)}</span>`}</span></div></div>`;
         }).join('');
         return `<div class="combatv3-window-scroll"><div class="combatv3-window-stage"><div class="combatv3-window-ruler">
@@ -2255,7 +2297,8 @@
         const events = state.showPerformance ? state.analysis.events : state.analysis.events.filter(event => !isPerformanceEvent(event));
         state.timelineEvents = events;
         const rows = events.map((event, index) => ({ ...event, label: eventLabel(event, index) }));
-        return `<div class="combatv3-context-row"><button type="button" class="ake-ui-segmented__button" data-combatv3-action="toggle-performance"
+        return `<div class="combatv3-editor__timeline-tools"><h3 class="ake-ui-section__title" id="combatv3TimelineTitle">${escapeHtml(t('tabs.timeline', null, '战斗时间轴'))}</h3>
+            <button type="button" class="ake-ui-segmented__button" data-combatv3-action="toggle-performance"
             aria-pressed="${state.showPerformance ? 'true' : 'false'}">${escapeHtml(state.showPerformance
                 ? t('buttons.showPerformance', null, '含表现事件')
                 : t('buttons.combatOnly', null, '仅战斗事件'))}</button>
@@ -2264,42 +2307,6 @@
                 total: state.analysis.events.length
             }, `${events.length} / ${state.analysis.events.length} 项`))}</span></div>
             ${renderWindowStage(rows, t('empty.noTimelineEvents', null, '分析器未返回战斗时间轴事件'))}`;
-    }
-
-    function linkClass(link) {
-        const text = `${link.kind || ''} ${link.type || ''} ${link.result || ''}`.toLowerCase();
-        if (/condition|check|条件/.test(text)) return 'is-condition';
-        if (/fail|failure|失败/.test(text)) return 'is-failure';
-        if (/result|success|结果/.test(text)) return 'is-result';
-        return 'is-event';
-    }
-
-    function renderLogic() {
-        const links = state.analysis.links;
-        const branchEvents = state.analysis.events.filter(event => Array.isArray(event.branchPath) && event.branchPath.length);
-        if (!links.length && !branchEvents.length) {
-            return `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noLogic', null, '未识别到条件、跳转或后继动作'))}</div>`;
-        }
-        const nodes = links.map((link, index) => {
-            const title = firstValue(link, ['label', 'name', 'title', 'to', 'targetId', 'id', '__key'])
-                || t('logic.named', { index: index + 1 }, `逻辑 ${index + 1}`);
-            const rawKicker = firstValue(link, ['kind', 'type', 'category']);
-            const kicker = rawKicker
-                ? (ACTION_LABELS[rawKicker] ? actionLabel(rawKicker) : timelineEnumLabel(rawKicker))
-                : t('logic.link', null, '链接');
-            const detail = firstValue(link, ['condition', 'detail', 'description', 'from', 'sourceId', 'path']);
-            return `<article class="combatv3-logic-node ${linkClass(link)}"><div class="combatv3-logic-kicker">${escapeHtml(kicker)}</div>
-                <div class="combatv3-logic-title">${escapeHtml(title)}</div>${isPresent(detail) ? `<div class="combatv3-logic-detail">${escapeHtml(compactTimelineDetail(detail))}</div>` : ''}</article>`;
-        });
-        branchEvents.forEach((event, index) => {
-            const frame = t('units.frames', { value: formatValue(event.startFrame ?? '--') }, `${formatValue(event.startFrame ?? '--')} 帧`);
-            nodes.push(`<article class="combatv3-logic-node is-condition"><div class="combatv3-logic-kicker">${escapeHtml(t('logic.conditionBranch', null, '条件分支'))}</div>
-                <div class="combatv3-logic-title">${escapeHtml(event.branchPath.join(' → '))}</div>
-                <div class="combatv3-logic-detail">${escapeHtml(eventLabel(event, index))} · ${escapeHtml(frame)}</div></article>`);
-        });
-        return `<div class="combatv3-logic-node"><div class="combatv3-logic-kicker">${escapeHtml(t('logic.rootSkill', null, '根技能'))}</div>
-            <div class="combatv3-logic-title">${escapeHtml(state.activeSkillId)}</div></div>
-            <div class="combatv3-logic-branches">${nodes.join('')}</div>`;
     }
 
     function blackboardRows() {
@@ -2333,17 +2340,73 @@
             <details class="combatv3-raw"><summary>${escapeHtml(t('raw.skillData', null, '原始 SkillData'))}</summary><pre>${escapeHtml(safeJson(state.currentData))}</pre></details></section>`;
     }
 
-    function renderTabs() {
-        const tabs = [
-            ['timeline', t('tabs.timeline', null, '战斗时间轴')],
-            ['logic', t('tabs.logic', null, '逻辑链')],
-            ['debug', t('tabs.debug', null, '调试数据')]
-        ];
-        const content = state.activeTab === 'logic' ? renderLogic() : (state.activeTab === 'debug' ? renderDebug() : renderTimeline());
-        return `<section class="ake-ui-section"><div class="ake-ui-tabs" data-variant="segment" data-layout="equal" role="tablist">${tabs.map(([id, label]) =>
-            `<button type="button" class="ake-ui-tabs__button${state.activeTab === id ? ' is-active' : ''}" role="tab" data-combatv3-tab="${escapeHtml(id)}"
-                aria-selected="${state.activeTab === id ? 'true' : 'false'}">${escapeHtml(label)}</button>`).join('')}</div>
-            <div class="ake-ui-section" role="tabpanel">${content}</div></section>`;
+    let timelineResize = null;
+
+    function updateTimelineLayout() {
+        const workspace = elements.detail.querySelector('#combatv3Workspace');
+        if (!workspace) return;
+        workspace.classList.toggle('is-timeline-collapsed', state.timelineCollapsed);
+        workspace.style.setProperty('--combatv3-graph-track', `${state.graphShare}fr`);
+        workspace.style.setProperty('--combatv3-timeline-track', `${100 - state.graphShare}fr`);
+        workspace.querySelector('#combatv3TimelineRegion').hidden = state.timelineCollapsed;
+        const handle = workspace.querySelector('[data-combatv3-resize]');
+        handle.hidden = state.timelineCollapsed;
+        handle.setAttribute('aria-valuenow', String(Math.round(state.graphShare)));
+        const button = workspace.querySelector('[data-combatv3-action="toggle-timeline"]');
+        button.setAttribute('aria-expanded', String(!state.timelineCollapsed));
+        button.textContent = window.akeI18n?.t(`actionGraph.${state.timelineCollapsed ? 'expandTimeline' : 'collapseTimeline'}`);
+    }
+
+    function startTimelineResize(event) {
+        const handle = event.target.closest('[data-combatv3-resize]');
+        if (!handle || event.button !== 0 || state.timelineCollapsed || timelineResize) return;
+        const workspace = handle.closest('.combatv3-editor');
+        const height = workspace.clientHeight - handle.parentElement.offsetHeight;
+        if (height <= 0) return;
+        timelineResize = { pointerId: event.pointerId, y: event.clientY, share: state.graphShare, height, workspace };
+        elements.detail.setPointerCapture(event.pointerId);
+        handle.focus({ preventScroll: true });
+        hideTooltip();
+        event.preventDefault();
+    }
+
+    function moveTimelineResize(event) {
+        if (!timelineResize || event.pointerId !== timelineResize.pointerId) return;
+        if (!timelineResize.workspace.isConnected) { stopTimelineResize(); return; }
+        state.graphShare = Math.max(20, Math.min(90, timelineResize.share + (event.clientY - timelineResize.y) / timelineResize.height * 100));
+        updateTimelineLayout();
+    }
+
+    function stopTimelineResize(event) {
+        if (!timelineResize || (event && event.pointerId !== timelineResize.pointerId)) return;
+        const pointerId = timelineResize.pointerId;
+        timelineResize = null;
+        if (elements.detail.hasPointerCapture(pointerId)) elements.detail.releasePointerCapture(pointerId);
+    }
+
+    function renderWorkspace() {
+        return `<section class="combatv3-editor" id="combatv3Workspace">
+            <section class="ake-ui-section combatv3-editor__graph" id="combatv3GraphPanel"
+                aria-label="${escapeHtml(window.akeI18n?.t('actionGraph.title'))}">
+                ${graphView?.render() || errorHtml(MODULE_TITLE(), t('warnings.ANALYZER_UNAVAILABLE', null, '分析器不可用'))}
+            </section>
+            <div class="combatv3-editor__divider">
+                <div class="combatv3-editor__resize" data-combatv3-resize role="separator" tabindex="0" aria-orientation="horizontal"
+                    aria-label="${escapeHtml(window.akeI18n?.t('actionGraph.resizeTimeline'))}" aria-valuemin="20" aria-valuemax="90" aria-valuenow="${state.graphShare}"
+                    aria-controls="combatv3GraphPanel combatv3TimelineRegion"></div>
+                <button type="button" class="ake-ui-segmented__button" data-combatv3-action="toggle-timeline" aria-controls="combatv3TimelineRegion"></button>
+            </div>
+            <section class="ake-ui-section combatv3-editor__timeline" id="combatv3TimelineRegion" aria-labelledby="combatv3TimelineTitle">
+                <div id="combatv3TimelinePanel">${renderTimeline()}</div>
+            </section>
+            <aside class="ake-ui-detail-aside combatv3-editor__inspector" id="combatv3InspectorPanel" hidden
+                aria-label="${escapeHtml(window.akeI18n?.t('actionGraph.parameters'))}">
+                <header class="ake-ui-section__header"><strong>${escapeHtml(window.akeI18n?.t('actionGraph.parameters'))}</strong>
+                    <button type="button" class="ake-ui-icon-button" data-action-graph="closeInspector"
+                        aria-label="${escapeHtml(t('buttons.close', null, '关闭'))}">×</button></header>
+                <div id="combatv3GraphInspector" aria-live="polite"></div>
+            </aside>
+        </section>`;
     }
 
     function renderSourceWarning() {
@@ -2355,7 +2418,90 @@
 
     function renderDetail() {
         if (!state.currentData || !state.activeOwner) return;
-        elements.detail.innerHTML = `${renderIdentity()}${renderSourceWarning()}${renderCore()}${renderWindows()}${renderHits()}${renderTabs()}`;
+        stopTimelineResize();
+        graphView?.unmount();
+        hideTooltip();
+        const sections = [
+            ['core', 'coreSection', renderCore()],
+            ['graph', 'graphSection', renderWorkspace()],
+            ['key', 'keySection', `${renderWindows()}${renderHits()}`],
+            ['debug', 'debugSection', '<div data-combatv3-debug-content></div>']
+        ];
+        elements.detail.innerHTML = `<div class="combatv3-page-identity">${renderIdentity()}${renderSourceWarning()}</div>
+            <div class="combatv3-sections">${sections.map(([id, label, content]) => `<section class="combatv3-section" data-combatv3-section="${id}"
+                aria-labelledby="combatv3SectionButton-${id}"${state.activeSection === id ? '' : ' hidden'}>
+                <div class="combatv3-section__body" id="combatv3Section-${id}">${content}</div>
+            </section>`).join('')}</div>`;
+        updateTimelineLayout();
+        graphView?.mount(elements.detail.querySelector('#combatv3Workspace'));
+        setSection(state.activeSection);
+    }
+
+    function setSection(id) {
+        stopTimelineResize();
+        state.activeSection = id;
+        hideTooltip();
+        elements.detail.querySelectorAll('[data-combatv3-section]').forEach(section => {
+            const open = section.dataset.combatv3Section === id;
+            section.hidden = !open;
+        });
+        elements.detail.querySelectorAll('[data-combatv3-action="select-section"]').forEach(button => {
+            button.setAttribute('aria-pressed', String(button.dataset.section === id));
+        });
+        const debug = elements.detail.querySelector('[data-combatv3-debug-content]');
+        if (id === 'debug' && debug && !debug.dataset.loaded) {
+            debug.innerHTML = renderDebug();
+            debug.dataset.loaded = 'true';
+        }
+    }
+
+    const graphView = window.AKEActionGraphView?.create({
+        escape: escapeHtml, actionLabel, fieldLabel: timelineFieldLabel, enumLabel: timelineEnumLabel, showHidden,
+        resourceLink(reference) {
+            const owner = reference.kind === 'skill' ? ownerFor(reference.id) : null;
+            if (!owner && !(showHidden() && reference.kind === 'buff')) return null;
+            const plugin = reference.kind === 'skill' ? MODULE_ID : 'v3_buff';
+            const url = new URL(window.location.href);
+            url.search = '';
+            url.hash = '';
+            url.searchParams.set('plugin', plugin);
+            url.searchParams.set('id', reference.id);
+            url.searchParams.delete('level');
+            return { href: window.__akeRouter?.entryUrl?.(plugin, reference.id) || `${url.pathname}${url.search}`,
+                plugin, id: reference.id,
+                label: showHidden() && owner ? owner.item.displayName : (window.akeI18n?.t('actionGraph.openResource') || '查看资源') };
+        },
+        locateTimeline(eventIndex) {
+            const item = state.analysis.events.find(event => event.index === eventIndex);
+            if (!item) return;
+            state.timelineCollapsed = false;
+            updateTimelineLayout();
+            if (isPerformanceEvent(item) && !state.showPerformance) {
+                state.showPerformance = true;
+                elements.detail.querySelector('#combatv3TimelinePanel').innerHTML = renderTimeline();
+            }
+            highlightTimeline(eventIndex, true);
+            const row = elements.detail.querySelector(`#combatv3TimelinePanel [data-graph-event-index="${eventIndex}"]`);
+            row?.querySelector('button')?.focus({ preventScroll: true });
+        },
+        onSelect: eventIndex => highlightTimeline(eventIndex, true)
+    });
+
+    function highlightTimeline(eventIndex, reveal = false) {
+        const timeline = elements.detail.querySelector('#combatv3TimelinePanel');
+        if (!timeline) return;
+        timeline.querySelectorAll('[data-graph-event-index]').forEach(row => {
+            const selected = Number(row.dataset.graphEventIndex) === eventIndex;
+            row.classList.toggle('is-selected', selected);
+            row.querySelector('button')?.setAttribute('aria-pressed', String(selected));
+            if (selected && reveal) {
+                const scroll = row.closest('.combatv3-window-scroll');
+                if (scroll) {
+                    const offset = row.getBoundingClientRect().top - scroll.getBoundingClientRect().top;
+                    scroll.scrollTop += offset - scroll.clientHeight / 2 + row.clientHeight / 2;
+                }
+            }
+        });
     }
 
     function setQuery(value) {
@@ -2386,21 +2532,41 @@
     }
 
     function onDetailClick(event) {
-        const tab = event.target.closest('[data-combatv3-tab]');
-        if (tab) {
-            state.activeTab = tab.dataset.combatv3Tab;
-            renderDetail();
+        if (graphView?.click(event.target)) return;
+        const control = event.target.closest('[data-combatv3-action]');
+        const action = control?.dataset.combatv3Action;
+        if (action === 'locate-spatial') {
+            setSection('graph');
+            graphView?.selectPath(control.dataset.actionPath);
             return;
         }
-        const action = event.target.closest('[data-combatv3-action]')?.dataset.combatv3Action;
+        if (action === 'toggle-timeline') {
+            stopTimelineResize();
+            state.timelineCollapsed = !state.timelineCollapsed;
+            updateTimelineLayout();
+            return;
+        }
+        if (action === 'select-section') {
+            setSection(control.dataset.section);
+            return;
+        }
+        if (action === 'locate-graph') {
+            setSection('graph');
+            const item = state.analysis.events.find(row => row.index === Number(control.dataset.eventIndex));
+            if (item) graphView?.selectPath(item.path);
+            return;
+        }
         if (action === 'toggle-performance') {
             state.showPerformance = !state.showPerformance;
-            renderDetail();
+            elements.detail.querySelector('#combatv3TimelinePanel').innerHTML = renderTimeline();
+            graphView?.refreshSelection();
         }
     }
 
     function onDetailChange(event) {
+        if (graphView?.change(event.target)) return;
         if (event.target.id !== 'combatv3LevelSelect') return;
+        graphView?.unmount();
         state.level = Number(event.target.value);
         state.currentPatch = selectedPatch(state.activeSkillId, state.level);
         updateDeepLink();
@@ -2440,7 +2606,32 @@
     }
 
     function onKeyDown(event) {
-        if (event.key === 'Escape') closeMobileList();
+        if (event.target.matches?.('[data-combatv3-resize]')) {
+            const delta = event.shiftKey ? 10 : 2;
+            const value = event.key === 'ArrowUp' ? state.graphShare - delta
+                : event.key === 'ArrowDown' ? state.graphShare + delta
+                : event.key === 'Home' ? 20 : event.key === 'End' ? 90 : null;
+            if (value !== null) {
+                event.preventDefault();
+                state.graphShare = Math.max(20, Math.min(90, value));
+                updateTimelineLayout();
+                return;
+            }
+        }
+        if ((event.key === 'Enter' || event.key === ' ') && event.target.matches?.('.combatv3-lane-track [data-combatv3-action="locate-graph"]')) {
+            event.preventDefault();
+            onDetailClick(event);
+            return;
+        }
+        if ((event.key === 'Enter' || event.key === ' ') && event.target.closest?.('svg [data-action-graph]')) {
+            event.preventDefault();
+            graphView?.click(event.target);
+            return;
+        }
+        if (event.key === 'Escape') {
+            if (graphView?.closeInspector()) { event.preventDefault(); return; }
+            closeMobileList();
+        }
     }
 
     async function fetchManifest() {
@@ -2458,6 +2649,7 @@
     }
 
     async function load(options) {
+        graphView?.unmount();
         const preserve = options?.preserve === true;
         const token = ++state.loadToken;
         if (!preserve) elements.detail.innerHTML = loadingHtml(MODULE_TITLE(),
@@ -2529,6 +2721,11 @@
         elements.detail.addEventListener('pointerover', onPointerOver);
         elements.detail.addEventListener('pointermove', moveTooltip);
         elements.detail.addEventListener('pointerout', hideTooltip);
+        elements.detail.addEventListener('pointerdown', startTimelineResize);
+        elements.detail.addEventListener('pointermove', moveTimelineResize);
+        elements.detail.addEventListener('pointerup', stopTimelineResize);
+        elements.detail.addEventListener('pointercancel', stopTimelineResize);
+        elements.detail.addEventListener('lostpointercapture', stopTimelineResize);
         window.addEventListener('keydown', onKeyDown);
         window.addEventListener('globalConfigChanged', onGlobalConfigChanged);
     }
@@ -2538,6 +2735,8 @@
     }
 
     function destroy() {
+        stopTimelineResize();
+        graphView?.destroy();
         state.loadToken += 1;
         state.detailToken += 1;
         elements.list.removeEventListener('click', onDirectoryClick);
@@ -2552,6 +2751,11 @@
         elements.detail.removeEventListener('pointerover', onPointerOver);
         elements.detail.removeEventListener('pointermove', moveTooltip);
         elements.detail.removeEventListener('pointerout', hideTooltip);
+        elements.detail.removeEventListener('pointerdown', startTimelineResize);
+        elements.detail.removeEventListener('pointermove', moveTimelineResize);
+        elements.detail.removeEventListener('pointerup', stopTimelineResize);
+        elements.detail.removeEventListener('pointercancel', stopTimelineResize);
+        elements.detail.removeEventListener('lostpointercapture', stopTimelineResize);
         window.removeEventListener('keydown', onKeyDown);
         window.removeEventListener('globalConfigChanged', onGlobalConfigChanged);
         hideTooltip();

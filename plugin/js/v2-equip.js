@@ -535,7 +535,9 @@
             for (const [skillId, skillData] of Object.entries(skillTable)) {
                 const bundle = skillData.SkillPatchDataBundle;
                 if (!bundle) continue;
-                bundle.forEach((skill, skillIndex) => {
+                const skillName = bundle[0]?.skillName?.text || (showHidden ? skillId : commonT('unknown'));
+                html += `<div class="ake-ui-card__header"><div class="ake-ui-card__title">${escapeHtml(skillName)}</div><div class="ake-ui-card__header-actions">${window.AKEAdvancedLinks.html([{ plugin: 'v3_skill', id: skillId }])}</div></div>`;
+                bundle.forEach(skill => {
                     const desc = skill.description?.text || '';
                     if (!desc) return;
                     const blackboard = skill.blackboard || [];
@@ -547,11 +549,7 @@
                     processedDesc = parseText(processedDesc);
                     processedDesc = processedDesc.replace(/\n/g, '<br>');
 
-                    const skillName = skill.skillName?.text || skillId;
-                    const skillLink = skillIndex === 0
-                        ? window.AKEUI.entryLinkHtml({ plugin: 'v3_skill', id: skillId, label: skillName, className: 'ake-ui-card__title', contentHtml: escapeHtml(skillName) })
-                        : '';
-                    html += `${skillLink}<div class="v2eq-skill-desc">${processedDesc}</div>`;
+                    html += `<div class="v2eq-skill-desc">${processedDesc}</div>`;
 
                     if (showHidden && blackboard.length > 0) {
                         html += `<div class="v2eq-blackboard-params">`;

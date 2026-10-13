@@ -564,7 +564,7 @@
                     : null;
                 window.AKEModuleOverview?.renderVersionDiff(container, rawData, baselineData ? renderDetail(baselineData) : '');
 
-                container.querySelectorAll('.v2e-toggle-btn').forEach(btn => {
+                container.querySelectorAll('.v2e-toggle-btn[data-variant]').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         e.preventDefault();
                         const vi = parseInt(btn.dataset.variant, 10);
@@ -674,15 +674,13 @@
                     collapseLabel: commonT('collapseExtraLevels'),
                     attributes: { 'data-variant': idx }
                 }) : null;
-                const toggleButton = toggle
-                    ? `<div class="ake-ui-card__header-actions">${toggle.outerHTML}</div>`
-                    : '';
+                const toggleButton = toggle?.outerHTML || '';
 
                 return `
                     <div class="ake-ui-card" data-card-kind="enemy-variant" data-density="regular" data-variant-index="${idx}">
                         <div class="ake-ui-card__header v2e-variant-header">
                             <div class="ake-ui-card__title">${variantId}${titleExtra}</div>
-                            ${toggleButton}
+                            <div class="ake-ui-card__header-actions">${window.AKEAdvancedLinks.html(variant.bornBuffs.map(id => ({ plugin: 'v3_buff', id })))}${toggleButton}</div>
                         </div>
                         <div class="ake-ui-card__body">${modifierHtml}${buffHtml}${flagsHtml}${diffHtml}<div class="ake-ui-table-shell">
                             <table class="ake-ui-table">
@@ -721,10 +719,10 @@
             const metaHtml = renderMeta(data);
 
             const showHidden = getCurrentShowHidden();
-            const poiseBuffHtml = showHidden && data.poiseKnotBuffList.length > 0 ? `
+            const poiseBuffHtml = data.poiseKnotBuffList.length > 0 ? `
                 <div class="ake-ui-section">
-                    <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.poiseBreakBuffs')}</h3></div>
-                    <div class="v2e-buffs">${data.poiseKnotBuffList.map(b => `<span class="ake-ui-badge ake-ui-badge--technical">${b}</span>`).join('')}</div>
+                    <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.poiseBreakBuffs')}</h3><div class="ake-ui-card__header-actions">${window.AKEAdvancedLinks.html(data.poiseKnotBuffList.map(id => ({ plugin: 'v3_buff', id })))}</div></div>
+                    ${showHidden ? `<div class="v2e-buffs">${data.poiseKnotBuffList.map(b => window.AKEUI.entryLinkHtml({ plugin: 'v3_buff', id: b, label: b, className: 'ake-ui-badge ake-ui-badge--technical' })).join('')}</div>` : renderModifierSummary(data.poiseKnotBuffModifiersStr, t('modifierLabels.buffBonus', null, 'Buff Bonus'))}
                 </div>
             ` : (!showHidden && data.poiseKnotBuffModifiersStr ? `
                 <div class="ake-ui-section">
