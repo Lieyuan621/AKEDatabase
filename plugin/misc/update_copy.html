@@ -1,0 +1,26 @@
+<section class="ake-ui-page" data-misc-module="update_copy" aria-labelledby="updateCopyTitle">
+    <header class="ake-ui-page__header">
+        <div>
+            <h2 id="updateCopyTitle">更新文案生成</h2>
+            <p class="ake-ui-page__summary">比较两个数据版本的新增条目，默认选择最近两次热更新。每个模块最多列出五个名称，不包含前瞻条目。</p>
+        </div>
+    </header>
+    <div class="ake-ui-toolbar">
+        <label>旧版本 <select data-copy-old aria-label="旧版本"></select></label>
+        <label>新版本 <select data-copy-new aria-label="新版本"></select></label>
+        <button type="button" data-copy-run disabled>生成文案</button>
+        <button type="button" data-copy-clipboard disabled>复制文案</button>
+    </div>
+    <p data-copy-status role="status" aria-live="polite">正在读取版本列表…</p>
+    <section class="ake-ui-section" aria-label="新增概览">
+        <div data-copy-results></div>
+    </section>
+    <details class="ake-ui-section">
+        <summary>统计口径与数据说明</summary>
+        <p>按稳定条目身份比较，仅名称或属性变化不计为新增。装备按单件、奖章按单枚、商店按商品、影拓丰碑按系列、战争回响按赛季、危机合约按活动关卡、Baker 按对话统计。全新商店单独说明。物品与装备、武器可能重复归属，分别计入对应模块。</p>
+        <p>档案库包含档案条目、任务阅读条目及地图对话。地图和阅读的素材关联使用站点共享索引，新增判断依据两个版本的文本表，不比较历史素材文件。读取失败的模块不会按零条处理。</p>
+        <div data-copy-diagnostics></div>
+    </details>
+</section>
+<script src="/plugin/js/ake-asset-index.js"></script>
+<script src="/plugin/js/misc-update-copy.js"></script>

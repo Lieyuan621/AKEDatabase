@@ -346,6 +346,13 @@
                 const index = cursor++, hit = hits[index];
                 const candidates = entries(window.AKESearchIndex).filter(([module, definition]) => visible.has(module) && definition.tables.includes(hit.Table)).map(([module]) => module);
                 const result = { ...hit, candidates, targets: [], text: '', name: '', status: 'unresolved', field: '' };
+                // A current text hit cannot establish membership in a two-version additions report.
+                // Retain the candidate and its coverage reason, but never invent an exact jump.
+                result.comparisonCandidates = candidates.flatMap(module => {
+                    const definition = window.AKESearchIndex[module]?.versionComparison;
+                    return definition?.tables.includes(hit.Table)
+                        ? [{ module, entryId: definition.entryId, reason: definition.coverage }] : [];
+                });
                 const parts = pathParts(hit.Path);
                 try {
                     if (!parts) result.status = 'unsupportedPath';
@@ -384,7 +391,8 @@
             counts[result.status] = (counts[result.status] || 0) + 1; return counts;
         }, {});
         diagnostics.unresolved = results.filter(result => !result.targets.length).map(result => ({
-            Table: result.Table, Path: result.Path, Id: result.Id, status: result.status, candidates: result.candidates
+            Table: result.Table, Path: result.Path, Id: result.Id, status: result.status, candidates: result.candidates,
+            comparisonCandidates: result.comparisonCandidates
         }));
         diagnostics.missingModuleDefinitions = [...visible].filter(id => !window.AKESearchIndex[id]);
         return { results, diagnostics };
