@@ -101,9 +101,6 @@
         FactoryBuildingTable: [['factory', 'building:']],
         FactoryBatteryItemTable: [['factory', 'battery:']],
         FactoryFuelItemTable: [['factory', 'fuel:']],
-        SpaceshipRoomTypeTable: [['spaceship', 'room:']],
-        SpaceshipClueDataTable: [['spaceship', 'clue:']],
-        SpaceshipRoomAttrTypeTable: [['spaceship', 'attribute:']],
         AdventureTaskTable: [['adventure', 'task:']],
         AdventureBookStageRewardTable: [['adventure', 'stage:']],
         AdventureWorldLevelTable: [['adventure', 'world:']],
@@ -116,6 +113,8 @@
         const key = parts[0], source = hit.Table, field = parts[1];
         const add = (module, id, label) => {
             if (!visible.has(module) || id === undefined || id === null || id === '') return;
+            // Keep in sync with the explicit page scope in spaceship.js.
+            if (module === 'spaceship' && !['room:0', 'room:1', 'room:2', 'room:5', 'credit', 'logistics'].includes(String(id))) return;
             const target = { module, id: String(id), title: plain(label) };
             results.set(`${module}:${id}`, target);
         };
@@ -173,6 +172,25 @@
             if (series?.gameCategory === 'dungeon_highdifficulty' && has('monument')) add('monument', id, title(series));
         }
         if (['CharGrowthTable', 'CharacterPotentialTable', 'SpaceshipCharSkillTable'].includes(source)) await from('CharacterTable', key, 'v3_character');
+        if (has('spaceship')) {
+            const logisticsTitle = window.akeI18n.t('modules.spaceship.skills.title');
+            if (source === 'SpaceshipSkillTable' && ['name', 'talentName', 'desc'].includes(field)) add('spaceship', 'logistics', logisticsTitle);
+            if (source === 'SpaceshipCharSkillTable' && field === 'skillList' && parts.includes('unlockHint')) add('spaceship', 'logistics', logisticsTitle);
+            if (source === 'CharacterTable' && field === 'name' && (await table('SpaceshipCharSkillTable'))[key]?.skillList?.length) add('spaceship', 'logistics', logisticsTitle);
+            if (source === 'SpaceshipRoomTypeTable' && field === 'name'
+                && entries(await table('SpaceshipSkillTable')).some(([, skill]) => String(skill.roomType) === key)) add('spaceship', 'logistics', logisticsTitle);
+            if (field === 'name' && ['SpaceshipGrowCabinFormulaShowingTypeTable', 'SpaceshipClueDataIndex2IdTable', 'SpaceshipRoomAttrTypeTable'].includes(source)) {
+                const used = entries(await table('SpaceshipSkillTable')).some(([, skill]) => {
+                    const effect = String(skill.effectType);
+                    const p = skill.parameters?.[effect === '6' ? 0 : 1];
+                    const target = String(p?.valueFloatList?.[0] ?? p?.valueIntList?.[0] ?? '');
+                    return (source === 'SpaceshipGrowCabinFormulaShowingTypeTable' && effect === '3' && target === key)
+                        || (source === 'SpaceshipClueDataIndex2IdTable' && effect === '6' && target === key)
+                        || (source === 'SpaceshipRoomAttrTypeTable' && effect === '7' && { '1': '16', '2': '17' }[target] === key);
+                });
+                if (used) add('spaceship', 'logistics', logisticsTitle);
+            }
+        }
         if (source === 'SpaceshipSkillTable' && has('v3_character')) {
             for (const [id, skills] of entries(await table('SpaceshipCharSkillTable'))) {
                 if ((skills.skillList || []).some(skill => skill.skillId === key)) await from('CharacterTable', id, 'v3_character');
@@ -272,7 +290,12 @@
             for (const [id, index] of entries(await table('WikiTutorialPageByEntryTable'))) if ((index.pageIds || []).includes(key)) owners.add(id);
             for (const id of owners) add('tutorial', id, title(row));
         }
-        if (source === 'SpaceshipRoomLvTable' && has('spaceship')) {
+        if (source === 'SpaceshipRoomTypeTable' && ['name', 'desc', 'helpDesc', 'extraDesc1'].includes(field)) {
+            add('spaceship', `room:${key}`, title(row));
+        }
+        if (['SpaceshipRoomLvTable', 'SpaceshipControlCenterLvTable', 'SpaceshipManufacturingStationLvTable',
+            'SpaceshipGrowCabinLvTable', 'SpaceshipGuestRoomLvTable', 'SpaceshipGuestRoomClueLvTable',
+            'SpaceshipCommandCenterLvTable'].includes(source) && ['conditionDesc', 'unlockAreaText'].includes(field) && has('spaceship')) {
             const helper = (await table('SpaceshipRoomLvHelperTable'))[row.id || key];
             const type = row.roomType ?? helper?.roomType ?? 'unassigned';
             add('spaceship', `room:${type}`, title((await table('SpaceshipRoomTypeTable'))[type]));

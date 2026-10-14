@@ -271,7 +271,35 @@
                 "missingIcons": "部分图标不可用，节点仍可查看。"
             },
             "spaceship": {
-                "title": "帝江号"
+                "title": "帝江号",
+                "skills": {
+                    "title": "后勤技能筛选",
+                    "effectType": "效果类型",
+                    "target": "作用对象",
+                    "minimum": "最低数值",
+                    "minimumPercent": "最低加成（%）",
+                    "minimumTier": "最低提升档位",
+                    "sort": "排序",
+                    "defaultSort": "默认顺序",
+                    "descending": "匹配技能数值从高到低",
+                    "ascending": "匹配技能数值从低到高",
+                    "tier": "档位 {value}",
+                    "unknownEffect": "未适配效果类型 {value}",
+                    "unknownTarget": "未适配作用对象 {value}",
+                    "numericHint": "点击舱室下的效果或产物按钮，默认按匹配技能的最高效果值从高到低排序；再次点击取消。",
+                    "tierHint": "选择具体线索后，默认按匹配技能的最高提升档位从高到低排序。档位不代表最终概率。",
+                    "effects": { "0": "全员心情恢复提升", "1": "舱室心情消耗降低", "3": "培养速度提升", "4": "线索收集效率提升", "6": "指定线索概率提升", "7": "制造效率提升" },
+                    "rooms": "舱室",
+                    "reset": "重置",
+                    "relatedOnly": "筛选时隐藏无关技能",
+                    "highestOnly": "仅显示各技能栏位的最高等级",
+                    "search": "搜索角色、技能、效果或解锁条件",
+                    "character": "角色",
+                    "unlock": "解锁",
+                    "skill": "技能",
+                    "effect": "效果",
+                    "unassigned": "未关联角色"
+                }
             },
             "tutorial": {
                 "title": "教学百科"

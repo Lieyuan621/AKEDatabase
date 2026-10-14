@@ -1,10 +1,37 @@
 # Special Announcement
 
-AKEData `v1.3.2` opens the Combat and Buff modules, adds a complete skill logic graph, a resizable timeline and advanced data links, and improves core metrics and skill attribute modifier parsing.
+AKEData `v1.3.4` opens the Dijiang module and adds logistics skill filtering by room, effect and product, with sorting based on structured skill parameters.
 
 AKEData has moved to www.akedata.wiki. The former domain, akedata.top, now redirects here.
 
 # AKEData Version Changelog
+
+### v1.3.4
+
+#### Dijiang
+
+- The Dijiang module is now visible after Baker and before Miscellaneous.
+- Browse the Control Nexus, Manufacturing Cabin, Growth Chamber, Reception Room and Credit Exchange, including upgrade costs, unlocks, production recipes, products and logistics skills.
+- Added room, item and logistics filter icons. Room symbols are centered, and directory accents match their backgrounds across all three themes.
+- Simplified the directory by removing categories, its heading and entry counts. Room details no longer display raw configuration.
+
+#### Logistics skill filtering
+
+- Added a dedicated entry with grouped operator portraits, unlock conditions, rooms, skill icons and effects.
+- Filter using room-specific effect and product buttons, including cultivation categories, manufacturing materials and individual clues.
+- Search by keyword, hide unrelated skills, show only the highest level per skill slot, or reset filters.
+- Effect values come from structured skill parameters. Selecting a specific effect ranks operators by their highest matching value, from high to low.
+- Clue probability skills are ranked by bonus tier, not final probability. Supplementary value badges appear only when hidden modules are enabled.
+- Updated global search links for logistics skills and related filter data, with Chinese and English interface text.
+
+### v1.3.3
+
+#### Skill node graph
+
+- Merge equivalent subgraphs across timeline entries and branches to reduce repetition while retaining access to each original location and its parameters.
+- Toggle node categories directly from the legend. Required predecessor paths and conditions remain visible, and equivalent subgraphs are merged after category filtering.
+- Display conditions as inputs on the left of their consuming nodes, with improvements to automatic layout, connections and legend styling.
+- These changes affect graph presentation only; original skill configuration remains unchanged.
 
 ### v1.3.2
 
