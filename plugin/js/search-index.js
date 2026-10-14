@@ -237,7 +237,35 @@ window.AKESearchIndex = {
     "coverage": "No primary TableCfg text entries; site content, assets, or remote search."
   },
   "misc": {
+    "versionComparison": {
+      "entryId": "update_copy",
+      "coverage": "Names are generated from two user-selected snapshots; current-version text hits cannot prove an added entry or an exact jump.",
+      "tables": ["CharacterTable", "WeaponBasicTable", "EnemyTemplateDisplayInfoTable", "EquipTable", "ActivityTable", "ShopGroupTable", "ShopTable", "CashShopGroupTable", "CashShopTable", "ShopGoodsTable", "CashShopGoodsTable", "RewardTable", "ItemTable", "GachaWeaponPoolTable", "GiftpackCashShopGoodsDataTable", "CashShopHideInGameTable", "AchievementTable", "AchievementTypeTable", "DungeonSeriesTable", "SeasonTowerTable", "ActivityContingencyContractTable", "PrtsAllItem", "PrtsReading", "RichContentTable", "RadioTable", "ReadingPopUpTable", "DialogTextTable", "SNSChatTable", "SNSDialogTable", "SNSDialogTopicTable"]
+    },
     "tables": [
+      "AchievementTable",
+      "AchievementTypeTable",
+      "CashShopGoodsTable",
+      "CashShopGroupTable",
+      "CashShopHideInGameTable",
+      "CashShopTable",
+      "DialogTextTable",
+      "DungeonSeriesTable",
+      "EnemyTemplateDisplayInfoTable",
+      "GachaWeaponPoolTable",
+      "GiftpackCashShopGoodsDataTable",
+      "PrtsAllItem",
+      "PrtsReading",
+      "RadioTable",
+      "ReadingPopUpTable",
+      "RichContentTable",
+      "SeasonTowerTable",
+      "ShopGoodsTable",
+      "ShopGroupTable",
+      "ShopTable",
+      "SNSChatTable",
+      "SNSDialogTable",
+      "SNSDialogTopicTable",
       "ActivityConditionalMultiStageCompleteConditionTable",
       "ActivityConditionalMultiStageTable",
       "ActivityConditionalMultiStageTaskCompleteConditionTable",
@@ -321,6 +349,8 @@ window.AKESearchIndex = {
       "plugin/js/misc-takestwo-completion-tasks.js",
       "plugin/js/misc-typhoea-archery.js",
       "plugin/js/misc-watermark-decoder.js",
+      "plugin/js/misc-update-copy.js",
+      "plugin/js/ake-asset-index.js",
       "plugin/js/misc-weekly-tasks.js",
       "plugin/js/misc.js",
       "plugin/misc.html",
@@ -335,6 +365,7 @@ window.AKESearchIndex = {
       "plugin/misc/takestwo_completion_tasks.html",
       "plugin/misc/typhoea_archery.html",
       "plugin/misc/watermark_decoder.html",
+      "plugin/misc/update_copy.html",
       "plugin/misc/weekly_tasks.html"
     ]
   },
