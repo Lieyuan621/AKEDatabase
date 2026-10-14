@@ -1,4 +1,7 @@
 /* Dark theme tokens. Structural and component rules live in light.css. */
+@scope (body[data-ake-module="spaceship"]) {
+    .ake-ui-directory { --ake-spaceship-icon-filter: brightness(0) invert(13.72549%); }
+}
 @scope (body[data-ake-module="v3_skill"]) {
     .combatv3-editor {
         --combatv3-node-entry: #64bfb0;

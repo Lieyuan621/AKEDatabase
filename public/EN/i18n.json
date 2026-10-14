@@ -2,6 +2,12 @@
     "language": "EN",
     "tableLanguage": "EN",
     "messages": {
+        "actionGraphMerging": {
+            "filter": "Node categories",
+            "filterHint": "Unchecked nodes are removed only when no downstream content remains. Branch conditions follow their branches.",
+            "notice": "Merged subgraph: this node represents {count} identical configurations. Only the display is shared, not runtime state.",
+            "location": "Source location {index}"
+        },
         "actionGraph": {"title":"Complete logic graph","notice":"This graph shows configured structure and order, not an actual combat run. Branches, timers and callbacks have separate entries. Dashed lines denote asynchronous triggers, resource references or unconfirmed containment.","sequence":"Action sequence","unknown":"Unmapped structure","entry":"Entry","entries":{"timeline":"Timeline group","passive":"Passive event","config":"Other configuration"},"frames":"Frames {start}–{end}","eventTime":"Event / configuration","back":"Parent","showPresentation":"Expand presentation actions","hidePresentation":"Fold presentation actions","folded":"{count} presentation actions folded","expand":"Expand","canvas":"Skill action flow graph","configuredNext":"Configured next","emptySequence":"Explicit empty sequence: this entry exists but contains no actions.","actionCount":"{count} actions","empty":"No action graph entries available","locateNode":"Locate action","chooseNode":"Choose an action","previous":"Previous","next":"Next","page":"Page {current} / {total}","nodeType":"Action","time":"Configured frame range","state":"Parse status","disabled":"Disabled","status":{"structural":"Structure recognized","control":"Control structure recognized","described":"Action details extracted","opaque":"Semantics not adapted"},"metadata":{"priorityLevel":"Priority","priorityOffset":"Priority offset","alwaysNext":"Always continue","destinationFrame":"Destination frame"},"mainCharacter":"Main character only","guard":"Guard only","source":"Source and raw fields","initialValues":"These are configured initial values with the selected level patch. Blackboard values may change during execution.","parameter":"Parameter","value":"Value","sourceLabel":"Value source","textValue":"Text value","unresolved":"Unresolved","blackboard":"Blackboard read","literal":"Literal","resourceReference":"Independent resource reference","dynamicReference":"Dynamic reference; execution context required","openResource":"Open resource","resources":{"skill":"Skill","buff":"Buff","abilityEntity":"Ability entity","projectile":"Projectile","enemy":"Enemy","jump":"Timeline jump"},"locateTimeline":"Locate on timeline","locateGraph":"View action flow","yes":"Yes","no":"No","missing":"Missing entry field","relations":{"condition":"Condition","success":"True branch","failure":"False branch","hit":"Hit callback","miss":"Miss callback","once":"Once","eachTarget":"For each target","tick":"Periodic entry","whileTrue":"While true","case":"Case","anyCondition":"Any true (ordered short-circuit)","invalidTarget":"Invalid target callback","contains":"Contains (semantics unknown)","resource":"Resource reference"},"diagnostics":"Diagnostics: {opaque} unadapted actions; {count} structural issues","opaqueNotice":"Unadapted actions and unknown structures remain visible. They are not assumed to have executed or been skipped.","diagnostic":{"nodeLimit":"Graph node limit reached","depthLimit":"Nested action depth limit reached","missingPort":"An expected entry field is missing","unknownStructure":"Unmapped child structure"},"target":"Target","parameters":"Action parameters","portEmpty":"Empty entry","returnPolicy":"Next edges show configured order only. Continuation depends on action results, priority and control rules.","hiddenIdentifier":"Technical identifier hidden","allEntries":"All entries","sequenceStart":"Start sequence","input":"Execution input","noSuccessor":"No successor in this sequence","fieldCount":"{count} fields","selectHint":"Click an action in the graph to inspect its detailed data.","total":"{count} actions · {entries} entries","fit":"Fit graph","focusSelected":"Locate selected node","arrange":"Arrange","canvasHelp":"Drag the background to pan and scroll to zoom. Drag nodes to reposition them; click a node to inspect its data on the right.","incomplete":"Source parsing reached a node or depth limit. This graph is incomplete; see the diagnostics.","layoutFailed":"Automatic layout did not complete. All nodes remain available and can be repositioned.","graphNotes":"Legend and parse diagnostics","fullNotice":"All timeline entries, passive entries and internal actions are shown on one graph. Solid lines connect action ports; dashed lines indicate data dependencies, periodic triggers, resource references or unconfirmed containment. Buffs, child skills and other independent resources remain reference nodes rather than merging their internal nodes into this skill.","coreSection":"Core metrics","graphSection":"Node graph","keySection":"Key information","debugSection":"Debug information","nodeColors":{"entry":"Entries and sequences","damage":"Damage","support":"Recovery and defense","logic":"Control and conditions","timing":"Timing and continuation","movement":"Movement and targeting","resource":"Buffs and resources","reference":"Spawns and references","data":"Blackboard data","presentation":"Presentation","other":"Other, unknown or disabled"},"expandTimeline":"Expand combat timeline","collapseTimeline":"Collapse combat timeline","resizeTimeline":"Resize graph and timeline (Up/Down arrows to adjust)","spatialCards":{"title":"Effect ranges and targets","notice":"Range, center and conditions within each card share one source. Equal values do not imply the same effect. Information is derived from configuration.","currentSkill":"Current skill","childSkill":"Related skill {number}","openSkill":"Open related skill","effectNumber":"{number}. {purpose}","cast":"Cast distance","hint":"Aiming indicator range","impact":"Effect range","search":"Target search range","collision":"Collision range","field":"Persistent field","range":"Range","center":"Center","condition":"Conditions","noExtraCondition":"No additional conditions recorded","unknown":"Not provided or not yet resolved","selectionTime":"Target selection timing","time":"Configured timing","variants":"Conditional range changes","effects":"Related effects and timing","unlinked":"No specific effect linked yet","source":"Technical source","viewAction":"View action","viewSource":"View range source action","inferred":"Inferred from static links between target selection and later effects; not validated in combat.","childTiming":"Times are local to the related skill, not directly on the current skill timeline.","relations":"Range relationships between cards","incomplete":"Range parsing has {warnings} notices and {pending} unresolved resource references. Information may be incomplete.","externalCondition":"External condition (name unresolved)","viewSpawn":"View spawn action","spawnTime":"Spawn timing in the parent skill: {time}","duration":"Duration","seconds":"{value} s","centerMotion":"Center movement","fixedAtStart":"Fixed at the initial position","followsPosition":"Follows the target position","doesNotFollow":"Does not follow the target position","sourceAction":"Range source action"}},
         "app": {
             "title": "AKEData · Endfield Database"
@@ -290,7 +296,35 @@
                 "missingIcons": "Some icons are unavailable. Node details remain accessible."
             },
             "spaceship": {
-                "title": "Dijiang"
+                "title": "Dijiang",
+                "skills": {
+                    "title": "Logistics Skill Filter",
+                    "effectType": "Effect type",
+                    "target": "Target",
+                    "minimum": "Minimum value",
+                    "minimumPercent": "Minimum bonus (%)",
+                    "minimumTier": "Minimum bonus tier",
+                    "sort": "Sort",
+                    "defaultSort": "Default order",
+                    "descending": "Matching value: high to low",
+                    "ascending": "Matching value: low to high",
+                    "tier": "Tier {value}",
+                    "unknownEffect": "Unsupported effect type {value}",
+                    "unknownTarget": "Unsupported target {value}",
+                    "numericHint": "Click an effect or product button under a room to sort operators by their highest matching effect value, high to low. Click again to clear.",
+                    "tierHint": "Selecting a clue sorts operators by their highest matching bonus tier, high to low. Tiers are not final probabilities.",
+                    "effects": { "0": "Global mood recovery", "1": "Room mood consumption reduction", "3": "Cultivation speed", "4": "Clue collection efficiency", "6": "Specific clue probability", "7": "Manufacturing efficiency" },
+                    "rooms": "Room",
+                    "reset": "Reset",
+                    "relatedOnly": "Hide unrelated skills when filtering",
+                    "highestOnly": "Highest level per skill slot only",
+                    "search": "Search character, skill, effect or unlock condition",
+                    "character": "Operator",
+                    "unlock": "Unlock",
+                    "skill": "Skill",
+                    "effect": "Effect",
+                    "unassigned": "No linked operator"
+                }
             },
             "tutorial": {
                 "title": "Tutorial Encyclopedia"

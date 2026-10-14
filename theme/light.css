@@ -8052,9 +8052,59 @@ body .ake-ui-table[class] th { overflow-wrap: anywhere; text-align: center; vert
 body .ake-ui-table[class] td { overflow-wrap: normal; white-space: nowrap; word-break: normal; }
 .ake-ui-table tbody tr:last-child td { border-bottom: 0; }
 .ake-ui-table tbody tr:hover { background: var(--ake-ui-surface-hover); }
+/* Logistics filters reuse shared buttons, materials and tables; only the comparison layout differs. */
+[data-spaceship-skills] [data-skill-search] { width: 100%; box-sizing: border-box; }
+[data-spaceship-skills] .ake-ui-filter__button {
+    border-color: var(--ake-spaceship-filter-color);
+    background: color-mix(in srgb, var(--ake-spaceship-filter-color) 18%, var(--ake-ui-surface));
+}
+[data-spaceship-skills] .ake-ui-filter__button[aria-pressed="true"] {
+    color: #232323;
+    background: var(--ake-spaceship-filter-color);
+}
+[data-spaceship-skills] .ake-ui-table-shell { max-height: none; }
+body .ake-ui-table[data-table-kind="spaceship-skills"] { min-width: 680px; table-layout: fixed; }
+body .ake-ui-table[data-table-kind="spaceship-skills"] thead th:nth-child(1) { width: 15%; }
+body .ake-ui-table[data-table-kind="spaceship-skills"] thead th:nth-child(2) { width: 13%; }
+body .ake-ui-table[data-table-kind="spaceship-skills"] thead th:nth-child(3) { width: 12%; }
+body .ake-ui-table[data-table-kind="spaceship-skills"] thead th:nth-child(4) { width: 22%; }
+body .ake-ui-table[data-table-kind="spaceship-skills"] tbody th {
+    position: static;
+    background: var(--ake-ui-surface);
+}
+body .ake-ui-table[data-table-kind="spaceship-skills"] td {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    vertical-align: middle;
+    text-align: start;
+}
+[data-table-kind="spaceship-skills"] tbody + tbody { border-top: var(--ake-ui-border); }
+[data-table-kind="spaceship-skills"] .ake-ui-material__item { max-width: 100%; }
+[data-table-kind="spaceship-skills"] .ake-ui-material__item-icon { width: 32px; height: 32px; flex-basis: 32px; }
+[data-table-kind="spaceship-skills"] small { display: block; overflow-wrap: anywhere; }
 
 .ake-ui-directory__item-icon { width: 36px; height: 36px; object-fit: contain; }
 .ake-ui-directory__item-icon.baker-avatar { object-fit: cover; }
+/* Room symbols keep their alpha shape; the tile background is not tinted. */
+.ake-ui-icon-tile {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--ake-ui-icon-tile-bg);
+}
+.ake-ui-icon-tile > img,
+.ake-ui-detail-media .ake-ui-icon-tile > img,
+.ake-ui-directory__item[data-layout="entity"] .ake-ui-icon-tile > img {
+    width: 80%;
+    height: 80%;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    object-fit: contain;
+    filter: var(--ake-spaceship-icon-filter, brightness(0) invert(13.72549%));
+}
 .ake-ui-directory__item-copy { min-width: 0; display: grid; gap: 2px; }
 .ake-ui-directory__item-title,
 .ake-ui-directory__item-id,
@@ -9024,8 +9074,15 @@ body[data-ake-module="misc"] :is(#miscWeeklyPrevious, #miscWeeklyNext) {
         .combatv3-editor.is-inspecting { grid-template-columns: minmax(0, 1fr); }
         .combatv3-editor__inspector { grid-area: auto; position: absolute; inset: 0 0 0 auto; width: min(88%, 380px); z-index: 5; box-shadow: var(--ake-ui-shadow-hover); }
     }
-    .combatv3-node-legend { display: flex; flex-wrap: wrap; gap: 8px 14px; padding-block: 8px; }
-    .combatv3-node-legend span::before { content: ''; display: inline-block; width: 10px; height: 10px; margin-right: 5px; border-radius: 2px; background: var(--node-tone); }
+    .combatv3-editor__canvas { position: relative; }
+    .combatv3-node-legend { position: absolute; right: 12px; bottom: 12px; display: flex; flex-direction: column; align-items: stretch; gap: 2px; max-width: calc(100% - 24px); max-height: calc(100% - 24px); overflow: auto; padding: 8px 10px; border: var(--ake-ui-border); border-radius: 3px; background: var(--combatv3-surface-muted); color: var(--combatv3-text); }
+    .combatv3-node-legend > * { display: flex; align-items: center; justify-content: flex-start; gap: 8px; min-height: 22px; margin: 0; padding: 1px 3px; border: 0; border-radius: 0; box-shadow: none; font: inherit; font-size: .72rem; line-height: 20px; text-align: left; color: inherit; background: transparent; }
+    .combatv3-node-legend > *::before { content: ''; display: inline-block; flex: 0 0 14px; width: 14px; height: 9px; border-radius: 1px; background: var(--node-tone); }
+    .combatv3-node-legend button { cursor: pointer; }
+    .combatv3-node-legend button[aria-pressed="false"] { opacity: .5; }
+    .combatv3-node-legend button[aria-pressed="false"]::before { background: var(--combatv3-node-other); }
+    .combatv3-node-legend button:hover { background: var(--combatv3-surface-active); opacity: 1; }
+    .combatv3-node-legend button:focus-visible { outline: 2px solid var(--combatv3-accent); outline-offset: 2px; }
     [data-node-tone="entry"] { --node-tone: var(--combatv3-node-entry); }
     [data-node-tone="damage"] { --node-tone: var(--combatv3-node-damage); }
     [data-node-tone="support"] { --node-tone: var(--combatv3-node-support); }

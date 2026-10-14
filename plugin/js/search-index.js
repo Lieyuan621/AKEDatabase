@@ -80,25 +80,27 @@ window.AKESearchIndex = {
     ]
   },
   "spaceship": {
+    "coverage": "Room details: room:0, room:1, room:2, room:5 and credit. Logistics filter includes all character skill slots and levels, unknown rooms and unassigned skills; raw configuration is excluded.",
     "tables": [
       "CharacterTable",
       "ItemTable",
       "RewardTable",
       "SpaceshipCharSkillTable",
-      "SpaceshipClueDataTable",
+      "SpaceshipClueDataIndex2IdTable",
       "SpaceshipCommandCenterLvTable",
       "SpaceshipControlCenterLvTable",
       "SpaceshipCreditTable",
       "SpaceshipDomainMoneyExchangeRateDataTable",
       "SpaceshipGrowCabinFormulaTable",
+      "SpaceshipGrowCabinFormulaShowingTypeTable",
       "SpaceshipGrowCabinLvTable",
       "SpaceshipGrowCabinSeedFormulaTable",
       "SpaceshipGuestRoomClueLvTable",
       "SpaceshipGuestRoomLvTable",
       "SpaceshipManufactureFormulaTable",
       "SpaceshipManufacturingStationLvTable",
-      "SpaceshipRoomAttrTypeTable",
       "SpaceshipRoomLvHelperTable",
+      "SpaceshipRoomAttrTypeTable",
       "SpaceshipRoomLvTable",
       "SpaceshipRoomTypeTable",
       "SpaceshipSkillTable"
@@ -106,6 +108,7 @@ window.AKESearchIndex = {
     "sources": [
       "plugin/js/ake-catalog.js",
       "plugin/js/spaceship.js",
+      "plugin/js/spaceship-skills.js",
       "plugin/spaceship.html"
     ]
   },

@@ -20,8 +20,15 @@
     const table = (headings, rows) => rows.length ? `<div class="ake-ui-table-shell"><table class="ake-ui-table"><thead><tr>${headings.map(label => `<th scope="col">${h(label)}</th>`).join('')}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(cell => `<td>${cell ?? '—'}</td>`).join('')}</tr>`).join('')}</tbody></table></div>` : state();
     const link = (plugin, id, label) => id === undefined || id === null || id === '' ? h(label || t('unavailable')) : window.AKEUI.entryLinkHtml({ plugin, id: String(id), label, contentHtml: h(label), className: 'ake-ui-badge' });
     const raw = row => hidden() ? section(t('source'), `<pre>${h(JSON.stringify(row, null, 2))}</pre>`) : '';
+    const iconTile = (image, background) => {
+        const tile = document.createElement('span');
+        tile.className = 'ake-ui-icon-tile';
+        tile.style.setProperty('--ake-ui-icon-tile-bg', background);
+        tile.appendChild(image);
+        return tile;
+    };
 
-    function context(tables, diagnostics) {
+    function context(tables, diagnostics, spec) {
         const issues = new Set();
         const issue = (kind, source, id, detail) => {
             const key = JSON.stringify([kind, source, id, detail]);
@@ -31,6 +38,15 @@
             if (!id) return '—';
             const row = tables.ItemTable?.[id];
             if (!row) issue('missing-reference', 'ItemTable', id);
+            if (spec.itemIcons) {
+                const label = name(row?.name, id);
+                const content = window.AKEUI.materialItem({
+                    name: label,
+                    icon: row ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${row.iconId || id}.png` : undefined
+                });
+                return window.AKEUI.entryLinkHtml({ plugin: 'v3_item', id: String(id), label, contentHtml: content.outerHTML })
+                    + (count === undefined || count === null ? '' : ` × ${number(count)}`);
+            }
             return link('v3_item', id, name(row?.name, id)) + (count === undefined || count === null ? '' : ` × ${number(count)}`);
         };
         const items = rows => list(rows).map(row => item(row.id ?? row.itemId ?? row.costItemId, row.count ?? row.itemCount ?? row.costItemCount)).join('<br>') || '—';
@@ -77,19 +93,37 @@
         const count = root.querySelector('[data-catalog-count]');
         let rows = [], ctx = null, activeId = null, generation = 0, destroyed = false, loading = false;
         let pendingNotFound = null, lastHidden = hidden();
+        let disposeDetail = null;
         let diagnostics = { state: 'loading', sources: {}, issues: [], coverage: {} };
         const deepId = window.__deepLinkId;
         window.__deepLinkId = null;
         const title = () => window.akeI18n.t(`modules.${spec.id}.title`);
+        const entryIcon = row => {
+            if (!row.icon) return undefined;
+            const image = document.createElement('img');
+            image.className = 'ake-ui-directory__item-icon';
+            image.src = row.icon;
+            image.alt = '';
+            image.loading = 'lazy';
+            image.decoding = 'async';
+            if (!row.iconBackground) return image;
+            const tile = iconTile(image, row.iconBackground);
+            if (row.iconOriginalColors) tile.style.setProperty('--ake-spaceship-icon-filter', 'none');
+            return tile;
+        };
         const close = () => { overlay?.classList.remove('is-open'); overlay?.setAttribute('aria-hidden', 'true'); };
         // Optional presentation adapter; loading, details, links and diagnostics stay shared.
         const view = spec.createView?.({ root, select, reload: load });
         function renderDetail() {
+            disposeDetail?.();
+            disposeDetail = null;
             if (!ctx) return;
             const row = rows.find(entry => entry.id === activeId);
             if (!row) { detail.innerHTML = state(); return; }
-            const header = window.AKEUI.detailHeader({ title: row.name, subtitle: row.group, id: hidden() ? row.id : undefined });
-            detail.innerHTML = `<article class="ake-ui-detail">${header.outerHTML}${spec.render(row, ctx)}${raw(row.raw)}</article>`;
+            const header = window.AKEUI.detailHeader({ title: row.name, subtitle: row.group, icon: entryIcon(row), id: hidden() ? row.id : undefined,
+                attributes: row.iconBackground ? { style: `--ake-ui-detail-accent: ${row.iconBackground}` } : undefined });
+            detail.innerHTML = `<article class="ake-ui-detail">${header.outerHTML}${spec.render(row, ctx)}${spec.showRaw === false ? '' : raw(row.raw)}</article>`;
+            disposeDetail = spec.mountDetail?.(row, ctx, detail) || null;
         }
         function select(id, update = true) {
             if (!(view && id === null) && !rows.some(row => row.id === id)) return false;
@@ -101,15 +135,17 @@
         function renderList() {
             if (view) { view.update({ rows, ctx, activeId }); return; }
             const query = search.value.trim().toLocaleLowerCase();
-            const filtered = rows.filter(row => (!filter.value || row.group === filter.value) && (!query || `${row.name} ${row.group} ${row.search || ''} ${hidden() ? row.id : ''}`.toLocaleLowerCase().includes(query)));
-            count.textContent = t('count', { count: filtered.length, total: rows.length });
+            const filtered = rows.filter(row => (!filter?.value || row.group === filter.value) && (!query || `${row.name} ${row.group} ${row.search || ''} ${hidden() ? row.id : ''}`.toLocaleLowerCase().includes(query)));
+            if (count) count.textContent = t('count', { count: filtered.length, total: rows.length });
             for (const target of [directory, mobile]) {
                 target.replaceChildren();
                 if (!filtered.length) { target.innerHTML = state(t('noMatches')); continue; }
                 const fragment = document.createDocumentFragment();
                 for (const row of filtered) fragment.appendChild(window.AKEUI.directoryItem({
-                    layout: 'entity', title: row.name, subtitle: row.subtitle ? `${row.group} · ${row.subtitle}` : row.group, id: hidden() ? row.id : undefined,
-                    active: row.id === activeId, attributes: { 'data-catalog-id': row.id }
+                    layout: 'entity', title: row.name, subtitle: [row.group, row.subtitle].filter(Boolean).join(' · '), id: hidden() ? row.id : undefined,
+                    icon: entryIcon(row),
+                    active: row.id === activeId, attributes: { 'data-catalog-id': row.id,
+                        ...(row.iconBackground ? { style: `--ake-ui-nav-accent: ${row.iconBackground}` } : {}) }
                 }));
                 target.appendChild(fragment);
             }
@@ -121,7 +157,7 @@
                 if (ids.has(row.id)) { ctx.issue('duplicate-entry', spec.id, row.id); return false; }
                 ids.add(row.id); return true;
             });
-            if (!view) {
+            if (!view && filter) {
                 const selectedGroup = filter.value;
                 filter.replaceChildren(new Option(t('all'), ''));
                 [...new Set(rows.map(row => row.group).filter(Boolean))].forEach(group => filter.add(new Option(group, group)));
@@ -142,6 +178,8 @@
             renderList(); renderDetail();
         }
         async function load() {
+            disposeDetail?.();
+            disposeDetail = null;
             const token = ++generation;
             loading = true;
             view?.status('loading');
@@ -154,7 +192,7 @@
                 if (destroyed || token !== generation) return;
                 const tables = Object.fromEntries(names.map((name, index) => [name, loaded[index]]));
                 diagnostics.sources = Object.fromEntries(names.map(name => [name, Object.keys(tables[name]).length]));
-                ctx = context(tables, diagnostics);
+                ctx = context(tables, diagnostics, spec);
                 diagnostics.state = 'ready';
                 rebuild(activeId || deepId);
             } catch (error) {
@@ -224,11 +262,12 @@
                 pendingNotFound = null;
             } else if (!ctx && !loading) load();
         });
-        const controller = { select, destroy() { destroyed = true; generation++; abort.abort(); view?.destroy(); }, diagnostics() { return structuredClone(diagnostics); } };
+        const controller = { select, destroy() { destroyed = true; generation++; abort.abort(); disposeDetail?.(); view?.destroy(); }, diagnostics() { return structuredClone(diagnostics); } };
         controllers.set(spec.id, controller);
-        root.querySelector('[data-catalog-title]').textContent = title();
+        const titleElement = root.querySelector('[data-catalog-title]');
+        if (titleElement) titleElement.textContent = title();
         load();
         return controller;
     }
-    window.AKECatalog = { mount, getDiagnostics: id => id ? controllers.get(id)?.diagnostics() : Object.fromEntries([...controllers].map(([id, controller]) => [id, controller.diagnostics()])) };
+    window.AKECatalog = { mount, iconTile, getDiagnostics: id => id ? controllers.get(id)?.diagnostics() : Object.fromEntries([...controllers].map(([id, controller]) => [id, controller.diagnostics()])) };
 })();

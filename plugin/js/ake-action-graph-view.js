@@ -1,6 +1,65 @@
 (function (global) {
     'use strict';
 
+    // Presentation-only subgraph merging. Compare every native field, including
+    // unknown fields; never equate blackboard reads by value. An action's own
+    // serverActionIndex identifies its occurrence, not its displayed structure.
+    // Ignore only that declaration (not index references); raw data and each
+    // occurrence's inspector retain the original serverActionIndex unchanged.
+    // Conditions and individual output ports remain, even when their bodies match.
+    function equivalentSubgraphs(graph) {
+        const aliases = new Map();
+        if (graph.truncated) return aliases;
+        const nodes = Object.values(graph.nodes);
+        const stable = value => {
+            if (Array.isArray(value)) return `[${value.map(stable).join(',')}]`;
+            if (value && typeof value === 'object') return `{${Object.keys(value)
+                .filter(key => !(key === 'serverActionIndex' && typeof value.$type === 'string'
+                    && Object.prototype.hasOwnProperty.call(value, 'isEnable'))).sort()
+                .map(key => `${JSON.stringify(key)}:${stable(value[key])}`).join(',')}}`;
+            return JSON.stringify(value);
+        };
+        const signatures = new Map();
+        const signature = node => {
+            if (!signatures.has(node.id)) signatures.set(node.id, stable(node.raw));
+            return signatures.get(node.id);
+        };
+        const timelineEntries = new Set(graph.entries.filter(entry => entry.kind === 'timeline').map(entry => entry.id));
+        const timelineCandidates = graph.entries.filter(entry => entry.kind === 'timeline').map(entry => entry.target);
+        const groups = [];
+        for (const owner of nodes) {
+            const ports = owner.type === 'IfElseAction' ? ['success', 'failure']
+                : owner.type === 'PhysicsCastAction' ? ['hit', 'miss']
+                : owner.type === 'SwitchAction' ? ['case'] : [];
+            const targets = owner.ports.filter(port => ports.includes(port.relation)).map(port => port.target);
+            if (timelineEntries.has(owner.entryId)) timelineCandidates.push(...targets);
+            else groups.push(targets);
+        }
+        groups.push([...new Set(timelineCandidates)]);
+        for (const targets of groups) {
+            const representatives = new Map();
+            for (const target of targets) {
+                const root = graph.nodes[target];
+                if (!root || root.next || aliases.has(root.id)) continue;
+                const key = signature(root);
+                const first = representatives.get(key);
+                if (!first) { representatives.set(key, root); continue; }
+                const members = nodes.filter(node => node.path === root.path
+                    || node.path.startsWith(`${root.path}.`) || node.path.startsWith(`${root.path}[`));
+                const pairs = members.map(node => [node, graph.nodes[graph.nodeByPath.get(
+                    first.path + node.path.slice(root.path.length))]]);
+                // Resolved inputs must also agree: identical raw syntax alone must
+                // not conceal different initial blackboard bindings in the viewer.
+                if (!pairs.every(([node, other]) => other && node.kind === other.kind
+                    && node.enabled === other.enabled
+                    && stable(node.inputs.map(({ path, ...input }) => input))
+                        === stable(other.inputs.map(({ path, ...input }) => input)))) continue;
+                for (const [node, other] of pairs) aliases.set(node.id, other.id);
+            }
+        }
+        return aliases;
+    }
+
     // Endaxis-style projection: LR Dagre layout, distinct output ports and cubic
     // curves. Selection, layout and camera never change the native action data.
     function create(options) {
@@ -13,6 +72,77 @@
         const tones = { damage: 'damage', recovery: 'support', defense: 'support', logic: 'logic', control: 'logic',
             cancel: 'timing', timing: 'timing', movement: 'movement', targeting: 'movement', buff: 'resource',
             resource: 'resource', spawn: 'reference', presentation: 'presentation' };
+        const categories = ['entry', 'damage', 'support', 'logic', 'timing', 'movement', 'resource', 'reference', 'data', 'presentation', 'other'];
+        const selectedCategories = new Set(categories);
+        const nativeTone = item => item.enabled === false ? 'other'
+            : item.kind === 'sequence' ? 'entry' : tones[item.category] || 'other';
+
+        function pruneGraph(source) {
+            if (selectedCategories.size === categories.length || source.truncated) return source;
+            // Work backwards from selected nodes. Any predecessor needed to reach
+            // one stays, including sequence/condition wrappers and configured next.
+            const parents = new Map();
+            const conditions = new Map();
+            const conditionMembers = new Set();
+            const gates = new Set();
+            for (const node of Object.values(source.nodes)) {
+                if (!['IfElseAction', 'SwitchAction'].includes(node.type)) continue;
+                gates.add(node.id);
+                const members = [];
+                for (const port of node.ports.filter(port => port.relation === 'condition')) {
+                    const root = source.nodes[port.target];
+                    if (!root) continue;
+                    for (const child of Object.values(source.nodes)) {
+                        if (child.path === root.path || child.path.startsWith(`${root.path}.`) || child.path.startsWith(`${root.path}[`)) {
+                            members.push(child.id);
+                            conditionMembers.add(child.id);
+                        }
+                    }
+                }
+                conditions.set(node.id, members);
+            }
+            source.edges.forEach(edge => {
+                if (gates.has(edge.from) && edge.relation === 'condition') return;
+                if (!parents.has(edge.to)) parents.set(edge.to, []);
+                parents.get(edge.to).push(edge.from);
+            });
+            const retained = new Set();
+            // Reads and resource links decorate retained actions; they are not
+            // independent roots that keep an otherwise hidden action alive.
+            // Branch gates and their predicates likewise follow their consumers,
+            // rather than surviving merely because the logic category is selected.
+            const pending = Object.values(source.nodes).filter(node => !gates.has(node.id)
+                && !conditionMembers.has(node.id) && node.kind !== 'sequence'
+                && selectedCategories.has(nativeTone(node))).map(node => node.id);
+            while (pending.length) {
+                const id = pending.pop();
+                if (retained.has(id)) continue;
+                retained.add(id);
+                pending.push(...(parents.get(id) || []));
+                pending.push(...(conditions.get(id) || []));
+            }
+            // Keep raw objects untouched. Only the comparison projection omits
+            // pruned actions; the inspector continues to read source.nodes.
+            const omit = Symbol('pruned');
+            const projectRaw = (value, path) => {
+                const id = source.nodeByPath.get(path);
+                if (id && !retained.has(id)) return omit;
+                if (Array.isArray(value)) return value.map((child, index) => projectRaw(child, `${path}[${index}]`)).filter(child => child !== omit);
+                if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value)
+                    .map(([key, child]) => [key, projectRaw(child, `${path}.${key}`)]).filter(([, child]) => child !== omit));
+                return value;
+            };
+            const nodes = Object.create(null);
+            Object.values(source.nodes).filter(node => retained.has(node.id)).forEach(node => {
+                nodes[node.id] = { ...node, raw: projectRaw(node.raw, node.path),
+                    children: node.children.filter(id => retained.has(id)),
+                    ports: node.ports.map(port => ({ ...port, target: retained.has(port.target) ? port.target : null })),
+                    next: retained.has(node.next) ? node.next : null };
+            });
+            return { ...source, nodes,
+                edges: source.edges.filter(edge => retained.has(edge.from) && retained.has(edge.to)),
+                entries: source.entries.filter(entry => retained.has(entry.target)) };
+        }
         const toneFor = item => item.enabled === false ? 'other'
             : ['entry', 'sequence'].includes(item.kind) ? 'entry'
             : item.kind === 'data' ? 'data' : item.kind === 'reference' ? 'reference'
@@ -66,8 +196,20 @@
             return result;
         }
         function buildScene() {
-            const result = { nodes: [], edges: [], byId: new Map(), aliases: new Map() };
+            const result = { nodes: [], edges: [], byId: new Map(), aliases: new Map(), mergedSources: new Map() };
             if (!graph) return result;
+            const displayGraph = pruneGraph(graph);
+            const displayNode = id => displayGraph.nodes[id];
+            const merged = equivalentSubgraphs(displayGraph);
+            const canonical = id => {
+                while (merged.has(id)) id = merged.get(id);
+                return id;
+            };
+            for (const id of merged.keys()) {
+                const target = canonical(id);
+                if (!result.mergedSources.has(target)) result.mergedSources.set(target, [target]);
+                result.mergedSources.get(target).push(id);
+            }
             const add = data => {
                 const item = { id: `n${result.nodes.length}`, width: 320, height: 100, x: 0, y: 0, outputs: [], inputs: [], ...data };
                 result.nodes.push(item);
@@ -77,55 +219,61 @@
             const transparent = item => item?.kind === 'sequence' && item.children.length > 0
                 && !item.ports.length && item.gates?.mainCharacter === false && item.gates?.guard === false;
             const resolve = id => {
+                id = canonical(id);
                 const visited = new Set();
-                while (transparent(rawNode(id)) && !visited.has(id)) {
+                while (transparent(displayNode(id)) && !visited.has(id)) {
                     visited.add(id);
-                    id = rawNode(id).children[0];
+                    id = canonical(displayNode(id).children[0]);
                 }
                 return id;
             };
             // Only omit wrappers with explicitly disabled gates and no extra ports.
             // Empty sequences, unknown structures and all actions remain visible.
-            Object.values(graph.nodes).forEach(item => {
-                if (transparent(item)) return;
+            Object.values(displayGraph.nodes).forEach(item => {
+                if (merged.has(item.id) || transparent(item)) return;
                 const view = add({ kind: item.kind, sourceId: item.id, title: title(item), subtitle: time(item), enabled: item.enabled });
                 result.aliases.set(item.id, view.id);
             });
-            Object.values(graph.nodes).forEach(item => result.aliases.set(item.id, result.aliases.get(resolve(item.id))));
+            Object.values(displayGraph.nodes).forEach(item => result.aliases.set(item.id, result.aliases.get(resolve(item.id))));
             const connect = (from, to, label, relation, sourceId) => {
                 const target = result.byId.get(to);
                 const source = result.byId.get(from);
                 if (!target || !source) return;
+                const isInput = ['data', 'condition', 'anyCondition'].includes(relation);
                 const edge = { id: `e${result.edges.length}`, from, to, label, relation, sourceId,
-                    outputIndex: source.outputs.length, inputIndex: relation === 'data' ? target.inputs.length : -1 };
+                    outputIndex: source.outputs.length, inputIndex: isInput ? target.inputs.length : -1 };
                 source.outputs.push(edge);
-                if (relation === 'data') target.inputs.push(edge);
+                if (isInput) target.inputs.push(edge);
                 result.edges.push(edge);
             };
-            graph.edges.forEach(edge => {
-                const source = rawNode(edge.from);
-                if (transparent(source)) return;
+            displayGraph.edges.forEach(edge => {
+                const source = displayNode(edge.from);
+                if (merged.has(edge.from) || transparent(source)) return;
                 const port = source?.ports.find(item => item.target === edge.to && item.relation === edge.relation);
-                connect(result.aliases.get(edge.from), result.aliases.get(edge.to),
+                // Native ports point to the predicate they invoke. The canvas
+                // presents that predicate as an input, without changing raw edges.
+                const isCondition = ['condition', 'anyCondition'].includes(edge.relation);
+                connect(result.aliases.get(isCondition ? edge.to : edge.from), result.aliases.get(isCondition ? edge.from : edge.to),
                     port ? portLabel(port) : text(edge.relation === 'next' ? 'configuredNext' : 'sequenceStart'), edge.relation, edge.from);
             });
-            Object.values(graph.nodes).forEach(item => {
+            Object.values(displayGraph.nodes).forEach(item => {
+                if (merged.has(item.id)) return;
                 const from = result.aliases.get(item.id);
-                item.references.forEach(reference => {
+                (selectedCategories.has('reference') ? item.references : []).forEach(reference => {
                     const ref = add({ kind: 'reference', sourceId: item.id, reference, title: resourceLabel(reference.kind),
                         subtitle: text(reference.resolved ? 'resourceReference' : 'dynamicReference'), width: 260, enabled: item.enabled });
                     connect(from, ref.id, resourceLabel(reference.kind), 'resource', item.id);
                 });
                 // Reads stay at their own consumption sites; identical keys do not
                 // imply shared runtime state or cached values across actions.
-                item.inputs.filter(input => input.key).forEach(input => {
+                item.inputs.filter(input => selectedCategories.has('data') && input.key).forEach(input => {
                     const read = add({ kind: 'data', sourceId: item.id, input, title: text('blackboard'), width: 230,
                         subtitle: options.showHidden() ? input.key : options.fieldLabel(input.path.split('.').pop()), enabled: item.enabled });
                     connect(read.id, from, options.fieldLabel(input.path.split('.').pop()), 'data', item.id);
                 });
             });
             const groups = new Map();
-            graph.entries.forEach((entry, index) => {
+            displayGraph.entries.forEach((entry, index) => {
                 const key = entry.kind === 'passive' ? `${entry.kind}:${String(entry.abilityEvent)}` : entry.kind;
                 if (!groups.has(key)) groups.set(key, add({ kind: 'entry', width: 390, entries: [],
                     title: text(`entries.${entry.kind}`), subtitle: entry.kind === 'passive' ? options.enumLabel(entry.abilityEvent ?? '?') : text('allEntries'), enabled: true }));
@@ -145,42 +293,14 @@
                 layout.setDefaultEdgeLabel(() => ({}));
                 result.nodes.forEach(item => layout.setNode(item.id, { width: item.width, height: item.height }));
                 result.edges.forEach(edge => layout.setEdge(edge.from, edge.to));
-                const priority = new Map();
-                let orderIndex = 0;
-                result.nodes.filter(item => item.kind === 'entry').forEach(entry => entry.outputs.forEach(output => {
-                    const pending = [output.to];
-                    const rank = orderIndex++;
-                    while (pending.length) {
-                        const id = pending.pop();
-                        if (priority.has(id)) continue;
-                        priority.set(id, rank);
-                        pending.push(...result.byId.get(id).outputs.map(edge => edge.to));
-                    }
-                }));
-                result.edges.filter(edge => edge.relation === 'data').forEach(edge => priority.set(edge.from, priority.get(edge.to) ?? orderIndex));
-                global.dagre.layout(layout, {
-                    customOrder(layoutGraph, order) {
-                        order(layoutGraph);
-                        const ranks = new Map();
-                        for (const id of layoutGraph.nodes()) {
-                            const placed = layoutGraph.node(id);
-                            const edge = placed.edgeObj;
-                            const rank = priority.get(id) ?? (edge ? priority.get(edge.v) ?? priority.get(edge.w) : undefined);
-                            if (rank === undefined || placed.rank === undefined || placed.order === undefined) continue;
-                            if (!ranks.has(placed.rank)) ranks.set(placed.rank, []);
-                            ranks.get(placed.rank).push({ id, rank, order: placed.order });
-                        }
-                        ranks.forEach(items => {
-                            const slots = items.map(item => item.order).sort((a, b) => a - b);
-                            items.sort((a, b) => a.rank - b.rank || a.order - b.order);
-                            items.forEach((item, index) => { layoutGraph.node(item.id).order = slots[index]; });
-                        });
-                    }
-                });
+                global.dagre.layout(layout);
+                // Mirror node positions, not node contents: output pins retain
+                // their configured top-to-bottom order. Graph height includes margins.
+                const graphHeight = layout.graph().height;
                 result.nodes.forEach(item => {
                     const placed = layout.node(item.id);
                     item.x = placed.x - item.width / 2;
-                    item.y = placed.y - item.height / 2;
+                    item.y = graphHeight - placed.y - item.height / 2;
                 });
             } catch (error) {
                 layoutFailed = true;
@@ -203,7 +323,8 @@
             const bend = Math.max(70, Math.abs(x2 - x1) * .46);
             return `M ${x1} ${y1} C ${x1 + bend} ${y1}, ${x2 - bend} ${y2}, ${x2} ${y2}`;
         }
-        const wireColor = edge => edge.relation === 'data' ? 'var(--combatv3-offset)' : 'var(--combatv3-border-strong)';
+        const wireColor = edge => ['condition', 'anyCondition'].includes(edge.relation) ? 'var(--combatv3-node-logic)'
+            : edge.relation === 'data' ? 'var(--combatv3-offset)' : 'var(--combatv3-border-strong)';
         function renderWire(edge) {
             const description = `${scene.byId.get(edge.from).title} → ${scene.byId.get(edge.to).title} · ${edge.label}`;
             return `<path data-graph-edge="${edge.id}" d="${curve(edge)}" fill="none" stroke="${wireColor(edge)}" stroke-width="2"
@@ -215,9 +336,13 @@
             const pin = (x, y, label) => `<circle cx="${x}" cy="${y}" r="5" fill="var(--combatv3-surface)" stroke="${accent}" stroke-width="2"><title>${escape(label)}</title></circle>`;
             const outputRows = item.outputs.map(edge => {
                 const y = HEADER + PORT * (edge.outputIndex + .5);
-                return `${pin(item.width, y, edge.label)}<text x="${item.width - 14}" y="${y + 4}" text-anchor="end" fill="var(--combatv3-text)" font-size="12">${escape(shorten(edge.label, item.width - 40, 12))}</text>`;
+                return `${pin(item.width, y, edge.label)}<text x="${item.width - 14}" y="${y + 4}" text-anchor="end" fill="var(--combatv3-text)" font-size="12">${escape(shorten(edge.label, item.inputs.length ? item.width / 2 - 24 : item.width - 40, 12))}</text>`;
             }).join('');
-            const inputRows = item.inputs.map(edge => pin(0, HEADER + PORT * (edge.inputIndex + 1.5), edge.label)).join('');
+            const inputRows = item.inputs.map(edge => {
+                const y = HEADER + PORT * (edge.inputIndex + 1.5);
+                return pin(0, y, edge.label) + (['condition', 'anyCondition'].includes(edge.relation)
+                    ? `<text x="14" y="${y + 4}" fill="var(--combatv3-text)" font-size="12">${escape(shorten(edge.label, item.width / 2 - 24, 12))}</text>` : '');
+            }).join('');
             return `<g data-graph-node="${item.id}" data-action-graph="select" data-graph-id="${item.id}" transform="translate(${item.x} ${item.y})"
                 role="button" tabindex="0" aria-label="${escape(item.title)}" aria-pressed="false">
                 <title>${escape(`${item.title} · ${item.subtitle}`)}</title>
@@ -255,6 +380,12 @@
             if (!visual) return `<p class="ake-ui-section__meta">${escape(text('selectHint'))}</p>`;
             if (visual.kind === 'entry' && !item) return `<h3>${escape(visual.title)}</h3><div class="combatv3-context-row">${visual.entries.map(entry => button('focusRaw', time(entry), entry.target)).join('')}</div>`;
             if (!item) return '';
+            const sources = scene.mergedSources?.get(visual.sourceId);
+            const sourceChoices = sources?.length > 1
+                ? `<p>${escape(global.akeI18n.t('actionGraphMerging.notice', { count: sources.length }))}</p>
+                    <div class="combatv3-context-row">${sources.map((id, index) => button('focusRaw',
+                        options.showHidden() ? rawNode(id).path
+                            : global.akeI18n.t('actionGraphMerging.location', { index: index + 1 }), id)).join('')}</div>` : '';
             const inputRows = item.inputs.map(input => `<tr><td>${escape(options.fieldLabel(input.path.split('.').pop()))}
                 ${options.showHidden() && input.key ? `<code>${escape(input.key)}</code>` : ''}</td>
                 <td>${escape(input.resolved ? safeValue(input.value, input.path.split('.').pop()) : text('unresolved'))}</td><td>${escape(text(input.key ? 'blackboard' : 'literal'))}</td></tr>`).join('');
@@ -264,11 +395,12 @@
                 ${visual.reference ? renderReference(visual.reference) : item.references.map(renderReference).join('')}
                 ${item.inputs.length ? `<p class="ake-ui-section__meta">${escape(text('initialValues'))}</p><div class="ake-ui-table-shell"><table class="ake-ui-table"><thead><tr>
                     <th>${escape(text('parameter'))}</th><th>${escape(text('value'))}</th><th>${escape(text('sourceLabel'))}</th></tr></thead><tbody>${inputRows}</tbody></table></div>` : ''}
+                ${sourceChoices}
                 <h4>${escape(text('parameters'))}</h4>${renderField(item.raw, '', item.path, 0)}
                 ${options.showHidden() ? `<details><summary>${escape(text('source'))}</summary><p>${escape(graph.resource.file)} · ${escape(item.path)}</p><pre>${escape(JSON.stringify(item.raw, null, 2))}</pre></details>` : ''}</section>`;
         }
         function render() {
-            if (!graph || !scene.nodes.length) return `<div class="ake-ui-state" data-state="empty">${escape(text('empty'))}</div>`;
+            if (!graph) return `<div class="ake-ui-state" data-state="empty">${escape(text('empty'))}</div>`;
             const count = Object.values(graph.nodes).filter(item => item.kind === 'action').length;
             return `<div class="combatv3-context-row combatv3-editor__toolbar"><strong>${escape(text('total', { count, entries: graph.entries.length }))}</strong>
                 ${button('zoomOut', '−')}<span data-graph-zoom>100%</span>${button('zoomIn', '+')}${button('fit', text('fit'))}
@@ -279,13 +411,14 @@
                     <rect width="100%" height="100%" fill="var(--combatv3-surface-muted)"/>
                     <rect width="100%" height="100%" fill="url(#akeActionGraphGrid)"/>
                     <g data-graph-world>${scene.edges.map(renderWire).join('')}${scene.nodes.map(renderNode).join('')}</g>
-                    </svg></div>
+                    </svg><div class="combatv3-node-legend" role="group" aria-label="${escape(global.akeI18n.t('actionGraphMerging.filter'))}">
+                    ${categories.map(tone => tone === 'entry'
+                        ? `<span data-node-tone="${tone}">${escape(text(`nodeColors.${tone}`))}</span>`
+                        : `<button type="button" data-node-tone="${tone}" data-action-graph="category" data-graph-category="${tone}" aria-pressed="${selectedCategories.has(tone)}">${escape(text(`nodeColors.${tone}`))}</button>`).join('')}</div></div>
                 <div class="combatv3-editor__notes">
                 ${graph.truncated ? `<div class="ake-ui-state" data-state="error">${escape(text('incomplete'))}</div>` : ''}
                 ${layoutFailed ? `<div class="ake-ui-state" data-state="error">${escape(text('layoutFailed'))}</div>` : ''}
                 <details><summary>${escape(text('graphNotes'))}</summary>
-                    <div class="combatv3-node-legend">${['entry', 'damage', 'support', 'logic', 'timing', 'movement', 'resource', 'reference', 'data', 'presentation', 'other'].map(tone =>
-                        `<span data-node-tone="${tone}">${escape(text(`nodeColors.${tone}`))}</span>`).join('')}</div>
                     <p>${escape(text('canvasHelp'))}</p><p>${escape(text('fullNotice'))}</p><p>${escape(text('returnPolicy'))}</p>
                     <p>${escape(text('diagnostics', { opaque: Object.values(graph.nodes).filter(item => item.status === 'opaque').length, count: graph.diagnostics.length }))}</p>
                     ${graph.diagnostics.map(item => `<p>${escape(text(`diagnostic.${item.code}`))}${options.showHidden() ? ` · ${escape(item.path)}` : ''}</p>`).join('')}</details></div>`;
@@ -488,6 +621,7 @@
                 if (suppressClick && control.closest('svg')) { suppressClick = false; return true; }
                 const action = control.dataset.actionGraph;
                 const id = control.dataset.graphId;
+                if (action === 'category') return toggleCategory(control);
                 if (action === 'select') {
                     const item = scene.byId.get(id);
                     if (item) { selectedId = id; selectedSource = item.sourceId || null; inspectorOpen = true; paintSelection(); }
@@ -504,6 +638,22 @@
             },
             change() { return false; }
         };
+        function toggleCategory(target) {
+                const category = target.dataset?.graphCategory;
+                if (!categories.includes(category) || category === 'entry') return false;
+                if (selectedCategories.has(category)) selectedCategories.delete(category);
+                else selectedCategories.add(category);
+                target.setAttribute('aria-pressed', String(selectedCategories.has(category)));
+                scene = buildScene();
+                selectedId = scene.aliases.get(selectedSource) || null;
+                if (!selectedId) { selectedSource = null; inspectorOpen = false; }
+                if (frameRequest) { cancelAnimationFrame(frameRequest); frameRequest = 0; }
+                gesture = null;
+                if (world) world.innerHTML = scene.edges.map(renderWire).join('') + scene.nodes.map(renderNode).join('');
+                paintSelection();
+                fit();
+                return true;
+        }
     }
     global.AKEActionGraphView = Object.freeze({ create });
 })(window);
