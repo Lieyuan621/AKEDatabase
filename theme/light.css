@@ -9024,8 +9024,15 @@ body[data-ake-module="misc"] :is(#miscWeeklyPrevious, #miscWeeklyNext) {
         .combatv3-editor.is-inspecting { grid-template-columns: minmax(0, 1fr); }
         .combatv3-editor__inspector { grid-area: auto; position: absolute; inset: 0 0 0 auto; width: min(88%, 380px); z-index: 5; box-shadow: var(--ake-ui-shadow-hover); }
     }
-    .combatv3-node-legend { display: flex; flex-wrap: wrap; gap: 8px 14px; padding-block: 8px; }
-    .combatv3-node-legend span::before { content: ''; display: inline-block; width: 10px; height: 10px; margin-right: 5px; border-radius: 2px; background: var(--node-tone); }
+    .combatv3-editor__canvas { position: relative; }
+    .combatv3-node-legend { position: absolute; right: 12px; bottom: 12px; display: flex; flex-direction: column; align-items: stretch; gap: 2px; max-width: calc(100% - 24px); max-height: calc(100% - 24px); overflow: auto; padding: 8px 10px; border: var(--ake-ui-border); border-radius: 3px; background: var(--combatv3-surface-muted); color: var(--combatv3-text); }
+    .combatv3-node-legend > * { display: flex; align-items: center; justify-content: flex-start; gap: 8px; min-height: 22px; margin: 0; padding: 1px 3px; border: 0; border-radius: 0; box-shadow: none; font: inherit; font-size: .72rem; line-height: 20px; text-align: left; color: inherit; background: transparent; }
+    .combatv3-node-legend > *::before { content: ''; display: inline-block; flex: 0 0 14px; width: 14px; height: 9px; border-radius: 1px; background: var(--node-tone); }
+    .combatv3-node-legend button { cursor: pointer; }
+    .combatv3-node-legend button[aria-pressed="false"] { opacity: .5; }
+    .combatv3-node-legend button[aria-pressed="false"]::before { background: var(--combatv3-node-other); }
+    .combatv3-node-legend button:hover { background: var(--combatv3-surface-active); opacity: 1; }
+    .combatv3-node-legend button:focus-visible { outline: 2px solid var(--combatv3-accent); outline-offset: 2px; }
     [data-node-tone="entry"] { --node-tone: var(--combatv3-node-entry); }
     [data-node-tone="damage"] { --node-tone: var(--combatv3-node-damage); }
     [data-node-tone="support"] { --node-tone: var(--combatv3-node-support); }
