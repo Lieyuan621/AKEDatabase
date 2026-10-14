@@ -53,6 +53,7 @@ description: Review and develop AKEDatabase with TableCfg-driven inclusion, shar
 
 ## 专项入口
 
+- 新建独立页面模块：读 [模块创建规范](../akedatabase-module-creation/SKILL.md)。
 - 发布/解析工具：读 [工具规则](../../tools/ake-data-tool/AGENTS.md)，发布授权不由开发任务隐含授予。
 - 配方画布：读 [配方约定](references/recipe-flow.md)。
 - 数据来源例外与诊断：读 [数据契约](references/data-contracts.md)。
