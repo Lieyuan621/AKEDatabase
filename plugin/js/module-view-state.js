@@ -23,6 +23,9 @@
         achievement: 'v3_achievement'
     });
     const ENTRY_ROOT_IDS = Object.freeze({
+        inn: 'innDetail',
+        farming: 'farmingDetail',
+        gamble: 'gambleDetail',
         tech_tree: 'tech_treeDetail',
         spaceship: 'spaceshipDetail',
         tutorial: 'tutorialDetail',
@@ -47,6 +50,9 @@
         misc: 'miscContent'
     });
     const MODULE_SCROLL_ROOT_IDS = Object.freeze({
+        inn: 'innList',
+        farming: 'farmingList',
+        gamble: 'gambleList',
         tech_tree: 'tech_treeList',
         spaceship: 'spaceshipList',
         tutorial: 'tutorialList',

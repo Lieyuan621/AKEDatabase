@@ -2,6 +2,21 @@
 // Shared I18nTextTable_<language> hydration is infrastructure, not module ownership.
 // Maintain alongside module adapters; see the repository development skill.
 window.AKESearchIndex = {
+  "inn": {
+    "tables": ["ItemTable", "RewardTable", "InnDishTable", "InnDrinkTable", "InnTopicTable", "InnCharSkillTable", "InnSkillTable", "InnLevelTable", "InnExpansionTable", "InnMilestoneTable", "InnMilestoneLevelTable", "InnRequirementTable", "InnAffixTable", "InnDishCategoryTable", "InnRandomRuleTable", "InnStarsRewardTable", "InnDescribeTable", "InnGoodsRandomTable", "InnManagementConst", "CharacterTable", "CropObtainWayTable", "InnRanchAnimalTable", "ShopGoodsTable"],
+    "sources": ["plugin/inn.html", "plugin/js/inn.js", "plugin/js/life-catalog.js", "plugin/js/ake-catalog.js"],
+    "coverage": "kind:source-key routes; named dishes, topics, requirements, skills, levels, expansions, milestones and refresh rules. Unconfirmed guest/order mappings are not inferred."
+  },
+  "farming": {
+    "tables": ["ItemTable", "RewardTable", "InnRanchAnimalTable", "InnRanchFeedTable", "InnRanchStableGroupTable", "CropObtainWayTable", "SoilMgrTable", "SoilMgrFeatureTable", "InnRanchStateTable", "InnRanchStableId2GroupId", "RanchConst", "FactorySoilConst", "InnDishTable", "InnLevelTable"],
+    "sources": ["plugin/farming.html", "plugin/js/farming.js", "plugin/js/life-catalog.js", "plugin/js/ake-catalog.js"],
+    "coverage": "Animals, feed, stable groups, crops, soil upgrades and feature descriptions. Production rates remain configuration values."
+  },
+  "gamble": {
+    "tables": ["ItemTable", "RewardTable", "GambleBattleHandTypeTable", "GambleBattleCardTable", "GambleBattleCardPoolTable", "GambleBattleEnemyBuffTable", "ActivityCommonUIMilestoneTable", "GambleBattleHandTypePoolTable", "GambleBattleConst", "ActivityCommonCoinRewardTable", "EnemyTable", "EnemyTemplateDisplayInfoTable", "ActivityTable", "DungeonTable", "TimeRangeTable"],
+    "sources": ["plugin/gamble.html", "plugin/js/gamble.js", "plugin/js/life-catalog.js", "plugin/js/ake-catalog.js"],
+    "coverage": "Configured hands, enemy cards, pools, effects and milestones. Pool membership does not establish live activity-stage membership."
+  },
   "search": {
     "tables": [],
     "sources": [

@@ -100,6 +100,7 @@ public final class BeyondSdkImageRunner {
             List.of(containersFilter),
             Map.of()
         );
+        System.out.println("[image-stage] 开始构建图片资源 map");
         ManifestAssetMapBuildResult result =
             helper.buildAnimeStudioAssetMapFromVfs$beyond_sdk(
                 vfsRoot,
@@ -108,6 +109,7 @@ public final class BeyondSdkImageRunner {
                 List.of(new Regex(containersFilter, RegexOption.IGNORE_CASE)),
                 vfsKey
             );
+        System.out.println("[image-stage] 构图完成，资源条目：" + result.getEntries().size());
         for (ManifestAssetMapDiagnostic diagnostic : result.getDiagnostics()) {
             System.err.println(
                 "[" + diagnostic.getSeverity() + "] "
@@ -127,6 +129,7 @@ public final class BeyondSdkImageRunner {
         Files.write(fullMapPath, AssetMapMessagePack.INSTANCE.encode(currentMap));
 
         Path deltaMapPath = runRoot.resolve("assets.delta.map");
+        System.out.println("[image-stage] 开始与历史 map 比较");
         DiffResult diff = createDeltaAndRemoteMaps(
             currentMap,
             historyAssetMaps,
@@ -135,6 +138,8 @@ public final class BeyondSdkImageRunner {
             vfsRoot
         );
 
+        System.out.println("[image-stage] 差分完成，待导出资源条目：" + diff.deltaEntries.size()
+            + "（资源条目数不等于最终图片文件数）");
         if (!diff.deltaEntries.isEmpty()) {
             List<String> legacyArguments = profile.legacyArguments(
                 vfsRoot,
@@ -143,10 +148,12 @@ public final class BeyondSdkImageRunner {
                 selection,
                 BundlesExportLayout.ByContainer
             );
+            System.out.println("[image-stage] 开始导出图片，大范围导出可能耗时较长");
             AnimeStudioCliKt.runLegacyAnimeStudioCli(
                 legacyArguments.toArray(String[]::new)
             );
         }
+        System.out.println("[image-stage] 图片导出结束");
         System.out.println(
             mapResultLine(
                 currentMap,
