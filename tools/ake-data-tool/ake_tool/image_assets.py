@@ -48,7 +48,7 @@ from .models import (
 )
 from .release import resolve_r2_versions
 from .unpacker import format_command
-from .sdk_compat import compat_command
+from .sdk_launch import sdk_command
 from .vfs_validation_cache import VfsValidationCache, latest_identity
 
 
@@ -1191,9 +1191,9 @@ class ImageAssetPipeline:
         self.json_output_root.mkdir(parents=True, exist_ok=True)
 
         sdk_target = self._json_sdk_target()
-        command = compat_command(
+        command = sdk_command(
             self.config.java_path, self.config.image_sdk,
-            self.config.image_work_root / "json-sdk-runtime",
+            work_root=self.config.image_work_root / "json-sdk-runtime",
         ) + [
             "vfs",
             str(self.config.image_work_root),
@@ -1569,8 +1569,9 @@ class ImageAssetPipeline:
         remote_map = run_root / "assets.remote.map"
         containers_filter = self.image_config.image_containers_filter
         started = time.monotonic()
-        command = compat_command(
-            self.config.java_path, self.config.image_sdk, run_root, IMAGE_RUNNER_SOURCE,
+        command = sdk_command(
+            self.config.java_path, self.config.image_sdk, IMAGE_RUNNER_SOURCE,
+            work_root=run_root,
         ) + [
             str(self.vfs_root),
             str(run_root),

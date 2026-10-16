@@ -54,7 +54,7 @@ public final class BeyondSdkCompatLauncher {
             // Resolve before the SDK starts any downloads or extraction.
             loader.loadClass("tech.perlica.ci.models.vfs.VfsReader")
                 .getMethod("akeLegacyParse", byte[].class);
-            System.out.println("AKE VFS compatibility enabled: legacy parser preserved, BLC v5 supported");
+            System.out.println("AKE BLC compatibility: enabled for known SDK SHA256 a5705238a0ed48953b8a12d2146150316ad9b870c0ae42cf6f77fdd15620df68; other SDK behavior preserved");
             try {
                 loader.loadClass(main).getMethod("main", String[].class)
                     .invoke(null, (Object) Arrays.copyOfRange(args, 4, args.length));
