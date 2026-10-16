@@ -275,7 +275,7 @@
 
                 const version = parseAssetVersion(record?.version);
                 const isNew = Boolean(version && latestAssetVersion && (newTagScope === 'major'
-                    ? compareVersionParts({ parts: version.gameParts }, { parts: latestAssetVersion.gameParts }) === 0
+                    ? window.akeDataSource.compareMajorVersions(version.value, latestAssetVersion.value) === 0
                     : compareAssetVersions(version, latestAssetVersion) === 0));
                 const file = makeFile(dataset, relative, record, current, isNew);
                 current.files.push(file);

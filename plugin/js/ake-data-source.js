@@ -107,6 +107,11 @@
         return String(a || '').localeCompare(String(b || ''), 'en');
     }
 
+    function compareMajorVersions(a, b) {
+        const majorVersion = value => String(value || '').split('@')[0].split('.').slice(0, 2).join('.');
+        return compareGameVersions(majorVersion(a), majorVersion(b));
+    }
+
     function compareHotfixVersions(a, b) {
         const left = String(a || '').split('-').map(Number);
         const right = String(b || '').split('-').map(Number);
@@ -136,7 +141,7 @@
         const scope = getNewTagScope();
         const previous = manifest.versions.filter(item => scope === 'hotfix'
             ? compareVersions(item, current) < 0
-            : compareGameVersions(item.gameVersion, current.gameVersion) < 0);
+            : compareMajorVersions(item.gameVersion, current.gameVersion) < 0);
         const baseline = previous.sort((a, b) => compareVersions(b, a))[0];
         return baseline ? Object.freeze({ current, baseline, showAdded: scope !== 'none' }) : null;
     }
@@ -442,6 +447,7 @@
         },
         getState: () => state,
         getNewTagScope,
+        compareMajorVersions,
         async configure({ baseUrl, selection }) {
             if (debugLocalMode) return false;
             const normalizedBase = normalizeBaseUrl(baseUrl || defaultBaseUrl);

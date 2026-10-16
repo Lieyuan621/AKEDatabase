@@ -116,7 +116,7 @@
                 sourcePath: entry.path || '',
                 isNew: Boolean(comparison?.baseline && newTagScope !== 'none' && rawMine.addedVersion &&
                     (newTagScope === 'major'
-                        ? String(rawMine.addedVersion).split('@')[0] === String(currentVersion).split('@')[0]
+                        ? window.akeDataSource.compareMajorVersions(rawMine.addedVersion, currentVersion) === 0
                         : rawMine.addedVersion === currentVersion))
             });
         }));

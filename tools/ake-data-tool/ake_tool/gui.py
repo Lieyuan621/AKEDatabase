@@ -1698,8 +1698,8 @@ class MainWindow(QMainWindow):
         relation = QLabel(
             "输入固定为统一工作目录下的 VFS/775A31D1。工具会先按最新 main/initial 索引准备并校验 "
             "SDK 所需的全部 VFS 文件，任何文件缺失时都不会启动 SDK。解析输出位于 json-output；"
-            "发布目标固定为 BuffData、LevelData、LevelScriptData、MissionRuntimeAsset、SkillData 和 "
-            "SpawnerConfig，其他文件和目录一律忽略。"
+            "发布时保留 SDK Json 数据目录的相对路径，收录全部数据目录及根目录文件；"
+            "新增数据目录自动纳入发布，随后可在 Json 同步页面生成 R2 上传计划。"
         )
         relation.setWordWrap(True)
         relation.setObjectName("pathHint")
@@ -1755,7 +1755,7 @@ class MainWindow(QMainWindow):
             ("json_analyze", "1. 检查最新版本/索引"),
             ("json_prepare", "2. 准备并校验 775A31D1"),
             ("json_extract", "3. JAR 解析 Json"),
-            ("json_publish", "4. 发布对应目录到 public"),
+            ("json_publish", "4. 发布全部 Json 数据到 public"),
         ]
         for index, (stage, text) in enumerate(specs):
             card = QFrame()
