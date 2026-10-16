@@ -1,0 +1,1 @@
+window.AKELifeCatalog.mount('gamble');

@@ -48,6 +48,7 @@ from .models import (
 )
 from .release import resolve_r2_versions
 from .unpacker import format_command
+from .sdk_launch import sdk_command
 from .vfs_validation_cache import VfsValidationCache, latest_identity
 
 
@@ -1190,12 +1191,10 @@ class ImageAssetPipeline:
         self.json_output_root.mkdir(parents=True, exist_ok=True)
 
         sdk_target = self._json_sdk_target()
-        command = [
-            self.config.java_path,
-            "-Xmx32G",
-            "--enable-native-access=ALL-UNNAMED",
-            "-jar",
-            str(self.config.image_sdk),
+        command = sdk_command(
+            self.config.java_path, self.config.image_sdk,
+            work_root=self.config.image_work_root / "json-sdk-runtime",
+        ) + [
             "vfs",
             str(self.config.image_work_root),
             str(self.json_output_root),
@@ -1230,6 +1229,7 @@ class ImageAssetPipeline:
 
         threading.Thread(target=read_output, daemon=True).start()
         reader_finished = False
+        sdk_failure: str | None = None
         try:
             while process.poll() is None or not reader_finished:
                 if self.token.is_cancelled:
@@ -1245,12 +1245,18 @@ class ImageAssetPipeline:
                         reader_finished = True
                     elif line:
                         self._emit("json_extract", line)
+                        # The SDK task graph can log a failure and still exit 0.
+                        # Never accept partial output as a successful Json export.
+                        if re.search(r"\bTask \S+ failed\.", line):
+                            sdk_failure = line
                 except queue.Empty:
                     pass
             if process.returncode:
                 raise AkeToolError(
                     f"beyond-sdk.jar Json 解析失败，退出码 {process.returncode}"
                 )
+            if sdk_failure is not None:
+                raise AkeToolError(f"beyond-sdk.jar Json 任务失败：{sdk_failure}")
         finally:
             if process.poll() is None:
                 process.kill()
@@ -1563,13 +1569,10 @@ class ImageAssetPipeline:
         remote_map = run_root / "assets.remote.map"
         containers_filter = self.image_config.image_containers_filter
         started = time.monotonic()
-        command = [
-            self.config.java_path,
-            "-Xmx32G",
-            "--enable-native-access=ALL-UNNAMED",
-            "--class-path",
-            str(self.config.image_sdk),
-            str(IMAGE_RUNNER_SOURCE),
+        command = sdk_command(
+            self.config.java_path, self.config.image_sdk, IMAGE_RUNNER_SOURCE,
+            work_root=run_root,
+        ) + [
             str(self.vfs_root),
             str(run_root),
             str(delta_output),
@@ -1603,6 +1606,8 @@ class ImageAssetPipeline:
         )
         lines: queue.Queue[str | None] = queue.Queue()
         metrics: dict[str, int] | None = None
+        next_progress = time.monotonic() + 30
+        previous_output: tuple[int, int, int] | None = None
 
         def read_output() -> None:
             assert process.stdout is not None
@@ -1640,6 +1645,38 @@ class ImageAssetPipeline:
                         self._emit("image_extract", line)
                 except queue.Empty:
                     pass
+                if process.poll() is None and time.monotonic() >= next_progress:
+                    file_count = 0
+                    byte_count = 0
+                    newest_write = 0
+                    try:
+                        for directory, _, filenames in os.walk(delta_output):
+                            for filename in filenames:
+                                path = Path(directory) / filename
+                                try:
+                                    info = path.stat()
+                                except FileNotFoundError:
+                                    continue
+                                file_count += 1
+                                byte_count += info.st_size
+                                newest_write = max(newest_write, info.st_mtime_ns)
+                        output_snapshot = (file_count, byte_count, newest_write)
+                        activity = (
+                            "本次观察到输出变化"
+                            if previous_output is not None and output_snapshot != previous_output
+                            else "首次统计" if previous_output is None
+                            else "本次未观察到文件变化，不能据此判定卡死"
+                        )
+                        previous_output = output_snapshot
+                        self._emit(
+                            "image_extract",
+                            f"解析进程仍在运行，已耗时 {(time.monotonic() - started) / 60:.1f} 分钟；"
+                            f"输出目录现有 {file_count} 个文件、{byte_count / (1024 * 1024):.1f} MiB；"
+                            f"{activity}（包含正在写入的文件，不代表完成数量）",
+                        )
+                    except OSError as exc:
+                        self._emit("image_extract", f"解析进程仍在运行，暂时无法统计输出：{exc}")
+                    next_progress = time.monotonic() + 30
             if process.returncode:
                 raise AkeToolError(f"beyond-sdk.jar 图片解析失败，退出码 {process.returncode}")
         finally:

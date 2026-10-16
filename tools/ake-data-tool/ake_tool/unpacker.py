@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import queue
-import locale
 import shutil
 import subprocess
 import threading
@@ -9,6 +8,7 @@ from pathlib import Path
 
 from .errors import AkeToolError, CancelledError
 from .models import CancellationToken, ProgressCallback, ProgressEvent, null_progress
+from .sdk_launch import sdk_command
 
 
 TABLE_RUNNER_SOURCE = Path(__file__).with_name("BeyondSdkTableRunner.java")
@@ -60,13 +60,9 @@ class BeyondSdkTableUnpacker:
         output_root.mkdir(parents=True)
 
         token.raise_if_cancelled()
-        command = [
-            self.java_path,
-            "-Xmx32G",
-            "--enable-native-access=ALL-UNNAMED",
-            "--class-path",
-            str(self.sdk_path),
-            str(TABLE_RUNNER_SOURCE),
+        command = sdk_command(
+            self.java_path, self.sdk_path, TABLE_RUNNER_SOURCE, work_root=output_root,
+        ) + [
             str(source_root / "VFS"),
             str(output_root),
         ]
@@ -97,7 +93,7 @@ class BeyondSdkTableUnpacker:
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
-            encoding=locale.getpreferredencoding(False),
+            encoding="utf-8",
             errors="replace",
             creationflags=creation_flags,
         )

@@ -403,6 +403,9 @@
             const includeAdded = comparison.showAdded !== false;
             const ranked = currentRows.map(row => {
                 const baseline = baselineById.get(manifestId(module, row));
+                // A preview entry is not an existing release entry. Keep the
+                // baseline for comparisons, but mark its official debut as new.
+                const becameReleased = Boolean(baseline?.isForesight && !row.isForesight);
                 const groupedEntitySignatures = row.__diffEntitySignatures || {};
                 const addedEntityIds = includeAdded && usesGroupedEntityDiff
                     ? Object.keys(groupedEntitySignatures).filter(entityId => !baselineGroupedEntities.has(entityId))
@@ -422,7 +425,7 @@
                 const canMarkWholeRowAdded = module !== 'activity' && !usesGroupedEntityDiff;
                 const changeType = hasGroupedAddition
                     ? 'added'
-                    : !baseline
+                    : !baseline || becameReleased
                     ? (includeAdded && canMarkWholeRowAdded ? 'added' : '')
                     : (includeModified && isModified ? 'modified' : '');
                 const publicRow = publicManifestRow(row);

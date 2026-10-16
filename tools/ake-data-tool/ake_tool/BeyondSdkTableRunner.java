@@ -37,4 +37,5 @@ public final class BeyondSdkTableRunner {
         );
         System.out.println("TableCfg output: " + extraction.getOutputDirectory());
     }
+
 }
