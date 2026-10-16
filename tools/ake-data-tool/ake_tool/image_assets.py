@@ -63,29 +63,18 @@ JSON_SDK_BLOCKS = (
     "InitialExtendData",
     "ExtendData",
 )
-JSON_PUBLISH_DATASETS = (
-    "BuffData",
-    "LevelData",
-    "LevelScriptData",
-    "MissionRuntimeAsset",
-    "SkillData",
-    "SpawnerConfig",
-)
 
 
 def _resolve_json_publish_sources(source_root: Path) -> dict[str, Path]:
+    assert_no_linked_files(source_root, "Json 解析输出")
     sources: dict[str, Path] = {}
-    missing: list[str] = []
-    for name in JSON_PUBLISH_DATASETS:
-        source = source_root / name
-        if not source.is_dir() or not any(path.is_file() for path in source.rglob("*")):
-            missing.append(name)
-        else:
-            sources[name] = source
-    if missing:
-        raise ValidationError(
-            "Json 解析输出缺少发布目标目录或目录为空：" + "、".join(missing)
-        )
+    for source in sorted(source_root.iterdir()):
+        if source.is_file() or (
+            source.is_dir() and any(path.is_file() for path in source.rglob("*"))
+        ):
+            sources[source.name] = source
+    if not sources:
+        raise ValidationError(f"Json 解析输出为空，拒绝发布：{source_root}")
     return sources
 
 
@@ -1317,6 +1306,13 @@ class ImageAssetPipeline:
         if not public_json_root.is_dir():
             raise FileNotFoundError(f"public/Json 不存在：{public_json_root}")
         matched_sources = _resolve_json_publish_sources(source_root)
+        published_directories = sorted(
+            name for name, source in matched_sources.items() if source.is_dir()
+        )
+        published_root_files = sorted(
+            name for name, source in matched_sources.items() if source.is_file()
+        )
+        assert_no_linked_files(public_json_root, "public/Json")
 
         staging_root = (self.config.public_root / ".ake-json-publish-staging").resolve()
         public_root = self.config.public_root.resolve()
@@ -1331,7 +1327,11 @@ class ImageAssetPipeline:
             for name, source in sorted(matched_sources.items()):
                 self.token.raise_if_cancelled()
                 staged = staging_root / name
-                file_count = copy_tree_contents(source, staged, self.token)
+                if source.is_dir():
+                    file_count = copy_tree_contents(source, staged, self.token)
+                else:
+                    copy_file_contents(source, staged, self.token)
+                    file_count = 1
                 if file_count == 0:
                     raise ValidationError(f"Json 输出目录为空，拒绝发布：{source}")
                 total_files += file_count
@@ -1341,8 +1341,10 @@ class ImageAssetPipeline:
                 self.token.raise_if_cancelled()
                 target = public_json_root / name
                 staged = staging_root / name
-                if target.exists():
+                if target.is_dir():
                     shutil.rmtree(target)
+                elif target.exists():
+                    target.unlink()
                 os.replace(staged, target)
                 assert_no_linked_files(target, f"public/Json/{name}")
                 self._emit(
@@ -1357,10 +1359,12 @@ class ImageAssetPipeline:
 
         self._emit(
             "json_publish",
-            f"Json 发布完成：{len(matched_sources)} 个对应目录，{total_files} 个文件",
+            f"Json 发布完成：{len(published_directories)} 个目录、"
+            f"{len(published_root_files)} 个根目录文件，共 {total_files} 个文件",
         )
         return {
-            "json_published_directories": sorted(matched_sources),
+            "json_published_directories": published_directories,
+            "json_published_root_files": published_root_files,
             "json_published_files": total_files,
             "json_publish_source": str(source_root),
             "json_published_hotfix_version": version_values["json_hotfix_version"],
