@@ -8892,6 +8892,7 @@ body[data-ake-module="misc"] :is(#miscWeeklyPrevious, #miscWeeklyNext) {
 
 /* Technology graph: shared geometry and per-theme visual tokens. */
 .ake-ui-directory.ake-ui-tech-tree {
+    --tech-icon-bg: #242b32;
     --tech-surface: #f3f5f7;
     --tech-band: #e8edf1;
     --tech-card: #ffffff;
@@ -8952,6 +8953,8 @@ body[data-ake-module="misc"] :is(#miscWeeklyPrevious, #miscWeeklyNext) {
 .ake-ui-tech-tree__node:is(:hover, :focus-visible, .is-selected) > rect { fill: var(--tech-selected); stroke: var(--tech-active); stroke-width: 3.5; }
 .ake-ui-tech-tree__node-label { fill: var(--tech-text); font-size: 12px; }
 .ake-ui-tech-tree__placeholder { fill: var(--tech-line); font-size: 36px; }
+.ake-ui-tech-tree__icon-backdrop { fill: var(--tech-icon-bg); }
+body[data-ake-module="tech_tree"] .ake-ui-material__item-icon { background: var(--tech-icon-bg); border-radius: var(--ake-ui-radius-sm); }
 .ake-ui-tech-tree__node:has(image) .ake-ui-tech-tree__placeholder { visibility: hidden; }
 .ake-ui-tech-tree__drawer {
     display: flex;

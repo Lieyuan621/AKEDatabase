@@ -35,7 +35,10 @@ window.AKESearchIndex = {
       "FacSTTLayerTable",
       "FacSTTNodeTable",
       "FacSTTPackConditionTable",
+      "FactoryBuildingItemTable",
       "FactoryBuildingTable",
+      "FactoryMachineCrafterTable",
+      "FactoryMachineCraftModeTable",
       "ItemTable",
       "MachineId2MachineTechIdTable",
       "RewardTable"

@@ -373,6 +373,24 @@
         // Category headings are rendered in the owning plan's graph.
         if (source === 'FacSTTCategoryTable') await from('FacSTTGroupTable', row.groupId, 'tech_tree', 'plan:');
         if (source === 'FacSTTPackConditionTable') await from('FacSTTGroupTable', row.groupId, 'tech_tree', 'plan:');
+        if (((source === 'FactoryBuildingTable' && field === 'name') ||
+            (source === 'FactoryMachineCraftModeTable' && field === 'machineModeTypeName')) && has('tech_tree')) {
+            const itemLinks = await table('FactoryBuildingItemTable');
+            const modes = new Map(entries(await table('FactoryMachineCrafterTable')).flatMap(([buildingId, machine]) =>
+                (machine.modeMap || []).map(mode => [`${buildingId}+${mode.modeName}`, { buildingId, mode: mode.modeName }])));
+            for (const [machine, relation] of entries(await table('MachineId2MachineTechIdTable'))) {
+                const mode = modes.get(machine);
+                if (source === 'FactoryBuildingTable' ? (itemLinks[machine]?.buildingId || mode?.buildingId || machine) === key :
+                    mode?.mode === key && Boolean((await table('FactoryBuildingTable'))[mode.buildingId])) {
+                    await from('FacSTTNodeTable', relation.techId, 'tech_tree', 'node:');
+                }
+            }
+            if (source === 'FactoryBuildingTable') for (const [, limit] of entries(await table('FacSTTBuildingDomainLimitTechTable'))) {
+                if ((itemLinks[limit.buildingId]?.buildingId || limit.buildingId) === key) {
+                    for (const techId of limit.stepTechIds || []) await from('FacSTTNodeTable', techId, 'tech_tree', 'node:');
+                }
+            }
+        }
         abortCheck(signal);
         return [...results.values()];
     }
