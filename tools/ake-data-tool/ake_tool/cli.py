@@ -3,10 +3,12 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from pathlib import Path
 
 from .config import CONFIG_FILE, load_config
 from .errors import AkeToolError, CancelledError
-from .models import ProgressEvent
+from .models import ProgressEvent, CancellationToken
+from .release import ReleaseManager
 from .pipeline import PIPELINE_STAGES, Pipeline
 
 
@@ -60,7 +62,8 @@ def command_gui() -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="AKE TableCfg 下载与解包工具")
-    parser.add_argument("command", choices=["check", "run", "stage", "gui", "config"], nargs="?", default="gui")
+    parser.add_argument("command", choices=["check", "run", "stage", "gui", "config", "narrative-index-plan", "narrative-index-apply"], nargs="?", default="gui")
+    parser.add_argument("--plan", help="叙事索引元数据刷新计划文件；plan 生成，apply 读取已核对的计划")
     parser.add_argument("stage_name", choices=list(PIPELINE_STAGES), nargs="?")
     parser.add_argument(
         "--steps",
@@ -76,6 +79,22 @@ def main() -> int:
         sys.stderr.reconfigure(encoding="utf-8", errors="replace")
     args = build_parser().parse_args()
     try:
+        if args.command in ("narrative-index-plan", "narrative-index-apply"):
+            if not args.plan:
+                raise ValueError("请通过 --plan 指定刷新计划文件")
+            manager = ReleaseManager(load_config(), CancellationToken(), print_event)
+            path = Path(args.plan).resolve()
+            protected = [load_config().public_root / name for name in ("Json", "TableCfg")]
+            if any(root.resolve() == path or root.resolve() in path.parents for root in protected):
+                raise ValueError("计划文件不能写入只读游戏数据目录")
+            if args.command == "narrative-index-plan":
+                plan = manager.plan_narrative_metadata_refresh()
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(json.dumps(plan, ensure_ascii=False, indent=2), encoding="utf-8")
+                print(json.dumps({"plan": str(path), "metadataUpdates": len(plan["updates"]), "contentUploads": 0, "deletes": 0}, ensure_ascii=False))
+            else:
+                print(json.dumps(manager.apply_narrative_metadata_refresh(json.loads(path.read_text(encoding="utf-8"))), ensure_ascii=False))
+            return 0
         if args.command == "check":
             return command_check()
         if args.command == "run":

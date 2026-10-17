@@ -401,6 +401,8 @@ window.AKESearchIndex = {
   "v3_archive": {
     "tables": [
       "DialogTextTable",
+      "EnvTalkTable",
+      "TextTable",
       "DomainDataTable",
       "LevelDescTable",
       "PrtsAllItem",
@@ -419,9 +421,10 @@ window.AKESearchIndex = {
       "plugin/js/ake-voice-player.js",
       "plugin/js/module-overview.js",
       "plugin/js/v3-archive.js",
+      "plugin/js/ake-asset-index.js",
       "plugin/v3_archive.html"
     ],
-    "coverage": "Prts tables plus indexed LevelData/LevelScriptData references; unindexed Json content is not covered."
+    "coverage": "Prts tables, indexed LevelData/LevelScriptData reading references and GameplayConfig NPC dialog/environment references; unindexed Json content is not covered."
   },
   "v3_cc": {
     "tables": [

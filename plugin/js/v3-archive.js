@@ -72,7 +72,9 @@
         'ReadingPopUpIconTable',
         'DialogTextTable',
         'PrtsReading',
-        'LevelDescTable'
+        'LevelDescTable',
+        'EnvTalkTable',
+        'TextTable'
     ]);
 
     const state = {
@@ -185,6 +187,7 @@
     }
 
     function groupSecondary(group, page, item) {
+        if (group?.npcSources) return t(group.environment ? 'npc.environment' : 'npc.dialog', null, group.environment ? '环境台词' : 'NPC 对话');
         if (group?.categoryId === READING_LIST_CATEGORY_ID) {
             const subtitle = gameText(group?.subName)
                 || t('readingList.category', null, '任务文本');
@@ -469,6 +472,7 @@
         state.groups.forEach(group => {
             const groupItems = items.filter(item => String(item?.firstLvId || '') === String(group.firstLvId || ''));
             const values = [
+                ...(group.npcSources || []).map(source => source.levelId),
                 group.firstLvId,
                 group.contentId,
                 group.levelDataPath,
@@ -757,29 +761,14 @@
         };
     }
 
-    function indexedReadingReferences(assetIndex) {
-        const byContentId = new Map();
-        const byUniqId = new Map();
-        const files = assetIndex?.datasets?.json?.files || {};
-        Object.entries(files)
-            .filter(([path]) => path.startsWith('LevelScriptData/') && path.toLocaleLowerCase().endsWith('.json'))
-            .sort(([a], [b]) => a.localeCompare(b, 'en'))
-            .forEach(([path, record]) => {
-                const meta = record?.meta || {};
-                (Array.isArray(meta.narrativeReadingContentIds) ? meta.narrativeReadingContentIds : []).forEach(contentId => {
-                    const key = String(contentId || '');
-                    if (!/^(?:text|radio)_/.test(key)) return;
-                    if (!byContentId.has(key)) byContentId.set(key, []);
-                    byContentId.get(key).push(path);
-                });
-                (Array.isArray(meta.narrativeReadingUniqIds) ? meta.narrativeReadingUniqIds : []).forEach(uniqId => {
-                    const key = String(uniqId || '');
-                    if (!key) return;
-                    if (!byUniqId.has(key)) byUniqId.set(key, []);
-                    byUniqId.get(key).push(path);
-                });
-            });
-        return { byContentId, byUniqId };
+    function indexedReadingReferences(assetIndex, popups) {
+        const refs = window.akeAssetIndex.readingReferences(assetIndex, popups);
+        state.narrativeDiagnostics = refs.diagnostics.slice();
+        state.readingReferences = refs.byContentId;
+        return {
+            byContentId: new Map([...refs.byContentId].map(([id, rows]) => [id, rows.map(row => row.path)])),
+            byUniqId: refs.byUniqId
+        };
     }
 
     function supplementalReadingRecords(raw, assetIndex) {
@@ -809,7 +798,7 @@
                 if (!readingByContentId.has(contentId)) readingByContentId.set(contentId, record);
             });
         });
-        const references = indexedReadingReferences(assetIndex);
+        const references = indexedReadingReferences(assetIndex, raw.ReadingPopUpTable);
         const contentIds = new Set(readingEntries.map(entry => String(entry.contentId || '')));
         references.byContentId.forEach((_, contentId) => contentIds.add(contentId));
         const resolveContent = (contentId, reading) => {
@@ -863,6 +852,7 @@
                 readingUniqId: reading?.uniqId || '',
                 readingEntryKey,
                 levelScriptPaths,
+                readingReferences: state.readingReferences.get(contentId) || [],
                 orphan: Boolean(orphan)
             };
             items[itemId] = {
@@ -880,6 +870,7 @@
                 readingUniqId: reading?.uniqId || '',
                 readingEntryKey,
                 levelScriptPaths,
+                readingReferences: state.readingReferences.get(contentId) || [],
                 orphan: Boolean(orphan)
             };
             generatedContentIds.add(contentId);
@@ -1050,9 +1041,40 @@
         if (unresolved.length) console.warn('Archive investigations contain unresolved references', unresolved);
     }
 
-    function prepareTables(raw, assetIndex) {
+    function prepareTables(raw, assetIndex, npc) {
         const mapText = mapTextRecords(raw.DialogTextTable || {}, assetIndex);
         const supplementalReading = supplementalReadingRecords(raw, assetIndex);
+        state.narrativeDiagnostics.push(...npc.diagnostics);
+        const appendNpc = (id, sources, environment) => {
+            sources = sources.map(source => {
+                const mission = assetIndex.datasets.json?.files?.[`MissionRuntimeAsset/${source.missionId}.json`];
+                return { ...source,
+                    npcName: gameText(raw.TextTable?.[`npcName_${source.npcNameId}`]),
+                    levelName: gameText(raw.LevelDescTable?.[source.levelId]?.showName),
+                    missionName: gameText(raw.TextTable?.[mission?.meta?.missionName?.key]),
+                    indexedMission: Boolean(mission) };
+            });
+            const lines = environment ? (raw.EnvTalkTable?.[id]?.envTalkDataList || []).map((line, index) => ({
+                rowId: `${id}:${index}`, rowNumber: line.index ?? index,
+                actorName: raw.TextTable?.[`npcName_${line.actorId}`], actorNameId: line.actorId,
+                dialogText: line.text, audioOverride: line.audio
+            })).sort((a, b) => a.rowNumber - b.rowNumber) : mapText.dialogLinesById.get(id) || [];
+            if (environment) mapText.dialogLinesById.set(id, lines);
+            if (!lines.length) state.narrativeDiagnostics.push({ reason: 'missing-npc-text', id, sources });
+            const groupId = `${environment ? 'npc_env' : 'npc_dialog'}:${id}`;
+            const names = [...new Set(sources.map(source => gameText(raw.TextTable?.[`npcName_${source.npcNameId}`])).filter(Boolean))];
+            const preview = gamePlainText(gameText(lines[0]?.dialogText));
+            const name = [names.join(' / '), preview].filter(Boolean).join(' · ') || t('readingList.unnamed', null, '任务文本');
+            const group = { firstLvId: groupId, categoryId: MAP_TEXT_CATEGORY_ID, name,
+                order: Number.MAX_SAFE_INTEGER, dialogId: id, npcSources: sources, environment };
+            mapText.groups[groupId] = group;
+            mapText.items[`${groupId}:entry`] = { ...group, id: `${groupId}:entry`, contentId: id, type: 'map_text', order: 0 };
+        };
+        npc.dialogs.forEach((sources, id) => appendNpc(id, sources, false));
+        npc.envTalks.forEach((sources, id) => appendNpc(id, sources, true));
+        for (const [id, references] of state.readingReferences) {
+            if (!raw.RichContentTable?.[id] && !raw.RadioTable?.[id]) state.narrativeDiagnostics.push({ reason: 'missing-reading-content', id, references });
+        }
         state.tables = {
             pages: {
                 ...(raw.PrtsPage || {}),
@@ -1546,12 +1568,16 @@
             </div>`;
         }).join('');
         const title = showTechnicalIds() ? item.contentId : itemDisplayName(item);
+        const npcSources = item.npcSources ? `<div class="ake-ui-section__meta">${t(item.environment ? 'npc.environment' : 'npc.dialog')}${item.npcSources.map(source => {
+            const mission = source.indexedMission ? window.AKEUI.entryLinkHtml({ plugin: 'v3_mission', id: source.missionId, label: source.missionName || t('npc.mission') }) : '';
+            return `<div>${[escapeHtml(source.npcName), escapeHtml(source.levelName), mission].filter(Boolean).join(' · ')}</div>`;
+        }).join('')}</div>` : '';
         const sourceMeta = showTechnicalIds()
-            ? `<p class="ake-ui-section__meta">${escapeHtml(item.levelDataPath)}</p>`
+            ? `<p class="ake-ui-section__meta">${escapeHtml(item.levelDataPath || '')}${item.npcSources ? escapeHtml(JSON.stringify(item.npcSources)) : ''}</p>`
             : '';
         return `<section class="akearchive-transcript ake-ui-section">
             <header class="ake-ui-section__header">
-                <div><h2 class="ake-ui-section__title">${gameHtml(title)}</h2>${sourceMeta}</div>
+                <div><h2 class="ake-ui-section__title">${gameHtml(title)}</h2>${npcSources}${sourceMeta}</div>
                 <span class="ake-ui-section__meta">${escapeHtml(tr('counts.entries', { count: lines.length }, `${lines.length} 条记录`))}</span>
             </header>
             <div class="akearchive-transcript-list">${lineHtml || `<div class="ake-ui-state" data-state="empty"><div><p>${escapeHtml(t('mapText.missingDialog', null, 'DialogTextTable 中未找到对应文本'))}</p></div></div>`}</div>
@@ -1971,7 +1997,9 @@
             if (state.disposed || token !== state.loadToken) return;
             const raw = Object.fromEntries(TABLE_NAMES.map((name, index) => [name, loaded[index]]));
             prepareVersionChanges(raw, baselineRaw, comparison);
-            prepareTables(raw, assetIndex);
+            const npc = await window.akeAssetIndex.npcNarratives(assetIndex);
+            if (state.disposed || token !== state.loadToken) return;
+            prepareTables(raw, assetIndex, npc);
             const levelDataRecords = Object.entries(assetIndex?.datasets?.json?.files || {})
                 .filter(([path]) => path.startsWith('LevelData/') && path.toLowerCase().endsWith('.json'));
             state.oemPoints = new Map();
@@ -1986,6 +2014,10 @@
                     if (!indexedPoints.has(prtsId)) indexedPoints.set(prtsId, []);
                     if (!indexedPoints.get(prtsId).includes(logicId)) indexedPoints.get(prtsId).push(logicId);
                 });
+            });
+            state.itemMap.forEach(item => {
+                const ids = (item.readingReferences || []).map(ref => ref.logicId).filter(id => window.AKEV3.pointShareUrl?.(id));
+                if (ids.length) indexedPoints.set(item.id, [...new Set([...(indexedPoints.get(item.id) || []), ...ids])]);
             });
             indexedPoints.forEach((ids, prtsId) => state.oemPoints.set(prtsId, ids.sort((a, b) => a - b)));
             renderDirectories();
@@ -2028,6 +2060,7 @@
     mobileViewport.addEventListener?.('change', onViewportChange);
 
     window.__akeArchiveController = {
+        getDiagnostics: () => structuredClone(state.narrativeDiagnostics || []),
         destroy() {
             window.AKEVoicePlayer?.stop();
             state.disposed = true;

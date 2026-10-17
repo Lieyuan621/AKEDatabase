@@ -288,13 +288,13 @@
                 }
             }
         }
-        if (['PrtsAllItem', 'PrtsFirstLv', 'PrtsReading', 'RichContentTable'].includes(source) && has('v3_archive')) {
+        if (['PrtsAllItem', 'PrtsFirstLv', 'PrtsReading', 'RichContentTable', 'RadioTable', 'ReadingPopUpTable'].includes(source) && has('v3_archive')) {
             const items = await table('PrtsAllItem');
             if (source === 'PrtsAllItem') add('v3_archive', row.id || key, title(row));
             else if (source === 'PrtsFirstLv') add('v3_archive', row.firstLvId || key, title(row));
             else {
                 const reading = source === 'PrtsReading' && parts[1] === 'list' ? row.list?.[parts[2]] : null;
-                const contentId = source === 'RichContentTable' ? key : reading?.contentId;
+                const contentId = ['RichContentTable', 'RadioTable'].includes(source) ? key : source === 'ReadingPopUpTable' ? row.contentId : reading?.contentId;
                 if (contentId) {
                     const linked = entries(items).filter(([, item]) => item.contentId === contentId || (reading?.prtsId && item.id === reading.prtsId));
                     for (const [id, item] of linked) add('v3_archive', item.id || id, title(item));
@@ -305,7 +305,30 @@
                         for (const [sourceId, collection] of readings) for (const [listId, entry] of entries(collection.list)) {
                             if (entry.contentId === contentId) add('v3_archive', `reading_list:${sourceId}:${entry.uniqId || listId || contentId}:entry`, title(entry) || title(row));
                         }
+                        const hasReading = readings.some(([, collection]) => entries(collection.list).some(([, entry]) => entry.contentId === contentId));
+                        if (!hasReading && window.akeAssetIndex?.readingReferences) {
+                            const index = await window.akeAssetIndex.ready;
+                            const refs = window.akeAssetIndex.readingReferences(index, await table('ReadingPopUpTable'));
+                            if (refs.byContentId.has(contentId)) add('v3_archive', `reading_list:orphan:${contentId}:entry`, title(row));
+                        }
                     }
+                }
+            }
+        }
+        if ((['DialogTextTable', 'EnvTalkTable'].includes(source) || (source === 'TextTable' && key.startsWith('npcName_'))) && has('v3_archive') && window.akeAssetIndex?.npcNarratives) {
+            const index = await window.akeAssetIndex.ready;
+            const npc = await window.akeAssetIndex.npcNarratives(index);
+            if (source === 'TextTable') {
+                const nameId = key.slice('npcName_'.length);
+                for (const [id, sources] of npc.dialogs) if (sources.some(source => source.npcNameId === nameId)) add('v3_archive', `npc_dialog:${id}:entry`, plain(row));
+                for (const [id, sources] of npc.envTalks) if (sources.some(source => source.npcNameId === nameId)) add('v3_archive', `npc_env:${id}:entry`, plain(row));
+            }
+            if (source === 'EnvTalkTable' && npc.envTalks.has(key)) add('v3_archive', `npc_env:${key}:entry`, title(row));
+            if (source === 'DialogTextTable') {
+                const id = /^(dlg_.+)_\d+$/.exec(key)?.[1];
+                if (id && npc.dialogs.has(id)) add('v3_archive', `npc_dialog:${id}:entry`, plain(row.dialogText));
+                for (const [path, record] of entries(index.datasets.json?.files)) {
+                    if (path.startsWith('LevelData/') && record.meta?.narrativeDialogIds?.includes(id)) add('v3_archive', `map_text:${path}:${id}:entry`, plain(row.dialogText));
                 }
             }
         }

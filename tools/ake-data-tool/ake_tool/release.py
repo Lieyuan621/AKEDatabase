@@ -31,6 +31,7 @@ from .config import AppConfig
 from .errors import AkeToolError, CancelledError, ValidationError
 from .asset_index import (
     index_digest,
+    _json_meta,
     merge_asset_index,
     plan_dataset_changes,
     scan_selected_dataset,
@@ -793,6 +794,59 @@ class ReleaseManager:
     @staticmethod
     def _asset_index_digest(value: dict[str, Any]) -> str:
         return index_digest(value)
+
+    def plan_narrative_metadata_refresh(self) -> dict[str, Any]:
+        """Read-only plan: regenerate metadata only for byte-identical indexed Json."""
+        remote = self._read_remote_asset_index_exact()
+        updates = {}
+        for relative, record in remote.get("datasets", {}).get("json", {}).get("files", {}).items():
+            if not relative.startswith(("LevelData/", "LevelScriptData/")) or not relative.lower().endswith(".json"):
+                continue
+            self.token.raise_if_cancelled()
+            root = (self.config.public_root / "Json").resolve()
+            path = (root / relative).resolve()
+            if root not in path.parents or not path.is_file() or path.is_symlink():
+                raise ValidationError(f"索引刷新缺少可信本地文件：{relative}")
+            content = path.read_bytes()
+            if len(content) != record["size"] or hashlib.md5(content).hexdigest() != record["md5"]:
+                raise ValidationError(f"本地内容与远端索引不一致，不能仅刷新元数据：{relative}")
+            generated = _json_meta(path, relative) or {}
+            # Preserve unrelated metadata, including historical mine addedVersion.
+            metadata = deepcopy(record.get("meta") or {})
+            for field in ("narrativeMetadataVersion", "narrativeReadingReferences", "narrativeReadingContentIds", "narrativeReadingUniqIds"):
+                if field in generated:
+                    metadata[field] = generated[field]
+            if metadata != record.get("meta"):
+                updates[relative] = metadata
+        return {"kind": "narrative-metadata-only", "remote": self.asset_index_remote,
+                "beforeDigest": index_digest(remote), "beforeRevision": remote["revision"],
+                "updates": updates, "uploadContent": [], "deletePaths": []}
+
+    def apply_narrative_metadata_refresh(self, plan: dict[str, Any]) -> dict[str, Any]:
+        if plan.get("kind") != "narrative-metadata-only" or plan.get("remote") != self.asset_index_remote:
+            raise ValidationError("索引刷新计划身份不匹配")
+        # Re-plan before mutation to detect changed local inputs and remote state.
+        current = self.plan_narrative_metadata_refresh()
+        if current != plan:
+            raise ValidationError("索引刷新计划已过期，请重新生成")
+        remote = self._read_remote_asset_index_exact()
+        if index_digest(remote) != plan["beforeDigest"]:
+            raise ValidationError("远端索引已变化")
+        if not plan["updates"]:
+            return {"updated": 0, "revision": remote["revision"]}
+        for path, metadata in plan["updates"].items():
+            remote["datasets"]["json"]["files"][path]["meta"] = metadata
+        now = datetime.now(timezone.utc).isoformat()
+        remote["revision"] = now
+        remote["updatedAt"] = now
+        validate_level_data_dialog_metadata(remote)
+        if self.before_index_upload is not None:
+            self.before_index_upload()
+        self._upload_remote_asset_index(remote)
+        verified = self._read_remote_asset_index_exact()
+        if index_digest(verified) != index_digest(remote):
+            raise ValidationError("索引上传后回读不一致")
+        return {"updated": len(plan["updates"]), "revision": now, "digest": index_digest(verified)}
 
     def _asset_specs(self, include_json: bool, include_images: bool) -> list[dict[str, Any]]:
         specs: list[dict[str, Any]] = []
