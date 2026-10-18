@@ -16,6 +16,8 @@
         let searchTerm = '';
         let currentCharacter = null;
         let currentCharData = null;
+        let detailGeneration = 0;
+        let disposeModelViewer = null;
         let charLevelsToShow = null;
         let skillLevelsToShow = null;
         let globalSkillExpand = false;
@@ -611,6 +613,9 @@
         }
 
         async function loadCharacterDetail(character, container) {
+            const generation = ++detailGeneration;
+            disposeModelViewer?.();
+            disposeModelViewer = null;
             window.AKEVoicePlayer?.stop();
             container.__akeCharacterDetailNavCleanup?.();
             container.innerHTML = `<div class="ake-ui-state" data-state="loading">${t('loading')}</div>`;
@@ -618,6 +623,7 @@
                 const fileName = (character.contentFile || '').split('/').pop() || `${character.charId}.json`;
                 const contentFile = `/public/CH/v2_character/${fileName}`;
                 const rawData = await (window.akeFetch || fetch)(contentFile).then(r => r.json());
+                if (generation !== detailGeneration || !container.isConnected) return;
                 const data = normalizeV2ToLegacy(character, rawData);
                 currentCharData = data;
                 currentCharacter = character;
@@ -627,6 +633,10 @@
                     : null;
                 window.AKEModuleOverview?.renderVersionDiff(container, rawData, baselineData ? renderDetail(baselineData) : '');
                 initCharacterDetailNav(container);
+                const modelSlot = container.querySelector('[data-character-model-slot]');
+                if (modelSlot && window.akeMountCharacterModelViewer) {
+                    disposeModelViewer = window.akeMountCharacterModelViewer(modelSlot, character.charId);
+                }
 
                 const globalSkillBtn = container.querySelector('.global-skill-toggle-btn');
                 if (globalSkillBtn) {
@@ -674,6 +684,7 @@
                     });
                 });
             } catch (err) {
+                if (generation !== detailGeneration || !container.isConnected) return;
                 const error = document.createElement('div');
                 error.className = 'ake-ui-state';
                 error.dataset.state = 'error';
@@ -1919,6 +1930,20 @@
                 ${trainingMaterialsHtml(data.trainingmaterials, itemInfoMap, t('sections.trainingMaterials'))}
                 <div class="character-archive-stack" id="character-archive">
                     ${potentialPicsHtml}
+                    ${window.akeMountCharacterModelViewer ? `<div class="ake-ui-section collapsible-section">
+                        <div class="ake-ui-section__header">
+                            <button class="character-collapse-toggle" type="button" aria-expanded="false">
+                                <span class="ake-ui-section__title">${window.akeI18n.scope('modules.modelViewer')('title')}</span>
+                                <span class="collapse-indicator" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="collapse-content">
+                            <div data-character-model-slot>
+                                <button class="ake-ui-button ake-ui-button--primary" data-load-character-model type="button">${window.akeI18n.scope('modules.modelViewer')('load')}</button>
+                                <span data-model-error role="status"></span>
+                            </div>
+                        </div>
+                    </div>` : ''}
                     <div class="ake-ui-section collapsible-section">
                         <div class="ake-ui-section__header">
                             <button class="character-collapse-toggle" type="button" aria-expanded="false">
