@@ -430,6 +430,7 @@ window.AKESearchIndex = {
     "coverage": "Prts tables, indexed LevelData/LevelScriptData reading references and GameplayConfig NPC dialog/environment references; unindexed Json content is not covered."
   },
   "v3_cc": {
+    "coverage": "Activity gameId -> contractGroupMap.contractMap.tagId; task configs are scoped by activityId and grouped by taskGroupId. Missing tagTerms are reported; BuffData defaults are not substituted for missing effect parameters.",
     "tables": [
       "ActivityConditionalMultiStageTaskConfigTable",
       "ActivityContingencyContractTable",

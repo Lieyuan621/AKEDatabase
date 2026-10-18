@@ -266,6 +266,24 @@
         if (source === 'ActivityContingencyContractTable' && has('v3_cc')) {
             add('v3_cc', row.gameId, title((await table('ActivityTable'))[row.activityId]));
         }
+        if (has('v3_cc') && (
+            (source === 'CcTagTable' && ['name', 'desc'].includes(field))
+            || (source === 'ActivityContingencyContractTaskGroupTable' && field === 'name')
+            || (source === 'ActivityConditionalMultiStageTaskConfigTable' && field === 'TaskConfigMap' && parts.includes('desc'))
+        )) {
+            const activityContracts = entries(await table('ActivityContingencyContractTable'));
+            const contracts = source === 'CcTagTable' ? await table('ContingencyContractTable') : {};
+            const configs = source === 'ActivityContingencyContractTaskGroupTable' ? await table('ActivityConditionalMultiStageTaskConfigTable') : {};
+            const activities = await table('ActivityTable');
+            for (const [, activity] of activityContracts) {
+                const matches = source === 'CcTagTable'
+                    ? Object.values(contracts[activity.gameId]?.contractGroupMap || {}).some(group => Object.values(group.contractMap || {}).some(tag => String(tag.tagId) === key))
+                    : source === 'ActivityContingencyContractTaskGroupTable'
+                        ? Object.values(configs[activity.activityId]?.TaskConfigMap || {}).some(task => task.taskGroupId === key)
+                        : activity.activityId === key;
+                if (matches) add('v3_cc', activity.gameId, title(activities[activity.activityId]));
+            }
+        }
         if (source === 'LevelDescTable' && has('region')) {
             for (const [id, domain] of entries(await table('DomainDataTable'))) {
                 if ((domain.levelGroup || []).includes(key)) add('region', id, title(domain));
