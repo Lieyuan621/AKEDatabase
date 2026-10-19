@@ -72,9 +72,7 @@
         'ReadingPopUpIconTable',
         'DialogTextTable',
         'PrtsReading',
-        'LevelDescTable',
-        'EnvTalkTable',
-        'TextTable'
+        'LevelDescTable'
     ]);
 
     const state = {
@@ -187,7 +185,6 @@
     }
 
     function groupSecondary(group, page, item) {
-        if (group?.npcSources) return t(group.environment ? 'npc.environment' : 'npc.dialog', null, group.environment ? '环境台词' : 'NPC 对话');
         if (group?.categoryId === READING_LIST_CATEGORY_ID) {
             const subtitle = gameText(group?.subName)
                 || t('readingList.category', null, '任务文本');
@@ -472,7 +469,6 @@
         state.groups.forEach(group => {
             const groupItems = items.filter(item => String(item?.firstLvId || '') === String(group.firstLvId || ''));
             const values = [
-                ...(group.npcSources || []).map(source => source.levelId),
                 group.firstLvId,
                 group.contentId,
                 group.levelDataPath,
@@ -1041,37 +1037,9 @@
         if (unresolved.length) console.warn('Archive investigations contain unresolved references', unresolved);
     }
 
-    function prepareTables(raw, assetIndex, npc) {
+    function prepareTables(raw, assetIndex) {
         const mapText = mapTextRecords(raw.DialogTextTable || {}, assetIndex);
         const supplementalReading = supplementalReadingRecords(raw, assetIndex);
-        state.narrativeDiagnostics.push(...npc.diagnostics);
-        const appendNpc = (id, sources, environment) => {
-            sources = sources.map(source => {
-                const mission = assetIndex.datasets.json?.files?.[`MissionRuntimeAsset/${source.missionId}.json`];
-                return { ...source,
-                    npcName: gameText(raw.TextTable?.[`npcName_${source.npcNameId}`]),
-                    levelName: gameText(raw.LevelDescTable?.[source.levelId]?.showName),
-                    missionName: gameText(raw.TextTable?.[mission?.meta?.missionName?.key]),
-                    indexedMission: Boolean(mission) };
-            });
-            const lines = environment ? (raw.EnvTalkTable?.[id]?.envTalkDataList || []).map((line, index) => ({
-                rowId: `${id}:${index}`, rowNumber: line.index ?? index,
-                actorName: raw.TextTable?.[`npcName_${line.actorId}`], actorNameId: line.actorId,
-                dialogText: line.text, audioOverride: line.audio
-            })).sort((a, b) => a.rowNumber - b.rowNumber) : mapText.dialogLinesById.get(id) || [];
-            if (environment) mapText.dialogLinesById.set(id, lines);
-            if (!lines.length) state.narrativeDiagnostics.push({ reason: 'missing-npc-text', id, sources });
-            const groupId = `${environment ? 'npc_env' : 'npc_dialog'}:${id}`;
-            const names = [...new Set(sources.map(source => gameText(raw.TextTable?.[`npcName_${source.npcNameId}`])).filter(Boolean))];
-            const preview = gamePlainText(gameText(lines[0]?.dialogText));
-            const name = [names.join(' / '), preview].filter(Boolean).join(' · ') || t('readingList.unnamed', null, '任务文本');
-            const group = { firstLvId: groupId, categoryId: MAP_TEXT_CATEGORY_ID, name,
-                order: Number.MAX_SAFE_INTEGER, dialogId: id, npcSources: sources, environment };
-            mapText.groups[groupId] = group;
-            mapText.items[`${groupId}:entry`] = { ...group, id: `${groupId}:entry`, contentId: id, type: 'map_text', order: 0 };
-        };
-        npc.dialogs.forEach((sources, id) => appendNpc(id, sources, false));
-        npc.envTalks.forEach((sources, id) => appendNpc(id, sources, true));
         for (const [id, references] of state.readingReferences) {
             if (!raw.RichContentTable?.[id] && !raw.RadioTable?.[id]) state.narrativeDiagnostics.push({ reason: 'missing-reading-content', id, references });
         }
@@ -1568,16 +1536,12 @@
             </div>`;
         }).join('');
         const title = showTechnicalIds() ? item.contentId : itemDisplayName(item);
-        const npcSources = item.npcSources ? `<div class="ake-ui-section__meta">${t(item.environment ? 'npc.environment' : 'npc.dialog')}${item.npcSources.map(source => {
-            const mission = source.indexedMission ? window.AKEUI.entryLinkHtml({ plugin: 'v3_mission', id: source.missionId, label: source.missionName || t('npc.mission') }) : '';
-            return `<div>${[escapeHtml(source.npcName), escapeHtml(source.levelName), mission].filter(Boolean).join(' · ')}</div>`;
-        }).join('')}</div>` : '';
         const sourceMeta = showTechnicalIds()
-            ? `<p class="ake-ui-section__meta">${escapeHtml(item.levelDataPath || '')}${item.npcSources ? escapeHtml(JSON.stringify(item.npcSources)) : ''}</p>`
+            ? `<p class="ake-ui-section__meta">${escapeHtml(item.levelDataPath || '')}</p>`
             : '';
         return `<section class="akearchive-transcript ake-ui-section">
             <header class="ake-ui-section__header">
-                <div><h2 class="ake-ui-section__title">${gameHtml(title)}</h2>${npcSources}${sourceMeta}</div>
+                <div><h2 class="ake-ui-section__title">${gameHtml(title)}</h2>${sourceMeta}</div>
                 <span class="ake-ui-section__meta">${escapeHtml(tr('counts.entries', { count: lines.length }, `${lines.length} 条记录`))}</span>
             </header>
             <div class="akearchive-transcript-list">${lineHtml || `<div class="ake-ui-state" data-state="empty"><div><p>${escapeHtml(t('mapText.missingDialog', null, 'DialogTextTable 中未找到对应文本'))}</p></div></div>`}</div>
@@ -1997,9 +1961,7 @@
             if (state.disposed || token !== state.loadToken) return;
             const raw = Object.fromEntries(TABLE_NAMES.map((name, index) => [name, loaded[index]]));
             prepareVersionChanges(raw, baselineRaw, comparison);
-            const npc = await window.akeAssetIndex.npcNarratives(assetIndex);
-            if (state.disposed || token !== state.loadToken) return;
-            prepareTables(raw, assetIndex, npc);
+            prepareTables(raw, assetIndex);
             const levelDataRecords = Object.entries(assetIndex?.datasets?.json?.files || {})
                 .filter(([path]) => path.startsWith('LevelData/') && path.toLowerCase().endsWith('.json'));
             state.oemPoints = new Map();

@@ -116,69 +116,8 @@
         return { byContentId, byUniqId, diagnostics };
     }
 
-    const npcPromises = new Map();
-    async function npcNarratives(index) {
-        const state = await window.akeDataSource.ready;
-        const cacheKey = `${state.baseUrl}|${index.revision}`;
-        if (!npcPromises.has(cacheKey)) npcPromises.set(cacheKey, (async () => {
-            const diagnostics = [];
-            const names = ['NpcProxyTable', 'NpcProxyExDataTable', 'WorldEntityRegistry'];
-            const data = await Promise.all(names.map(async name => {
-                const path = `GameplayConfig/${name}.json`;
-                if (!index.datasets.json?.files?.[path]) {
-                    diagnostics.push({ reason: 'unindexed-npc-source', path });
-                    return {};
-                }
-                const response = await (window.akeFetch || fetch)(contentFile(path));
-                if (!response.ok) throw new Error(`${path}: HTTP ${response.status}`);
-                const payload = await response.json();
-                const fields = name === 'NpcProxyTable' ? ['dataTable'] : name === 'NpcProxyExDataTable' ? ['data', 'proxyInfoData'] : ['npcProxyBriefInfos'];
-                if (!payload || fields.some(field => !payload[field] || typeof payload[field] !== 'object' || Array.isArray(payload[field]))) {
-                    throw new Error(`Invalid NPC source: ${path}`);
-                }
-                return payload;
-            }));
-            const [proxyTable, ex, world] = data;
-            const proxies = proxyTable.dataTable || {};
-            const locations = new Map();
-            for (const [entityId, row] of Object.entries(world.npcProxyBriefInfos || {})) {
-                if (!locations.has(row.proxyId)) locations.set(row.proxyId, []);
-                locations.get(row.proxyId).push({ entityId, ...row });
-            }
-            const dialogs = new Map(), envTalks = new Map();
-            const add = (target, id, source) => {
-                if (!id) return;
-                if (!target.has(id)) target.set(id, []);
-                const rows = target.get(id);
-                if (!rows.some(row => JSON.stringify(row) === JSON.stringify(source))) rows.push(source);
-            };
-            const sourceFor = (proxyId, extra = {}) => ({ proxyId, ...ex.proxyInfoData?.[proxyId],
-                levelId: proxies[proxyId]?.levelId || '', position: proxies[proxyId]?.position,
-                locations: locations.get(proxyId) || [], ...extra });
-            for (const [proxyId, rows] of Object.entries(ex.data || {})) {
-                if (!Array.isArray(rows)) throw new Error(`Invalid NPC dialogue list: ${proxyId}`);
-                if (!ex.proxyInfoData?.[proxyId]) diagnostics.push({ reason: 'missing-npc-identity', proxyId });
-                for (const row of rows) {
-                    const source = sourceFor(proxyId, { missionId: row.missionId || '', phase: 'configured' });
-                    add(dialogs, row.dialogId, source);
-                    for (const id of row.envTalkData?.envTalkIds || []) add(envTalks, id, source);
-                    if (row.addDialogExOption || row.dialogExOptionData?.length) diagnostics.push({ reason: 'unmapped-dialog-options', proxyId, row });
-                }
-            }
-            for (const [proxyId, row] of Object.entries(proxies)) {
-                for (const id of row.envTalkIds || []) add(envTalks, id, sourceFor(proxyId, { phase: 'default' }));
-                const source = sourceFor(proxyId, { phase: 'lazy-destroy', enabled: row.lazyDestroy });
-                add(dialogs, row.lazyDestroyOverrideDialogId, source);
-                for (const id of row.lazyDestroyEnvTalkData?.envTalkIds || []) add(envTalks, id, source);
-            }
-            return { dialogs, envTalks, diagnostics };
-        })().catch(error => { npcPromises.delete(cacheKey); throw error; }));
-        return npcPromises.get(cacheKey);
-    }
-
     window.akeAssetIndex = {
         readingReferences,
-        npcNarratives,
         get ready() { return load(); },
         load,
         async listJsonFiles(prefix, options) {

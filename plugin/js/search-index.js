@@ -404,8 +404,6 @@ window.AKESearchIndex = {
   "v3_archive": {
     "tables": [
       "DialogTextTable",
-      "EnvTalkTable",
-      "TextTable",
       "DomainDataTable",
       "LevelDescTable",
       "PrtsAllItem",
@@ -427,7 +425,7 @@ window.AKESearchIndex = {
       "plugin/js/ake-asset-index.js",
       "plugin/v3_archive.html"
     ],
-    "coverage": "Prts tables, indexed LevelData/LevelScriptData reading references and GameplayConfig NPC dialog/environment references; unindexed Json content is not covered."
+    "coverage": "Prts tables and indexed LevelData/LevelScriptData narrative references; GameplayConfig NPC dialogue and ambient dialogue are outside archive coverage."
   },
   "v3_cc": {
     "coverage": "Activity gameId -> contractGroupMap.contractMap.tagId; task configs are scoped by activityId and grouped by taskGroupId. Missing tagTerms are reported; BuffData defaults are not substituted for missing effect parameters.",
