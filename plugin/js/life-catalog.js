@@ -271,10 +271,10 @@
                 icon: item?.iconId ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${item.iconId}.png` : undefined };
         }));
     }
-    function mount(module) {
+    function mount(module, presentation = {}) {
         return window.AKECatalog.mount({ id: module, tables: tables(module), primary: definitions[module].map(([, s]) => s), itemIcons: true,
-            build: c => build(module, c), render: (e, c) => ({ inn: renderInn, farming: renderFarming, gamble: renderGamble })[module](e, c) });
+            build: c => build(module, c), render: (e, c) => ({ inn: renderInn, farming: renderFarming, gamble: renderGamble })[module](e, c), ...presentation });
     }
     const tables = module => [...new Set(['ItemTable', 'RewardTable', ...definitions[module].map(([, s]) => s), ...dependencies[module]])];
-    window.AKELifeCatalog = { mount, definitions, tables, textFields };
+    window.AKELifeCatalog = { mount, definitions, tables, textFields, build, renderGamble };
 })();

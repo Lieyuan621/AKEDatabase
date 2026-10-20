@@ -15,7 +15,7 @@ window.AKESearchIndex = {
   "gamble": {
     "tables": ["ItemTable", "RewardTable", "GambleBattleHandTypeTable", "GambleBattleCardTable", "GambleBattleCardPoolTable", "GambleBattleEnemyBuffTable", "ActivityCommonUIMilestoneTable", "GambleBattleHandTypePoolTable", "GambleBattleConst", "ActivityCommonCoinRewardTable", "EnemyTable", "EnemyTemplateDisplayInfoTable", "ActivityTable", "DungeonTable", "TimeRangeTable"],
     "sources": ["plugin/gamble.html", "plugin/js/gamble.js", "plugin/js/life-catalog.js", "plugin/js/ake-catalog.js"],
-    "coverage": "Configured hands, enemy cards, pools, effects and milestones. Pool membership does not establish live activity-stage membership."
+    "coverage": "Six category entries contain configured hands, enemy cards, pools, effects, milestones and opening periods. Stable kind:source-key routes focus the original record inside its category. Pool membership does not establish live activity-stage membership."
   },
   "search": {
     "tables": [],

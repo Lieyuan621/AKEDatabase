@@ -166,3 +166,10 @@
         --tech-border: #4b5865;
     }
 }
+
+@scope (body[data-ake-module="gamble"]) {
+    .ake-ui-directory {
+        --gamble-tile-bg: var(--ake-ui-surface-muted);
+        --gamble-symbol-filter: brightness(0) invert(1) opacity(.8);
+    }
+}

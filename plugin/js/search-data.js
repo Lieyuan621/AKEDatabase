@@ -127,6 +127,8 @@
         for (const [module, prefix] of direct[source] || []) add(module, prefix + key, title(row));
 
         // The catalogue owns stable routes and explicitly displayed text fields.
+        // Gamble keeps kind:source-key targets: its grouped view opens the category
+        // and focuses that record. Do not merge distinct hits into category routes.
         const life = window.AKELifeCatalog;
         if (life) {
             for (const [module, definitions] of Object.entries(life.definitions)) {
