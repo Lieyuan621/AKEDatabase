@@ -17,9 +17,6 @@
         --combatv3-node-other: #aab4bd;
     }
 }
-@scope (body[data-ake-module="monument"]) {
-    .v2d-series-banner { --monument-banner-fade-color: #171717; }
-}
 :root {
     --sidebar-bg: #121212;
     --border-color: #343434;
@@ -100,6 +97,8 @@
     --ake-ui-surface: var(--module-bg);
     --ake-ui-surface-muted: var(--sidebar-bg);
     --ake-ui-surface-hover: var(--active-bg);
+    --ake-ui-timeline-track: #383f47;
+    --ake-ui-timeline-fill: var(--accent-color);
     --ake-ui-border: 1px solid var(--border-color);
     --ake-ui-shadow-hover: 0 8px 22px rgba(0, 0, 0, .34);
     --ake-rarity-1: #9a9a9a;

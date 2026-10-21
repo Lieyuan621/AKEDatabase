@@ -317,7 +317,7 @@
         const configs = Object.values(dungeon.spawnerConfigs || {});
         const fallbackEnemies = (dungeon.enemyIds || []).map((id, index) => ({ id, level: dungeon.enemyLevels?.[index] || dungeon.recommendLv, buffs: [] }));
         if (!configs.length && !fallbackEnemies.length) return '';
-        return `<details class="st-combat" data-game-id="${escapeHtml(gameId)}"${isHighestDifficulty ? ' data-default-open="true"' : ''}${openByDefault ? ' open' : ''}><summary>${escapeHtml(t('combat'))}${configs.length ? escapeHtml(t('groups', { count: configs.length })) : ''}</summary><div class="st-combat-body"><span class="st-muted">${escapeHtml(t('combatLoading'))}</span></div></details>`;
+        return `<details class="ake-ui-details st-combat" data-game-id="${escapeHtml(gameId)}"${isHighestDifficulty ? ' data-default-open="true"' : ''}${openByDefault ? ' open' : ''}><summary><span>${escapeHtml(t('combat'))}${configs.length ? escapeHtml(t('groups', { count: configs.length })) : ''}</span>${window.AKEUI.icon('disclosure').outerHTML}</summary><div class="st-combat-body"><span class="st-muted">${escapeHtml(t('combatLoading'))}</span></div></details>`;
     }
 
     function renderCombatBody(dungeon, data) {
@@ -331,9 +331,27 @@
             const scriptedBuffs = data.scriptBuffs[dungeon.sceneId]?.[config.configId] || [];
             const unique = [...new Map(waves.flatMap(wave => wave.enemies).map(enemy => [enemy.id, enemy])).values()];
             const mapHtml = renderSpawnMap(waves, data);
+            const waveCards = waves.map((wave, waveIndex) => window.AKEUI.waveCard({
+                index: waveIndex,
+                label: t('wave', { id: wave.waveId }),
+                active: waveIndex === 0,
+                flags: [
+                    wave.repeatable && t('repeatable'),
+                    wave.maxAlive > 0 && t('alive', { count: wave.maxAlive }),
+                    wave.externallyControlled && t('external')
+                ],
+                enemies: wave.enemies.map(enemy => ({
+                    id: enemy.id,
+                    name: text(data.enemyDisplay[data.enemies[enemy.id]?.templateId]?.name,
+                        window.akeData?.getConfig?.().showHidden === true ? enemy.id : commonT('unknown')),
+                    count: enemy.count,
+                    level: enemy.level,
+                    iconSrc: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${enemy.templateId}.png`
+                }))
+            }).outerHTML).join('');
             return `<div class="st-config">
-                <div class="st-config-title"><code class="st-config-id">${escapeHtml(config.configId)}</code><span>${escapeHtml(t('waveSummary', { waves: waves.length, count: total }))}</span></div>
-                <div class="v2d-wave-map-row"><div class="v2d-wave-section"><div class="v2d-wave-detail">${waves.map((wave, waveIndex) => `<div class="v2d-wave-line${waveIndex === 0 ? ' active' : ''}" data-wave-idx="${waveIndex}"><span class="v2d-wave-num">${escapeHtml(t('wave', { id: wave.waveId }))}</span>${wave.repeatable ? `<span class="v2d-wave-repeat">${escapeHtml(t('repeatable'))}</span>` : ''}${wave.maxAlive ? `<span class="v2d-wave-alive">${escapeHtml(t('alive', { count: wave.maxAlive }))}</span>` : ''}${wave.externallyControlled ? `<span class="v2d-wave-pause">${escapeHtml(t('external'))}</span>` : ''}: ${wave.enemies.map(enemy => `<span class="v2d-wave-enemy" data-wave-idx="${waveIndex}" data-enemy-id="${escapeHtml(enemy.id)}"><img class="v2d-wave-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${escapeHtml(enemy.templateId)}.png" alt=""><span class="v2d-wave-ename">${escapeHtml(text(data.enemyDisplay[data.enemies[enemy.id]?.templateId]?.name, enemy.id))}</span> ×${enemy.count} <span class="v2d-wave-lv">Lv.${enemy.level}</span></span>`).join(' ')}</div>`).join('')}</div></div>${mapHtml}</div>
+                <div class="st-config-title"><span>${escapeHtml(t('waveSummary', { waves: waves.length, count: total }))}</span>${window.akeData?.getConfig?.().showHidden === true ? `<code class="st-config-id">${escapeHtml(config.configId)}</code>` : ''}</div>
+                <div class="v2d-wave-map-row"><div class="v2d-wave-section"><div class="v2d-wave-detail v2d-wave-detail--cards">${waveCards}</div></div>${mapHtml}</div>
                 <div class="ake-ui-card-grid" data-size="wide">${unique.map(enemy => renderEnemy(enemy.id, enemy.level, libraryBuffs[enemy.id] || [], scriptedBuffs, data)).join('')}</div>
             </div>`;
         }).join('');
@@ -409,8 +427,8 @@
         const status = seasonStatus(week);
         const open = status.key === 'active';
         const maxStars = week.groupIds.reduce((sum, id) => sum + Math.max(0, ...Object.keys(data.gameGroups[id]?.stars || {}).map(Number)), 0);
-        return `<details class="st-week st-week--${status.key}" data-week-id="${escapeHtml(week.id)}"${open ? ' open' : ''}>
-            <summary class="st-week-head"><div><h2>${escapeHtml(week.name)}</h2><small>${escapeHtml(t('weekSummary', { index: index + 1, count: week.groupIds.length, stars: maxStars }))}</small></div><div class="st-week-time"><b class="st-week-status">${status.label}</b><span>${formatDate(week.openTime)}</span><i></i><span>${formatDate(week.closeTime)}</span></div></summary>
+        return `<details class="ake-ui-details st-week st-week--${status.key}" data-week-id="${escapeHtml(week.id)}"${open ? ' open' : ''}>
+            <summary class="st-week-head"><div><h2>${escapeHtml(week.name)}</h2><small>${escapeHtml(t('weekSummary', { index: index + 1, count: week.groupIds.length, stars: maxStars }))}</small></div><div class="st-week-time"><b class="st-week-status">${status.label}</b><span>${formatDate(week.openTime)}</span><i></i><span>${formatDate(week.closeTime)}</span></div>${window.AKEUI.icon('disclosure').outerHTML}</summary>
             <div class="st-week-body"><div class="ake-ui-card-grid" data-size="full">${week.groupIds.map(id => renderStage(id, data, open)).join('')}</div></div>
         </details>`;
     }
@@ -526,7 +544,7 @@
     }
 
     function switchWave(config, waveIndex) {
-        config.querySelectorAll('.v2d-wave-line').forEach(line => line.classList.toggle('active', line.dataset.waveIdx === waveIndex));
+        config.querySelectorAll('.v2d-wave-line').forEach(line => window.AKEUI.setWaveCardActive(line, line.dataset.waveIdx === waveIndex));
         config.querySelectorAll('.v2d-map-spot').forEach(spot => { spot.style.display = spot.dataset.wave === waveIndex ? '' : 'none'; });
     }
 

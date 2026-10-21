@@ -208,6 +208,8 @@
         const viewport = root.querySelector('[data-tech-viewport]'), svg = root.querySelector('[data-tech-svg]');
         const drawer = root.querySelector('[data-tech-drawer]'), planSelect = root.querySelector('[data-tech-plan]');
         const search = root.querySelector('[data-tech-search]'), statusLine = root.querySelector('[data-tech-status]');
+        root.querySelector('[data-tech-action="out"]')?.replaceChildren(window.AKEUI.icon('minus'));
+        root.querySelector('[data-tech-action="in"]')?.replaceChildren(window.AKEUI.icon('plus'));
         let rows = [], ctx, activeId = null, planId = null, graph, state = 'loading', disposed = false;
         let camera = { x: 0, y: 0, zoom: 1 }, pendingFit = true, frame = 0, iconGeneration = 0;
         let pendingNode = null, pendingLayer = null, restoringFocus = false;

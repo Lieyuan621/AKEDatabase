@@ -22,6 +22,8 @@
         english: ['voice.languages.english', '英语'],
         korean: ['voice.languages.korean', '韩语']
     });
+    const PLAY_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M7 4.5v15L19 12 7 4.5z"/></svg>';
+    const PAUSE_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><rect x="7" y="5" width="3" height="14" rx="1"/><rect x="14" y="5" width="3" height="14" rx="1"/></svg>';
     let activeAudio = null;
     let activeButton = null;
     function readStoredLanguage() {
@@ -54,7 +56,7 @@
     function setButtonState(button, state) {
         if (!button) return;
         const playing = state === 'playing';
-        button.innerHTML = playing ? '&#10074;&#10074;' : '&#9654;';
+        button.innerHTML = playing ? PAUSE_ICON : PLAY_ICON;
         button.setAttribute('aria-pressed', String(playing));
         button.setAttribute('aria-label', button.dataset[playing ? 'pauseLabel' : 'playLabel'] || 'Play voice');
         button.title = state === 'error'
@@ -93,13 +95,18 @@
 
     function languageControlHtml() {
         const label = window.akeData?.t?.('voice.language', null, '语音语言') || '语音语言';
-        const buttons = VOICE_LANGUAGES.map(language => {
+        const items = VOICE_LANGUAGES.map(language => {
             const [key, fallback] = LANGUAGE_LABEL_KEYS[language];
-            const text = window.akeData?.t?.(key, null, fallback) || fallback;
-            const active = language === selectedLanguage;
-            return `<button type="button" class="ake-ui-tabs__button${active ? ' is-active' : ''}" data-ake-voice-language="${language}" aria-pressed="${active}">${escapeHtml(text)}</button>`;
-        }).join('');
-        return `<div class="ake-ui-tabs" data-variant="segment" data-layout="equal" role="group" aria-label="${escapeHtml(label)}" data-ake-voice-language-control>${buttons}</div>`;
+            return {
+                label: window.akeData?.t?.(key, null, fallback) || fallback,
+                active: language === selectedLanguage,
+                attributes: { 'data-ake-voice-language': language }
+            };
+        });
+        return window.AKEUI.tabs({
+            role: 'group', label, variant: 'segment', layout: 'equal', attached: true, items,
+            attributes: { 'data-ake-voice-language-control': true }
+        }).outerHTML;
     }
 
     function toggle(button) {
@@ -173,7 +180,7 @@
         const playLabel = labels.play || 'Play voice';
         const pauseLabel = labels.pause || 'Pause voice';
         const errorLabel = labels.error || 'Voice playback failed';
-        return `<button type="button" class="ake-ui-icon-button" data-ake-voice-id="${escapeHtml(voId)}" data-play-label="${escapeHtml(playLabel)}" data-pause-label="${escapeHtml(pauseLabel)}" data-error-label="${escapeHtml(errorLabel)}" aria-label="${escapeHtml(playLabel)}" title="${escapeHtml(playLabel)}" aria-pressed="false">&#9654;</button>`;
+        return `<button type="button" class="ake-ui-icon-button" data-ake-voice-id="${escapeHtml(voId)}" data-play-label="${escapeHtml(playLabel)}" data-pause-label="${escapeHtml(pauseLabel)}" data-error-label="${escapeHtml(errorLabel)}" aria-label="${escapeHtml(playLabel)}" title="${escapeHtml(playLabel)}" aria-pressed="false">${PLAY_ICON}</button>`;
     }
 
     document.addEventListener('click', event => {

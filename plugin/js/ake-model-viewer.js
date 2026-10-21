@@ -28,6 +28,7 @@
     const category = root.querySelector('#modelViewerCategory');
     const animation = root.querySelector('#modelViewerAnimation');
     const state = root.querySelector('#modelViewerState');
+    const stateField = state?.closest('.model-viewer__field');
     const potential = root.querySelector('#modelViewerPotential');
     const potentialLabel = root.querySelector('#modelViewerPotentialLabel');
     const play = root.querySelector('#modelViewerPlay');
@@ -168,7 +169,8 @@
         const states = clip?.states || [];
         state.replaceChildren(new Option(t('selectState', null, '选择状态'), ''),
             ...states.map(entry => new Option(entry.name, entry.id)));
-        state.hidden = state.disabled = states.length === 0;
+        state.disabled = states.length === 0;
+        if (stateField) stateField.hidden = states.length === 0;
         if (states.length === 1) state.value = states[0].id;
     }
 
