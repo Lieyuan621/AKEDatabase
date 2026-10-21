@@ -757,29 +757,14 @@
         };
     }
 
-    function indexedReadingReferences(assetIndex) {
-        const byContentId = new Map();
-        const byUniqId = new Map();
-        const files = assetIndex?.datasets?.json?.files || {};
-        Object.entries(files)
-            .filter(([path]) => path.startsWith('LevelScriptData/') && path.toLocaleLowerCase().endsWith('.json'))
-            .sort(([a], [b]) => a.localeCompare(b, 'en'))
-            .forEach(([path, record]) => {
-                const meta = record?.meta || {};
-                (Array.isArray(meta.narrativeReadingContentIds) ? meta.narrativeReadingContentIds : []).forEach(contentId => {
-                    const key = String(contentId || '');
-                    if (!/^(?:text|radio)_/.test(key)) return;
-                    if (!byContentId.has(key)) byContentId.set(key, []);
-                    byContentId.get(key).push(path);
-                });
-                (Array.isArray(meta.narrativeReadingUniqIds) ? meta.narrativeReadingUniqIds : []).forEach(uniqId => {
-                    const key = String(uniqId || '');
-                    if (!key) return;
-                    if (!byUniqId.has(key)) byUniqId.set(key, []);
-                    byUniqId.get(key).push(path);
-                });
-            });
-        return { byContentId, byUniqId };
+    function indexedReadingReferences(assetIndex, popups) {
+        const refs = window.akeAssetIndex.readingReferences(assetIndex, popups);
+        state.narrativeDiagnostics = refs.diagnostics.slice();
+        state.readingReferences = refs.byContentId;
+        return {
+            byContentId: new Map([...refs.byContentId].map(([id, rows]) => [id, rows.map(row => row.path)])),
+            byUniqId: refs.byUniqId
+        };
     }
 
     function supplementalReadingRecords(raw, assetIndex) {
@@ -809,7 +794,7 @@
                 if (!readingByContentId.has(contentId)) readingByContentId.set(contentId, record);
             });
         });
-        const references = indexedReadingReferences(assetIndex);
+        const references = indexedReadingReferences(assetIndex, raw.ReadingPopUpTable);
         const contentIds = new Set(readingEntries.map(entry => String(entry.contentId || '')));
         references.byContentId.forEach((_, contentId) => contentIds.add(contentId));
         const resolveContent = (contentId, reading) => {
@@ -863,6 +848,7 @@
                 readingUniqId: reading?.uniqId || '',
                 readingEntryKey,
                 levelScriptPaths,
+                readingReferences: state.readingReferences.get(contentId) || [],
                 orphan: Boolean(orphan)
             };
             items[itemId] = {
@@ -880,6 +866,7 @@
                 readingUniqId: reading?.uniqId || '',
                 readingEntryKey,
                 levelScriptPaths,
+                readingReferences: state.readingReferences.get(contentId) || [],
                 orphan: Boolean(orphan)
             };
             generatedContentIds.add(contentId);
@@ -1053,6 +1040,9 @@
     function prepareTables(raw, assetIndex) {
         const mapText = mapTextRecords(raw.DialogTextTable || {}, assetIndex);
         const supplementalReading = supplementalReadingRecords(raw, assetIndex);
+        for (const [id, references] of state.readingReferences) {
+            if (!raw.RichContentTable?.[id] && !raw.RadioTable?.[id]) state.narrativeDiagnostics.push({ reason: 'missing-reading-content', id, references });
+        }
         state.tables = {
             pages: {
                 ...(raw.PrtsPage || {}),
@@ -1547,7 +1537,7 @@
         }).join('');
         const title = showTechnicalIds() ? item.contentId : itemDisplayName(item);
         const sourceMeta = showTechnicalIds()
-            ? `<p class="ake-ui-section__meta">${escapeHtml(item.levelDataPath)}</p>`
+            ? `<p class="ake-ui-section__meta">${escapeHtml(item.levelDataPath || '')}</p>`
             : '';
         return `<section class="akearchive-transcript ake-ui-section">
             <header class="ake-ui-section__header">
@@ -1987,6 +1977,10 @@
                     if (!indexedPoints.get(prtsId).includes(logicId)) indexedPoints.get(prtsId).push(logicId);
                 });
             });
+            state.itemMap.forEach(item => {
+                const ids = (item.readingReferences || []).map(ref => ref.logicId).filter(id => window.AKEV3.pointShareUrl?.(id));
+                if (ids.length) indexedPoints.set(item.id, [...new Set([...(indexedPoints.get(item.id) || []), ...ids])]);
+            });
             indexedPoints.forEach((ids, prtsId) => state.oemPoints.set(prtsId, ids.sort((a, b) => a - b)));
             renderDirectories();
             if (pendingDeepId) {
@@ -2028,6 +2022,7 @@
     mobileViewport.addEventListener?.('change', onViewportChange);
 
     window.__akeArchiveController = {
+        getDiagnostics: () => structuredClone(state.narrativeDiagnostics || []),
         destroy() {
             window.AKEVoicePlayer?.stop();
             state.disposed = true;

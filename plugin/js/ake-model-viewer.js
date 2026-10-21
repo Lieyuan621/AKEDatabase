@@ -1,9 +1,11 @@
 (function () {
     'use strict';
 
+    window.akeInitModelViewer = function (root, options = {}) {
+    if (!root) return () => {};
     const t = window.akeI18n?.scope?.('modules.modelViewer') || ((key, params, fallback) => fallback ?? key);
-    const root = document.getElementById('modelViewerModule');
-    if (!root) return;
+    const fixedCharacterId = options.characterId || null;
+    let disposed = false;
 
     const MODEL_BUCKET_PATH = '/endfield-bundles/';
     const FALLBACK_DATA_BASE_URL = 'https://data.akedata.wiki';
@@ -26,6 +28,7 @@
     const category = root.querySelector('#modelViewerCategory');
     const animation = root.querySelector('#modelViewerAnimation');
     const state = root.querySelector('#modelViewerState');
+    const stateField = state?.closest('.model-viewer__field');
     const potential = root.querySelector('#modelViewerPotential');
     const potentialLabel = root.querySelector('#modelViewerPotentialLabel');
     const play = root.querySelector('#modelViewerPlay');
@@ -43,6 +46,7 @@
     let renderer = null;
     let pending = null;
     let pausedBeforeScrub = false;
+    let catalogReady = false;
 
     function resolveBucketUrl() {
         const state = window.akeDataSource?.getState?.();
@@ -67,14 +71,10 @@
         }
     }
 
-    function localizedStatus() {
-        if (!customElements.get('endfield-viewer')) return '';
-        return viewer?.shadowRoot?.querySelector('[data-status]')?.textContent || '';
-    }
-
     function showStatus(state, title, message) {
         if (!status) return;
         status.dataset.state = state;
+        status.style.display = state === 'ready' && (fixedCharacterId || renderer) ? 'none' : '';
         status.querySelector('.ake-ui-state__title').textContent = title;
         status.querySelector('.ake-ui-state__message').textContent = message || '';
     }
@@ -104,7 +104,7 @@
         category.replaceChildren(new Option(t('allAnimations', null, '全部动画'), ''));
         animation.replaceChildren(new Option(t('defaultPose', null, '默认姿态'), ''));
         updateStates();
-        showStatus('loading', t('selectCharacter', null, '请选择角色'),
+        if (!fixedCharacterId) showStatus('loading', t('selectCharacter', null, '请选择角色'),
             t('selectCharacterHint', null, '从列表中选择一个角色，然后点击加载。'));
     }
 
@@ -169,7 +169,8 @@
         const states = clip?.states || [];
         state.replaceChildren(new Option(t('selectState', null, '选择状态'), ''),
             ...states.map(entry => new Option(entry.name, entry.id)));
-        state.hidden = state.disabled = states.length === 0;
+        state.disabled = states.length === 0;
+        if (stateField) stateField.hidden = states.length === 0;
         if (states.length === 1) state.value = states[0].id;
     }
 
@@ -194,20 +195,24 @@
         if (pending) return;
         showProgress('animation', 0, 0, 0, 0);
         pending = viewer.ensureAnimation(animationId).then(() => {
+            if (disposed) return;
             renderer.playAnimation(animationId, true, stateId);
             timeline.disabled = false;
-            showStatus('ready', clip.name, localizedStatus() || '');
+            showStatus('ready', '', '');
         }).catch(error => {
+            if (disposed) return;
             console.error(error);
             showStatus('error', t('loadFailed', null, '加载失败'), error?.message || '');
             timeline.disabled = true;
         }).finally(() => {
+            if (disposed) return;
             pending = null;
             hideProgress();
         });
     }
 
     function updatePlayback() {
+        if (disposed || !root.isConnected) return;
         if (!renderer) {
             requestAnimationFrame(updatePlayback);
             return;
@@ -222,25 +227,40 @@
     }
 
     viewer.addEventListener('catalog-loaded', event => {
+        if (disposed) return;
+        catalogReady = true;
         const ids = event.detail?.characters || [];
-        character.replaceChildren(new Option(t('selectCharacter', null, '请选择角色'), ''),
-            ...ids.map(id => new Option(characterLabel(id), id)));
-        character.disabled = ids.length === 0;
+        if (character) {
+            character.replaceChildren(new Option(t('selectCharacter', null, '请选择角色'), ''),
+                ...ids.map(id => new Option(characterLabel(id), id)));
+            character.disabled = ids.length === 0;
+        }
         loadButton.disabled = ids.length === 0;
         resetAnimationControls();
-        showStatus('ready', t('selectCharacter', null, '请选择角色'),
-            t('selectCharacterHint', null, '从列表中选择一个角色，然后点击加载。'));
+        if (fixedCharacterId) {
+            if (ids.includes(fixedCharacterId)) void loadSelectedCharacter();
+            else {
+                loadButton.disabled = true;
+                showStatus('error', t('loadFailed', null, '加载失败'), '当前角色暂无模型');
+            }
+        } else {
+            showStatus('ready', t('selectCharacter', null, '请选择角色'),
+                t('selectCharacterHint', null, '从列表中选择一个角色，然后点击加载。'));
+        }
     });
 
     viewer.addEventListener('character-loaded', event => {
+        if (disposed || (fixedCharacterId && event.detail.characterId !== fixedCharacterId)) return;
         renderer = event.detail.renderer || null;
         clips = event.detail.animations || [];
         pending = null;
-        if (character.options.length <= 1) {
-            character.replaceChildren(...(event.detail.characters || []).map(id => new Option(characterLabel(id), id)));
+        if (character) {
+            if (character.options.length <= 1) {
+                character.replaceChildren(...(event.detail.characters || []).map(id => new Option(characterLabel(id), id)));
+            }
+            character.value = event.detail.characterId;
+            character.disabled = false;
         }
-        character.value = event.detail.characterId;
-        character.disabled = false;
         loadButton.disabled = false;
         category.replaceChildren(new Option(t('allAnimations', null, '全部动画'), ''),
             ...['battle', 'interaction', 'dialogue', 'ui', 'locomotion', 'expression', 'cinematic', 'uncategorized']
@@ -249,18 +269,28 @@
         filterAnimations();
         updateStates();
         hideProgress();
-        showStatus('ready', event.detail.characterId, localizedStatus() || event.detail.characterId);
+        showStatus('ready', '', '');
         const hasPotentialTargets = (viewer?.listAttachments?.() || []).length > 0 || visibilityGroups().length > 0;
         if (potential) potential.checked = false;
         if (potentialLabel) potentialLabel.hidden = !hasPotentialTargets;
     });
 
     viewer.addEventListener('character-error', event => {
+        if (disposed) return;
         showStatus('error', t('loadFailed', null, '加载失败'), event.detail?.error?.message || '');
         hideProgress();
+        loadButton.disabled = false;
+    });
+
+    viewer.addEventListener('catalog-error', event => {
+        if (disposed) return;
+        catalogReady = false;
+        loadButton.disabled = false;
+        showStatus('error', t('loadFailed', null, '加载失败'), event.detail?.error?.message || '');
     });
 
     viewer.addEventListener('load-progress', event => {
+        if (disposed) return;
         if (!progress || progress.hidden) return;
         const detail = event.detail || {};
         showProgress(
@@ -272,12 +302,18 @@
         );
     });
 
-    loadButton.onclick = async () => {
-        const characterId = character.value;
+    async function loadSelectedCharacter() {
+        const characterId = fixedCharacterId || character?.value;
         if (!characterId || typeof viewer?.loadCharacter !== 'function') return;
-        loadButton.disabled = true;
+        if (!catalogReady) {
+            loadButton.disabled = true;
+            showStatus('loading', t('loading', null, '正在加载'), '');
+            await viewer.reloadCatalog();
+            return;
+        }
         resetAnimationControls();
-        showStatus('loading', t('loadingModel', null, '正在加载模型...'), characterId);
+        loadButton.disabled = true;
+        showStatus('loading', t('loadingModel', null, '正在加载模型...'), '');
         showProgress('model', 0, 0, 0, 0);
         try {
             await viewer.loadCharacter(characterId);
@@ -287,7 +323,8 @@
             hideProgress();
             loadButton.disabled = false;
         }
-    };
+    }
+    loadButton.onclick = loadSelectedCharacter;
     potential.onchange = () => applyPotential(Boolean(potential.checked));
     category.onchange = filterAnimations;
     animation.onchange = () => {
@@ -313,4 +350,14 @@
         if (!pausedBeforeScrub) renderer?.resumeAnimation();
     };
     requestAnimationFrame(updatePlayback);
+    return () => {
+        disposed = true;
+        renderer = null;
+        pending = null;
+        loadButton.onclick = null;
+        viewer.remove();
+    };
+    };
+    const standalone = document.getElementById('modelViewerModule');
+    if (standalone) window.akeInitModelViewer(standalone);
 })();

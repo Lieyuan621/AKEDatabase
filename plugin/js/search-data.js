@@ -127,6 +127,8 @@
         for (const [module, prefix] of direct[source] || []) add(module, prefix + key, title(row));
 
         // The catalogue owns stable routes and explicitly displayed text fields.
+        // Gamble keeps kind:source-key targets: its grouped view opens the category
+        // and focuses that record. Do not merge distinct hits into category routes.
         const life = window.AKELifeCatalog;
         if (life) {
             for (const [module, definitions] of Object.entries(life.definitions)) {
@@ -266,6 +268,24 @@
         if (source === 'ActivityContingencyContractTable' && has('v3_cc')) {
             add('v3_cc', row.gameId, title((await table('ActivityTable'))[row.activityId]));
         }
+        if (has('v3_cc') && (
+            (source === 'CcTagTable' && ['name', 'desc'].includes(field))
+            || (source === 'ActivityContingencyContractTaskGroupTable' && field === 'name')
+            || (source === 'ActivityConditionalMultiStageTaskConfigTable' && field === 'TaskConfigMap' && parts.includes('desc'))
+        )) {
+            const activityContracts = entries(await table('ActivityContingencyContractTable'));
+            const contracts = source === 'CcTagTable' ? await table('ContingencyContractTable') : {};
+            const configs = source === 'ActivityContingencyContractTaskGroupTable' ? await table('ActivityConditionalMultiStageTaskConfigTable') : {};
+            const activities = await table('ActivityTable');
+            for (const [, activity] of activityContracts) {
+                const matches = source === 'CcTagTable'
+                    ? Object.values(contracts[activity.gameId]?.contractGroupMap || {}).some(group => Object.values(group.contractMap || {}).some(tag => String(tag.tagId) === key))
+                    : source === 'ActivityContingencyContractTaskGroupTable'
+                        ? Object.values(configs[activity.activityId]?.TaskConfigMap || {}).some(task => task.taskGroupId === key)
+                        : activity.activityId === key;
+                if (matches) add('v3_cc', activity.gameId, title(activities[activity.activityId]));
+            }
+        }
         if (source === 'LevelDescTable' && has('region')) {
             for (const [id, domain] of entries(await table('DomainDataTable'))) {
                 if ((domain.levelGroup || []).includes(key)) add('region', id, title(domain));
@@ -288,13 +308,13 @@
                 }
             }
         }
-        if (['PrtsAllItem', 'PrtsFirstLv', 'PrtsReading', 'RichContentTable'].includes(source) && has('v3_archive')) {
+        if (['PrtsAllItem', 'PrtsFirstLv', 'PrtsReading', 'RichContentTable', 'RadioTable', 'ReadingPopUpTable'].includes(source) && has('v3_archive')) {
             const items = await table('PrtsAllItem');
             if (source === 'PrtsAllItem') add('v3_archive', row.id || key, title(row));
             else if (source === 'PrtsFirstLv') add('v3_archive', row.firstLvId || key, title(row));
             else {
                 const reading = source === 'PrtsReading' && parts[1] === 'list' ? row.list?.[parts[2]] : null;
-                const contentId = source === 'RichContentTable' ? key : reading?.contentId;
+                const contentId = ['RichContentTable', 'RadioTable'].includes(source) ? key : source === 'ReadingPopUpTable' ? row.contentId : reading?.contentId;
                 if (contentId) {
                     const linked = entries(items).filter(([, item]) => item.contentId === contentId || (reading?.prtsId && item.id === reading.prtsId));
                     for (const [id, item] of linked) add('v3_archive', item.id || id, title(item));
@@ -305,8 +325,21 @@
                         for (const [sourceId, collection] of readings) for (const [listId, entry] of entries(collection.list)) {
                             if (entry.contentId === contentId) add('v3_archive', `reading_list:${sourceId}:${entry.uniqId || listId || contentId}:entry`, title(entry) || title(row));
                         }
+                        const hasReading = readings.some(([, collection]) => entries(collection.list).some(([, entry]) => entry.contentId === contentId));
+                        if (!hasReading && window.akeAssetIndex?.readingReferences) {
+                            const index = await window.akeAssetIndex.ready;
+                            const refs = window.akeAssetIndex.readingReferences(index, await table('ReadingPopUpTable'));
+                            if (refs.byContentId.has(contentId)) add('v3_archive', `reading_list:orphan:${contentId}:entry`, title(row));
+                        }
                     }
                 }
+            }
+        }
+        if (source === 'DialogTextTable' && has('v3_archive') && window.akeAssetIndex) {
+            const index = await window.akeAssetIndex.ready;
+            const id = /^(dlg_.+)_\d+$/.exec(key)?.[1];
+            if (id) for (const [path, record] of entries(index.datasets.json?.files)) {
+                if (path.startsWith('LevelData/') && record.meta?.narrativeDialogIds?.includes(id)) add('v3_archive', `map_text:${path}:${id}:entry`, plain(row.dialogText));
             }
         }
         if (source === 'SNSDialogTable' && has('baker')) add('baker', row.dialogId || key, title((await table('SNSChatTable'))[row.chatId]));
@@ -350,6 +383,24 @@
         // Category headings are rendered in the owning plan's graph.
         if (source === 'FacSTTCategoryTable') await from('FacSTTGroupTable', row.groupId, 'tech_tree', 'plan:');
         if (source === 'FacSTTPackConditionTable') await from('FacSTTGroupTable', row.groupId, 'tech_tree', 'plan:');
+        if (((source === 'FactoryBuildingTable' && field === 'name') ||
+            (source === 'FactoryMachineCraftModeTable' && field === 'machineModeTypeName')) && has('tech_tree')) {
+            const itemLinks = await table('FactoryBuildingItemTable');
+            const modes = new Map(entries(await table('FactoryMachineCrafterTable')).flatMap(([buildingId, machine]) =>
+                (machine.modeMap || []).map(mode => [`${buildingId}+${mode.modeName}`, { buildingId, mode: mode.modeName }])));
+            for (const [machine, relation] of entries(await table('MachineId2MachineTechIdTable'))) {
+                const mode = modes.get(machine);
+                if (source === 'FactoryBuildingTable' ? (itemLinks[machine]?.buildingId || mode?.buildingId || machine) === key :
+                    mode?.mode === key && Boolean((await table('FactoryBuildingTable'))[mode.buildingId])) {
+                    await from('FacSTTNodeTable', relation.techId, 'tech_tree', 'node:');
+                }
+            }
+            if (source === 'FactoryBuildingTable') for (const [, limit] of entries(await table('FacSTTBuildingDomainLimitTechTable'))) {
+                if ((itemLinks[limit.buildingId]?.buildingId || limit.buildingId) === key) {
+                    for (const techId of limit.stepTechIds || []) await from('FacSTTNodeTable', techId, 'tech_tree', 'node:');
+                }
+            }
+        }
         abortCheck(signal);
         return [...results.values()];
     }

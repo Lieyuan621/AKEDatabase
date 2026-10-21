@@ -49,6 +49,11 @@
             return window.akeData?.getConfig().showHidden ?? false;
         }
 
+        function displaySeriesName(series) {
+            const name = series?.name || '';
+            return name && (getCurrentShowHidden() || name !== series.templateId) ? name : commonT('unknown');
+        }
+
         function parseText(text) {
             return window.parseText(text, IMAGE_BASE_PATH);
         }
@@ -186,14 +191,19 @@
                     ].filter(Boolean);
                     const offsetPct = (0.3 * 100 / (2 * halfX)).toFixed(2);
                     const stackStyle = stackIdx > 0 ? `margin-left:${stackIdx * offsetPct}%;margin-top:-${stackIdx * offsetPct}%;z-index:${10 - stackIdx};` : 'z-index:10;';
-                    mapSpotsHtml += `<div class="v2d-map-spot" data-ake-popover-anchor data-wave="${wi}" data-group="${g.groupKey}" data-target-group="${targetGroupKey}" style="left:${pct.left}%;top:${pct.top}%;${vis}${stackStyle}">
-                        <img class="v2d-map-spot-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${spawn.templateId}.png">
+                    const spotAccessibility = moduleId === 'monument'
+                        ? ` tabindex="0" role="img" aria-label="${escH(`${spawn.name} ×${spawn.count} Lv.${spawn.level}`)}"`
+                        : '';
+                    mapSpotsHtml += `<div class="v2d-map-spot" data-ake-popover-anchor${spotAccessibility} data-wave="${wi}" data-group="${g.groupKey}" data-target-group="${targetGroupKey}" style="left:${pct.left}%;top:${pct.top}%;${vis}${stackStyle}">
+                        <img class="v2d-map-spot-icon" src="/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${spawn.templateId}.png" alt="">
                         <div class="v2d-map-tip ake-ui-popover" data-placement="top">${tipLines.map(l => `<div>${l}</div>`).join('')}</div>
                     </div>`;
                 });
             });
 
-            const coordInfo = `<div class="v2d-map-coords">X: ${minX.toFixed(0)} ~ ${maxX.toFixed(0)}  Z: ${minZ.toFixed(0)} ~ ${maxZ.toFixed(0)}</div>`;
+            const coordInfo = moduleId !== 'monument' || getCurrentShowHidden()
+                ? `<div class="v2d-map-coords">X: ${minX.toFixed(0)} ~ ${maxX.toFixed(0)}  Z: ${minZ.toFixed(0)} ~ ${maxZ.toFixed(0)}</div>`
+                : '';
             const unitPct = (100 / (2 * halfX)).toFixed(2);
             return `<div class="v2d-spawn-map-container"><div class="v2d-spawn-map" style="--unit:${unitPct}%"><div class="v2d-map-center"></div>${mapSpotsHtml}</div>${coordInfo}</div>`;
         }
@@ -244,7 +254,7 @@
                             const templateId = cfg.templateId || findTemplateId(eid, displayTable);
                             const attrTemplateId = cfg.attrTemplateId || findTemplateId(eid, attrTable);
                             const disp = displayTable[templateId] || {};
-                            const name = disp.name?.text || templateId;
+                            const name = disp.name?.text || (getCurrentShowHidden() ? templateId : commonT('unknown'));
                             const count = action.spawnCount || 1;
                             groupInfo.spawns.push({
                                 instanceId: eid, templateId, attrTemplateId, name, count,
@@ -352,9 +362,9 @@
                 : undefined;
             const item = window.AKEUI.directoryItem({
                 layout: 'entity',
-                title: series.name,
+                title: displaySeriesName(series),
                 subtitle,
-                id: series.templateId,
+                id: getCurrentShowHidden() ? series.templateId : '',
                 icon: { src: series.image || '', alt: '' },
                 meta: isMonument ? [{ label: status.label, kind: `status-${status.key}` }]
                     : [{ label: series.gameCategoryName || '', kind: 'dungeon-category' }],
@@ -438,8 +448,11 @@
                         else image.addEventListener('load', fitPoster, { once: true });
                     });
                 },
-                items: items.map(item => ({ ...item, id: item.templateId, image: item.image, fallback: t('overview.fallback'),
-                    tags: [t('overview.stageCount', { count: item.dungeonCount || 0 }), commonT('rarityLabel', { rarity: item.rarity || 1 })] }))
+                items: items.map(item => ({ ...item, name: displaySeriesName(item), id: item.templateId, image: item.image, fallback: t('overview.fallback'),
+                    rarity: moduleId === 'monument' ? 0 : item.rarity,
+                    tags: moduleId === 'monument'
+                        ? [t('overview.stageCount', { count: item.dungeonCount || 0 })]
+                        : [t('overview.stageCount', { count: item.dungeonCount || 0 }), commonT('rarityLabel', { rarity: item.rarity || 1 })] }))
             });
         }
 
@@ -586,7 +599,7 @@
             const displayInfo = displayTable[templateId] || {};
             const attrData = attrTable[attrTemplateId] || {};
 
-            const name = displayInfo.name?.text || templateId;
+            const name = displayInfo.name?.text || (getCurrentShowHidden() ? templateId : commonT('unknown'));
             const nickname = displayInfo.nickname?.text || '';
             const desc = displayInfo.description?.text || '';
             const inlineModifiers = enemyConfig.attrModifiers || [];
@@ -686,14 +699,14 @@
         }
 
         function renderDungeonCard(dungeonId, dungeon) {
-            const name = dungeon.dungeonName?.text || dungeonId;
+            const isMonument = moduleId === 'monument';
+            const name = dungeon.dungeonName?.text || (getCurrentShowHidden() ? dungeonId : commonT('unknown'));
             const level = dungeon.dungeonLevelDesc?.text || '';
             const desc = dungeon.dungeonDesc?.text ? parseText(dungeon.dungeonDesc.text) : '';
             const featureDesc = dungeon.featureDesc?.text ? parseText(dungeon.featureDesc.text) : '';
             const costStamina = dungeon.costStamina !== undefined ? dungeon.costStamina : 0;
             const recommendLv = dungeon.recommendLv || '?';
             const dungeonCategory = dungeon.dungeonCategory || '';
-            const categoryLabel = getCategoryLabel(dungeonCategory);
             const picPath = dungeon.dungeonPicPath || '';
             const dungeonImg = dungeon.dungeonImg || '';
 
@@ -702,7 +715,7 @@
             let goalsHtml = '';
             if (mainGoal) goalsHtml += `<div><strong>${t('goals.main')}</strong>${parseText(mainGoal)}</div>`;
             if (extraGoal) goalsHtml += `<div><strong>${t('goals.extra')}</strong>${parseText(extraGoal)}</div>`;
-            if (goalsHtml) goalsHtml = `<div class="v2d-card-goal">${goalsHtml}</div>`;
+            if (goalsHtml) goalsHtml = `<div class="${isMonument ? 'v2d-monument-goals' : 'v2d-card-goal'}">${goalsHtml}</div>`;
 
             const rewardTable = dungeon.rewardTable || {};
             const itemTable = dungeon.itemTable || {};
@@ -733,6 +746,8 @@
             const waveSpawners = parseDungeonWaves(dungeon);
 
             let waveSummaryHtml = '';
+            let monumentWaveHtml = '';
+            let monumentMapHtml = '';
             let enemiesHtml = '';
 
             if (waveSpawners) {
@@ -758,21 +773,47 @@
 
                 let waveDetailHtml = '';
                 allWaves.forEach((wave, wIdx) => {
+                    if (isMonument) {
+                        waveDetailHtml += window.AKEUI.waveCard({
+                            index: wIdx,
+                            label: t('waves.number', { number: wave.waveIdx }),
+                            active: wIdx === 0,
+                            flags: [
+                                wave.repeatable && t('waves.repeatable'),
+                                wave.maxAlive > 0 && t('waves.aliveLimit', { count: wave.maxAlive }),
+                                wave.hasPause && t('waves.externallyControlled')
+                            ],
+                            enemies: wave.enemies.map(e => ({
+                                id: e.instanceId,
+                                name: e.name,
+                                count: e.count,
+                                level: e.level,
+                                iconSrc: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${e.templateId}.png`
+                            }))
+                        }).outerHTML;
+                        return;
+                    }
                     const repeatTag = wave.repeatable ? ` <span class="v2d-wave-repeat">${t('waves.repeatable')}</span>` : '';
                     const aliveTag = wave.maxAlive > 0 ? ` <span class="v2d-wave-alive">${t('waves.aliveLimit', { count: wave.maxAlive })}</span>` : '';
                     const pauseTag = wave.hasPause ? ` <span class="v2d-wave-pause">${t('waves.externallyControlled')}</span>` : '';
                     const enemyParts = wave.enemies.map(e => {
                         const iconSrc = `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${e.templateId}.png`;
-                        return `<span class="v2d-wave-enemy" data-wave-idx="${wIdx}" data-enemy-id="${e.instanceId}"><img class="v2d-wave-icon" src="${iconSrc}"><span class="v2d-wave-ename">${e.name}</span> ×${e.count} <span class="v2d-wave-lv">Lv.${e.level}</span></span>`;
+                        return `<span class="v2d-wave-enemy" data-wave-idx="${wIdx}" data-enemy-id="${e.instanceId}"><img class="v2d-wave-icon" src="${iconSrc}" alt=""><span class="v2d-wave-ename">${e.name}</span> ×${e.count} <span class="v2d-wave-lv">Lv.${e.level}</span></span>`;
                     }).join(' ');
                     const activeCls = wIdx === 0 ? ' active' : '';
-                    waveDetailHtml += `<div class="v2d-wave-line${activeCls}" data-wave-idx="${wIdx}"><span class="v2d-wave-num" data-wave-idx="${wIdx}">${t('waves.number', { number: wave.waveIdx })}</span>${repeatTag}${aliveTag}${pauseTag}: ${enemyParts}</div>`;
+                    const waveMeta = `<span class="v2d-wave-num" data-wave-idx="${wIdx}">${t('waves.number', { number: wave.waveIdx })}</span>${repeatTag}${aliveTag}${pauseTag}`;
+                    waveDetailHtml += `<div class="v2d-wave-line${activeCls}" data-wave-idx="${wIdx}">${waveMeta}: ${enemyParts}</div>`;
                 });
 
                 const mergedSpawner = { configId: 'merged', waves: allWaves };
                 const spawnMapHtml = renderSpawnMap(mergedSpawner);
 
-                waveSummaryHtml = `<div class="v2d-wave-map-row"><div class="v2d-wave-section"><div class="v2d-wave-summary"><span class="v2d-wave-label">${t('waves.summaryLabel')}</span> ${t('waves.summary', { waves: totalWaves, enemies: totalEnemies })}</div><div class="v2d-wave-detail">${waveDetailHtml}</div></div>${spawnMapHtml}</div>`;
+                if (isMonument) {
+                    monumentWaveHtml = `<div class="v2d-wave-section"><h4 class="v2d-monument-subtitle">${t('waves.summaryLabel')} <small>${t('waves.summary', { waves: totalWaves, enemies: totalEnemies })}</small></h4><div class="v2d-wave-detail v2d-wave-detail--cards">${waveDetailHtml}</div></div>`;
+                    monumentMapHtml = spawnMapHtml;
+                } else {
+                    waveSummaryHtml = `<div class="v2d-wave-map-row"><div class="v2d-wave-section"><div class="v2d-wave-summary"><span class="v2d-wave-label">${t('waves.summaryLabel')}</span> ${t('waves.summary', { waves: totalWaves, enemies: totalEnemies })}</div><div class="v2d-wave-detail">${waveDetailHtml}</div></div>${spawnMapHtml}</div>`;
+                }
 
                 const enemyLibBuffs = {};
                 const enemyScriptBuffs = {};
@@ -827,10 +868,40 @@
             }
 
             const cardBgSrc = picPath ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/dungeon/${picPath}.png` : '';
-            const cardBgHtml = cardBgSrc ? `<img class="v2d-card-bg" src="${cardBgSrc}">` : '';
-
             const dungeonIconSrc = dungeonImg ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/itemiconbig/${dungeonImg}.png` : '';
-            const dungeonIconHtml = dungeonIconSrc ? `<img class="v2d-card-icon" src="${dungeonIconSrc}">` : '';
+            const dungeonIconHtml = dungeonIconSrc ? `<img class="v2d-card-icon" src="${dungeonIconSrc}" alt="">` : '';
+
+            if (isMonument) {
+                const meta = window.AKEUI.metaGrid([
+                    { label: t('meta.recommendedLevel'), value: recommendLv },
+                    ...(costStamina > 0 ? [{ label: t('meta.staminaCost'), value: String(costStamina) }] : [])
+                ], { layout: 'auto' });
+                const stageArt = cardBgSrc ? `<img class="v2d-monument-stage-art" src="${cardBgSrc}" alt="">` : '';
+                return `<section class="ake-ui-section v2d-monument-stage" data-card-kind="dungeon">
+                    <div class="ake-ui-section__header">
+                        ${dungeonIconHtml}
+                        <h3 class="ake-ui-section__title">${escH(name)}</h3>
+                        ${level ? `<span class="ake-ui-badge">${escH(level)}</span>` : ''}
+                        ${getCurrentShowHidden() ? `<small class="ake-ui-section__meta">${escH(dungeonId)}</small>` : ''}
+                        ${stageArt}
+                    </div>
+                    <div class="v2d-monument-stage-grid${monumentMapHtml ? '' : ' is-mapless'}">
+                        <div class="v2d-monument-stage-main">
+                            ${desc ? `<div class="ake-ui-section__body v2d-monument-stage-desc">${desc}</div>` : ''}
+                            ${featureDesc ? `<div class="ake-ui-section__body v2d-monument-stage-feature">${featureDesc}</div>` : ''}
+                            ${goalsHtml}
+                            ${meta?.outerHTML || ''}
+                            ${monumentWaveHtml}
+                        </div>
+                        ${monumentMapHtml}
+                    </div>
+                    ${rewardsHtml}
+                    ${enemiesHtml}
+                </section>`;
+            }
+
+            const cardBgHtml = cardBgSrc ? `<img class="v2d-card-bg" src="${cardBgSrc}">` : '';
+            const categoryLabel = getCategoryLabel(dungeonCategory);
 
             return `
                 <div class="ake-ui-card" data-card-kind="dungeon" data-density="regular">
@@ -857,12 +928,9 @@
         }
 
         function renderDetail(data, seriesItem) {
-            const seriesName = data.dungeonseriestable?.name?.text || seriesItem.name;
+            const seriesName = data.dungeonseriestable?.name?.text || displaySeriesName(seriesItem);
             const seriesDesc = data.dungeonseriestable?.desc?.text || '';
             const staminaText = data.dungeonseriestable?.staminaText?.text || '';
-            const gameCategory = data.dungeonseriestable?.gameCategory || '';
-            const categoryLabel = getCategoryLabel(gameCategory);
-            const picPath = data.dungeonseriestable?.dungeonPicPath || '';
             const roleImg = data.dungeonseriestable?.dungeonRoleImg || '';
 
             const dungeons = data.dungeontable || {};
@@ -874,26 +942,46 @@
             const includeIds = data.dungeonseriestable?.includeDungeonIds || dungeonIds;
             const orderedIds = includeIds.filter(id => dungeons[id]);
 
-            let metaHtml = '';
-            if (categoryLabel) metaHtml += `<span class="ake-ui-badge">${categoryLabel}</span>`;
-            if (staminaText) metaHtml += `<span class="ake-ui-badge">${t('stamina', { value: staminaText })}</span>`;
-            if (moduleId === 'monument') {
-                const status = getMonumentStatus(seriesItem);
-                metaHtml += `<span class="ake-ui-badge" data-accent="status" data-accent-value="${status.key}">${status.label}</span>`;
-                metaHtml += `<span>${formatMonumentDate(seriesItem.openTime)} - ${formatMonumentDate(seriesItem.closeTime)}</span>`;
-            }
-            if (metaHtml) metaHtml = `<div class="ake-ui-detail-badges">${metaHtml}</div>`;
-
-            const bgSrc = picPath ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/dungeon/${picPath}_bg.png` : '';
-            const bgImg = bgSrc ? `<img class="v2d-series-bg" src="${bgSrc}">` : '';
-
             const roleSrc = roleImg ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${roleImg}.png` : '';
-            const roleImgHtml = roleSrc ? `<img class="v2d-series-role" src="${roleSrc}">` : '';
 
             let dungeonsHtml = '';
             orderedIds.forEach(id => {
                 dungeonsHtml += renderDungeonCard(id, dungeons[id]);
             });
+
+            if (moduleId === 'monument') {
+                const status = getMonumentStatus(seriesItem);
+                const availability = seriesItem.openTime || seriesItem.closeTime
+                    ? `${formatMonumentDate(seriesItem.openTime)} - ${formatMonumentDate(seriesItem.closeTime)}`
+                    : '';
+                const header = window.AKEUI.detailHeader({
+                    title: seriesName,
+                    id: getCurrentShowHidden() ? (data.dungeonSeriesId || seriesItem.templateId) : '',
+                    icon: roleSrc ? { src: roleSrc, alt: '' } : null,
+                    subtitle: availability,
+                    badges: [
+                        { label: status.label, attributes: { 'data-accent': 'status', 'data-accent-value': status.key } },
+                        { label: t('overview.stageCount', { count: orderedIds.length }) },
+                        ...(staminaText ? [{ label: t('stamina', { value: staminaText }) }] : [])
+                    ]
+                });
+                return `<article class="ake-ui-detail" data-detail-kind="monument">
+                    ${header?.outerHTML || ''}
+                    ${seriesDesc ? `<div class="ake-ui-section__body v2d-monument-intro">${parseText(seriesDesc)}</div>` : ''}
+                    <div class="v2d-dungeons">${dungeonsHtml}</div>
+                </article>`;
+            }
+
+            const gameCategory = data.dungeonseriestable?.gameCategory || '';
+            const categoryLabel = getCategoryLabel(gameCategory);
+            const picPath = data.dungeonseriestable?.dungeonPicPath || '';
+            let metaHtml = '';
+            if (categoryLabel) metaHtml += `<span class="ake-ui-badge">${categoryLabel}</span>`;
+            if (staminaText) metaHtml += `<span class="ake-ui-badge">${t('stamina', { value: staminaText })}</span>`;
+            if (metaHtml) metaHtml = `<div class="ake-ui-detail-badges">${metaHtml}</div>`;
+            const bgSrc = picPath ? `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/dungeon/${picPath}_bg.png` : '';
+            const bgImg = bgSrc ? `<img class="v2d-series-bg" src="${bgSrc}">` : '';
+            const roleImgHtml = roleSrc ? `<img class="v2d-series-role" src="${roleSrc}">` : '';
 
             return `<article class="ake-ui-detail" data-detail-kind="dungeon">
                 <div class="v2d-series-banner">
@@ -958,9 +1046,11 @@
 
             function switchWave(wi, body) {
                 const map = body.querySelector('.v2d-spawn-map');
-                if (!map) return;
-                body.querySelectorAll('.v2d-wave-line').forEach(l => l.classList.toggle('active', l.dataset.waveIdx === wi));
-                map.querySelectorAll('.v2d-map-spot').forEach(s => { s.style.display = s.dataset.wave === wi ? '' : 'none'; });
+                body.querySelectorAll('.v2d-wave-line').forEach(l => {
+                    const active = l.dataset.waveIdx === wi;
+                    window.AKEUI.setWaveCardActive(l, active);
+                });
+                map?.querySelectorAll('.v2d-map-spot').forEach(s => { s.style.display = s.dataset.wave === wi ? '' : 'none'; });
             }
 
             function clearHL(body) {

@@ -90,11 +90,14 @@
             evalExpr = evalExpr.replace(regex, `(${value})`);
         }
         let result;
+        // Blackboard expressions contain numeric arithmetic only.
+        if (!/^[\d\s.()+*/%\-]+$/.test(evalExpr)) return null;
         try {
             result = new Function('return ' + evalExpr)();
         } catch (e) {
             return null;
         }
+        if (typeof result !== 'number' || !Number.isFinite(result)) return null;
         let formatted;
         if (format.includes('%')) formatted = (result * 100).toFixed(1) + '%';
         else if (format.includes('.')) {
@@ -129,7 +132,7 @@
                     ? allValueMaps[String(refTagId)] || {}
                     : valueMap;
                 const result = evalExprWithMap(expr, format, lookupMap);
-                return result !== null ? result : match;
+                return result !== null ? result : (getCurrentShowHidden() ? escapeHtml(match) : t('data.unavailableValue'));
             });
     }
 
@@ -392,6 +395,8 @@
         container.innerHTML = `<div class="ake-ui-state" data-state="loading">${t('loading')}</div>`;
         try {
             const data = await (window.akeFetch || fetch)(game.contentFile).then(r => r.json());
+            const diagnostics = getCcDiagnostics(data);
+            if (Object.values(diagnostics).some(rows => rows.length)) console.warn('CC data relations', game.gameId, diagnostics);
             currentData = data;
             currentGame = game;
             currentDungeonData = null;
@@ -498,7 +503,8 @@
     function renderContractGroups(cct, tagTable) {
         if (!cct || !cct.contractGroupMap) return '';
         const groupMap = cct.contractGroupMap;
-        const groupIds = Object.keys(groupMap).sort((a, b) => Number(a) - Number(b));
+        const column = id => Math.min(...Object.values(groupMap[id].contractMap || {}).map(tag => tag.column ?? Infinity));
+        const groupIds = Object.keys(groupMap).sort((a, b) => column(a) - column(b) || Number(a) - Number(b));
         if (!groupIds.length) return '';
 
         const allTags = getAllContractTags(cct);
@@ -509,14 +515,14 @@
                 <div class="ake-ui-section__header"><h3 class="ake-ui-section__title">${t('sections.contractTerms')}</h3></div>
                 ${renderScorePanel(tagTable)}
                 <div class="ake-ui-card-grid v2cc-groups" data-size="wide">
-                    ${groupIds.map(gid => {
+                    ${groupIds.map((gid, groupIndex) => {
                         const group = groupMap[gid];
                         const contractMap = group.contractMap || {};
-                        const entryKeys = Object.keys(contractMap).sort((a, b) => Number(a) - Number(b));
+                        const entryKeys = Object.keys(contractMap).sort((a, b) => (contractMap[a].row ?? 0) - (contractMap[b].row ?? 0) || Number(a) - Number(b));
 
                         return `
                             <section class="ake-ui-section v2cc-group">
-                                <div class="ake-ui-section__header"><h4 class="ake-ui-section__title">${t('contract.group', { id: escapeHtml(gid) })}</h4></div>
+                                <div class="ake-ui-section__header"><h4 class="ake-ui-section__title">${t('contract.group', { id: getCurrentShowHidden() ? escapeHtml(gid) : groupIndex + 1 })}</h4></div>
                                 ${entryKeys.map(ek => {
                                     const tag = contractMap[ek];
                                     const tid = String(tag.tagId);
@@ -717,20 +723,13 @@
     }
 
     function renderTaskGroups(data) {
-        const tgt = data.activitycontingencycontracttaskgrouptable;
-        if (!tgt || !Object.keys(tgt).length) return '';
-        const groups = Object.entries(tgt).sort((a, b) => (a[1].sortId || 0) - (b[1].sortId || 0));
-
-        const acmConfig = data.activityconditionalmultistagetaskconfigtable;
-        let taskConfigMap = {};
-        if (acmConfig) {
-            for (const actKey of Object.keys(acmConfig)) {
-                const cfg = acmConfig[actKey];
-                if (cfg && cfg.TaskConfigMap) {
-                    Object.assign(taskConfigMap, cfg.TaskConfigMap);
-                }
-            }
-        }
+        const tgt = data.activitycontingencycontracttaskgrouptable || {};
+        const activityId = data.activitycontingencycontracttable?.activityId || data.contingencycontracttable?.activityId;
+        const taskConfigMap = data.activityconditionalmultistagetaskconfigtable?.[activityId]?.TaskConfigMap || {};
+        const groupIds = [...new Set(Object.values(taskConfigMap).map(task => task.taskGroupId || ''))];
+        if (!groupIds.length) return '';
+        const groups = groupIds.map(id => [id, { ...tgt[id], taskGroupId: id }])
+            .sort((a, b) => (a[1].sortId ?? Infinity) - (b[1].sortId ?? Infinity));
 
         const rewardTable = data.rewardtable || {};
         const itemTable = data.itemtable || {};
@@ -742,7 +741,7 @@
                     ${groups.map(([, tg]) => {
                         const tgId = tg.taskGroupId;
                         const tasks = Object.values(taskConfigMap)
-                            .filter(t => t.taskGroupId === tgId)
+                            .filter(t => (t.taskGroupId || '') === tgId)
                             .sort((a, b) => (a.sortId || 0) - (b.sortId || 0));
 
                         return `
@@ -1233,15 +1232,23 @@
 
                     let waveDetailHtml = '';
                     mergedWaves.forEach((wave, wIdx) => {
-                        const repeatTag = wave.repeatable ? `<span class="ake-ui-badge">${t('waves.repeatable')}</span>` : '';
-                        const aliveTag = wave.maxAlive > 0 ? `<span class="ake-ui-badge">${t('waves.aliveLimit', { count: wave.maxAlive })}</span>` : '';
-                        const pauseTag = wave.hasPause ? `<span class="ake-ui-badge">${t('waves.externallyControlled')}</span>` : '';
-                        const enemyParts = wave.enemies.map(e => {
-                            const iconSrc = `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${e.templateId}.png`;
-                            return `<span class="ake-ui-badge v2d-wave-enemy" data-wave-idx="${wIdx}" data-enemy-id="${e.instanceId}"><img class="v2d-wave-icon" src="${iconSrc}" alt=""><span class="v2d-wave-ename">${escapeHtml(e.name)}</span> ×${e.count} <span class="v2d-wave-lv">Lv.${e.level}</span></span>`;
-                        }).join(' ');
-                        const activeCls = wIdx === 0 ? ' active' : '';
-                        waveDetailHtml += `<button class="ake-ui-card is-interactive v2d-wave-line${activeCls}" type="button" data-card-kind="cc-wave" data-wave-idx="${wIdx}" aria-pressed="${wIdx === 0}"><span class="ake-ui-card__meta"><span class="v2d-wave-num" data-wave-idx="${wIdx}">${t('waves.number', { number: wave.waveIdx })}</span>${repeatTag}${aliveTag}${pauseTag}</span><span class="ake-ui-card__badges">${enemyParts}</span></button>`;
+                        waveDetailHtml += window.AKEUI.waveCard({
+                            index: wIdx,
+                            label: t('waves.number', { number: wave.waveIdx }),
+                            active: wIdx === 0,
+                            flags: [
+                                wave.repeatable && t('waves.repeatable'),
+                                wave.maxAlive > 0 && t('waves.aliveLimit', { count: wave.maxAlive }),
+                                wave.hasPause && t('waves.externallyControlled')
+                            ],
+                            enemies: wave.enemies.map(e => ({
+                                id: e.instanceId,
+                                name: e.name,
+                                count: e.count,
+                                level: e.level,
+                                iconSrc: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${e.templateId}.png`
+                            }))
+                        }).outerHTML;
                     });
 
                     const mergedSpawner = { ...sp, waves: mergedWaves };
@@ -1290,7 +1297,7 @@
                         <div class="v2cc-spawner-body">
                             <div class="v2cc-wave-map-row">
                                 <div class="v2d-wave-section">
-                                    <div class="v2d-wave-detail">${waveDetailHtml}</div>
+                                    <div class="v2d-wave-detail v2d-wave-detail--cards">${waveDetailHtml}</div>
                                 </div>
                                 ${spawnMapHtml}
                             </div>
@@ -1315,11 +1322,24 @@
         return html;
     }
 
+    function getCcDiagnostics(data) {
+        const ids = Object.keys(getAllContractTags(data.contingencycontracttable));
+        const tags = data.cctagtable || {};
+        const activityId = data.activitycontingencycontracttable?.activityId || data.contingencycontracttable?.activityId;
+        const tasks = Object.values(data.activityconditionalmultistagetaskconfigtable?.[activityId]?.TaskConfigMap || {});
+        return {
+            missingTags: ids.filter(id => !tags[id]),
+            missingTerms: ids.filter(id => tags[id] && !Array.isArray(tags[id].tagTerms)),
+            missingTaskGroups: [...new Set(tasks.map(task => task.taskGroupId || '').filter(id => !data.activitycontingencycontracttaskgrouptable?.[id]))]
+        };
+    }
+
     function renderDetail(data, game) {
         const acc = data.activitycontingencycontracttable;
         const cct = data.contingencycontracttable;
         const tagTable = data.cctagtable || {};
-        const tagCount = Object.keys(tagTable).length;
+        const tagCount = Object.keys(getAllContractTags(cct)).length;
+        const diagnostics = getCcDiagnostics(data);
         const groupCount = cct && cct.contractGroupMap ? Object.keys(cct.contractGroupMap).length : 0;
         const showHidden = getCurrentShowHidden();
         const status = STATUS_ACCENTS[game.statusOrder] || 'permanent';
@@ -1345,6 +1365,7 @@
         let html = `
             <div class="ake-ui-detail" data-detail-kind="cc">
                 ${detailHeader?.outerHTML || ''}
+                ${Object.values(diagnostics).some(rows => rows.length) ? `<div class="ake-ui-state" role="note">${t('data.incomplete', { tags: diagnostics.missingTags.length, terms: diagnostics.missingTerms.length, groups: diagnostics.missingTaskGroups.length })}</div>` : ''}
                 ${renderActivityInfo(acc)}
                 ${renderContractGroups(cct, tagTable)}
                 <div class="ake-ui-section" id="v2ccSelectedSummary"></div>
@@ -1700,8 +1721,7 @@
             const map = spawnerBody.querySelector('.v2cc-spawn-map');
             spawnerBody.querySelectorAll('.v2d-wave-line').forEach(l => {
                 const active = l.dataset.waveIdx === wi;
-                l.classList.toggle('active', active);
-                l.setAttribute('aria-pressed', String(active));
+                window.AKEUI.setWaveCardActive(l, active);
             });
             if (!map) return;
             map.querySelectorAll('.v2cc-map-spot').forEach(spot => {

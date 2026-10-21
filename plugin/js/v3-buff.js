@@ -53,6 +53,7 @@
         mobileReturnFocus: null,
         pendingDeepId
     };
+    let actionDisclosureSequence = 0;
 
     const CATEGORY_DEFINITIONS = Object.freeze({
         weapons: { order: 20, key: 'groups.weapons', fallback: '武器', icon: '·' },
@@ -64,12 +65,12 @@
     });
 
     const EFFECT_GROUPS = Object.freeze([
-        ['attributes', 'sections.attributes', '属性修改', 'attribute'],
-        ['damage', 'sections.damage', '伤害修改', 'damage'],
-        ['heal', 'sections.heal', '治疗修改', 'heal'],
-        ['poise', 'sections.poise', '韧性修改', 'poise'],
-        ['global', 'sections.global', '全局战斗修改', 'global'],
-        ['shields', 'sections.shields', '护盾', 'shield']
+        ['attributes', 'sections.attributes', '属性修改'],
+        ['damage', 'sections.damage', '伤害修改'],
+        ['heal', 'sections.heal', '治疗修改'],
+        ['poise', 'sections.poise', '韧性修改'],
+        ['global', 'sections.global', '全局战斗修改'],
+        ['shields', 'sections.shields', '护盾']
     ]);
 
     const FIELD_PRIORITY = Object.freeze([
@@ -233,6 +234,7 @@
         if (!isObject(value) || !value.usesBlackboard) return '';
         const key = String(value.blackboardKey || '');
         if (!key) return t('blackboardSources.empty-key-fallback', null, '空键回退值');
+        if (!showHidden()) return t('values.dynamic', null, '动态值');
         return t('units.blackboardKey', { key }, `黑板键 ${key}`);
     }
 
@@ -410,6 +412,7 @@
             map.set(owner.sectionId, (map.get(owner.sectionId) || 0) + owner.items.length);
             return map;
         }, new Map());
+        const disclosureIcon = window.AKEUI.icon('disclosure').outerHTML;
         let previousSection = '';
         target.innerHTML = directory.map(owner => {
             const sectionHeader = owner.sectionId !== previousSection
@@ -431,7 +434,7 @@
                 <button type="button" class="ake-ui-tree__group-toggle" data-buffv3-action="toggle-owner"
                     data-owner-id="${escapeHtml(owner.id)}" aria-expanded="${ownerOpen ? 'true' : 'false'}">
                     <span class="ake-ui-tree__group-label">${icon}<span>${escapeHtml(owner.name)}</span></span>
-                    <span class="ake-ui-tree__group-count">${escapeHtml(owner.items.length)}</span>
+                    <span class="ake-ui-tree__group-count">${disclosureIcon}${escapeHtml(owner.items.length)}</span>
                 </button>
                 <div class="ake-ui-tree__children">${items}</div>
             </section>`;
@@ -586,13 +589,14 @@
         return true;
     }
 
-    function metric(label, value, unit, important) {
-        if (!isPresent(value) && value !== 0) return '';
-        return `<div class="buffv3-metric${important ? ' is-important' : ''}">
-            <div class="buffv3-metric-label">${escapeHtml(label)}</div>
-            <div class="buffv3-metric-value">${escapeHtml(value)}</div>
-            ${unit ? `<div class="buffv3-metric-unit">${escapeHtml(unit)}</div>` : ''}
-        </div>`;
+    function metric(label, value, unit, note) {
+        if (!isPresent(value) && value !== 0) return null;
+        return { label, value: unit ? `${value} ${unit}` : value, note };
+    }
+
+    function sourcedMetric(label, value, unit, source) {
+        const note = resolvedUnit(source);
+        return metric(label, value, note ? '' : unit, note);
     }
 
     function coreMetrics() {
@@ -603,26 +607,27 @@
         const limited = String(lifeType || '').toLowerCase() !== 'infinity';
         const metrics = [];
         if (isPresent(lifeType)) metrics.push(metric(t('metrics.lifeType', null, '生命周期'),
-            localizedEnum('lifeTypes', lifeType), '', true));
+            localizedEnum('lifeTypes', lifeType)));
 
         const duration = numberValue(core.duration);
-        if (limited && duration !== null && duration >= 0) metrics.push(metric(t('metrics.duration', null, '持续时间'),
-            formatNumber(duration), resolvedUnit(core.duration) || t('units.secondsLabel', null, '秒'), true));
+        if (limited && duration !== null && duration >= 0) metrics.push(sourcedMetric(t('metrics.duration', null, '持续时间'),
+            formatNumber(duration), t('units.secondsLabel', null, '秒'), core.duration));
 
         const interval = numberValue(core.triggerInterval);
-        if (interval !== null && interval >= 0) metrics.push(metric(t('metrics.triggerInterval', null, '触发间隔'),
-            formatNumber(interval), resolvedUnit(core.triggerInterval) || t('units.secondsLabel', null, '秒')));
+        if (interval !== null && interval >= 0) metrics.push(sourcedMetric(t('metrics.triggerInterval', null, '触发间隔'),
+            formatNumber(interval), t('units.secondsLabel', null, '秒'), core.triggerInterval));
         if (core.waitFirstTriggerInterval === true) metrics.push(metric(t('metrics.firstTriggerDelay', null, '首次触发等待间隔'),
             t('values.yes', null, '是')));
 
         const maximumTriggers = numberValue(core.maxTriggerCnt);
-        if (maximumTriggers !== null) metrics.push(metric(t('metrics.maxTriggerCount', null, '最大触发次数'),
-            maximumTriggers < 0 ? t('values.infinite', null, '无限') : formatNumber(maximumTriggers),
-            maximumTriggers < 0 ? '' : resolvedUnit(core.maxTriggerCnt) || t('units.timesLabel', null, '次')));
+        if (maximumTriggers !== null) metrics.push(maximumTriggers < 0
+            ? metric(t('metrics.maxTriggerCount', null, '最大触发次数'), t('values.infinite', null, '无限'))
+            : sourcedMetric(t('metrics.maxTriggerCount', null, '最大触发次数'),
+                formatNumber(maximumTriggers), t('units.timesLabel', null, '次'), core.maxTriggerCnt));
 
         const stackingType = unwrapped(stacking.stackingType);
         if (isPresent(stackingType)) metrics.push(metric(t('metrics.stackingType', null, '叠加规则'),
-            localizedEnum('stackingTypes', stackingType), '', true));
+            localizedEnum('stackingTypes', stackingType)));
         const identifierType = unwrapped(stacking.identifierType);
         if (isPresent(identifierType)) {
             const identifier = localizedEnum('identifierTypes', identifierType);
@@ -630,19 +635,20 @@
                 stacking.stackingKey ? `${identifier} · ${stacking.stackingKey}` : identifier));
         }
         const maximumStacks = numberValue(stacking.maxStackCnt);
-        if (maximumStacks !== null && maximumStacks !== 0) metrics.push(metric(t('metrics.maxStacks', null, '最大层数'),
-            maximumStacks < 0 ? t('values.infinite', null, '无限') : formatNumber(maximumStacks),
-            maximumStacks < 0 ? '' : resolvedUnit(stacking.maxStackCnt) || t('units.stacksLabel', null, '层')));
+        if (maximumStacks !== null && maximumStacks !== 0) metrics.push(maximumStacks < 0
+            ? metric(t('metrics.maxStacks', null, '最大层数'), t('values.infinite', null, '无限'))
+            : sourcedMetric(t('metrics.maxStacks', null, '最大层数'),
+                formatNumber(maximumStacks), t('units.stacksLabel', null, '层'), stacking.maxStackCnt));
         const priority = numberValue(stacking.priority);
-        if (priority !== null && priority !== 0) metrics.push(metric(t('metrics.priority', null, '优先级'),
-            formatNumber(priority), resolvedUnit(stacking.priority)));
+        if (priority !== null && priority !== 0) metrics.push(sourcedMetric(t('metrics.priority', null, '优先级'),
+            formatNumber(priority), '', stacking.priority));
 
         if (Object.prototype.hasOwnProperty.call(dispel, 'canBeDispelled')) metrics.push(metric(t('metrics.dispel', null, '可驱散'),
             formatValue(dispel.canBeDispelled)));
         const addingCooldown = numberValue(core.addingCooldown);
-        if (core.hasAddingCooldown === true && addingCooldown !== null && addingCooldown > 0) metrics.push(metric(
+        if (core.hasAddingCooldown === true && addingCooldown !== null && addingCooldown > 0) metrics.push(sourcedMetric(
             t('metrics.addingCooldown', null, '添加冷却'), formatNumber(addingCooldown),
-            resolvedUnit(core.addingCooldown) || t('units.secondsLabel', null, '秒')));
+            t('units.secondsLabel', null, '秒'), core.addingCooldown));
         if (core.ignoreTagImmune === true) metrics.push(metric(t('metrics.ignoreTagImmune', null, '忽略标签免疫'), t('values.yes', null, '是')));
         if (core.useTimeDilationDt === true) metrics.push(metric(t('metrics.timeDilation', null, '受时间膨胀影响'), t('values.yes', null, '是')));
         if (core.onlyUseSelfTimeDilation === true) metrics.push(metric(t('metrics.selfTimeDilationOnly', null, '仅使用自身时间膨胀'), t('values.yes', null, '是')));
@@ -762,16 +768,20 @@
         return localizedEnum('globalModifierTypes', value);
     }
 
-    function renderEffectCollection(title, values, tone, options) {
+    function renderEffectCollection(title, values, options) {
         const items = collection(values);
         if (!items.length) return '';
-        return `<section class="buffv3-effect-group buffv3-effect-group--${escapeHtml(tone)}">
+        return `<section class="buffv3-effect-group">
             <header><h3>${escapeHtml(title)}</h3><span>${options?.converted ? `<strong class="buffv3-conversion-badge">${escapeHtml(t('modifierTypes.attributeConversion', null, '属性转换'))}</strong>` : ''}${escapeHtml(t('list.sectionCount', { count: items.length }, `${items.length} 条`))}</span></header>
             <div class="buffv3-effect-list">${items.map((item, index) => {
                 const pairs = scalarPairs(isObject(item) ? item : { value: item }, 12);
                 const nested = renderDescriptors(item, 'processors') + renderDescriptors(item, 'damageAbsorptions')
                     + renderDescriptorObject(item, 'calculation') + nestedSummary(item, 'rules') + renderModifierCondition(item);
-                return `<article class="buffv3-effect-item"><div class="buffv3-effect-title">${escapeHtml(effectTitle(item, index, title))}</div>${pairs.length ? `<div class="buffv3-data-grid">${pairs.join('')}</div>` : ''}${nested}</article>`;
+                const card = window.AKEUI.card({ density: 'compact', header: { title: effectTitle(item, index, title) } });
+                card.querySelector('.ake-ui-card__content').appendChild(window.AKEUI.fragment(
+                    `<div class="ake-ui-card__body">${pairs.length ? `<div class="buffv3-data-grid">${pairs.join('')}</div>` : ''}${nested}</div>`
+                ));
+                return card.outerHTML;
             }).join('')}</div>
         </section>`;
     }
@@ -791,8 +801,8 @@
         const modifiers = state.analysis.modifiers || {};
         const conversionNotice = modifiers.isConvertedAttribute === true && !collection(modifiers.attributes).length
             ? `<div class="buffv3-conversion-notice">${escapeHtml(t('modifierTypes.attributeConversion', null, '属性转换'))}</div>` : '';
-        const content = EFFECT_GROUPS.map(([key, translation, fallback, tone]) =>
-            renderEffectCollection(t(translation, null, fallback), modifiers[key], tone, {
+        const content = EFFECT_GROUPS.map(([key, translation, fallback]) =>
+            renderEffectCollection(t(translation, null, fallback), modifiers[key], {
                 converted: key === 'attributes' && modifiers.isConvertedAttribute === true
             })).join('') + renderTags();
         const body = conversionNotice + content;
@@ -897,35 +907,51 @@
     }
 
     function renderActionFields(event) {
-        const entries = eventFieldEntries(event).filter(([key, value]) => isPresent(formatFieldValue(key, value))).slice(0, 14);
+        const entries = eventFieldEntries(event)
+            .filter(([key, value]) => isPresent(formatFieldValue(key, value))
+                && (showHidden() || !/(?:^|_)(?:id|key|path)$|(?:id|key|path)$/i.test(key)));
         if (!entries.length) return '';
-        return `<div class="buffv3-action-fields">${entries.map(([key, value]) => {
-            const display = formatFieldValue(key, value);
-            const unit = resolvedUnit(value);
-            return `<span><small>${escapeHtml(fieldLabel(key))}</small><strong>${escapeHtml(display)}</strong>${unit ? `<em>${escapeHtml(unit)}</em>` : ''}</span>`;
-        }).join('')}</div>`;
+        const fields = entries.map(([key, value]) => ({
+            label: fieldLabel(key), value: formatFieldValue(key, value), note: resolvedUnit(value)
+        }));
+        const visible = window.AKEUI.metaGrid(fields.slice(0, 4), { layout: 'auto' })?.outerHTML || '';
+        const remaining = fields.length - 4;
+        if (remaining <= 0) return visible;
+        const details = window.AKEUI.metaGrid(fields.slice(4), { layout: 'auto' })?.outerHTML || '';
+        const panelId = `buffv3ActionFields-${++actionDisclosureSequence}`;
+        const count = t('units.entries', { count: remaining }, `${remaining} 项`);
+        const button = window.AKEUI.disclosureButton({
+            className: 'buffv3-action-more-button',
+            expandLabel: `${t('buttons.expand', null, '展开')} ${count}`,
+            collapseLabel: `${t('buttons.collapse', null, '收起')} ${count}`,
+            attributes: { 'aria-controls': panelId, 'data-buffv3-action': 'toggle-action-fields' }
+        });
+        return `${visible}<div class="buffv3-action-more">${button.outerHTML}<div id="${panelId}" class="buffv3-action-more-panel" hidden>${details}</div></div>`;
     }
 
-    function renderActionNode(event, children, visited, depth) {
+    function renderActionNode(event, children, visited) {
         const index = String(event.index ?? '');
         if (index && visited.has(index)) return '';
         if (index) visited.add(index);
         const childEvents = children.get(index) || [];
-        const childHtml = childEvents.map(child => renderActionNode(child, children, visited, depth + 1)).join('');
+        const childHtml = childEvents.map(child => renderActionNode(child, children, visited)).join('');
         if (event.presentation && !state.showPerformance) return childHtml;
         const type = String(event.type || 'UnknownAction');
         const rawType = String(event.rawType || type).split(',')[0];
-        const category = String(event.category || 'misc');
         const relation = event.relation ? t(`relations.${enumKey(event.relation)}`, null, splitIdentifier(event.relation, false)) : '';
-        return `<article class="buffv3-action buffv3-action--${escapeHtml(category)}" style="--buffv3-depth:${Math.min(depth, 8)}">
-            <header class="buffv3-action-header"><div><strong>${escapeHtml(actionLabel(event))}</strong><code>${escapeHtml(rawType)}</code></div><div class="buffv3-action-badges">
-                ${relation ? `<span>${escapeHtml(relation)}</span>` : ''}
-                ${event.enabled === false ? `<span class="is-disabled">${escapeHtml(t('values.disabled', null, '已禁用'))}</span>` : ''}
-                ${event.presentation ? `<span class="is-presentation">${escapeHtml(t('values.presentation', null, '表现'))}</span>` : ''}
-            </div></header>
-            ${renderActionFields(event)}
-            ${childHtml ? `<div class="buffv3-action-children">${childHtml}</div>` : ''}
-        </article>`;
+        const card = window.AKEUI.card({ density: 'compact', header: {
+            title: actionLabel(event), subtitle: showHidden() ? rawType : '',
+            badges: [
+                relation ? { label: relation, tone: 'muted' } : null,
+                event.enabled === false ? { label: t('values.disabled', null, '已禁用'), tone: 'danger' } : null,
+                event.presentation ? { label: t('values.presentation', null, '表现'), tone: 'muted' } : null
+            ].filter(Boolean)
+        } });
+        card.classList.add('buffv3-action');
+        card.querySelector('.ake-ui-card__content').appendChild(window.AKEUI.fragment(
+            `${renderActionFields(event)}${childHtml ? `<div class="buffv3-action-children">${childHtml}</div>` : ''}`
+        ));
+        return card.outerHTML;
     }
 
     function renderGroupActions(group) {
@@ -934,7 +960,7 @@
         const seedIds = new Set(seeds.map((event, index) => String(event.index ?? index)));
         const roots = seeds.filter(event => !seedIds.has(String(event.parentEventIndex)));
         const candidates = roots.length ? roots : seeds;
-        const html = candidates.map(event => renderActionNode(event, children, new Set(), 0)).join('');
+        const html = candidates.map(event => renderActionNode(event, children, new Set())).join('');
         return html || `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noVisibleActions', null, '没有可展示的战斗动作'))}</div>`;
     }
 
@@ -957,11 +983,13 @@
         const groups = state.analysis.eventGroups;
         if (!groups.length) return `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noEvents', null, '没有事件动作'))}</div>`;
         const children = eventChildrenMap();
-        return `<div class="buffv3-tab-toolbar">${performanceToggle()}</div><div class="buffv3-event-groups">${groups.map((group, index) => {
+        const toggle = performanceToggle();
+        const disclosureIcon = window.AKEUI.icon('disclosure').outerHTML;
+        return `${toggle ? `<div class="buffv3-tab-toolbar">${toggle}</div>` : ''}<div class="buffv3-event-groups">${groups.map((group, index) => {
             const events = groupEvents(group);
             const count = visibleEventCount(events, children);
             const kind = t(`eventKinds.${enumKey(group.kind || 'buff')}`, null, splitIdentifier(group.kind || 'buff', false));
-            return `<details class="buffv3-event-group"${index === 0 ? ' open' : ''}><summary><span><small>${escapeHtml(kind)}</small><strong>${escapeHtml(eventGroupTitle(group))}</strong>${group.finishAfterIgnited ? `<em>${escapeHtml(t('values.finishAfterIgnited', null, '点燃后结束'))}</em>` : ''}</span><span>${escapeHtml(t('units.actions', { count }, `${count} 个动作`))}</span></summary><div class="buffv3-action-tree">${renderGroupActions(group)}</div></details>`;
+            return `<details class="buffv3-event-group"${index === 0 ? ' open' : ''}><summary>${disclosureIcon}<span><small>${escapeHtml(kind)}</small><strong>${escapeHtml(eventGroupTitle(group))}</strong>${group.finishAfterIgnited ? `<em>${escapeHtml(t('values.finishAfterIgnited', null, '点燃后结束'))}</em>` : ''}</span><span>${escapeHtml(t('units.actions', { count }, `${count} 个动作`))}</span></summary><div class="buffv3-action-tree">${renderGroupActions(group)}</div></details>`;
         }).join('')}</div>`;
     }
 
@@ -977,17 +1005,23 @@
         if (!groups.length) return `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noTimeline', null, '没有时间轴动作'))}</div>`;
         const ranges = groups.map(timelineRange);
         const finiteEnd = Math.max(1, ...ranges.filter(range => !range.openEnded).map(range => range.end), ...ranges.map(range => range.start + 1));
-        return `<div class="buffv3-tab-toolbar">${performanceToggle()}</div><div class="buffv3-timeline-axis"><span>0</span><span>${escapeHtml(t('units.frames', { value: finiteEnd }, `${finiteEnd} 帧`))}</span></div><div class="buffv3-timeline-groups">${groups.map((group, index) => {
+        const marks = finiteEnd < 4 ? [0, finiteEnd] : [0, Math.round(finiteEnd / 2), finiteEnd];
+        const ruler = window.AKEUI.timelineRuler(marks.map(formatNumber));
+        const toggle = performanceToggle();
+        const disclosureIcon = window.AKEUI.icon('disclosure').outerHTML;
+        return `${toggle ? `<div class="buffv3-tab-toolbar">${toggle}</div>` : ''}<div class="buffv3-timeline-axis"><span></span>${ruler.outerHTML}<span></span></div><div class="buffv3-timeline-groups">${groups.map((group, index) => {
             const range = ranges[index];
-            const left = Math.max(0, Math.min(98, range.start / finiteEnd * 100));
-            const width = range.openEnded ? Math.max(3, 100 - left) : Math.max(2, (range.end - range.start) / finiteEnd * 100);
             const duration = range.openEnded ? null : (numberValue(group.durationFrames) ?? Math.max(0, range.end - range.start));
             const endLabel = range.openEnded ? t('values.openEnded', null, '开放结束') : formatNumber(range.end);
             const seconds = duration === null ? '' : (duration / 30).toFixed(duration % 30 === 0 ? 1 : 2);
             const rawGroupNumber = Number(group.groupIndex ?? index);
             const groupNumber = Number.isFinite(rawGroupNumber) ? rawGroupNumber + 1 : index + 1;
+            const frameRange = `${formatNumber(range.start)}–${endLabel}`;
+            const track = window.AKEUI.timelineTrack({
+                start: range.start, end: range.end, max: finiteEnd, openEnded: range.openEnded
+            });
             return `<details class="buffv3-timeline-group"${index === 0 ? ' open' : ''}>
-                <summary><span class="buffv3-timeline-label"><strong>${escapeHtml(t('units.group', { number: groupNumber }, `组 ${groupNumber}`))}</strong><small>${escapeHtml(`${formatNumber(range.start)}–${endLabel}`)}</small></span><span class="buffv3-timeline-track"><i style="left:${left}%;width:${width}%"></i></span><span class="buffv3-timeline-duration"><strong>${escapeHtml(duration === null ? endLabel : formatNumber(duration))}</strong>${duration === null ? '' : `<small>${escapeHtml(t('units.frameApprox', { seconds }, `帧，约 ${seconds} 秒`))}</small>`}</span></summary>
+                <summary>${disclosureIcon}<span class="buffv3-timeline-label"><strong>${escapeHtml(t('units.group', { number: groupNumber }, `组 ${groupNumber}`))}</strong><small>${escapeHtml(t('units.frames', { value: range.openEnded ? formatNumber(range.start) : frameRange }, `${frameRange} 帧`))}</small></span>${track.outerHTML}<span class="buffv3-timeline-duration"><strong>${escapeHtml(duration === null ? endLabel : `≈${t('units.seconds', { value: seconds }, `${seconds} 秒`)}`)}</strong></span></summary>
                 <div class="buffv3-action-tree">${renderGroupActions(group)}</div>
             </details>`;
         }).join('')}</div>`;
@@ -1025,11 +1059,21 @@
             const technicalId = dynamic && blackboardKey
                 ? `@${blackboardKey}${id && !id.startsWith('@') ? ` -> ${id}` : ''}`
                 : id;
-            const linkState = dynamic ? `${relation} · ${t('values.dynamic', null, '动态值')}` : relation;
-            const inner = `<span><strong>${escapeHtml(target?.item.displayName || id)}</strong><code>${escapeHtml(technicalId)}</code></span><small>${escapeHtml(linkState)}</small>`;
-            return target
-                ? `<button type="button" class="buffv3-link-item" data-buffv3-action="select-link" data-buff-id="${escapeHtml(id)}">${inner}</button>`
-                : `<div class="buffv3-link-item is-unavailable">${inner}</div>`;
+            const label = showHidden() ? (target?.item.displayName || id) : t('header.buffData', null, 'BuffData 条目');
+            const card = window.AKEUI.card({
+                density: 'compact', interactive: Boolean(target),
+                header: {
+                    title: label,
+                    subtitle: showHidden() ? technicalId : '',
+                    badges: [
+                        { label: relation, tone: 'muted' },
+                        dynamic ? { label: t('values.dynamic', null, '动态值'), tone: 'muted' } : null
+                    ].filter(Boolean)
+                },
+                attributes: target ? { 'data-buffv3-action': 'select-link', 'data-buff-id': id,
+                    'aria-label': `${t('buttons.openLinkedBuff', null, '打开关联 Buff')}：${label}` } : {}
+            });
+            return card.outerHTML;
         }).join('')}</div>`;
     }
 
@@ -1055,24 +1099,35 @@
         const blackboard = state.analysis.blackboard || {};
         const entries = collection(blackboard.entries);
         if (!entries.length) return '';
-        return `<section class="buffv3-technical-block"><h3>${escapeHtml(t('sections.blackboard', null, '黑板参数'))}</h3><div class="buffv3-blackboard-list">${entries.map((entry, index) => {
+        const items = entries.map((entry, index) => {
             const key = entry?.key ?? entry?.blackboardKey ?? entry?.name ?? `#${index + 1}`;
             const value = entry?.value ?? entry?.defaultValue ?? entry?.fallbackValue;
             const source = entry?.status ?? entry?.source;
-            return `<article><div><code>${escapeHtml(key)}</code>${source ? `<span>${escapeHtml(t(`blackboardSources.${enumKey(source)}`, null, splitIdentifier(source, false)))}</span>` : ''}</div><strong>${escapeHtml(formatValue(value))}</strong></article>`;
-        }).join('')}</div></section>`;
+            return {
+                label: key,
+                value: formatValue(value),
+                note: source ? t(`blackboardSources.${enumKey(source)}`, null, splitIdentifier(source, false)) : ''
+            };
+        });
+        return `<section class="buffv3-technical-block"><h3>${escapeHtml(t('sections.blackboard', null, '黑板参数'))}</h3>${window.AKEUI.metaGrid(items, { columns: 2 })?.outerHTML || ''}</section>`;
     }
 
     function renderDependencies() {
         const dependencies = collection(state.analysis.blackboard?.dependencies);
         if (!dependencies.length) return '';
         const hasExternal = dependencies.some(entry => entry?.status === 'external-key');
-        return `<section class="buffv3-technical-block"><h3>${escapeHtml(t('technical.references', null, 'Blackboard 引用'))}</h3>${hasExternal ? `<p class="buffv3-technical-note">${escapeHtml(t('technical.externalNotice', null, '外部 Blackboard 键需要运行时上下文，不视为解析错误。'))}</p>` : ''}<div class="buffv3-blackboard-list">${dependencies.map((entry, index) => {
+        const items = dependencies.map((entry, index) => {
             const key = entry?.key || `#${index + 1}`;
             const status = entry?.status || 'external-key';
             const value = isPresent(entry?.value) ? entry.value : entry?.fallbackValue;
-            return `<article><div><code>${escapeHtml(key)}</code><span>${escapeHtml(entry?.path || '')}</span></div><strong>${escapeHtml(formatValue(value))}</strong><span class="buffv3-dependency-status">${escapeHtml(t(`blackboardSources.${status}`, null, splitIdentifier(status, false)))}</span></article>`;
-        }).join('')}</div></section>`;
+            const source = t(`blackboardSources.${enumKey(status)}`, null, splitIdentifier(status, false));
+            return {
+                label: key,
+                value: formatValue(value),
+                note: entry?.path ? `${source} · ${entry.path}` : source
+            };
+        });
+        return `<section class="buffv3-technical-block"><h3>${escapeHtml(t('technical.references', null, 'Blackboard 引用'))}</h3>${hasExternal ? `<p class="buffv3-technical-note">${escapeHtml(t('technical.externalNotice', null, '外部 Blackboard 键需要运行时上下文，不视为解析错误。'))}</p>` : ''}${window.AKEUI.metaGrid(items, { columns: 2 })?.outerHTML || ''}</section>`;
     }
 
     function renderTechnicalTab() {
@@ -1104,8 +1159,15 @@
         const tabs = tabDefinitions();
         const renderers = { events: renderEventsTab, timeline: renderTimelineTab, links: renderLinksTab, technical: renderTechnicalTab };
         const logicTitle = t('sections.eventLogic', null, '触发与执行逻辑');
-        return `<section class="ake-ui-section buffv3-logic-section"><header class="ake-ui-section__header"><div><span class="ake-ui-detail-eyebrow">ActionData</span><h2 class="ake-ui-section__title">${escapeHtml(logicTitle)}</h2></div></header><div class="ake-ui-tabs" data-variant="segment" data-layout="equal" role="tablist" aria-label="${escapeHtml(logicTitle)}">${tabs.map(([id, key, fallback, count]) => `
-            <button id="buffv3Tab-${id}" type="button" role="tab" aria-selected="${state.activeTab === id ? 'true' : 'false'}" aria-controls="buffv3TabPanel" tabindex="${state.activeTab === id ? '0' : '-1'}" class="ake-ui-tabs__button${state.activeTab === id ? ' is-active' : ''}" data-buffv3-action="switch-tab" data-tab="${id}"><span>${escapeHtml(t(key, null, fallback))}</span><small>${escapeHtml(count)}</small></button>`).join('')}</div><div class="ake-ui-tabs__panel" id="buffv3TabPanel" role="tabpanel" aria-labelledby="buffv3Tab-${state.activeTab}">${renderers[state.activeTab]?.() || renderEventsTab()}</div></section>`;
+        const tabBar = window.AKEUI.tabs({
+            label: logicTitle, layout: 'equal', attached: true,
+            items: tabs.map(([id, key, fallback, count]) => ({
+                id: `buffv3Tab-${id}`, label: t(key, null, fallback), count,
+                active: state.activeTab === id, controls: 'buffv3TabPanel',
+                attributes: { 'data-buffv3-action': 'switch-tab', 'data-tab': id }
+            }))
+        });
+        return `<section class="ake-ui-section buffv3-logic-section"><header class="ake-ui-section__header"><div><span class="ake-ui-detail-eyebrow">ActionData</span><h2 class="ake-ui-section__title">${escapeHtml(logicTitle)}</h2></div></header>${tabBar.outerHTML}<div class="ake-ui-tabs__panel" id="buffv3TabPanel" role="tabpanel" aria-labelledby="buffv3Tab-${state.activeTab}">${renderers[state.activeTab]?.() || renderEventsTab()}</div></section>`;
     }
 
     function renderDetail() {
@@ -1123,7 +1185,7 @@
         const ownerChip = ownerPlugin
             ? window.AKEUI.entryLinkHtml({ plugin: ownerPlugin, id: owner.id, label: owner.name, className: 'buffv3-owner-chip', contentHtml: `${ownerIcon}<span>${escapeHtml(owner.name)}</span>` })
             : `<span class="buffv3-owner-chip">${ownerIcon}<span>${escapeHtml(owner.name)}</span></span>`;
-        const metrics = coreMetrics();
+        const metrics = window.AKEUI.metaGrid(coreMetrics(), { layout: 'auto' });
         const detailHeader = window.AKEUI.detailHeader({
             layout: 'showcase',
             icon: buffIcon ? { src: buffIcon } : null,
@@ -1134,7 +1196,7 @@
         });
         elements.detail.innerHTML = `<div class="ake-ui-detail" data-detail-kind="buff">
             ${detailHeader?.outerHTML || ''}
-            <section class="ake-ui-section"><header class="ake-ui-section__header"><div><span class="ake-ui-detail-eyebrow">Config</span><h2 class="ake-ui-section__title">${escapeHtml(t('sections.core', null, '核心指标'))}</h2></div></header><div class="buffv3-metric-grid">${metrics.join('') || `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noCoreMetrics', null, '没有可展示的核心指标'))}</div>`}</div></section>
+            <section class="ake-ui-section"><header class="ake-ui-section__header"><div><span class="ake-ui-detail-eyebrow">Config</span><h2 class="ake-ui-section__title">${escapeHtml(t('sections.core', null, '核心指标'))}</h2></div></header>${metrics?.outerHTML || `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noCoreMetrics', null, '没有可展示的核心指标'))}</div>`}</section>
             ${renderEffectsPanel()}
             ${renderTabs()}
         </div>`;
@@ -1147,11 +1209,17 @@
         if (action === 'toggle-owner') {
             const id = control.dataset.ownerId;
             const target = control.closest('#buffv3MobileDirectory') ? elements.mobileDirectory : elements.directory;
-            if (state.expandedOwners.has(id)) state.expandedOwners.delete(id);
-            else state.expandedOwners.add(id);
-            renderDirectories();
-            [...target.querySelectorAll('[data-buffv3-action="toggle-owner"]')]
-                .find(button => button.dataset.ownerId === id)?.focus();
+            window.AKEUI.animateTreeToggle({
+                button: control,
+                animate: !state.query,
+                toggle: () => {
+                    if (state.expandedOwners.has(id)) state.expandedOwners.delete(id);
+                    else state.expandedOwners.add(id);
+                },
+                render: renderDirectories,
+                findButton: () => [...target.querySelectorAll('[data-buffv3-action="toggle-owner"]')]
+                    .find(button => button.dataset.ownerId === id)
+            });
         } else if (action === 'select-buff') {
             selectBuff(control.dataset.buffId);
         }
@@ -1165,6 +1233,12 @@
             state.activeTab = control.dataset.tab;
             renderDetail();
             document.getElementById(`buffv3Tab-${state.activeTab}`)?.focus();
+        } else if (action === 'toggle-action-fields') {
+            const panel = document.getElementById(control.getAttribute('aria-controls'));
+            if (!panel) return;
+            const expanded = control.getAttribute('aria-expanded') !== 'true';
+            panel.hidden = !expanded;
+            window.AKEUI.setDisclosureButtonExpanded(control, expanded);
         } else if (action === 'select-link') {
             selectBuff(control.dataset.buffId);
         } else if (action === 'retry' && state.currentItem) {

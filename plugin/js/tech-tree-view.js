@@ -133,12 +133,83 @@
         return { nodes, edges, categories: categoryBands, layers: layerBands, hasIssues, width: Math.max(x + 20, 500), height: Math.max(y + 20, 360) };
     }
 
+    // Every candidate contains at most three points: a straight line or one elbow.
+    // Vary attachment ports rather than adding detours around intervening cards.
+    function routeEdge(a, b, nodes, otherRoutes = []) {
+        const candidates = [];
+        const add = points => {
+            const compact = points.filter((point, index) => !index || point[0] !== points[index - 1][0] || point[1] !== points[index - 1][1]);
+            if (compact.length === 3 && ((compact[0][0] === compact[1][0] && compact[1][0] === compact[2][0]) ||
+                (compact[0][1] === compact[1][1] && compact[1][1] === compact[2][1]))) compact.splice(1, 1);
+            if (compact.length > 1) candidates.push(compact);
+        };
+        if (a === b) {
+            // A malformed self-reference is retained, with a single exterior elbow.
+            add([[a.x + W, a.y + H / 2], [a.x + W + 24, a.y - 24], [a.x + W / 2, a.y]]);
+        } else {
+            const sx = Math.sign(b.x - a.x), sy = Math.sign(b.y - a.y);
+            for (const port of [.5, .25, .75]) {
+                if (a.x === b.x) add([[a.x + W * port, a.y + (sy > 0 ? H : 0)], [b.x + W * port, b.y + (sy > 0 ? 0 : H)]]);
+                if (a.y === b.y) add([[a.x + (sx > 0 ? W : 0), a.y + H * port], [b.x + (sx > 0 ? 0 : W), b.y + H * port]]);
+            }
+            if (sx && sy) {
+                for (const fromPort of [.5, .25, .75]) for (const toPort of [.5, .25, .75]) {
+                    // Vertical then horizontal, entering the target's facing side.
+                    add([[a.x + W * fromPort, a.y + (sy > 0 ? H : 0)],
+                        [a.x + W * fromPort, b.y + H * toPort],
+                        [b.x + (sx > 0 ? 0 : W), b.y + H * toPort]]);
+                    // Horizontal then vertical, entering its top/bottom instead.
+                    add([[a.x + (sx > 0 ? W : 0), a.y + H * fromPort],
+                        [b.x + W * toPort, a.y + H * fromPort],
+                        [b.x + W * toPort, b.y + (sy > 0 ? 0 : H)]]);
+                }
+            }
+        }
+        // Segment/rectangle clipping also covers the self-reference's diagonal legs.
+        const intersects = (start, end, node) => {
+            let low = 0, high = 1;
+            for (const [axis, min, max] of [[0, node.x - 6, node.x + W + 6], [1, node.y - 6, node.y + H + 6]]) {
+                const delta = end[axis] - start[axis];
+                if (!delta) { if (start[axis] < min || start[axis] > max) return false; }
+                else {
+                    const first = (min - start[axis]) / delta, last = (max - start[axis]) / delta;
+                    low = Math.max(low, Math.min(first, last)); high = Math.min(high, Math.max(first, last));
+                    if (low > high) return false;
+                }
+            }
+            return true;
+        };
+        const obstacles = [...nodes.values()].filter(node => node !== a && node !== b);
+        const crosses = (a, b, c, d) => {
+            const cross = (p, q, r) => (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]);
+            const abC = cross(a, b, c), abD = cross(a, b, d), cdA = cross(c, d, a), cdB = cross(c, d, b);
+            if (!abC && !abD) {
+                const axis = Math.abs(b[0] - a[0]) >= Math.abs(b[1] - a[1]) ? 0 : 1;
+                return Math.min(Math.max(a[axis], b[axis]), Math.max(c[axis], d[axis]))
+                    > Math.max(Math.min(a[axis], b[axis]), Math.min(c[axis], d[axis]));
+            }
+            return abC * abD <= 0 && cdA * cdB <= 0;
+        };
+        const scored = candidates.map(points => ({
+            points,
+            blocked: obstacles.filter(node => points.slice(1).some((end, index) => intersects(points[index], end, node))).map(node => node.key),
+            crossings: otherRoutes.reduce((count, route) => count + points.slice(1).reduce((sum, end, index) => sum +
+                route.points.slice(1).filter((otherEnd, otherIndex) => crosses(points[index], end, route.points[otherIndex], otherEnd)).length, 0), 0),
+            length: points.slice(1).reduce((total, end, index) => total + Math.hypot(end[0] - points[index][0], end[1] - points[index][1]), 0)
+        }));
+        scored.sort((a, b) => a.blocked.length - b.blocked.length || a.crossings - b.crossings || a.points.length - b.points.length || a.length - b.length);
+        const route = scored[0];
+        return { ...route, d: route.points.map(([x, y], index) => `${index ? 'L' : 'M'} ${x} ${y}`).join(' ') };
+    }
+
     function create({ root, select, reload }) {
         const abort = new AbortController();
         const on = (element, event, fn, options = {}) => element.addEventListener(event, fn, { ...options, signal: abort.signal });
         const viewport = root.querySelector('[data-tech-viewport]'), svg = root.querySelector('[data-tech-svg]');
         const drawer = root.querySelector('[data-tech-drawer]'), planSelect = root.querySelector('[data-tech-plan]');
         const search = root.querySelector('[data-tech-search]'), statusLine = root.querySelector('[data-tech-status]');
+        root.querySelector('[data-tech-action="out"]')?.replaceChildren(window.AKEUI.icon('minus'));
+        root.querySelector('[data-tech-action="in"]')?.replaceChildren(window.AKEUI.icon('plus'));
         let rows = [], ctx, activeId = null, planId = null, graph, state = 'loading', disposed = false;
         let camera = { x: 0, y: 0, zoom: 1 }, pendingFit = true, frame = 0, iconGeneration = 0;
         let pendingNode = null, pendingLayer = null, restoringFocus = false;
@@ -202,6 +273,7 @@
             statusLine.replaceChildren(document.createTextNode(searchQuery ? t('matches', { count: matches.length }) :
                 t('nodeCount', { count: [...(graph?.nodes.values() || [])].filter(node => !node.external).length })));
             if (graph?.hasIssues) statusLine.append(' ', t('dataIssues'));
+            if (graph?.routingIssues) statusLine.append(' ', t('routingIssues', { count: graph.routingIssues }));
             if (iconMissing) statusLine.append(' ', t('missingIcons'));
             if (iconFailed) {
                 const button = document.createElement('button'); button.type = 'button'; button.className = 'ake-ui-button';
@@ -245,7 +317,7 @@
             if (!ctx) return;
             graph = layout(rows, ctx, planId);
             svg.replaceChildren(); nodeElements.clear(); edgeElements.length = 0;
-            const defs = svgElement('defs'), marker = svgElement('marker', { id: 'ake-tech-arrow', viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 6, markerHeight: 6, orient: 'auto-start-reverse' });
+            const defs = svgElement('defs'), marker = svgElement('marker', { id: 'ake-tech-arrow', viewBox: '0 0 10 10', refX: 10, refY: 5, markerWidth: 8, markerHeight: 8, markerUnits: 'userSpaceOnUse', orient: 'auto' });
             marker.append(svgElement('path', { d: 'M 0 0 L 10 5 L 0 10 z', fill: 'context-stroke' })); defs.append(marker); svg.append(defs);
             for (const [index, layer] of graph.layers.entries()) {
                 svg.append(svgElement('rect', { x: 0, y: layer.y, width: graph.width, height: layer.height, class: `ake-ui-tech-tree__band${index % 2 ? ' is-alternate' : ''}` }));
@@ -260,20 +332,28 @@
                 const heading = svgElement('g'); heading.append(svgElement('title', {}, category.name));
                 label(heading, category.name, category.x + category.width / 2, 30, 'ake-ui-tech-tree__label', 18); svg.append(heading);
             }
-            for (const [index, edge] of graph.edges.entries()) {
+            const routes = new Map();
+            // Reconsider earlier routes after later edges exist, so crossing avoidance
+            // does not depend solely on the source table's traversal order.
+            for (let pass = 0; pass < 2; pass++) for (const edge of graph.edges) {
+                routes.set(edge, routeEdge(graph.nodes.get(edge.from), graph.nodes.get(edge.to), graph.nodes,
+                    [...routes].filter(([other]) => other !== edge).map(([, route]) => route)));
+            }
+            for (const edge of graph.edges) {
                 const a = graph.nodes.get(edge.from), b = graph.nodes.get(edge.to);
-                const ax = a.x + W / 2, ay = a.y + H, bx = b.x + W / 2, by = b.y;
-                const clear = ax === bx && ay < by && ![...graph.nodes.values()].some(node => node !== a && node !== b && node.x === a.x && node.y > a.y && node.y < b.y);
-                // Horizontal channels are between rows; the side channel stays outside cards.
-                const offset = (index % 5) * 3;
-                const lane = a.x + W + 16 + offset;
-                const d = clear ? `M ${ax} ${ay} V ${by}` : `M ${ax} ${ay} V ${ay + 16 + offset} H ${lane} V ${by - 14 - offset} H ${bx} V ${by}`;
-                const element = svgElement('path', { d, class: 'ake-ui-tech-tree__edge', 'marker-end': 'url(#ake-tech-arrow)' });
+                const route = routes.get(edge);
+                if (route.blocked.length) {
+                    graph.routingIssues = (graph.routingIssues || 0) + 1;
+                    ctx.issue('single-bend-route-obstructed', 'FacSTTNodeTable', edge.to, { from: edge.from, obstacles: route.blocked });
+                }
+                const element = svgElement('path', { d: route.d, class: 'ake-ui-tech-tree__edge', 'marker-end': 'url(#ake-tech-arrow)' });
                 element.append(svgElement('title', {}, `${a.name} → ${b.name}`)); svg.append(element); edgeElements.push({ edge, element });
             }
             for (const node of graph.nodes.values()) {
                 const element = svgElement('g', { transform: `translate(${node.x} ${node.y})`, class: `ake-ui-tech-tree__node${node.external ? ' is-external' : ''}`, 'aria-label': node.name });
-                element.append(svgElement('title', {}, node.name), svgElement('rect', { width: W, height: H, rx: 5 }),
+                const iconFrame = svgElement('g');
+                iconFrame.append(svgElement('rect', { x: 26, y: 4, width: 60, height: 60, rx: 6, class: 'ake-ui-tech-tree__icon-backdrop' }));
+                element.append(svgElement('title', {}, node.name), svgElement('rect', { width: W, height: H, rx: 5 }), iconFrame,
                     svgElement('text', { x: W / 2, y: 49, class: 'ake-ui-tech-tree__placeholder', 'text-anchor': 'middle' }, '◇'));
                 label(element, node.name, W / 2, 80, 'ake-ui-tech-tree__node-label', 10);
                 if (node.id) { activateBand(element, node.id); element.setAttribute('aria-pressed', 'false'); }

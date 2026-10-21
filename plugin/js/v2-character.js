@@ -16,6 +16,8 @@
         let searchTerm = '';
         let currentCharacter = null;
         let currentCharData = null;
+        let detailGeneration = 0;
+        let disposeModelViewer = null;
         let charLevelsToShow = null;
         let skillLevelsToShow = null;
         let globalSkillExpand = false;
@@ -611,6 +613,9 @@
         }
 
         async function loadCharacterDetail(character, container) {
+            const generation = ++detailGeneration;
+            disposeModelViewer?.();
+            disposeModelViewer = null;
             window.AKEVoicePlayer?.stop();
             container.__akeCharacterDetailNavCleanup?.();
             container.innerHTML = `<div class="ake-ui-state" data-state="loading">${t('loading')}</div>`;
@@ -618,6 +623,7 @@
                 const fileName = (character.contentFile || '').split('/').pop() || `${character.charId}.json`;
                 const contentFile = `/public/CH/v2_character/${fileName}`;
                 const rawData = await (window.akeFetch || fetch)(contentFile).then(r => r.json());
+                if (generation !== detailGeneration || !container.isConnected) return;
                 const data = normalizeV2ToLegacy(character, rawData);
                 currentCharData = data;
                 currentCharacter = character;
@@ -627,6 +633,10 @@
                     : null;
                 window.AKEModuleOverview?.renderVersionDiff(container, rawData, baselineData ? renderDetail(baselineData) : '');
                 initCharacterDetailNav(container);
+                const modelSlot = container.querySelector('[data-character-model-slot]');
+                if (modelSlot && window.akeMountCharacterModelViewer) {
+                    disposeModelViewer = window.akeMountCharacterModelViewer(modelSlot, character.charId);
+                }
 
                 const globalSkillBtn = container.querySelector('.global-skill-toggle-btn');
                 if (globalSkillBtn) {
@@ -674,6 +684,7 @@
                     });
                 });
             } catch (err) {
+                if (generation !== detailGeneration || !container.isConnected) return;
                 const error = document.createElement('div');
                 error.className = 'ake-ui-state';
                 error.dataset.state = 'error';
@@ -1510,6 +1521,7 @@
 
         function renderDetail(data) {
             const showHidden = getCurrentShowHidden();
+            const collapseIndicator = `<span class="collapse-indicator" aria-hidden="true">${window.AKEUI.icon('disclosure').outerHTML}</span>`;
             const overviewMetaTags = getCharacterMetaIcons(data).map(icon => `
                 <span class="character-detail-tag">
                     <img class="ake-ui-meta-icon" src="${icon.src}" alt="" data-kind="${icon.kind || ''}">
@@ -1794,7 +1806,7 @@
                     <div class="ake-ui-section__header">
                         <button class="character-collapse-toggle" type="button" aria-expanded="false">
                             <span class="ake-ui-section__title">${t('sections.potentialImages')}</span>
-                            <span class="collapse-indicator" aria-hidden="true"></span>
+                            ${collapseIndicator}
                         </button>
                     </div>
                     <div class="collapse-content">
@@ -1816,13 +1828,13 @@
                 <div class="character-voice-list">
                     ${(data.profileVoice || []).map(v => `
                         <div class="character-voice-row">
-                            <div class="voice-title">${voiceButtonHtml(v.voId)}${v.title}</div>
+                            <div class="voice-title">${voiceButtonHtml(v.voId)}<span class="voice-title__text">${escapeAttribute(v.title)}</span></div>
                             <div class="voice-desc">${v.desc}</div>
                         </div>
                     `).join('')}
                 </div>
             ` : `<p>${t('none')}</p>`;
-            const specialVoiceHtml = (data.specialVoices || []).length ? `<div class="character-voice-list character-special-voice-list">${data.specialVoices.map(v => `<div class="character-voice-row"><div class="voice-title">${voiceButtonHtml(v.voId)}${escapeAttribute(v.title)}</div><div class="voice-desc">${v.desc}</div></div>`).join('')}</div>` : `<p>${t('none')}</p>`;
+            const specialVoiceHtml = (data.specialVoices || []).length ? `<div class="character-voice-list character-special-voice-list">${data.specialVoices.map(v => `<div class="character-voice-row"><div class="voice-title">${voiceButtonHtml(v.voId)}<span class="voice-title__text">${escapeAttribute(v.title)}</span></div><div class="voice-desc">${v.desc}</div></div>`).join('')}</div>` : `<p>${t('none')}</p>`;
 
             const spaceshipSkills = data.spaceshipSkills || [];
             const spaceshipHtml = spaceshipSkills.length ? spaceshipSkills.map(slot => `
@@ -1919,11 +1931,25 @@
                 ${trainingMaterialsHtml(data.trainingmaterials, itemInfoMap, t('sections.trainingMaterials'))}
                 <div class="character-archive-stack" id="character-archive">
                     ${potentialPicsHtml}
+                    ${window.akeMountCharacterModelViewer ? `<div class="ake-ui-section collapsible-section">
+                        <div class="ake-ui-section__header">
+                            <button class="character-collapse-toggle" type="button" aria-expanded="false">
+                                <span class="ake-ui-section__title">${window.akeI18n.scope('modules.modelViewer')('title')}</span>
+                                ${collapseIndicator}
+                            </button>
+                        </div>
+                        <div class="collapse-content">
+                            <div data-character-model-slot>
+                                <button class="ake-ui-button ake-ui-button--primary" data-load-character-model type="button">${window.akeI18n.scope('modules.modelViewer')('load')}</button>
+                                <span data-model-error role="status"></span>
+                            </div>
+                        </div>
+                    </div>` : ''}
                     <div class="ake-ui-section collapsible-section">
                         <div class="ake-ui-section__header">
                             <button class="character-collapse-toggle" type="button" aria-expanded="false">
                                 <span class="ake-ui-section__title">${t('sections.profile')}</span>
-                                <span class="collapse-indicator" aria-hidden="true"></span>
+                                ${collapseIndicator}
                             </button>
                         </div>
                         <div class="collapse-content">
@@ -1934,7 +1960,7 @@
                         <div class="ake-ui-section__header">
                             <button class="character-collapse-toggle" type="button" aria-expanded="false">
                                 <span class="ake-ui-section__title">${t('sections.voiceRecords')}</span>
-                                <span class="collapse-indicator" aria-hidden="true"></span>
+                                ${collapseIndicator}
                             </button>
                         </div>
                         <div class="collapse-content">

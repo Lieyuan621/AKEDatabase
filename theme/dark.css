@@ -17,9 +17,6 @@
         --combatv3-node-other: #aab4bd;
     }
 }
-@scope (body[data-ake-module="monument"]) {
-    .v2d-series-banner { --monument-banner-fade-color: #171717; }
-}
 :root {
     --sidebar-bg: #121212;
     --border-color: #343434;
@@ -100,6 +97,8 @@
     --ake-ui-surface: var(--module-bg);
     --ake-ui-surface-muted: var(--sidebar-bg);
     --ake-ui-surface-hover: var(--active-bg);
+    --ake-ui-timeline-track: #383f47;
+    --ake-ui-timeline-fill: var(--accent-color);
     --ake-ui-border: 1px solid var(--border-color);
     --ake-ui-shadow-hover: 0 8px 22px rgba(0, 0, 0, .34);
     --ake-rarity-1: #9a9a9a;
@@ -155,6 +154,7 @@
 
 @scope (body[data-ake-module="tech_tree"]) {
     .ake-ui-directory.ake-ui-tech-tree {
+        --tech-icon-bg: #242b32;
         --tech-surface: #191e24;
         --tech-band: #222a32;
         --tech-card: #303942;
@@ -163,5 +163,12 @@
         --tech-selected: #4a4430;
         --tech-text: #e7edf2;
         --tech-border: #4b5865;
+    }
+}
+
+@scope (body[data-ake-module="gamble"]) {
+    .ake-ui-directory {
+        --gamble-tile-bg: var(--ake-ui-surface-muted);
+        --gamble-symbol-filter: brightness(0) invert(1) opacity(.8);
     }
 }

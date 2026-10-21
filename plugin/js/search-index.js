@@ -15,7 +15,7 @@ window.AKESearchIndex = {
   "gamble": {
     "tables": ["ItemTable", "RewardTable", "GambleBattleHandTypeTable", "GambleBattleCardTable", "GambleBattleCardPoolTable", "GambleBattleEnemyBuffTable", "ActivityCommonUIMilestoneTable", "GambleBattleHandTypePoolTable", "GambleBattleConst", "ActivityCommonCoinRewardTable", "EnemyTable", "EnemyTemplateDisplayInfoTable", "ActivityTable", "DungeonTable", "TimeRangeTable"],
     "sources": ["plugin/gamble.html", "plugin/js/gamble.js", "plugin/js/life-catalog.js", "plugin/js/ake-catalog.js"],
-    "coverage": "Configured hands, enemy cards, pools, effects and milestones. Pool membership does not establish live activity-stage membership."
+    "coverage": "Six category entries contain configured hands, enemy cards, pools, effects, milestones and opening periods. Stable kind:source-key routes focus the original record inside its category. Pool membership does not establish live activity-stage membership."
   },
   "search": {
     "tables": [],
@@ -35,7 +35,10 @@ window.AKESearchIndex = {
       "FacSTTLayerTable",
       "FacSTTNodeTable",
       "FacSTTPackConditionTable",
+      "FactoryBuildingItemTable",
       "FactoryBuildingTable",
+      "FactoryMachineCrafterTable",
+      "FactoryMachineCraftModeTable",
       "ItemTable",
       "MachineId2MachineTechIdTable",
       "RewardTable"
@@ -419,11 +422,13 @@ window.AKESearchIndex = {
       "plugin/js/ake-voice-player.js",
       "plugin/js/module-overview.js",
       "plugin/js/v3-archive.js",
+      "plugin/js/ake-asset-index.js",
       "plugin/v3_archive.html"
     ],
-    "coverage": "Prts tables plus indexed LevelData/LevelScriptData references; unindexed Json content is not covered."
+    "coverage": "Prts tables and indexed LevelData/LevelScriptData narrative references; GameplayConfig NPC dialogue and ambient dialogue are outside archive coverage."
   },
   "v3_cc": {
+    "coverage": "Activity gameId -> contractGroupMap.contractMap.tagId; task configs are scoped by activityId and grouped by taskGroupId. Missing tagTerms are reported; BuffData defaults are not substituted for missing effect parameters.",
     "tables": [
       "ActivityConditionalMultiStageTaskConfigTable",
       "ActivityContingencyContractTable",

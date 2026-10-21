@@ -2,8 +2,10 @@
 <script src="/plugin/js/ake-catalog.js"></script>
 <script src="/plugin/js/tech-tree-view.js"></script>
 <div class="ake-ui-directory ake-ui-tech-tree" data-ake-module="tech_tree">
-    <header class="ake-ui-tech-tree__toolbar">
+    <header class="ake-ui-section__header">
         <h2 class="ake-ui-section__title" data-catalog-title></h2>
+    </header>
+    <div class="ake-ui-toolbar ake-ui-tech-tree__toolbar">
         <label><span data-i18n="modules.catalog.plan"></span> <select class="ake-ui-control ake-ui-control--select" data-tech-plan></select></label>
         <button class="ake-ui-button" type="button" data-tech-action="plan" data-i18n="modules.tech_tree.planDetails"></button>
         <form data-tech-search-form role="search">
@@ -11,14 +13,14 @@
             <button class="ake-ui-button" type="submit" data-i18n="modules.tech_tree.locate"></button>
         </form>
         <div class="ake-ui-tech-tree__controls">
-            <button class="ake-ui-icon-button" type="button" data-tech-action="out" data-i18n-aria-label="modules.tech_tree.zoomOut">−</button>
+            <button class="ake-ui-button ake-ui-button--icon" type="button" data-tech-action="out" data-i18n-aria-label="modules.tech_tree.zoomOut"></button>
             <output data-tech-zoom>100%</output>
-            <button class="ake-ui-icon-button" type="button" data-tech-action="in" data-i18n-aria-label="modules.tech_tree.zoomIn">+</button>
+            <button class="ake-ui-button ake-ui-button--icon" type="button" data-tech-action="in" data-i18n-aria-label="modules.tech_tree.zoomIn"></button>
             <button class="ake-ui-button" type="button" data-tech-action="fit" data-i18n="modules.tech_tree.fit"></button>
         </div>
-    </header>
+    </div>
     <p class="ake-ui-section__description" data-i18n="modules.tech_tree.help"></p>
-    <p class="ake-ui-tech-tree__status" data-tech-status role="status"></p>
+    <p class="ake-ui-tech-tree__status" data-tech-status role="status" aria-live="polite" aria-atomic="true"></p>
     <div class="ake-ui-tech-tree__workspace">
         <div class="ake-ui-tech-tree__viewport" id="tech_treeList" tabindex="0" data-tech-viewport data-i18n-aria-label="modules.tech_tree.graph">
             <svg class="ake-ui-tech-tree__svg" data-tech-svg role="group" data-i18n-aria-label="modules.tech_tree.graph"></svg>

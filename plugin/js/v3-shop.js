@@ -523,7 +523,7 @@
                     });
                     const channelName = gameText(channel.channelName, channel.levelId || channelId);
                     return `<tr><td><b>${escapeHtml(channelName)}</b><small class="akeshop-shop-id">${escapeHtml(channelId)}</small></td>
-                        <td>${escapeHtml(level)}</td><td>${escapeHtml(costs.join(' + ') || t('channel.none', null, 'None'))}</td></tr>`;
+                        <td>${escapeHtml(level)}</td><td>${costs.length ? costs.join(' + ') : escapeHtml(t('channel.none', null, 'None'))}</td></tr>`;
                 }));
         return `<section class="akeshop-shop-section"><header><div><h2>${escapeHtml(t('channel.title', null, 'Regional Dispatch Levels'))}</h2></div><span>${escapeHtml(t('channel.count', { count: channels.length }, `${channels.length} dispatch points`))}</span></header>
             <div class="ake-ui-table-shell"><table class="ake-ui-table"><thead><tr><th>${escapeHtml(t('channel.point', null, 'Dispatch Point'))}</th><th>${escapeHtml(t('channel.level', null, 'Level'))}</th><th>${escapeHtml(t('channel.upgradeCost', null, 'Upgrade Cost'))}</th></tr></thead><tbody>${rows.join('')}</tbody></table></div></section>`;

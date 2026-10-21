@@ -92,7 +92,32 @@
         return sharedPromises.get(cacheKey);
     }
 
+    // Keep archive membership and global-search routes on the same source relations.
+    function readingReferences(index, popups = {}) {
+        const byContentId = new Map();
+        const byUniqId = new Map();
+        const diagnostics = [];
+        for (const [path, record] of Object.entries(index.datasets.json?.files || {})) {
+            if (!/^(LevelData|LevelScriptData)\/.+\.json$/i.test(path)) continue;
+            const meta = record.meta || {};
+            if (meta.narrativeMetadataVersion !== 1) diagnostics.push({ reason: 'outdated-narrative-metadata', path });
+            const refs = meta.narrativeReadingReferences || (meta.narrativeReadingContentIds || []).map(typeId => ({ typeId }));
+            for (const ref of refs) {
+                const contentId = popups[ref.typeId]?.contentId || ref.typeId;
+                if (!contentId) { diagnostics.push({ reason: 'missing-content-id', path, reference: ref }); continue; }
+                if (!byContentId.has(contentId)) byContentId.set(contentId, []);
+                byContentId.get(contentId).push({ path, ...ref, contentId });
+            }
+            for (const id of meta.narrativeReadingUniqIds || []) {
+                if (!byUniqId.has(id)) byUniqId.set(id, []);
+                byUniqId.get(id).push(path);
+            }
+        }
+        return { byContentId, byUniqId, diagnostics };
+    }
+
     window.akeAssetIndex = {
+        readingReferences,
         get ready() { return load(); },
         load,
         async listJsonFiles(prefix, options) {

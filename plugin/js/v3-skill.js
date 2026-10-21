@@ -990,6 +990,7 @@
             counts.set(entity.sectionId, (counts.get(entity.sectionId) || 0) + 1);
             return counts;
         }, new Map());
+        const disclosureIcon = window.AKEUI.icon('disclosure').outerHTML;
         let previousSectionId = '';
         target.innerHTML = directory.map(character => {
             const sectionHeading = character.sectionId !== previousSectionId
@@ -1017,7 +1018,7 @@
                         data-character-id="${escapeHtml(character.id)}" data-group-id="${escapeHtml(group.id)}"
                         aria-expanded="${groupOpen ? 'true' : 'false'}">
                         <span class="ake-ui-tree__group-label">${group.icon ? `<img class="ake-ui-tree__group-icon" data-size="small" src="${escapeHtml(skillIconPath(group.icon))}" alt="">` : ''}<span>${escapeHtml(group.displayName)}</span></span>
-                        <span class="ake-ui-tree__group-count">${escapeHtml(group.skills.length)}</span>
+                        <span class="ake-ui-tree__group-count">${disclosureIcon}${escapeHtml(group.skills.length)}</span>
                     </button>
                     <div class="ake-ui-tree__children">${skills}</div>
                 </section>`;
@@ -1026,7 +1027,7 @@
                 <button type="button" class="ake-ui-tree__group-toggle" data-combatv3-action="toggle-character"
                     data-character-id="${escapeHtml(character.id)}" aria-expanded="${characterOpen ? 'true' : 'false'}">
                     <span class="ake-ui-tree__group-label">${character.icon ? `<img class="ake-ui-tree__group-icon" src="${escapeHtml(character.icon)}" alt="">` : ''}<span>${escapeHtml(character.name)}</span></span>
-                    <span class="ake-ui-tree__group-count">${escapeHtml(total)}</span>
+                    <span class="ake-ui-tree__group-count">${disclosureIcon}${escapeHtml(total)}</span>
                 </button>
                 <div class="ake-ui-tree__children">${groups}</div>
             </section>`;
@@ -1836,7 +1837,7 @@
         const row = (label, content) => `<dt>${escapeHtml(label)}</dt><dd>${content}</dd>`;
         const plainRow = (label, value) => row(label, escapeHtml(value || st('unknown')));
         const actionButton = (fact, path, label) => isRoot(fact) && path && state.analysis.graph?.nodeByPath.has(path)
-            ? `<button type="button" class="ake-ui-segmented__button" data-combatv3-action="locate-spatial" data-action-path="${escapeHtml(path)}">${escapeHtml(label)}</button>` : '';
+            ? `<button type="button" class="ake-ui-button ake-ui-button--secondary combatv3-action-button" data-combatv3-action="locate-spatial" data-action-path="${escapeHtml(path)}">${escapeHtml(label)}</button>` : '';
         const factNames = new Map();
         const orderedSources = [...sources.values()].sort((a, b) => Number(isRoot(b.fact)) - Number(isRoot(a.fact)));
         let childNumber = 0;
@@ -1887,9 +1888,10 @@
                             : card.purpose === 'search' || card.purpose === 'impact' ? plainRow(st('effects'), st('unlinked')) : '',
                         showHidden() ? plainRow(st('source'), [fact.skillId, fact.path, fact.id].filter(Boolean).join(' · ')) : ''
                     ].join('');
+                    const sourceAction = actionButton(fact, fact.path, st('viewSource'));
                     return `<div class="ake-ui-section">${card.purpose === 'impact' ? `<p class="ake-ui-section__meta">${escapeHtml(st('inferred'))}</p>` : ''}
                         <dl class="combatv3-definition-list">${detail}</dl>
-                        ${actionButton(fact, fact.path, st('viewSource'))}</div>`;
+                        ${sourceAction ? `<div class="combatv3-spatial-actions">${sourceAction}</div>` : ''}</div>`;
                 }).join('');
                 return `<article class="ake-ui-card"><header class="ake-ui-card__header"><h4 class="ake-ui-card__title">${escapeHtml(label)}</h4></header>
                     <div class="ake-ui-card__body">${variants}</div></article>`;
@@ -1914,7 +1916,7 @@
         const warnings = spatial.warnings.length;
         return `<section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">${escapeHtml(st('title'))}</h2></header>
             <p class="ake-ui-section__meta">${escapeHtml(st('notice'))}</p>${sections}
-            ${relations ? `<details><summary>${escapeHtml(st('relations'))}</summary><ul>${relations}</ul></details>` : ''}
+            ${relations ? `<details class="ake-ui-details">${disclosureSummary(st('relations'))}<div class="ake-ui-details__body"><ul>${relations}</ul></div></details>` : ''}
             ${pending || warnings ? `<p class="combatv3-note is-warning">${escapeHtml(st('incomplete', { pending, warnings }))}</p>` : ''}</section>`;
     }
 
@@ -1983,8 +1985,10 @@
             enumValueLabel('skillSpecifications', raw.skillSpecification),
             enumValueLabel('passiveSkillTypes', raw.passiveSkillType)
         ].filter(Boolean);
-        const code = window.AKEUI.element('code', 'ake-ui-detail-id', owner.item.id);
-        code.title = owner.item.id;
+        const displayId = raw.skillId || owner.item.id;
+        const code = displayId !== owner.item.id
+            ? window.AKEUI.element('code', 'ake-ui-detail-id', owner.item.id) : null;
+        if (code) code.title = owner.item.id;
         const ownerPlugin = owner.character.entityKind === 'character' ? 'v3_character'
             : (owner.character.entityKind === 'enemy' ? 'v3_enemy' : '');
         const ownerLink = ownerPlugin
@@ -1995,23 +1999,36 @@
             beforeTitle: ownerLink,
             eyebrow: isEnemy ? entityLabel : owner.group.displayName,
             title,
-            subtitle: raw.skillId || owner.item.id,
-            after: code
+            subtitle: displayId,
+            after: null
         });
         const contextBar = `<div class="combatv3-context-bar"><div class="combatv3-context-row">
-            <label class="combatv3-context-item"><span>${escapeHtml(t('metrics.level', null, '等级'))}</span><select id="combatv3LevelSelect"${levels.length <= 1 ? ' disabled' : ''}>${options}</select></label>
+            ${levels.length > 1 ? `<label class="combatv3-context-item"><span>${escapeHtml(t('metrics.level', null, '等级'))}</span><select id="combatv3LevelSelect">${options}</select></label>` : ''}
             <span class="combatv3-context-item"><span>${escapeHtml(entityLabel)}</span><strong>${escapeHtml(owner.character.name)}</strong></span>
             ${isEnemy ? '' : `<span class="combatv3-context-item"><span>${escapeHtml(t('directory.groupLabel', null, '技能组'))}</span><strong>${escapeHtml(owner.group.displayName)}</strong></span>`}
             ${tags.length ? `<div class="ake-ui-detail-badges">${tags.map((tag, index) => `<span class="ake-ui-badge"${index === 0 ? ' data-tone="accent"' : ''}>${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
-        </div><div class="ake-ui-segmented combatv3-section-switcher">${[
-            ['core', 'coreSection'], ['graph', 'graphSection'], ['key', 'keySection'], ['debug', 'debugSection']
-        ].map(([id, label]) => `<button type="button" class="ake-ui-segmented__button" id="combatv3SectionButton-${id}"
-            data-combatv3-action="select-section" data-section="${id}" aria-pressed="${state.activeSection === id}"
-            aria-controls="combatv3Section-${id}">${escapeHtml(window.akeI18n?.t(`actionGraph.${label}`))}</button>`).join('')}</div></div>`;
+        </div>${window.AKEUI.tabs({
+            layout: 'equal',
+            attached: true,
+            label: t('tabs.sections', null, '战斗信息分区'),
+            attributes: { class: 'ake-ui-tabs combatv3-section-switcher' },
+            items: [
+                ['core', 'coreSection'], ['graph', 'graphSection'], ['key', 'keySection'], ['debug', 'debugSection']
+            ].map(([id, label]) => ({
+                id: `combatv3SectionButton-${id}`,
+                label: window.akeI18n?.t(`actionGraph.${label}`),
+                active: state.activeSection === id,
+                controls: `combatv3Section-${id}`,
+                attributes: { 'data-combatv3-action': 'select-section', 'data-section': id }
+            }))
+        }).outerHTML}</div>`;
         if (!detailHeader) return contextBar;
         detailHeader.classList.add('combatv3-identity-header');
         const copy = detailHeader.querySelector('.ake-ui-detail-copy');
-        if (copy) copy.insertAdjacentHTML('afterend', contextBar);
+        if (copy) {
+            if (code) copy.appendChild(code);
+            copy.insertAdjacentHTML('afterend', contextBar);
+        }
         else detailHeader.insertAdjacentHTML('beforeend', contextBar);
         return detailHeader.outerHTML;
     }
@@ -2035,25 +2052,22 @@
     }
 
     function renderCore() {
-        const metrics = coreMetrics();
-        const standardHtml = metrics.map(([key, label, rawValue, important]) => {
+        const metricItems = rows => rows.map(([key, label, rawValue]) => {
             const value = metricValue(key, rawValue);
-            return `<div class="combatv3-metric${important ? ' is-important' : ''}"><span class="combatv3-metric-label">${escapeHtml(label)}</span>
-                <strong class="combatv3-metric-value">${escapeHtml(value.value)}</strong>${value.unit ? `<span class="combatv3-metric-unit">${escapeHtml(value.unit)}</span>` : ''}</div>`;
-        }).join('');
-        const metricHtml = standardHtml
-            ? standardHtml
-            : `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noCoreMetrics', null, '分析器未返回核心指标'))}</div>`;
+            return { label, value: [value.value, value.unit].filter(Boolean).join(' ') };
+        });
+        const metricHtml = window.AKEUI.metaGrid(metricItems(coreMetrics()), { layout: 'auto' })?.outerHTML
+            || `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noCoreMetrics', null, '分析器未返回核心指标'))}</div>`;
         const patches = patchMetrics();
         const patchHtml = patches.length ? `<section class="ake-ui-section">
             <header class="ake-ui-section__header"><h3 class="ake-ui-section__title">${escapeHtml(t('sections.skillLevelConfiguration', null, '技能等级配置'))}</h3></header>
-            <div class="combatv3-metric-grid">${patches.map(([key, label, rawValue]) => {
-                const value = metricValue(key, rawValue);
-                return `<div class="combatv3-metric"><span class="combatv3-metric-label">${escapeHtml(label)}</span>
-                    <strong class="combatv3-metric-value">${escapeHtml(value.value)}</strong>${value.unit ? `<span class="combatv3-metric-unit">${escapeHtml(value.unit)}</span>` : ''}</div>`;
-            }).join('')}</div></section>` : '';
+            ${window.AKEUI.metaGrid(metricItems(patches), { layout: 'auto' })?.outerHTML || ''}</section>` : '';
         return `${patchHtml}<section class="ake-ui-section"><header class="ake-ui-section__header"><h2 class="ake-ui-section__title">${escapeHtml(t('sections.coreMetrics', null, '核心指标'))}</h2>
-            <span class="ake-ui-section__meta">${escapeHtml(t('sectionNotes.keyCombatFields', null, '关键战斗字段'))}</span></header><div class="combatv3-metric-grid">${metricHtml}</div></section>${renderCardAttributeModifiers()}${renderSpatialEffects()}`;
+            <span class="ake-ui-section__meta">${escapeHtml(t('sectionNotes.keyCombatFields', null, '关键战斗字段'))}</span></header>${metricHtml}</section>${renderCardAttributeModifiers()}${renderSpatialEffects()}`;
+    }
+
+    function disclosureSummary(label) {
+        return `<summary><span>${escapeHtml(label)}</span>${window.AKEUI.icon('disclosure').outerHTML}</summary>`;
     }
 
     function frameOf(item, names) {
@@ -2201,12 +2215,10 @@
     function renderWindowStage(rows, emptyText) {
         if (!rows.length) return `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(emptyText)}</div>`;
         const max = timelineMax();
-        const ruler = [0, 20, 40, 60, 80, 100].map(percent => `<span>${escapeHtml(Math.round(max * percent / 100))}</span>`).join('');
+        const ruler = window.AKEUI.timelineRuler([0, 20, 40, 60, 80, 100].map(percent => Math.round(max * percent / 100)));
         const lanes = rows.map((item, index) => {
             const start = frameOf(item, ['startFrame', 'frame', 'start', 'from']) ?? 0;
             const end = frameOf(item, ['endFrame', 'end', 'to']) ?? start;
-            const left = Math.max(0, Math.min(100, start / max * 100));
-            const width = Math.max(0.35, Math.min(100 - left, Math.max(0, end - start) / max * 100));
             const label = windowLabel(item, index);
             const detail = windowDetail(item);
             const frameText = start === end
@@ -2214,18 +2226,27 @@
                 : t('units.frameRange', { start: formatValue(start), end: formatValue(end) }, `${formatValue(start)}–${formatValue(end)} 帧`);
             const tooltip = `${label} · ${frameText}${isPresent(detail) ? ` · ${formatValue(detail)}` : ''}`;
             const kind = windowKind(item);
-            const blockClass = start === end ? 'combatv3-window-point' : `combatv3-window combatv3-window--${kind}`;
             const graphEvent = Number.isInteger(item.eventIndex) ? item.eventIndex : item.index;
             const graphNode = Number.isInteger(graphEvent) && state.analysis.graph?.nodeByPath.has(item.path);
-            const graphButton = graphNode ? `<button type="button" class="ake-ui-segmented__button" data-combatv3-action="locate-graph"
-                data-event-index="${graphEvent}" aria-label="${escapeHtml(window.akeI18n?.t('actionGraph.locateGraph') || '查看动作流程')}">${escapeHtml(label)} ↗</button>` : escapeHtml(label);
+            const locateLabel = `${window.akeI18n?.t('actionGraph.locateGraph') || '查看动作流程'}：${label}`;
+            const graphButton = graphNode ? `<button type="button" class="combatv3-lane-action" data-combatv3-action="locate-graph"
+                data-event-index="${graphEvent}" aria-label="${escapeHtml(locateLabel)}" title="${escapeHtml(locateLabel)}"><span class="combatv3-lane-action__text">${escapeHtml(label)}</span>${window.AKEUI.icon('locate').outerHTML}</button>` : escapeHtml(label);
+            const track = window.AKEUI.timelineTrack({ start, end, max });
+            track.classList.add('combatv3-window-track', `combatv3-window-track--${kind}`);
+            track.dataset.combatv3Tooltip = tooltip;
+            if (graphNode) {
+                track.removeAttribute('aria-hidden');
+                track.setAttribute('role', 'button');
+                track.setAttribute('tabindex', '0');
+                track.setAttribute('aria-label', tooltip);
+                track.dataset.combatv3Action = 'locate-graph';
+                track.dataset.eventIndex = String(graphEvent);
+            }
             return `<div class="combatv3-window-lane"${graphNode ? ` data-graph-event-index="${graphEvent}"` : ''}><span class="combatv3-lane-label" title="${escapeHtml(label)}">${graphButton}</span>
-                <div class="combatv3-lane-track"><span class="${blockClass}" style="left:${escapeHtml(left)}%;width:${escapeHtml(width)}%;"
-                    ${graphNode ? `role="button" tabindex="0" data-combatv3-action="locate-graph" data-event-index="${graphEvent}" aria-label="${escapeHtml(tooltip)}"` : ''}
-                    data-combatv3-tooltip="${escapeHtml(tooltip)}">${start === end ? '' : `<span>${escapeHtml(label)}</span>`}</span></div></div>`;
+                <div class="combatv3-lane-track">${track.outerHTML}</div></div>`;
         }).join('');
         return `<div class="combatv3-window-scroll"><div class="combatv3-window-stage"><div class="combatv3-window-ruler">
-            <span class="combatv3-lane-label">${escapeHtml(t('units.frames', { value: '' }, '帧').trim())}</span><div class="combatv3-ruler-track">${ruler}</div></div>${lanes}</div></div>`;
+            <span class="combatv3-lane-label">${escapeHtml(t('units.frames', { value: '' }, '帧').trim())}</span><div class="combatv3-ruler-track">${ruler.outerHTML}</div></div>${lanes}</div></div>`;
     }
 
     function renderWindows() {
@@ -2297,11 +2318,10 @@
         const events = state.showPerformance ? state.analysis.events : state.analysis.events.filter(event => !isPerformanceEvent(event));
         state.timelineEvents = events;
         const rows = events.map((event, index) => ({ ...event, label: eventLabel(event, index) }));
+        const performanceLabel = t('buttons.showPerformance', null, '含表现事件');
         return `<div class="combatv3-editor__timeline-tools"><h3 class="ake-ui-section__title" id="combatv3TimelineTitle">${escapeHtml(t('tabs.timeline', null, '战斗时间轴'))}</h3>
-            <button type="button" class="ake-ui-segmented__button" data-combatv3-action="toggle-performance"
-            aria-pressed="${state.showPerformance ? 'true' : 'false'}">${escapeHtml(state.showPerformance
-                ? t('buttons.showPerformance', null, '含表现事件')
-                : t('buttons.combatOnly', null, '仅战斗事件'))}</button>
+            <label class="combatv3-timeline-filter"><span>${escapeHtml(performanceLabel)}</span>
+                <input type="checkbox" class="ake-ui-switch" data-combatv3-action="toggle-performance"${state.showPerformance ? ' checked' : ''}></label>
             <span class="ake-ui-section__meta">${escapeHtml(t('counts.filteredEvents', {
                 visible: events.length,
                 total: state.analysis.events.length
@@ -2335,9 +2355,9 @@
                 <td data-column="note">${escapeHtml(compactTimelineDetail(firstValue(event, ['detail', 'details', 'description', 'note', 'condition'])))}</td></tr>`).join('')}</tbody></table></div>` : '';
         return `${warningHtml}<section class="ake-ui-section"><header class="ake-ui-section__header"><h3 class="ake-ui-section__title">${escapeHtml(t('sections.blackboardResolution', null, '黑板解析'))}</h3></header>${boardHtml}</section>
             <section class="ake-ui-section"><header class="ake-ui-section__header"><h3 class="ake-ui-section__title">${escapeHtml(t('sections.allEvents', null, '全部事件'))}</h3><span class="ake-ui-section__meta">${escapeHtml(t('counts.events', { count: events.length }, `${events.length} 个事件`))}</span></header>${eventTable || `<div class="ake-ui-state" data-state="empty" data-density="compact">${escapeHtml(t('empty.noEvents', null, '没有事件'))}</div>`}</section>
-            <section class="ake-ui-section"><details class="combatv3-raw"><summary>${escapeHtml(t('raw.analyzerOutput', null, '分析器输出'))}</summary><pre>${escapeHtml(safeJson(state.analysisSource))}</pre></details>
-            <details class="combatv3-raw"><summary>${escapeHtml(t('raw.currentPatch', null, '当前等级 SkillPatch'))}</summary><pre>${escapeHtml(safeJson(state.currentPatch))}</pre></details>
-            <details class="combatv3-raw"><summary>${escapeHtml(t('raw.skillData', null, '原始 SkillData'))}</summary><pre>${escapeHtml(safeJson(state.currentData))}</pre></details></section>`;
+            <section class="ake-ui-section"><details class="ake-ui-details combatv3-raw">${disclosureSummary(t('raw.analyzerOutput', null, '分析器输出'))}<div class="ake-ui-details__body"><pre>${escapeHtml(safeJson(state.analysisSource))}</pre></div></details>
+            <details class="ake-ui-details combatv3-raw">${disclosureSummary(t('raw.currentPatch', null, '当前等级 SkillPatch'))}<div class="ake-ui-details__body"><pre>${escapeHtml(safeJson(state.currentPatch))}</pre></div></details>
+            <details class="ake-ui-details combatv3-raw">${disclosureSummary(t('raw.skillData', null, '原始 SkillData'))}<div class="ake-ui-details__body"><pre>${escapeHtml(safeJson(state.currentData))}</pre></div></details></section>`;
     }
 
     let timelineResize = null;
@@ -2353,8 +2373,7 @@
         handle.hidden = state.timelineCollapsed;
         handle.setAttribute('aria-valuenow', String(Math.round(state.graphShare)));
         const button = workspace.querySelector('[data-combatv3-action="toggle-timeline"]');
-        button.setAttribute('aria-expanded', String(!state.timelineCollapsed));
-        button.textContent = window.akeI18n?.t(`actionGraph.${state.timelineCollapsed ? 'expandTimeline' : 'collapseTimeline'}`);
+        window.AKEUI.setDisclosureButtonExpanded(button, !state.timelineCollapsed);
     }
 
     function startTimelineResize(event) {
@@ -2385,6 +2404,12 @@
     }
 
     function renderWorkspace() {
+        const timelineToggle = window.AKEUI.disclosureButton({
+            expanded: !state.timelineCollapsed,
+            expandLabel: window.akeI18n?.t('actionGraph.expandTimeline'),
+            collapseLabel: window.akeI18n?.t('actionGraph.collapseTimeline'),
+            attributes: { 'data-combatv3-action': 'toggle-timeline', 'aria-controls': 'combatv3TimelineRegion' }
+        });
         return `<section class="combatv3-editor" id="combatv3Workspace">
             <section class="ake-ui-section combatv3-editor__graph" id="combatv3GraphPanel"
                 aria-label="${escapeHtml(window.akeI18n?.t('actionGraph.title'))}">
@@ -2394,7 +2419,7 @@
                 <div class="combatv3-editor__resize" data-combatv3-resize role="separator" tabindex="0" aria-orientation="horizontal"
                     aria-label="${escapeHtml(window.akeI18n?.t('actionGraph.resizeTimeline'))}" aria-valuemin="20" aria-valuemax="90" aria-valuenow="${state.graphShare}"
                     aria-controls="combatv3GraphPanel combatv3TimelineRegion"></div>
-                <button type="button" class="ake-ui-segmented__button" data-combatv3-action="toggle-timeline" aria-controls="combatv3TimelineRegion"></button>
+                ${timelineToggle.outerHTML}
             </div>
             <section class="ake-ui-section combatv3-editor__timeline" id="combatv3TimelineRegion" aria-labelledby="combatv3TimelineTitle">
                 <div id="combatv3TimelinePanel">${renderTimeline()}</div>
@@ -2428,7 +2453,7 @@
             ['debug', 'debugSection', '<div data-combatv3-debug-content></div>']
         ];
         elements.detail.innerHTML = `<div class="combatv3-page-identity">${renderIdentity()}${renderSourceWarning()}</div>
-            <div class="combatv3-sections">${sections.map(([id, label, content]) => `<section class="combatv3-section" data-combatv3-section="${id}"
+            <div class="combatv3-sections">${sections.map(([id, label, content]) => `<section class="combatv3-section" role="tabpanel" data-combatv3-section="${id}"
                 aria-labelledby="combatv3SectionButton-${id}"${state.activeSection === id ? '' : ' hidden'}>
                 <div class="combatv3-section__body" id="combatv3Section-${id}">${content}</div>
             </section>`).join('')}</div>`;
@@ -2446,7 +2471,10 @@
             section.hidden = !open;
         });
         elements.detail.querySelectorAll('[data-combatv3-action="select-section"]').forEach(button => {
-            button.setAttribute('aria-pressed', String(button.dataset.section === id));
+            const active = button.dataset.section === id;
+            button.setAttribute('aria-selected', String(active));
+            button.classList.toggle('is-active', active);
+            button.tabIndex = active ? 0 : -1;
         });
         const debug = elements.detail.querySelector('[data-combatv3-debug-content]');
         if (id === 'debug' && debug && !debug.dataset.loaded) {
@@ -2518,14 +2546,32 @@
         const characterId = button.dataset.characterId;
         const groupId = button.dataset.groupId;
         if (action === 'toggle-character') {
-            if (state.expandedCharacters.has(characterId)) state.expandedCharacters.delete(characterId);
-            else state.expandedCharacters.add(characterId);
-            renderDirectories();
+            const tree = button.closest('.ake-ui-tree');
+            window.AKEUI.animateTreeToggle({
+                button,
+                animate: !state.query,
+                toggle: () => {
+                    if (state.expandedCharacters.has(characterId)) state.expandedCharacters.delete(characterId);
+                    else state.expandedCharacters.add(characterId);
+                },
+                render: renderDirectories,
+                findButton: () => [...tree.querySelectorAll('[data-combatv3-action="toggle-character"]')]
+                    .find(item => item.dataset.characterId === characterId)
+            });
         } else if (action === 'toggle-group') {
             const key = groupKey(characterId, groupId);
-            if (state.expandedGroups.has(key)) state.expandedGroups.delete(key);
-            else state.expandedGroups.add(key);
-            renderDirectories();
+            const tree = button.closest('.ake-ui-tree');
+            window.AKEUI.animateTreeToggle({
+                button,
+                animate: !state.query,
+                toggle: () => {
+                    if (state.expandedGroups.has(key)) state.expandedGroups.delete(key);
+                    else state.expandedGroups.add(key);
+                },
+                render: renderDirectories,
+                findButton: () => [...tree.querySelectorAll('[data-combatv3-action="toggle-group"]')]
+                    .find(item => item.dataset.characterId === characterId && item.dataset.groupId === groupId)
+            });
         } else if (action === 'select-skill') {
             selectSkill(button.dataset.skillId, { characterId, groupId, updateUrl: true });
         }
@@ -2556,15 +2602,16 @@
             if (item) graphView?.selectPath(item.path);
             return;
         }
-        if (action === 'toggle-performance') {
-            state.showPerformance = !state.showPerformance;
-            elements.detail.querySelector('#combatv3TimelinePanel').innerHTML = renderTimeline();
-            graphView?.refreshSelection();
-        }
     }
 
     function onDetailChange(event) {
         if (graphView?.change(event.target)) return;
+        if (event.target.dataset.combatv3Action === 'toggle-performance') {
+            state.showPerformance = event.target.checked;
+            elements.detail.querySelector('#combatv3TimelinePanel').innerHTML = renderTimeline();
+            graphView?.refreshSelection();
+            return;
+        }
         if (event.target.id !== 'combatv3LevelSelect') return;
         graphView?.unmount();
         state.level = Number(event.target.value);
@@ -2606,6 +2653,17 @@
     }
 
     function onKeyDown(event) {
+        const sectionTab = event.target.closest?.('[role="tab"][data-combatv3-action="select-section"]');
+        if (sectionTab && ['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
+            event.preventDefault();
+            const tabs = [...elements.detail.querySelectorAll('[data-combatv3-action="select-section"]')];
+            const current = tabs.indexOf(sectionTab);
+            const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1
+                : (current + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+            setSection(tabs[next].dataset.section);
+            tabs[next].focus();
+            return;
+        }
         if (event.target.matches?.('[data-combatv3-resize]')) {
             const delta = event.shiftKey ? 10 : 2;
             const value = event.key === 'ArrowUp' ? state.graphShare - delta

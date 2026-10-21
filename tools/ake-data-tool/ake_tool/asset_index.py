@@ -92,6 +92,7 @@ def _level_data_meta(path: Path) -> dict[str, Any]:
         raise ValidationError(f"LevelData Json 根节点不是对象：{path}")
 
     dialog_ids: list[str] = []
+    reading_refs: list[dict[str, Any]] = []
     archive_points: list[dict[str, Any]] = []
     seen: set[str] = set()
     interactives = payload.get("interactives")
@@ -121,13 +122,20 @@ def _level_data_meta(path: Path) -> dict[str, Any]:
                         point = {"prtsId": dialog_id, "logicId": logic_id}
                         if point not in archive_points:
                             archive_points.append(point)
-                elif isinstance(dialog_id, str) and dialog_id.startswith("dlg_") and dialog_id not in seen:
-                    seen.add(dialog_id)
-                    dialog_ids.append(dialog_id)
+                elif isinstance(dialog_id, str) and dialog_id:
+                    if dialog_id.startswith("dlg_"):
+                        if dialog_id not in seen:
+                            seen.add(dialog_id)
+                            dialog_ids.append(dialog_id)
+                    else:
+                        reference = {"typeId": dialog_id, "logicId": logic_id}
+                        if reference not in reading_refs:
+                            reading_refs.append(reference)
+    narrative_meta = {"narrativeMetadataVersion": 1, "narrativeReadingReferences": reading_refs}
     factory_mines: list[dict[str, Any]] = []
     raw_mines = payload.get("factoryMines")
     if not isinstance(raw_mines, list) or not raw_mines:
-        return {"narrativeDialogIds": dialog_ids, "archivePoints": archive_points}
+        return {"narrativeDialogIds": dialog_ids, "archivePoints": archive_points, **narrative_meta}
     for mine in raw_mines:
         if not isinstance(mine, dict):
             continue
@@ -153,7 +161,7 @@ def _level_data_meta(path: Path) -> dict[str, Any]:
             entry["voxelPosition"] = [position["x"], position["y"], position["z"]]
         factory_mines.append(entry)
     modified_at = datetime.fromtimestamp(path.stat().st_mtime, timezone.utc).isoformat()
-    return {"narrativeDialogIds": dialog_ids, "archivePoints": archive_points, "factoryMines": factory_mines, "mapModifiedAt": modified_at, "metadataSchemaVersion": 2}
+    return {"narrativeDialogIds": dialog_ids, "archivePoints": archive_points, "factoryMines": factory_mines, "mapModifiedAt": modified_at, "metadataSchemaVersion": 2, **narrative_meta}
 
 
 def _level_script_meta(path: Path) -> dict[str, Any]:
@@ -172,7 +180,8 @@ def _level_script_meta(path: Path) -> dict[str, Any]:
     def add_content(value: Any) -> None:
         if (
             isinstance(value, str)
-            and re.match(r"^(?:text|radio)_", value)
+            and value
+            and not value.startswith("dlg_")
             and value not in seen_content
         ):
             seen_content.add(value)
@@ -202,10 +211,10 @@ def _level_script_meta(path: Path) -> dict[str, Any]:
                 walk(child)
 
     walk(payload)
-    if not content_ids and not uniq_ids:
-        return {}
     return {
-        "narrativeReadingContentIds": content_ids,
+        "narrativeMetadataVersion": 1,
+        "narrativeReadingReferences": [{"typeId": value} for value in content_ids],
+        "narrativeReadingContentIds": [value for value in content_ids if value.startswith(("text_", "radio_"))],
         "narrativeReadingUniqIds": uniq_ids,
     }
 
@@ -386,6 +395,13 @@ def validate_level_data_dialog_metadata(value: dict[str, Any]) -> dict[str, Any]
     mine_invalid: list[str] = []
     script_invalid: list[str] = []
     for path, record in files.items():
+        if path.startswith(("LevelData/", "LevelScriptData/")) and path.lower().endswith(".json"):
+            meta = record.get("meta") or {}
+            refs = meta.get("narrativeReadingReferences")
+            if meta.get("narrativeMetadataVersion") != 1 or not isinstance(refs, list):
+                raise ValidationError(f"叙事索引需要重建：{path}")
+            if any(not isinstance(ref, dict) or not isinstance(ref.get("typeId"), str) or not ref["typeId"] for ref in refs):
+                raise ValidationError(f"叙事阅读引用无效：{path}")
         if path.startswith("LevelScriptData/") and path.lower().endswith(".json"):
             meta = record.get("meta")
             if isinstance(meta, dict):
