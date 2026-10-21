@@ -1232,15 +1232,23 @@
 
                     let waveDetailHtml = '';
                     mergedWaves.forEach((wave, wIdx) => {
-                        const repeatTag = wave.repeatable ? `<span class="ake-ui-badge">${t('waves.repeatable')}</span>` : '';
-                        const aliveTag = wave.maxAlive > 0 ? `<span class="ake-ui-badge">${t('waves.aliveLimit', { count: wave.maxAlive })}</span>` : '';
-                        const pauseTag = wave.hasPause ? `<span class="ake-ui-badge">${t('waves.externallyControlled')}</span>` : '';
-                        const enemyParts = wave.enemies.map(e => {
-                            const iconSrc = `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${e.templateId}.png`;
-                            return `<span class="ake-ui-badge v2d-wave-enemy" data-wave-idx="${wIdx}" data-enemy-id="${e.instanceId}"><img class="v2d-wave-icon" src="${iconSrc}" alt=""><span class="v2d-wave-ename">${escapeHtml(e.name)}</span> ×${e.count} <span class="v2d-wave-lv">Lv.${e.level}</span></span>`;
-                        }).join(' ');
-                        const activeCls = wIdx === 0 ? ' active' : '';
-                        waveDetailHtml += `<button class="ake-ui-card is-interactive v2d-wave-line${activeCls}" type="button" data-card-kind="cc-wave" data-wave-idx="${wIdx}" aria-pressed="${wIdx === 0}"><span class="ake-ui-card__meta"><span class="v2d-wave-num" data-wave-idx="${wIdx}">${t('waves.number', { number: wave.waveIdx })}</span>${repeatTag}${aliveTag}${pauseTag}</span><span class="ake-ui-card__badges">${enemyParts}</span></button>`;
+                        waveDetailHtml += window.AKEUI.waveCard({
+                            index: wIdx,
+                            label: t('waves.number', { number: wave.waveIdx }),
+                            active: wIdx === 0,
+                            flags: [
+                                wave.repeatable && t('waves.repeatable'),
+                                wave.maxAlive > 0 && t('waves.aliveLimit', { count: wave.maxAlive }),
+                                wave.hasPause && t('waves.externallyControlled')
+                            ],
+                            enemies: wave.enemies.map(e => ({
+                                id: e.instanceId,
+                                name: e.name,
+                                count: e.count,
+                                level: e.level,
+                                iconSrc: `/public/images/assets/beyond/dynamicassets/gameplay/ui/sprites/monstericonbig/${e.templateId}.png`
+                            }))
+                        }).outerHTML;
                     });
 
                     const mergedSpawner = { ...sp, waves: mergedWaves };
@@ -1289,7 +1297,7 @@
                         <div class="v2cc-spawner-body">
                             <div class="v2cc-wave-map-row">
                                 <div class="v2d-wave-section">
-                                    <div class="v2d-wave-detail">${waveDetailHtml}</div>
+                                    <div class="v2d-wave-detail v2d-wave-detail--cards">${waveDetailHtml}</div>
                                 </div>
                                 ${spawnMapHtml}
                             </div>
@@ -1713,8 +1721,7 @@
             const map = spawnerBody.querySelector('.v2cc-spawn-map');
             spawnerBody.querySelectorAll('.v2d-wave-line').forEach(l => {
                 const active = l.dataset.waveIdx === wi;
-                l.classList.toggle('active', active);
-                l.setAttribute('aria-pressed', String(active));
+                window.AKEUI.setWaveCardActive(l, active);
             });
             if (!map) return;
             map.querySelectorAll('.v2cc-map-spot').forEach(spot => {

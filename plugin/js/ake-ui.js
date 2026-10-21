@@ -35,6 +35,40 @@
         return template.content;
     }
 
+    function icon(name) {
+        if (!['plus', 'minus', 'disclosure', 'locate'].includes(name)) return null;
+        const namespace = 'http://www.w3.org/2000/svg';
+        const svg = document.createElementNS(namespace, 'svg');
+        svg.setAttribute('class', `ake-ui-icon ake-ui-icon--${name}`);
+        svg.setAttribute('viewBox', '0 0 24 24');
+        svg.setAttribute('width', '16');
+        svg.setAttribute('height', '16');
+        svg.setAttribute('aria-hidden', 'true');
+        svg.setAttribute('focusable', 'false');
+        const line = (x1, y1, x2, y2, className) => {
+            const node = document.createElementNS(namespace, 'line');
+            node.setAttribute('x1', String(x1));
+            node.setAttribute('y1', String(y1));
+            node.setAttribute('x2', String(x2));
+            node.setAttribute('y2', String(y2));
+            if (className) node.setAttribute('class', className);
+            return node;
+        };
+        if (name === 'locate') {
+            const center = document.createElementNS(namespace, 'circle');
+            center.setAttribute('cx', '12');
+            center.setAttribute('cy', '12');
+            center.setAttribute('r', '3.5');
+            svg.append(center,
+                line(12, 2, 12, 5), line(12, 19, 12, 22),
+                line(2, 12, 5, 12), line(19, 12, 22, 12));
+        } else {
+            svg.appendChild(line(5, 12, 19, 12));
+            if (name !== 'minus') svg.appendChild(line(12, 5, 12, 19, 'ake-ui-icon__vertical'));
+        }
+        return svg;
+    }
+
     function applyCommonState(node, options) {
         const density = options.density || 'regular';
         const layout = options.layout || 'compact';
@@ -417,6 +451,7 @@
         if (!visibleItems.length && !options.preserveEmpty) return null;
         const grid = element('dl', 'ake-ui-meta-grid');
         if (options.columns) grid.style.setProperty('--ake-ui-meta-columns', String(options.columns));
+        if (options.layout) grid.dataset.layout = options.layout;
         visibleItems.forEach(item => {
             const row = element('div', 'ake-ui-meta-grid__item');
             const label = element('dt');
@@ -429,9 +464,67 @@
             if (isPresent(item.label)) appendContent(label, item.label);
             if (label.childNodes.length) row.appendChild(label);
             row.appendChild(element('dd', null, item.value));
+            if (isPresent(item.note)) row.appendChild(element('small', 'ake-ui-meta-grid__note', item.note));
             grid.appendChild(row);
         });
         return grid;
+    }
+
+    function timelineRuler(labels = []) {
+        const ruler = element('div', 'ake-ui-timeline-ruler');
+        ruler.setAttribute('aria-hidden', 'true');
+        labels.forEach(label => ruler.appendChild(element('span', null, label)));
+        return ruler;
+    }
+
+    function timelineTrack(options = {}) {
+        const max = Number(options.max);
+        const start = Number(options.start);
+        const end = Number(options.end);
+        const upper = Number.isFinite(max) && max > 0 ? max : 1;
+        const from = Number.isFinite(start) ? Math.max(0, Math.min(upper, start)) : 0;
+        const to = options.openEnded ? upper : (Number.isFinite(end) ? Math.max(from, Math.min(upper, end)) : from);
+        const track = element('span', 'ake-ui-timeline-track');
+        if (options.label) {
+            track.setAttribute('role', 'img');
+            track.setAttribute('aria-label', String(options.label));
+        } else {
+            track.setAttribute('aria-hidden', 'true');
+        }
+        if (options.openEnded) track.dataset.openEnded = 'true';
+        if (from === to && !options.openEnded) track.dataset.point = 'true';
+        track.style.setProperty('--ake-ui-timeline-start', `${from / upper * 100}%`);
+        track.style.setProperty('--ake-ui-timeline-length', `${(to - from) / upper * 100}%`);
+        track.appendChild(element('span', 'ake-ui-timeline-track__range'));
+        return track;
+    }
+
+    function tabs(options = {}) {
+        const group = element('div', 'ake-ui-tabs');
+        group.dataset.variant = options.variant || 'segment';
+        if (options.layout) group.dataset.layout = options.layout;
+        if (options.attached) group.dataset.attached = 'true';
+        group.setAttribute('role', options.role || 'tablist');
+        if (options.label) group.setAttribute('aria-label', String(options.label));
+        applyAttributes(group, options.attributes);
+        (options.items || []).forEach(item => {
+            const button = element('button', `ake-ui-tabs__button${item.active ? ' is-active' : ''}`);
+            button.type = 'button';
+            if (item.id) button.id = item.id;
+            if (group.getAttribute('role') === 'tablist') {
+                button.setAttribute('role', 'tab');
+                button.setAttribute('aria-selected', String(Boolean(item.active)));
+                button.tabIndex = item.active ? 0 : -1;
+                if (item.controls) button.setAttribute('aria-controls', item.controls);
+            } else {
+                button.setAttribute('aria-pressed', String(Boolean(item.active)));
+            }
+            if (isPresent(item.label)) button.appendChild(element('span', null, item.label));
+            if (isPresent(item.count)) button.appendChild(element('small', null, item.count));
+            applyAttributes(button, item.attributes);
+            group.appendChild(button);
+        });
+        return group;
     }
 
     function dataTable(definition = {}) {
@@ -552,6 +645,53 @@
         }
         if (content.childElementCount) node.appendChild(content);
 
+        return node;
+    }
+
+    function setWaveCardActive(node, active) {
+        if (!(node instanceof Element)) return node;
+        const selected = Boolean(active);
+        node.classList.toggle('active', selected);
+        if (node.matches('button')) node.setAttribute('aria-pressed', String(selected));
+        return node;
+    }
+
+    function waveCard(options = {}) {
+        const waveIndex = String(options.index ?? 0);
+        const node = element('button', 'ake-ui-card is-interactive v2d-wave-line');
+        node.type = 'button';
+        node.dataset.cardKind = 'wave';
+        node.dataset.waveIdx = waveIndex;
+        setWaveCardActive(node, options.active);
+
+        const meta = element('span', 'ake-ui-card__meta');
+        const number = element('span', 'v2d-wave-num', options.label);
+        number.dataset.waveIdx = waveIndex;
+        meta.appendChild(number);
+        (options.flags || []).forEach(flag => {
+            if (!flag) return;
+            const item = badge(flag);
+            if (item) meta.appendChild(item);
+        });
+        node.appendChild(meta);
+
+        const enemies = element('span', 'ake-ui-card__badges');
+        (options.enemies || []).forEach(enemy => {
+            const item = element('span', 'ake-ui-badge v2d-wave-enemy');
+            item.dataset.waveIdx = waveIndex;
+            if (isPresent(enemy.id)) item.dataset.enemyId = String(enemy.id);
+            if (enemy.iconSrc) {
+                const image = element('img', 'v2d-wave-icon');
+                image.src = enemy.iconSrc;
+                image.alt = '';
+                item.appendChild(image);
+            }
+            item.appendChild(element('span', 'v2d-wave-ename', enemy.name));
+            appendContent(item, ` ×${enemy.count ?? 0} `);
+            if (isPresent(enemy.level)) item.appendChild(element('span', 'v2d-wave-lv', `Lv.${enemy.level}`));
+            enemies.appendChild(item);
+        });
+        node.appendChild(enemies);
         return node;
     }
 
@@ -1157,23 +1297,95 @@
     });
     window.addEventListener('scroll', () => openSelectInstance?.positionMenu(), true);
 
+    function animateTreeToggle({ button, toggle, render, findButton, animate = true } = {}) {
+        if (!(button instanceof HTMLElement) || typeof toggle !== 'function' || typeof render !== 'function') return;
+        if (button.dataset.akeTreeAnimating === 'true') return;
+
+        const tree = button.closest('.ake-ui-tree');
+        const group = button.closest('.ake-ui-tree__group');
+        const panel = group?.querySelector(':scope > .ake-ui-tree__children');
+        const wasOpen = button.getAttribute('aria-expanded') === 'true';
+        const motionAllowed = animate && panel && typeof panel.animate === 'function'
+            && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const update = () => {
+            if (!tree?.isConnected) return null;
+            const restoreFocus = document.activeElement === button;
+            render();
+            const nextButton = findButton?.();
+            if (restoreFocus) nextButton?.focus({ preventScroll: true });
+            tree.dispatchEvent(new Event('ake:scroll-content-change'));
+            return nextButton;
+        };
+
+        toggle();
+        if (!motionAllowed) {
+            update();
+            return;
+        }
+
+        if (wasOpen) {
+            button.dataset.akeTreeAnimating = 'true';
+            button.setAttribute('aria-expanded', 'false');
+            panel.inert = true;
+            panel.style.overflow = 'hidden';
+            panel.style.boxSizing = 'border-box';
+            const height = panel.getBoundingClientRect().height;
+            const paddingBottom = getComputedStyle(panel).paddingBottom;
+            const transition = panel.animate([
+                { height: `${height}px`, paddingBottom, opacity: 1 },
+                { height: '0px', paddingBottom: '0px', opacity: 0 }
+            ], { duration: 180, easing: 'ease-in', fill: 'forwards' });
+            transition.finished.then(update, update);
+            return;
+        }
+
+        const nextButton = update();
+        const nextPanel = nextButton?.closest('.ake-ui-tree__group')
+            ?.querySelector(':scope > .ake-ui-tree__children');
+        if (!nextPanel) return;
+        nextPanel.style.overflow = 'hidden';
+        const originalBoxSizing = nextPanel.style.boxSizing;
+        nextPanel.style.boxSizing = 'border-box';
+        const height = nextPanel.getBoundingClientRect().height;
+        const paddingBottom = getComputedStyle(nextPanel).paddingBottom;
+        const transition = nextPanel.animate([
+            { height: '0px', paddingBottom: '0px', opacity: 0 },
+            { height: `${height}px`, paddingBottom, opacity: 1 }
+        ], { duration: 180, easing: 'ease-out' });
+        transition.finished.then(() => {
+            nextPanel.style.overflow = '';
+            nextPanel.style.boxSizing = originalBoxSizing;
+            tree.dispatchEvent(new Event('ake:scroll-content-change'));
+        }, () => {
+            nextPanel.style.overflow = '';
+            nextPanel.style.boxSizing = originalBoxSizing;
+        });
+    }
+
     window.AKEUI = Object.freeze({
         isPresent,
         element,
         fragment,
+        icon,
         filterButton,
         updateFilterPanel,
         refreshSelect,
         enhanceCard,
         badge,
         metaGrid,
+        timelineRuler,
+        timelineTrack,
+        tabs,
         dataTable,
         section,
         card,
+        waveCard,
+        setWaveCardActive,
         stateView,
         setState,
         directoryItem,
         setDirectoryItemActive,
+        animateTreeToggle,
         detailHeader,
         disclosureButton,
         setDisclosureButtonExpanded,

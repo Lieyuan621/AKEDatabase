@@ -1521,6 +1521,7 @@
 
         function renderDetail(data) {
             const showHidden = getCurrentShowHidden();
+            const collapseIndicator = `<span class="collapse-indicator" aria-hidden="true">${window.AKEUI.icon('disclosure').outerHTML}</span>`;
             const overviewMetaTags = getCharacterMetaIcons(data).map(icon => `
                 <span class="character-detail-tag">
                     <img class="ake-ui-meta-icon" src="${icon.src}" alt="" data-kind="${icon.kind || ''}">
@@ -1805,7 +1806,7 @@
                     <div class="ake-ui-section__header">
                         <button class="character-collapse-toggle" type="button" aria-expanded="false">
                             <span class="ake-ui-section__title">${t('sections.potentialImages')}</span>
-                            <span class="collapse-indicator" aria-hidden="true"></span>
+                            ${collapseIndicator}
                         </button>
                     </div>
                     <div class="collapse-content">
@@ -1827,13 +1828,13 @@
                 <div class="character-voice-list">
                     ${(data.profileVoice || []).map(v => `
                         <div class="character-voice-row">
-                            <div class="voice-title">${voiceButtonHtml(v.voId)}${v.title}</div>
+                            <div class="voice-title">${voiceButtonHtml(v.voId)}<span class="voice-title__text">${escapeAttribute(v.title)}</span></div>
                             <div class="voice-desc">${v.desc}</div>
                         </div>
                     `).join('')}
                 </div>
             ` : `<p>${t('none')}</p>`;
-            const specialVoiceHtml = (data.specialVoices || []).length ? `<div class="character-voice-list character-special-voice-list">${data.specialVoices.map(v => `<div class="character-voice-row"><div class="voice-title">${voiceButtonHtml(v.voId)}${escapeAttribute(v.title)}</div><div class="voice-desc">${v.desc}</div></div>`).join('')}</div>` : `<p>${t('none')}</p>`;
+            const specialVoiceHtml = (data.specialVoices || []).length ? `<div class="character-voice-list character-special-voice-list">${data.specialVoices.map(v => `<div class="character-voice-row"><div class="voice-title">${voiceButtonHtml(v.voId)}<span class="voice-title__text">${escapeAttribute(v.title)}</span></div><div class="voice-desc">${v.desc}</div></div>`).join('')}</div>` : `<p>${t('none')}</p>`;
 
             const spaceshipSkills = data.spaceshipSkills || [];
             const spaceshipHtml = spaceshipSkills.length ? spaceshipSkills.map(slot => `
@@ -1934,7 +1935,7 @@
                         <div class="ake-ui-section__header">
                             <button class="character-collapse-toggle" type="button" aria-expanded="false">
                                 <span class="ake-ui-section__title">${window.akeI18n.scope('modules.modelViewer')('title')}</span>
-                                <span class="collapse-indicator" aria-hidden="true"></span>
+                                ${collapseIndicator}
                             </button>
                         </div>
                         <div class="collapse-content">
@@ -1948,7 +1949,7 @@
                         <div class="ake-ui-section__header">
                             <button class="character-collapse-toggle" type="button" aria-expanded="false">
                                 <span class="ake-ui-section__title">${t('sections.profile')}</span>
-                                <span class="collapse-indicator" aria-hidden="true"></span>
+                                ${collapseIndicator}
                             </button>
                         </div>
                         <div class="collapse-content">
@@ -1959,7 +1960,7 @@
                         <div class="ake-ui-section__header">
                             <button class="character-collapse-toggle" type="button" aria-expanded="false">
                                 <span class="ake-ui-section__title">${t('sections.voiceRecords')}</span>
-                                <span class="collapse-indicator" aria-hidden="true"></span>
+                                ${collapseIndicator}
                             </button>
                         </div>
                         <div class="collapse-content">

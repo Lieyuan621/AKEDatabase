@@ -39,17 +39,23 @@
         return `
             <div class="model-viewer" id="characterModelViewer">
                 <header class="ake-ui-section model-viewer__header">
-                    <div class="model-viewer__title-row">
-                        <button class="ake-ui-button ake-ui-button--primary model-viewer__load" id="modelViewerLoad" type="button">${t('load', null, '加载')}</button>
-                        <label class="model-viewer__field"><span class="model-viewer__label">${t('category', null, '动画分类')}</span><select class="ake-ui-control model-viewer__select" id="modelViewerCategory"><option value="">${t('allAnimations', null, '全部动画')}</option></select></label>
-                        <label class="model-viewer__field model-viewer__field--wide"><span class="model-viewer__label">${t('animation', null, '动画')}</span><select class="ake-ui-control model-viewer__select" id="modelViewerAnimation"><option value="">${t('defaultPose', null, '默认姿态')}</option></select></label>
-                        <label class="model-viewer__field"><span class="model-viewer__label">${t('state', null, '动画状态')}</span><select class="ake-ui-control model-viewer__select" id="modelViewerState" disabled><option value="">${t('selectState', null, '选择状态')}</option></select></label>
-                        <label class="model-viewer__field model-viewer__field--switch" id="modelViewerPotentialLabel" hidden><span class="model-viewer__label">${t('maxPotential', null, '满潜特效')}</span><input class="ake-ui-switch" type="checkbox" id="modelViewerPotential"></label>
+                    <div class="model-viewer__controls">
+                        <div class="model-viewer__fields">
+                            <label class="model-viewer__field"><span class="model-viewer__label">${t('category', null, '动画分类')}</span><select class="ake-ui-control ake-ui-control--select" id="modelViewerCategory"><option value="">${t('allAnimations', null, '全部动画')}</option></select></label>
+                            <label class="model-viewer__field model-viewer__field--wide"><span class="model-viewer__label">${t('animation', null, '动画')}</span><select class="ake-ui-control ake-ui-control--select" id="modelViewerAnimation"><option value="">${t('defaultPose', null, '默认姿态')}</option></select></label>
+                            <label class="model-viewer__field"><span class="model-viewer__label">${t('state', null, '动画状态')}</span><select class="ake-ui-control ake-ui-control--select" id="modelViewerState" disabled><option value="">${t('selectState', null, '选择状态')}</option></select></label>
+                        </div>
+                        <div class="model-viewer__actions">
+                            <label class="model-viewer__field model-viewer__field--switch" id="modelViewerPotentialLabel" hidden><span class="model-viewer__label">${t('maxPotential', null, '满潜特效')}</span><input class="ake-ui-switch" type="checkbox" id="modelViewerPotential"></label>
+                            <button class="ake-ui-button ake-ui-button--primary model-viewer__load" id="modelViewerLoad" type="button">${t('load', null, '加载')}</button>
+                        </div>
                     </div>
                     <div class="model-viewer__toolbar">
-                        <button class="ake-ui-button ake-ui-button--primary" id="modelViewerPlay" type="button" disabled>${t('play', null, '播放')}</button>
-                        <button class="ake-ui-button ake-ui-button--secondary" id="modelViewerPause" type="button" disabled>${t('pause', null, '暂停')}</button>
-                        <label class="model-viewer__timeline"><span class="model-viewer__label">${t('timeline', null, '进度')}</span><input id="modelViewerTimeline" type="range" min="0" max="1" step="0.001" value="0" disabled></label>
+                        <div class="model-viewer__playback">
+                            <button class="ake-ui-button ake-ui-button--primary" id="modelViewerPlay" type="button" disabled>${t('play', null, '播放')}</button>
+                            <button class="ake-ui-button ake-ui-button--secondary" id="modelViewerPause" type="button" disabled>${t('pause', null, '暂停')}</button>
+                        </div>
+                        <label class="model-viewer__timeline"><span class="model-viewer__label">${t('timeline', null, '进度')}</span><input class="ake-ui-range" id="modelViewerTimeline" type="range" min="0" max="1" step="0.001" value="0" disabled></label>
                         <output class="model-viewer__time" id="modelViewerTime">0.00 / 0.00</output>
                     </div>
                 </header>

@@ -284,6 +284,7 @@
 
         list.addEventListener('scroll', scheduleUpdate, { passive: true });
         list.addEventListener('load', scheduleUpdate, true);
+        list.addEventListener('ake:scroll-content-change', scheduleUpdate);
         resizeObserver?.observe(list);
         resizeObserver?.observe(frame);
         contentObserver.observe(list, { childList: true, subtree: true, characterData: true });
@@ -297,6 +298,7 @@
                 contentObserver.disconnect();
                 list.removeEventListener('scroll', scheduleUpdate);
                 list.removeEventListener('load', scheduleUpdate, true);
+                list.removeEventListener('ake:scroll-content-change', scheduleUpdate);
                 if (list.parentElement === frame) frame.replaceWith(list);
             }
         };
@@ -418,7 +420,15 @@
         }
 
         function prepareScrollAffordances() {
-            element.querySelectorAll('.module-list, .ake-ui-directory__list').forEach(list => {
+            const moduleRoot = element.closest('.ake-ui-directory');
+            const hasTreeDirectory = ['skill', 'buff'].includes(moduleRoot?.dataset.akeModule);
+            const lists = [...element.querySelectorAll(hasTreeDirectory
+                ? '.module-list, .ake-ui-directory__list, .ake-ui-tree'
+                : '.module-list, .ake-ui-directory__list')];
+            if (hasTreeDirectory) {
+                lists.push(...moduleRoot.querySelectorAll('.ake-ui-directory__mobile-panel .ake-ui-tree'));
+            }
+            lists.forEach(list => {
                 const affordance = createScrollAffordance(list);
                 if (affordance) scrollAffordances.push(affordance);
             });

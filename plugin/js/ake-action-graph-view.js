@@ -66,6 +66,7 @@
         const t = global.akeI18n?.scope?.('actionGraph') || ((key, params, fallback) => fallback || key);
         const text = (key, params) => t(key, params);
         const escape = options.escape;
+        const disclosureSummary = label => `<summary><span>${escape(label)}</span>${global.AKEUI.icon('disclosure').outerHTML}</summary>`;
         const HEADER = 58;
         const PORT = 28;
         // Visual groups consume the analyzer's categories; unknown actions stay visible.
@@ -165,8 +166,10 @@
         let layoutFailed = false;
         const camera = { x: 0, y: 0, zoom: 1, width: 1000, height: 640 };
         const rawNode = id => graph?.nodes[id];
-        const button = (action, label, id, disabled) => `<button type="button" class="ake-ui-segmented__button"
+        const button = (action, label, id, disabled) => `<button type="button" class="ake-ui-button ake-ui-button--secondary combatv3-action-button"
             data-action-graph="${action}"${id ? ` data-graph-id="${escape(id)}"` : ''}${disabled ? ' disabled' : ''}>${escape(label)}</button>`;
+        const zoomButton = (action, iconName) => `<button type="button" class="ake-ui-button ake-ui-button--secondary combatv3-action-button combatv3-action-button--icon"
+            data-action-graph="${action}" aria-label="${escape(global.akeI18n?.t?.(`modules.tech_tree.${action}`) || action)}">${global.AKEUI.icon(iconName).outerHTML}</button>`;
         const title = item => item.kind === 'action' ? options.actionLabel(item.type)
             : text(item.kind === 'sequence' ? 'sequence' : 'unknown');
         const time = item => item.startFrame === null || item.startFrame === undefined ? text('eventTime')
@@ -364,9 +367,9 @@
             if (depth > 48) return escape(text('diagnostic.depthLimit'));
             const fields = Object.entries(value);
             if (!fields.length) return Array.isArray(value) ? '[]' : '{}';
-            return `<details${depth === 0 ? ' open' : ''}><summary>${escape(text('fieldCount', { count: fields.length }))}</summary>
-                <dl class="combatv3-definition-list">${fields.map(([name, item]) => `<dt>${escape(Array.isArray(value) ? Number(name) + 1 : options.fieldLabel(name))}</dt>
-                    <dd>${renderField(item, name, Array.isArray(value) ? `${path}[${name}]` : `${path}.${name}`, depth + 1)}</dd>`).join('')}</dl></details>`;
+            return `<details class="ake-ui-details"${depth === 0 ? ' open' : ''}>${disclosureSummary(text('fieldCount', { count: fields.length }))}
+                <div class="ake-ui-details__body"><dl class="combatv3-definition-list">${fields.map(([name, item]) => `<dt>${escape(Array.isArray(value) ? Number(name) + 1 : options.fieldLabel(name))}</dt>
+                    <dd>${renderField(item, name, Array.isArray(value) ? `${path}[${name}]` : `${path}.${name}`, depth + 1)}</dd>`).join('')}</dl></div></details>`;
         }
         function renderReference(reference) {
             const target = reference.resolved ? options.resourceLink(reference) : null;
@@ -397,14 +400,14 @@
                     <th>${escape(text('parameter'))}</th><th>${escape(text('value'))}</th><th>${escape(text('sourceLabel'))}</th></tr></thead><tbody>${inputRows}</tbody></table></div>` : ''}
                 ${sourceChoices}
                 <h4>${escape(text('parameters'))}</h4>${renderField(item.raw, '', item.path, 0)}
-                ${options.showHidden() ? `<details><summary>${escape(text('source'))}</summary><p>${escape(graph.resource.file)} · ${escape(item.path)}</p><pre>${escape(JSON.stringify(item.raw, null, 2))}</pre></details>` : ''}</section>`;
+                ${options.showHidden() ? `<details class="ake-ui-details">${disclosureSummary(text('source'))}<div class="ake-ui-details__body"><p>${escape(graph.resource.file)} · ${escape(item.path)}</p><pre>${escape(JSON.stringify(item.raw, null, 2))}</pre></div></details>` : ''}</section>`;
         }
         function render() {
             if (!graph) return `<div class="ake-ui-state" data-state="empty">${escape(text('empty'))}</div>`;
             const count = Object.values(graph.nodes).filter(item => item.kind === 'action').length;
-            return `<div class="combatv3-context-row combatv3-editor__toolbar"><strong>${escape(text('total', { count, entries: graph.entries.length }))}</strong>
-                ${button('zoomOut', '−')}<span data-graph-zoom>100%</span>${button('zoomIn', '+')}${button('fit', text('fit'))}
-                ${button('focus', text('focusSelected'), null, !selectedId)}${button('arrange', text('arrange'))}</div>
+            return `<div class="combatv3-editor__toolbar"><strong>${escape(text('total', { count, entries: graph.entries.length }))}</strong>
+                <div class="combatv3-editor__toolbar-actions">${zoomButton('zoomOut', 'minus')}<span data-graph-zoom>100%</span>${zoomButton('zoomIn', 'plus')}
+                ${button('fit', text('fit'))}${button('focus', text('focusSelected'), null, !selectedId)}${button('arrange', text('arrange'))}</div></div>
                 <div class="ake-ui-table-shell combatv3-editor__canvas"><svg data-graph-canvas xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"
                     viewBox="0 0 1000 640" role="group" tabindex="0" aria-label="${escape(text('canvas'))}">
                     <defs><pattern id="akeActionGraphGrid" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="var(--combatv3-border)"/></pattern></defs>
@@ -418,10 +421,10 @@
                 <div class="combatv3-editor__notes">
                 ${graph.truncated ? `<div class="ake-ui-state" data-state="error">${escape(text('incomplete'))}</div>` : ''}
                 ${layoutFailed ? `<div class="ake-ui-state" data-state="error">${escape(text('layoutFailed'))}</div>` : ''}
-                <details><summary>${escape(text('graphNotes'))}</summary>
+                <details class="ake-ui-details">${disclosureSummary(text('graphNotes'))}<div class="ake-ui-details__body">
                     <p>${escape(text('canvasHelp'))}</p><p>${escape(text('fullNotice'))}</p><p>${escape(text('returnPolicy'))}</p>
                     <p>${escape(text('diagnostics', { opaque: Object.values(graph.nodes).filter(item => item.status === 'opaque').length, count: graph.diagnostics.length }))}</p>
-                    ${graph.diagnostics.map(item => `<p>${escape(text(`diagnostic.${item.code}`))}${options.showHidden() ? ` · ${escape(item.path)}` : ''}</p>`).join('')}</details></div>`;
+                    ${graph.diagnostics.map(item => `<p>${escape(text(`diagnostic.${item.code}`))}${options.showHidden() ? ` · ${escape(item.path)}` : ''}</p>`).join('')}</div></details></div>`;
         }
         function paintCamera() {
             if (!world) return;
